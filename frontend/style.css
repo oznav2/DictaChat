@@ -523,4 +523,401 @@ select,
     }
 }
 
-;
+/* ====================================
+   Markdown Rendering Enhancements
+   ==================================== */
+
+/* Markdown Typography */
+.response-message h1,
+.thinking-content-inner h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 1rem 0 0.5rem 0;
+    color: #f0f6ff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.3rem;
+}
+
+.response-message h2,
+.thinking-content-inner h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0.8rem 0 0.4rem 0;
+    color: #e6eef8;
+}
+
+.response-message h3,
+.thinking-content-inner h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0.6rem 0 0.3rem 0;
+    color: #dfe9ff;
+}
+
+/* Lists */
+.response-message ul,
+.thinking-content-inner ul {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+    list-style-type: disc;
+}
+
+.response-message ol,
+.thinking-content-inner ol {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+    list-style-type: decimal;
+}
+
+.response-message li,
+.thinking-content-inner li {
+    margin: 0.3rem 0;
+    line-height: 1.6;
+}
+
+/* Inline Code */
+.response-message code:not(.hljs),
+.thinking-content-inner code:not(.hljs) {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #fbbf24;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Code Blocks */
+.response-message pre,
+.thinking-content-inner pre {
+    background: #0d1117;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.8rem 0;
+    overflow-x: auto;
+    position: relative;
+}
+
+.response-message pre code,
+.thinking-content-inner pre code {
+    background: transparent;
+    padding: 0;
+    border: none;
+    color: inherit;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: block;
+}
+
+/* Blockquotes */
+.response-message blockquote,
+.thinking-content-inner blockquote {
+    border-left: 3px solid var(--accent);
+    padding-left: 1rem;
+    margin: 0.8rem 0;
+    color: var(--muted);
+    font-style: italic;
+    background: rgba(59, 130, 246, 0.05);
+    border-radius: 0 8px 8px 0;
+    padding: 0.5rem 1rem;
+}
+
+/* Links */
+.response-message a,
+.thinking-content-inner a {
+    color: var(--accent);
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+.response-message a:hover,
+.thinking-content-inner a:hover {
+    color: #60a5fa;
+}
+
+/* Tables */
+.response-message table,
+.thinking-content-inner table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0.8rem 0;
+    font-size: 0.9rem;
+}
+
+.response-message th,
+.thinking-content-inner th {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.6rem;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+}
+
+.response-message td,
+.thinking-content-inner td {
+    padding: 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.response-message tr:nth-child(even),
+.thinking-content-inner tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Horizontal Rules */
+.response-message hr:not(.message-separator),
+.thinking-content-inner hr:not(.message-separator) {
+    border: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.15);
+    margin: 1rem 0;
+}
+
+/* Math Equations */
+.katex-display {
+    margin: 1rem 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.katex {
+    font-size: 1.1em;
+    color: #e6eef8;
+}
+
+/* Footnotes */
+.footnotes {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.footnotes ol {
+    padding-left: 1.2rem;
+}
+
+.footnote-ref {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footnote-ref:hover {
+    text-decoration: underline;
+}
+
+.footnote-backref {
+    margin-left: 0.3rem;
+    text-decoration: none;
+    color: var(--muted);
+}
+
+/* RTL/BiDi Support */
+.response-message[dir="rtl"],
+.thinking-content-inner[dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+}
+
+.response-message[dir="ltr"],
+.thinking-content-inner[dir="ltr"] {
+    direction: ltr;
+    text-align: left;
+}
+
+/* Auto-detect mode */
+.response-message,
+.thinking-content-inner {
+    unicode-bidi: plaintext;
+}
+
+/* Ensure code blocks stay LTR even in RTL content */
+.response-message pre,
+.thinking-content-inner pre,
+.response-message code,
+.thinking-content-inner code {
+    direction: ltr;
+    text-align: left;
+    unicode-bidi: embed;
+}
+
+/* Task Lists */
+.contains-task-list {
+    list-style-type: none;
+    padding-left: 0.5rem;
+}
+
+.task-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin: 0.3rem 0;
+}
+
+.task-list-item-checkbox {
+    margin-top: 0.35rem;
+    accent-color: var(--accent);
+}
+
+/* Collapsible Sections (Details/Summary) */
+details {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+summary {
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05);
+    font-weight: 600;
+    color: #e6eef8;
+    user-select: none;
+    transition: background 0.2s;
+    list-style: none; /* Hide default arrow */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::before {
+    content: '▶';
+    font-size: 0.8rem;
+    transition: transform 0.2s;
+    display: inline-block;
+    color: var(--muted);
+}
+
+details[open] summary::before {
+    transform: rotate(90deg);
+}
+
+details[open] summary {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+details .details-content {
+    padding: 1rem;
+}
+
+/* Mermaid Diagrams */
+.mermaid {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    overflow-x: auto;
+    text-align: center;
+}
+
+/* Theme Selector Styles */
+.theme-selector {
+    position: absolute;
+    top: 1rem;
+    right: 5rem;
+    z-index: 100;
+}
+
+.theme-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--muted);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.theme-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Formatting Toolbar */
+.formatting-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px 8px 0 0;
+}
+
+.format-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    padding: 0.3rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.format-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* Markdown Preview Toggle */
+.preview-toggle {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 10;
+}
+
+/* Code Block Wrapper with Copy Button */
+.code-block-wrapper {
+    position: relative;
+    margin: 0.8rem 0;
+}
+
+.copy-code-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--muted);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.copy-code-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.copy-code-btn.copied {
+    background: var(--success);
+    color: #fff;
+    border-color: var(--success);
+}
+
+/* Message Preview */
+.message-preview {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    min-height: 100px;
+    max-height: 300px;
+    overflow-y: auto;
+}
