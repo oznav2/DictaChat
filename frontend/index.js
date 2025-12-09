@@ -643,8 +643,16 @@
             // Second message component: Final response
             const contentDiv = document.createElement('div');
             contentDiv.className = 'response-message';
-            // Ensure proper prefixing if needed, or rely on the avatar
-            contentDiv.innerHTML = content.replace(/\n/g, '<br>');
+            // Render markdown with all enhancements
+            const renderedHtml = renderMarkdown(content);
+            contentDiv.innerHTML = renderedHtml;
+
+            // Detect and apply RTL direction if needed
+            if (detectRTL(content)) {
+                contentDiv.setAttribute('dir', 'rtl');
+            } else {
+                contentDiv.setAttribute('dir', 'ltr');
+            }
             bubble.appendChild(contentDiv);
         }
 
@@ -685,9 +693,18 @@
             // Second message component: Final response
             const contentDiv = document.createElement('div');
             contentDiv.className = 'response-message';
-            contentDiv.innerHTML = content.replace(/\n/g, '<br>');
+            // Render markdown with all enhancements
+            const renderedHtml = renderMarkdown(content);
+            contentDiv.innerHTML = renderedHtml;
+
+            // Detect and apply RTL direction if needed
+            if (detectRTL(content)) {
+                contentDiv.setAttribute('dir', 'rtl');
+            } else {
+                contentDiv.setAttribute('dir', 'ltr');
+            }
             bubble.appendChild(contentDiv);
-            
+
             messagesEl.scrollTop = messagesEl.scrollHeight;
         }, 900 + Math.min(2000, userText.length * 30));
     }
