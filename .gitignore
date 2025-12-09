@@ -5,13 +5,12 @@ target
 .env
 .trae
 .logs
-.blog
-.cookbook
-kubernetes
-scripts
+blog/
+cookbook/
+kubernetes/
+scripts/
 frontend/node_modules
 chat_template.jinja2.template.bak
-blog
 
 frontend/ref.css
 
