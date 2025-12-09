@@ -797,6 +797,54 @@
 
     // initial focus
     input.focus();
+
+    // ========================================
+    // UI Controls for Preview and Theme
+    // ========================================
+
+    // Toggle Preview Mode
+    let isPreviewMode = false;
+    const previewBtn = document.getElementById('previewBtn');
+    const messagePreview = document.getElementById('message-preview');
+
+    if (previewBtn) {
+        previewBtn.addEventListener('click', () => {
+            isPreviewMode = !isPreviewMode;
+
+            if (isPreviewMode) {
+                messagePreview.innerHTML = renderMarkdown(input.value);
+                messagePreview.style.display = 'block';
+                input.style.display = 'none';
+                previewBtn.textContent = '✏️'; // Edit icon
+            } else {
+                messagePreview.style.display = 'none';
+                input.style.display = 'block';
+                previewBtn.textContent = '👁️'; // Preview icon
+            }
+        });
+    }
+
+    // Auto-update preview when typing (if preview mode is active)
+    input.addEventListener('input', () => {
+        if (isPreviewMode && messagePreview) {
+            messagePreview.innerHTML = renderMarkdown(input.value);
+        }
+    });
+
+    // Theme Selector
+    const themes = ['github-dark', 'monokai', 'dracula', 'atom-one-dark', 'vs2015'];
+    let currentThemeIndex = 0;
+    const themeBtn = document.getElementById('themeBtn');
+
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            const themeLink = document.getElementById('hljs-theme');
+            if (themeLink) {
+                themeLink.href = `https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/${themes[currentThemeIndex]}.min.css`;
+            }
+        });
+    }
 })();
 
 

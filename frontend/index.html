@@ -96,9 +96,14 @@
             </div>
 
             <form class="chat-input" id="composer" action="#" onsubmit="return false;" aria-label="Send a message">
+                <div class="formatting-toolbar">
+                    <button type="button" class="format-btn" id="previewBtn" title="Toggle Preview">👁️</button>
+                    <button type="button" class="format-btn" id="themeBtn" title="Toggle Theme">🌓</button>
+                </div>
                 <button type="button" title="Attach file" class="icon-btn" aria-hidden="true">📎</button>
                 <textarea id="input" placeholder="Write a message and press Enter to send…"
                     aria-label="Message input"></textarea>
+                <div id="message-preview" class="message-preview" style="display: none;"></div>
                 <button class="send" id="sendBtn" aria-label="Send message" title="Send message">Send</button>
             </form>
         </main>
