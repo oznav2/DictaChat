@@ -1,4 +1,316 @@
 (() => {
+    // ========================================
+    // Markdown Rendering Configuration
+    // ========================================
+
+    // Initialize markdown-it parser
+    const md = window.markdownit({
+        html: false,        // Disable raw HTML for security
+        xhtmlOut: false,    // Use > instead of /> for void elements
+        breaks: true,       // Convert \n to <br>
+        linkify: true,      // Auto-convert URLs to links
+        typographer: true,  // Enable smartquotes and other typographic replacements
+        quotes: '""''',     // Quote replacement characters
+
+        // Syntax highlighting for code blocks (Lazy Loading)
+        highlight: function (str, lang) {
+            // Lazy load language if not available
+            if (lang && window.hljs && !window.hljs.getLanguage(lang)) {
+                try {
+                    // Check if we have a CDN URL for this language
+                    // Note: In a real implementation, we would need a mapping or dynamic import
+                    // For now, we'll try to load it dynamically if possible or fall back to auto
+                    loadLanguage(lang);
+                } catch (e) {
+                    console.warn(`Failed to load language: ${lang}`, e);
+                }
+            }
+
+            if (lang && window.hljs && window.hljs.getLanguage(lang)) {
+                try {
+                    return window.hljs.highlight(str, {
+                        language: lang,
+                        ignoreIllegals: true
+                    }).value;
+                } catch (err) {
+                    console.error('Highlight.js error:', err);
+                }
+            }
+            // Auto-detect language if not specified
+            if (window.hljs) {
+                try {
+                    return window.hljs.highlightAuto(str).value;
+                } catch (err) {
+                    console.error('Highlight.js auto-detect error:', err);
+                }
+            }
+            return ''; // Return empty string to use default escaping
+        }
+    });
+
+    // Add task lists support
+    if (window.markdownitTaskLists) {
+        md.use(window.markdownitTaskLists, {
+            enabled: true,
+            label: true,
+            labelAfter: true
+        });
+    }
+
+    // Add container support (for collapsible sections/admonitions)
+    if (window.markdownitContainer) {
+        md.use(window.markdownitContainer, 'details', {
+            validate: function(params) {
+                return params.trim().match(/^details\s+(.*)$/);
+            },
+            render: function (tokens, idx) {
+                var m = tokens[idx].info.trim().match(/^details\s+(.*)$/);
+                if (tokens[idx].nesting === 1) {
+                    // opening tag
+                    return '<details><summary>' + md.utils.escapeHtml(m[1]) + '</summary>\n<div class="details-content">';
+                } else {
+                    // closing tag
+                    return '</div></details>\n';
+                }
+            }
+        });
+    }
+
+    // Add emoji support
+    if (window.markdownitEmoji) {
+        md.use(window.markdownitEmoji);
+    }
+
+    // Add footnote support for citations
+    if (window.markdownitFootnote) {
+        md.use(window.markdownitFootnote);
+    }
+
+    // Add attributes support for RTL/BiDi
+    if (window.markdownitAttrs) {
+        md.use(window.markdownitAttrs, {
+            leftDelimiter: '{',
+            rightDelimiter: '}',
+            allowedAttributes: ['dir', 'class', 'id']
+        });
+    }
+
+    // Add math support via KaTeX
+    if (window.texmath && window.katex) {
+        md.use(window.texmath, {
+            engine: window.katex,
+            delimiters: 'dollars',  // Use $ and $$ delimiters
+            katexOptions: {
+                throwOnError: false,  // Don't break on math errors
+                displayMode: false,
+                output: 'html'
+            }
+        });
+    }
+
+    /**
+     * Lazy load highlight.js languages
+     * @param {string} lang - Language name
+     */
+    function loadLanguage(lang) {
+        // Implementation for lazy loading
+        const script = document.createElement('script');
+        script.src = `https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/${lang}.min.js`;
+        script.onerror = () => console.warn(`Could not load language: ${lang}`);
+        document.head.appendChild(script);
+    }
+
+    /**
+     * Render Mermaid diagrams
+     * @param {string} code - Mermaid code
+     * @returns {string} - Rendered SVG or placeholder
+     */
+    function renderMermaid(code) {
+        try {
+            // Generate unique ID
+            const id = 'mermaid-' + Math.random().toString(36).substr(2, 9);
+            // Return container div - actual rendering happens after DOM insertion
+            setTimeout(() => {
+                mermaid.render(id, code).then(result => {
+                    const element = document.getElementById(id + '-container');
+                    if (element) element.innerHTML = result.svg;
+                });
+            }, 0);
+            return `<div class="mermaid" id="${id}-container">${code}</div>`;
+        } catch (e) {
+            return `<pre class="mermaid-error">${e.message}</pre>`;
+        }
+    }
+
+    // Initialize Mermaid
+    if (window.mermaid) {
+        mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+    }
+
+    // ========================================
+    // RTL/BiDi Detection
+    // ========================================
+
+    /**
+     * Detect if text contains significant RTL characters
+     * @param {string} text - Text to analyze
+     * @returns {boolean} - True if text is primarily RTL
+     */
+    function detectRTL(text) {
+        const rtlChars = /[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/g;
+        const rtlMatches = (text.match(rtlChars) || []).length;
+        const totalChars = text.replace(/\s/g, '').length;
+
+        // If more than 30% of non-whitespace chars are RTL, treat as RTL
+        return totalChars > 0 && (rtlMatches / totalChars) > 0.3;
+    }
+
+    // ========================================
+    // Markdown Rendering Pipeline
+    // ========================================
+
+    /**
+     * Escape HTML for safe attribute insertion
+     * @param {string} text - Text to escape
+     * @returns {string} - Escaped text
+     */
+    function escapeHtml(text) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, m => map[m]);
+    }
+
+    /**
+     * Render markdown text to sanitized HTML
+     * @param {string} text - Raw markdown text
+     * @returns {string} - Sanitized HTML
+     */
+    function renderMarkdown(text) {
+        if (!text || text.trim().length === 0) {
+            return '';
+        }
+
+        // Step 1: Parse markdown to HTML
+        let html = md.render(text);
+
+        // Step 2: Sanitize HTML with DOMPurify
+        if (window.DOMPurify) {
+            html = window.DOMPurify.sanitize(html, {
+                ALLOWED_TAGS: [
+                    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                    'p', 'br', 'hr', 'div', 'span',
+                    'strong', 'em', 'b', 'i', 'u', 's', 'del', 'ins',
+                    'code', 'pre', 'kbd', 'samp', 'var',
+                    'ul', 'ol', 'li', 'dl', 'dt', 'dd',
+                    'a', 'blockquote', 'cite', 'q',
+                    'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td',
+                    'sup', 'sub', 'abbr', 'mark', 'small',
+                    'section', 'article', 'aside', 'details', 'summary',
+                    // KaTeX math elements
+                    'math', 'semantics', 'mrow', 'mi', 'mo', 'mn', 'ms', 'mtext',
+                    'annotation', 'annotation-xml',
+                    // Footnote elements
+                    'sup', 'section',
+                    // Task list elements
+                    'input', 'label'
+                ],
+                ALLOWED_ATTR: [
+                    'class', 'id', 'dir', 'lang',
+                    'href', 'title', 'target', 'rel',
+                    'data-footnote-ref', 'data-footnote-backref',
+                    'aria-label', 'role',
+                    // KaTeX attributes
+                    'style', 'xmlns', 'aria-hidden',
+                    // Task list attributes
+                    'type', 'checked', 'disabled', 'for'
+                ],
+                ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+                KEEP_CONTENT: true,
+                RETURN_TRUSTED_TYPE: false
+            });
+        }
+
+        // Step 3: Wrap code blocks for copy functionality
+        html = html.replace(
+            /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g,
+            (match, lang, code) => {
+                // Special handling for mermaid diagrams
+                if (lang === 'mermaid') {
+                    // Decode HTML entities in code
+                    const textarea = document.createElement('textarea');
+                    textarea.innerHTML = code;
+                    return renderMermaid(textarea.value);
+                }
+
+                return `<div class="code-block-wrapper">
+                    <button class="copy-code-btn" data-code="${escapeHtml(code)}" title="Copy code">Copy</button>
+                    <pre><code class="language-${lang}">${code}</code></pre>
+                </div>`;
+            }
+        );
+
+        // Also wrap plain code blocks
+        html = html.replace(
+            /<pre><code>([\s\S]*?)<\/code><\/pre>/g,
+            (match, code) => {
+                // Skip if already wrapped
+                if (match.includes('code-block-wrapper')) {
+                    return match;
+                }
+                return `<div class="code-block-wrapper">
+                    <button class="copy-code-btn" data-code="${escapeHtml(code)}" title="Copy code">Copy</button>
+                    <pre><code>${code}</code></pre>
+                </div>`;
+            }
+        );
+
+        return html;
+    }
+
+    /**
+     * Handle copy button clicks for code blocks
+     */
+    function setupCopyButtons() {
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('copy-code-btn')) {
+                const code = e.target.getAttribute('data-code');
+                if (code) {
+                    // Decode HTML entities
+                    const textarea = document.createElement('textarea');
+                    textarea.innerHTML = code;
+                    const decodedCode = textarea.value;
+
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(decodedCode).then(() => {
+                        const btn = e.target;
+                        const originalText = btn.textContent;
+                        btn.textContent = 'Copied!';
+                        btn.classList.add('copied');
+
+                        setTimeout(() => {
+                            btn.textContent = originalText;
+                            btn.classList.remove('copied');
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy:', err);
+                    });
+                }
+            }
+        });
+    }
+
+    // Initialize copy buttons on load
+    setupCopyButtons();
+
+    // ========================================
+    // Original Application Code
+    // ========================================
+
     const messagesEl = document.getElementById('messages');
     const input = document.getElementById('input');
     const sendBtn = document.getElementById('sendBtn');
