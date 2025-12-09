@@ -888,21 +888,37 @@ details .details-content {
 .code-block-wrapper {
     position: relative;
     margin: 0.8rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.code-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.code-language {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .copy-code-btn {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: var(--muted);
-    padding: 0.3rem 0.6rem;
+    padding: 0.25rem 0.5rem;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     transition: all 0.2s;
-    z-index: 10;
 }
 
 .copy-code-btn:hover {
@@ -914,6 +930,16 @@ details .details-content {
     background: var(--success);
     color: #fff;
     border-color: var(--success);
+}
+
+.code-block-wrapper pre {
+    margin: 0;
+    border-radius: 0;
+}
+
+.code-block-wrapper pre code {
+    display: block;
+    padding: 1rem;
 }
 
 /* Message Preview */

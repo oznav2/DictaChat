@@ -10,7 +10,7 @@
         breaks: true,       // Convert \n to <br>
         linkify: true,      // Auto-convert URLs to links
         typographer: true,  // Enable smartquotes and other typographic replacements
-        quotes: '""''',     // Quote replacement characters
+        quotes: '“”‘’',     // Quote replacement characters
 
         // Syntax highlighting for code blocks (Lazy Loading)
         highlight: function (str, lang) {
@@ -129,22 +129,42 @@
         try {
             // Generate unique ID
             const id = 'mermaid-' + Math.random().toString(36).substr(2, 9);
-            // Return container div - actual rendering happens after DOM insertion
-            setTimeout(() => {
-                mermaid.render(id, code).then(result => {
-                    const element = document.getElementById(id + '-container');
-                    if (element) element.innerHTML = result.svg;
-                });
-            }, 0);
-            return `<div class="mermaid" id="${id}-container">${code}</div>`;
+            // Return container div with the code - mermaid.run() will render it
+            return `<div class="mermaid" id="${id}">${escapeHtml(code)}</div>`;
         } catch (e) {
-            return `<pre class="mermaid-error">${e.message}</pre>`;
+            console.error('Mermaid error:', e);
+            return `<pre class="mermaid-error">${escapeHtml(e.message)}</pre>`;
         }
     }
 
     // Initialize Mermaid
     if (window.mermaid) {
-        mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+        window.mermaid.initialize({
+            startOnLoad: false,
+            theme: 'dark',
+            securityLevel: 'loose',
+            flowchart: { useMaxWidth: true }
+        });
+    }
+
+    /**
+     * Process mermaid diagrams in the DOM after content is added
+     */
+    async function processMermaidDiagrams() {
+        if (window.mermaid) {
+            try {
+                // Run mermaid on all unprocessed diagrams
+                await window.mermaid.run({
+                    querySelector: '.mermaid:not([data-processed="true"])'
+                });
+                // Mark processed diagrams
+                document.querySelectorAll('.mermaid').forEach(el => {
+                    el.setAttribute('data-processed', 'true');
+                });
+            } catch (error) {
+                console.error('Failed to render Mermaid diagrams:', error);
+            }
+        }
     }
 
     // ========================================
@@ -235,7 +255,7 @@
             });
         }
 
-        // Step 3: Wrap code blocks for copy functionality
+        // Step 3: Wrap code blocks for copy functionality and language labels
         html = html.replace(
             /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g,
             (match, lang, code) => {
@@ -247,24 +267,41 @@
                     return renderMermaid(textarea.value);
                 }
 
+                // Decode the code to get the original text for copying
+                const textarea = document.createElement('textarea');
+                textarea.innerHTML = code;
+                const plainCode = textarea.value;
+
                 return `<div class="code-block-wrapper">
-                    <button class="copy-code-btn" data-code="${escapeHtml(code)}" title="Copy code">Copy</button>
-                    <pre><code class="language-${lang}">${code}</code></pre>
+                    <div class="code-block-header">
+                        <span class="code-language">${lang}</span>
+                        <button class="copy-code-btn" data-code="${escapeHtml(plainCode)}" title="Copy code">Copy</button>
+                    </div>
+                    <pre><code class="language-${lang} hljs">${code}</code></pre>
                 </div>`;
             }
         );
 
-        // Also wrap plain code blocks
+        // Also wrap plain code blocks (no language specified)
         html = html.replace(
-            /<pre><code>([\s\S]*?)<\/code><\/pre>/g,
+            /<pre><code(?![\s>]*class="language-)>([\s\S]*?)<\/code><\/pre>/g,
             (match, code) => {
                 // Skip if already wrapped
                 if (match.includes('code-block-wrapper')) {
                     return match;
                 }
+
+                // Decode the code to get the original text for copying
+                const textarea = document.createElement('textarea');
+                textarea.innerHTML = code;
+                const plainCode = textarea.value;
+
                 return `<div class="code-block-wrapper">
-                    <button class="copy-code-btn" data-code="${escapeHtml(code)}" title="Copy code">Copy</button>
-                    <pre><code>${code}</code></pre>
+                    <div class="code-block-header">
+                        <span class="code-language">text</span>
+                        <button class="copy-code-btn" data-code="${escapeHtml(plainCode)}" title="Copy code">Copy</button>
+                    </div>
+                    <pre><code class="hljs">${code}</code></pre>
                 </div>`;
             }
         );
@@ -397,13 +434,35 @@
             console.log("Response content:", content.substring(0, 100));
             return { thinkContent, content };
         }
-        
+
+        // Priority 1.2: Check for <reasoning></reasoning> tags (alternative format)
+        thinkMatch = text.match(/<reasoning>([\s\S]*?)<\/reasoning>([\s\S]*)/);
+        if (thinkMatch) {
+            thinkContent = thinkMatch[1].trim();
+            content = thinkMatch[2].trim();
+            console.log("Priority 1.2 matched - <reasoning></reasoning> tags found");
+            console.log("Thinking content:", thinkContent.substring(0, 100));
+            console.log("Response content:", content.substring(0, 100));
+            return { thinkContent, content };
+        }
+
         // Priority 1.5: Check for closing </think> tag only (chat template adds opening tag)
         thinkMatch = text.match(/([\s\S]*?)<\/think>([\s\S]*)/);
         if (thinkMatch) {
             thinkContent = thinkMatch[1].trim();
             content = thinkMatch[2].trim();
             console.log("Priority 1.5 matched - </think> tag found (template adds opening)");
+            console.log("Thinking content:", thinkContent.substring(0, 100));
+            console.log("Response content:", content.substring(0, 100));
+            return { thinkContent, content };
+        }
+
+        // Priority 1.7: Check for closing </reasoning> tag only
+        thinkMatch = text.match(/([\s\S]*?)<\/reasoning>([\s\S]*)/);
+        if (thinkMatch) {
+            thinkContent = thinkMatch[1].trim();
+            content = thinkMatch[2].trim();
+            console.log("Priority 1.7 matched - </reasoning> tag found");
             console.log("Thinking content:", thinkContent.substring(0, 100));
             console.log("Response content:", content.substring(0, 100));
             return { thinkContent, content };
@@ -669,6 +728,12 @@
         msg.appendChild(bubble);
         messagesEl.appendChild(msg);
         messagesEl.scrollTop = messagesEl.scrollHeight;
+
+        // Process any mermaid diagrams in the new content (if not typing)
+        if (!typing) {
+            processMermaidDiagrams();
+        }
+
         return { msg, bubble };
     }
     function simulateReply(userText) {
@@ -715,6 +780,9 @@
             bubble.appendChild(contentDiv);
 
             messagesEl.scrollTop = messagesEl.scrollHeight;
+
+            // Process any mermaid diagrams in the new content
+            processMermaidDiagrams();
         }, 900 + Math.min(2000, userText.length * 30));
     }
 

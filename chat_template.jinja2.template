@@ -86,7 +86,7 @@
  	 	 {%- endif -%} 
  	 {%- endif -%} 
  {%- endfor -%} 
- {{- "\n" -}} 
- {%- if add_generation_prompt -%} 
- 	 {{- "<|im_start|>assistant\n<think>" -}} 
- {%- endif -%}
+{{- "\n" -}} 
+{%- if add_generation_prompt -%} 
+	 {{- "<|im_start|>assistant\n" -}} 
+{%- endif -%}
