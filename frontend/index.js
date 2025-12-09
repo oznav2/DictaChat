@@ -129,8 +129,10 @@
         try {
             // Generate unique ID
             const id = 'mermaid-' + Math.random().toString(36).substr(2, 9);
-            // Return container div with the code - mermaid.run() will render it
-            return `<div class="mermaid" id="${id}">${escapeHtml(code)}</div>`;
+            // Return container div with the code - DON'T escape HTML as mermaid needs the raw code
+            // But DO trim whitespace which can cause syntax errors
+            const cleanCode = code.trim();
+            return `<pre class="mermaid" id="${id}">${cleanCode}</pre>`;
         } catch (e) {
             console.error('Mermaid error:', e);
             return `<pre class="mermaid-error">${escapeHtml(e.message)}</pre>`;
@@ -417,58 +419,70 @@
         console.log("=== parseResponse called ===");
         console.log("Input text:", text);
         console.log("Text length:", text.length);
-        
+
         let thinkContent = null;
         let content = text;
 
-        // Priority 1: Check for explicit <think></think> tags (as per chat template)
-        // This is the PRIMARY format the model should use based on chat_template.jinja2.template
-        // Note: The chat template adds the opening <think> tag, so the model's response
-        // may only contain the closing </think> tag followed by the actual response
+        // Priority 1: Check for <think></think> tags (most reliable)
         let thinkMatch = text.match(/<think>([\s\S]*?)<\/think>([\s\S]*)/);
         if (thinkMatch) {
             thinkContent = thinkMatch[1].trim();
             content = thinkMatch[2].trim();
-            console.log("Priority 1 matched - <think></think> tags found");
-            console.log("Thinking content:", thinkContent.substring(0, 100));
-            console.log("Response content:", content.substring(0, 100));
+            console.log("✓ Found <think> tags");
+            console.log("  Reasoning:", thinkContent.substring(0, 100) + "...");
+            console.log("  Answer:", content.substring(0, 100) + "...");
             return { thinkContent, content };
         }
 
-        // Priority 1.2: Check for <reasoning></reasoning> tags (alternative format)
+        // Priority 2: Check for <reasoning></reasoning> tags
         thinkMatch = text.match(/<reasoning>([\s\S]*?)<\/reasoning>([\s\S]*)/);
         if (thinkMatch) {
             thinkContent = thinkMatch[1].trim();
             content = thinkMatch[2].trim();
-            console.log("Priority 1.2 matched - <reasoning></reasoning> tags found");
-            console.log("Thinking content:", thinkContent.substring(0, 100));
-            console.log("Response content:", content.substring(0, 100));
+            console.log("✓ Found <reasoning> tags");
+            console.log("  Reasoning:", thinkContent.substring(0, 100) + "...");
+            console.log("  Answer:", content.substring(0, 100) + "...");
             return { thinkContent, content };
         }
 
-        // Priority 1.5: Check for closing </think> tag only (chat template adds opening tag)
-        thinkMatch = text.match(/([\s\S]*?)<\/think>([\s\S]*)/);
+        // Priority 3: Check for closing </think> only (template might add opening)
+        thinkMatch = text.match(/^([\s\S]*?)<\/think>\s*([\s\S]+)$/);
         if (thinkMatch) {
             thinkContent = thinkMatch[1].trim();
             content = thinkMatch[2].trim();
-            console.log("Priority 1.5 matched - </think> tag found (template adds opening)");
-            console.log("Thinking content:", thinkContent.substring(0, 100));
-            console.log("Response content:", content.substring(0, 100));
-            return { thinkContent, content };
+            // Only accept if there's substantial content after the tag
+            if (content.length > 10) {
+                console.log("✓ Found </think> closing tag");
+                console.log("  Reasoning:", thinkContent.substring(0, 100) + "...");
+                console.log("  Answer:", content.substring(0, 100) + "...");
+                return { thinkContent, content };
+            }
         }
 
-        // Priority 1.7: Check for closing </reasoning> tag only
-        thinkMatch = text.match(/([\s\S]*?)<\/reasoning>([\s\S]*)/);
+        // Priority 4: Check for closing </reasoning> only
+        thinkMatch = text.match(/^([\s\S]*?)<\/reasoning>\s*([\s\S]+)$/);
         if (thinkMatch) {
             thinkContent = thinkMatch[1].trim();
             content = thinkMatch[2].trim();
-            console.log("Priority 1.7 matched - </reasoning> tag found");
-            console.log("Thinking content:", thinkContent.substring(0, 100));
-            console.log("Response content:", content.substring(0, 100));
-            return { thinkContent, content };
+            // Only accept if there's substantial content after the tag
+            if (content.length > 10) {
+                console.log("✓ Found </reasoning> closing tag");
+                console.log("  Reasoning:", thinkContent.substring(0, 100) + "...");
+                console.log("  Answer:", content.substring(0, 100) + "...");
+                return { thinkContent, content };
+            }
         }
 
-        console.log("No <think> tags found - checking for implicit patterns");
+        console.log("✗ No reasoning tags found - returning full text as answer");
+
+        // Return full text if no tags found
+        return { thinkContent: null, content: text };
+    }
+
+    // Legacy fallback logic (currently disabled - only tags are used)
+    function parseResponseLegacy(text) {
+        let thinkContent = null;
+        let content = text;
 
         // Priority 2: Detect thinking patterns intelligently
         // Look for reasoning that ends with a clear conclusion followed by the actual response
@@ -908,8 +922,8 @@
         }
     });
 
-    // Theme Selector
-    const themes = ['github-dark', 'monokai', 'dracula', 'atom-one-dark', 'vs2015'];
+    // Theme Selector (starts with atom-one-dark)
+    const themes = ['atom-one-dark', 'github-dark', 'monokai', 'dracula', 'vs2015'];
     let currentThemeIndex = 0;
     const themeBtn = document.getElementById('themeBtn');
 
