@@ -1,169 +1,169 @@
 <p align="center">
-<img src="./assets/hero-dicta.jpeg" width="150" />
+<img src="./assets/hero-heb.png" width="100%" />
 </p>
 
-# **BricksLLM: Local AI Infrastructure for DictaLM-3.0**
+# **BricksLLM: תשתית AI מקומית עבור DictaLM-3.0**
 
-**BricksLLM** is a specialized, cloud-native AI gateway optimized for the local deployment and management of the **DictaLM-3.0** model. This project provides a complete, containerized infrastructure that orchestrates:
+**BricksLLM** הוא שער AI (AI Gateway) ייעודי, מותאם לענן (Cloud-native), שעבר אופטימיזציה לפריסה וניהול מקומיים של מודל **DictaLM-3.0**. פרויקט זה מספק תשתית מלאה מבוססת קונטיינרים המנהלת את המרכיבים הבאים:
 
--   **DictaLM-3.0 Inference**: Runs the `dictalm-3.0-24b-thinking-fp8-q4_k_m.gguf` model via a dedicated `llama-server` container (Dockerized Llama.cpp with CUDA support).
--   **AI Gateway**: A Go-based proxy that manages rate limiting, cost control, caching, and API key authentication between clients and the model.
--   **Frontend Demo**: A lightweight, hot-reloading chat interface for interacting with DictaLM, demonstrating reasoning capabilities (`<think>` tags) and tool use.
--   **Data Persistence**: PostgreSQL and Redis containers for storing configuration, logs, and cache data.
+-   **DictaLM-3.0 Inference**: מריץ את המודל `dictalm-3.0-24b-thinking-fp8-q4_k_m.gguf` באמצעות קונטיינר `llama-server` ייעודי (Llama.cpp בתוך Docker עם תמיכת CUDA).
+-   **AI Gateway**: שרת פרוקסי מבוסס Go המנהל הגבלת קצב (Rate Limiting), בקרת עלויות, מטמון (Caching), ואימות מפתחות API בין הלקוחות למודל.
+-   **Frontend Demo**: ממשק צ'אט קליל עם טעינה חמה (Hot-reloading) לאינטראקציה עם DictaLM, המדגים יכולות חשיבה (תגיות `<think>`) ושימוש בכלים.
+-   **Data Persistence**: קונטיינרים של PostgreSQL ו-Redis לשמירת הגדרות, לוגים ונתוני מטמון.
 
-This setup is specifically designed for local usage, leveraging Docker Compose to spin up the entire stack with a single command. It acts as a production-ready template for deploying DictaLM with enterprise-grade management features.
+מערך זה תוכנן במיוחד לשימוש מקומי, וממנף את Docker Compose להרמת המחסנית (Stack) כולה בפקודה אחת. הוא משמש כתבנית מוכנה לייצור (Production-ready) לפריסת DictaLM עם יכולות ניהול ברמה ארגונית.
 
-## 🚀 Server Management Rules (CRITICAL)
+## 🚀 כללי ניהול שרת (קריטי)
 
-### Rule 1: Stop Before Start
-To ensure a clean state and prevent "Address already in use" errors (especially with port bindings like 8003 or 5002), strict server management discipline is enforced.
+### כלל 1: עצור לפני שתתחיל (Stop Before Start)
+כדי להבטיח מצב נקי ולמנוע שגיאות "Address already in use" (במיוחד עם פורטים כמו 8003 או 5002), יש להקפיד על משמעת ניהול שרת קפדנית.
 
-**Protocol:**
-Before executing the `start.sh` script or any command that starts server services (like `docker compose up`), you **MUST ALWAYS** first stop any running server instances.
+**פרוטוקול:**
+לפני הרצת הסקריפט `start.sh` או כל פקודה המפעילה שירותי שרת (כמו `docker compose up`), **חובה תמיד** לעצור תחילה כל מופע שרת שרץ.
 
-**Required Workflow:**
+**תהליך עבודה נדרש:**
 ```bash
-./stop.sh  # 1. Cleans up old containers and releases ports
-./start.sh # 2. Starts the fresh stack
+./stop.sh  # 1. מנקה קונטיינרים ישנים ומשחרר פורטים
+./start.sh # 2. מפעיל את המחסנית החדשה
 ```
 
-**Rationale:**
-This prevents port binding conflicts and ensures that configuration changes (like volume bindings, environment variables, or hot-reload settings) are correctly applied to recreated containers.
+**רציונל:**
+זה מונע התנגשויות בקישור פורטים ומבטיח ששינויי תצורה (כמו קישורי Volumes, משתני סביבה, או הגדרות Hot-reload) יוחלו כראוי על הקונטיינרים שנוצרו מחדש.
 
-## 🛠️ Technical Stack & Operations Guide
+## 🛠️ מחסנית טכנולוגית ומדריך תפעול
 
-### 1. Stack Deployment Process
+### 1. תהליך פריסת המחסנית (Stack Deployment)
 
-The deployment is orchestrated by the `start.sh` script, which ensures a consistent and error-free initialization of the environment using Docker Compose.
+הפריסה מנוהלת על ידי הסקריפט `start.sh`, המבטיח אתחול עקבי וללא שגיאות של הסביבה באמצעות Docker Compose.
 
-**Deployment Sequence:**
-1.  **Prerequisite Validation**: Checks for Docker, NVIDIA drivers (for GPU support), and essential configuration files (`.env`, `docker-compose.yml`).
-2.  **Resource Check**: Verifies available GPU resources and disk space to ensure the model can be loaded.
-3.  **Configuration Validation**: Ensures all required environment variables are set in `.env`.
-4.  **Service Initialization**:
-    -   Executes `docker compose up -d` to start the backend services (`postgresql`, `redis`, `llama-server`, `bricksllm`, `swagger-ui`).
-    -   Starts the frontend container (`frontend`).
-5.  **Health Verification**:
-    -   Polls the health endpoints of each service (`pg_isready`, `redis-cli ping`, `curl health`).
-    -   **Critical Step**: Waits for `llama-server` to fully load the DictaLM model into memory (indicated by a healthy HTTP 200 response).
-6.  **Integration Testing**: Runs a suite of internal tests (`test-stack.sh`) to verify connectivity between the proxy, the model, and the database.
-7.  **Access Information**: Prints the available URLs for all services.
+**רצף הפריסה:**
+1.  **בדיקת דרישות קדם**: בודק קיום של Docker, דרייברים של NVIDIA (לתמיכת GPU), וקבצי תצורה חיוניים (`.env`, `docker-compose.yml`).
+2.  **בדיקת משאבים**: מאמת משאבי GPU ושטח דיסק פנוי כדי להבטיח שהמודל יכול להיטען.
+3.  **אימות תצורה**: מבטיח שכל משתני הסביבה הנדרשים מוגדרים ב-`.env`.
+4.  **אתחול שירותים**:
+    -   מריץ `docker compose up -d` להפעלת שירותי ה-Backend (`postgresql`, `redis`, `llama-server`, `bricksllm`, `swagger-ui`).
+    -   מפעיל את קונטיינר ה-Frontend (`frontend`).
+5.  **אימות בריאות (Health Verification)**:
+    -   דוגם את נקודות הקצה לבדיקת בריאות של כל שירות (`pg_isready`, `redis-cli ping`, `curl health`).
+    -   **צעד קריטי**: ממתין ל-`llama-server` שיטען את מודל DictaLM במלואו לזיכרון (מצוין על ידי תגובת HTTP 200 תקינה).
+6.  **בדיקות אינטגרציה**: מריץ סדרת בדיקות פנימיות (`test-stack.sh`) לאימות הקישוריות בין הפרוקסי, המודל ומסד הנתונים.
+7.  **מידע גישה**: מדפיס את כתובות ה-URL הזמינות לכל השירותים.
 
-### 2. Service Endpoints
+### 2. נקודות קצה לשירותים (Service Endpoints)
 
-#### Frontend UI
--   **URL**: `http://localhost:8003`
--   **Access**: Browser-based chat interface.
+#### Frontend UI (ממשק משתמש)
+-   **כתובת**: `http://localhost:8003`
+-   **גישה**: ממשק צ'אט מבוסס דפדפן.
 
 #### BricksLLM Proxy API
-The primary entry point for AI applications.
--   **Base URL**: `http://localhost:8002`
--   **Auth**: Bearer Token (API Key required)
--   **Key Endpoint**: 
+נקודת הכניסה העיקרית ליישומי AI.
+-   **כתובת בסיס**: `http://localhost:8002`
+-   **אימות**: Bearer Token (נדרש מפתח API)
+-   **נקודת קצה למפתח**: 
     -   `POST /api/custom/providers/llama-cpp-root/chat/completions`
-    -   **Payload**: OpenAI-compatible JSON (messages, model, tools).
-    -   **Response**: Streaming or JSON completion with `<think>` tags.
+    -   **מטען (Payload)**: JSON תואם OpenAI (הודעות, מודל, כלים).
+    -   **תגובה**: Streaming או JSON רגיל עם תגיות `<think>`.
 
 #### BricksLLM Admin API
-Used for configuration and management.
--   **Base URL**: `http://localhost:8001`
--   **Auth**: None (Local default) / Configurable
--   **Key Endpoints**:
-    -   `GET /api/health`: System health status.
-    -   `PUT /api/key-management/keys`: Create/Update API keys.
-    -   `PUT /api/provider-settings`: Configure LLM providers.
-    -   `GET /api/events`: Retrieve usage logs and analytics.
+משמש לתצורה וניהול.
+-   **כתובת בסיס**: `http://localhost:8001`
+-   **אימות**: ללא (ברירת מחדל מקומית) / ניתן להגדרה.
+-   **נקודות קצה עיקריות**:
+    -   `GET /api/health`: סטטוס בריאות המערכת.
+    -   `PUT /api/key-management/keys`: יצירה/עדכון מפתחות API.
+    -   `PUT /api/provider-settings`: הגדרת ספקי LLM.
+    -   `GET /api/events`: שליפת לוגים של שימוש ונתונים אנליטיים.
 
-#### Llama Server (Direct)
-Direct access to the model (bypassing the gateway).
--   **Base URL**: `http://localhost:5002`
--   **Endpoint**: `POST /v1/chat/completions`
--   **Auth**: Bearer token (optional/ignored by default server config, but header may be required).
+#### Llama Server (ישיר)
+גישה ישירה למודל (עקיפת ה-Gateway).
+-   **כתובת בסיס**: `http://localhost:5002`
+-   **נקודת קצה**: `POST /v1/chat/completions`
+-   **אימות**: Bearer token (אופציונלי/מתעלמים ממנו בתצורת השרת המוגדרת, אך ייתכן שיידרש כ-Header).
 
-### 3. Model Loading Process
+### 3. תהליך טעינת המודל
 
-**Mechanism**:
-Upon container start, the `llama-server` maps the GGUF model file from the host filesystem to the container and begins loading it into GPU VRAM (and system RAM if VRAM is insufficient).
+**מנגנון**:
+עם הפעלת הקונטיינר, ה-`llama-server` ממפה את קובץ המודל (GGUF) ממערכת הקבצים המארחת אל הקונטיינר ומתחיל לטעון אותו לזיכרון ה-GPU (VRAM) (ולזיכרון המערכת אם ה-VRAM אינו מספיק).
 
-**Timing & Readiness**:
--   **Duration**: Typically **10-45 seconds**, depending on disk speed (NVMe recommended) and model size (24B parameters).
--   **Readiness Check**: The container will report as "healthy" only when the model is fully loaded and the HTTP server is accepting requests.
+**תזמון ומוכנות**:
+-   **משך זמן**: בדרך כלל **10-45 שניות**, תלוי במהירות הדיסק (מומלץ NVMe) וגודל המודל (24B פרמטרים).
+-   **בדיקת מוכנות**: הקונטיינר ידווח על סטטוס "בריא" (healthy) רק כאשר המודל נטען במלואו ושרת ה-HTTP מקבל בקשות.
 
-> **⚠️ CRITICAL WARNING:**
-> **DO NOT** attempt to interact with the frontend or API endpoints until the `start.sh` script explicitly reports that all services are **HEALTHY**.
-> Premature interaction while the model is loading will result in `Connection Refused` or `502 Bad Gateway` errors and may require a stack restart.
+> **⚠️ אזהרה קריטית:**
+> **אין** לנסות ליצור אינטראקציה עם ה-Frontend או נקודות הקצה של ה-API עד שהסקריפט `start.sh` מדווח במפורש שכל השירותים הם **HEALTHY**.
+> אינטראקציה מוקדמת בזמן שהמודל נטען תגרום לשגיאות `Connection Refused` או `502 Bad Gateway` ועשויה לדרוש אתחול מחדש של המחסנית.
 
-### 4. Operational Considerations
+### 4. שיקולים תפעוליים
 
-**System Requirements**:
--   **GPU**: NVIDIA GPU with **16GB+ VRAM** (24GB recommended for full offload of the 24B parameter model).
--   **RAM**: 32GB+ System RAM (if partial CPU offloading is required).
--   **Disk**: Fast NVMe SSD (critical for model loading times).
+**דרישות מערכת**:
+-   **GPU**: כרטיס NVIDIA עם **16GB+ VRAM** (מומלץ 24GB לטעינה מלאה של מודל ה-24B).
+-   **RAM**: זיכרון מערכת של 32GB+ (אם נדרשת טעינה חלקית ל-CPU).
+-   **דיסק**: כונן NVMe SSD מהיר (קריטי לזמני טעינת המודל).
 
-**Performance**:
--   **Inference**: The system uses `llama.cpp` with CUDA acceleration. Performance scales with the number of GPU layers offloaded (`--n-gpu-layers`).
--   **Context Window**: Default configured to 8192 tokens. Increasing this will significantly increase VRAM usage.
+**ביצועים**:
+-   **Inference**: המערכת משתמשת ב-`llama.cpp` עם האצת CUDA. הביצועים משתפרים ככל שיותר שכבות נטענות ל-GPU (`--n-gpu-layers`).
+-   **חלון הקשר (Context Window)**: מוגדר כברירת מחדל ל-8192 טוקנים. הגדלת ערך זה תגדיל משמעותית את השימוש ב-VRAM.
 
-## 🏗️ Codebase Structure and Technical Architecture
+## 🏗️ מבנה בסיס הקוד וארכיטקטורה טכנית
 
-This section provides a comprehensive breakdown of the project's organization, technical stack, and component relationships.
+חלק זה מספק פירוט מקיף של ארגון הפרויקט, המחסנית הטכנולוגית והיחסים בין הרכיבים.
 
-### 1. Codebase Structure Tree
+### 1. עץ מבנה בסיס הקוד
 
-The project is organized into functional areas: Core Go Application, Frontend Interface, and Deployment Configuration.
+הפרויקט מאורגן לאזורים פונקציונליים: אפליקציית Go ליבה, ממשק Frontend, ותצורת פריסה.
 
 ```
 BricksLLM/
 ├── cmd/
-│   └── bricksllm/              # Main application entry point
-│       └── main.go             # Bootstraps Admin and Proxy servers
-├── internal/                   # Core business logic (Go)
-│   ├── config/                 # Configuration loading (env, file)
-│   ├── event/                  # Event bus and logging system
-│   ├── key/                    # API key validation logic
-│   ├── manager/                # State management (keys, providers, routes)
-│   ├── message/                # Pub/sub messaging system
-│   ├── provider/               # LLM Provider integrations
-│   │   ├── custom/             # Custom provider logic (used for DictaLM)
-│   │   ├── openai/             # OpenAI adapter
-│   │   └── ...                 # Other providers (Anthropic, vLLM, etc.)
-│   ├── route/                  # Request routing and failover logic
-│   ├── server/                 # HTTP Server implementations
+│   └── bricksllm/              # נקודת הכניסה הראשית לאפליקציה
+│       └── main.go             # מאתחל את שרתי ה-Admin וה-Proxy
+├── internal/                   # לוגיקה עסקית מרכזית (Go)
+│   ├── config/                 # טעינת תצורה (env, קובץ)
+│   ├── event/                  # מערכת אירועים ולוגים
+│   ├── key/                    # לוגיקת אימות מפתחות API
+│   ├── manager/                # ניהול מצב (מפתחות, ספקים, נתיבים)
+│   ├── message/                # מערכת הודעות Pub/sub
+│   ├── provider/               # אינטגרציות ספקי LLM
+│   │   ├── custom/             # לוגיקת ספק מותאם אישית (בשימוש עבור DictaLM)
+│   │   ├── openai/             # מתאם OpenAI
+│   │   └── ...                 # ספקים אחרים (Anthropic, vLLM וכו')
+│   ├── route/                  # לוגיקת ניתוב בקשות ויתירות (Failover)
+│   ├── server/                 # מימושי שרת HTTP
 │   │   ├── web/
-│   │       ├── admin/          # Admin API endpoints (Port 8001)
-│   │       └── proxy/          # Proxy API endpoints (Port 8002)
-│   ├── storage/                # Data persistence layer
-│   │   ├── postgresql/         # SQL database implementations
-│   │   └── redis/              # Cache implementations
-│   └── validator/              # Request validation (Rate limits, Cost)
-├── frontend/                   # Frontend Chat Application
-│   ├── index.html              # Main UI structure
-│   ├── index.js                # Chat logic and API integration
-│   ├── style.css               # UI Styling
-│   └── package.json            # Build scripts (cache versioning)
-├── .env.template               # Template for environment variables
-├── chat_template.jinja2.template # ChatML template for DictaLM
-├── docker-compose.yml          # Container orchestration config
-├── Dockerfile.prod             # BricksLLM Go binary build definition
-├── llama_entrypoint.sh         # Startup script for Llama Server container
-├── start.sh                    # Master deployment script
-├── stop.sh                     # Cleanup and shutdown script
-└── test-stack.sh               # Integration testing suite
+│   │       ├── admin/          # נקודות קצה Admin API (פורט 8001)
+│   │       └── proxy/          # נקודות קצה Proxy API (פורט 8002)
+│   ├── storage/                # שכבת שמירת נתונים (Persistence)
+│   │   ├── postgresql/         # מימושי מסד נתונים SQL
+│   │   └── redis/              # מימושי מטמון (Cache)
+│   └── validator/              # אימות בקשות (מגבלות קצב, עלות)
+├── frontend/                   # אפליקציית צ'אט Frontend
+│   ├── index.html              # מבנה UI ראשי
+│   ├── index.js                # לוגיקת צ'אט ואינטגרציית API
+│   ├── style.css               # עיצוב UI
+│   └── package.json            # סקריפטי בנייה (ניהול גרסאות מטמון)
+├── .env.template               # תבנית למשתני סביבה
+├── chat_template.jinja2.template # תבנית ChatML עבור DictaLM
+├── docker-compose.yml          # תצורת תזמור קונטיינרים
+├── Dockerfile.prod             # הגדרת בניית הבינארי של BricksLLM Go
+├── llama_entrypoint.sh         # סקריפט אתחול לקונטיינר Llama Server
+├── start.sh                    # סקריפט פריסה ראשי
+├── stop.sh                     # סקריפט ניקוי וכיבוי
+└── test-stack.sh               # חבילת בדיקות אינטגרציה
 ```
 
-### 2. Technical Architecture Diagram
+### 2. דיאגרמת ארכיטקטורה טכנית
 
-The system operates as a cohesive stack of containerized services, orchestrated by Docker Compose.
+המערכת פועלת כמחסנית אחידה של שירותים בקונטיינרים, מנוהלת על ידי Docker Compose.
 
 ```ascii
-                                  [ User Browser ]
+                                  [ דפדפן משתמש ]
                                          │
                                          ▼
                              [ Frontend Container (8003) ]
                              (Hot-reloadable static server)
                                          │
                                          ▼
-[ External API Client ] ────► [ BricksLLM Proxy (8002) ] ◄────► [ Redis Cache (6380) ]
+[ לקוח API חיצוני ] ────► [ BricksLLM Proxy (8002) ] ◄────► [ Redis Cache (6380) ]
                                          │                       (Rate Limits, Responses)
                                          ▼
                              [ Llama Server (5002) ]
@@ -171,7 +171,7 @@ The system operates as a cohesive stack of containerized services, orchestrated 
                              (CUDA / GPU Accelerated)
                                          │
                                          ▼
-                                  [ GPU Hardware ]
+                                  [ חומרת GPU ]
 
 -----------------------------------------------------------------------------------
 
@@ -179,149 +179,151 @@ The system operates as a cohesive stack of containerized services, orchestrated 
                                                                  (Config, Logs, Keys)
 ```
 
-## 🔐 Environment Variables Configuration
+## 🔐 תצורת משתני סביבה
 
-This section documents the critical environment variables used to configure the BricksLLM stack.
+חלק זה מתעד את משתני הסביבה הקריטיים המשמשים להגדרת מחסנית BricksLLM.
 
-### Variable Reference Table
+### טבלת ייחוס משתנים
 
-| Variable Name | Default Value | Required | Purpose | Used In |
+| שם משתנה | ערך ברירת מחדל | חובה | מטרה | בשימוש ב |
 | :--- | :--- | :--- | :--- | :--- |
 | **PostgreSQL** | | | | |
-| `POSTGRESQL_USERNAME` | `postgres` | Yes | Database user for BricksLLM metadata. | `.env`, `docker-compose.yml` |
-| `POSTGRESQL_PASSWORD` | `postgres` | Yes | Database password. **Security Warning: Change in production.** | `.env`, `docker-compose.yml` |
-| `POSTGRESQL_DB` | `bricksllm` | Yes | Name of the database to create/use. | `.env`, `docker-compose.yml` |
-| `POSTGRESQL_HOST_PORT` | `5433` | Yes | Host port mapping for PostgreSQL. | `.env`, `docker-compose.yml` |
+| `POSTGRESQL_USERNAME` | `postgres` | כן | משתמש מסד נתונים עבור BricksLLM. | `.env`, `docker-compose.yml` |
+| `POSTGRESQL_PASSWORD` | `postgres` | כן | סיסמת מסד נתונים. **אזהרת אבטחה: שנה בייצור.** | `.env`, `docker-compose.yml` |
+| `POSTGRESQL_DB` | `bricksllm` | כן | שם מסד הנתונים ליצירה/שימוש. | `.env`, `docker-compose.yml` |
+| `POSTGRESQL_HOST_PORT` | `5433` | כן | מיפוי פורט מארח ל-PostgreSQL. | `.env`, `docker-compose.yml` |
 | **Redis** | | | | |
-| `REDIS_PASSWORD` | (Complex String) | Yes | Password for Redis authentication. | `.env`, `docker-compose.yml` |
-| `REDIS_HOST_PORT` | `6380` | Yes | Host port mapping for Redis. | `.env`, `docker-compose.yml` |
+| `REDIS_PASSWORD` | (מחרוזת מורכבת) | כן | סיסמה לאימות Redis. | `.env`, `docker-compose.yml` |
+| `REDIS_HOST_PORT` | `6380` | כן | מיפוי פורט מארח ל-Redis. | `.env`, `docker-compose.yml` |
 | **Llama Server** | | | | |
-| `LLAMA_IMAGE` | `ghcr.io/ggml-org/llama.cpp:server-cuda` | Yes | Docker image for the inference engine. | `.env`, `docker-compose.yml` |
-| `LLAMA_HOST_PORT` | `5002` | Yes | Host port for direct model access. | `.env`, `docker-compose.yml` |
-| `HF_FILE` | `dictalm...gguf` | Yes | Filename of the GGUF model to load. | `.env`, `docker-compose.yml` |
-| `LOCAL_MODEL_PATH` | `./models` | Yes | Host path containing the model file. | `.env`, `docker-compose.yml` |
-| `CONTEXT_SIZE` | `8192` | No | Context window size in tokens. | `.env`, `docker-compose.yml` |
-| `N_GPU_LAYERS` | `99` | No | Number of layers to offload to GPU. | `.env`, `docker-compose.yml` |
-| `SYSTEM_PROMPT` | "You are DictaLM..." | No | Base system instruction injected into the chat template. | `.env`, `llama_entrypoint.sh` |
+| `LLAMA_IMAGE` | `ghcr.io/ggml-org/llama.cpp:server-cuda` | כן | Docker image עבור מנוע ההסקה. | `.env`, `docker-compose.yml` |
+| `LLAMA_HOST_PORT` | `5002` | כן | פורט מארח לגישה ישירה למודל. | `.env`, `docker-compose.yml` |
+| `HF_FILE` | `dictalm...gguf` | כן | שם קובץ מודל ה-GGUF לטעינה. | `.env`, `docker-compose.yml` |
+| `LOCAL_MODEL_PATH` | `./models` | כן | נתיב מארח המכיל את קובץ המודל. | `.env`, `docker-compose.yml` |
+| `CONTEXT_SIZE` | `8192` | לא | גודל חלון ההקשר בטוקנים. | `.env`, `docker-compose.yml` |
+| `N_GPU_LAYERS` | `99` | לא | מספר השכבות לטעינה ל-GPU. | `.env`, `docker-compose.yml` |
+| `SYSTEM_PROMPT` | "You are DictaLM..." | לא | הוראת מערכת בסיסית המוזרקת לתבנית הצ'אט. | `.env`, `llama_entrypoint.sh` |
 | **BricksLLM Gateway** | | | | |
-| `BRICKSLLM_MODE` | `production` | Yes | Operational mode (`development` or `production`). | `.env`, `docker-compose.yml` |
-| `BRICKSLLM_ADMIN_PORT`| `8001` | Yes | Host port for the Admin API. | `.env`, `docker-compose.yml` |
-| `BRICKSLLM_PROXY_PORT`| `8002` | Yes | Host port for the Proxy API. | `.env`, `docker-compose.yml` |
+| `BRICKSLLM_MODE` | `production` | כן | מצב תפעולי (`development` או `production`). | `.env`, `docker-compose.yml` |
+| `BRICKSLLM_ADMIN_PORT`| `8001` | כן | פורט מארח עבור Admin API. | `.env`, `docker-compose.yml` |
+| `BRICKSLLM_PROXY_PORT`| `8002` | כן | פורט מארח עבור Proxy API. | `.env`, `docker-compose.yml` |
 
-## 📥 Model Download Instructions
+## 💻 תיעוד Frontend
 
-### Downloading the DictaLM-3.0 GGUF Model
+### סקירה כללית
+ה-Frontend של BricksLLM הוא אפליקציית עמוד-יחיד (SPA) קלילה שנועדה להדגים את יכולות ה-Gateway של BricksLLM ואת מודל DictaLM הבסיסי. היא מספקת ממשק צ'אט התומך בהדמיית חשיבה (באמצעות תגיות `<think>`) ומשתלב ישירות עם BricksLLM Proxy.
 
-Before running the BricksLLM stack, you need to download the DictaLM-3.0 GGUF model file and place it in the correct directory.
+### אינטגרציית API
 
-#### Step 1: Create the Model Directory
+#### תצורה (Configuration)
+ה-Frontend משתמש בתצורה הקשיחה (Hardcoded) הבאה כדי להתחבר ל-BricksLLM Proxy. הגדרות אלו תואמות את הספק המותאם אישית והמפתח שהוגדרו ב-Backend.
+
+**הגדרת ספק (Custom):**
+-   **שם ספק**: `llama-cpp-root`
+-   **כתובת**: `http://llama-server:5002`
+-   **מזהה הגדרה**: (נוצר אוטומטית על ידי סקריפט ההתקנה)
+
+**מפתח API:**
+-   **מפתח**: `sk-bricksllm-frontend-llama-key-explicit`
+-   **שם**: `Frontend Llama Key`
+-   **נתיב מותר**: `/chat/completions`
+
+#### נקודת קצה (Endpoint)
+ה-Frontend מתקשר עם BricksLLM Proxy דרך נקודת הקצה הבאה:
+-   **כתובת**: `http://localhost:8002/api/custom/providers/llama-cpp-root/chat/completions`
+-   **שיטה**: `POST`
+-   **Headers**:
+    -   `Authorization`: `Bearer sk-bricksllm-frontend-llama-key-explicit` (המפתח שהוגדר לספק המותאם אישית)
+    -   `Content-Type`: `application/json`
+
+### פריסה (Deployment)
+
+#### תצורת Docker
+ה-Frontend מוגדר כשירות ב-`docker-compose.yml`:
+-   **Image**: `node:18-alpine`
+-   **שם קונטיינר**: `bricksllm-frontend`
+-   **מיפוי פורטים**: פורט מארח `8003` -> פורט קונטיינר `8003`
+-   **Volume**: מקשר את ספריית `frontend` המקומית ל-`/app` בקונטיינר עבור טעינה חמה (Hot-reloading).
+
+#### מצב פיתוח (Hot Reload)
+-   **פקודה**: הקונטיינר מריץ פקודת מעטפת שבודקת את `NODE_ENV`.
+    -   אם `development`: מריץ `bun run build` (מעדכן גרסת מטמון) ומפעיל `http-server` עם מטמון מבוטל (`-c-1`).
+    -   אם `production`: מפעיל `http-server` עם מטמון ברירת מחדל.
+-   **משתנה סביבה**: `NODE_ENV=development` מוגדר ב-`docker-compose.yml` כדי לאפשר התנהגות טעינה חמה.
+
+---
+
+
+## 📥 הורדת המודל - הוראות
+
+### הורדת מודל DictaLM-3.0 GGUF
+
+לפני הרצת מערכת BricksLLM, עליך להוריד את קובץ המודל DictaLM-3.0 GGUF ולהציב אותו בתיקייה הנכונה.
+
+#### שלב 1: יצירת תיקיית המודל
 ```bash
-# Create the models directory (if it doesn't exist)
+# יצירת תיקיית models (אם אינה קיימת)
 mkdir -p ./models
 
-# Or create a custom directory and update LOCAL_MODEL_PATH in .env
+# או יצירת תיקייה מותאמת אישית ועדכון LOCAL_MODEL_PATH ב-.env
 mkdir -p /path/to/your/local/model/directory
 ```
 
-#### Step 2: Download the Model File
+#### שלב 2: הורדת קובץ המודל
 
-Download the DictaLM-3.0-24B-Thinking-FP8-Q4_0-GGUF model using one of these methods:
+הורד את מודל DictaLM-3.0-24B-Thinking-FP8-Q4_0-GGUF באמצעות אחת מהשיטות הבאות:
 
-**Model File Details:**
-- **Size**: 13.4 GB
+**פרטי קובץ המודל:**
+- **גודל**: 13.4 GB
 - **SHA256**: `41353ca50fb02be915a7924c0e98061b8657f685c6fcb9a25c522a682cb77732`
 
-**Using wget:**
+**באמצעות wget:**
 ```bash
 wget https://huggingface.co/VRDate/DictaLM-3.0-24B-Thinking-FP8-Q4_0-GGUF/resolve/main/dictalm-3.0-24b-thinking-fp8-q4_0.gguf -O ./models/dictalm-3.0-24b-thinking-fp8-q4_0.gguf
 ```
 
-**Using curl:**
+**באמצעות curl:**
 ```bash
 curl -L https://huggingface.co/VRDate/DictaLM-3.0-24B-Thinking-FP8-Q4_0-GGUF/resolve/main/dictalm-3.0-24b-thinking-fp8-q4_0.gguf -o ./models/dictalm-3.0-24b-thinking-fp8-q4_0.gguf
 ```
 
-**For custom directory (update LOCAL_MODEL_PATH in .env):**
+**לתיקייה מותאמת אישית (עדכון LOCAL_MODEL_PATH ב-.env):**
 ```bash
 curl -L https://huggingface.co/VRDate/DictaLM-3.0-24B-Thinking-FP8-Q4_0-GGUF/resolve/main/dictalm-3.0-24b-thinking-fp8-q4_0.gguf -o /path/to/your/local/model/directory/dictalm-3.0-24b-thinking-fp8-q4_0.gguf
 ```
 
-#### Step 3: Verify the Download
+#### שלב 3: אימות ההורדה
 
-Check that the model file was downloaded correctly:
+בדוק שקובץ המודל הורד כראוי:
 ```bash
 ls -la ./models/
-# Should show: dictalm-3.0-24b-thinking-fp8-q4_0.gguf
+# אמור להציג: dictalm-3.0-24b-thinking-fp8-q4_0.gguf
 
-# Check file size (should be ~13-14GB)
+# בדיקת גודל הקובץ (אמור להיות ~13-14GB)
 du -h ./models/dictalm-3.0-24b-thinking-fp8-q4_0.gguf
 ```
 
-#### Step 4: Update Environment Configuration
+#### שלב 4: עדכון תצורת הסביבה
 
-Ensure your `.env` file has the correct model configuration:
+ודא שקובץ `.env` שלך מכיל את תצורת המודל הנכונה:
 ```bash
-# For default models directory
+# עבור תיקיית models ברירת מחדל
 LOCAL_MODEL_PATH=./models
 HF_FILE=dictalm-3.0-24b-thinking-fp8-q4_0.gguf
 
-# Or for custom directory
+# או עבור תיקייה מותאמת אישית
 LOCAL_MODEL_PATH=/path/to/your/local/model/directory
 HF_FILE=dictalm-3.0-24b-thinking-fp8-q4_0.gguf
 ```
 
-### Alternative Models
+### מודלים חלופיים
 
-You can also use other GGUF format models by:
-1. Downloading the desired model file
-2. Placing it in your `LOCAL_MODEL_PATH` directory
-3. Updating `HF_FILE` in your `.env` to match the filename
-4. Adjusting `CONTEXT_SIZE` and `N_GPU_LAYERS` as needed for the new model
+ניתן להשתמש גם במודלים אחרים בפורמט GGUF על ידי:
+1. הורדת קובץ המודל הרצוי
+2. הצבתו בתיקיית `LOCAL_MODEL_PATH` שלך
+3. עדכון `HF_FILE` ב-`.env` שלך להתאמה לשם הקובץ
+4. התאמת `CONTEXT_SIZE` ו-`N_GPU_LAYERS` לפי הצורך עבור המודל החדש
 
-## 💻 Frontend Documentation
-
-### Overview
-The BricksLLM frontend is a lightweight, single-page application (SPA) designed to demonstrate the capabilities of the BricksLLM gateway and the underlying DictaLM model. It provides a chat interface that supports reasoning visualization (via `<think>` tags) and integrates directly with the BricksLLM proxy.
-
-### API Integration
-
-#### Configuration
-The frontend uses the following hardcoded configuration to connect to the BricksLLM proxy. These settings match the custom provider and key configured in the backend.
-
-**Provider Setting (Custom):**
-- **Provider Name**: `llama-cpp-root`
-- **URL**: `http://llama-server:5002`
-- **Setting ID**: (Auto-generated by setup script)
-
-**API Key:**
-- **Key**: `sk-bricksllm-frontend-llama-key-explicit`
-- **Name**: `Frontend Llama Key`
-- **Allowed Path**: `/chat/completions`
-
-#### Endpoint
-The frontend communicates with the BricksLLM proxy via the following endpoint:
-- **URL**: `http://localhost:8002/api/custom/providers/llama-cpp-root/chat/completions`
-- **Method**: `POST`
-- **Headers**:
-  - `Authorization`: `Bearer sk-bricksllm-frontend-llama-key-explicit` (Key configured for the custom provider)
-  - `Content-Type`: `application/json`
-
-### Deployment
-
-#### Docker Configuration
-The frontend is defined as a service in `docker-compose.yml`:
-- **Image**: `node:18-alpine`
-- **Container Name**: `bricksllm-frontend`
-- **Port Mapping**: Host port `8003` -> Container port `8003`
-- **Volume**: Binds the local `frontend` directory to `/app` in the container for hot-reloading.
-
-#### Development Mode (Hot Reload)
-- **Command**: The container runs a shell command that checks `NODE_ENV`.
-  - If `development`: Runs `bun run build` (updates cache version) and starts `http-server` with caching disabled (`-c-1`).
-  - If `production`: Starts `http-server` with default caching.
-- **Environment Variable**: `NODE_ENV=development` is set in `docker-compose.yml` to enable hot-reloading behavior.
-
----
 
 <p align="center">
   <a href="https://discord.gg/dFvdt4wqWh"><img src="https://img.shields.io/badge/discord-BricksLLM-blue?logo=discord&labelColor=2EB67D" alt="Join BricksLLM on Discord"></a>
