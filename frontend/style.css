@@ -414,11 +414,8 @@ select,
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent);
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    position: sticky;
-    bottom: 0;
     width: 100%;
     backdrop-filter: blur(6px);
-    z-index: 99;
 }
 
 .chat-input textarea {
@@ -844,14 +841,23 @@ details .details-content {
     border-color: rgba(255, 255, 255, 0.4);
 }
 
+/* Input Container */
+.input-container {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    background: var(--panel);
+    z-index: 99;
+}
+
 /* Formatting Toolbar */
 .formatting-toolbar {
     display: flex;
     gap: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.5rem 0.75rem;
     background: rgba(0, 0, 0, 0.2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px 8px 0 0;
+    justify-content: flex-end;
 }
 
 .format-btn {
@@ -916,8 +922,9 @@ details .details-content {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     padding: 1rem;
-    margin: 0.5rem 0;
-    min-height: 100px;
+    min-height: 50px;
     max-height: 300px;
     overflow-y: auto;
+    flex: 1;
+    color: var(--text);
 }
