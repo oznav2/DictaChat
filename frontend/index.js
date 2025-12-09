@@ -351,7 +351,16 @@
         
         // Use a span with pre-wrap style for text content
         const textSpan = document.createElement('span');
-        textSpan.textContent = content;
+        // Render markdown in thinking blocks too
+        const renderedHtml = renderMarkdown(content);
+        textSpan.innerHTML = renderedHtml;
+
+        // Detect and apply RTL direction if needed
+        if (detectRTL(content)) {
+            innerContent.setAttribute('dir', 'rtl');
+        } else {
+            innerContent.setAttribute('dir', 'ltr');
+        }
         innerContent.appendChild(textSpan);
         
         contentArea.appendChild(innerContent);
