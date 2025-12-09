@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: BricksLLM
+  title: DictaLLM
   contact:
     email: spike@bricks-tech.com
   license:

@@ -1,40 +1,212 @@
 services:
   redis:
-    image: redis:6.2-alpine
-    restart: always
+    image: redis:7.2-alpine
+    container_name: bricksllm-redis
+    restart: unless-stopped
     ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+      - '${REDIS_HOST_PORT:-6380}:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes:
-      - redis:/data
+      - redis_data:/data
+    networks:
+      - bricksllm-network
+    healthcheck:
+      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
   postgresql:
-    image: postgres:14.1-alpine
-    restart: always
+    image: postgres:16.1-alpine
+    container_name: bricksllm-postgresql
+    restart: unless-stopped
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_USER: ${POSTGRESQL_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRESQL_DB:-bricksllm}
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - '5432:5432'
+      - '${POSTGRESQL_HOST_PORT:-5433}:5432'
     volumes:
-      - postgresql:/var/lib/postgresql/data
-  # bricksllm:
-  #   depends_on:
-  #     - redis
-  #     - postgresql
-  #   image: luyuanxin1995/bricksllm
+      - postgresql_data:/var/lib/postgresql/data
+    networks:
+      - bricksllm-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRESQL_USERNAME:-postgres} -d ${POSTGRESQL_DB:-bricksllm}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+
+  llama-server:
+    image: ${LLAMA_IMAGE}
+    container_name: bricksllm-llama
+    restart: unless-stopped
+    runtime: nvidia
+    environment:
+      CUDA_VISIBLE_DEVICES: ${GPU_DEVICE_IDS:-0}
+      SYSTEM_PROMPT: ${SYSTEM_PROMPT}
+    ports:
+      - '${LLAMA_HOST_PORT:-5002}:5002'
+    volumes:
+      - ${LOCAL_MODEL_PATH:-./models}:/models
+      - ./llama_entrypoint.sh:/app/entrypoint.sh
+      - ./chat_template.jinja2.template:/app/chat_template.jinja2.template
+    networks:
+      - bricksllm-network
+    entrypoint: ["/app/entrypoint.sh", "/app/llama-server"]
+    command:
+      - -m
+      - /models/${HF_FILE}
+      - -c
+      - '${CONTEXT_SIZE:-8192}'
+      - --host
+      - '0.0.0.0'
+      - --port
+      - '5002'
+      - --n-gpu-layers
+      - '${N_GPU_LAYERS:-99}'
+      - --temp
+      - '${TEMPERATURE:-0.7}'
+      - --top-p
+      - '${TOP_P:-0.9}'
+      - --repeat-penalty
+      - '${REPEAT_PENALTY:-1.1}'
+      - -n
+      - '${NUM_PREDICT:-2048}'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:5002/health']
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: ${GPU_COUNT:-1}
+              capabilities: [gpu]
+
+
+  bricksllm:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: bricksllm-gateway
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgresql:
+        condition: service_healthy
+      # llama-server:
+      #   condition: service_healthy
+    environment:
+      POSTGRESQL_HOSTS: postgresql
+      POSTGRESQL_PORT: 5432
+      POSTGRESQL_DB_NAME: ${POSTGRESQL_DB:-bricksllm}
+      POSTGRESQL_USERNAME: ${POSTGRESQL_USERNAME:-postgres}
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD:-postgres}
+      POSTGRESQL_READ_TIME_OUT: ${POSTGRESQL_READ_TIME_OUT:-2s}
+      POSTGRESQL_WRITE_TIME_OUT: ${POSTGRESQL_WRITE_TIME_OUT:-1s}
+      REDIS_HOSTS: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_READ_TIME_OUT: ${REDIS_READ_TIME_OUT:-1s}
+      REDIS_WRITE_TIME_OUT: ${REDIS_WRITE_TIME_OUT:-1s}
+      IN_MEMORY_DB_UPDATE_INTERVAL: ${IN_MEMORY_DB_UPDATE_INTERVAL:-5s}
+      STATS_PROVIDER: ${STATS_PROVIDER:-}
+      AMAZON_SECRET_ARN: ${AMAZON_SECRET_ARN:-}
+      AMAZON_REGION: ${AMAZON_REGION:-}
+      PROXY_TIMEOUT: ${PROXY_TIMEOUT:-600s}
+      NUMBER_OF_EVENT_MESSAGE_CONSUMERS: ${NUMBER_OF_EVENT_MESSAGE_CONSUMERS:-3}
+    ports:
+      - '${BRICKSLLM_ADMIN_PORT:-8001}:8001'
+      - '${BRICKSLLM_PROXY_PORT:-8002}:8002'
+    volumes:
+      - bricksllm_logs:/var/log/bricksllm
+    networks:
+      - bricksllm-network
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:8001/api/health']
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+    command: ['-m', '${BRICKSLLM_MODE:-production}']
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: bricksllm-swagger
+    restart: unless-stopped
+    environment:
+      SWAGGER_JSON: /docs/admin.yaml
+    volumes:
+      - ./docs/admin.yaml:/docs/admin.yaml
+    ports:
+      - '${SWAGGER_HOST_PORT:-8082}:8080'
+    networks:
+      - bricksllm-network
+
+  # bricksllm-admin-panel:
+  #   image: luyuanxin1995/bricksllm-admin-panel:0.1.0
+  #   container_name: bricksllm-admin-panel
+  #   restart: unless-stopped
   #   environment:
-  #     - POSTGRESQL_USERNAME=postgres
-  #     - POSTGRESQL_PASSWORD=postgres
-  #     - REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-  #     - POSTGRESQL_HOSTS=postgresql
-  #     - REDIS_HOSTS=redis
+  #     VITE_API_HOST: http://localhost:8001
   #   ports:
-  #     - '8001:8001'
-  #     - '8002:8002'
-  #   command:
-  #     - '-m=dev'
+  #     - '3000:3000'
+  #   networks:
+  #     - bricksllm-network
+
+  frontend:
+    image: node:18-alpine
+    container_name: bricksllm-frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - '8003:8003'
+    networks:
+      - bricksllm-network
+    command: sh -c "npm install -g bun && bun install && if [ \"$NODE_ENV\" = \"development\" ]; then bun run build && bun x http-server -p 8003 -c-1; else bun x http-server -p 8003; fi"
+    environment:
+      - NODE_ENV=development
+
+networks:
+  bricksllm-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${NETWORK_SUBNET:-172.30.0.0/16}
+
 volumes:
-  redis:
+  redis_data:
     driver: local
-  postgresql:
+  postgresql_data:
+    driver: local
+  huggingface_cache:
+    driver: local
+  vllm_logs:
+    driver: local
+  bricksllm_logs:
     driver: local

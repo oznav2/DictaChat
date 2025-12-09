@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: BricksLLM
+  title: DictaLLM
   contact:
     email: spike@bricks-tech.com
   license:
@@ -21,7 +21,7 @@ tags:
 
 servers:
   - url: localhost:8001
-    description: Admin server for configuring BricksLLM
+    description: Admin server for configuring DictaLLM
     variables:
       protocol:
         enum: [http]

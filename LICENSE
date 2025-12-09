@@ -1,7 +1,22 @@
-Copyright 2023 Bricks Cloud Technologies, Inc.
+Copyright 2025 Keyx AI Limited and ilan elhayani.
+
+This software is a derivative work based on BricksLLM.
+Original Copyright (c) Bricks Cloud Technologies, Inc.
+Original Source: https://github.com/bricks-cloud/BricksLLM.git
+
+This software also integrates the DictaLM-3.0 model.
+Model Citation:
+@article{Shmidman2025DictaLM3,
+  title={{Dicta-LM 3.0: Advancing The Frontier of Hebrew Sovereign LLMs}},
+  author={Shaltiel Shmidman and Avi Shmidman and Amir DN Cohen and Moshe Koppel},
+  year={2025},
+  publisher={{DICTA / Jerusalem, Israel}},
+  note={https://www.dicta.org.il/publications/DictaLM_3_0___Techincal_Report.pdf}
+}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
