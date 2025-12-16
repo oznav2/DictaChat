@@ -189,6 +189,17 @@ wget https://huggingface.co/VRDate/DictaLM-3.0-24B-Thinking-FP8-Q4_0-GGUF/resolv
 
 ---
 
+# ℹ️ בהערכה
+
+זוהי מבחינתי גירסה ראשונית של המערכת ובוודאי שהיא לא חפה מבאגים ולגמרי ניתן לשפר אותה ולהשלים בה את הפונקציונליות 
+.ככל שיותיר לי הזמן אשתדל לעדכנה מעת לעת. אתם מוזמנים לדווח על תקלות והצעותיכם לשיפור והרחבה. 
+בהצלחה! 
+
+אילן אלחיאני,  
+תמיכה בפרויקט, דירוגו בגיטהב וכמובן שהשתתפות שלכם בהפצתו וקידומו יתקבלו בברכה! 🙏
+
+---
+
 ## תודות וקרדיטים:
 
 <p align="center">
