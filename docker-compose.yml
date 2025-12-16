@@ -184,35 +184,11 @@ services:
     networks:
       - bricksllm-network
 
-  # bricksllm-admin-panel:
-  #   image: luyuanxin1995/bricksllm-admin-panel:0.1.0
-  #   container_name: bricksllm-admin-panel
-  #   restart: unless-stopped
-  #   environment:
-  #     VITE_API_HOST: http://localhost:8001
-  #   ports:
-  #     - '3000:3000'
-  #   networks:
-  #     - bricksllm-network
-
-  # frontend:
-  #   image: node:18-alpine
-  #   container_name: bricksllm-frontend
-  #   working_dir: /app
-  #   volumes:
-  #     - ./frontend:/app
-  #   ports:
-  #     - '8003:8003'
-  #   networks:
-  #     - bricksllm-network
-  #   command: sh -c "npx http-server -p 8003 -c-1"
-  #   environment:
-  #     - NODE_ENV=development
-  frontend-huggingface:
+  frontend-ui:
     build:
       context: ./frontend-huggingface
       dockerfile: Dockerfile
-    container_name: frontend-huggingface
+    container_name: frontend-UI
     restart: unless-stopped
     environment:
       - PUBLIC_APP_NAME=DictaLM Chat
@@ -245,52 +221,6 @@ services:
     networks:
       - bricksllm-network
     command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
-
-  # mcpo:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile.mcpo
-  #     args:
-  #       # קרא את PIP_SOURCE מקובץ .env והעבר ל-Dockerfile
-  #       - PIP_SOURCE=${PIP_SOURCE:-} # שימוש ב-:-} למניעת שגיאות במקרה של ערך לא מוגדר
-  #   container_name: mcpo-dicta
-  #   restart: unless-stopped
-  #   group_add:
-  #     - "1001"
-  #   ports:
-  #     - "8888:8888"
-  #     # Expose additional ports if needed for direct access to specific MCP servers (optional)
-  #     # - "8001:8001" 
-  #     # - "8002:8002"
-  #   expose:
-  #     - 8888 
-  #   volumes:
-  #     - ./mcpo/config.json:/app/config/config.json
-  #     - ./logs:/app/logs
-  #     - ./mcpo-data:/app/data
-  #     - ./mcpo_node_modules:/app/node_modules # שמירת node_modules
-  #     - /usr/bin/docker:/usr/bin/docker:ro
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - /mnt/c/Users/ilane/.docker/modules/cli-plugins-wsl/docker-mcp:/app/.docker/cli-plugins/docker-mcp:ro
-  #     - /home/ilan/.docker/contexts:/app/.docker/contexts:ro
-  #   env_file:
-  #     - .env # טען את כל המשתנים מקובץ .env כמשתני סביבה
-  #   environment:
-  #     - MCPO_API_KEY=${MCPO_API_KEY:-}
-  #     # If servers are running on localhost inside container, use loopback. 
-  #     # If they are other containers, use their service names.
-  #     # For now, assuming internal processes managed by mcpo or external urls.
-  #   healthcheck:
-  #     test: CMD curl -f http://localhost:8888/docs || exit 1
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
-  #     start_period: 40s
-  #   networks:
-  #     - bricksllm-network
-  #   command: ["mcpo", "--port", "8888", "--config", "/app/config/config.json", "--api-key", "${MCPO_API_KEY}", "--hot-reload"]
-  #   depends_on:
-  #     - frontend-huggingface
 
   mcp-sse-proxy:
     build:
@@ -346,19 +276,6 @@ volumes:
     driver: local
   bricksllm_logs:
     driver: local
-  # mcpo_config:
-  #   driver: local
-  # mcpo_logs:
-  #   driver: local
-  # mcpo_data:
-  #   driver: local
-  # mcpo_node_modules:
-  #   driver: local
-  # mcpo_npm:
-  #   driver: local
-  # mcpo_uv_cache:
-  #   driver: local
-  # MCP Server Data Volumes
   mcp_memory_data:
     driver: local
   mcp_uploads:
