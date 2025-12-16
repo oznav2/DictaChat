@@ -61,7 +61,7 @@
 
 ---
 
-<img src="./assets/dicta_frontend_intro.gif" width="50%" height="50%"/>
+<img src="./assets/dicta_frontend_intro.gif" width="100%" height="100%"/>
 
 ##  מה צריך כדי להתחיל? (דרישות מערכת)
 
