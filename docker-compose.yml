@@ -22,6 +22,23 @@ services:
         reservations:
           memory: 256M
 
+  mongo:
+    image: mongo:7
+    container_name: bricksllm-mongo
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - bricksllm-network
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', 'db.adminCommand("ping")']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
   postgresql:
     image: postgres:16.1-alpine
     container_name: bricksllm-postgresql
@@ -178,19 +195,136 @@ services:
   #   networks:
   #     - bricksllm-network
 
-  frontend:
-    image: node:18-alpine
-    container_name: bricksllm-frontend
-    working_dir: /app
-    volumes:
-      - ./frontend:/app
+  # frontend:
+  #   image: node:18-alpine
+  #   container_name: bricksllm-frontend
+  #   working_dir: /app
+  #   volumes:
+  #     - ./frontend:/app
+  #   ports:
+  #     - '8003:8003'
+  #   networks:
+  #     - bricksllm-network
+  #   command: sh -c "npx http-server -p 8003 -c-1"
+  #   environment:
+  #     - NODE_ENV=development
+  frontend-huggingface:
+    build:
+      context: ./frontend-huggingface
+      dockerfile: Dockerfile
+    container_name: frontend-huggingface
+    restart: unless-stopped
+    environment:
+      - PUBLIC_APP_NAME=DictaLM Chat
+      - PUBLIC_APP_ASSETS=chat-ui
+      - PUBLIC_APP_COLOR=blue
+      - PUBLIC_APP_DESCRIPTION=A chat interface for DictaLM
+      - PUBLIC_APP_DATA_SHARING=1
+      - PUBLIC_APP_DISCLAIMER=0
+      - MONGODB_URL=mongodb://mongo:27017/chat-ui
+      - HF_TOKEN=${HF_TOKEN:-}
+      - DOCKER_ENV=true
+      - OPENAI_BASE_URL=http://bricksllm:8002/api/custom/providers/llama-cpp-root
+      - OPENAI_API_KEY=${BRICKSLLM_API_KEY:-sk-bricksllm-frontend-llama-key-explicit}
+      - ENABLE_CONFIG_MANAGER=false
+      - ORIGIN=http://localhost:8004
+      - LLM_ROUTER_ENABLE_TOOLS=true
+      - LLM_ROUTER_TOOLS_MODEL=dictalm-3.0-24b-thinking-fp8-q4_k_m.gguf
+      - 'MODELS=[{"id":"dictalm-3.0-24b-thinking-fp8-q4_k_m.gguf","name":"DictaLM 3.0 24B","endpoints":[{"type":"openai","baseURL":"http://bricksllm:8002/api/custom/providers/llama-cpp-root"}],"supportsTools":true}]'
+      - 'MCP_SERVERS=[{"name":"Everything","url":"http://mcp-sse-proxy:3100/everything/sse"},{"name":"Context7","url":"https://mcp.context7.com/mcp"},{"name":"Docker","url":"http://mcp-sse-proxy:3100/docker/sse"},{"name":"Sequential Thinking","url":"http://mcp-sse-proxy:3100/sequential-thinking/sse"},{"name":"Git","url":"http://mcp-sse-proxy:3100/git/sse"},{"name":"Fetch","url":"http://mcp-sse-proxy:3100/fetch/sse"},{"name":"Time","url":"http://mcp-sse-proxy:3100/time/sse"},{"name":"Memory","url":"http://mcp-sse-proxy:3100/memory/sse"},{"name":"Filesystem","url":"http://mcp-sse-proxy:3100/filesystem/sse"},{"name":"Perplexity","url":"http://mcp-sse-proxy:3100/perplexity/sse"},{"name":"Tavily Search","url":"http://mcp-sse-proxy:3100/Tavily/sse"},{"name":"YouTube Summarizer","url":"http://mcp-sse-proxy:3100/youtube-video-summarizer/sse"}]'
     ports:
-      - '8003:8003'
+      - "8004:3000"
+    volumes:
+      - ./frontend-huggingface:/app
+      - /app/node_modules
+    depends_on:
+      - mongo
+      - mcp-sse-proxy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - bricksllm-network
-    command: sh -c "npm install -g bun && bun install && if [ \"$NODE_ENV\" = \"development\" ]; then bun run build && bun x http-server -p 8003 -c-1; else bun x http-server -p 8003; fi"
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
+
+  # mcpo:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.mcpo
+  #     args:
+  #       # קרא את PIP_SOURCE מקובץ .env והעבר ל-Dockerfile
+  #       - PIP_SOURCE=${PIP_SOURCE:-} # שימוש ב-:-} למניעת שגיאות במקרה של ערך לא מוגדר
+  #   container_name: mcpo-dicta
+  #   restart: unless-stopped
+  #   group_add:
+  #     - "1001"
+  #   ports:
+  #     - "8888:8888"
+  #     # Expose additional ports if needed for direct access to specific MCP servers (optional)
+  #     # - "8001:8001" 
+  #     # - "8002:8002"
+  #   expose:
+  #     - 8888 
+  #   volumes:
+  #     - ./mcpo/config.json:/app/config/config.json
+  #     - ./logs:/app/logs
+  #     - ./mcpo-data:/app/data
+  #     - ./mcpo_node_modules:/app/node_modules # שמירת node_modules
+  #     - /usr/bin/docker:/usr/bin/docker:ro
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - /mnt/c/Users/ilane/.docker/modules/cli-plugins-wsl/docker-mcp:/app/.docker/cli-plugins/docker-mcp:ro
+  #     - /home/ilan/.docker/contexts:/app/.docker/contexts:ro
+  #   env_file:
+  #     - .env # טען את כל המשתנים מקובץ .env כמשתני סביבה
+  #   environment:
+  #     - MCPO_API_KEY=${MCPO_API_KEY:-}
+  #     # If servers are running on localhost inside container, use loopback. 
+  #     # If they are other containers, use their service names.
+  #     # For now, assuming internal processes managed by mcpo or external urls.
+  #   healthcheck:
+  #     test: CMD curl -f http://localhost:8888/docs || exit 1
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 40s
+  #   networks:
+  #     - bricksllm-network
+  #   command: ["mcpo", "--port", "8888", "--config", "/app/config/config.json", "--api-key", "${MCPO_API_KEY}", "--hot-reload"]
+  #   depends_on:
+  #     - frontend-huggingface
+
+  mcp-sse-proxy:
+    build:
+      context: ./mcp-sse-proxy
+      dockerfile: Dockerfile
+    container_name: mcp-sse-proxy
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      # Configuration
+      - ./mcp-sse-proxy/config:/app/config
+      # Docker socket for mcp-server-docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Persistent data for MCP servers
+      - mcp_memory_data:/app/data/memory
+      - mcp_uploads:/app/uploads
+      - mcp_sandbox:/app/sandbox
     environment:
-      - NODE_ENV=development
+      - PORT=3100
+      - CONFIG_PATH=/app/config/servers.json
+      - NODE_ENV=production
+      # API Keys for external MCP services
+      - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY:-}
+      - TAVILY_API_KEY=${TAVILIY_SEARCH_API_KEY:-}
+      - SMITHERY_API_KEY=${SMITHERY_API_KEY:-}
+    healthcheck:
+      test: CMD curl -f http://localhost:3100/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - bricksllm-network
 
 networks:
   bricksllm-network:
@@ -204,9 +338,30 @@ volumes:
     driver: local
   postgresql_data:
     driver: local
+  mongo_data:
+    driver: local
   huggingface_cache:
     driver: local
   vllm_logs:
     driver: local
   bricksllm_logs:
+    driver: local
+  # mcpo_config:
+  #   driver: local
+  # mcpo_logs:
+  #   driver: local
+  # mcpo_data:
+  #   driver: local
+  # mcpo_node_modules:
+  #   driver: local
+  # mcpo_npm:
+  #   driver: local
+  # mcpo_uv_cache:
+  #   driver: local
+  # MCP Server Data Volumes
+  mcp_memory_data:
+    driver: local
+  mcp_uploads:
+    driver: local
+  mcp_sandbox:
     driver: local

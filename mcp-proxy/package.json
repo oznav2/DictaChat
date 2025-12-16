@@ -1,0 +1,17 @@
+{
+  "name": "mcp-sequential-thinking-proxy",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "SSE proxy for Sequential Thinking MCP server",
+  "main": "sequential-thinking-server.js",
+  "scripts": {
+    "start": "node sequential-thinking-server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

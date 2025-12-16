@@ -1,4 +1,47 @@
-(() => {
+// Initialize the app with retry mechanism for highlight.js
+let hljsRetryCount = 0;
+const MAX_HLJS_RETRIES = 30; // 3 seconds max
+
+function checkLibraries() {
+    console.log('🔍 Checking libraries... (attempt', hljsRetryCount + 1, ')');
+    console.log('  📚 markdown-it:', !!window.markdownit);
+    console.log('  🎨 highlight.js (window.hljs):', !!window.hljs);
+    console.log('  🧹 DOMPurify:', !!window.DOMPurify);
+    console.log('  📊 mermaid:', !!window.mermaid);
+
+    // Check all window properties for hljs
+    const hljsKeys = Object.keys(window).filter(k => k.toLowerCase().includes('hljs') || k.toLowerCase().includes('highlight'));
+    console.log('  🔎 Window keys with "hljs/highlight":', hljsKeys);
+}
+
+function initializeApp() {
+    console.log('🚀 Initializing frontend...');
+    checkLibraries();
+
+    if (!window.markdownit) {
+        console.error('❌ markdown-it not loaded!');
+        alert('Error: markdown-it library failed to load. Please refresh the page.');
+        return;
+    }
+
+    if (!window.hljs) {
+        if (hljsRetryCount < MAX_HLJS_RETRIES) {
+            hljsRetryCount++;
+            console.warn('⚠️ highlight.js not loaded yet, retrying in 100ms...');
+            setTimeout(initializeApp, 100);
+            return;
+        } else {
+            console.error('❌ highlight.js failed to load after', MAX_HLJS_RETRIES, 'retries');
+            console.error('   Proceeding WITHOUT syntax highlighting');
+            // Continue anyway
+        }
+    } else {
+        console.log('✅ highlight.js loaded!');
+        console.log('  📦 hljs languages:', window.hljs.listLanguages().slice(0, 20).join(', '), '...');
+    }
+
+    console.log('✅ Starting app initialization...');
+
     // ========================================
     // Markdown Rendering Configuration
     // ========================================
@@ -12,39 +55,51 @@
         typographer: true,  // Enable smartquotes and other typographic replacements
         quotes: '“”‘’',     // Quote replacement characters
 
-        // Syntax highlighting for code blocks (Lazy Loading)
+        // Syntax highlighting for code blocks
         highlight: function (str, lang) {
-            // Lazy load language if not available
-            if (lang && window.hljs && !window.hljs.getLanguage(lang)) {
-                try {
-                    // Check if we have a CDN URL for this language
-                    // Note: In a real implementation, we would need a mapping or dynamic import
-                    // For now, we'll try to load it dynamically if possible or fall back to auto
-                    loadLanguage(lang);
-                } catch (e) {
-                    console.warn(`Failed to load language: ${lang}`, e);
+            console.log('🎨 Highlight function called:', { lang, hasHljs: !!window.hljs, codeLength: str?.length });
+
+            // Check if highlight.js is loaded
+            if (!window.hljs) {
+                console.warn('⚠️ Highlight.js not loaded - returning unescaped');
+                // Return unescaped so markdown-it will escape it properly
+                return md.utils.escapeHtml(str);
+            }
+
+            // If language is specified, try to highlight with that language
+            if (lang) {
+                const hasLanguage = window.hljs.getLanguage(lang);
+                console.log(`  Language '${lang}' available:`, !!hasLanguage);
+
+                if (hasLanguage) {
+                    try {
+                        const result = window.hljs.highlight(str, {
+                            language: lang,
+                            ignoreIllegals: true
+                        });
+                        console.log('  ✅ Highlighted successfully, output length:', result.value.length);
+                        console.log('  Output preview:', result.value.substring(0, 100));
+                        return result.value;
+                    } catch (err) {
+                        console.error(`  ❌ Highlight.js error for ${lang}:`, err);
+                        // On error, return escaped version
+                        return md.utils.escapeHtml(str);
+                    }
+                } else {
+                    console.warn(`  ⚠️ Language '${lang}' not available, trying auto-detect`);
                 }
             }
 
-            if (lang && window.hljs && window.hljs.getLanguage(lang)) {
-                try {
-                    return window.hljs.highlight(str, {
-                        language: lang,
-                        ignoreIllegals: true
-                    }).value;
-                } catch (err) {
-                    console.error('Highlight.js error:', err);
-                }
+            // Auto-detect language if not specified or language not found
+            try {
+                const result = window.hljs.highlightAuto(str);
+                console.log('  ✅ Auto-detected as:', result.language, 'output length:', result.value.length);
+                return result.value;
+            } catch (err) {
+                console.error('  ❌ Highlight.js auto-detect error:', err);
+                // On error, return escaped version
+                return md.utils.escapeHtml(str);
             }
-            // Auto-detect language if not specified
-            if (window.hljs) {
-                try {
-                    return window.hljs.highlightAuto(str).value;
-                } catch (err) {
-                    console.error('Highlight.js auto-detect error:', err);
-                }
-            }
-            return ''; // Return empty string to use default escaping
         }
     });
 
@@ -169,6 +224,56 @@
         }
     }
 
+    /**
+     * Process code blocks for syntax highlighting after content is added to DOM
+     * This is a fallback for any blocks that weren't highlighted during markdown parsing
+     */
+    function processCodeHighlighting() {
+        if (window.hljs) {
+            // Find all code blocks (both with and without hljs class) and check if they need highlighting
+            document.querySelectorAll('pre code').forEach((block) => {
+                // Check if highlighting was already applied by looking for hljs-* span elements
+                const hasHighlighting = block.querySelector('span[class*="hljs-"]') !== null;
+
+                if (!hasHighlighting && block.textContent && block.textContent.trim().length > 0) {
+                    // Extract language from class if available
+                    const langMatch = block.className.match(/language-(\w+)/);
+
+                    if (langMatch && langMatch[1]) {
+                        // Try to highlight with specific language
+                        try {
+                            const result = window.hljs.highlight(block.textContent, {
+                                language: langMatch[1],
+                                ignoreIllegals: true
+                            });
+                            block.innerHTML = result.value;
+                            block.classList.add('hljs');
+                        } catch (e) {
+                            console.warn(`Failed to highlight ${langMatch[1]} code block:`, e);
+                            // Fall back to auto-detection
+                            try {
+                                const result = window.hljs.highlightAuto(block.textContent);
+                                block.innerHTML = result.value;
+                                block.classList.add('hljs');
+                            } catch (e2) {
+                                console.error('Failed to auto-highlight code block:', e2);
+                            }
+                        }
+                    } else {
+                        // No language specified, use auto-detection
+                        try {
+                            const result = window.hljs.highlightAuto(block.textContent);
+                            block.innerHTML = result.value;
+                            block.classList.add('hljs');
+                        } catch (e) {
+                            console.error('Failed to auto-highlight code block:', e);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
     // ========================================
     // RTL/BiDi Detection
     // ========================================
@@ -219,9 +324,11 @@
 
         // Step 1: Parse markdown to HTML
         let html = md.render(text);
+        console.log('📝 After markdown rendering:', html.substring(0, 500));
 
         // Step 2: Sanitize HTML with DOMPurify
         if (window.DOMPurify) {
+            const beforeSanitize = html;
             html = window.DOMPurify.sanitize(html, {
                 ALLOWED_TAGS: [
                     'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
@@ -255,12 +362,28 @@
                 KEEP_CONTENT: true,
                 RETURN_TRUSTED_TYPE: false
             });
+
+            console.log('🧹 After DOMPurify sanitization:', html.substring(0, 500));
+
+            // Check if highlighting was preserved
+            if (beforeSanitize.includes('<span') && !html.includes('<span')) {
+                console.error('⚠️ DOMPurify stripped highlighting spans!');
+            } else if (html.includes('<span')) {
+                console.log('  ✅ Highlighting spans preserved');
+            }
         }
 
         // Step 3: Wrap code blocks for copy functionality and language labels
         html = html.replace(
             /<pre><code class="language-(\w+)">([\s\S]*?)<\/code><\/pre>/g,
             (match, lang, code) => {
+                console.log('📦 Wrapping code block:', {
+                    lang,
+                    codeLength: code.length,
+                    hasSpans: code.includes('<span'),
+                    preview: code.substring(0, 200)
+                });
+
                 // Special handling for mermaid diagrams
                 if (lang === 'mermaid') {
                     // Decode HTML entities in code
@@ -269,10 +392,13 @@
                     return renderMermaid(textarea.value);
                 }
 
-                // Decode the code to get the original text for copying
-                const textarea = document.createElement('textarea');
-                textarea.innerHTML = code;
-                const plainCode = textarea.value;
+                // Extract plain text from highlighted code (strips HTML tags)
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = code;
+                const plainCode = tempDiv.textContent || tempDiv.innerText || '';
+
+                console.log('  Plain code for copy:', plainCode.substring(0, 100));
+                console.log('  Code has highlighting spans:', code.includes('<span'));
 
                 return `<div class="code-block-wrapper">
                     <div class="code-block-header">
@@ -293,10 +419,10 @@
                     return match;
                 }
 
-                // Decode the code to get the original text for copying
-                const textarea = document.createElement('textarea');
-                textarea.innerHTML = code;
-                const plainCode = textarea.value;
+                // Extract plain text from highlighted code (strips HTML tags)
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = code;
+                const plainCode = tempDiv.textContent || tempDiv.innerText || '';
 
                 return `<div class="code-block-wrapper">
                     <div class="code-block-header">
@@ -743,9 +869,10 @@
         messagesEl.appendChild(msg);
         messagesEl.scrollTop = messagesEl.scrollHeight;
 
-        // Process any mermaid diagrams in the new content (if not typing)
+        // Process any mermaid diagrams and syntax highlighting in the new content (if not typing)
         if (!typing) {
             processMermaidDiagrams();
+            processCodeHighlighting();
         }
 
         return { msg, bubble };
@@ -795,8 +922,9 @@
 
             messagesEl.scrollTop = messagesEl.scrollHeight;
 
-            // Process any mermaid diagrams in the new content
+            // Process any mermaid diagrams and syntax highlighting in the new content
             processMermaidDiagrams();
+            processCodeHighlighting();
         }, 900 + Math.min(2000, userText.length * 30));
     }
 
@@ -907,6 +1035,9 @@
                 messagePreview.style.display = 'block';
                 input.style.display = 'none';
                 previewBtn.textContent = '✏️'; // Edit icon
+                // Apply syntax highlighting to preview
+                processCodeHighlighting();
+                processMermaidDiagrams();
             } else {
                 messagePreview.style.display = 'none';
                 input.style.display = 'block';
@@ -919,11 +1050,41 @@
     input.addEventListener('input', () => {
         if (isPreviewMode && messagePreview) {
             messagePreview.innerHTML = renderMarkdown(input.value);
+            // Apply syntax highlighting to updated preview
+            processCodeHighlighting();
+            processMermaidDiagrams();
         }
     });
 
-    // Theme Selector (starts with atom-one-dark)
-    const themes = ['atom-one-dark', 'github-dark', 'monokai', 'dracula', 'vs2015'];
+    // Theme Selector with Cloudflare CDN and integrity hashes
+    const themes = [
+        {
+            name: 'atom-one-dark',
+            url: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css',
+            integrity: 'sha512-Jk4AqjWsdSzSWCSuQTfYRIF84Rq/eV0G2+tu07byYwHcbTGfdmLrHjUSwvzp5HvbiqK4ibmNwdcG49Y5RGYPTg=='
+        },
+        {
+            name: 'github-dark',
+            url: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css',
+            integrity: 'sha512-rqDYGMkLw4i0TNfFUS+vBlo2hduyiLx6PYwFKwY3e4VPeVIHtWgFBUZIs5vLS/xJiDLAzb8vZbG9TBPjZ3zaSA=='
+        },
+        {
+            name: 'monokai',
+            url: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css',
+            integrity: 'sha512-xIFS2s5U8ToE8f5hAFxf2L1P+rmVqo5xfPG7b5FWKZ3Mc8iVFqAfI4mLjRbfAYQS3AxCL9BFJsS0FxlrOmMLxA=='
+        },
+        {
+            name: 'dracula',
+            url: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dracula.min.css',
+            integrity: 'sha512-x6zKi8mSkCt+TOlSnqSAST1LqMxPFLIzxzhvqiJ3k8rDEgZhcwb9ckLPD0ckJqS6hG1H6eBLB75VpIJPdAMmwQ=='
+        },
+        {
+            name: 'vs2015',
+            url: 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css',
+            integrity: 'sha512-w8aclkBlN3Ha08SMwFKXFJqhSUx2qlvTBFLLelF8sm4xQnlg64qmGB/A6pBIKy0W8Bo51yDMDtQiPLNRq1WMcQ=='
+        }
+    ];
+
     let currentThemeIndex = 0;
     const themeBtn = document.getElementById('themeBtn');
 
@@ -932,11 +1093,29 @@
             currentThemeIndex = (currentThemeIndex + 1) % themes.length;
             const themeLink = document.getElementById('hljs-theme');
             if (themeLink) {
-                themeLink.href = `https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/${themes[currentThemeIndex]}.min.css`;
+                const theme = themes[currentThemeIndex];
+                // Remove old attributes that might cause issues
+                themeLink.removeAttribute('integrity');
+                themeLink.removeAttribute('crossorigin');
+                // Set new URL (HTTPS provides transport security)
+                themeLink.href = theme.url;
+                console.log('🎨 Switched to theme:', theme.name);
             }
         });
     }
-})();
+
+    console.log('✅ App initialization complete!');
+    console.log('  Send button:', sendBtn);
+    console.log('  Input field:', input);
+    console.log('  Messages container:', messagesEl);
+}
+
+// Initialize the app after all scripts are loaded
+// Use window.onload to ensure ALL external scripts (including CDN) are loaded
+window.addEventListener('load', function() {
+    console.log('🔄 Window loaded, starting initialization...');
+    initializeApp();
+});
 
 
 // // Chat completion (POST /chat/completions)

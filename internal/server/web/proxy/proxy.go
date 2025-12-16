@@ -17,6 +17,7 @@ import (
 	"github.com/bricks-cloud/bricksllm/internal/policy"
 	"github.com/bricks-cloud/bricksllm/internal/provider"
 	"github.com/bricks-cloud/bricksllm/internal/provider/custom"
+	"github.com/bricks-cloud/bricksllm/internal/storage/postgresql"
 	"github.com/bricks-cloud/bricksllm/internal/telemetry"
 	"github.com/bricks-cloud/bricksllm/internal/util"
 	"github.com/gin-gonic/gin"
@@ -96,6 +97,13 @@ func NewProxyServer(log *zap.Logger, mode, privacyMode string, c cache, m KeyMan
 	// health check
 	router.GET("/api/health", getGetHealthCheckHandler())
 
+	// conversations (versioned, internal)
+	ch := NewConversationHandler(ks.(*postgresql.Store))
+	router.GET("/api/v1/conversations", ch.ListConversations)
+	router.POST("/api/v1/conversations", ch.CreateConversation)
+	router.GET("/api/v1/conversations/:id/messages", ch.ListMessages)
+	router.POST("/api/v1/conversations/:id/messages", ch.CreateMessage)
+
 	// audios
 	router.POST("/api/providers/openai/v1/audio/speech", getSpeechHandler(prod, client))
 	router.POST("/api/providers/openai/v1/audio/transcriptions", getTranscriptionsHandler(prod, client, e))
@@ -103,6 +111,8 @@ func NewProxyServer(log *zap.Logger, mode, privacyMode string, c cache, m KeyMan
 
 	// completions
 	router.POST("/api/providers/openai/v1/chat/completions", getChatCompletionHandler(prod, private, client, e))
+	router.POST("/v1/chat/completions", getChatCompletionAliasHandler(prod, private, client))
+	router.POST("/v1/completions", getCompletionHandler(prod, private, client))
 
 	// embeddings
 	router.POST("/api/providers/openai/v1/embeddings", getEmbeddingHandler(prod, private, client, e))
@@ -114,6 +124,7 @@ func NewProxyServer(log *zap.Logger, mode, privacyMode string, c cache, m KeyMan
 	router.GET("/api/providers/openai/v1/models", getPassThroughHandler(prod, private, client))
 	router.GET("/api/providers/openai/v1/models/:model", getPassThroughHandler(prod, private, client))
 	router.DELETE("/api/providers/openai/v1/models/:model", getPassThroughHandler(prod, private, client))
+	router.GET("/v1/models", getModelsAliasHandler())
 
 	// assistants
 	router.POST("/api/providers/openai/v1/assistants", getPassThroughHandler(prod, private, client))
@@ -525,6 +536,10 @@ func getPassThroughHandler(prod, private bool, client http.Client) gin.HandlerFu
 			telemetry.Incr("bricksllm.proxy.get_pass_through_handler.success", tags, 1)
 			telemetry.Timing("bricksllm.proxy.get_pass_through_handler.success_latency", dur, tags, 1)
 
+			if c.FullPath() == "/v1/models" && c.Request.Method == http.MethodGet {
+				logListModelsResponse(log, bytes, prod)
+			}
+
 			if c.FullPath() == "/api/providers/openai/v1/assistants" && c.Request.Method == http.MethodPost {
 				logAssistantResponse(log, bytes, prod, private)
 			}
@@ -641,6 +656,10 @@ func getPassThroughHandler(prod, private bool, client http.Client) gin.HandlerFu
 				logCreateModerationResponse(log, bytes, prod)
 			}
 
+			if c.FullPath() == "/v1/models" && c.Request.Method == http.MethodGet {
+				logListModelsResponse(log, bytes, prod)
+			}
+
 			if c.FullPath() == "/api/providers/openai/v1/models" && c.Request.Method == http.MethodGet {
 				logListModelsResponse(log, bytes, prod)
 			}
@@ -715,6 +734,10 @@ func getPassThroughHandler(prod, private bool, client http.Client) gin.HandlerFu
 }
 
 func buildProxyUrl(c *gin.Context) (string, error) {
+	if c.FullPath() == "/v1/models" && c.Request.Method == http.MethodGet {
+		return "https://api.openai.com/v1/models", nil
+	}
+
 	if c.FullPath() == "/api/providers/openai/v1/assistants" && c.Request.Method == http.MethodPost {
 		return "https://api.openai.com/v1/assistants", nil
 	}
@@ -913,12 +936,54 @@ var (
 	eventErrorPrefix      = []byte("event: error")
 )
 
+func getModelsAliasHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		resp, err := http.Get("http://llama-server:5002/v1/models")
+		if err != nil {
+			JSON(c, http.StatusBadGateway, "[BricksLLM] failed to reach llama-server /v1/models")
+			return
+		}
+		defer resp.Body.Close()
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			JSON(c, http.StatusBadGateway, "[BricksLLM] failed to read llama-server /v1/models response")
+			return
+		}
+
+		if resp.StatusCode != http.StatusOK {
+			c.Data(resp.StatusCode, "application/json", body)
+			return
+		}
+
+		type LlamaModel struct {
+			ID          string `json:"id"`
+			Object      string `json:"object"`
+			Created     int64  `json:"created"`
+			OwnedBy     string `json:"owned_by"`
+			Description string `json:"description"`
+		}
+
+		var llamaRes struct {
+			Data []LlamaModel `json:"data"`
+		}
+
+		if err := json.Unmarshal(body, &llamaRes); err != nil || len(llamaRes.Data) == 0 {
+			JSON(c, http.StatusBadGateway, "[BricksLLM] invalid llama-server /v1/models response")
+			return
+		}
+
+		c.JSON(http.StatusOK, llamaRes)
+	}
+}
+
 func (ps *ProxyServer) Run() {
 	go func() {
 		ps.log.Info("proxy server listening at 8002")
 
 		// health check
 		ps.log.Info("PORT 8002 | GET    | /api/health is ready")
+		ps.log.Info("PORT 8002 | GET    | /v1/models is ready")
 
 		// audio
 		ps.log.Info("PORT 8002 | POST   | /api/providers/openai/v1/audio/speech is ready for creating openai speeches")
@@ -927,6 +992,8 @@ func (ps *ProxyServer) Run() {
 
 		// chat completions
 		ps.log.Info("PORT 8002 | POST   | /api/providers/openai/v1/chat/completions is ready for forwarding chat completion requests to openai")
+		ps.log.Info("PORT 8002 | POST   | /v1/chat/completions is ready for OpenAI-compatible chat completions")
+		ps.log.Info("PORT 8002 | POST   | /v1/completions is ready for OpenAI-compatible completions")
 
 		// embeddings
 		ps.log.Info("PORT 8002 | POST   | /api/providers/openai/v1/embeddings is ready for forwarding embeddings requests to openai")

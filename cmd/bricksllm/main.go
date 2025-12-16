@@ -152,6 +152,12 @@ func main() {
 		log.Sugar().Fatalf("error creating users table: %v", err)
 	}
 
+	// conversations/messages for Chat UI
+	err = store.CreateConversationTables()
+	if err != nil {
+		log.Sugar().Fatalf("error creating conversation tables: %v", err)
+	}
+
 	err = store.CreateCreatedAtIndexForUsers()
 	if err != nil {
 		log.Sugar().Fatalf("error creating created at index for users table: %v", err)
