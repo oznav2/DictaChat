@@ -32,7 +32,7 @@ export function validateMcpServerUrl(urlString: string): string | null {
 
 		// Block certain localhost/private IPs in production
 		if (!dev && isPrivateOrLocalhost(url.hostname)) {
-			console.warn("Warning: Localhost/private IP addresses are not recommended in production.");
+			return null;
 		}
 
 		return url.toString();

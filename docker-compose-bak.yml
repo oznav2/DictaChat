@@ -1,0 +1,472 @@
+services:
+  redis:
+    image: redis:7.2-alpine
+    container_name: bricksllm-redis
+    restart: unless-stopped
+    ports:
+      - '${REDIS_HOST_PORT:-6380}:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    networks:
+      - bricksllm-network
+    healthcheck:
+      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+  mongo:
+    image: mongo:7
+    container_name: bricksllm-mongo
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - bricksllm-network
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', 'db.adminCommand("ping")']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  postgresql:
+    image: postgres:16.1-alpine
+    container_name: bricksllm-postgresql
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRESQL_DB:-bricksllm}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - '${POSTGRESQL_HOST_PORT:-5433}:5432'
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+    networks:
+      - bricksllm-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRESQL_USERNAME:-postgres} -d ${POSTGRESQL_DB:-bricksllm}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+
+  llama-server:
+    image: ${LLAMA_IMAGE:-ghcr.io/ggml-org/llama.cpp:server-cuda}
+    container_name: bricksllm-llama
+    restart: unless-stopped
+    runtime: nvidia
+    environment:
+      CUDA_VISIBLE_DEVICES: ${GPU_DEVICE_IDS:-0}
+      SYSTEM_PROMPT: ${SYSTEM_PROMPT}
+    ports:
+      - '${LLAMA_HOST_PORT:-5002}:5002'
+    volumes:
+      - ${LOCAL_MODEL_PATH:-./models}:/models
+      - ./llama_entrypoint.sh:/app/entrypoint.sh
+      - ./chat_template.jinja2.template:/app/chat_template.jinja2.template
+    networks:
+      - bricksllm-network
+    entrypoint: ["/app/entrypoint.sh", "/app/llama-server"]
+    command:
+    # ═══════════════════════════════════════════════════════════════════
+    # MODEL LOADING
+    # ═══════════════════════════════════════════════════════════════════
+    - -m
+    - /models/${HF_FILE}
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # SERVER CONFIGURATION
+    # ═══════════════════════════════════════════════════════════════════
+    - --host
+    - '0.0.0.0'
+    - --port
+    - '5002'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # CONTEXT WINDOW (32K for MCP tools)
+    # ═══════════════════════════════════════════════════════════════════
+    - -c
+    - '${CONTEXT_SIZE:-32768}'
+      
+    # ═══════════════════════════════════════════════════════════════════
+    # GPU CONFIGURATION
+    # ═══════════════════════════════════════════════════════════════════
+    # Offload all layers to GPU
+    - --n-gpu-layers
+    - '${N_GPU_LAYERS:-99}'
+    
+    # Main GPU device
+    - --main-gpu
+    - '${MAIN_GPU:-0}'
+    
+    # Split mode (none for single GPU)
+    - --split-mode
+    - '${SPLIT_MODE:-none}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # FLASH ATTENTION (30-40% speedup)
+    # ═══════════════════════════════════════════════════════════════════
+    - --flash-attn
+    - '${FLASH_ATTN:-on}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # BATCH PROCESSING
+    # ═══════════════════════════════════════════════════════════════════
+    # Main batch size (optimal for RTX 3090 @ 32K context)
+    - --batch-size
+    - '${N_BATCH:-1024}'
+    
+    # Physical batch size (ubatch)
+    - --ubatch-size
+    - '${N_UBATCH:-256}'
+    
+    # CPU threads for processing
+    - --threads
+    - '${N_THREADS:-8}'
+    
+    # Threads for batch processing
+    - --threads-batch
+    - '${N_THREADS_BATCH:-8}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # KV CACHE CONFIGURATION (q8_0 saves ~4GB VRAM)
+    # ═══════════════════════════════════════════════════════════════════
+    - --cache-type-k
+    - '${CACHE_TYPE_K:-q8_0}'
+    
+    - --cache-type-v
+    - '${CACHE_TYPE_V:-q8_0}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # PARALLEL REQUEST HANDLING (for MCP tool chains)
+    # ═══════════════════════════════════════════════════════════════════
+    - --parallel
+    - '${N_PARALLEL:-1}'
+    
+    # Enable continuous batching
+    - --cont-batching
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # ROPE SCALING (for context extension)
+    # ═══════════════════════════════════════════════════════════════════
+    - --rope-scaling
+    - '${ROPE_SCALING:-linear}'
+    
+    - --rope-freq-base
+    - '${ROPE_FREQ_BASE:-10000}'
+    
+    - --yarn-ext-factor
+    - '${YARN_EXT_FACTOR:-1.0}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # SAMPLING CHAIN (User Configured)
+    # ═══════════════════════════════════════════════════════════════════
+    - --samplers
+    - '${SAMPLERS:-dry;top_k;typical_p;top_p;min_p;temperature}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # TEMPERATURE
+    # ═══════════════════════════════════════════════════════════════════
+    - --temp
+    - '${TEMPERATURE:-0.4}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # NUCLEUS SAMPLING (Top-P)
+    # ═══════════════════════════════════════════════════════════════════
+    - --top-p
+    - '${TOP_P:-0.9}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # TOP-K (DISABLED - redundant with top-p + min-p)
+    # ═══════════════════════════════════════════════════════════════════
+    - --top-k
+    - '${TOP_K:-0}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # MINIMUM PROBABILITY (Min-P)
+    # ═══════════════════════════════════════════════════════════════════
+    - --min-p
+    - '${MIN_P:-0.05}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # MIROSTAT (DISABLED)
+    # ═══════════════════════════════════════════════════════════════════
+    - --mirostat
+    - '${MIROSTAT:-0}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # REPEAT PENALTY
+    # ═══════════════════════════════════════════════════════════════════
+    - --repeat-penalty
+    - '${REPEAT_PENALTY:-1.1}'
+    
+    - --repeat-last-n
+    - '${REPEAT_LAST_N:-1024}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # FREQUENCY & PRESENCE PENALTIES (DISABLED)
+    # ═══════════════════════════════════════════════════════════════════
+    - --frequency-penalty
+    - '${FREQUENCY_PENALTY:-0.0}'
+    
+    - --presence-penalty
+    - '${PRESENCE_PENALTY:-0.0}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # DRY SAMPLER (Don't Repeat Yourself)
+    # ═══════════════════════════════════════════════════════════════════
+    - --dry-multiplier
+    - '${DRY_MULTIPLIER:-0.8}'
+    
+    - --dry-base
+    - '${DRY_BASE:-1.75}'
+    
+    - --dry-allowed-length
+    - '${DRY_ALLOWED_LENGTH:-2}'
+    
+    - --dry-penalty-last-n
+    - '${DRY_PENALTY_LAST_N:-1024}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # GENERATION LIMITS
+    # ═══════════════════════════════════════════════════════════════════
+    # Number of tokens to predict (-1 = unlimited, but we set a safe limit)
+    - -n
+    - '${NUM_PREDICT:-4096}'
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # CHAT TEMPLATE & REASONING
+    # ═══════════════════════════════════════════════════════════════════
+    # NOTE: Custom template loaded via entrypoint.sh (--chat-template-file)
+    # DO NOT add --chat-template here as it will override the custom template!
+
+    # ═══════════════════════════════════════════════════════════════════
+    # MONITORING & LOGGING
+    # ═══════════════════════════════════════════════════════════════════
+    - --metrics
+    - --verbose
+    - --no-warmup
+    
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:5002/health']
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: ${HEALTHCHECK_START_PERIOD:-120s}
+    
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: ${GPU_COUNT:-1}
+              capabilities: [gpu]
+        limits:
+          memory: ${DOCKER_MEMORY_LIMIT:-40G}
+    
+    shm_size: ${SHM_SIZE:-20gb}
+
+
+  bricksllm:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: bricksllm-gateway
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgresql:
+        condition: service_healthy
+      # llama-server:
+      #   condition: service_healthy
+    environment:
+      POSTGRESQL_HOSTS: postgresql
+      POSTGRESQL_PORT: 5432
+      POSTGRESQL_DB_NAME: ${POSTGRESQL_DB:-bricksllm}
+      POSTGRESQL_USERNAME: ${POSTGRESQL_USERNAME:-postgres}
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD:-postgres}
+      POSTGRESQL_READ_TIME_OUT: ${POSTGRESQL_READ_TIME_OUT:-2s}
+      POSTGRESQL_WRITE_TIME_OUT: ${POSTGRESQL_WRITE_TIME_OUT:-1s}
+      REDIS_HOSTS: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_READ_TIME_OUT: ${REDIS_READ_TIME_OUT:-1s}
+      REDIS_WRITE_TIME_OUT: ${REDIS_WRITE_TIME_OUT:-1s}
+      IN_MEMORY_DB_UPDATE_INTERVAL: ${IN_MEMORY_DB_UPDATE_INTERVAL:-5s}
+      STATS_PROVIDER: ${STATS_PROVIDER:-}
+      AMAZON_SECRET_ARN: ${AMAZON_SECRET_ARN:-}
+      AMAZON_REGION: ${AMAZON_REGION:-}
+      PROXY_TIMEOUT: ${PROXY_TIMEOUT:-600s}
+      NUMBER_OF_EVENT_MESSAGE_CONSUMERS: ${NUMBER_OF_EVENT_MESSAGE_CONSUMERS:-3}
+    ports:
+      - '${BRICKSLLM_ADMIN_PORT:-8001}:8001'
+      - '${BRICKSLLM_PROXY_PORT:-8002}:8002'
+    volumes:
+      - bricksllm_logs:/var/log/bricksllm
+    networks:
+      - bricksllm-network
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:8001/api/health']
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+    command: ['-m', '${BRICKSLLM_MODE:-production}']
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: bricksllm-swagger
+    restart: unless-stopped
+    environment:
+      SWAGGER_JSON: /docs/admin.yaml
+    volumes:
+      - ./docs/admin.yaml:/docs/admin.yaml
+    ports:
+      - '${SWAGGER_HOST_PORT:-8082}:8080'
+    networks:
+      - bricksllm-network
+
+  frontend-ui:
+    build:
+      context: ./frontend-huggingface
+      dockerfile: Dockerfile
+    container_name: frontend-UI
+    restart: unless-stopped
+    environment:
+      # Database connections
+      - MONGODB_URL=${MONGODB_URL:-mongodb://mongo:27017/chat-ui}
+      - POSTGRES_URL=${POSTGRES_URL:-postgres://postgres:postgres@postgresql:5432/bricksllm}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+
+      # OpenAI-compatible endpoint (uses consolidated root .env)
+      - OPENAI_BASE_URL=${FRONTEND_OPENAI_BASE_URL:-http://bricksllm:8002/api/custom/providers/llama-cpp-root}
+      - OPENAI_API_KEY=${FRONTEND_OPENAI_API_KEY:-sk-bricksllm-frontend-llama-key-explicit}
+
+      # Public app configuration
+      - PUBLIC_APP_NAME=${FRONTEND_PUBLIC_APP_NAME:-DictaLM Chat}
+      - PUBLIC_APP_ASSETS=${FRONTEND_PUBLIC_APP_ASSETS:-chatui}
+      - PUBLIC_APP_COLOR=blue
+      - PUBLIC_APP_DESCRIPTION=${FRONTEND_PUBLIC_APP_DESCRIPTION:-A chat interface for DictaLM}
+      - PUBLIC_APP_DATA_SHARING=${FRONTEND_PUBLIC_APP_DATA_SHARING:-1}
+      - PUBLIC_APP_DISCLAIMER=0
+      - PUBLIC_ORIGIN=${FRONTEND_PUBLIC_ORIGIN:-http://localhost:8004}
+
+      # MCP Tool Configuration (uses consolidated root .env)
+      - MCP_MAX_TOOLS=${MCP_MAX_TOOLS:-4}
+      - MCP_FILTER_TOOLS=${MCP_FILTER_TOOLS:-true}
+      - MCP_USE_NATIVE_TOOLS=${MCP_USE_NATIVE_TOOLS:-false}
+      - MCP_TOOL_SUMMARY_PROMPT=${MCP_TOOL_SUMMARY_PROMPT:-Based on the tool results above, provide a helpful and concise answer.}
+      - MCP_FOLLOWUP_MAX_TOKENS=${MCP_FOLLOWUP_MAX_TOKENS:-4096}
+      - MCP_FOLLOWUP_REP_PENALTY=${MCP_FOLLOWUP_REP_PENALTY:-1.05}
+      - MCP_FOLLOWUP_TEMPERATURE=${MCP_FOLLOWUP_TEMPERATURE:-0.3}
+
+      # Legacy/compatibility
+      - HF_TOKEN=${HF_TOKEN:-}
+      - DOCKER_ENV=true
+      - ENABLE_CONFIG_MANAGER=false
+      - LLM_ROUTER_ENABLE_TOOLS=true
+      - LLM_ROUTER_TOOLS_MODEL=${HF_FILE:-dictalm-3.0-24b-thinking-fp8-q4_k_m.gguf}
+
+      # Model definition (uses variables from root .env)
+      - 'MODELS=[{"id":"${FRONTEND_MODEL_ID:-mradermacher/DictaLM-3.0-24B-Thinking-i1-GGUF}","name":"${FRONTEND_MODEL_NAME:-dictalm-3.0-i1-q4km}","displayName":"${FRONTEND_MODEL_DISPLAY_NAME:-DictaLM-3.0}","description":"${FRONTEND_MODEL_DESCRIPTION:-Enterprise-grade Hebrew-optimized model}","websiteUrl":"${FRONTEND_MODEL_WEBSITE:-https://dicta.org.il}","supportsTools":true,"parameters":{"temperature":${FRONTEND_MODEL_TEMPERATURE:-0.4},"top_p":${FRONTEND_MODEL_TOP_P:-0.9},"repetition_penalty":${FRONTEND_MODEL_REPETITION_PENALTY:-1.1},"truncate":${FRONTEND_MODEL_TRUNCATE:-1000},"max_tokens":${FRONTEND_MODEL_MAX_TOKENS:-4096}},"endpoints":[{"type":"openai","baseURL":"${FRONTEND_OPENAI_BASE_URL:-http://bricksllm:8002/api/custom/providers/llama-cpp-root}","apiKey":"${FRONTEND_OPENAI_API_KEY:-sk-bricksllm-frontend-llama-key-explicit}"}]}]'
+
+      # MCP Servers configuration
+      - MCP_SERVERS=${FRONTEND_MCP_SERVERS}
+    ports:
+      - "8004:3000"
+    volumes:
+      - ./frontend-huggingface:/app
+      - /app/node_modules
+    depends_on:
+      - mongo
+      - mcp-sse-proxy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - bricksllm-network
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "3000"]
+
+  mcp-sse-proxy:
+    build:
+      context: ./mcp-sse-proxy
+      dockerfile: Dockerfile
+    container_name: mcp-sse-proxy
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      # Configuration
+      - ./mcp-sse-proxy/config:/app/config
+      # Docker socket for mcp-server-docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      # Persistent data for MCP servers
+      - mcp_memory_data:/app/data/memory
+      - mcp_uploads:/app/uploads
+      - mcp_sandbox:/app/sandbox
+    environment:
+      - PORT=3100
+      - CONFIG_PATH=/app/config/servers.json
+      - NODE_ENV=production
+      # API Keys for external MCP services
+      - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY:-}
+      - TAVILY_API_KEY=${TAVILIY_SEARCH_API_KEY:-}
+      - SMITHERY_API_KEY=${SMITHERY_API_KEY:-}
+    healthcheck:
+      test: CMD curl -f http://localhost:3100/health || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - bricksllm-network
+
+networks:
+  bricksllm-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${NETWORK_SUBNET:-172.30.0.0/16}
+
+volumes:
+  redis_data:
+    driver: local
+  postgresql_data:
+    driver: local
+  mongo_data:
+    driver: local
+  huggingface_cache:
+    driver: local
+  vllm_logs:
+    driver: local
+  bricksllm_logs:
+    driver: local
+  mcp_memory_data:
+    driver: local
+  mcp_uploads:
+    driver: local
+  mcp_sandbox:
+    driver: local

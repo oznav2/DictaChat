@@ -8,6 +8,7 @@ import { Semaphores } from "$lib/types/Semaphore";
 
 export type PublicConfigKey = keyof typeof publicEnv;
 const keysFromEnv = { ...publicEnv, ...serverEnv };
+console.log("DEBUG: keysFromEnv.PUBLIC_APP_ASSETS =", keysFromEnv.PUBLIC_APP_ASSETS);
 export type ConfigKey = keyof typeof keysFromEnv;
 
 class ConfigManager {

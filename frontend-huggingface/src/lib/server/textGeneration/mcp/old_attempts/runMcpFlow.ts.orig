@@ -1,0 +1,1053 @@
+import { config } from "$lib/server/config";
+import { MessageUpdateType, type MessageUpdate } from "$lib/types/MessageUpdate";
+import { getMcpServers } from "$lib/server/mcp/registry";
+import { isValidUrl } from "$lib/server/urlSafety";
+import { resetMcpToolsCache } from "$lib/server/mcp/tools";
+import { getOpenAiToolsForMcp } from "$lib/server/mcp/tools";
+import type {
+	ChatCompletionChunk,
+	ChatCompletionCreateParamsStreaming,
+	ChatCompletionMessageParam,
+	ChatCompletionMessageToolCall,
+} from "openai/resources/chat/completions";
+import type { Stream } from "openai/streaming";
+import { buildToolPreprompt } from "../utils/toolPrompt";
+import { filterToolsByIntent, extractUserQuery } from "./toolFilter";
+import type { EndpointMessage } from "../../endpoints/endpoints";
+import { resolveRouterTarget } from "./routerResolution";
+import { executeToolCalls, type NormalizedToolCall } from "./toolInvocation";
+import { drainPool } from "$lib/server/mcp/clientPool";
+import type { TextGenerationContext } from "../types";
+import { hasAuthHeader, isStrictHfMcpLogin, hasNonEmptyToken } from "$lib/server/mcp/hf";
+import { buildImageRefResolver } from "./fileRefs";
+import { prepareMessagesWithFiles } from "$lib/server/textGeneration/utils/prepareFiles";
+import { makeImageProcessor } from "$lib/server/endpoints/images";
+import { extractAndRepairJson } from "$lib/server/textGeneration/utils/jsonRepair";
+import { getSummarizerPattern, applyLanguageInstructions } from "./toolSummarizers";
+
+
+export type RunMcpFlowContext = Pick<
+	TextGenerationContext,
+	"model" | "conv" | "assistant" | "forceMultimodal" | "forceTools" | "locals"
+> & { messages: EndpointMessage[] };
+
+export async function* runMcpFlow({
+	model,
+	conv,
+	messages,
+	assistant,
+	forceMultimodal,
+	forceTools,
+	locals,
+	preprompt,
+	abortSignal,
+}: RunMcpFlowContext & { preprompt?: string; abortSignal?: AbortSignal }): AsyncGenerator<
+	MessageUpdate,
+	boolean,
+	undefined
+> {
+	console.debug("[mcp] runMcpFlow started");
+	// Start from env-configured servers
+	let servers = getMcpServers();
+	try {
+		console.debug(
+			{ baseServers: servers.map((s) => ({ name: s.name, url: s.url })), count: servers.length },
+			"[mcp] base servers loaded"
+		);
+	} catch {}
+
+	// Merge in request-provided custom servers (if any)
+	try {
+		const reqMcp = (
+			locals as unknown as {
+				mcp?: {
+					selectedServers?: Array<{ name: string; url: string; headers?: Record<string, string> }>;
+					selectedServerNames?: string[];
+				};
+			}
+		)?.mcp;
+		const custom = Array.isArray(reqMcp?.selectedServers) ? reqMcp?.selectedServers : [];
+		if (custom.length > 0) {
+			// Invalidate cached tool list when the set of servers changes at request-time
+			resetMcpToolsCache();
+			// Deduplicate by server name (request takes precedence)
+			const byName = new Map<
+				string,
+				{ name: string; url: string; headers?: Record<string, string> }
+			>();
+			for (const s of servers) byName.set(s.name, s);
+			for (const s of custom) byName.set(s.name, s);
+			servers = [...byName.values()];
+			try {
+				console.debug(
+					{
+						customProvidedCount: custom.length,
+						mergedServers: servers.map((s) => ({
+							name: s.name,
+							url: s.url,
+							hasAuth: !!s.headers?.Authorization,
+						})),
+					},
+					"[mcp] merged request-provided servers"
+				);
+			} catch {}
+		}
+
+		// If the client specified a selection by name, filter to those
+		const names = Array.isArray(reqMcp?.selectedServerNames)
+			? reqMcp?.selectedServerNames
+			: undefined;
+		if (Array.isArray(names)) {
+			const before = servers.map((s) => s.name);
+			servers = servers.filter((s) => names.includes(s.name));
+			try {
+				console.debug(
+					{ selectedNames: names, before, after: servers.map((s) => s.name) },
+					"[mcp] applied name selection"
+				);
+			} catch {}
+		}
+	} catch {
+		// ignore selection merge errors and proceed with env servers
+	}
+
+	// If selection/merge yielded no servers, bail early with clearer log
+	if (servers.length === 0) {
+		console.warn("[mcp] no MCP servers selected after merge/name filter");
+		return false;
+	}
+
+	// Enforce server-side safety (public HTTPS only, no private ranges)
+	// Relaxed for local MCP integration
+	{
+		const before = servers.slice();
+		servers = servers.filter((s) => {
+			try {
+				// Use the updated isValidUrl which now allows HTTP and localhost
+				return isValidUrl(s.url);
+			} catch {
+				return false;
+			}
+		});
+		try {
+			const rejected = before.filter((b) => !servers.includes(b));
+			if (rejected.length > 0) {
+				console.warn(
+					{ rejected: rejected.map((r) => ({ name: r.name, url: r.url })) },
+					"[mcp] rejected servers by URL safety"
+				);
+			}
+		} catch {}
+	}
+	if (servers.length === 0) {
+		console.warn("[mcp] all selected MCP servers rejected by URL safety guard");
+		return false;
+	}
+
+	// Optionally attach the logged-in user's HF token to the official HF MCP server only.
+	// Never override an explicit Authorization header, and require token to look like an HF token.
+	try {
+		const shouldForward = config.MCP_FORWARD_HF_USER_TOKEN === "true";
+		const userToken =
+			(locals as unknown as { hfAccessToken?: string } | undefined)?.hfAccessToken ??
+			(locals as unknown as { token?: string } | undefined)?.token;
+
+		if (shouldForward && hasNonEmptyToken(userToken)) {
+			const overlayApplied: string[] = [];
+			servers = servers.map((s) => {
+				try {
+					if (isStrictHfMcpLogin(s.url) && !hasAuthHeader(s.headers)) {
+						overlayApplied.push(s.name);
+						return {
+							...s,
+							headers: { ...(s.headers ?? {}), Authorization: `Bearer ${userToken}` },
+						};
+					}
+				} catch {
+					// ignore URL parse errors and leave server unchanged
+				}
+				return s;
+			});
+			if (overlayApplied.length > 0) {
+				try {
+					console.debug({ overlayApplied }, "[mcp] forwarded HF token to servers");
+				} catch {}
+			}
+		}
+	} catch {
+		// best-effort overlay; continue if anything goes wrong
+	}
+	console.debug(
+		{ count: servers.length, servers: servers.map((s) => s.name) },
+		"[mcp] servers configured"
+	);
+	if (servers.length === 0) {
+		return false;
+	}
+
+	// Gate MCP flow based on model tool support (aggregated) with user override
+	try {
+		const supportsTools = Boolean((model as unknown as { supportsTools?: boolean }).supportsTools);
+		const toolsEnabled = Boolean(forceTools) || supportsTools;
+		console.debug(
+			{
+				model: model.id ?? model.name,
+				supportsTools,
+				forceTools: Boolean(forceTools),
+				toolsEnabled,
+			},
+			"[mcp] tools gate evaluation"
+		);
+		if (!toolsEnabled) {
+			console.info(
+				{ model: model.id ?? model.name },
+				"[mcp] tools disabled for model; skipping MCP flow"
+			);
+			return false;
+		}
+	} catch {
+		// If anything goes wrong reading the flag, proceed (previous behavior)
+	}
+
+	const resolveFileRef = buildImageRefResolver(messages);
+	const imageProcessor = makeImageProcessor({
+		supportedMimeTypes: ["image/png", "image/jpeg"],
+		preferredMimeType: "image/jpeg",
+		maxSizeInMB: 1,
+		maxWidth: 1024,
+		maxHeight: 1024,
+	});
+
+	const hasImageInput = messages.some((msg) =>
+		(msg.files ?? []).some(
+			(file) => typeof file?.mime === "string" && file.mime.startsWith("image/")
+		)
+	);
+
+	const { runMcp, targetModel, candidateModelId, resolvedRoute } = await resolveRouterTarget({
+		model,
+		messages,
+		conversationId: conv._id.toString(),
+		hasImageInput,
+		locals,
+	});
+
+	if (!runMcp) {
+		console.info(
+			{ model: targetModel.id ?? targetModel.name, resolvedRoute },
+			"[mcp] runMcp=false (routing chose non-tools candidate)"
+		);
+		return false;
+	}
+
+	const { tools: oaTools, mapping } = await getOpenAiToolsForMcp(servers, { signal: abortSignal });
+
+	// Filter tools by user intent to reduce grammar complexity
+	const userQuery = extractUserQuery(messages);
+	const { filtered: filteredTools, categories: matchedCategories } = filterToolsByIntent(oaTools, userQuery);
+
+	console.info(
+		{
+			originalToolCount: oaTools.length,
+			filteredToolCount: filteredTools.length,
+			matchedCategories,
+			filteredToolNames: filteredTools.map((t) => t.function.name),
+			userQueryPreview: userQuery.slice(0, 100),
+		},
+		"[mcp] tool filtering applied"
+	);
+
+	// Use filtered tools for the rest of the flow
+	const toolsToUse = filteredTools;
+
+	if (toolsToUse.length === 0) {
+		console.warn("[mcp] zero tools available after filtering; skipping MCP flow");
+		return false;
+	}
+
+	try {
+		const { OpenAI } = await import("openai");
+
+		// Capture provider header (x-inference-provider) from the upstream OpenAI-compatible server.
+		let providerHeader: string | undefined;
+		const captureProviderFetch = async (
+			input: RequestInfo | URL,
+			init?: RequestInit
+		): Promise<Response> => {
+			const res = await fetch(input, init);
+			const p = res.headers.get("x-inference-provider");
+			if (p && !providerHeader) providerHeader = p;
+			return res;
+		};
+
+		const openai = new OpenAI({
+			apiKey: config.OPENAI_API_KEY || config.HF_TOKEN || "sk-",
+			baseURL: config.OPENAI_BASE_URL || "http://localhost:8002/v1",
+			fetch: captureProviderFetch,
+			defaultHeaders: {
+				// Bill to organization if configured (HuggingChat only)
+				...(config.isHuggingChat && locals?.billingOrganization
+					? { "X-HF-Bill-To": locals.billingOrganization }
+					: {}),
+			},
+		});
+
+		const mmEnabled = (forceMultimodal ?? false) || targetModel.multimodal;
+		console.info(
+			{
+				targetModel: targetModel.id ?? targetModel.name,
+				mmEnabled,
+				route: resolvedRoute,
+				candidateModelId,
+				toolCount: toolsToUse.length,
+				hasUserToken: Boolean((locals as unknown as { token?: string })?.token),
+			},
+			"[mcp] starting completion with tools"
+		);
+		let messagesOpenAI: ChatCompletionMessageParam[] = await prepareMessagesWithFiles(
+			messages,
+			imageProcessor,
+			mmEnabled
+		);
+
+		// Check if we should use native OpenAI tools API (experimental)
+		const useNativeTools = process.env.MCP_USE_NATIVE_TOOLS === "true";
+
+		// Tool prompt injection - either XML format (for llama.cpp) or simple list (for native tools)
+		const prepromptPieces: string[] = [];
+
+		if (toolsToUse.length > 0 && !useNativeTools) {
+			// XML tool injection - we inject tool definitions directly into system message
+			// This avoids llama.cpp GBNF grammar issues and streaming parser errors
+			// Build tool selection guide based on available tools
+			const hasPerplexity = toolsToUse.some(t => t.function.name.includes("perplexity"));
+			const hasTavily = toolsToUse.some(t => t.function.name.includes("tavily"));
+
+			// Condensed tool format with usage hints
+			const toolDefs = toolsToUse.map(t => {
+				const fn = t.function;
+				const desc = (fn.description || "").slice(0, 80);
+				return `- ${fn.name}: ${desc}`;
+			}).join("\n");
+
+			// Build smart tool selection guide
+			let toolSelectionGuide = "";
+			if (hasPerplexity && hasTavily) {
+				toolSelectionGuide = `## TOOL SELECTION GUIDE
+Choose the RIGHT tool based on query type:
+
+| Query Type | Best Tool | Why |
+|------------|-----------|-----|
+| Quick facts, news, products | tavily-search | Fast web results |
+| Deep research, analysis | perplexity_research | Comprehensive AI analysis |
+| Simple Q&A, explanations | perplexity_ask | Conversational answers |
+| Compare options, reasoning | perplexity_reason | Logical analysis |
+| Extract from specific URL | tavily-extract | Content extraction |
+
+Examples:
+- "מה המיקרוגל הכי טוב?" → tavily-search (product search)
+- "הסבר לי על בינה מלאכותית" → perplexity_ask (explanation)
+- "חקור את השפעות שינויי האקלים" → perplexity_research (deep research)
+- "השווה בין iPhone ל-Samsung" → perplexity_reason (comparison)`;
+			} else if (hasTavily) {
+				toolSelectionGuide = `## USE tavily-search FOR:
+- Product recommendations and prices
+- Current news and events
+- Facts and information lookup
+- Any research or search query`;
+			} else if (hasPerplexity) {
+				toolSelectionGuide = `## TOOL SELECTION:
+- perplexity_search: Quick web search
+- perplexity_ask: Q&A and explanations
+- perplexity_research: Deep analysis
+- perplexity_reason: Comparisons and logic`;
+			}
+
+			// Open WebUI-style JSON format for tool calling (no XML tags)
+			const toolPrompt = `Available Tools: ${toolDefs}
+
+Your task is to choose and return the correct tool(s) based on the query. Follow these guidelines:
+
+- Return ONLY the JSON object, without any additional text or explanation.
+- If no tools match the query, respond normally without JSON.
+- If one or more tools match, return EXACTLY this format:
+{"tool_calls": [{"name": "tavily-search", "parameters": {"query": "your search"}}]}
+
+${toolSelectionGuide}
+
+CRITICAL RULES:
+- For search/research/info queries: Return the JSON tool call, don't explain
+- You HAVE internet access via these tools
+- NEVER say "אין לי גישה" or "I cannot search" - USE A TOOL
+- Return {"tool_calls": [...]} as your FIRST output for lookups`;
+			prepromptPieces.push(toolPrompt);
+		}
+
+		// const toolPreprompt = buildToolPreprompt(oaTools);
+		// if (toolPreprompt.trim().length > 0) {
+		// 	prepromptPieces.push(toolPreprompt);
+		// }
+		if (typeof preprompt === "string" && preprompt.trim().length > 0) {
+			prepromptPieces.push(preprompt);
+		}
+		const mergedPreprompt = prepromptPieces.join("\n\n");
+		const hasSystemMessage = messagesOpenAI.length > 0 && messagesOpenAI[0]?.role === "system";
+		if (hasSystemMessage) {
+			if (mergedPreprompt.length > 0) {
+				const existing = messagesOpenAI[0].content ?? "";
+				const existingText = typeof existing === "string" ? existing : "";
+				messagesOpenAI[0].content = mergedPreprompt + (existingText ? "\n\n" + existingText : "");
+			}
+		} else if (mergedPreprompt.length > 0) {
+			messagesOpenAI = [{ role: "system", content: mergedPreprompt }, ...messagesOpenAI];
+		}
+
+		// Work around servers that reject `system` role
+		if (
+			typeof config.OPENAI_BASE_URL === "string" &&
+			config.OPENAI_BASE_URL.length > 0 &&
+			(config.OPENAI_BASE_URL.includes("hf.space") ||
+				config.OPENAI_BASE_URL.includes("gradio.app")) &&
+			messagesOpenAI[0]?.role === "system"
+		) {
+			messagesOpenAI[0] = { ...messagesOpenAI[0], role: "user" };
+		}
+
+		const parameters = { ...targetModel.parameters, ...assistant?.generateSettings } as Record<
+			string,
+			unknown
+		>;
+		// For tool-calling, allow enough tokens for thinking + tool call + response
+		let maxTokens =
+			(parameters?.max_tokens as number | undefined) ??
+			(parameters?.max_new_tokens as number | undefined) ??
+			(parameters?.max_completion_tokens as number | undefined) ??
+			4096;
+
+		// Enforce a reasonable limit (allow up to 8192 for long tool responses)
+		if (maxTokens <= 0 || maxTokens > 8192) {
+			console.warn(`[mcp] clamping max_tokens from ${maxTokens} to 4096`);
+			maxTokens = 4096;
+		}
+
+		const stopSequences =
+			typeof parameters?.stop === "string"
+				? [parameters.stop]
+				: Array.isArray(parameters?.stop)
+					? (parameters.stop as string[])
+					: [];
+		
+		// For JSON tool calling format, we don't need special stop sequences
+		// The model should output complete JSON: {"tool_calls": [...]}
+		// NOTE: Do NOT add </think> as stop sequence - model needs to finish thinking
+		// THEN generate the tool call. Stopping at </think> cuts off the response.
+
+		// For llama.cpp, we need repetition_penalty (1.0-1.5 range, 1.0 = no penalty)
+		// This prevents the model from getting stuck in repetition loops after tool execution
+		// Use 1.1 as balance between preventing loops and not breaking JSON formatting
+		const repetitionPenalty =
+			typeof parameters?.repetition_penalty === "number"
+				? parameters.repetition_penalty
+				: 1.1; // Balance between preventing loops and valid JSON output
+
+		const completionBase: Omit<ChatCompletionCreateParamsStreaming, "messages"> & {
+			repetition_penalty?: number;
+			tools?: typeof toolsToUse;
+			tool_choice?: "auto" | "none";
+		} = {
+			model: targetModel.id ?? targetModel.name,
+			stream: true,
+			temperature: typeof parameters?.temperature === "number" ? parameters.temperature : undefined,
+			top_p: typeof parameters?.top_p === "number" ? parameters.top_p : undefined,
+			frequency_penalty:
+				typeof parameters?.frequency_penalty === "number"
+					? parameters.frequency_penalty
+					: undefined,
+			presence_penalty:
+				typeof parameters?.presence_penalty === "number" ? parameters.presence_penalty : undefined,
+			// llama.cpp specific: repetition_penalty helps prevent loops in quantized models
+			repetition_penalty: repetitionPenalty,
+			stop: stopSequences,
+			max_tokens: typeof maxTokens === "number" ? maxTokens : undefined,
+			// Native tools API - only enable if MCP_USE_NATIVE_TOOLS=true
+			// With few tools (2-3), native API may work better than XML injection
+			...(useNativeTools ? { tools: toolsToUse, tool_choice: "auto" as const } : {}),
+		};
+
+		// Debug: Log message sizes to diagnose token explosion
+		const messageSizes = messagesOpenAI.map((m, i) => ({
+			index: i,
+			role: m.role,
+			contentLength: typeof m.content === 'string' ? m.content.length : JSON.stringify(m.content || '').length
+		}));
+		const totalChars = messageSizes.reduce((sum, m) => sum + m.contentLength, 0);
+
+		console.debug(
+			{ messageCount: messagesOpenAI.length, toolCount: toolsToUse.length, maxTokens, repetitionPenalty, useNativeTools, totalChars, messageSizes },
+			"[mcp] completion request configured"
+		);
+
+		const toPrimitive = (value: unknown) => {
+			if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
+				return value;
+			}
+			return undefined;
+		};
+
+		const parseArgs = (raw: unknown): Record<string, unknown> => {
+			if (typeof raw !== "string" || raw.trim().length === 0) return {};
+			try {
+				return JSON.parse(raw);
+			} catch {
+				return {};
+			}
+		};
+
+		const processToolOutput = (
+			text: string
+		): {
+			annotated: string;
+			sources: { index: number; link: string }[];
+		} => ({ annotated: text, sources: [] });
+
+		let lastAssistantContent = "";
+		let streamedContent = false;
+		// Track whether we're inside a <think> block when the upstream streams
+		// provider-specific reasoning tokens (e.g. `reasoning` or `reasoning_content`).
+		let thinkOpen = false;
+
+		if (resolvedRoute && candidateModelId) {
+			yield {
+				type: MessageUpdateType.RouterMetadata,
+				route: resolvedRoute,
+				model: candidateModelId,
+			};
+			console.debug(
+				{ route: resolvedRoute, model: candidateModelId },
+				"[mcp] router metadata emitted"
+			);
+		}
+
+		// Loop detection: track previous tool calls and content to detect repetition
+		const previousToolCalls: string[] = [];
+		const previousContents: string[] = [];
+		const MAX_REPEATED_CALLS = 3; // If same tool call appears 3 times, we're in a loop
+
+		for (let loop = 0; loop < 10; loop += 1) {
+			lastAssistantContent = "";
+			streamedContent = false;
+
+			// For follow-up completions after tool results (loop > 0):
+			// 1. Allow sufficient tokens for comprehensive summaries with citations (6144 default for verbose, comprehensive output)
+			// 2. Increase repetition_penalty to prevent loops
+			// CRITICAL: For summaries, OVERRIDE the original token limit (don't use Math.min)
+			// The original request might have a low max_tokens, but summaries need more space
+			const isFollowup = loop > 0;
+			const followupMaxTokens = isFollowup
+				? parseInt(process.env.MCP_FOLLOWUP_MAX_TOKENS || "6144", 10)
+				: completionBase.max_tokens;
+
+			// Higher repetition penalty for follow-up to prevent degeneration
+			const followupRepPenalty = isFollowup
+				? parseFloat(process.env.MCP_FOLLOWUP_REP_PENALTY || "1.2")
+				: completionBase.repetition_penalty;
+
+			const completionRequest: ChatCompletionCreateParamsStreaming = {
+				...completionBase,
+				stream: true,
+				messages: messagesOpenAI,
+				max_tokens: followupMaxTokens,
+				repetition_penalty: followupRepPenalty,
+			} as ChatCompletionCreateParamsStreaming & { repetition_penalty?: number };
+
+			if (isFollowup) {
+				console.info(
+					{ loop, maxTokens: followupMaxTokens, repPenalty: followupRepPenalty },
+					"[mcp] follow-up completion configured with reduced tokens and higher rep penalty"
+				);
+			}
+
+			const completionStream: Stream<ChatCompletionChunk> = await openai.chat.completions.create(
+				completionRequest,
+				{
+					signal: abortSignal,
+					headers: {
+						"ChatUI-Conversation-ID": conv._id.toString(),
+						"X-use-cache": "false",
+						...(locals?.token ? { Authorization: `Bearer ${locals.token}` } : {}),
+					},
+				}
+			);
+
+			// If provider header was exposed, notify UI so it can render "via {provider}".
+			if (providerHeader) {
+				yield {
+					type: MessageUpdateType.RouterMetadata,
+					route: "",
+					model: "",
+					provider: providerHeader as unknown as import("@huggingface/inference").InferenceProvider,
+				};
+				console.debug({ provider: providerHeader }, "[mcp] provider metadata emitted");
+			}
+
+			const toolCallState: Record<number, { id?: string; name?: string; arguments: string }> = {};
+			let firstToolDeltaLogged = false;
+			let sawToolCall = false;
+			let toolCallDetectedLogged = false;
+			let tokenCount = 0;
+			for await (const chunk of completionStream) {
+				const choice = chunk.choices?.[0];
+				const delta = choice?.delta;
+				if (!delta) continue;
+
+				const chunkToolCalls = delta.tool_calls ?? [];
+				if (chunkToolCalls.length > 0) {
+					sawToolCall = true;
+					for (const call of chunkToolCalls) {
+						const toolCall = call as unknown as {
+							index?: number;
+							id?: string;
+							function?: { name?: string; arguments?: string };
+						};
+						const index = toolCall.index ?? 0;
+						const current = toolCallState[index] ?? { arguments: "" };
+						if (toolCall.id) current.id = toolCall.id;
+						if (toolCall.function?.name) current.name = toolCall.function.name;
+						if (toolCall.function?.arguments) current.arguments += toolCall.function.arguments;
+						toolCallState[index] = current;
+					}
+					if (!firstToolDeltaLogged) {
+						try {
+							const first =
+								toolCallState[
+									Object.keys(toolCallState)
+										.map((k) => Number(k))
+										.sort((a, b) => a - b)[0] ?? 0
+								];
+							console.info(
+								{ firstCallName: first?.name, hasId: Boolean(first?.id) },
+								"[mcp] observed streamed tool_call delta"
+							);
+							firstToolDeltaLogged = true;
+						} catch {}
+					}
+				}
+
+				const deltaContent = (() => {
+					if (typeof delta.content === "string") return delta.content;
+					const maybeParts = delta.content as unknown;
+					if (Array.isArray(maybeParts)) {
+						return maybeParts
+							.map((part) =>
+								typeof part === "object" &&
+								part !== null &&
+								"text" in part &&
+								typeof (part as Record<string, unknown>).text === "string"
+									? String((part as Record<string, unknown>).text)
+									: ""
+							)
+							.join("");
+					}
+					return "";
+				})();
+
+				// Provider-dependent reasoning fields (e.g., `reasoning` or `reasoning_content`).
+				const deltaReasoning: string =
+					typeof (delta as unknown as Record<string, unknown>)?.reasoning === "string"
+						? ((delta as unknown as { reasoning?: string }).reasoning as string)
+						: typeof (delta as unknown as Record<string, unknown>)?.reasoning_content === "string"
+							? ((delta as unknown as { reasoning_content?: string }).reasoning_content as string)
+							: "";
+
+				// Merge reasoning + content into a single combined token stream, mirroring
+				// the OpenAI adapter so the UI can auto-detect <think> blocks.
+				// IMPORTANT: If deltaContent already contains <think> tags, don't wrap again
+				let combined = "";
+				const contentHasThinkTags = deltaContent && (
+					deltaContent.includes("<think>") ||
+					deltaContent.includes("</think>")
+				);
+
+				if (deltaReasoning.trim().length > 0 && !contentHasThinkTags) {
+					if (!thinkOpen) {
+						combined += "<think>" + deltaReasoning;
+						thinkOpen = true;
+					} else {
+						combined += deltaReasoning;
+					}
+				}
+
+				if (deltaContent && deltaContent.length > 0) {
+					if (contentHasThinkTags) {
+						// Model already handles think tags, pass through as-is
+						combined += deltaContent;
+						thinkOpen = false;
+					} else if (thinkOpen) {
+						combined += "</think>" + deltaContent;
+						thinkOpen = false;
+					} else {
+						combined += deltaContent;
+					}
+				}
+
+				if (combined.length > 0) {
+					lastAssistantContent += combined;
+
+					// Check if we've seen a tool_calls JSON - if so, stop streaming to UI
+					// The tool call will be parsed and executed after the stream closes
+					const hasToolCallInContent = lastAssistantContent.includes('"tool_calls"');
+					const chunkLooksLikeJson = combined.trim().startsWith('{') || combined.includes('"tool_calls"');
+
+					// Debug logging to diagnose streaming behavior
+					if (chunkLooksLikeJson || hasToolCallInContent) {
+						console.info(
+							{
+								chunkLength: combined.length,
+								chunkPreview: combined.substring(0, 50),
+								chunkLooksLikeJson,
+								hasToolCallInContent,
+								willStream: false
+							},
+							"[mcp] detected JSON chunk, NOT streaming to UI"
+						);
+					}
+
+					// CRITICAL: During initial tool call (loop 0), buffer content before streaming
+					// to prevent showing gibberish that appears before {"tool_calls": ...}
+					// Only stream if we have enough content to be confident there are no tool calls coming
+					const shouldStream = !sawToolCall && !hasToolCallInContent && !chunkLooksLikeJson &&
+						(isFollowup || lastAssistantContent.length > 200); // Buffer 200 chars in loop 0
+
+					if (shouldStream) {
+						streamedContent = true;
+						yield { type: MessageUpdateType.Stream, token: combined };
+						tokenCount += combined.length;
+
+						// EARLY ABORT: If model is generating too much content without calling a tool
+						// This prevents 9000+ token responses that don't use tools
+						if (!isFollowup && loop === 0 && lastAssistantContent.length > 1500 && !lastAssistantContent.includes('"tool_calls"')) {
+							// Check if this looks like a search query that should have used tools
+							const userQuery = messages[messages.length - 1]?.content?.toString().toLowerCase() || "";
+							const isSearchQuery = /search|find|חפש|מצא|מה|איזה|recommend|best|price|מחיר|compare|news|חדשות|research|מחקר/.test(userQuery);
+							if (isSearchQuery) {
+								console.warn(
+									{ contentLength: lastAssistantContent.length, userQuery: userQuery.slice(0, 50) },
+									"[mcp] model generating long response without tool call for search query, aborting"
+								);
+								break; // Exit streaming, will fallback
+							}
+						}
+
+						// NOTE: Gibberish detection DISABLED for summary phase (isFollowup)
+						// The summary input is clean tool results - if model generates bad output,
+						// we should abort the entire MCP flow (return false) in the post-stream check,
+						// not truncate during streaming. Truncation was causing valid summaries to be cut off.
+					} else if (hasToolCallInContent && !sawToolCall && !toolCallDetectedLogged) {
+						// Log once that we detected a tool call in content
+						console.debug("[mcp] detected tool_calls JSON in stream, stopping UI streaming");
+						toolCallDetectedLogged = true;
+					}
+				}
+			}
+			console.info(
+				{ sawToolCalls: Object.keys(toolCallState).length > 0, tokens: tokenCount, loop },
+				"[mcp] completion stream closed"
+			);
+
+
+			// Log summary if no native tool calls detected
+			if (Object.keys(toolCallState).length === 0) {
+				console.debug(
+					{ contentLength: lastAssistantContent.length, hasToolCallsJson: lastAssistantContent.includes('"tool_calls"') },
+					"[mcp] no native tool_calls in response"
+				);
+			}
+
+			// Fallback: If no structured tool calls were seen, check if the model outputted them as JSON
+			// Open WebUI format: {"tool_calls": [{"name": "...", "parameters": {...}}]}
+			if (Object.keys(toolCallState).length === 0 && lastAssistantContent.includes('"tool_calls"')) {
+				try {
+					console.info("[mcp] attempting to parse tool_calls JSON from content");
+
+					// Use the JSON repair utility to extract and fix the JSON
+					const repairResult = extractAndRepairJson(lastAssistantContent, "tool_calls");
+
+					if (!repairResult.success) {
+						console.warn(
+							{
+								error: repairResult.error,
+								position: repairResult.position
+							},
+							"[mcp] failed to extract/repair tool_calls JSON"
+						);
+						throw new Error(repairResult.error || "Failed to parse JSON");
+					}
+
+					const parsed = repairResult.data;
+					if (parsed.tool_calls && Array.isArray(parsed.tool_calls)) {
+						let index = 0;
+						for (const call of parsed.tool_calls) {
+							if (call.name) {
+								// Open WebUI uses "parameters", convert to "arguments" for compatibility
+								const params = call.parameters || call.arguments || {};
+								const args = typeof params === 'object'
+									? JSON.stringify(params)
+									: String(params || "{}");
+
+								toolCallState[index] = {
+									id: `call_json_${Math.random().toString(36).slice(2)}`,
+									name: call.name,
+									arguments: args
+								};
+								index++;
+							}
+						}
+						if (Object.keys(toolCallState).length > 0) {
+							console.info({ count: Object.keys(toolCallState).length }, "[mcp] successfully parsed tool_calls from JSON");
+						}
+						}
+				} catch (e) {
+					console.error("[mcp] error parsing tool_calls JSON", e);
+				}
+			}
+
+			if (Object.keys(toolCallState).length > 0) {
+				const calls: NormalizedToolCall[] = Object.values(toolCallState)
+					.filter((c) => c?.name)
+					.map((c) => ({
+						id: c?.id || `call_${Math.random().toString(36).slice(2)}`,
+						name: c?.name ?? "",
+						arguments: c?.arguments ?? "",
+					}));
+
+				// Loop detection: check if we're making the same tool calls repeatedly
+				const callSignature = calls.map(c => `${c.name}:${c.arguments}`).join("|");
+				previousToolCalls.push(callSignature);
+
+				const repeatCount = previousToolCalls.filter(sig => sig === callSignature).length;
+				if (repeatCount >= MAX_REPEATED_CALLS) {
+					console.warn(
+						{ callSignature, repeatCount, loop },
+						"[mcp] detected tool call loop, aborting MCP flow to fallback"
+					);
+					return false; // Fall back to regular generation
+				}
+
+				// Content loop detection
+				const contentSignature = lastAssistantContent.slice(0, 200);
+				if (previousContents.includes(contentSignature) && contentSignature.length > 50) {
+					console.warn(
+						{ contentPreview: contentSignature, loop },
+						"[mcp] detected content repetition loop, aborting MCP flow to fallback"
+					);
+					return false;
+				}
+				previousContents.push(contentSignature);
+
+				if (Object.values(toolCallState).some((c) => c?.name && !c?.id)) {
+					console.debug(
+						{ loop },
+						"[mcp] missing tool_call id in stream; generated synthetic ids"
+					);
+				}
+
+				// Include the assistant message with tool_calls so the next round
+				// sees both the calls and their outputs, matching MCP branch behavior.
+				const toolCalls: ChatCompletionMessageToolCall[] = calls.map((call) => ({
+					id: call.id,
+					type: "function",
+					function: { name: call.name, arguments: call.arguments },
+				}));
+
+				// Avoid sending <think> content back to the model alongside tool_calls
+				// to prevent confusing follow-up reasoning. Strip any think blocks.
+				// Also strip the tool_calls JSON if it was parsed from content to avoid duplication.
+				let assistantContentForToolMsg = lastAssistantContent
+					.replace(/<think>[\s\S]*?(?:<\/think>|$)/g, "");
+
+				// Strip the {"tool_calls": [...]} JSON from content
+				const toolCallsJsonStart = assistantContentForToolMsg.indexOf('{"tool_calls"');
+				if (toolCallsJsonStart !== -1) {
+					// Find the matching closing brace
+					let braceCount = 0;
+					let jsonEnd = -1;
+					for (let i = toolCallsJsonStart; i < assistantContentForToolMsg.length; i++) {
+						if (assistantContentForToolMsg[i] === '{') braceCount++;
+						else if (assistantContentForToolMsg[i] === '}') braceCount--;
+						if (braceCount === 0) {
+							jsonEnd = i;
+							break;
+						}
+					}
+					if (jsonEnd !== -1) {
+						assistantContentForToolMsg =
+							assistantContentForToolMsg.slice(0, toolCallsJsonStart) +
+							assistantContentForToolMsg.slice(jsonEnd + 1);
+					}
+				}
+				assistantContentForToolMsg = assistantContentForToolMsg.trim();
+
+				const assistantToolMessage: ChatCompletionMessageParam = {
+					role: "assistant",
+					content: assistantContentForToolMsg,
+					tool_calls: toolCalls,
+				};
+
+				const exec = executeToolCalls({
+					calls,
+					mapping,
+					servers,
+					parseArgs,
+					resolveFileRef,
+					toPrimitive,
+					processToolOutput,
+					abortSignal,
+				});
+				let toolMsgCount = 0;
+				let toolRunCount = 0;
+				for await (const event of exec) {
+					if (event.type === "update") {
+						yield event.update;
+					} else {
+						// Check if the last message is already an assistant message
+						const lastMsg = messagesOpenAI[messagesOpenAI.length - 1];
+						const lastIsAssistant = lastMsg?.role === "assistant";
+
+						if (lastIsAssistant) {
+							// Replace the last assistant message with the tool call version
+							// to avoid "Cannot have 2 or more assistant messages" error
+							console.debug(
+								{ replacedContent: lastMsg.content },
+								"[mcp] replacing last assistant message with tool_calls version"
+							);
+							messagesOpenAI = [
+								...messagesOpenAI.slice(0, -1),
+								assistantToolMessage,
+								...(event.summary.toolMessages ?? []),
+							];
+						} else {
+							// Safe to append normally
+							messagesOpenAI = [
+								...messagesOpenAI,
+								assistantToolMessage,
+								...(event.summary.toolMessages ?? []),
+							];
+						}
+				toolMsgCount = event.summary.toolMessages?.length ?? 0;
+				toolRunCount = event.summary.toolRuns?.length ?? 0;
+
+				// Extract ONLY the raw text outputs (not the structured messages)
+				// Send raw results without "Tool:" prefix to avoid confusing the model
+				const toolOutputs = (event.summary.toolRuns ?? [])
+					.map(run => run.output || "")
+					.join("\n\n---\n\n");
+
+				// Create a CLEAN summary request (not part of the conversation)
+				// This prevents context pollution and avoids gibberish/JSON artifacts
+				const originalQuery = messages[messages.length - 1]?.content?.toString() || "";
+
+			// Get tool-specific summarizer pattern (modular fabric-style patterns)
+			const toolNames = (event.summary.toolRuns ?? []).map(run => run.name);
+			const isHebrewQuery = /[\u0590-\u05FF]/.test(originalQuery);
+			let summarizerPattern = getSummarizerPattern(toolNames);
+			summarizerPattern = applyLanguageInstructions(summarizerPattern, isHebrewQuery);
+
+			// Build messages using the modular pattern
+			messagesOpenAI = [
+				{
+					role: "system",
+					content: process.env.MCP_SUMMARY_SYSTEM_PROMPT || summarizerPattern.systemPrompt
+				},
+				{
+					role: "user",
+					content: process.env.MCP_SUMMARY_USER_PROMPT?.replace("{query}", originalQuery).replace("{results}", toolOutputs) ||
+						summarizerPattern.userPromptTemplate.replace("{query}", originalQuery).replace("{results}", toolOutputs)
+				}
+			];
+
+					console.info(
+						{
+							toolMsgCount,
+							toolRunCount,
+							outputLength: toolOutputs.length,
+							query: originalQuery.slice(0, 100),
+							toolOutputPreview: toolOutputs.slice(0, 200),
+							userPromptPreview: (messagesOpenAI[1].content as string)?.slice(0, 300)
+						},
+						"[mcp] tools executed; created clean summary request (no context pollution)"
+					);
+					}
+				}
+				// Continue loop: next iteration will use tool messages to get the final content
+				continue;
+			}
+
+			// No tool calls: finalize and return
+			// If a <think> block is still open, close it for the final output
+			if (thinkOpen) {
+				lastAssistantContent += "</think>";
+				thinkOpen = false;
+			}
+
+			// Post-process to remove any tool_calls artifacts or JSON output
+			// This handles cases where gibberish detection truncated but left fragments
+			let cleanedContent = lastAssistantContent;
+
+			// Remove "tool_calls" word artifacts (common when model echoes the JSON structure)
+			cleanedContent = cleanedContent.replace(/\btool_calls\b/gi, '');
+
+			// Remove any remaining JSON-like structures that shouldn't be in natural language
+			// Match {"...": [...]} patterns but preserve <think> blocks
+			cleanedContent = cleanedContent.replace(/\{["\s]*[a-z_]+["\s]*:\s*\[[\s\S]*?\]\}/gi, '');
+
+			// Remove leading/trailing whitespace and collapse multiple HORIZONTAL spaces only
+			// CRITICAL: DO NOT collapse newlines - summaries need proper paragraph structure
+			cleanedContent = cleanedContent.trim().replace(/ {2,}/g, ' ');
+
+			if (cleanedContent !== lastAssistantContent) {
+				console.debug(
+					{
+						originalLength: lastAssistantContent.length,
+						cleanedLength: cleanedContent.length,
+						removed: lastAssistantContent.length - cleanedContent.length
+					},
+					"[mcp] cleaned tool_calls artifacts from final answer"
+				);
+				lastAssistantContent = cleanedContent;
+			}
+
+			if (!streamedContent && lastAssistantContent.trim().length > 0) {
+				yield { type: MessageUpdateType.Stream, token: lastAssistantContent };
+			}
+			yield {
+				type: MessageUpdateType.FinalAnswer,
+				text: lastAssistantContent,
+				interrupted: false,
+			};
+			console.info(
+				{ length: lastAssistantContent.length, loop },
+				"[mcp] final answer emitted (no tool_calls)"
+			);
+			return true;
+		}
+		console.warn("[mcp] exceeded tool-followup loops; falling back");
+	} catch (err) {
+		const msg = String(err ?? "");
+		const isAbort =
+			(abortSignal && abortSignal.aborted) ||
+			msg.includes("AbortError") ||
+			msg.includes("APIUserAbortError") ||
+			msg.includes("Request was aborted");
+		if (isAbort) {
+			// Expected on user stop; keep logs quiet and do not treat as error
+			console.debug("[mcp] aborted by user");
+			return false;
+		}
+		console.warn({ err: msg }, "[mcp] flow failed, falling back to default endpoint");
+	} finally {
+		// ensure MCP clients are closed after the turn
+		await drainPool();
+	}
+
+	return false;
+}

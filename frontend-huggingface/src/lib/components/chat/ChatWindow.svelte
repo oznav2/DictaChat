@@ -633,7 +633,9 @@
 							<ChatInput value="Sorry, something went wrong. Please try again." disabled={true} />
 						{:else}
 							<ChatInput
-								placeholder={isReadOnly ? "This conversation is read-only." : "הקלידו כאן כדי לשלוח את ההודעה"}
+								placeholder={isReadOnly
+									? "This conversation is read-only."
+									: "הקלידו כאן כדי לשלוח את ההודעה"}
 								{loading}
 								bind:value={draft}
 								bind:files

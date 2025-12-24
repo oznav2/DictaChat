@@ -51,24 +51,32 @@
 			<CarbonChevronDown
 				class="ml-2 size-4 flex-none transition-transform duration-200 {isOpen ? 'rotate-180' : ''}"
 			/>
-			<span class="line-clamp-1 flex-1 font-medium text-right">
-				{isOpen ? "Thought process" : content.replace(/[#*_`~[\]]/g, "").replace(/\n+/g, " ").trim()}
+			<span class="line-clamp-1 flex-1 text-right font-medium">
+				{isOpen
+					? "Thought process"
+					: content
+							.replace(/[#*_`~[\]]/g, "")
+							.replace(/\n+/g, " ")
+							.trim()}
 			</span>
 		{:else}
 			<span class="line-clamp-1 flex-1 font-medium">
-				{isOpen ? "Thought process" : content.replace(/[#*_`~[\]]/g, "").replace(/\n+/g, " ").trim()}
+				{isOpen
+					? "Thought process"
+					: content
+							.replace(/[#*_`~[\]]/g, "")
+							.replace(/\n+/g, " ")
+							.trim()}
 			</span>
 			<CarbonChevronDown
-				class="ml-2 size-4 flex-none transition-transform duration-200 {isOpen
-					? 'rotate-180'
-					: ''}"
+				class="ml-2 size-4 flex-none transition-transform duration-200 {isOpen ? 'rotate-180' : ''}"
 			/>
 		{/if}
 	</button>
 
 	{#if isOpen}
 		<div
-			class="prose prose-sm max-w-none border-t border-gray-200 px-3 py-2 text-sm leading-relaxed text-gray-600 dark:border-gray-700 dark:prose-invert dark:text-gray-300"
+			class="prose prose-sm max-w-none border-t border-gray-200 px-3 py-2 text-sm leading-relaxed text-gray-600 dark:prose-invert dark:border-gray-700 dark:text-gray-300"
 		>
 			<MarkdownRenderer {content} {loading} />
 		</div>

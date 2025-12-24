@@ -1,10 +1,9 @@
 import { error } from "@sveltejs/kit";
 import { logger } from "$lib/server/logger.js";
-import { fetch } from "undici";
-import { isValidUrl } from "$lib/server/urlSafety";
+import { robustFetch } from "$lib/server/robustFetch";
+import { isValidUrl } from "$lib/server/urlSafetyEnhanced";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
-const FETCH_TIMEOUT = 30000; // 30 seconds
 const SECURITY_HEADERS: HeadersInit = {
 	// Prevent any active content from executing if someone navigates directly to this endpoint.
 	"Content-Security-Policy":
@@ -28,61 +27,37 @@ export async function GET({ url }) {
 	}
 
 	try {
-		// Fetch with timeout
-		const controller = new AbortController();
-		const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
-
-		const response = await fetch(targetUrl, {
-			signal: controller.signal,
+		const response = await robustFetch(targetUrl, {
 			headers: {
-				"User-Agent": "HuggingChat-Attachment-Fetcher/1.0",
+				"User-Agent": "Mozilla/5.0 (compatible; BricksLLM-Fetcher/1.0)",
 			},
-		}).finally(() => clearTimeout(timeoutId));
+		});
 
-		if (!response.ok) {
-			logger.error({ targetUrl, response }, `Error fetching URL. Response not ok.`);
-			throw error(response.status, `Failed to fetch: ${response.statusText}`);
-		}
-
-		// Check content length if available
-		const contentLength = response.headers.get("content-length");
-		if (contentLength && parseInt(contentLength) > MAX_FILE_SIZE) {
+		// Check content length
+		if (response.content.length > MAX_FILE_SIZE) {
 			throw error(413, "File too large (max 10MB)");
 		}
 
-		// Stream the response back
-		const originalContentType = response.headers.get("content-type") || "application/octet-stream";
-		// Send as text/plain for safety; expose the original type via secondary header
-		const safeContentType = "text/plain; charset=utf-8";
-		const contentDisposition = response.headers.get("content-disposition");
+		const safeContentType = response.contentType || "application/octet-stream";
 
-		const headers: HeadersInit = {
-			"Content-Type": safeContentType,
-			"X-Forwarded-Content-Type": originalContentType,
-			"Cache-Control": "public, max-age=3600",
-			...(contentDisposition ? { "Content-Disposition": contentDisposition } : {}),
-			...SECURITY_HEADERS,
-		};
-
-		// Get the body as array buffer to check size
-		const arrayBuffer = await response.arrayBuffer();
-
-		if (arrayBuffer.byteLength > MAX_FILE_SIZE) {
-			throw error(413, "File too large (max 10MB)");
+		// Ensure charset is communicated if detected (e.g. from meta tags) but missing in header
+		let finalContentType = safeContentType;
+		if (response.charset && !finalContentType.toLowerCase().includes("charset=")) {
+			finalContentType += `; charset=${response.charset}`;
 		}
 
-		return new Response(arrayBuffer, { headers });
-	} catch (err) {
-		if (err instanceof Error) {
-			if (err.name === "AbortError") {
-				logger.error(err, `Request timeout`);
-				throw error(504, "Request timeout");
-			}
-
-			logger.error(err, `Error fetching URL`);
-			throw error(500, `Failed to fetch URL: ${err.message}`);
-		}
-		logger.error(err, `Error fetching URL`);
-		throw error(500, "Failed to fetch URL.");
+		return new Response(response.content as BodyInit, {
+			headers: {
+				...SECURITY_HEADERS,
+				"Content-Type": finalContentType, // Return the detected/original content type with charset
+				"X-Forwarded-Content-Type": safeContentType,
+				"X-Original-Charset": response.charset,
+				// Cache control
+				"Cache-Control": "public, max-age=3600",
+			},
+		});
+	} catch (e: any) {
+		logger.error({ targetUrl, error: e.message }, `Error fetching URL`);
+		throw error(500, `Failed to fetch: ${e.message}`);
 	}
 }

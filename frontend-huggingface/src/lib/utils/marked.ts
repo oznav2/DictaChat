@@ -30,6 +30,7 @@ import sql from "highlight.js/lib/languages/sql";
 import plaintext from "highlight.js/lib/languages/plaintext";
 import { parseIncompleteMarkdown } from "./parseIncompleteMarkdown";
 import { parseMarkdownIntoBlocks } from "./parseBlocks";
+import DOMPurify from "isomorphic-dompurify";
 
 const bundledLanguages: [string, LanguageFn][] = [
 	["javascript", javascript],
@@ -295,9 +296,12 @@ function createMarkedInstance(sources: SimpleSource[]): Marked {
 					: `<span>${escapeHTML(text ?? "")}</span>`;
 			},
 			html: (html) => {
-				// Allow details and summary tags for collapsible sections
+				// Allow details and summary tags for collapsible sections, but sanitize to prevent XSS
 				if (html.includes("<details") || html.includes("<summary")) {
-					return html;
+					return DOMPurify.sanitize(html, {
+						ALLOWED_TAGS: ["details", "summary"],
+						ALLOWED_ATTR: ["open"],
+					});
 				}
 				return escapeHTML(html);
 			},

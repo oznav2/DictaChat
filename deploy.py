@@ -277,7 +277,7 @@ def download_file(url, dest_path):
         task = progress.add_task(f"[cyan]Downloading {dest_path.name}...", total=total_size)
         
         with open(dest_path, "wb") as f:
-            for chunk in response.iter_content(chunk_size=8192):
+            for chunk in response.iter_content(chunk_size=32768):
                 f.write(chunk)
                 progress.update(task, advance=len(chunk))
                 

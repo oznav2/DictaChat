@@ -311,7 +311,7 @@ The frontend communicates with the BricksLLM proxy via the following endpoint:
 #### Docker Configuration
 The frontend is defined as a service in `docker-compose.yml`:
 - **Image**: `node:18-alpine`
-- **Container Name**: `dictachat-frontend`
+- **Container Name**: `bricksllm-frontend`
 - **Port Mapping**: Host port `8003` -> Container port `8003`
 - **Volume**: Binds the local `frontend` directory to `/app` in the container for hot-reloading.
 

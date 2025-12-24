@@ -1,0 +1,22 @@
+--- frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts
++++ frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts
+@@ -552,11 +552,18 @@
+ 			? parseFloat(process.env.MCP_FOLLOWUP_REP_PENALTY || "1.2")
+ 			: completionBase.repetition_penalty;
+ 
++		// Add stop sequences for follow-up requests to prevent repetition loops
++		// Stop on repeated section headers in both Hebrew and English
++		const followupStopSequences = isFollowup
++			? ["## סיכום", "## Summary", "\n\n\n\n", "**P** = "]
++			: undefined;
++
+ 		const completionRequest: ChatCompletionCreateParamsStreaming = {
+ 			...completionBase,
+ 			stream: true,
+ 			messages: messagesOpenAI,
+ 			max_tokens: followupMaxTokens,
+ 			repetition_penalty: followupRepPenalty,
+-		} as ChatCompletionCreateParamsStreaming & { repetition_penalty?: number };
++			...(followupStopSequences ? { stop: followupStopSequences } : {})
++		} as ChatCompletionCreateParamsStreaming & { repetition_penalty?: number; stop?: string[] };
+ 

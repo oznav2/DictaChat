@@ -192,7 +192,7 @@ services:
     restart: unless-stopped
     environment:
       - PUBLIC_APP_NAME=DictaLM Chat
-      - PUBLIC_APP_ASSETS=chat-ui
+      - PUBLIC_APP_ASSETS=chatui
       - PUBLIC_APP_COLOR=blue
       - PUBLIC_APP_DESCRIPTION=A chat interface for DictaLM
       - PUBLIC_APP_DATA_SHARING=1
@@ -205,8 +205,8 @@ services:
       - ENABLE_CONFIG_MANAGER=false
       - ORIGIN=http://localhost:8004
       - LLM_ROUTER_ENABLE_TOOLS=true
-      - LLM_ROUTER_TOOLS_MODEL=dictalm-3.0-24b-thinking-fp8-q4_k_m.gguf
-      - 'MODELS=[{"id":"dictalm-3.0-24b-thinking-fp8-q4_k_m.gguf","name":"DictaLM 3.0 24B","endpoints":[{"type":"openai","baseURL":"http://bricksllm:8002/api/custom/providers/llama-cpp-root"}],"supportsTools":true}]'
+      - LLM_ROUTER_TOOLS_MODEL=DictaLM-3.0-24B-Thinking.i1-Q4_K_M.gguf
+      - 'MODELS=[{"id":"DictaLM-3.0-24B-Thinking.i1-Q4_K_M.gguf","name":"DictaLM 3.0 24B","endpoints":[{"type":"openai","baseURL":"http://bricksllm:8002/api/custom/providers/llama-cpp-root"}],"supportsTools":true}]'
       - 'MCP_SERVERS=[{"name":"Everything","url":"http://mcp-sse-proxy:3100/everything/sse"},{"name":"Context7","url":"https://mcp.context7.com/mcp"},{"name":"Docker","url":"http://mcp-sse-proxy:3100/docker/sse"},{"name":"Sequential Thinking","url":"http://mcp-sse-proxy:3100/sequential-thinking/sse"},{"name":"Git","url":"http://mcp-sse-proxy:3100/git/sse"},{"name":"Fetch","url":"http://mcp-sse-proxy:3100/fetch/sse"},{"name":"Time","url":"http://mcp-sse-proxy:3100/time/sse"},{"name":"Memory","url":"http://mcp-sse-proxy:3100/memory/sse"},{"name":"Filesystem","url":"http://mcp-sse-proxy:3100/filesystem/sse"},{"name":"Perplexity","url":"http://mcp-sse-proxy:3100/perplexity/sse"},{"name":"Tavily Search","url":"http://mcp-sse-proxy:3100/Tavily/sse"},{"name":"YouTube Summarizer","url":"http://mcp-sse-proxy:3100/youtube-video-summarizer/sse"}]'
     ports:
       - "8004:3000"

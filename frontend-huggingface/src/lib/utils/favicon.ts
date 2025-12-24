@@ -25,7 +25,7 @@ const SERVER_DOMAIN_MAPPING: Record<string, string> = {
 	notion: "notion.so",
 	openai: "openai.com",
 	anthropic: "anthropic.com",
-	discord: "discord.com"
+	discord: "discord.com",
 };
 
 /**

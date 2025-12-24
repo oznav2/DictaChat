@@ -21,7 +21,10 @@ export const endpointOAIParametersSchema = z.object({
 	weight: z.number().int().positive().default(1),
 	model: z.any(),
 	type: z.literal("openai"),
-	baseURL: z.string().url().default(config.OPENAI_BASE_URL || "http://localhost:8002/v1"),
+	baseURL: z
+		.string()
+		.url()
+		.default(config.OPENAI_BASE_URL || "http://localhost:8002/v1"),
 	// Canonical auth token is OPENAI_API_KEY; keep HF_TOKEN as legacy alias
 	apiKey: z.string().default(config.OPENAI_API_KEY || config.HF_TOKEN || "sk-"),
 	completion: z
@@ -134,7 +137,7 @@ export async function endpointOai(
 				model: model.id ?? model.name,
 				prompt,
 				stream: true,
-				max_tokens: parameters?.max_tokens,
+				max_tokens: parameters?.max_tokens ?? 16384,
 				stop: parameters?.stop,
 				temperature: parameters?.temperature,
 				top_p: parameters?.top_p,
@@ -197,15 +200,48 @@ export async function endpointOai(
 
 			// Combine model defaults with request-specific parameters
 			const parameters = { ...model.parameters, ...generateSettings };
+
+			// Calculate max tokens with safe clamping to prevent infinite loops
+			// Enterprise Refactoring: Increased limit from 4096 to 16384 to support "Thinking" models
+			// that generate extensive reasoning chains before the final answer.
+			let maxTokens = parameters?.max_tokens ?? 4096;
+			if (maxTokens > 16384) maxTokens = 16384;
+
+			// Ensure critical stop tokens are present to prevent hallucinations/loops
+			// NOTE: Do NOT add </tool_call> as stop sequence - allows parallel tool calls
+			let stopSequences: string[] =
+				typeof parameters?.stop === "string"
+					? [parameters.stop]
+					: Array.isArray(parameters?.stop)
+						? parameters.stop
+						: [];
+
+			const criticalStopTokens = ["<|im_end|>", "<|im_start|>", "<tool_response>"];
+			for (const token of criticalStopTokens) {
+				if (!stopSequences.includes(token)) {
+					stopSequences = [...stopSequences, token];
+				}
+			}
+
+			// Remove </tool_call> if present to allow multiple tool calls
+			if (stopSequences.includes("</tool_call>")) {
+				stopSequences = stopSequences.filter((s) => s !== "</tool_call>");
+			}
+
+			console.debug("[endpointOai] Constructing body", {
+				model: model.id,
+				maxTokens,
+				stop: stopSequences,
+				streaming: streamingSupported,
+			});
+
 			const body = {
 				model: model.id ?? model.name,
 				messages: messagesOpenAI,
 				stream: streamingSupported,
 				// Support two different ways of specifying token limits depending on the model
-				...(useCompletionTokens
-					? { max_completion_tokens: parameters?.max_tokens }
-					: { max_tokens: parameters?.max_tokens }),
-				stop: parameters?.stop,
+				...(useCompletionTokens ? { max_completion_tokens: maxTokens } : { max_tokens: maxTokens }),
+				stop: stopSequences,
 				temperature: parameters?.temperature,
 				top_p: parameters?.top_p,
 				frequency_penalty: parameters?.frequency_penalty,

@@ -1,5 +1,5 @@
 import { Client } from "@modelcontextprotocol/sdk/client";
-import { getClient } from "./clientPool";
+import { getClientEnhanced } from "./clientPoolEnhanced";
 
 export interface McpServerConfig {
 	name: string;
@@ -34,7 +34,7 @@ export async function callMcpTool(
 
 	// Get a (possibly pooled) client. The client itself was connected with a signal
 	// that already composes outer cancellation. We still enforce a per-call timeout here.
-	const activeClient = client ?? (await getClient(server, signal));
+	const activeClient = client ?? (await getClientEnhanced(server, signal));
 
 	// Prefer the SDK's built-in request controls (timeout, signal)
 	const response = await activeClient.callTool(

@@ -1,7 +1,8 @@
 import { config } from "$lib/server/config";
 import type { ChatTemplateInput } from "$lib/types/Template";
 import { z } from "zod";
-import endpoints, { endpointSchema, type Endpoint } from "./endpoints/endpoints";
+import endpoints, { type Endpoint } from "./endpoints/endpoints";
+import { endpointOAIParametersSchema } from "./endpoints/openai/endpointOai";
 
 import JSON5 from "json5";
 import { logger } from "$lib/server/logger";
@@ -14,6 +15,10 @@ const sanitizeJSONEnv = (val: string, fallback: string) => {
 	const unquoted = raw.startsWith("`") && raw.endsWith("`") ? raw.slice(1, -1) : raw;
 	return unquoted || fallback;
 };
+
+const endpointConfigSchema = endpointOAIParametersSchema
+	.omit({ model: true })
+	.extend({ model: z.any().optional() });
 
 const modelConfig = z.object({
 	/** Used as an identifier in DB */
@@ -39,7 +44,7 @@ const modelConfig = z.object({
 			})
 		)
 		.optional(),
-	endpoints: z.array(endpointSchema).optional(),
+	endpoints: z.array(endpointConfigSchema).optional(),
 	providers: z.array(z.object({ supports_tools: z.boolean().optional() }).passthrough()).optional(),
 	parameters: z
 		.object({
@@ -65,6 +70,12 @@ const modelConfig = z.object({
 });
 
 type ModelConfig = z.infer<typeof modelConfig>;
+
+const envModelsSchema = z.array(
+	modelConfig.extend({
+		endpoints: z.array(endpointConfigSchema).min(1),
+	})
+);
 
 const overrideEntrySchema = modelConfig
 	.partial()
@@ -150,8 +161,25 @@ type InternalProcessedModel = Awaited<ReturnType<typeof addEndpoint>> & {
 
 const inferenceApiIds: string[] = [];
 
+const getModelsFromEnv = (): ModelConfig[] => {
+	const modelsEnv = (Reflect.get(config, "MODELS") as string | undefined) ?? "";
+	if (!modelsEnv.trim()) {
+		return [];
+	}
+
+	try {
+		return envModelsSchema.parse(JSON5.parse(sanitizeJSONEnv(modelsEnv, "[]")));
+	} catch (error) {
+		logger.error(error, "[models] Failed to parse MODELS as model definitions");
+		return [];
+	}
+};
+
 const getModelOverrides = (): ModelOverride[] => {
-	const overridesEnv = (Reflect.get(config, "MODELS") as string | undefined) ?? "";
+	const modelsEnv = (Reflect.get(config, "MODELS") as string | undefined) ?? "";
+	const overridesEnv = getModelsFromEnv().length
+		? ((Reflect.get(config, "OLD_MODELS") as string | undefined) ?? "")
+		: modelsEnv;
 
 	if (!overridesEnv.trim()) {
 		return [];
@@ -302,16 +330,119 @@ const buildModels = async (): Promise<ProcessedModel[]> => {
 		throw new Error("OPENAI_BASE_URL not set");
 	}
 
+	const modelsFromEnv = getModelsFromEnv();
 	try {
+		if (modelsFromEnv.length > 0) {
+			const overrides = getModelOverrides();
+			let modelsRaw = modelsFromEnv;
+
+			if (overrides.length) {
+				const overrideMap = new Map<string, ModelOverride>();
+				for (const override of overrides) {
+					for (const key of [override.id, override.name]) {
+						const trimmed = key?.trim();
+						if (trimmed) overrideMap.set(trimmed, override);
+					}
+				}
+
+				modelsRaw = modelsRaw.map((model) => {
+					const override = overrideMap.get(model.id ?? "") ?? overrideMap.get(model.name ?? "");
+					if (!override) return model;
+
+					const { id, name, ...rest } = override;
+					void id;
+					void name;
+
+					return {
+						...model,
+						...rest,
+					};
+				});
+			}
+
+			const builtModels = await Promise.all(
+				modelsRaw.map((e) =>
+					processModel(e)
+						.then(addEndpoint)
+						.then(async (m) => ({
+							...m,
+							hasInferenceAPI: inferenceApiIds.includes(m.id ?? m.name),
+							isRouter: false as boolean,
+						}))
+				)
+			);
+
+			const archBase = (config.LLM_ROUTER_ARCH_BASE_URL || "").trim();
+			const routerLabel = (config.PUBLIC_LLM_ROUTER_DISPLAY_NAME || "Omni").trim() || "Omni";
+			const routerLogo = (config.PUBLIC_LLM_ROUTER_LOGO_URL || "").trim();
+			const routerAliasId = (config.PUBLIC_LLM_ROUTER_ALIAS_ID || "omni").trim() || "omni";
+			const routerMultimodalEnabled =
+				(config.LLM_ROUTER_ENABLE_MULTIMODAL || "").toLowerCase() === "true";
+			const routerToolsEnabled = (config.LLM_ROUTER_ENABLE_TOOLS || "").toLowerCase() === "true";
+
+			let decorated = builtModels as ProcessedModel[];
+
+			if (archBase) {
+				const aliasRaw = {
+					id: routerAliasId,
+					name: routerAliasId,
+					displayName: routerLabel,
+					description: "Automatically routes your messages to the best model for your request.",
+					logoUrl: routerLogo || undefined,
+					preprompt: "",
+					endpoints: [
+						{
+							type: "openai" as const,
+							baseURL: openaiBaseUrl,
+							weight: 1,
+							apiKey: config.OPENAI_API_KEY || config.HF_TOKEN || "sk-",
+							completion: "chat_completions",
+							multimodal: {
+								image: {
+									supportedMimeTypes: ["image/png", "image/jpeg"],
+									preferredMimeType: "image/png",
+									maxSizeInMB: 10,
+									maxWidth: 4096,
+									maxHeight: 4096,
+								},
+							},
+							useCompletionTokens: false,
+							streamingSupported: true,
+						},
+					],
+					unlisted: false,
+				} as ModelConfig;
+
+				if (routerMultimodalEnabled) {
+					aliasRaw.multimodal = true;
+					aliasRaw.multimodalAcceptedMimetypes = ["image/*"];
+				}
+
+				if (routerToolsEnabled) {
+					aliasRaw.supportsTools = true;
+				}
+
+				const aliasBase = await processModel(aliasRaw);
+				const aliasModel: ProcessedModel = {
+					...aliasBase,
+					isRouter: true,
+					hasInferenceAPI: false,
+					getEndpoint: async (): Promise<Endpoint> => makeRouterEndpoint(aliasModel),
+				} as ProcessedModel;
+
+				decorated = [aliasModel, ...decorated];
+			}
+
+			return decorated;
+		}
+
 		const baseURL = openaiBaseUrl;
 		logger.info({ baseURL }, "[models] Using OpenAI-compatible base URL");
 
 		const authToken = config.OPENAI_API_KEY || config.HF_TOKEN;
 
 		// Handle trailing slash if present to avoid double slashes
-		const url = baseURL.endsWith("/")
-			? `${baseURL}models`
-			: `${baseURL}/models`;
+		const url = baseURL.endsWith("/") ? `${baseURL}models` : `${baseURL}/models`;
 
 		const response = await fetch(url, {
 			headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
@@ -323,9 +454,7 @@ const buildModels = async (): Promise<ProcessedModel[]> => {
 			);
 		}
 		if (!response.ok) {
-			throw new Error(
-				`Failed to fetch ${url}: ${response.status} ${response.statusText}`
-			);
+			throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
 		}
 		const json = await response.json();
 		logger.info({ keys: Object.keys(json || {}) }, "[models] Response keys");
@@ -436,26 +565,26 @@ const buildModels = async (): Promise<ProcessedModel[]> => {
 				description: "Automatically routes your messages to the best model for your request.",
 				logoUrl: routerLogo || undefined,
 				preprompt: "",
-			endpoints: [
-				{
-					type: "openai" as const,
-					baseURL: openaiBaseUrl,
-					weight: 1,
-					apiKey: config.OPENAI_API_KEY || config.HF_TOKEN || "sk-",
-					completion: "chat_completions",
-					multimodal: {
-						image: {
-							supportedMimeTypes: ["image/png", "image/jpeg"],
-							preferredMimeType: "image/png",
-							maxSizeInMB: 10,
-							maxWidth: 4096,
-							maxHeight: 4096,
+				endpoints: [
+					{
+						type: "openai" as const,
+						baseURL: openaiBaseUrl,
+						weight: 1,
+						apiKey: config.OPENAI_API_KEY || config.HF_TOKEN || "sk-",
+						completion: "chat_completions",
+						multimodal: {
+							image: {
+								supportedMimeTypes: ["image/png", "image/jpeg"],
+								preferredMimeType: "image/png",
+								maxSizeInMB: 10,
+								maxWidth: 4096,
+								maxHeight: 4096,
+							},
 						},
+						useCompletionTokens: false,
+						streamingSupported: true,
 					},
-					useCompletionTokens: false,
-					streamingSupported: true,
-				},
-			],
+				],
 				unlisted: false,
 			} as ModelConfig;
 

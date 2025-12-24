@@ -18,6 +18,8 @@ test-stack.sh
 agent-description.md
 CLAUDE.md
 WARP.md
+.trae
+
 DOCKER_DEPLOYMENT.md
 implement_history.md
 CHANGELOG.md
@@ -40,3 +42,13 @@ frontend-huggingface/HOT_RELOAD.md
 bricksllm
 test-mcp-servers.sh
 .mcp.json
+runmcpflow_overview.md
+test_model.py
+STATUS.md
+tasks
+.deployment_state
+response_content.txt
+_pycache_
+
+frontend-huggingface/CONFIG_MOVED.md
+frontend-huggingface/HOT_RELOAD.md

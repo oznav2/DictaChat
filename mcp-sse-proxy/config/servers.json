@@ -77,6 +77,7 @@
       "args": ["-y", "@perplexity-ai/mcp-server"],
       "env": {
         "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}",
+        "PERPLEXITY_MODEL": "sonar-pro",
         "PERPLEXITY_TIMEOUT_MS": "600000"
       }
     },

@@ -144,11 +144,11 @@
 		// Try to find a filename in comments
 		const lines = content.split("\n");
 		const firstFewLines = lines.slice(0, 5);
-		
+
 		// Look for common filename patterns in comments
 		// e.g. # filename: script.py, // File: index.js, <!-- main.html -->
 		const filenameRegex = /(?:filename|file):\s*([a-zA-Z0-9_\-\.]+)/i;
-		
+
 		for (const line of firstFewLines) {
 			const match = line.match(filenameRegex);
 			if (match && match[1]) {
@@ -165,10 +165,12 @@
 	function getShebang(lang: string): string | null {
 		const normalizedLang = lang.toLowerCase();
 		if (normalizedLang === "python") return "#!/usr/bin/env python3";
-		if (normalizedLang === "bash" || normalizedLang === "shell" || normalizedLang === "sh") return "#!/bin/bash";
+		if (normalizedLang === "bash" || normalizedLang === "shell" || normalizedLang === "sh")
+			return "#!/bin/bash";
 		if (normalizedLang === "perl") return "#!/usr/bin/env perl";
 		if (normalizedLang === "ruby") return "#!/usr/bin/env ruby";
-		if (normalizedLang === "node" || normalizedLang === "javascript" || normalizedLang === "js") return "#!/usr/bin/env node";
+		if (normalizedLang === "node" || normalizedLang === "javascript" || normalizedLang === "js")
+			return "#!/usr/bin/env node";
 		if (normalizedLang === "php") return "#!/usr/bin/env php";
 		return null;
 	}
@@ -195,13 +197,13 @@
 		// but currently 'blocks' are mostly text chunks.
 		// However, we can use the marked tokens if we had access to them here, but we don't directly.
 		// So we'll re-parse the content to find code blocks or use a regex for this specific action.
-		
+
 		const codeBlockRegex = /```(\w+)?\n([\s\S]*?)```/g;
 		let match;
 		while ((match = codeBlockRegex.exec(contentWithoutThink)) !== null) {
 			codeBlocks.push({
 				lang: match[1] || "plaintext",
-				code: match[2]
+				code: match[2],
 			});
 		}
 
@@ -226,22 +228,22 @@
 
 		// Multiple blocks: Create a ZIP
 		const usedFilenames = new Set<string>();
-		
+
 		codeBlocks.forEach(({ code, lang }) => {
 			let filename = generateFilename(code, lang);
-			
+
 			// Handle duplicate filenames
 			if (usedFilenames.has(filename)) {
-				const nameParts = filename.split('.');
+				const nameParts = filename.split(".");
 				const ext = nameParts.pop();
-				const name = nameParts.join('.');
+				const name = nameParts.join(".");
 				let counter = 1;
 				while (usedFilenames.has(`${name}-${counter}.${ext}`)) {
 					counter++;
 				}
 				filename = `${name}-${counter}.${ext}`;
 			}
-			
+
 			usedFilenames.add(filename);
 			const contentToDownload = prepareCodeForDownload(code, lang);
 			zip.file(filename, contentToDownload);
@@ -364,7 +366,7 @@
 
 	let hasCode = $derived(message.content.includes("```"));
 	let codeBlockCount = $derived((message.content.match(/```/g) || []).length / 2);
-	
+
 	let editMode = $derived(editMsdgId === message.id);
 	$effect(() => {
 		if (editMode) {
@@ -506,25 +508,25 @@
 									onerror={(e) => ((e.currentTarget as HTMLImageElement).style.display = "none")}
 								/>
 								{message.routerMetadata.provider}
-					</a>
+							</a>
+						{/if}
+					</div>
 				{/if}
-			</div>
-		{/if}
-		{#if !isLast || !loading}
-			{#if hasCode}
-				<button
-					class="btn rounded-sm p-1 text-xs text-gray-400 hover:text-gray-500 focus:ring-0 dark:text-gray-400 dark:hover:text-gray-300"
-					title={codeBlockCount > 1 ? "Download All Code" : "Download Code"}
-					type="button"
-					onclick={downloadAllCodeBlocks}
-				>
-					<CarbonDownload />
-				</button>
-			{/if}
-			<CopyToClipBoardBtn
-				onClick={() => {
-					isCopied = true;
-				}}
+				{#if !isLast || !loading}
+					{#if hasCode}
+						<button
+							class="btn rounded-sm p-1 text-xs text-gray-400 hover:text-gray-500 focus:ring-0 dark:text-gray-400 dark:hover:text-gray-300"
+							title={codeBlockCount > 1 ? "Download All Code" : "Download Code"}
+							type="button"
+							onclick={downloadAllCodeBlocks}
+						>
+							<CarbonDownload />
+						</button>
+					{/if}
+					<CopyToClipBoardBtn
+						onClick={() => {
+							isCopied = true;
+						}}
 						classNames="btn rounded-sm p-1 text-sm text-gray-400 hover:text-gray-500 focus:ring-0 dark:text-gray-400 dark:hover:text-gray-300"
 						value={contentWithoutThink}
 						iconClassNames="text-xs"
@@ -564,7 +566,7 @@
 		onkeydown={() => (isTapped = !isTapped)}
 		dir={isUserRTL ? "rtl" : "ltr"}
 	>
-		<div class="flex w-full flex-col gap-2 items-start">
+		<div class="flex w-full flex-col items-start gap-2">
 			{#if message.files?.length}
 				<div class="flex w-fit gap-4 px-5">
 					{#each message.files as file}
@@ -576,7 +578,7 @@
 			<div class="flex w-full flex-row flex-nowrap">
 				{#if !editMode}
 					<p
-						class="disabled appearance-none whitespace-break-spaces text-wrap break-words rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 px-5 py-3.5 text-gray-700 shadow-sm dark:border-blue-900/30 dark:from-blue-950/30 dark:text-gray-300 w-full"
+						class="disabled w-full appearance-none whitespace-break-spaces text-wrap break-words rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 px-5 py-3.5 text-gray-700 shadow-sm dark:border-blue-900/30 dark:from-blue-950/30 dark:text-gray-300"
 					>
 						{message.content.trim()}
 					</p>
@@ -585,9 +587,11 @@
 							? 'right-0'
 							: 'left-0'}"
 					>
-						<span class="text-xs select-none">{new Date(message.createdAt || "").toLocaleDateString()}</span>
+						<span class="select-none text-xs"
+							>{new Date(message.createdAt || "").toLocaleDateString()}</span
+						>
 						<button
-							class="rounded p-1.5 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-300 transition-colors duration-200"
+							class="rounded p-1.5 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-300"
 							title="Resend"
 							type="button"
 							onclick={() => {
@@ -598,7 +602,7 @@
 							<CarbonRotate360 class="size-4" />
 						</button>
 						<button
-							class="rounded p-1.5 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-300 transition-colors duration-200"
+							class="rounded p-1.5 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-300"
 							title="Edit"
 							type="button"
 							onclick={() => {
@@ -637,7 +641,10 @@
 							class="flex w-full items-center justify-between border-t border-gray-100 bg-gray-50/50 px-2 py-2 dark:border-gray-800 dark:bg-gray-800/50"
 						>
 							<div class="flex items-center gap-2 px-2 text-xs text-gray-500">
-								<span class="size-3.5 rounded-full border border-gray-400 text-[8px] text-center leading-[12px] font-mono">i</span>
+								<span
+									class="size-3.5 rounded-full border border-gray-400 text-center font-mono text-[8px] leading-[12px]"
+									>i</span
+								>
 								Editing this message will create a new conversation branch.
 							</div>
 							<div class="flex gap-2">
@@ -662,7 +669,11 @@
 					</form>
 				{/if}
 			</div>
-			<div class="absolute -bottom-4 {isUserRTL ? 'mr-3.5' : 'ml-3.5'} flex w-full gap-1.5 {isUserRTL ? 'flex-row-reverse' : ''}">
+			<div
+				class="absolute -bottom-4 {isUserRTL ? 'mr-3.5' : 'ml-3.5'} flex w-full gap-1.5 {isUserRTL
+					? 'flex-row-reverse'
+					: ''}"
+			>
 				{#if alternatives.length > 1 && editMsdgId === null}
 					<Alternatives
 						{message}

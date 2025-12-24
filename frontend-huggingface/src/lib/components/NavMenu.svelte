@@ -325,7 +325,7 @@
 		aria-label="Resize sidebar"
 	>
 		<span
-			class="pointer-events-none mx-auto block h-full w-px bg-gray-200 opacity-0 transition-colors duration-150 group-hover:opacity-100 group-hover:bg-gray-300 dark:bg-gray-700 dark:group-hover:bg-gray-500"
+			class="pointer-events-none mx-auto block h-full w-px bg-gray-200 opacity-0 transition-colors duration-150 group-hover:bg-gray-300 group-hover:opacity-100 dark:bg-gray-700 dark:group-hover:bg-gray-500"
 		></span>
 	</button>
 

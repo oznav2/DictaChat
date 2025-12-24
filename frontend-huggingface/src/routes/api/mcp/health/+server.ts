@@ -41,63 +41,63 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		// For Docker internal communication, we might need to adjust the URL
 		// if the frontend is trying to access localhost from inside the container.
 		let targetUrl = url;
-		
+
 		// If running in Docker (detect via environment or hostname), replace localhost with host.docker.internal
 		// This is a heuristic - in a real prod env, the user should provide the correct service name
-		if (process.env.DOCKER_ENV && (url.includes('localhost') || url.includes('127.0.0.1'))) {
+		if (process.env.DOCKER_ENV && (url.includes("localhost") || url.includes("127.0.0.1"))) {
 			// Replace localhost with mcpo service name or host.docker.internal
 			// Since we know the service name is 'mcpo', we can try that first
 			// or host.docker.internal if we want to reach the host
 			// BUT: The user provided URL is likely what they see in their browser (localhost:8888)
 			// From inside the frontend container, localhost refers to the frontend container itself.
 			// We need to route to the mcpo container.
-			
+
 			// Option 1: If the user entered localhost:8888, they likely mean the host machine's port 8888
 			// which is mapped to mcpo container. From inside frontend container, we should use
 			// host.docker.internal:8888 (if on Mac/Windows) or the service name 'mcpo:8888' if on the same network.
-			
+
 			// Let's try to be smart: if the port is 8888, it's likely our mcpo service.
-			if (url.includes(':8888')) {
-				targetUrl = url.replace(/localhost|127\.0\.0\.1/, 'mcpo-dicta');
-				
+			if (url.includes(":8888")) {
+				targetUrl = url.replace(/localhost|127\.0\.0\.1/, "mcpo-dicta");
+
 				// Auto-fix path for MCPO: MCPO hosts tools under /{server_name}/sse
 				// If the URL is just root or /sse, we might need to be specific, but
 				// typically users should provide the full path like http://localhost:8888/memory/sse
 				// However, if they just provide http://localhost:8888, we can't easily guess which server they want.
 				// But we can at least ensure we don't fail on connection.
-				
+
 				// Check if the URL already has a subpath (e.g., /memory/sse)
 				// The user provided URL might be http://localhost:8888/ or http://localhost:8888
 				const urlObj = new URL(targetUrl);
-				if (urlObj.pathname === '/' || urlObj.pathname === '/sse') {
+				if (urlObj.pathname === "/" || urlObj.pathname === "/sse") {
 					// Default to /memory/sse if no path provided, as a fallback
 					// This is better than failing with 404
 					// Ideally we should list available servers from openapi.json, but that's complex here.
 					// For now, let's assume 'memory' is a safe default to check connectivity.
 					// Or even better, try to fetch openapi.json to see if we are connected.
 					// But the frontend expects a specific MCP connection.
-					
+
 					// Let's modify the path to point to a valid MCP endpoint
 					// The user can override this by providing a full URL in the frontend UI.
-					if (!urlObj.pathname.includes('/sse')) {
-						targetUrl = targetUrl.replace(/\/$/, '') + '/memory/sse';
+					if (!urlObj.pathname.includes("/sse")) {
+						targetUrl = targetUrl.replace(/\/$/, "") + "/memory/sse";
 					} else {
 						// if it ends with /sse but has no server prefix (e.g. mcpo:8888/sse)
-						// we need to inject a server name. 
+						// we need to inject a server name.
 						// This is tricky because we don't know which server.
 						// Let's assume 'memory' for now.
-						targetUrl = targetUrl.replace('/sse', '/memory/sse');
+						targetUrl = targetUrl.replace("/sse", "/memory/sse");
 					}
 				}
 			}
-  		}
+		}
 
 		if (!isValidUrl(targetUrl)) {
 			// Try validating without strict HTTPS check for local development
 			try {
 				const parsed = new URL(targetUrl);
-				if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
-					throw new Error('Invalid protocol');
+				if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+					throw new Error("Invalid protocol");
 				}
 			} catch {
 				return new Response(

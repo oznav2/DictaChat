@@ -70,10 +70,14 @@ async function* textGenerationWithoutTitle(
 		}
 		const didRunMcp = Boolean(step.value);
 		if (!didRunMcp) {
+			console.log(
+				"[textGeneration] MCP flow skipped or yielded no results. Falling back to default generation."
+			);
 			// fallback to normal text generation
 			yield* generate({ ...ctx, messages: processedMessages }, preprompt);
 		}
-	} catch {
+	} catch (error) {
+		console.error("[textGeneration] MCP flow failed with error:", error);
 		// On any MCP error, fall back to normal generation
 		yield* generate({ ...ctx, messages: processedMessages }, preprompt);
 	}

@@ -6,7 +6,7 @@ export function isValidUrl(urlString: string): boolean {
 		if (url.protocol !== "https:" && url.protocol !== "http:") {
 			return false;
 		}
-		
+
 		// In development/local setup, we might want to allow localhost
 		// For now, we will relax this check to allow internal docker communication
 		return true;

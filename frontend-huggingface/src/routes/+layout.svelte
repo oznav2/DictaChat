@@ -30,6 +30,7 @@
 	setContext("publicConfig", data.publicConfig);
 
 	const publicConfig = data.publicConfig;
+	console.log("DEBUG: publicConfig.PUBLIC_APP_ASSETS =", publicConfig.PUBLIC_APP_ASSETS);
 	const client = useAPIClient();
 
 	let conversations = $state(data.conversations);
@@ -305,7 +306,7 @@
 			user={data.user}
 			ondeleteConversation={(id) => deleteConversation(id)}
 			oneditConversationTitle={(payload) => editConversationTitle(payload.id, payload.title)}
-			sidebarWidth={sidebarWidth}
+			{sidebarWidth}
 			onSidebarResize={handleSidebarResize}
 		/>
 	</nav>

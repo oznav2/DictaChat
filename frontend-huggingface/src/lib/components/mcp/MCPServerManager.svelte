@@ -69,7 +69,8 @@
 			</h2>
 			<p class="text-sm text-gray-600 dark:text-gray-400">
 				{#if currentView === "list"}
-					זוכה להרחבה דרמטית של יכולות המודל להתקשר עם מקורות מידע חיצוניים {publicConfig.PUBLIC_APP_NAME} באמצעות שרתי כלים ופונקציות.
+					זוכה להרחבה דרמטית של יכולות המודל להתקשר עם מקורות מידע חיצוניים {publicConfig.PUBLIC_APP_NAME}
+					באמצעות שרתי כלים ופונקציות.
 				{:else}
 					הוסף שרת כלים מותאם אישית {publicConfig.PUBLIC_APP_NAME}.
 				{/if}
@@ -93,7 +94,7 @@
 					<div>
 						<p class="text-sm font-semibold text-gray-900 dark:text-gray-100">
 							{$allMcpServers.length}
-							{$allMcpServers.length === 1 ? "שרת" : "שרתים"}  מוגדרים במערכת באמצעות קובץ servers.json
+							{$allMcpServers.length === 1 ? "שרת" : "שרתים"} מוגדרים במערכת באמצעות קובץ servers.json
 						</p>
 						<p class="text-xs text-gray-600 dark:text-gray-400">
 							{enabledCount} שרתים פעילים
@@ -173,7 +174,10 @@
 					<ul class="space-y-1 text-xs text-gray-600 dark:text-gray-400">
 						<li>• הוסף שרתי כלים ממקור מהימן בלבד</li>
 						<li>• הפעל את השרת הרלוונטים לך בתוך חלון השיחה</li>
-						<li>• השתמש בכפתור בדיקת החיבור בכדי לבדוק זמינות שרת הכלים ורשימת הפונקציות שהוא פותח בפני המודל</li>
+						<li>
+							• השתמש בכפתור בדיקת החיבור בכדי לבדוק זמינות שרת הכלים ורשימת הפונקציות שהוא פותח
+							בפני המודל
+						</li>
 						<li>• תוכל להגדיר שרתי כלים עם גישה מאובטחת תלוית סיסמה או מפתח טוקן</li>
 					</ul>
 				</div>

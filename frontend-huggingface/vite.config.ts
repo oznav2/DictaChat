@@ -10,7 +10,7 @@ config({ path: "./.env.local" });
 function loadTTFAsArrayBuffer() {
 	return {
 		name: "load-ttf-as-array-buffer",
-		async transform(_src, id) {
+		async transform(_src: unknown, id: string) {
 			if (id.endsWith(".ttf")) {
 				return `export default new Uint8Array([
 			${new Uint8Array(await promises.readFile(id))}
@@ -35,8 +35,17 @@ export default defineConfig({
 		// Using leading dot matches subdomains per Vite's host check logic
 		allowedHosts: ["huggingface.ngrok.io"],
 	},
+	resolve: {
+		alias: {
+			"dayjs/plugin/advancedFormat": "dayjs/esm/plugin/advancedFormat",
+			"dayjs/plugin/customParseFormat": "dayjs/esm/plugin/customParseFormat",
+			"dayjs/plugin/isoWeek": "dayjs/esm/plugin/isoWeek",
+			dayjs: "dayjs/esm",
+		},
+	},
 	optimizeDeps: {
-		include: ["uuid", "sharp", "clsx"],
+		include: ["uuid", "sharp", "clsx", "@braintree/sanitize-url"],
+		exclude: ["mermaid", "dayjs"],
 	},
 	test: {
 		workspace: [
