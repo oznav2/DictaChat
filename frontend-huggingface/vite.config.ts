@@ -37,9 +37,14 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
+			"dayjs/plugin/advancedFormat.js": "dayjs/esm/plugin/advancedFormat/index.js",
+			"dayjs/plugin/customParseFormat.js": "dayjs/esm/plugin/customParseFormat/index.js",
+			"dayjs/plugin/isoWeek.js": "dayjs/esm/plugin/isoWeek/index.js",
+			"dayjs/plugin/duration.js": "dayjs/esm/plugin/duration/index.js",
 			"dayjs/plugin/advancedFormat": "dayjs/esm/plugin/advancedFormat",
 			"dayjs/plugin/customParseFormat": "dayjs/esm/plugin/customParseFormat",
 			"dayjs/plugin/isoWeek": "dayjs/esm/plugin/isoWeek",
+			"dayjs/plugin/duration": "dayjs/esm/plugin/duration",
 			dayjs: "dayjs/esm",
 		},
 	},

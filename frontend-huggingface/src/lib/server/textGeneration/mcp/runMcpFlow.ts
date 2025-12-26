@@ -424,6 +424,46 @@ export async function* runMcpFlow({
 			// Use the shared prompt builder that enforces reasoning and correct format
 			const toolPrompt = buildToolPreprompt(toolsToUse, intentHint);
 			prepromptPieces.push(toolPrompt);
+
+			// DataGov Israel guidance when DataGov tools are present
+			const datagovToolNames = new Set([
+				"datagov_query", // PRIMARY - unified query tool
+				"datagov_resource_map",
+				"datagov_helper",
+				"datagov_helper_map",
+				"datagov_helper_pick",
+				"datastore_search",
+				"package_search",
+				"package_show",
+				"fetch_data",
+				"get_resource_metadata_offline",
+			]);
+			const hasDataGov = toolsToUse.some((t) => datagovToolNames.has(t.function.name));
+			if (hasDataGov) {
+				const datagovGuidance = `**DataGov Israel (data.gov.il) - PRIORITY TOOL**
+
+When the user asks about Israeli government/public data, statistics, ministries, hospitals, or any query mentioning "datagov", "data.gov.il", or Hebrew keywords like "נתונים ממשלתיים", "בתי חולים", "משרד הבריאות", you MUST use the DataGov tools.
+
+**PRIMARY TOOL**: \`datagov_query\`
+- Use this for ALL DataGov queries - it handles everything automatically
+- The \`query\` parameter is REQUIRED - never call with empty arguments
+- Supports Hebrew: {"query": "בתי חולים ירושלים", "limit": 20}
+- Supports English: {"query": "trauma centers Jerusalem", "limit": 20}
+
+**CORRECT USAGE**:
+{
+  "tool_calls": [
+    {"name": "datagov_query", "arguments": {"query": "hospitals ministry of health", "limit": 20}}
+  ]
+}
+
+**INCORRECT - DO NOT DO THIS**:
+- Empty arguments: {"arguments": {}} ❌
+- Missing query: {"arguments": {"limit": 20}} ❌
+
+**DO NOT** use Tavily/Perplexity for Israeli government data - use DataGov tools instead.`;
+				prepromptPieces.push(datagovGuidance);
+			}
 		}
 
 		// const toolPreprompt = buildToolPreprompt(oaTools);

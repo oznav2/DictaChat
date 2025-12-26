@@ -208,6 +208,32 @@ const TOOL_CATEGORIES: Record<string, { keywords: RegExp; tools: string[] }> = {
 			/\b(library|package|npm|pip|documentation|docs|api reference|module)\b|ספרייה|חבילה|תיעוד|מודול/i,
 		tools: ["resolve-library-id", "get-library-docs"],
 	},
+	datagov: {
+		// English + Hebrew: Israeli government data, data.gov.il, ministries, statistics, public data
+		// Matches: datagov, data.gov, government data, ministry of health, census, hospitals, budget, etc.
+		keywords:
+			/\b(datagov|data\.gov|data gov|government data|public data|open data|ckan|israel data|census|statistics|ministry|health data|education data|budget data|hospitals?|trauma|medical|centers?|jerusalem|israel)\b|נתונים ממשלתיים|נתונים פתוחים|מידע ממשלתי|לשכת הסטטיסטיקה|משרד הבריאות|משרד החינוך|מאגר מידע|דאטהגוב|ממשלתי|תקציב|בריאות|חינוך|סטטיסטיקה|מרכז טראומה|בית חולים|בתי חולים|מוסדות|רישוי|עסקים|רשויות|עיריות|ירושלים/i,
+		tools: [
+			// Primary unified tool
+			"datagov_query",
+			// CKAN API tools (exported by datagov server)
+			"status_show",
+			"license_list",
+			"package_list",
+			"package_search",
+			"package_show",
+			"organization_list",
+			"organization_show",
+			"resource_search",
+			"datastore_search",
+			// Helper tools
+			"datagov_helper",
+			"datagov_helper_map",
+			"datagov_helper_pick",
+			"datagov_resource_map",
+			"get_resource_metadata_offline",
+		],
+	},
 };
 
 /**
@@ -226,6 +252,23 @@ const TOOL_PRIORITIES: Record<string, number> = {
 	tavily_extract: 90,
 	"tavily-extract": 90,
 	"get-video-info-for-summary-from-url": 90,
+	// DataGov tools - datagov_query is PRIMARY (highest priority)
+	datagov_query: 95,
+	datagov_helper: 85,
+	datagov_helper_map: 85,
+	datagov_helper_pick: 85,
+	datagov_resource_map: 85,
+	datastore_search: 80,
+	package_search: 75,
+	package_show: 75,
+	package_list: 70,
+	organization_list: 70,
+	organization_show: 70,
+	resource_search: 70,
+	status_show: 60,
+	license_list: 60,
+	get_resource_metadata_offline: 75,
+	// File operations
 	read_file: 80,
 	write_file: 80,
 	edit_file: 80,

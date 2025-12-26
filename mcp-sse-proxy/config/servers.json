@@ -99,6 +99,23 @@
       "command": "npx",
       "args": ["-y", "youtube-video-summarizer-mcp"],
       "env": {}
+    },
+    "datagov": {
+      "type": "stdio",
+      "command": "sh",
+      "args": [
+        "-c",
+        ". /opt/datagov-venv/bin/activate && python -m datagov.server"
+      ],
+      "env": {
+        "BASE_URL": "https://data.gov.il/api/3",
+        "DATAGOV_CACHE_DIR": "/app/data/datagov",
+        "DATAGOV_DEFAULT_LIMIT": "500",
+        "DATAGOV_MAX_LIMIT": "1000",
+        "DATAGOV_TIMEOUT_MS": "60000",
+        "DATAGOV_LOG_PAYLOADS": "true",
+        "DATAGOV_PROXY_URL": "${DATAGOV_PROXY_URL}"
+      }
     }
   }
 }

@@ -207,7 +207,7 @@ services:
       - LLM_ROUTER_ENABLE_TOOLS=true
       - LLM_ROUTER_TOOLS_MODEL=DictaLM-3.0-24B-Thinking.i1-Q4_K_M.gguf
       - 'MODELS=[{"id":"DictaLM-3.0-24B-Thinking.i1-Q4_K_M.gguf","name":"DictaLM 3.0 24B","endpoints":[{"type":"openai","baseURL":"http://bricksllm:8002/api/custom/providers/llama-cpp-root"}],"supportsTools":true}]'
-      - 'MCP_SERVERS=[{"name":"Everything","url":"http://mcp-sse-proxy:3100/everything/sse"},{"name":"Context7","url":"https://mcp.context7.com/mcp"},{"name":"Docker","url":"http://mcp-sse-proxy:3100/docker/sse"},{"name":"Sequential Thinking","url":"http://mcp-sse-proxy:3100/sequential-thinking/sse"},{"name":"Git","url":"http://mcp-sse-proxy:3100/git/sse"},{"name":"Fetch","url":"http://mcp-sse-proxy:3100/fetch/sse"},{"name":"Time","url":"http://mcp-sse-proxy:3100/time/sse"},{"name":"Memory","url":"http://mcp-sse-proxy:3100/memory/sse"},{"name":"Filesystem","url":"http://mcp-sse-proxy:3100/filesystem/sse"},{"name":"Perplexity","url":"http://mcp-sse-proxy:3100/perplexity/sse"},{"name":"Tavily Search","url":"http://mcp-sse-proxy:3100/Tavily/sse"},{"name":"YouTube Summarizer","url":"http://mcp-sse-proxy:3100/youtube-video-summarizer/sse"}]'
+      - 'MCP_SERVERS=[{"name":"Everything","url":"http://mcp-sse-proxy:3100/everything/sse"},{"name":"Context7","url":"https://mcp.context7.com/mcp"},{"name":"Docker","url":"http://mcp-sse-proxy:3100/docker/sse"},{"name":"Sequential Thinking","url":"http://mcp-sse-proxy:3100/sequential-thinking/sse"},{"name":"Git","url":"http://mcp-sse-proxy:3100/git/sse"},{"name":"Fetch","url":"http://mcp-sse-proxy:3100/fetch/sse"},{"name":"Time","url":"http://mcp-sse-proxy:3100/time/sse"},{"name":"Memory","url":"http://mcp-sse-proxy:3100/memory/sse"},{"name":"Filesystem","url":"http://mcp-sse-proxy:3100/filesystem/sse"},{"name":"Perplexity","url":"http://mcp-sse-proxy:3100/perplexity/sse"},{"name":"Tavily Search","url":"http://mcp-sse-proxy:3100/Tavily/sse"},{"name":"YouTube Summarizer","url":"http://mcp-sse-proxy:3100/youtube-video-summarizer/sse"},{"name":"DataGov Israel","url":"http://mcp-sse-proxy:3100/datagov/sse"}]'
     ports:
       - "8004:3000"
     volumes:
@@ -239,6 +239,9 @@ services:
       - mcp_memory_data:/app/data/memory
       - mcp_uploads:/app/uploads
       - mcp_sandbox:/app/sandbox
+      # DataGov MCP code and cache
+      - ./datagov:/app/datagov
+      - ./datagov/cache:/app/data/datagov
     environment:
       - PORT=3100
       - CONFIG_PATH=/app/config/servers.json
@@ -247,6 +250,7 @@ services:
       - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY:-}
       - TAVILY_API_KEY=${TAVILIY_SEARCH_API_KEY:-}
       - SMITHERY_API_KEY=${SMITHERY_API_KEY:-}
+      - DATAGOV_PROXY_URL=${DATAGOV_PROXY_URL:-}
     healthcheck:
       test: CMD curl -f http://localhost:3100/health || exit 1
       interval: 30s

@@ -39,4 +39,5 @@ if ! python -c "import rich" &> /dev/null; then
 fi
 
 # Pass control to the Python deployment script
-python deploy.py "$@"
+# Use the venv python explicitly to avoid system python issues
+"$VENV_DIR/bin/python" deploy.py "$@"

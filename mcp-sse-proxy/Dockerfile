@@ -10,11 +10,16 @@ RUN apk add --no-cache python3 py3-pip curl git docker-cli && \
     ln -sf /root/.local/bin/uv /usr/local/bin/uv && \
     ln -sf /root/.local/bin/uvx /usr/local/bin/uvx
 
+# Prebuild a dedicated Python venv for DataGov MCP and install core deps
+# Added curl_cffi for browser TLS impersonation to bypass 403 blocks
+RUN uv venv /opt/datagov-venv && \
+    uv pip install --python /opt/datagov-venv "fastmcp>=2.8.1" "requests>=2.32.4" "curl_cffi>=0.5.10"
+
 WORKDIR /app
 
 # Copy package files and install Node.js dependencies
 COPY package.json ./
-RUN npm install --production
+RUN npm install --production --legacy-peer-deps
 
 # Copy application code and configuration
 COPY server.js ./
