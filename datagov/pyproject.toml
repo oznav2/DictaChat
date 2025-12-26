@@ -1,0 +1,10 @@
+[project]
+name = "datagov-mcp"
+version = "0.1.0"
+description = "DataGov Israel MCP Server (BricksLLM)"
+requires-python = ">=3.10"
+dependencies = [
+  "fastmcp>=2.8.1",
+  "requests>=2.32.4"
+]
+
