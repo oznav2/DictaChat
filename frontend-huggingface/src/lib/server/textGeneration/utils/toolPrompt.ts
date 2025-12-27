@@ -1,9 +1,15 @@
 import type { OpenAiTool } from "$lib/server/mcp/tools";
+import { generateToolCapabilityManifest } from "$lib/server/textGeneration/mcp/toolIntelligenceRegistry";
 
 /**
  * Builds the system prompt for tool usage with reasoning capabilities.
  * Enforces a "Reasoning First" approach where the model must explain its thought process
  * before invoking tools, improving reliability and reducing hallucinations.
+ *
+ * ENTERPRISE FEATURES:
+ * - Tool Capability Awareness: Model knows and can describe its available tools
+ * - Tool Attribution: Model is instructed to tell users which tool provided answers
+ * - Proactive Guidance: Model suggests alternative tools when appropriate
  */
 export function buildToolPreprompt(tools: OpenAiTool[], intentHint?: string): string {
 	if (!Array.isArray(tools) || tools.length === 0) return "";
@@ -15,6 +21,10 @@ export function buildToolPreprompt(tools: OpenAiTool[], intentHint?: string): st
 		day: "numeric",
 	});
 
+	// Generate human-readable capability manifest for the model
+	const toolNames = tools.map((t) => t.function.name);
+	const capabilityManifest = generateToolCapabilityManifest(toolNames);
+
 	const hintSection = intentHint ? `\n**SYSTEM NOTE / הערת מערכת**:\n${intentHint}\n` : "";
 
 	const hasSequentialThinking = tools.some((t) => t.function.name === "sequentialthinking");
@@ -24,6 +34,7 @@ export function buildToolPreprompt(tools: OpenAiTool[], intentHint?: string): st
 
 	return `Available Tools: ${toolDefs}
 Today's date: ${currentDate}${hintSection}
+${capabilityManifest}
 
 You are an expert assistant capable of fluent reasoning and communication in both English and Hebrew (עברית).
 Your task is to analyze the user's request and determine if a tool is needed.
@@ -51,6 +62,15 @@ Your task is to analyze the user's request and determine if a tool is needed.
    - Ensure arguments match the tool's schema exactly.
    - NEVER say "I cannot search" - USE A TOOL if information is missing.
    - If a tool generates an image, you can inline it directly: ![alt text](image_url)${sequentialThinkingConstraint}
+
+4. **Tool Transparency & Capability Awareness / שקיפות וידע על יכולות**:
+   - When a user asks "מה אתה יכול לעשות?" or "what can you do?", describe your available tools using the capability list above.
+   - After using a tool, mention which tool provided the answer (e.g., "המידע מבוסס על חיפוש עם Tavily").
+   - If your answer is limited by the tool used, proactively suggest alternatives:
+     * Quick search → Suggest deep research for more comprehensive results
+     * Government data → Mention you can add context from other sources
+   - Example: "ביצעתי חיפוש מהיר. לתוצאות מקיפות יותר, אוכל להפעיל את כלי המחקר המעמיק."
+   - כאשר המשתמש שואל על היכולות שלך, תאר את הכלים הזמינים. לאחר שימוש בכלי, ציין איזה כלי שימש.
 
 **Examples:**
 

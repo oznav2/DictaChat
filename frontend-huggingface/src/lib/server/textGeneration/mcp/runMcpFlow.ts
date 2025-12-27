@@ -1224,6 +1224,22 @@ When the user asks about Israeli government/public data, statistics, ministries,
 			const stripped = stripLeadingToolCallsPayload(cleanedContent);
 			cleanedContent = stripped.text;
 
+			// Remove <reasoning> tags from output (common in Perplexity/research tool responses)
+			// Strip the tags but keep the content - the reasoning is valuable, just not the markup
+			cleanedContent = cleanedContent
+				.replace(/<reasoning>/gi, "")
+				.replace(/<\/reasoning>/gi, "");
+
+			// Also remove other common internal tags that shouldn't appear in user output
+			// These are model artifacts that leak through from tool responses
+			cleanedContent = cleanedContent
+				.replace(/<internal>/gi, "")
+				.replace(/<\/internal>/gi, "")
+				.replace(/<context>/gi, "")
+				.replace(/<\/context>/gi, "")
+				.replace(/<sources>/gi, "")
+				.replace(/<\/sources>/gi, "");
+
 			// Remove leading/trailing whitespace and collapse multiple HORIZONTAL spaces only
 			// CRITICAL: DO NOT collapse newlines - summaries need proper paragraph structure
 			// CRITICAL: DO NOT collapse spaces - code indentation must be preserved

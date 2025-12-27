@@ -249,7 +249,28 @@ app.get('/:serverName/sse', async (req, res) => {
       console.log(`[${timestamp}] [${tag}] [MCP-REQUEST] Tool: ${request.params.name}, Args: ${JSON.stringify(request.params.arguments || {})}`);
 
       try {
-        const result = await mcpClient.callTool(request.params);
+        // Use configured timeout for this server (defaults to 2 minutes)
+        // Extended timeout for research-intensive tools (perplexity, etc.)
+        const toolName = request.params.name?.toLowerCase() || '';
+        const isResearchTool = toolName.includes('perplexity') ||
+                               toolName.includes('research') ||
+                               toolName.includes('reason');
+        const effectiveTimeout = isResearchTool
+          ? Math.max(normalizedConfig.timeout, 300000)  // At least 5 minutes for research
+          : normalizedConfig.timeout;
+
+        console.log(`[${timestamp}] [${tag}] Using timeout: ${effectiveTimeout}ms for tool: ${request.params.name}`);
+
+        const result = await mcpClient.callTool(
+          request.params,
+          undefined,
+          {
+            timeout: effectiveTimeout,
+            // Keep connection alive during long operations
+            onprogress: () => {},
+            resetTimeoutOnProgress: true
+          }
+        );
         const responseTimestamp = new Date().toISOString();
 
         console.log(`[${responseTimestamp}] [${tag}] [MCP-RAW-RESPONSE] ${JSON.stringify(result, null, 2)}`);

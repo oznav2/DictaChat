@@ -75,6 +75,7 @@
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "@perplexity-ai/mcp-server"],
+      "timeout": 300000,
       "env": {
         "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}",
         "PERPLEXITY_MODEL": "sonar-pro",

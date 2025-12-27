@@ -14,6 +14,15 @@ import {
 } from "$lib/server/mcp/clientPoolEnhanced";
 import { attachFileRefsToArgs, type FileRefResolver } from "./fileRefs";
 import { sanitizeToolArguments } from "./toolArgumentSanitizer";
+import { identifyToolMcp } from "./toolFilter";
+import { normalizeWithRegistry } from "./toolParameterRegistry";
+import {
+	getGracefulFailureMessage,
+	getQuerySuggestion,
+	getProgressMessage,
+	getToolIntelligence,
+	getFallbackChain,
+} from "./toolIntelligenceRegistry";
 import type { Client } from "@modelcontextprotocol/sdk/client";
 
 export type Primitive = string | number | boolean;
@@ -66,14 +75,147 @@ const serverMap = (servers: McpServerConfig[]): Map<string, McpServerConfig> => 
 };
 
 /**
+ * Convert raw error to user-friendly graceful message.
+ * CRITICAL: Users should NEVER see raw errors, stack traces, or technical details.
+ *
+ * The message MUST:
+ * 1. Explain WHAT happened (which service/action failed)
+ * 2. Explain WHY it likely failed (possible reason)
+ * 3. Explain WHAT TO DO (actionable next step)
+ *
+ * Otherwise users will assume the model is broken.
+ */
+function toGracefulError(toolName: string, rawError: string): string {
+	// Get tool intelligence for display name and suggestions
+	const toolInfo = getToolIntelligence(toolName);
+	const displayName = toolInfo?.displayName || toolName;
+	const suggestion = getQuerySuggestion(toolName);
+
+	// Check for common error patterns and provide CONTEXTUAL guidance
+	const errorLower = rawError.toLowerCase();
+
+	// ========== TIMEOUT ERRORS ==========
+	if (errorLower.includes("timeout") || errorLower.includes("timed out")) {
+		if (toolName.includes("research") || toolName.includes("perplexity")) {
+			return `⏱️ **המחקר לקח יותר מדי זמן**\n\n` +
+				`השירות ${displayName} מבצע חיפוש מעמיק שלפעמים דורש זמן רב.\n\n` +
+				`**מה לעשות:**\n` +
+				`• נסה שאלה קצרה ופשוטה יותר\n` +
+				`• פצל את השאלה לכמה שאלות נפרדות\n` +
+				`• ${suggestion}`;
+		}
+		if (toolName.includes("datagov")) {
+			return `⏱️ **הגישה למאגרי המידע הממשלתיים ארכה זמן רב**\n\n` +
+				`המאגרים הממשלתיים מכילים מיליוני רשומות וחיפוש רחב עלול להיות איטי.\n\n` +
+				`**מה לעשות:**\n` +
+				`• הוסף מילות מפתח ספציפיות (שם משרד, שנה, אזור)\n` +
+				`• ${suggestion}`;
+		}
+		return `⏱️ **הפעולה ארכה זמן רב מדי**\n\n` +
+			`${displayName} לא הספיק לסיים את הפעולה בזמן הקצוב.\n\n` +
+			`**מה לעשות:**\n` +
+			`• נסה שוב עם בקשה פשוטה יותר\n` +
+			`• ${suggestion}`;
+	}
+
+	// ========== CONNECTION ERRORS ==========
+	if (errorLower.includes("not connected") || errorLower.includes("connection")) {
+		return `🔌 **שירות ${displayName} אינו זמין כרגע**\n\n` +
+			`ייתכן שיש תקלה זמנית בשירות או בחיבור לאינטרנט.\n\n` +
+			`**מה לעשות:**\n` +
+			`• נסה שוב בעוד מספר שניות\n` +
+			`• אם הבעיה נמשכת, השתמש בניסוח אחר או שאל שאלה דומה`;
+	}
+
+	// ========== NOT FOUND / EMPTY RESULTS ==========
+	if (errorLower.includes("not found") || errorLower.includes("404") || errorLower.includes("no results")) {
+		if (toolName.includes("datagov")) {
+			return `🔍 **לא נמצא מידע במאגרים הממשלתיים**\n\n` +
+				`ייתכן שהמידע המבוקש לא קיים במאגרים הרשמיים, או שהניסוח לא מדויק.\n\n` +
+				`**מה לעשות:**\n` +
+				`• נסה מילות מפתח רשמיות (למשל: "לשכת הסטטיסטיקה" במקום "סטטיסטיקה")\n` +
+				`• ציין שם משרד ממשלתי ספציפי\n` +
+				`• ${suggestion}`;
+		}
+		return `🔍 **לא נמצאו תוצאות**\n\n` +
+			`${displayName} לא מצא מידע התואם לבקשה.\n\n` +
+			`**מה לעשות:**\n` +
+			`• נסה מילות מפתח שונות\n` +
+			`• ${suggestion}`;
+	}
+
+	// ========== VALIDATION / PARAMETER ERRORS ==========
+	if (errorLower.includes("invalid") || errorLower.includes("required") || errorLower.includes("missing")) {
+		if (toolName.includes("file") || toolName.includes("directory")) {
+			return `📂 **בעיה בנתיב הקובץ**\n\n` +
+				`הנתיב שהוזן אינו תקין או שהקובץ/תיקייה לא נמצאו.\n\n` +
+				`**מה לעשות:**\n` +
+				`• ודא שהנתיב מדויק (כולל סיומת קובץ אם רלוונטי)\n` +
+				`• ${suggestion}`;
+		}
+		if (toolName.includes("fetch") || toolName.includes("extract")) {
+			return `🌐 **בעיה בכתובת האינטרנט**\n\n` +
+				`הכתובת שהוזנה אינה תקינה או שהאתר לא נגיש.\n\n` +
+				`**מה לעשות:**\n` +
+				`• ודא שהכתובת מתחילה ב-https://\n` +
+				`• בדוק שהכתובת נכתבה נכון\n` +
+				`• ${suggestion}`;
+		}
+		return `📝 **חסר מידע לביצוע הפעולה**\n\n` +
+			`${displayName} צריך פרטים נוספים כדי לבצע את הבקשה.\n\n` +
+			`**מה לעשות:**\n` +
+			`• נסח את הבקשה בצורה מפורטת יותר\n` +
+			`• ${suggestion}`;
+	}
+
+	// ========== RATE LIMIT ERRORS ==========
+	if (errorLower.includes("rate limit") || errorLower.includes("too many") || errorLower.includes("quota")) {
+		return `⚡ **הגעת למגבלת בקשות**\n\n` +
+			`נשלחו יותר מדי בקשות ל-${displayName} בזמן קצר.\n\n` +
+			`**מה לעשות:**\n` +
+			`• המתן דקה ונסה שוב\n` +
+			`• צמצם את מספר הבקשות`;
+	}
+
+	// ========== AUTH ERRORS ==========
+	if (errorLower.includes("unauthorized") || errorLower.includes("forbidden") || errorLower.includes("auth")) {
+		return `🔐 **בעיית הרשאה**\n\n` +
+			`אין הרשאה לגשת ל-${displayName}. ייתכן שחסרה הגדרת API Key.\n\n` +
+			`**מה לעשות:**\n` +
+			`• פנה למנהל המערכת לבדיקת ההגדרות`;
+	}
+
+	// ========== SERVER ERRORS ==========
+	if (errorLower.includes("500") || errorLower.includes("server error") || errorLower.includes("internal")) {
+		return `⚠️ **תקלה בשירות ${displayName}**\n\n` +
+			`השירות נתקל בבעיה פנימית.\n\n` +
+			`**מה לעשות:**\n` +
+			`• נסה שוב בעוד כמה שניות\n` +
+			`• אם הבעיה נמשכת, נסה לנסח את השאלה אחרת`;
+	}
+
+	// ========== DEFAULT - GENERIC BUT HELPFUL ==========
+	const gracefulMessage = getGracefulFailureMessage(toolName);
+	return `⚠️ **${displayName} נתקל בבעיה**\n\n` +
+		`${gracefulMessage}\n\n` +
+		`**מה לעשות:**\n` +
+		`• ${suggestion}\n` +
+		`• נסה לנסח את הבקשה בצורה שונה`;
+}
+
+/**
  * Normalize and sanitize tool arguments based on the tool type.
- * Handles common model mistakes and validates for security.
+ * Uses the universal tool parameter registry for automatic normalization.
+ *
+ * Flow:
+ * 1. Security sanitization (prevent injection attacks)
+ * 2. Registry-based normalization (map aliases, coerce types, apply defaults)
  */
 function normalizeToolArgs(
 	toolName: string,
 	args: Record<string, unknown>
 ): Record<string, unknown> {
-	// First sanitize the arguments for security
+	// Step 1: Security sanitization first
 	const sanitizationResult = sanitizeToolArguments(toolName, args);
 	if (!sanitizationResult.success) {
 		logger.warn(
@@ -83,7 +225,6 @@ function normalizeToolArgs(
 		throw new Error(`Tool argument sanitization failed: ${sanitizationResult.error}`);
 	}
 
-	// Log warnings if any
 	if (sanitizationResult.warnings && sanitizationResult.warnings.length > 0) {
 		logger.debug(
 			{ toolName, warnings: sanitizationResult.warnings },
@@ -91,48 +232,31 @@ function normalizeToolArgs(
 		);
 	}
 
-	const normalized = { ...sanitizationResult.sanitized! };
+	// Step 2: Registry-based normalization
+	// This handles all tool-specific parameter mapping automatically:
+	// - Perplexity: query ↔ messages conversion
+	// - Tavily: type coercion (days → number, topic → enum)
+	// - Filesystem: path aliases (file, filepath, file_path → path)
+	// - Git: repo aliases (path, repository, repo → repo_path)
+	// - Docker: container aliases (container_id, name, id → container)
+	// - And all other registered tools...
+	const registryResult = normalizeWithRegistry(toolName, sanitizationResult.sanitized!);
 
-	// Perplexity tools (perplexity_ask, perplexity_research, perplexity_reason) require "messages" array
-	// but models often send "query" string instead
-	if (toolName.startsWith("perplexity_") || toolName.startsWith("perplexity-")) {
-		if (normalized.query && !normalized.messages) {
-			const query = String(normalized.query);
-			normalized.messages = [{ role: "user", content: query }];
-			delete normalized.query;
-			logger.debug({ toolName, query }, "[mcp] normalized query → messages for perplexity tool");
-		}
-		// Also handle "prompt" being used instead of "messages"
-		if (normalized.prompt && !normalized.messages) {
-			const prompt = String(normalized.prompt);
-			normalized.messages = [{ role: "user", content: prompt }];
-			delete normalized.prompt;
-			logger.debug({ toolName, prompt }, "[mcp] normalized prompt → messages for perplexity tool");
-		}
+	if (registryResult.warnings.length > 0) {
+		logger.warn(
+			{ toolName, warnings: registryResult.warnings },
+			"[mcp] Registry normalization warnings"
+		);
 	}
 
-	// Tavily tools use "query" which is correct, no transformation needed
-	if (toolName.includes("tavily")) {
-		// Ensure days is a number (API expects integer, model might send string)
-		if (normalized.days !== undefined) {
-			const d = parseInt(String(normalized.days), 10);
-			if (!isNaN(d)) {
-				normalized.days = d;
-			} else {
-				delete normalized.days;
-			}
-		}
-		// Ensure topic is valid
-		if (normalized.topic && typeof normalized.topic === "string") {
-			const topic = normalized.topic.toLowerCase();
-			if (topic !== "news" && topic !== "general") {
-				// Fallback to general if invalid topic
-				normalized.topic = "general";
-			}
-		}
+	if (registryResult.appliedMappings.length > 0) {
+		logger.debug(
+			{ toolName, mappings: registryResult.appliedMappings },
+			"[mcp] Applied parameter mappings from registry"
+		);
 	}
 
-	return normalized;
+	return registryResult.normalized;
 }
 
 /**
@@ -180,6 +304,54 @@ function normalizeToolName(name: string, mapping: Record<string, McpToolMapping>
 	return name;
 }
 
+/**
+ * Cascade Fallback Result
+ * Contains either a successful result or the final error after all fallbacks failed
+ */
+interface CascadeFallbackResult {
+	success: boolean;
+	output?: string;
+	structured?: unknown;
+	blocks?: unknown[];
+	error?: string;
+	/** The tool that actually succeeded (may be different from original if fallback was used) */
+	usedTool?: string;
+	/** List of tools that were tried and failed */
+	failedTools?: string[];
+}
+
+/**
+ * Check if an error is recoverable (should trigger fallback)
+ * Some errors like auth failures should not trigger fallback
+ */
+function isRecoverableError(error: string): boolean {
+	const errorLower = error.toLowerCase();
+
+	// Non-recoverable errors - don't try fallback
+	if (errorLower.includes("unauthorized") || errorLower.includes("forbidden")) {
+		return false; // Auth issues won't be fixed by fallback
+	}
+	if (errorLower.includes("invalid") && errorLower.includes("api key")) {
+		return false; // API key issues
+	}
+
+	// Recoverable errors - try fallback
+	return true;
+}
+
+/**
+ * Build progress message for fallback attempts
+ */
+function buildFallbackProgressMessage(originalTool: string, fallbackTool: string): string {
+	const originalInfo = getToolIntelligence(originalTool);
+	const fallbackInfo = getToolIntelligence(fallbackTool);
+
+	const originalName = originalInfo?.displayName || originalTool;
+	const fallbackName = fallbackInfo?.displayName || fallbackTool;
+
+	return `${originalName} לא זמין כרגע, מנסה עם ${fallbackName}...`;
+}
+
 export async function* executeToolCalls({
 	calls,
 	mapping,
@@ -189,7 +361,7 @@ export async function* executeToolCalls({
 	toPrimitive,
 	processToolOutput,
 	abortSignal,
-	toolTimeoutMs = 30_000,
+	toolTimeoutMs = 120_000, // 2 minutes default; httpClient may override for research tools
 }: ExecuteToolCallsParams): AsyncGenerator<ToolExecutionEvent, void, undefined> {
 	// Check abort signal at the beginning
 	if (abortSignal?.aborted) {
@@ -321,9 +493,10 @@ export async function* executeToolCalls({
 		}
 
 		if (p.parseError) {
+			// Use graceful error - never expose raw parse errors to users
 			q.push({
 				index,
-				error: `Invalid tool arguments: ${p.parseError}`,
+				error: toGracefulError(p.call.name, p.parseError),
 				uuid: p.uuid,
 				paramsClean: p.paramsClean,
 			});
@@ -334,9 +507,31 @@ export async function* executeToolCalls({
 		const normalizedName = normalizeToolName(p.call.name, mapping);
 		const mappingEntry = mapping[normalizedName];
 		if (!mappingEntry) {
+			// Graceful error handling: identify which MCP the tool belongs to
+			const mcpInfo = identifyToolMcp(p.call.name);
+			let userFriendlyError: string;
+
+			if (mcpInfo) {
+				// Tool pattern recognized but MCP not enabled
+				userFriendlyError = `The "${mcpInfo.displayName}" MCP server is not enabled. ` +
+					`Please enable the "${mcpInfo.mcpName}" MCP in your settings to use the ${p.call.name} tool.`;
+				logger.warn(
+					{ toolName: p.call.name, mcpName: mcpInfo.mcpName },
+					"[mcp] Tool requested but MCP server not enabled"
+				);
+			} else {
+				// Unknown tool pattern
+				userFriendlyError = `Tool "${p.call.name}" is not available. ` +
+					`Please check if the required MCP server is enabled in your settings.`;
+				logger.warn(
+					{ toolName: p.call.name, normalizedName },
+					"[mcp] Unknown tool requested"
+				);
+			}
+
 			q.push({
 				index,
-				error: `Unknown MCP function: ${p.call.name} (tried: ${normalizedName})`,
+				error: userFriendlyError,
 				uuid: p.uuid,
 				paramsClean: p.paramsClean,
 			});
@@ -344,9 +539,10 @@ export async function* executeToolCalls({
 		}
 		const serverCfg = serverLookup.get(mappingEntry.server);
 		if (!serverCfg) {
+			// Graceful error - never expose internal server config details
 			q.push({
 				index,
-				error: `Unknown MCP server: ${mappingEntry.server}`,
+				error: toGracefulError(p.call.name, `Server not available: ${mappingEntry.server}`),
 				uuid: p.uuid,
 				paramsClean: p.paramsClean,
 			});
@@ -432,28 +628,126 @@ export async function* executeToolCalls({
 					}
 				}
 
+				// Log full error details for debugging (internal only)
 				logger.error(
 					{
 						server: mappingEntry.server,
 						tool: mappingEntry.tool,
 						err: message,
 						toolName: p.call.name,
+						timestamp: new Date().toISOString(),
 					},
 					"[mcp] tool call failed with error"
 				);
 
-				// Enhanced error information for better debugging
-				const enhancedError = {
-					message,
-					toolName: p.call.name,
-					server: mappingEntry.server,
-					tool: mappingEntry.tool,
-					timestamp: new Date().toISOString(),
-				};
+				// ============================================================
+				// CASCADE FALLBACK: Try fallback tools before giving up
+				// ============================================================
+				if (isRecoverableError(message)) {
+					const fallbackChain = getFallbackChain(p.call.name);
 
+					if (fallbackChain.length > 0) {
+						logger.info(
+							{ originalTool: p.call.name, fallbackChain },
+							"[mcp] attempting cascade fallback"
+						);
+
+						for (const fallbackToolName of fallbackChain) {
+							// Check if fallback tool is available in mapping
+							const fallbackNormalized = normalizeToolName(fallbackToolName, mapping);
+							const fallbackMapping = mapping[fallbackNormalized];
+
+							if (!fallbackMapping) {
+								logger.debug(
+									{ fallbackTool: fallbackToolName },
+									"[mcp] fallback tool not available in mapping, skipping"
+								);
+								continue;
+							}
+
+							// Get server config for fallback
+							const fallbackServerCfg = serverLookup.get(fallbackMapping.server);
+							if (!fallbackServerCfg) {
+								logger.debug(
+									{ fallbackTool: fallbackToolName, server: fallbackMapping.server },
+									"[mcp] fallback tool server not configured, skipping"
+								);
+								continue;
+							}
+
+							// Get or create client for fallback server
+							let fallbackClient = clientMap.get(fallbackMapping.server);
+							if (!fallbackClient) {
+								try {
+									fallbackClient = await getClientEnhanced(fallbackServerCfg, abortSignal);
+									clientMap.set(fallbackMapping.server, fallbackClient);
+								} catch (clientErr) {
+									logger.warn(
+										{ fallbackTool: fallbackToolName, err: String(clientErr) },
+										"[mcp] failed to get client for fallback tool"
+									);
+									continue;
+								}
+							}
+
+							// Log fallback attempt
+							logger.info(
+								{ originalTool: p.call.name, fallbackTool: fallbackToolName },
+								"[mcp] trying fallback tool"
+							);
+
+							try {
+								// Execute fallback tool with same arguments
+								const fallbackResponse = await callMcpTool(
+									fallbackServerCfg,
+									fallbackMapping.tool,
+									p.argsObj,
+									{
+										client: fallbackClient,
+										signal: abortSignal,
+										timeoutMs: toolTimeoutMs,
+									}
+								);
+
+								const { annotated } = processToolOutput(fallbackResponse.text ?? "");
+
+								// SUCCESS! Push result and return
+								logger.info(
+									{ originalTool: p.call.name, fallbackTool: fallbackToolName },
+									"[mcp] fallback tool succeeded"
+								);
+
+								q.push({
+									index,
+									output: annotated,
+									structured: fallbackResponse.structured,
+									blocks: fallbackResponse.content,
+									uuid: p.uuid,
+									paramsClean: p.paramsClean,
+								});
+								return; // Exit - we succeeded with fallback
+							} catch (fallbackErr) {
+								const fallbackMessage = fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr);
+								logger.warn(
+									{ fallbackTool: fallbackToolName, err: fallbackMessage },
+									"[mcp] fallback tool also failed, trying next"
+								);
+								// Continue to next fallback
+							}
+						}
+
+						// All fallbacks failed - log and continue to error
+						logger.warn(
+							{ originalTool: p.call.name, fallbackChain },
+							"[mcp] all fallback tools failed"
+						);
+					}
+				}
+
+				// Push GRACEFUL error to user - never expose raw error messages
 				q.push({
 					index,
-					error: JSON.stringify(enhancedError),
+					error: toGracefulError(p.call.name, message),
 					uuid: p.uuid,
 					paramsClean: p.paramsClean,
 				});

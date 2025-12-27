@@ -7,7 +7,22 @@ export interface McpServerConfig {
 	headers?: Record<string, string>;
 }
 
-const DEFAULT_TIMEOUT_MS = 30_000;
+// Default timeout for most tools (60 seconds)
+const DEFAULT_TIMEOUT_MS = 60_000;
+
+// Extended timeouts for research-intensive tools (5 minutes)
+// perplexity_research can take 2-5 minutes for deep research queries
+const EXTENDED_TIMEOUT_TOOLS = [
+	"perplexity_research",
+	"perplexity_ask",
+	"perplexity-research",
+	"perplexity-ask",
+	"perplexity_reason",
+	"perplexity-reason",
+	"perplexity_search",
+	"perplexity-search",
+];
+const EXTENDED_TIMEOUT_MS = 300_000; // 5 minutes
 
 export type McpToolTextResponse = {
 	text: string;
@@ -22,11 +37,20 @@ export async function callMcpTool(
 	tool: string,
 	args: unknown = {},
 	{
-		timeoutMs = DEFAULT_TIMEOUT_MS,
+		timeoutMs,
 		signal,
 		client,
 	}: { timeoutMs?: number; signal?: AbortSignal; client?: Client } = {}
 ): Promise<McpToolTextResponse> {
+	// Determine appropriate timeout based on tool type
+	// Research-intensive tools (perplexity) get extended timeout
+	// Use the larger of: passed timeout OR smart timeout for research tools
+	const isExtendedTool = EXTENDED_TIMEOUT_TOOLS.some((t) =>
+		tool.toLowerCase().includes(t.toLowerCase())
+	);
+	const smartTimeout = isExtendedTool ? EXTENDED_TIMEOUT_MS : DEFAULT_TIMEOUT_MS;
+	const effectiveTimeout = Math.max(timeoutMs ?? 0, smartTimeout);
+
 	const normalizedArgs =
 		typeof args === "object" && args !== null && !Array.isArray(args)
 			? (args as Record<string, unknown>)
@@ -42,7 +66,7 @@ export async function callMcpTool(
 		undefined,
 		{
 			signal,
-			timeout: timeoutMs,
+			timeout: effectiveTimeout,
 			// Enable progress tokens so long-running tools keep extending the timeout.
 			onprogress: () => {},
 			resetTimeoutOnProgress: true,

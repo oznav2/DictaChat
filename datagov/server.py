@@ -446,7 +446,80 @@ async def get_resource_metadata_offline(ctx: Context, resource_id: str):
     return {"found": False, "error": "resource not found in local index"}
 
 
-def _format_as_markdown(records: list, fields: list, resource: dict, total: int, limit: int, offset: int) -> str:
+def _is_count_query(query: str) -> bool:
+    """
+    Detect if query is asking for a COUNT/TOTAL/SUM (not just listing data).
+    These queries need ALL records to calculate aggregates.
+    """
+    count_patterns = [
+        r'\bכמה\b',           # "how many" in Hebrew
+        r'\bסה"כ\b',          # "total" in Hebrew
+        r'\bסהכ\b',           # "total" without quotes
+        r'\bמספר\b',          # "number of" in Hebrew
+        r'\bסכום\b',          # "sum" in Hebrew
+        r'\bhow many\b',
+        r'\btotal\b',
+        r'\bcount\b',
+        r'\bsum of\b',
+        r'\bhow much\b',
+    ]
+    import re
+    q_lower = query.lower()
+    return any(re.search(p, q_lower) for p in count_patterns)
+
+
+def _calculate_aggregates(records: list, fields: list) -> dict:
+    """
+    Calculate SUM/COUNT aggregates for numeric columns.
+    Returns a summary dict with totals.
+    """
+    if not records:
+        return {}
+
+    # Find numeric fields
+    numeric_fields = []
+    for f in fields:
+        fid = f.get("id", "")
+        ftype = (f.get("type") or "").lower()
+        if fid == "_id":
+            continue
+        # Check if it's a numeric type or if values look numeric
+        if ftype in ("int", "int4", "int8", "float", "float8", "numeric", "integer", "number"):
+            numeric_fields.append(fid)
+        elif records:
+            # Check first non-null value
+            for r in records[:5]:
+                val = r.get(fid)
+                if val is not None and str(val).replace(",", "").replace(".", "").replace("-", "").isdigit():
+                    numeric_fields.append(fid)
+                    break
+
+    # Calculate sums
+    sums = {}
+    for fid in numeric_fields:
+        total = 0
+        count = 0
+        for r in records:
+            val = r.get(fid)
+            if val is not None:
+                try:
+                    # Handle string numbers with commas
+                    if isinstance(val, str):
+                        val = val.replace(",", "")
+                    total += float(val)
+                    count += 1
+                except (ValueError, TypeError):
+                    pass
+        if count > 0:
+            sums[fid] = {
+                "sum": int(total) if total == int(total) else round(total, 2),
+                "count": count,
+            }
+
+    return sums
+
+
+def _format_as_markdown(records: list, fields: list, resource: dict, total: int, limit: int, offset: int, aggregates: dict = None) -> str:
     """Format datastore records as a readable markdown table."""
     if not records:
         return "No records found."
@@ -475,7 +548,14 @@ def _format_as_markdown(records: list, fields: list, resource: dict, total: int,
     footer = f"\n\n**Source**: {resource.get('dataset_title', 'Unknown')} - {resource.get('resource_title', '')}\n"
     footer += f"**Records**: {offset+1}-{offset+len(records)} of {total} | **Format**: {resource.get('format', 'N/A')}"
 
-    if (offset + len(records)) < total:
+    # Add aggregates summary if available (important for "how many" queries)
+    if aggregates:
+        footer += "\n\n**📊 SUMMARY TOTALS:**\n"
+        for field_name, stats in aggregates.items():
+            footer += f"- **{field_name}**: {stats['sum']:,} (from {stats['count']} records)\n"
+        footer += "\n*☝️ Use these totals to answer 'how many' questions directly. No need to paginate.*"
+
+    if (offset + len(records)) < total and not aggregates:
         footer += f"\n*More records available. Use offset={offset+limit} to get next page.*"
 
     return header + "\n" + separator + "\n" + "\n".join(rows) + footer
@@ -490,29 +570,56 @@ async def datagov_query(
     format_output: bool = True
 ):
     """
-    Search Israeli government open data (data.gov.il) and return formatted results.
+    חיפוש במאגרי המידע הרשמיים של ממשלת ישראל (data.gov.il).
+    Search Israeli government official data repositories.
 
-    This is the PRIMARY tool for natural language queries to Israeli government data.
-    It automatically handles: resource discovery -> selection -> schema validation -> data fetching -> formatting.
+    USE THIS TOOL FIRST when user asks about:
+    - מאגרים רשמיים / מידע רשמי / נתונים רשמיים (official repositories/data)
+    - נתוני ממשלה / מידע ממשלתי (government data)
+    - סטטיסטיקה רשמית / נתונים סטטיסטיים (official statistics)
+    - data.gov.il / דאטה גוב / הממשלה הפתוחה (open government)
+    - Israeli vehicles, transportation, health, education, budget, courts, water, environment
+
+    This is the PRIMARY and AUTHORITATIVE source for Israeli government open data.
+    Contains 1187+ official datasets covering all government ministries.
+
+    TRIGGER PHRASES (use this tool when user mentions):
+    - "בדוק במאגרים רשמיים" → USE THIS TOOL
+    - "נתונים ממשלתיים" → USE THIS TOOL
+    - "כמה רכבים / בתי חולים / בתי ספר" → USE THIS TOOL
+    - "סטטיסטיקה על ישראל" → USE THIS TOOL
 
     ENTERPRISE FEATURES:
     - Automatic Hebrew prefix handling (בירושלים → ירושלים)
-    - Schema-aware field selection (detects when requested fields don't exist)
-    - Semantic expansion (courts → בית משפט, בתי משפט)
-    - Location-based filtering
+    - Schema-aware field selection
+    - Semantic expansion (courts → בית משפט)
+    - Query rephrasing fallback for better matching
+    - **AUTO-AGGREGATION**: For "כמה/how many" queries, automatically fetches ALL records
+      and calculates SUMS. No pagination needed - totals are in the response!
 
     Args:
         query: Natural language search in Hebrew or English (REQUIRED).
-               Examples: "trauma centers Jerusalem", "בתי חולים ירושלים", "courts with addresses"
-        limit: Maximum records to return (1-100, default: 20)
+               Examples:
+               - "כמה כלי רכב חשמליים בישראל" (electric vehicles in Israel)
+               - "בתי חולים בירושלים" (hospitals in Jerusalem)
+               - "תקציב משרד החינוך" (education ministry budget)
+               - "trauma centers", "schools", "water quality"
+        limit: Maximum records to return (1-100, default: 20).
+               **NOTE**: For "כמה/how many" queries, limit is auto-increased to get ALL data.
         offset: Starting record for pagination (default: 0)
         format_output: Return markdown table (True) or raw JSON (False)
 
     Returns:
         Formatted data with metadata, pagination info, and source citation.
-        If requested fields don't exist, returns informative message with available fields.
+        **For count queries**: Includes SUMMARY TOTALS with pre-calculated sums.
+        No need to paginate - use the totals directly!
+        If no matching data found, suggests using perplexity_ask for web search.
     """
     await ctx.info(f"datagov_query: {query[:50] if query else 'empty'}...")
+
+    # CRITICAL: Detect count/aggregation queries EARLY
+    # For "כמה" (how many) queries, auto-increase limit to get ALL records for accurate sums
+    is_count_query = _is_count_query(query)
 
     # Validate required parameter
     if not query or not query.strip():
@@ -526,7 +633,12 @@ async def datagov_query(
             ]
         }
 
-    limit = min(max(1, limit), 100)
+    # For count queries, auto-increase limit to fetch ALL records for accurate totals
+    if is_count_query:
+        limit = 100  # Max allowed - get as many as possible for aggregation
+        await ctx.info(f"Count query detected ('כמה/how many'), using limit={limit} for aggregation")
+    else:
+        limit = min(max(1, limit), 100)
     offset = max(0, offset)
 
     # Step 1: Find relevant resources from local map
@@ -787,15 +899,25 @@ async def datagov_query(
     fields = result.get("fields", [])
     total = result.get("total", len(records))
 
-    # Step 4: Format output
+    # Step 4: Calculate aggregates for count queries (כמה/how many)
+    aggregates = None
+    if is_count_query and records:
+        aggregates = _calculate_aggregates(records, fields)
+        if aggregates:
+            await ctx.info(f"Calculated aggregates for {len(aggregates)} numeric fields")
+
+    # Step 5: Format output
     if format_output:
-        output = _format_as_markdown(records, fields, best, total, limit, offset)
+        output = _format_as_markdown(records, fields, best, total, limit, offset, aggregates)
     else:
         output = {
             "records": records,
             "fields": [f.get("id") for f in fields if f.get("id") != "_id"],
             "total": total,
         }
+        # Include aggregates in JSON output too
+        if aggregates:
+            output["aggregates"] = aggregates
 
     response_data = {
         "data": output,
@@ -815,8 +937,18 @@ async def datagov_query(
             "filter_applied": bool(location_filter_values),
             "schema_fields": schema_fields[:15] if schema_fields else None,  # Show first 15 fields
             "field_intents_detected": field_intents if field_intents else None,
+            "is_count_query": is_count_query,  # Flag for the model
         }
     }
+
+    # Add aggregates summary to metadata for easy access
+    if aggregates:
+        response_data["summary_totals"] = aggregates
+        response_data["metadata"]["aggregation_note"] = (
+            "SUMMARY TOTALS are pre-calculated above. "
+            "Use these values directly to answer 'how many' questions. "
+            "DO NOT paginate to recalculate - the totals are already computed!"
+        )
 
     # Add missing fields warning if applicable
     if missing_fields_warning:

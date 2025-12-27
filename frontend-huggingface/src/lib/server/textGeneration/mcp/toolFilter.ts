@@ -1,5 +1,10 @@
 import type { OpenAiTool } from "$lib/server/mcp/tools";
-import { detectHebrewIntent } from "../utils/hebrewIntentDetector";
+import {
+	detectHebrewIntent,
+	getBestPerplexityTool,
+	scorePerplexityTools,
+	type PerplexityTool,
+} from "../utils/hebrewIntentDetector";
 
 /**
  * Maximum number of tools to send to the model.
@@ -86,23 +91,49 @@ const toolFilterCache = new ToolFilterCache();
  * Tools in matching categories will be prioritized.
  * Includes both English and Hebrew keywords for bilingual support.
  */
+/**
+ * Tool name patterns for MCP identification
+ * Used for graceful error handling and intent-based filtering
+ */
+const TOOL_PATTERNS = {
+	perplexity: /^perplexity[_-]/i,
+	tavily: /^tavily[_-]/i,
+	datagov: /^(datagov|package_|organization_|resource_|datastore_|status_show|license_list)/i,
+} as const;
+
 const TOOL_CATEGORIES: Record<string, { keywords: RegExp; tools: string[] }> = {
-	research: {
-		// English + Hebrew: search, find, research, information, news, buy, price, compare, recommend, best
-		keywords:
-			/\b(search|find|research|look up|what is|who is|how to|why|explain|information|news|article|latest|current|today|buy|purchase|price|compare|review|market|recommend|best|top|popular)\b|חפש|חיפוש|מצא|מחקר|מידע|חדשות|מאמר|עדכני|היום|קנה|לקנות|מחיר|השווה|השוואה|ביקורת|שוק|המלצה|הטוב ביותר|פופולרי|מה זה|מי זה|איך|למה|הסבר/i,
+	// DEEP RESEARCH: Perplexity-only (מחקר, research, deep dive)
+	// Tavily is explicitly EXCLUDED for research intent
+	deepResearch: {
+		keywords: /\b(research|deep dive|in-depth|comprehensive|analyze)\b|מחקר|לחקור|ניתוח מעמיק/i,
 		tools: [
-			"perplexity_search",
-			"perplexity_ask",
-			"perplexity_research",
-			"perplexity_reason",
+			"perplexity-ask",
+			"perplexity-search",
+			"perplexity-research",
+			"perplexity-reason",
+		],
+	},
+	// SIMPLE SEARCH: Tavily (חפש, search, find)
+	simpleSearch: {
+		keywords: /\b(search|find|look up|what is|who is)\b|חפש|חיפוש|מצא/i,
+		tools: [
 			"tavily-search",
 			"tavily-extract",
-			"tavily_search",
-			"tavily_extract",
-			"tavily_context",
-			"tavily_qna",
 			"tavily-map",
+			"fetch",
+		],
+	},
+	// GENERAL INFO: Perplexity preferred (info, news, explain, etc.)
+	// NOTE: Tavily is NOT included here - use simpleSearch category for Tavily
+	research: {
+		// English + Hebrew: information, news, buy, price, compare, recommend, best
+		keywords:
+			/\b(how to|why|explain|information|news|article|latest|current|today|buy|purchase|price|compare|review|market|recommend|best|top|popular)\b|מידע|חדשות|מאמר|עדכני|היום|קנה|לקנות|מחיר|השווה|השוואה|ביקורת|שוק|המלצה|הטוב ביותר|פופולרי|מה זה|מי זה|איך|למה|הסבר/i,
+		tools: [
+			"perplexity-ask",
+			"perplexity-search",
+			"perplexity-research",
+			"perplexity-reason",
 			"search", // Context7
 			"fetch",
 		],
@@ -211,8 +242,9 @@ const TOOL_CATEGORIES: Record<string, { keywords: RegExp; tools: string[] }> = {
 	datagov: {
 		// English + Hebrew: Israeli government data, data.gov.il, ministries, statistics, public data
 		// Matches: datagov, data.gov, government data, ministry of health, census, hospitals, budget, etc.
+		// CRITICAL: Include "מאגרים רשמיים" (official repositories) - explicit user request for government data
 		keywords:
-			/\b(datagov|data\.gov|data gov|government data|public data|open data|ckan|israel data|census|statistics|ministry|health data|education data|budget data|hospitals?|trauma|medical|centers?|jerusalem|israel)\b|נתונים ממשלתיים|נתונים פתוחים|מידע ממשלתי|לשכת הסטטיסטיקה|משרד הבריאות|משרד החינוך|מאגר מידע|דאטהגוב|ממשלתי|תקציב|בריאות|חינוך|סטטיסטיקה|מרכז טראומה|בית חולים|בתי חולים|מוסדות|רישוי|עסקים|רשויות|עיריות|ירושלים/i,
+			/\b(datagov|data\.gov|data gov|government data|public data|open data|official data|official repo|ckan|israel data|census|statistics|ministry|health data|education data|budget data|hospitals?|trauma|medical|centers?|jerusalem|israel|electric vehicles?|EV|vehicles?)\b|מאגר(?:ים)?\s*רשמי|נתונים\s*רשמי|נתונים ממשלתיים|נתונים פתוחים|מידע ממשלתי|לשכת הסטטיסטיקה|משרד הבריאות|משרד החינוך|משרד התחבורה|מאגר מידע|דאטהגוב|ממשלתי|תקציב|בריאות|חינוך|סטטיסטיקה|מרכז טראומה|בית חולים|בתי חולים|מוסדות|רישוי|עסקים|רשויות|עיריות|ירושלים|רכב חשמלי|רכבים חשמליים|כלי רכב|כמה רכבים|מספר רכבים/i,
 		tools: [
 			// Primary unified tool
 			"datagov_query",
@@ -243,14 +275,15 @@ const TOOL_CATEGORIES: Record<string, { keywords: RegExp; tools: string[] }> = {
  */
 const TOOL_PRIORITIES: Record<string, number> = {
 	sequentialthinking: 95,
-	perplexity_ask: 100,
-	perplexity_search: 100,
-	perplexity_research: 100,
-	perplexity_reason: 100,
-	tavily_search: 90,
+	// Perplexity tools (hyphen format - MCP standard)
+	"perplexity-ask": 100,
+	"perplexity-search": 100,
+	"perplexity-research": 100,
+	"perplexity-reason": 100,
+	// Tavily tools (hyphen format - MCP standard)
 	"tavily-search": 90,
-	tavily_extract: 90,
 	"tavily-extract": 90,
+	"tavily-map": 85,
 	"get-video-info-for-summary-from-url": 90,
 	// DataGov tools - datagov_query is PRIMARY (highest priority)
 	datagov_query: 95,
@@ -287,6 +320,61 @@ const TOOL_PRIORITIES: Record<string, number> = {
  * which overwhelms quantized models.
  */
 const ALWAYS_INCLUDE: string[] = [];
+
+/**
+ * Maps PerplexityTool type to both underscore and hyphen variants
+ * MCP tools use hyphens, but model might generate underscores
+ */
+const PERPLEXITY_TOOL_VARIANTS: Record<PerplexityTool, string[]> = {
+	perplexity_ask: ["perplexity_ask", "perplexity-ask"],
+	perplexity_search: ["perplexity_search", "perplexity-search"],
+	perplexity_research: ["perplexity_research", "perplexity-research"],
+	perplexity_reason: ["perplexity_reason", "perplexity-reason"],
+};
+
+/**
+ * Selects the single best Perplexity tool based on intelligent scoring.
+ * Removes all other Perplexity tools from the filtered list.
+ * Preserves non-Perplexity tools in their original order.
+ */
+function selectBestPerplexityTool(
+	allTools: OpenAiTool[],
+	userQuery: string,
+	currentFiltered: OpenAiTool[]
+): OpenAiTool[] {
+	// Get the best tool based on scoring
+	const scores = scorePerplexityTools(userQuery);
+	const bestTool = scores[0];
+
+	console.log(`[tool-filter] Perplexity scoring for query: "${userQuery.slice(0, 50)}..."`);
+	console.log(`[tool-filter] Scores: ${JSON.stringify(scores.map((s) => ({ tool: s.tool, score: s.score, signals: s.matchedSignals })))}`);
+	console.log(`[tool-filter] Selected: ${bestTool.tool} (score: ${bestTool.score}, signals: ${bestTool.matchedSignals.join(", ")})`);
+
+	// Get the valid name variants for the best tool
+	const validNames = PERPLEXITY_TOOL_VARIANTS[bestTool.tool] || [bestTool.tool];
+
+	// Find the actual tool in allTools (handles both underscore and hyphen formats)
+	const selectedPerplexityTool = allTools.find((t) =>
+		validNames.some((name) => t.function.name.toLowerCase() === name.toLowerCase())
+	);
+
+	if (!selectedPerplexityTool) {
+		console.warn(`[tool-filter] Best Perplexity tool ${bestTool.tool} not found in available tools`);
+		// Fallback: remove all Perplexity tools and keep others
+		return currentFiltered.filter((t) => !TOOL_PATTERNS.perplexity.test(t.function.name));
+	}
+
+	// Remove ALL Perplexity tools from filtered, then add only the best one at the front
+	const nonPerplexityTools = currentFiltered.filter((t) => !TOOL_PATTERNS.perplexity.test(t.function.name));
+
+	// Also remove Tavily to prevent confusion when Perplexity is selected
+	const withoutTavily = nonPerplexityTools.filter((t) => !TOOL_PATTERNS.tavily.test(t.function.name));
+
+	const result = [selectedPerplexityTool, ...withoutTavily];
+	console.log(`[tool-filter] Final Perplexity selection: ${selectedPerplexityTool.function.name}, total tools: ${result.length}`);
+
+	return result;
+}
 
 /**
  * Filters tools based on user query intent to reduce grammar complexity.
@@ -331,23 +419,42 @@ export function filterToolsByIntent(
 
 	const hebrewIntent = detectHebrewIntent(userQuery);
 	if (hebrewIntent) {
-		let preferredTools: OpenAiTool[] = [];
-		if (hebrewIntent === "research") {
-			// User explicitly wants "Deep Research" -> Perplexity
-			preferredTools = allTools.filter((t) => t.function.name.toLowerCase().includes("perplexity"));
-		} else if (hebrewIntent === "search") {
-			// User explicitly wants "Search" -> Tavily
-			preferredTools = allTools.filter((t) => t.function.name.toLowerCase().includes("tavily"));
-		}
+		console.log(`[tool-filter] Hebrew intent detected: ${hebrewIntent}`);
 
-		if (preferredTools.length > 0) {
-			const preferredNames = new Set(preferredTools.map((t) => t.function.name));
-			// Keep tools that are NOT in preferred (to avoid dupes)
-			// 'others' are already sorted by priority from above
-			const others = filtered.filter((t) => !preferredNames.has(t.function.name));
-			// Put preferred first
-			filtered = [...preferredTools, ...others];
+		if (hebrewIntent === "official_data") {
+			// User explicitly wants official Israeli government data -> DataGov ONLY
+			// EXCLUDE all other search tools to prevent model confusion
+			const datagovTools = allTools.filter((t) =>
+				t.function.name === "datagov_query" ||
+				TOOL_PATTERNS.datagov.test(t.function.name)
+			);
+			if (datagovTools.length > 0) {
+				filtered = datagovTools;
+				console.log(`[tool-filter] Official data: filtered to ${datagovTools.length} DataGov tools`);
+			}
+		} else if (hebrewIntent === "research") {
+			// User explicitly wants "Deep Research" (מחקר) -> Single BEST Perplexity tool
+			// Use intelligent scoring to pick the most appropriate tool
+			filtered = selectBestPerplexityTool(allTools, userQuery, filtered);
+		} else if (hebrewIntent === "search") {
+			// User explicitly wants "Simple Search" (חפש) -> Tavily preferred
+			const tavilyTools = allTools.filter((t) =>
+				TOOL_PATTERNS.tavily.test(t.function.name)
+			);
+			if (tavilyTools.length > 0) {
+				const tavilyNames = new Set(tavilyTools.map((t) => t.function.name));
+				const others = filtered.filter((t) => !tavilyNames.has(t.function.name));
+				filtered = [...tavilyTools, ...others];
+				console.log(`[tool-filter] Search intent: Tavily-first (${tavilyTools.length} tools)`);
+			}
 		}
+	}
+
+	// INTELLIGENT PERPLEXITY SELECTION: If we have multiple Perplexity tools, pick only the best one
+	// This prevents model confusion and ensures accurate tool selection
+	const perplexityInFiltered = filtered.filter((t) => TOOL_PATTERNS.perplexity.test(t.function.name));
+	if (perplexityInFiltered.length > 1) {
+		filtered = selectBestPerplexityTool(allTools, userQuery, filtered);
 	}
 
 	// If we still have no tools after filtering, take the first MAX_TOOLS from research
@@ -385,4 +492,44 @@ export function extractUserQuery(messages: Array<{ from?: string; content?: stri
 
 export function clearToolFilterCache(): void {
 	toolFilterCache.clear();
+}
+
+/**
+ * Identifies which MCP server a tool belongs to based on name pattern.
+ * Used for graceful error handling when tool is not found.
+ * Returns null if tool pattern is unknown.
+ */
+export function identifyToolMcp(toolName: string): { mcpName: string; displayName: string } | null {
+	const name = toolName.toLowerCase();
+
+	if (TOOL_PATTERNS.perplexity.test(name)) {
+		return { mcpName: "perplexity", displayName: "Perplexity AI" };
+	}
+	if (TOOL_PATTERNS.tavily.test(name)) {
+		return { mcpName: "Tavily", displayName: "Tavily Search" };
+	}
+	if (TOOL_PATTERNS.datagov.test(name)) {
+		return { mcpName: "DataGov", displayName: "Israel Government Data (data.gov.il)" };
+	}
+	// Add more patterns as needed
+	if (/^(read_file|write_file|edit_file|list_directory|create_directory)/i.test(name)) {
+		return { mcpName: "filesystem", displayName: "Filesystem" };
+	}
+	if (/^git_/i.test(name)) {
+		return { mcpName: "git", displayName: "Git" };
+	}
+	if (/^(docker_|list_containers|run_container)/i.test(name)) {
+		return { mcpName: "docker", displayName: "Docker" };
+	}
+	if (/^(get_current_time|convert_time)/i.test(name)) {
+		return { mcpName: "time", displayName: "Time" };
+	}
+	if (/^sequentialthinking$/i.test(name)) {
+		return { mcpName: "sequential-thinking", displayName: "Sequential Thinking" };
+	}
+	if (/^fetch$/i.test(name)) {
+		return { mcpName: "fetch", displayName: "Web Fetch" };
+	}
+
+	return null;
 }
