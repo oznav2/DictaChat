@@ -49,6 +49,9 @@ tasks
 .deployment_state
 response_content.txt
 _pycache_
+__pycache__
+.models/
+BAAI/
 
 frontend-huggingface/CONFIG_MOVED.md
 frontend-huggingface/HOT_RELOAD.md

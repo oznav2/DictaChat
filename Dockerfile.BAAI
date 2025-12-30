@@ -1,0 +1,67 @@
+# Stage 1: Builder
+FROM nvidia/cuda:12.4.1-runtime-ubuntu22.04 AS builder
+
+ARG POETRY_INSTALL_ARGS=""
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install Python and pip
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip \
+    python3-venv \
+    libgomp1 \
+    libstdc++6 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install poetry
+RUN pip3 install --no-cache-dir poetry==2.0.0
+
+ENV POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_IN_PROJECT=1 \
+    POETRY_VIRTUALENVS_CREATE=1 \
+    POETRY_CACHE_DIR=/tmp/poetry_cache
+
+WORKDIR /app
+
+COPY BAAI/pyproject.toml ./
+
+# Install dependencies (including llama-cpp-python wheel)
+RUN poetry install ${POETRY_INSTALL_ARGS} --without dev --no-root \
+    && rm -rf "$POETRY_CACHE_DIR"
+
+COPY BAAI/src ./src
+
+# Stage 2: Runtime
+FROM nvidia/cuda:12.4.1-runtime-ubuntu22.04 AS runtime
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    VIRTUAL_ENV=/app/.venv \
+    PATH="/app/.venv/bin:$PATH" \
+    PYTHONPATH=/app/src
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-venv \
+    libgomp1 \
+    libstdc++6 \
+    curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd -r appuser && useradd -r -g appuser appuser \
+    && mkdir -p /home/appuser \
+    && chown -R appuser:appuser /home/appuser
+
+WORKDIR /app
+
+COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+COPY --from=builder /app/src ./src
+
+# Copy startup script from workspace root
+COPY start_embeddings.sh /app/start_embeddings.sh
+RUN chmod +x /app/start_embeddings.sh && chown -R appuser:appuser /app
+
+EXPOSE 5005 5006
+
+ENTRYPOINT ["/app/start_embeddings.sh"]

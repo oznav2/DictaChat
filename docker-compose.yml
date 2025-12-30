@@ -207,12 +207,13 @@ services:
       - LLM_ROUTER_ENABLE_TOOLS=true
       - LLM_ROUTER_TOOLS_MODEL=DictaLM-3.0-24B-Thinking.i1-Q4_K_M.gguf
       - 'MODELS=[{"id":"DictaLM-3.0-24B-Thinking.i1-Q4_K_M.gguf","name":"DictaLM 3.0 24B","endpoints":[{"type":"openai","baseURL":"http://bricksllm:8002/api/custom/providers/llama-cpp-root"}],"supportsTools":true}]'
-      - 'MCP_SERVERS=[{"name":"Everything","url":"http://mcp-sse-proxy:3100/everything/sse"},{"name":"Context7","url":"https://mcp.context7.com/mcp"},{"name":"Docker","url":"http://mcp-sse-proxy:3100/docker/sse"},{"name":"Sequential Thinking","url":"http://mcp-sse-proxy:3100/sequential-thinking/sse"},{"name":"Git","url":"http://mcp-sse-proxy:3100/git/sse"},{"name":"Fetch","url":"http://mcp-sse-proxy:3100/fetch/sse"},{"name":"Time","url":"http://mcp-sse-proxy:3100/time/sse"},{"name":"Memory","url":"http://mcp-sse-proxy:3100/memory/sse"},{"name":"Filesystem","url":"http://mcp-sse-proxy:3100/filesystem/sse"},{"name":"Perplexity","url":"http://mcp-sse-proxy:3100/perplexity/sse"},{"name":"Tavily Search","url":"http://mcp-sse-proxy:3100/Tavily/sse"},{"name":"YouTube Summarizer","url":"http://mcp-sse-proxy:3100/youtube-video-summarizer/sse"},{"name":"DataGov Israel","url":"http://mcp-sse-proxy:3100/datagov/sse"}]'
+      - 'MCP_SERVERS=[{"name":"Everything","url":"http://mcp-sse-proxy:3100/everything/sse"},{"name":"Context7","url":"https://mcp.context7.com/mcp"},{"name":"Docker","url":"http://mcp-sse-proxy:3100/docker/sse"},{"name":"Sequential Thinking","url":"http://mcp-sse-proxy:3100/sequential-thinking/sse"},{"name":"Git","url":"http://mcp-sse-proxy:3100/git/sse"},{"name":"Fetch","url":"http://mcp-sse-proxy:3100/fetch/sse"},{"name":"Time","url":"http://mcp-sse-proxy:3100/time/sse"},{"name":"Memory","url":"http://mcp-sse-proxy:3100/memory/sse"},{"name":"Filesystem","url":"http://mcp-sse-proxy:3100/filesystem/sse"},{"name":"Perplexity","url":"http://mcp-sse-proxy:3100/perplexity/sse"},{"name":"Tavily Search","url":"http://mcp-sse-proxy:3100/Tavily/sse"},{"name":"YouTube Summarizer","url":"http://mcp-sse-proxy:3100/youtube-video-summarizer/sse"},{"name":"DataGov Israel","url":"http://mcp-sse-proxy:3100/datagov/sse"},{"name":"Docling","url":"http://mcp-sse-proxy:3100/docling/sse"}]'
     ports:
       - "8004:3000"
     volumes:
       - ./frontend-huggingface:/app
       - /app/node_modules
+      - mcp_uploads:/app/uploads
     depends_on:
       - mongo
       - mcp-sse-proxy
@@ -242,6 +243,9 @@ services:
       # DataGov MCP code and cache
       - ./datagov:/app/datagov
       - ./datagov/cache:/app/data/datagov
+      # Docling MCP code and cache
+      - ./docling_mcp:/app/docling_mcp
+      - docling_mcp_cache:/app/data/docling
     environment:
       - PORT=3100
       - CONFIG_PATH=/app/config/servers.json
@@ -257,6 +261,112 @@ services:
       timeout: 10s
       retries: 3
       start_period: 20s
+    networks:
+      - bricksllm-network
+
+  docling:
+    env_file: .env
+    healthcheck:
+      interval: 300s
+      retries: 5
+      start_period: 10s
+      test: curl --fail http://localhost:5001/health || exit 1
+      timeout: 5s
+    image: quay.io/docling-project/docling-serve-cu128
+    container_name: dicta-docling
+    ports:
+      - 5001:5001
+    expose:
+      - 5001
+    volumes:
+      - docling-cache:/root/.cache/docling
+      - ./docling/gradio_ui.py:/opt/app-root/src/docling_serve/gradio_ui.py:ro
+      - ./docling/Hebrew.traineddata:/root/.cache/docling/tessdata/Hebrew.traineddata
+      - ./docling/tesseract:/app/tesseract_custom
+      - ./UPLOADED_FILES:/opt/app-root/src/docling_serve/uploaded_files
+      # Shared volume for frontend uploads - enables Docling to access files via MCP
+      - mcp_uploads:/app/uploads
+    environment:
+      - DOCLING_SERVE_ENABLE_UI=true
+      - NVIDIA_VISIBLE_DEVICES=all
+      - DOCLING_SERVE_ENABLE_REMOTE_SERVICES=true
+      - OMP_NUM_THREADS=24
+      - MKL_NUM_THREADS=24
+      - OPENBLAS_NUM_THREADS=24
+      - NUMBA_NUM_THREADS=24
+      - PYTORCH_NUM_THREADS=24
+      - TF_NUM_INTRAOP_THREADS=24
+      - TF_NUM_INTEROP_THREADS=2
+      - DOCLING_SERVE_MAX_SYNC_WAIT=1800
+      - DOCLING_SERVE_TIMEOUT=3600
+      - UVICORN_TIMEOUT_KEEP_ALIVE=65
+      - UVICORN_TIMEOUT_GRACEFUL_SHUTDOWN=30
+      - GRADIO_MCP_SERVER=true
+      - MAX_FILE_SIZE=${MAX_FILE_SIZE}
+      - MAX_NUM_PAGES=${MAX_NUM_PAGES}
+      - TESSDATA_PREFIX=/root/.cache/docling/tessdata
+    runtime: nvidia
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+    networks:
+      - bricksllm-network
+
+  dicta-retrieval:
+    build:
+      context: .
+      dockerfile: Dockerfile.BAAI
+      args:
+        - POETRY_INSTALL_ARGS=
+    container_name: dicta-retrieval
+    hostname: dicta-retrieval
+    environment:
+      - FASTAPI_HOST=0.0.0.0
+      - FASTAPI_PORT=5005
+      - RERANKING_PORT=5006
+      - LOG_LEVEL=INFO
+      - DEVICE=cuda
+      - MODEL_IDLE_TIMEOUT=60
+      - USE_FP16=true
+      - EMBEDDING_MODEL_NAME=${EMBEDDINGS_MODEL_PATH:-/app/models/embeddings/bge-m3-f16.gguf}
+      - RERANKER_MODEL_NAME=${RERANKER_MODEL_NAME:-/app/models/reranking/bge-reranker-v2-m3-q8_0.gguf}
+      - EMBEDDINGS_MODEL_CTX_SIZE=${EMBEDDINGS_MODEL_CTX_SIZE:-8192}
+      - EMBEDDINGS_MODEL_BATCH_SIZE=${EMBEDDINGS_MODEL_BATCH_SIZE:-512}
+      - EMBEDDINGS_MODEL_UBATCH_SIZE=${EMBEDDINGS_MODEL_UBATCH_SIZE:-128}
+      - EMBEDDINGS_MODEL_THREADS=${EMBEDDINGS_MODEL_THREADS:-8}
+      - EMBEDDINGS_MODEL_N_GPU_LAYERS=${EMBEDDINGS_MODEL_N_GPU_LAYERS:--1}
+      - EMBEDDINGS_MODEL_MAIN_GPU=${EMBEDDINGS_MODEL_MAIN_GPU:-0}
+      - RERANKER_MODEL_CTX_SIZE=${RERANKER_MODEL_CTX_SIZE:-8192}
+      - RERANKER_MODEL_BATCH_SIZE=${RERANKER_MODEL_BATCH_SIZE:-512}
+      - RERANKER_MODEL_UBATCH_SIZE=${RERANKER_MODEL_UBATCH_SIZE:-128}
+      - RERANKER_MODEL_THREADS=${RERANKER_MODEL_THREADS:-8}
+      - RERANKER_MODEL_N_GPU_LAYERS=${RERANKER_MODEL_N_GPU_LAYERS:--1}
+      - RERANKER_MODEL_MAIN_GPU=${RERANKER_MODEL_MAIN_GPU:-0}
+    ports:
+      - "5005:5005"
+      - "5006:5006"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "sh", "-c", "curl -f http://localhost:5005/health && curl -f http://localhost:5006/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    volumes:
+      - ./.models:/app/models
+    runtime: nvidia
     networks:
       - bricksllm-network
 
@@ -285,4 +395,8 @@ volumes:
   mcp_uploads:
     driver: local
   mcp_sandbox:
+    driver: local
+  docling-cache:
+    driver: local
+  docling_mcp_cache:
     driver: local

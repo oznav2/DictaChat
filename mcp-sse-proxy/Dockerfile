@@ -15,6 +15,11 @@ RUN apk add --no-cache python3 py3-pip curl git docker-cli && \
 RUN uv venv /opt/datagov-venv && \
     uv pip install --python /opt/datagov-venv "fastmcp>=2.8.1" "requests>=2.32.4" "curl_cffi>=0.5.10"
 
+# Prebuild a dedicated Python venv for Docling MCP and install core deps
+# Use fastmcp (same as datagov) for consistency
+RUN uv venv /opt/docling-venv && \
+    uv pip install --python /opt/docling-venv "fastmcp>=2.8.1" "httpx>=0.27.0" "aiofiles>=23.0.0"
+
 WORKDIR /app
 
 # Copy package files and install Node.js dependencies

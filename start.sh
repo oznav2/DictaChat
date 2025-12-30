@@ -38,6 +38,12 @@ if ! python -c "import rich" &> /dev/null; then
     pip install rich requests
 fi
 
+# Install requirements (Docling) if not installed
+if ! python -c "import docling" &> /dev/null; then
+    echo "Installing required Python packages (docling)..."
+    pip install docling
+fi
+
 # Pass control to the Python deployment script
 # Use the venv python explicitly to avoid system python issues
 "$VENV_DIR/bin/python" deploy.py "$@"

@@ -892,6 +892,155 @@ const TOOL_SCHEMAS: ToolSchema[] = [
 	},
 
 	// =========================================================================
+	// DOCLING TOOLS (Document Processing)
+	// =========================================================================
+	{
+		patterns: [/^docling[_-]?convert$/i, /^convert[_-]?document$/i],
+		parameters: [
+			{
+				name: "file_path",
+				type: "string",
+				aliases: ["path", "file", "document", "source", "קובץ", "מסמך", "נתיב"],
+				required: true,
+				transform: "toString",
+				description: "Path to the document file",
+			},
+			{
+				name: "format",
+				type: "string",
+				aliases: ["output", "output_format", "type", "פורמט", "סוג"],
+				default: "markdown",
+				enum: ["markdown", "json", "text", "html"],
+				transform: "toString",
+				description: "Output format",
+			},
+			{
+				name: "ocr_enabled",
+				type: "boolean",
+				aliases: ["ocr", "scan", "recognize", "סריקה", "זיהוי"],
+				default: true,
+				transform: "toBoolean",
+				description: "Enable OCR for scanned documents",
+			},
+		],
+	},
+	{
+		patterns: [/^docling[_-]?convert[_-]?url$/i],
+		parameters: [
+			{
+				name: "url",
+				type: "string",
+				aliases: ["link", "source", "קישור", "כתובת"],
+				required: true,
+				transform: "toString",
+				description: "URL of the document",
+			},
+			{
+				name: "format",
+				type: "string",
+				aliases: ["output", "output_format", "פורמט"],
+				default: "markdown",
+				enum: ["markdown", "json", "text"],
+				transform: "toString",
+			},
+			{
+				name: "ocr_enabled",
+				type: "boolean",
+				aliases: ["ocr", "scan"],
+				default: true,
+				transform: "toBoolean",
+			},
+		],
+	},
+	{
+		patterns: [/^docling[_-]?extract[_-]?tables$/i, /^extract[_-]?tables$/i],
+		parameters: [
+			{
+				name: "file_path",
+				type: "string",
+				aliases: ["path", "file", "document", "קובץ", "מסמך"],
+				required: true,
+				transform: "toString",
+			},
+			{
+				name: "output_format",
+				type: "string",
+				aliases: ["format", "type", "פורמט"],
+				default: "json",
+				enum: ["json", "csv", "markdown"],
+				transform: "toString",
+			},
+		],
+	},
+	{
+		patterns: [/^docling[_-]?extract[_-]?images$/i],
+		parameters: [
+			{
+				name: "file_path",
+				type: "string",
+				aliases: ["path", "file", "document", "קובץ"],
+				required: true,
+				transform: "toString",
+			},
+			{
+				name: "classify",
+				type: "boolean",
+				aliases: ["classification", "סיווג"],
+				default: true,
+				transform: "toBoolean",
+			},
+		],
+	},
+	{
+		patterns: [/^docling[_-]?ocr$/i, /^ocr$/i],
+		parameters: [
+			{
+				name: "file_path",
+				type: "string",
+				aliases: ["path", "file", "image", "קובץ", "תמונה"],
+				required: true,
+				transform: "toString",
+			},
+			{
+				name: "language",
+				type: "string",
+				aliases: ["lang", "languages", "שפה", "שפות"],
+				default: "heb+eng",
+				enum: ["heb", "eng", "ara", "heb+eng", "ara+heb+eng"],
+				transform: "toString",
+			},
+		],
+	},
+	{
+		patterns: [/^docling[_-]?status$/i],
+		parameters: [
+			{
+				name: "task_id",
+				type: "string",
+				aliases: ["id", "job_id", "task"],
+				required: true,
+				transform: "toString",
+			},
+		],
+	},
+	{
+		patterns: [/^docling[_-]?list[_-]?formats$/i],
+		parameters: [],
+	},
+	{
+		patterns: [/^docling[_-]?analyze$/i],
+		parameters: [
+			{
+				name: "file_path",
+				type: "string",
+				aliases: ["path", "file", "document", "קובץ"],
+				required: true,
+				transform: "toString",
+			},
+		],
+	},
+
+	// =========================================================================
 	// EVERYTHING TOOLS (demo/test)
 	// =========================================================================
 	{

@@ -416,10 +416,149 @@ def wait_for_model_loading():
         console.print("[dim]The service might still be loading in the background.[/]")
         return False
 
+def deploy_docling_verbose():
+    console.print("\n[info]Initializing Docling Service...[/]")
+    
+    # 1. Check if container is already running and healthy
+    inspect = subprocess.run(
+        ["docker", "inspect", "--format", "{{.State.Status}}", "dicta-docling"],
+        capture_output=True,
+        text=True
+    )
+    if inspect.returncode == 0 and inspect.stdout.strip() == "running":
+        console.print("[success]✔ Docling service is already running[/]")
+        return
+
+    # 2. Start docling specifically
+    subprocess.run(["docker", "compose", "up", "-d", "docling"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    
+    # 3. Monitor logs for downloads OR immediate readiness
+    console.print("[dim]Scanning Docling logs...[/]")
+    try:
+        process = subprocess.Popen(
+            ["docker", "logs", "-f", "dicta-docling"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1
+        )
+        
+        start_time = time.time()
+        download_patterns = [
+            "Downloading layout model",
+            "Downloading tableformer model",
+            "Downloading picture classifier model",
+            "Downloading code formula model",
+            "Downloading easyocr models"
+        ]
+        
+        is_downloading = False
+        
+        while True:
+            line = process.stdout.readline()
+            if not line:
+                break
+            
+            line_str = line.strip()
+            
+            # Check for download patterns
+            if any(p in line_str for p in download_patterns):
+                 if not is_downloading:
+                     console.print("[cyan]⬇ Downloading Docling models...[/]")
+                     is_downloading = True
+                 console.print(f"[cyan]  {line_str}[/]")
+            
+            # Rewrite 0.0.0.0 to localhost for user-friendly output
+            if "http://0.0.0.0:5001" in line_str:
+                line_str = line_str.replace("http://0.0.0.0:5001", "http://localhost:5001")
+                console.print(f"[dim]  {line_str}[/]")
+
+            # Break on startup success
+            if "Application startup complete" in line_str or "Uvicorn running on" in line_str:
+                console.print("[success]✔ Docling models deployed to container[/]")
+                console.print("[success]✔ Docling service ready![/]")
+                process.terminate()
+                break
+            
+            # Timeout (120s)
+            if time.time() - start_time > 120:
+                process.terminate()
+                console.print("[warning]⚠ Docling startup monitoring timed out (service might still be loading)[/]")
+                break
+    except Exception as e:
+        console.print(f"[warning]⚠ Could not monitor docling logs: {e}[/]")
+
+def deploy_retrieval_verbose():
+    console.print("\n[info]Initializing Retrieval Services (Embeddings & Reranker)...[/]")
+    
+    # 1. Check if container is already running and healthy
+    inspect = subprocess.run(
+        ["docker", "inspect", "--format", "{{.State.Status}}", "dicta-retrieval"],
+        capture_output=True,
+        text=True
+    )
+    if inspect.returncode == 0 and inspect.stdout.strip() == "running":
+        console.print("[success]✔ Retrieval service is already running[/]")
+        return
+
+    # 2. Start retrieval specifically
+    subprocess.run(["docker", "compose", "up", "-d", "dicta-retrieval"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    
+    # 3. Monitor logs for downloads OR immediate readiness
+    console.print("[dim]Scanning Retrieval logs...[/]")
+    try:
+        process = subprocess.Popen(
+            ["docker", "logs", "-f", "dicta-retrieval"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1
+        )
+        
+        start_time = time.time()
+        
+        while True:
+            line = process.stdout.readline()
+            if not line:
+                break
+            
+            line_str = line.strip()
+            
+            # Filter and style interesting logs
+            if "Starting Embedding Service" in line_str:
+                 console.print("[cyan]📊 Starting Embedding Service (Port 5005)...[/]")
+            elif "Starting Reranking Service" in line_str:
+                 console.print("[cyan]🔄 Starting Reranking Service (Port 5006)...[/]")
+            elif "Loading Embedding routes" in line_str:
+                 console.print("[dim]  Loading Embedding models...[/]")
+            elif "Loading Reranker routes" in line_str:
+                 console.print("[dim]  Loading Reranker models...[/]")
+            
+            # Show "All services running" as success
+            if "All services running!" in line_str:
+                console.print("[success]✔ Retrieval services ready![/]")
+                process.terminate()
+                break
+            
+            # Timeout (120s)
+            if time.time() - start_time > 120:
+                process.terminate()
+                console.print("[warning]⚠ Retrieval startup monitoring timed out (service might still be loading)[/]")
+                break
+                
+    except Exception as e:
+        console.print(f"[warning]⚠ Could not monitor retrieval logs: {e}[/]")
+
 def deploy_services():
     console.print("\n[step]Step 5: Deploying Services...[/]")
     
-    with console.status("[bold green]Starting services with Docker Compose...[/]"):
+    # Deploy Docling first with verbose logs
+    deploy_docling_verbose()
+    
+    # Deploy Retrieval second with verbose logs
+    deploy_retrieval_verbose()
+    
+    with console.status("[bold green]Starting remaining services with Docker Compose...[/]"):
         if subprocess.run(["docker", "compose", "up", "-d"]).returncode == 0:
             console.print("[success]✔ Services started successfully[/]")
         else:
@@ -500,6 +639,9 @@ def main():
         console.print("  • Frontend UI: http://localhost:8004                   • ")
         console.print("  • Admin Panel: http://localhost:8001                   • ")
         console.print("  • MCP Proxy:   http://localhost:3100                   • ")
+        console.print("  • Document Engine UI:  http://localhost:5001/ui                • ")
+        console.print("  • Embedding API:       http://localhost:5005                   • ")
+        console.print("  • Reranking API:       http://localhost:5006                   • ")
         console.print("                                      ")
         console.print("  • Model Configuration (from .env):                     • ")
         console.print("  • Context Size: 32768 tokens (default)                 • ")

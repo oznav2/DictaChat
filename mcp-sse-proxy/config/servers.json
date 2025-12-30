@@ -117,6 +117,20 @@
         "DATAGOV_LOG_PAYLOADS": "true",
         "DATAGOV_PROXY_URL": "${DATAGOV_PROXY_URL}"
       }
+    },
+    "docling": {
+      "type": "stdio",
+      "command": "sh",
+      "args": [
+        "-c",
+        ". /opt/docling-venv/bin/activate && python -m docling_mcp.server"
+      ],
+      "env": {
+        "DOCLING_BASE_URL": "http://dicta-docling:5001",
+        "DOCLING_TIMEOUT_MS": "300000",
+        "DOCLING_CACHE_DIR": "/app/data/docling",
+        "PYTHONIOENCODING": "utf-8"
+      }
     }
   }
 }

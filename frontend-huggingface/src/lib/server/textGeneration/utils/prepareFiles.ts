@@ -41,6 +41,17 @@ export async function prepareMessagesWithFiles(
 	);
 }
 
+// MIME types that Docling can process (need file path, not inline content)
+const DOCLING_MIME_TYPES = [
+	"application/pdf",
+	"application/vnd.openxmlformats-officedocument.wordprocessingml.document", // docx
+	"application/msword", // doc
+	"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // xlsx
+	"application/vnd.ms-excel", // xls
+	"application/vnd.openxmlformats-officedocument.presentationml.presentation", // pptx
+	"application/vnd.ms-powerpoint", // ppt
+];
+
 async function prepareFiles(
 	imageProcessor: ReturnType<typeof makeImageProcessor>,
 	files: MessageFile[],
@@ -50,8 +61,16 @@ async function prepareFiles(
 	textContent: string;
 }> {
 	const imageFiles = files.filter((file) => file.mime.startsWith("image/"));
+
+	// Separate Docling-processable files from regular text files
+	const doclingFiles = files.filter((file) =>
+		DOCLING_MIME_TYPES.includes(file.mime.toLowerCase()) && file.path
+	);
+
 	const textFiles = files.filter((file) => {
 		const mime = (file.mime || "").toLowerCase();
+		// Skip Docling files - they'll be handled separately
+		if (DOCLING_MIME_TYPES.includes(mime)) return false;
 		const [fileType, fileSubtype] = mime.split("/");
 		return TEXT_MIME_ALLOWLIST.some((allowed) => {
 			const [type, subtype] = allowed.toLowerCase().split("/");
@@ -74,14 +93,37 @@ async function prepareFiles(
 	}
 
 	let textContent = "";
+
+	// Add Docling file references (path only, content processed by Docling)
+	if (doclingFiles.length > 0) {
+		const doclingParts = doclingFiles.map((file) =>
+			`<attached_file name="${file.name}" type="${file.mime}" path="${file.path}">\nזהו קובץ מצורף. השתמש בכלי docling_convert עם הנתיב: ${file.path}\nThis is an attached file. Use docling_convert tool with path: ${file.path}\n</attached_file>`
+		);
+		textContent = doclingParts.join("\n\n");
+	}
+
+	// Add image file references with paths for OCR
+	if (imageFiles.length > 0) {
+		const imagePaths = imageFiles
+			.filter((file) => file.path)
+			.map((file) =>
+				`<attached_image name="${file.name}" type="${file.mime}" path="${file.path}">\nלזיהוי טקסט (OCR) השתמש ב-docling_ocr עם הנתיב: ${file.path}\nFor OCR use docling_ocr with path: ${file.path}\n</attached_image>`
+			);
+		if (imagePaths.length > 0) {
+			textContent = textContent + (textContent ? "\n\n" : "") + imagePaths.join("\n\n");
+		}
+	}
+
+	// Add regular text files (inline content)
 	if (textFiles.length > 0) {
 		const textParts = await Promise.all(
 			textFiles.map(async (file) => {
 				const content = Buffer.from(file.value, "base64").toString("utf-8");
-				return `<document name="${file.name}" type="${file.mime}">\n${content}\n</document>`;
+				const pathAttr = file.path ? ` path="${file.path}"` : "";
+				return `<document name="${file.name}" type="${file.mime}"${pathAttr}>\n${content}\n</document>`;
 			})
 		);
-		textContent = textParts.join("\n\n");
+		textContent = textContent + (textContent ? "\n\n" : "") + textParts.join("\n\n");
 	}
 
 	return { imageParts, textContent };

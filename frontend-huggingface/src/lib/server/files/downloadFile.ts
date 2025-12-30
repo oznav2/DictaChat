@@ -20,6 +20,7 @@ export async function downloadFile(
 
 	const mime = file.metadata?.mime;
 	const name = file.filename;
+	const path = file.metadata?.path;
 
 	const fileStream = collections.bucket.openDownloadStream(file._id);
 
@@ -30,5 +31,5 @@ export async function downloadFile(
 		fileStream.on("end", () => resolve(Buffer.concat(chunks)));
 	});
 
-	return { type: "base64", name, value: buffer.toString("base64"), mime };
+	return { type: "base64", name, value: buffer.toString("base64"), mime, ...(path && { path }) };
 }

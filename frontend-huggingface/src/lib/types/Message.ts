@@ -38,4 +38,6 @@ export type MessageFile = {
 	name: string;
 	value: string;
 	mime: string;
+	/** Filesystem path for MCP tools (Docling, etc.) */
+	path?: string;
 };

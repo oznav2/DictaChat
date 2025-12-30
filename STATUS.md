@@ -1,6 +1,45 @@
 # Project Status
 
-**Last Updated**: December 27, 2025
+**Last Updated**: December 28, 2025
+
+## Review - Repository Maintenance (2025-12-30)
+
+### Summary of Changes
+- **Git Configuration**:
+    - Updated `.gitignore` to exclude large model directories (`.models/`, `BAAI/`).
+    - Fixed typo in `.gitignore` (`_pycache_` -> `__pycache__`).
+    - Verified repo status to ensure large files are not committed.
+
+## Review - Retrieval & Processing Integration (2025-12-28)
+
+### Summary of Changes
+- **Service Added**: `dicta-retrieval` (BAAI) for embeddings and reranking.
+    - **Endpoints**:
+        - Embeddings: `http://localhost:5005/v1/embeddings` (OpenAI compatible).
+        - Reranking: `http://localhost:5006/v1/rerank`.
+        - Health: `http://localhost:5005/health`, `http://localhost:5006/health`.
+    - **Models**:
+        - Embedding: `bge-m3-f16.gguf` (Multilingual/Hebrew support).
+        - Reranking: `bge-reranker-v2-m3-q8_0.gguf`.
+    - **Fixes**:
+        - Resolved startup crashes by adding `libgomp1` and `libstdc++6`.
+        - Fixed configuration initialization order in `main.py`.
+        - Implemented single-input processing to bypass GGUF batch limitations.
+        - Aligned output keys with Pydantic DTOs (`dense` vs `dense_vecs`).
+
+- **Service Added**: `dicta-docling` (Quay.io/docling-project/docling-serve-cu128) for OCR and document processing.
+    - **Configuration**:
+        - Added `MAX_FILE_SIZE=10MB` and `MAX_NUM_PAGES=30` to `.env`.
+        - Mounted Tesseract data (`Hebrew.traineddata`) and `UPLOADED_FILES` volume.
+        - Configured `TESSDATA_PREFIX` for container-side OCR using mounted data.
+    - **Deployment**:
+        - Updated `deploy.py` to launch Docling first and stream verbose logs for model downloads.
+        - Created `UPLOADED_FILES` directory for persistent uploads.
+
+### Next Steps
+- Verify Docling service health (`curl http://localhost:5001/health`).
+- Test file upload and OCR processing.
+- Validate end-to-end RAG pipeline using new embeddings and reranker.
 
 ## Overview
 

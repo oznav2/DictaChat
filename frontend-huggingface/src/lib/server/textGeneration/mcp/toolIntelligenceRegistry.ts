@@ -663,6 +663,231 @@ const TOOL_INTELLIGENCE: ToolIntelligence[] = [
 			weight: 90,
 		},
 	},
+
+	// =========================================================================
+	// DOCLING TOOLS (Document Processing)
+	// =========================================================================
+	{
+		name: "docling_convert",
+		patterns: [/^docling[_-]?convert$/i, /^convert[_-]?document$/i],
+		mcpServer: "docling",
+		displayName: "Document Converter",
+		priority: 88,
+		// NOTE: fetch removed from fallback - it expects URLs, not file paths
+		// If standard pipeline fails, try OCR mode as last resort
+		fallbackChain: ["docling_ocr"],
+		conflictsWith: [],
+		latency: {
+			typical: 5000,
+			timeout: 300000,
+			userFeedbackDelay: 2000,
+			tier: "slow",
+		},
+		response: {
+			typicalTokens: 5000,
+			maxTokens: 50000,
+			structured: false,
+			requiresSummarization: true,
+		},
+		messages: {
+			progress: "מעבד את המסמך...",
+			noResults: "לא ניתן לעבד את המסמך. ודא שהקובץ תקין.",
+			suggestion: "נסה פורמט אחר או ודא שהמסמך לא פגום",
+			gracefulFailure: "עיבוד המסמך נכשל. הנה מידע חלקי:",
+		},
+		intentSignals: {
+			keywords: /convert|document|pdf|docx|המר|מסמך|קובץ|וורד/i,
+			weight: 90,
+		},
+	},
+	{
+		name: "docling_convert_url",
+		patterns: [/^docling[_-]?convert[_-]?url$/i],
+		mcpServer: "docling",
+		displayName: "URL Document Converter",
+		priority: 85,
+		// NOTE: docling_convert removed - it expects file paths, not URLs
+		// fetch is valid fallback since both work with URLs
+		fallbackChain: ["fetch"],
+		conflictsWith: [],
+		latency: {
+			typical: 8000,
+			timeout: 300000,
+			userFeedbackDelay: 2000,
+			tier: "slow",
+		},
+		response: {
+			typicalTokens: 5000,
+			maxTokens: 50000,
+			structured: false,
+			requiresSummarization: true,
+		},
+		messages: {
+			progress: "מוריד ומעבד מסמך מהאינטרנט...",
+			noResults: "לא ניתן לעבד את המסמך מהכתובת.",
+			suggestion: "ודא שהכתובת נכונה והמסמך נגיש",
+			gracefulFailure: "לא ניתן לגשת למסמך.",
+		},
+		intentSignals: {
+			keywords: /convert.*url|המר.*קישור|מסמך.*מ.*http/i,
+			weight: 85,
+		},
+	},
+	{
+		name: "docling_extract_tables",
+		patterns: [/^docling[_-]?extract[_-]?tables$/i, /^extract[_-]?tables$/i],
+		mcpServer: "docling",
+		displayName: "Table Extractor",
+		priority: 92,
+		fallbackChain: ["docling_convert"],
+		conflictsWith: [],
+		latency: {
+			typical: 3000,
+			timeout: 120000,
+			userFeedbackDelay: 1500,
+			tier: "medium",
+		},
+		response: {
+			typicalTokens: 3000,
+			maxTokens: 30000,
+			structured: true,
+			requiresSummarization: false,
+		},
+		messages: {
+			progress: "מחלץ טבלאות מהמסמך...",
+			noResults: "לא נמצאו טבלאות במסמך.",
+			suggestion: "ודא שהמסמך מכיל טבלאות בפורמט מובנה",
+			gracefulFailure: "לא ניתן לחלץ טבלאות מהמסמך.",
+		},
+		intentSignals: {
+			keywords: /table|טבלה|extract.*table|חלץ.*טבל|הוצא.*טבל/i,
+			weight: 95,
+		},
+	},
+	{
+		name: "docling_extract_images",
+		patterns: [/^docling[_-]?extract[_-]?images$/i],
+		mcpServer: "docling",
+		displayName: "Image Extractor",
+		priority: 85,
+		fallbackChain: ["docling_convert"],
+		conflictsWith: [],
+		latency: {
+			typical: 4000,
+			timeout: 180000,
+			userFeedbackDelay: 2000,
+			tier: "medium",
+		},
+		response: {
+			typicalTokens: 2000,
+			maxTokens: 20000,
+			structured: true,
+			requiresSummarization: false,
+		},
+		messages: {
+			progress: "מחלץ תמונות מהמסמך...",
+			noResults: "לא נמצאו תמונות במסמך.",
+			suggestion: "ודא שהמסמך מכיל תמונות",
+			gracefulFailure: "לא ניתן לחלץ תמונות.",
+		},
+		intentSignals: {
+			keywords: /image|תמונה|extract.*image|חלץ.*תמונ/i,
+			weight: 90,
+		},
+	},
+	{
+		name: "docling_ocr",
+		patterns: [/^docling[_-]?ocr$/i, /^ocr$/i],
+		mcpServer: "docling",
+		displayName: "OCR Scanner",
+		priority: 90,
+		fallbackChain: ["docling_convert"],
+		conflictsWith: [],
+		latency: {
+			typical: 10000,
+			timeout: 300000,
+			userFeedbackDelay: 3000,
+			tier: "slow",
+		},
+		response: {
+			typicalTokens: 4000,
+			maxTokens: 40000,
+			structured: false,
+			requiresSummarization: false,
+		},
+		messages: {
+			progress: "מזהה טקסט במסמך הסרוק...",
+			noResults: "לא זוהה טקסט במסמך.",
+			suggestion: "ודא שהתמונה ברורה ובאיכות טובה",
+			gracefulFailure: "זיהוי הטקסט נכשל.",
+		},
+		intentSignals: {
+			keywords: /ocr|scan|סרוק|זהה.*טקסט|recognize.*text|זיהוי\s*תווים/i,
+			weight: 95,
+		},
+	},
+	{
+		name: "docling_list_formats",
+		patterns: [/^docling[_-]?list[_-]?formats$/i],
+		mcpServer: "docling",
+		displayName: "Format Lister",
+		priority: 50,
+		fallbackChain: [],
+		conflictsWith: [],
+		latency: {
+			typical: 100,
+			timeout: 5000,
+			userFeedbackDelay: 500,
+			tier: "fast",
+		},
+		response: {
+			typicalTokens: 200,
+			maxTokens: 500,
+			structured: true,
+			requiresSummarization: false,
+		},
+		messages: {
+			progress: "מביא רשימת פורמטים נתמכים...",
+			noResults: "לא ניתן לקבל רשימת פורמטים.",
+			suggestion: "נסה שוב",
+			gracefulFailure: "שירות Docling אינו זמין.",
+		},
+		intentSignals: {
+			keywords: /format|פורמט|supported|נתמך|list.*format/i,
+			weight: 70,
+		},
+	},
+	{
+		name: "docling_analyze",
+		patterns: [/^docling[_-]?analyze$/i],
+		mcpServer: "docling",
+		displayName: "Document Analyzer",
+		priority: 80,
+		fallbackChain: ["docling_convert"],
+		conflictsWith: [],
+		latency: {
+			typical: 2000,
+			timeout: 30000,
+			userFeedbackDelay: 1000,
+			tier: "medium",
+		},
+		response: {
+			typicalTokens: 500,
+			maxTokens: 2000,
+			structured: true,
+			requiresSummarization: false,
+		},
+		messages: {
+			progress: "מנתח את המסמך...",
+			noResults: "לא ניתן לנתח את המסמך.",
+			suggestion: "ודא שהקובץ תקין",
+			gracefulFailure: "ניתוח המסמך נכשל.",
+		},
+		intentSignals: {
+			keywords: /analyze|נתח|בדוק.*מסמך|check.*document/i,
+			weight: 75,
+		},
+	},
 ];
 
 // ============================================================================
@@ -834,7 +1059,7 @@ export function isToolRegistered(toolName: string): boolean {
 /**
  * Tool categories for grouping in capability manifest
  */
-type ToolCategory = "research" | "search" | "data" | "files" | "development" | "utility";
+type ToolCategory = "research" | "search" | "data" | "documents" | "files" | "development" | "utility";
 
 interface ToolCategoryInfo {
 	name: string;
@@ -861,6 +1086,20 @@ const TOOL_CATEGORIES: Record<ToolCategory, ToolCategoryInfo> = {
 		hebrewName: "מידע ממשלתי",
 		description: "Official Israeli government data sources",
 		tools: ["datagov_query", "datastore_search"],
+	},
+	documents: {
+		name: "Document Processing",
+		hebrewName: "עיבוד מסמכים",
+		description: "Convert, extract, and analyze documents (PDF, Word, Excel, images)",
+		tools: [
+			"docling_convert",
+			"docling_convert_url",
+			"docling_extract_tables",
+			"docling_extract_images",
+			"docling_ocr",
+			"docling_analyze",
+			"docling_list_formats",
+		],
 	},
 	files: {
 		name: "File Operations",
