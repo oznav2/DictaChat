@@ -43,6 +43,10 @@ STATE_FILE = SCRIPT_DIR / ".deployment_state"
 ENV_FILE = SCRIPT_DIR / ".env"
 DOCKER_COMPOSE_FILE = SCRIPT_DIR / "docker-compose.yml"
 
+# Default to Docker
+RUNTIME_CMD = ["docker"]
+COMPOSE_CMD = ["docker", "compose"]
+
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -102,8 +106,8 @@ def check_fast_track_eligibility(state, force=False):
         return False, "docker-compose.yml has changed"
         
     # Check if docker is still available (basic check)
-    if shutil.which("docker") is None:
-        return False, "Docker not found"
+    if shutil.which(RUNTIME_CMD[0]) is None:
+        return False, f"{RUNTIME_CMD[0]} not found"
 
     return True, "All checks passed"
 
@@ -457,7 +461,7 @@ def deploy_docling_verbose():
     
     # 1. Check if container is already running and healthy
     inspect = subprocess.run(
-        ["docker", "inspect", "--format", "{{.State.Status}}", "dicta-docling"],
+        RUNTIME_CMD + ["inspect", "--format", "{{.State.Status}}", "dicta-docling"],
         capture_output=True,
         text=True
     )
@@ -466,13 +470,13 @@ def deploy_docling_verbose():
         return
 
     # 2. Start docling specifically
-    subprocess.run(["docker", "compose", "up", "-d", "docling"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.run(COMPOSE_CMD + ["up", "-d", "docling"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     
     # 3. Monitor logs for downloads OR immediate readiness
     console.print("[dim]Scanning Docling logs...[/]")
     try:
         process = subprocess.Popen(
-            ["docker", "logs", "-f", "dicta-docling"],
+            RUNTIME_CMD + ["logs", "-f", "dicta-docling"],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
@@ -529,7 +533,7 @@ def deploy_retrieval_verbose():
     
     # 1. Check if container is already running and healthy
     inspect = subprocess.run(
-        ["docker", "inspect", "--format", "{{.State.Status}}", "dicta-retrieval"],
+        RUNTIME_CMD + ["inspect", "--format", "{{.State.Status}}", "dicta-retrieval"],
         capture_output=True,
         text=True
     )
@@ -538,13 +542,13 @@ def deploy_retrieval_verbose():
         return
 
     # 2. Start retrieval specifically
-    subprocess.run(["docker", "compose", "up", "-d", "dicta-retrieval"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.run(COMPOSE_CMD + ["up", "-d", "dicta-retrieval"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     
     # 3. Monitor logs for downloads OR immediate readiness
     console.print("[dim]Scanning Retrieval logs...[/]")
     try:
         process = subprocess.Popen(
-            ["docker", "logs", "-f", "dicta-retrieval"],
+            RUNTIME_CMD + ["logs", "-f", "dicta-retrieval"],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
@@ -594,8 +598,8 @@ def deploy_services():
     # Deploy Retrieval second with verbose logs
     deploy_retrieval_verbose()
     
-    with console.status("[bold green]Starting remaining services with Docker Compose...[/]"):
-        if subprocess.run(["docker", "compose", "up", "-d"]).returncode == 0:
+    with console.status("[bold green]Starting remaining services with Compose...[/]"):
+        if subprocess.run(COMPOSE_CMD + ["up", "-d"]).returncode == 0:
             console.print("[success]✔ Services started successfully[/]")
         else:
             console.print("[error]✘ Failed to start services[/]")
@@ -614,13 +618,13 @@ def fast_track_deploy():
     console.print("[dim]Skipping redundant checks based on previous successful state.[/]")
     
     # Basic system sanity check is still good (e.g. is docker running?)
-    if shutil.which("docker") is None:
-        console.print("[error]✘ Docker not found! Falling back to full check.[/]")
+    if shutil.which(RUNTIME_CMD[0]) is None:
+        console.print(f"[error]✘ {RUNTIME_CMD[0]} not found! Falling back to full check.[/]")
         return False
 
     with console.status("[bold green]🚀 Fast-tracking deployment...[/]"):
         # We still need to make sure the containers are up
-        result = subprocess.run(["docker", "compose", "up", "-d"], capture_output=True)
+        result = subprocess.run(COMPOSE_CMD + ["up", "-d"], capture_output=True)
         
         if result.returncode == 0:
             console.print("[success]✔ Services started successfully (Fast-Track)[/]")
@@ -631,9 +635,20 @@ def fast_track_deploy():
             return False
 
 def main():
+    global RUNTIME_CMD, COMPOSE_CMD
     parser = argparse.ArgumentParser(description="BricksLLM Deployment Script")
     parser.add_argument("--force", action="store_true", help="Force full checks, bypassing fast-track mode")
+    parser.add_argument("--podman", action="store_true", help="Use Podman instead of Docker")
     args = parser.parse_args()
+
+    if args.podman:
+        RUNTIME_CMD = ["podman"]
+        # Try to detect podman-compose vs podman compose
+        if shutil.which("podman-compose"):
+             COMPOSE_CMD = ["podman-compose"]
+        else:
+             COMPOSE_CMD = ["podman", "compose"]
+        console.print("[info]Using Podman runtime[/]")
 
     clear_screen()
     
@@ -688,7 +703,10 @@ def main():
         console.print("  • Num Predict: 2048 tokens (default) - response length • ")
         console.print("  • ==================================================== • ")
         console.print("  • To Stop & Unload the stack:                          • ")
-        console.print("  •[bold red] [Use ./stop.sh]                          •[/]")
+        if args.podman:
+             console.print("  •[bold red] [Use ./stop_podman.sh]                   •[/]")
+        else:
+             console.print("  •[bold red] [Use ./stop.sh]                          •[/]")
         console.print("                                      ")
     # Removed the log viewing prompt as requested
 

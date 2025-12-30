@@ -2,6 +2,21 @@
 
 **Last Updated**: December 30, 2025
 
+## Review - Podman Support (2025-12-30)
+
+### Summary of Changes
+- **Podman Integration**:
+    - Created `start_podman.sh` and `stop_podman.sh` for seamless Podman usage.
+    - Updated `deploy.py` to support `--podman` flag.
+    - Abstracted container runtime (Docker vs Podman) and Compose commands.
+    - Added support for `podman-compose` and `podman compose`.
+
+### Kubernetes Support
+- **Helm Charts**: Updated to include all new services (Docling, Retrieval, MCP, Frontend) and dependencies (MongoDB).
+- **Deployment Tools**:
+    - `kubernetes/update_deps.sh`: Simple script to update Helm chart dependencies.
+    - `kubernetes/deploy_kubernetes.py`: User-friendly Python script for graceful deployment with interactive prompts and dry-run capabilities.
+
 ## Review - Deployment Automation (2025-12-30)
 
 ### Summary of Changes
