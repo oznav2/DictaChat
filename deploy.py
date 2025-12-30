@@ -283,6 +283,42 @@ def download_file(url, dest_path):
                 
     console.print("[success]✔ Download complete![/]")
 
+def check_baai_models():
+    console.print("\n[step]Step 3.5: Checking BAAI Retrieval Models...[/]")
+    
+    # Base directory for BAAI models as defined in docker-compose.yml
+    # volumes: - ./.models:/app/models
+    base_dir = SCRIPT_DIR / ".models"
+    
+    models = [
+        {
+            "name": "bge-m3-f16.gguf",
+            "path": base_dir / "embeddings" / "bge-m3-f16.gguf",
+            "url": "https://huggingface.co/vonjack/bge-m3-gguf/resolve/main/bge-m3-f16.gguf",
+            "desc": "Embedding Model (BGE-M3)"
+        },
+        {
+            "name": "bge-reranker-v2-m3-q8_0.gguf",
+            "path": base_dir / "reranking" / "bge-reranker-v2-m3-q8_0.gguf",
+            "url": "https://huggingface.co/klnstpr/bge-reranker-v2-m3-Q8_0-GGUF/resolve/main/bge-reranker-v2-m3-q8_0.gguf",
+            "desc": "Reranker Model (BGE-Reranker-v2-M3)"
+        }
+    ]
+    
+    for model in models:
+        if model["path"].exists():
+            console.print(f"[success]✔ {model['desc']} found: {model['name']}[/]")
+        else:
+            console.print(f"[warning]⚠ {model['desc']} missing: {model['name']}[/]")
+            # Ensure directory exists
+            model["path"].parent.mkdir(parents=True, exist_ok=True)
+            
+            if Confirm.ask(f"Do you want to download {model['name']} from HuggingFace?"):
+                download_file(model["url"], model["path"])
+            else:
+                console.print(f"[error]✘ Cannot proceed without {model['name']}.[/]")
+                sys.exit(1)
+
 def check_docker_images():
     console.print("\n[step]Step 4: Verifying Docker Images...[/]")
     
@@ -616,6 +652,7 @@ def main():
             check_system_requirements()
             env_vars = check_env_configuration()
             check_model_files(env_vars)
+            check_baai_models()
             check_docker_images()
             deploy_services()
             deployed = True
@@ -626,6 +663,7 @@ def main():
         check_system_requirements()
         env_vars = check_env_configuration()
         check_model_files(env_vars)
+        check_baai_models()
         check_docker_images()
         deploy_services()
         deployed = True

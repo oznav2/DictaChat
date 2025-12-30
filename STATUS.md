@@ -1,6 +1,16 @@
 # Project Status
 
-**Last Updated**: December 28, 2025
+**Last Updated**: December 30, 2025
+
+## Review - Deployment Automation (2025-12-30)
+
+### Summary of Changes
+- **Deployment Script (`deploy.py`)**:
+    - Added automated checks for BAAI retrieval models (`bge-m3-f16.gguf` and `bge-reranker-v2-m3-q8_0.gguf`).
+    - Implemented interactive download prompt if models are missing from local `.models` directory.
+    - Integrated model verification into both standard and fallback deployment flows.
+    - Aligned with `docker-compose.yml` volume bindings (`./.models:/app/models`).
+
 
 ## Review - Repository Maintenance (2025-12-30)
 
