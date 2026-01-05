@@ -9,7 +9,8 @@ export type MessageUpdate =
 	| MessageFileUpdate
 	| MessageFinalAnswerUpdate
 	| MessageReasoningUpdate
-	| MessageRouterMetadataUpdate;
+	| MessageRouterMetadataUpdate
+	| MessageTraceUpdate;
 
 export enum MessageUpdateType {
 	Status = "status",
@@ -20,6 +21,7 @@ export enum MessageUpdateType {
 	FinalAnswer = "finalAnswer",
 	Reasoning = "reasoning",
 	RouterMetadata = "routerMetadata",
+	Trace = "trace",
 }
 
 // Status
@@ -120,3 +122,69 @@ export interface MessageRouterMetadataUpdate {
 	model: string;
 	provider?: InferenceProvider;
 }
+
+// Trace updates (for RAG pipeline progress)
+export enum MessageTraceUpdateType {
+	RunCreated = "run.created",
+	RunCompleted = "run.completed",
+	StepCreated = "step.created",
+	StepStatus = "step.status",
+	StepDetail = "step.detail",
+}
+
+export interface TraceStepLabel {
+	he: string;
+	en: string;
+}
+
+export interface TraceStep {
+	id: string;
+	parentId: string | null;
+	label: TraceStepLabel;
+	status: "queued" | "running" | "done" | "error";
+	detail?: string;
+	timestamp: number;
+	meta?: Record<string, unknown>;
+}
+
+interface MessageTraceUpdateBase<TSubtype extends MessageTraceUpdateType> {
+	type: MessageUpdateType.Trace;
+	subtype: TSubtype;
+	runId: string;
+}
+
+export interface MessageTraceRunCreatedUpdate
+	extends MessageTraceUpdateBase<MessageTraceUpdateType.RunCreated> {
+	conversationId: string;
+	timestamp: number;
+}
+
+export interface MessageTraceRunCompletedUpdate
+	extends MessageTraceUpdateBase<MessageTraceUpdateType.RunCompleted> {
+	timestamp: number;
+}
+
+export interface MessageTraceStepCreatedUpdate
+	extends MessageTraceUpdateBase<MessageTraceUpdateType.StepCreated> {
+	step: TraceStep;
+}
+
+export interface MessageTraceStepStatusUpdate
+	extends MessageTraceUpdateBase<MessageTraceUpdateType.StepStatus> {
+	stepId: string;
+	status: TraceStep["status"];
+	timestamp: number;
+}
+
+export interface MessageTraceStepDetailUpdate
+	extends MessageTraceUpdateBase<MessageTraceUpdateType.StepDetail> {
+	stepId: string;
+	detail: string;
+}
+
+export type MessageTraceUpdate =
+	| MessageTraceRunCreatedUpdate
+	| MessageTraceRunCompletedUpdate
+	| MessageTraceStepCreatedUpdate
+	| MessageTraceStepStatusUpdate
+	| MessageTraceStepDetailUpdate;

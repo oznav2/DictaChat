@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { logger } from "../../logger";
-import type { MessageUpdate } from "$lib/types/MessageUpdate";
-import { MessageToolUpdateType, MessageUpdateType } from "$lib/types/MessageUpdate";
+import type { MessageUpdate, MessageTraceUpdate } from "$lib/types/MessageUpdate";
+import { MessageToolUpdateType, MessageUpdateType, MessageTraceUpdateType } from "$lib/types/MessageUpdate";
 import { ToolResultStatus } from "$lib/types/Tool";
 import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import type { McpToolMapping } from "$lib/server/mcp/tools";
@@ -24,6 +24,126 @@ import {
 	getFallbackChain,
 } from "./toolIntelligenceRegistry";
 import type { Client } from "@modelcontextprotocol/sdk/client";
+
+// ============================================
+// DOCLING TOOL TRACE INTEGRATION
+// ============================================
+
+/**
+ * Docling tool names that should trigger trace events
+ */
+const DOCLING_TOOL_NAMES = new Set([
+	"docling_convert",
+	"docling_ocr",
+	"docling-convert",
+	"docling-ocr"
+]);
+
+/**
+ * Check if a tool is a docling document processing tool
+ */
+function isDoclingTool(toolName: string): boolean {
+	const nameLower = toolName.toLowerCase();
+	return DOCLING_TOOL_NAMES.has(nameLower) || nameLower.includes("docling");
+}
+
+/**
+ * Get bilingual label for a tool
+ * Returns user-friendly labels for known tools
+ */
+function getToolLabel(toolName: string): { he: string; en: string } {
+	const nameLower = toolName.toLowerCase();
+
+	// Docling tools
+	if (nameLower.includes("docling_convert") || nameLower.includes("docling-convert")) {
+		return { he: "מעבד מסמך", en: "Processing document" };
+	}
+	if (nameLower.includes("docling_ocr") || nameLower.includes("docling-ocr")) {
+		return { he: "מזהה טקסט בתמונה", en: "Performing OCR" };
+	}
+	if (nameLower.includes("docling")) {
+		return { he: "מעבד מסמך", en: "Processing document" };
+	}
+
+	// Search tools
+	if (nameLower.includes("search") || nameLower.includes("tavily") || nameLower.includes("perplexity")) {
+		return { he: "מחפש מידע", en: "Searching" };
+	}
+
+	// File tools
+	if (nameLower.includes("read") || nameLower.includes("file")) {
+		return { he: "קורא קובץ", en: "Reading file" };
+	}
+
+	// Default - use tool name
+	return { he: toolName, en: toolName };
+}
+
+/**
+ * Create a trace run created event for docling tool execution
+ */
+function createDoclingTraceRunCreated(runId: string, conversationId: string): MessageTraceUpdate {
+	return {
+		type: MessageUpdateType.Trace,
+		subtype: MessageTraceUpdateType.RunCreated,
+		runId,
+		conversationId,
+		timestamp: Date.now()
+	};
+}
+
+/**
+ * Create a trace step created event for docling tool execution
+ */
+function createDoclingTraceStepCreated(
+	runId: string,
+	stepId: string,
+	label: { he: string; en: string },
+	status: "running" | "done" | "error" = "running"
+): MessageTraceUpdate {
+	return {
+		type: MessageUpdateType.Trace,
+		subtype: MessageTraceUpdateType.StepCreated,
+		runId,
+		step: {
+			id: stepId,
+			parentId: null,
+			label,
+			status,
+			timestamp: Date.now()
+		}
+	};
+}
+
+/**
+ * Create a trace step status update event
+ */
+function createDoclingTraceStepStatus(
+	runId: string,
+	stepId: string,
+	status: "running" | "done" | "error"
+): MessageTraceUpdate {
+	return {
+		type: MessageUpdateType.Trace,
+		subtype: MessageTraceUpdateType.StepStatus,
+		runId,
+		stepId,
+		status,
+		timestamp: Date.now()
+	};
+}
+
+/**
+ * Create a trace run completed event
+ */
+function createDoclingTraceRunCompleted(runId: string): MessageTraceUpdate {
+	return {
+		type: MessageUpdateType.Trace,
+		subtype: MessageTraceUpdateType.RunCompleted,
+		runId,
+		timestamp: Date.now()
+	};
+}
 
 export type Primitive = string | number | boolean;
 
@@ -52,6 +172,8 @@ export interface ExecuteToolCallsParams {
 	};
 	abortSignal?: AbortSignal;
 	toolTimeoutMs?: number;
+	/** Conversation ID for trace event emission (used for docling tools) */
+	conversationId?: string;
 }
 
 export interface ToolCallExecutionResult {
@@ -362,6 +484,7 @@ export async function* executeToolCalls({
 	processToolOutput,
 	abortSignal,
 	toolTimeoutMs = 120_000, // 2 minutes default; httpClient may override for research tools
+	conversationId,
 }: ExecuteToolCallsParams): AsyncGenerator<ToolExecutionEvent, void, undefined> {
 	// Check abort signal at the beginning
 	if (abortSignal?.aborted) {
@@ -370,6 +493,13 @@ export async function* executeToolCalls({
 	const toolMessages: ChatCompletionMessageParam[] = [];
 	const toolRuns: ToolRun[] = [];
 	const serverLookup = serverMap(servers);
+
+	// Track trace state for tool calls
+	// Each REAL tool call gets its own step in the trace
+	let traceRunId: string | null = null;
+	const traceStepIds: Map<string, string> = new Map(); // toolCallId -> stepId
+	const hasTrackedTools = calls.some((c) => isDoclingTool(c.name)); // Can extend to other tools
+
 	// Pre-emit call + ETA updates and prepare tasks
 	type TaskResult = {
 		index: number;
@@ -416,6 +546,44 @@ export async function* executeToolCalls({
 				eta: 10,
 			},
 		};
+	}
+
+	// ============================================
+	// EMIT TRACE EVENTS FOR REAL TOOL CALLS
+	// One step per actual tool execution - NO fake/simulated steps
+	// ============================================
+	if (hasTrackedTools && conversationId) {
+		traceRunId = randomUUID();
+
+		// Emit run.created
+		yield {
+			type: "update",
+			update: createDoclingTraceRunCreated(traceRunId, conversationId),
+		};
+
+		// Emit one step per tracked tool call (running state)
+		for (const p of prepared) {
+			if (isDoclingTool(p.call.name)) {
+				const stepId = `${p.call.name}-${p.uuid}`;
+				traceStepIds.set(p.uuid, stepId);
+
+				yield {
+					type: "update",
+					update: createDoclingTraceStepCreated(
+						traceRunId,
+						stepId,
+						getToolLabel(p.call.name),
+						"running"
+					),
+				};
+
+				logger.debug("[mcp] Emitted trace step for real tool call", {
+					runId: traceRunId,
+					stepId,
+					toolName: p.call.name,
+				});
+			}
+		}
 	}
 
 	// Preload clients per distinct server used in this batch
@@ -769,6 +937,17 @@ export async function* executeToolCalls({
 		}
 
 		results.push(r);
+
+		// Check if this result is from a tracked tool
+		const toolCallId = prepared[r.index].uuid;
+		const toolName = prepared[r.index].call.name;
+		const isTrackedTool = isDoclingTool(toolName);
+
+		// ============================================
+		// EMIT TOOL RESULT FIRST
+		// Then trace completion AFTER, so TracePanel completes
+		// when the actual output is visible to the user
+		// ============================================
 		if (r.error) {
 			yield {
 				type: "update",
@@ -800,6 +979,50 @@ export async function* executeToolCalls({
 					},
 				},
 			};
+		}
+
+		// ============================================
+		// EMIT TRACE STEP COMPLETION FOR REAL TOOL CALLS
+		// These appear AFTER the result update, so the trace
+		// completes when the user can see the actual output
+		// ============================================
+		if (isTrackedTool && traceRunId) {
+			const stepId = traceStepIds.get(toolCallId);
+			if (stepId) {
+				// Update step status to done or error
+				yield {
+					type: "update",
+					update: createDoclingTraceStepStatus(
+						traceRunId,
+						stepId,
+						r.error ? "error" : "done"
+					),
+				};
+
+				logger.debug("[mcp] Emitted trace step completion for real tool", {
+					runId: traceRunId,
+					stepId,
+					toolName,
+					success: !r.error,
+				});
+
+				// Remove from tracking
+				traceStepIds.delete(toolCallId);
+
+				// If all tracked steps are done, complete the run
+				if (traceStepIds.size === 0) {
+					yield {
+						type: "update",
+						update: createDoclingTraceRunCompleted(traceRunId),
+					};
+
+					logger.debug("[mcp] Emitted trace run completion", {
+						runId: traceRunId,
+					});
+
+					traceRunId = null;
+				}
+			}
 		}
 	}
 

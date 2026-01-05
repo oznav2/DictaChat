@@ -1,15 +1,15 @@
 import { container, SERVICE_KEYS, type IToolFilterService } from "./serviceContainer";
 import { LoopDetector } from "./loopDetector";
 import { ToolArgumentSanitizer } from "./toolArgumentSanitizer";
-import { filterToolsByIntent, clearToolFilterCache } from "./toolFilter";
+import { filterToolsByIntent, clearToolFilterCache, type ToolFilterOptions } from "./toolFilter";
 import type { OpenAiTool } from "$lib/server/mcp/tools";
 
 /**
  * Adapter to expose functional tool filter as a service
  */
 class ToolFilterServiceAdapter implements IToolFilterService {
-	filterToolsByIntent(allTools: OpenAiTool[], userQuery: string) {
-		return filterToolsByIntent(allTools, userQuery);
+	filterToolsByIntent(allTools: OpenAiTool[], userQuery: string, options?: ToolFilterOptions) {
+		return filterToolsByIntent(allTools, userQuery, options);
 	}
 	clearCache() {
 		clearToolFilterCache();

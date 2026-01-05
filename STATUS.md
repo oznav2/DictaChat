@@ -2,6 +2,103 @@
 
 **Last Updated**: December 30, 2025
 
+## RAG Trace Panel Implementation (2025-12-30)
+
+### Summary
+Complete implementation of a visual trace panel for RAG (Retrieval-Augmented Generation) pipeline progress. Shows real-time step-by-step progress during document retrieval with bilingual (Hebrew/English) support.
+
+### Phase 1-3: Backend Services (Completed)
+
+**Type Definitions:**
+| File | Purpose |
+|------|---------|
+| `mcp/types/trace.ts` | TraceStep, TraceEvent, StepStatus types |
+| `mcp/types/documentContext.ts` | DocumentContext, DocumentChunk, ConversationMemory, RetrievalResult |
+
+**Constants:**
+| File | Purpose |
+|------|---------|
+| `mcp/constants/traceSteps.ts` | Bilingual step labels (EXTRACTING_DOCUMENT, CHUNKING_CONTENT, etc.) |
+
+**Services:**
+| File | Purpose |
+|------|---------|
+| `mcp/services/traceEmitter.ts` | SSE event streaming, run/step management |
+| `mcp/services/semanticChunker.ts` | Document chunking with section/paragraph/sentence splitting |
+| `mcp/services/embeddingClient.ts` | Client for dicta-retrieval (port 5005) |
+| `mcp/services/rerankerClient.ts` | Client for dicta-retrieval (port 5006) |
+| `mcp/services/documentRAG.ts` | Main orchestrator (ingestDocument, retrieveContext) |
+| `mcp/services/ragDatabase.ts` | MongoDB connection helper |
+
+**Store:**
+| File | Purpose |
+|------|---------|
+| `mcp/stores/documentContextStore.ts` | MongoDB CRUD for document contexts, chunks, memory |
+
+**Integration:**
+| File | Purpose |
+|------|---------|
+| `mcp/ragIntegration.ts` | runMcpFlow integration helper |
+
+### Phase 4: Full UI Integration (Completed)
+
+**Frontend Changes:**
+| File | Changes |
+|------|---------|
+| `src/lib/types/MessageUpdate.ts` | Added `MessageUpdateType.Trace`, `MessageTraceUpdateType` enum, trace update interfaces |
+| `src/lib/utils/messageUpdates.ts` | Added 6 type guard helpers: `isMessageTraceUpdate()`, `isMessageTraceRunCreatedUpdate()`, etc. |
+| `src/lib/stores/traceStore.ts` | Added `handleMessageTraceUpdate()`, `getActiveRunId()`, `hasActiveRuns` derived store |
+| `src/lib/components/chat/ChatMessage.svelte` | Integrated TracePanel with trace event processing |
+| `src/lib/components/chat/TracePanel.svelte` | Collapsible panel with step progress, status icons, bilingual labels |
+
+**Backend Changes:**
+| File | Changes |
+|------|---------|
+| `mcp/services/traceEmitter.ts` | Added `toMessageUpdate()` and `streamAsMessageUpdates()` methods |
+| `mcp/runMcpFlow.ts` | Yields trace events (run.created → step.created → run.completed) after RAG retrieval |
+
+### Event Flow
+```
+ragIntegration.ts (retrieval)
+    → traceEmitter (collects events)
+    → runMcpFlow (yields MessageTraceUpdate)
+    → textGeneration
+    → +server.ts (SSE stream)
+    → ChatMessage.svelte (processes updates)
+    → traceStore (manages state)
+    → TracePanel.svelte (renders UI)
+```
+
+### Key Methods Introduced
+| Method | Location | Purpose |
+|--------|----------|---------|
+| `toMessageUpdate()` | traceEmitter.ts | Converts TraceEvent to MessageTraceUpdate |
+| `handleMessageTraceUpdate()` | traceStore.ts | Dispatches trace updates to store actions |
+| `isMessageTraceUpdate()` | messageUpdates.ts | Type guard for trace updates |
+| `tryRetrieveRAGContext()` | ragIntegration.ts | Retrieves RAG context with trace events |
+| `injectRAGContext()` | ragIntegration.ts | Injects retrieved context into preprompt |
+
+### Environment Variables
+```
+DOCUMENT_RAG_ENABLED=true
+EMBEDDING_SERVICE_URL=http://dicta-retrieval:5005
+RERANKER_SERVICE_URL=http://dicta-retrieval:5006
+RERANKER_THRESHOLD=0.7
+MAX_CONTEXT_CHUNKS=10
+CONTEXT_TOKEN_BUDGET=8000
+MAX_CHUNK_TOKENS=800
+```
+
+### UI Features
+- Collapsible panel with Melt-UI
+- Real-time step progress (queued → running → done/error)
+- Status icons (spinner, checkmark, X)
+- Bilingual labels (Hebrew RTL / English LTR)
+- Auto-collapse after 2 seconds when complete
+- Nested step support
+
+---
+
 ## Review - Podman Support (2025-12-30)
 
 ### Summary of Changes

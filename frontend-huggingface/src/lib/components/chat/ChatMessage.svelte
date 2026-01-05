@@ -22,8 +22,15 @@
 	import { PROVIDERS_HUB_ORGS } from "@huggingface/inference";
 	import { requireAuthUser } from "$lib/utils/auth";
 	import ToolUpdate from "./ToolUpdate.svelte";
-	import { isMessageToolUpdate } from "$lib/utils/messageUpdates";
-	import { MessageUpdateType, type MessageToolUpdate } from "$lib/types/MessageUpdate";
+	import TracePanel from "./TracePanel.svelte";
+	import { isMessageToolUpdate, isMessageTraceUpdate } from "$lib/utils/messageUpdates";
+	import {
+		MessageUpdateType,
+		MessageTraceUpdateType,
+		type MessageToolUpdate,
+		type MessageTraceUpdate
+	} from "$lib/types/MessageUpdate";
+	import { handleMessageTraceUpdate, runs, getActiveRunId } from "$lib/stores/traceStore";
 
 	interface Props {
 		message: Message;
@@ -367,6 +374,53 @@
 	let hasCode = $derived(message.content.includes("```"));
 	let codeBlockCount = $derived((message.content.match(/```/g) || []).length / 2);
 
+	// Track trace updates and run ID for RAG panel
+	let traceRunId: string | null = $state(null);
+	let traceLanguage: "he" | "en" = $state("en");
+
+	// Find the index where TracePanel should be inserted (after last tool block, before final response)
+	let tracePanelInsertIndex = $derived.by(() => {
+		if (!traceRunId) return -1;
+
+		// Find the last tool block index
+		let lastToolIndex = -1;
+		for (let i = 0; i < blocks.length; i++) {
+			if (blocks[i].type === "tool") {
+				lastToolIndex = i;
+			}
+		}
+
+		// If there are tool blocks, insert after the last one
+		// Otherwise, insert after the first text block (reasoning)
+		if (lastToolIndex >= 0) {
+			return lastToolIndex + 1;
+		}
+
+		// If no tool blocks but there's reasoning (first text block with <think>), insert after it
+		if (blocks.length > 0 && blocks[0].type === "text") {
+			const firstContent = (blocks[0] as { type: "text"; content: string }).content;
+			if (firstContent.includes("<think>") || firstContent.includes("</think>")) {
+				return 1; // Insert after reasoning block
+			}
+		}
+
+		return 0; // Insert at the beginning if nothing else
+	});
+
+	// Process trace updates from message updates
+	$effect(() => {
+		const updates = message.updates ?? [];
+		for (const update of updates) {
+			if (isMessageTraceUpdate(update)) {
+				handleMessageTraceUpdate(update);
+				// Track the run ID for this message
+				if (update.subtype === MessageTraceUpdateType.RunCreated) {
+					traceRunId = update.runId;
+				}
+			}
+		}
+	});
+
 	let editMode = $derived(editMsdgId === message.id);
 	$effect(() => {
 		if (editMode) {
@@ -418,6 +472,11 @@
 					{@const nextBlockHasThink =
 						nextBlock?.type === "text" && THINK_BLOCK_TEST_REGEX.test(nextBlock.content)}
 					{@const nextIsLinkable = nextBlock?.type === "tool" || nextBlockHasThink}
+					{#if traceRunId && blockIndex === tracePanelInsertIndex}
+						<div class="my-3" data-exclude-from-copy>
+							<TracePanel runId={traceRunId} language={traceLanguage} />
+						</div>
+					{/if}
 					{#if block.type === "tool"}
 						<div data-exclude-from-copy class="has-[+.prose]:mb-3 [.prose+&]:mt-4">
 							<ToolUpdate tool={block.updates} {loading} hasNext={nextIsLinkable} />
@@ -459,6 +518,12 @@
 						{/if}
 					{/if}
 				{/each}
+
+				{#if traceRunId && tracePanelInsertIndex >= blocks.length}
+					<div class="my-3" data-exclude-from-copy>
+						<TracePanel runId={traceRunId} language={traceLanguage} />
+					</div>
+				{/if}
 			</div>
 		</div>
 

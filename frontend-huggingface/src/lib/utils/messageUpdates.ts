@@ -6,8 +6,15 @@ import {
 	type MessageToolCallUpdate,
 	type MessageToolResultUpdate,
 	type MessageToolErrorUpdate,
+	type MessageTraceUpdate,
+	type MessageTraceRunCreatedUpdate,
+	type MessageTraceRunCompletedUpdate,
+	type MessageTraceStepCreatedUpdate,
+	type MessageTraceStepStatusUpdate,
+	type MessageTraceStepDetailUpdate,
 	MessageUpdateType,
 	MessageToolUpdateType,
+	MessageTraceUpdateType,
 } from "$lib/types/MessageUpdate";
 
 import { page } from "$app/state";
@@ -264,6 +271,35 @@ export const isMessageToolResultUpdate = (
 
 export const isMessageToolErrorUpdate = (update: MessageUpdate): update is MessageToolErrorUpdate =>
 	isMessageToolUpdate(update) && update.subtype === MessageToolUpdateType.Error;
+
+// Trace update type guards for UI rendering
+export const isMessageTraceUpdate = (update: MessageUpdate): update is MessageTraceUpdate =>
+	update.type === MessageUpdateType.Trace;
+
+export const isMessageTraceRunCreatedUpdate = (
+	update: MessageUpdate
+): update is MessageTraceRunCreatedUpdate =>
+	isMessageTraceUpdate(update) && update.subtype === MessageTraceUpdateType.RunCreated;
+
+export const isMessageTraceRunCompletedUpdate = (
+	update: MessageUpdate
+): update is MessageTraceRunCompletedUpdate =>
+	isMessageTraceUpdate(update) && update.subtype === MessageTraceUpdateType.RunCompleted;
+
+export const isMessageTraceStepCreatedUpdate = (
+	update: MessageUpdate
+): update is MessageTraceStepCreatedUpdate =>
+	isMessageTraceUpdate(update) && update.subtype === MessageTraceUpdateType.StepCreated;
+
+export const isMessageTraceStepStatusUpdate = (
+	update: MessageUpdate
+): update is MessageTraceStepStatusUpdate =>
+	isMessageTraceUpdate(update) && update.subtype === MessageTraceUpdateType.StepStatus;
+
+export const isMessageTraceStepDetailUpdate = (
+	update: MessageUpdate
+): update is MessageTraceStepDetailUpdate =>
+	isMessageTraceUpdate(update) && update.subtype === MessageTraceUpdateType.StepDetail;
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const waitForEvent = (eventTarget: EventTarget, eventName: string) =>

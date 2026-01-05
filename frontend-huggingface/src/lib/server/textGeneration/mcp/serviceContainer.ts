@@ -15,7 +15,8 @@ import { LogLevel, StructuredLoggingService } from "./loggingService";
 export interface IToolFilterService {
 	filterToolsByIntent(
 		allTools: any[],
-		userQuery: string
+		userQuery: string,
+		options?: { hasDocuments?: boolean }
 	): { filtered: any[]; categories: string[] };
 	clearCache(): void;
 }
@@ -62,7 +63,8 @@ export interface ILoggingService {
 export interface IToolFilterService {
 	filterToolsByIntent(
 		allTools: any[],
-		userQuery: string
+		userQuery: string,
+		options?: { hasDocuments?: boolean }
 	): { filtered: any[]; categories: string[] };
 	clearCache(): void;
 }

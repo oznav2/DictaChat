@@ -102,6 +102,21 @@ const TOOL_PATTERNS = {
 } as const;
 
 const TOOL_CATEGORIES: Record<string, { keywords: RegExp; tools: string[] }> = {
+	// DOCUMENT PROCESSING: Docling tools for PDF/document handling
+	// CRITICAL: Must be available when documents are attached to conversation
+	document: {
+		keywords: /\b(document|pdf|file|parse|extract|convert|ocr|scan|מסמך|קובץ|pdf|עמודים)\b/i,
+		tools: [
+			"docling_convert",
+			"docling_convert_url",
+			"docling_extract_tables",
+			"docling_extract_images",
+			"docling_ocr",
+			"docling_status",
+			"docling_list_formats",
+			"docling_analyze",
+		],
+	},
 	// DEEP RESEARCH: Perplexity-only (מחקר, research, deep dive)
 	// Tavily is explicitly EXCLUDED for research intent
 	deepResearch: {
@@ -377,21 +392,50 @@ function selectBestPerplexityTool(
 }
 
 /**
+ * Options for tool filtering
+ */
+export interface ToolFilterOptions {
+	/** If true, always include docling tools regardless of query intent */
+	hasDocuments?: boolean;
+}
+
+/**
  * Filters tools based on user query intent to reduce grammar complexity.
  * Returns a subset of tools (max MAX_TOOLS) relevant to the query.
+ *
+ * @param allTools - All available MCP tools
+ * @param userQuery - The user's query text
+ * @param options - Optional configuration (e.g., hasDocuments flag)
  */
 export function filterToolsByIntent(
 	allTools: OpenAiTool[],
-	userQuery: string
+	userQuery: string,
+	options?: ToolFilterOptions
 ): { filtered: OpenAiTool[]; categories: string[] } {
-	// Check cache first
-	const cached = toolFilterCache.get(userQuery);
-	if (cached) {
-		return { filtered: cached.tools, categories: cached.categories };
+	const { hasDocuments = false } = options || {};
+
+	// CRITICAL: If documents are attached, ALWAYS include docling tools
+	// This ensures the model can process PDFs/documents regardless of query wording
+	if (hasDocuments) {
+		console.log("[tool-filter] Documents attached - including docling tools");
+	}
+
+	// Check cache first (but not if documents attached - need fresh filtering)
+	if (!hasDocuments) {
+		const cached = toolFilterCache.get(userQuery);
+		if (cached) {
+			return { filtered: cached.tools, categories: cached.categories };
+		}
 	}
 
 	const matchedCategories: string[] = [];
 	const relevantToolNames = new Set<string>(ALWAYS_INCLUDE);
+
+	// CRITICAL: If documents attached, always include document category
+	if (hasDocuments) {
+		matchedCategories.push("document");
+		TOOL_CATEGORIES.document.tools.forEach((t) => relevantToolNames.add(t));
+	}
 
 	// Find categories that match the user query
 	for (const [category, config] of Object.entries(TOOL_CATEGORIES)) {

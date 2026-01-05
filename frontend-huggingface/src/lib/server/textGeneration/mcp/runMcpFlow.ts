@@ -36,6 +36,11 @@ import { startTimer, timeAsync, logPerformanceSummary } from "./performanceMonit
 import { executeWithCircuitBreaker } from "./circuitBreaker";
 import { randomUUID } from "crypto";
 import JSON5 from "json5";
+import {
+	hasDocumentAttachments,
+	detectQueryLanguage,
+	type RAGContextResult
+} from "./ragIntegration";
 
 /**
  * Clean string to ensure valid UTF-8 and remove invalid characters
@@ -321,11 +326,25 @@ export async function* runMcpFlow({
 	// Register services
 	registerMcpServices();
 
+	// ============================================
+	// CRITICAL: Check for document attachments BEFORE filtering
+	// ============================================
+	// If documents are attached, we MUST include docling tools
+	// regardless of the user's query wording.
+	// ============================================
+	const hasDocuments = hasDocumentAttachments(messages);
+	if (hasDocuments) {
+		logger.debug("[mcp] Documents detected - docling tools will be included", {
+			messageCount: messages.length,
+		});
+	}
+
 	// Filter tools by user intent to reduce grammar complexity
+	// Pass hasDocuments flag to ensure docling tools are available when needed
 	const userQuery = extractUserQuery(messages);
 	const filterTimer = startTimer("tool_filtering");
 	const { filtered: filteredTools, categories: matchedCategories } =
-		getToolFilterService().filterToolsByIntent(oaTools, userQuery);
+		getToolFilterService().filterToolsByIntent(oaTools, userQuery, { hasDocuments });
 	filterTimer();
 
 	console.info(
@@ -335,6 +354,7 @@ export async function* runMcpFlow({
 			matchedCategories,
 			filteredToolNames: filteredTools.map((t) => t.function.name),
 			userQueryPreview: userQuery.slice(0, 100),
+			hasDocuments,
 		},
 		"[mcp] tool filtering applied"
 	);
@@ -346,6 +366,15 @@ export async function* runMcpFlow({
 		console.warn("[mcp] zero tools available after filtering; skipping MCP flow");
 		return false;
 	}
+
+	// ============================================
+	// ENTERPRISE UX: NO BLOCKING RAG PIPELINE
+	// ============================================
+	// Reasoning MUST stream immediately when user submits.
+	// Document processing happens through real tool calls (docling_convert).
+	// The trace panel shows progress when tools actually execute.
+	// ============================================
+	const ragContext: RAGContextResult | null = null;
 
 	try {
 		const { OpenAI } = await import("openai");
@@ -391,6 +420,11 @@ export async function* runMcpFlow({
 			imageProcessor,
 			mmEnabled
 		);
+
+		// Note: We do NOT modify user messages to remove docling prompts.
+		// Instead, the RAG context injection in preprompt tells the model
+		// that the document is already processed. This is safer and preserves
+		// the original message structure.
 
 		// Check if we should use native OpenAI tools API (experimental)
 		const useNativeTools = process.env.MCP_USE_NATIVE_TOOLS === "true";
@@ -465,6 +499,24 @@ When the user asks about Israeli government/public data, statistics, ministries,
 				prepromptPieces.push(datagovGuidance);
 			}
 		}
+
+		// ============================================
+		// LANGUAGE INSTRUCTION
+		// Respond in the same language as the user's query,
+		// regardless of document content language
+		// ============================================
+		const queryLanguage = detectQueryLanguage(userQuery);
+		if (queryLanguage === "he") {
+			prepromptPieces.push(`**CRITICAL - Response Language**:
+The user's query is in HEBREW. You MUST respond in HEBREW (עברית).
+Even if the document content is in English, your response must be in Hebrew.
+השתמש בעברית בתשובתך, גם אם המסמך באנגלית.`);
+		} else if (queryLanguage === "en") {
+			prepromptPieces.push(`**CRITICAL - Response Language**:
+The user's query is in ENGLISH. You MUST respond in ENGLISH.
+Even if the document content is in Hebrew or another language, your response must be in English.`);
+		}
+		// For "mixed" language, let the model decide based on context
 
 		// const toolPreprompt = buildToolPreprompt(oaTools);
 		// if (toolPreprompt.trim().length > 0) {
@@ -1103,6 +1155,7 @@ When the user asks about Israeli government/public data, statistics, ministries,
 					toPrimitive,
 					processToolOutput,
 					abortSignal,
+					conversationId: conv._id?.toString(),
 				});
 				let toolMsgCount = 0;
 				let toolRunCount = 0;
