@@ -1,0 +1,260 @@
+export type Outcome = "worked" | "failed" | "partial" | "unknown";
+
+export type MemoryTier = "working" | "history" | "patterns" | "books" | "memory_bank";
+
+export type MemoryStatus = "active" | "archived" | "deleted";
+
+export type SortBy = "relevance" | "recency" | "score";
+
+export type ContextType =
+	| "general"
+	| "coding"
+	| "debug"
+	| "error"
+	| "planning"
+	| "research"
+	| "other"
+	| (string & {});
+
+export type MemorySourceType = "user" | "assistant" | "tool" | "document" | "system";
+
+export interface BookSourceMetadata {
+	book_id: string;
+	title: string;
+	author: string | null;
+	chunk_index: number;
+	source_context: string | null;
+	doc_position: number | null;
+	has_code: boolean | null;
+	token_count: number | null;
+	upload_timestamp: string | null;
+	file_type: string | null;
+	mime_type: string | null;
+	document_hash: string | null;
+}
+
+export interface MemorySource {
+	type: MemorySourceType;
+	conversation_id: string | null;
+	message_id: string | null;
+	tool_name: string | null;
+	tool_run_id: string | null;
+	doc_id: string | null;
+	chunk_id: string | null;
+	book?: BookSourceMetadata;
+}
+
+export interface MemoryQuality {
+	importance: number;
+	confidence: number;
+	mentioned_count: number;
+	quality_score: number;
+}
+
+export interface MemoryStats {
+	uses: number;
+	last_used_at: string | null;
+	worked_count: number;
+	failed_count: number;
+	partial_count: number;
+	unknown_count: number;
+	success_rate: number;
+	wilson_score: number;
+}
+
+export interface MemoryTimestamps {
+	created_at: string;
+	updated_at: string;
+	archived_at: string | null;
+	expires_at: string | null;
+}
+
+export interface MemoryEmbeddingInfo {
+	model: string;
+	dims: number;
+	vector_hash: string;
+	last_indexed_at: string | null;
+}
+
+export interface MemoryVersioningInfo {
+	current_version: number;
+	supersedes_memory_id: string | null;
+}
+
+export interface MemoryItem {
+	memory_id: string;
+	user_id: string;
+	org_id: string | null;
+	tier: MemoryTier;
+	status: MemoryStatus;
+	tags: string[];
+	always_inject?: boolean;
+	text: string;
+	summary: string | null;
+	entities: string[];
+	source: MemorySource;
+	quality?: MemoryQuality;
+	stats?: MemoryStats;
+	timestamps: MemoryTimestamps;
+	embedding?: MemoryEmbeddingInfo;
+	versioning?: MemoryVersioningInfo;
+}
+
+export type ActionType =
+	| "search_memory"
+	| "get_context_insights"
+	| "add_to_memory_bank"
+	| "update_memory"
+	| "archive_memory"
+	| "delete_memory"
+	| "record_response"
+	| (string & {});
+
+export type ToolRunStatus = "ok" | "error" | "timeout";
+
+export interface ActionOutcome {
+	action_id: string;
+	action_type: ActionType;
+	context_type: ContextType;
+	outcome: Outcome;
+	conversation_id: string | null;
+	message_id: string | null;
+	answer_attempt_id: string | null;
+	tier: MemoryTier | null;
+	doc_id: string | null;
+	memory_id: string | null;
+	action_params: Record<string, unknown> | null;
+	tool_status: ToolRunStatus | null;
+	latency_ms: number | null;
+	error_type: string | null;
+	error_message: string | null;
+	timestamp: string;
+}
+
+export interface StageTimingsMs {
+	memory_prefetch_ms?: number;
+	qdrant_query_ms?: number;
+	bm25_query_ms?: number;
+	candidate_merge_ms?: number;
+	rerank_ms?: number;
+	kg_insights_ms?: number;
+}
+
+export interface SearchScoreSummary {
+	final_score: number;
+	embedding_similarity?: number;
+	learned_score?: number;
+	dense_similarity?: number;
+	text_similarity?: number;
+	rrf_score?: number;
+	ce_score?: number;
+	quality_score?: number;
+	entity_boost?: number;
+	embedding_weight?: number;
+	learned_weight?: number;
+	vector_rank?: number | null;
+	text_rank?: number | null;
+	ce_rank?: number | null;
+	uses?: number;
+	wilson_score?: number;
+	last_outcome?: Outcome | null;
+	age_seconds?: number | null;
+	created_at?: string | null;
+	updated_at?: string | null;
+}
+
+export interface Citation {
+	source_type: MemorySourceType;
+	memory_id?: string;
+	conversation_id?: string | null;
+	message_id?: string | null;
+	tool_name?: string | null;
+	doc_id?: string | null;
+	chunk_id?: string | null;
+	book?: BookSourceMetadata;
+}
+
+export interface SearchResult {
+	position: number;
+	tier: MemoryTier;
+	memory_id: string;
+	score_summary: SearchScoreSummary;
+	content: string;
+	preview?: string;
+	citations: Citation[];
+}
+
+export type RetrievalConfidence = "high" | "medium" | "low";
+
+export interface SearchDebug {
+	confidence: RetrievalConfidence;
+	stage_timings_ms: StageTimingsMs;
+	fallbacks_used: string[];
+	errors: Array<{ stage: string; message: string; code?: string }>;
+}
+
+export interface SearchResponse {
+	results: SearchResult[];
+	debug: SearchDebug;
+}
+
+export interface TierEffectiveness {
+	tier: MemoryTier;
+	success_rate: number;
+	total_uses: number;
+}
+
+export interface TierRecommendation {
+	concept: string;
+	recommendations: TierEffectiveness[];
+}
+
+export interface InsightMemoryRef {
+	memory_id: string;
+	tier: MemoryTier;
+	content: string;
+	success_rate?: number;
+	total_uses?: number;
+}
+
+export interface PastFailure {
+	memory_id: string;
+	tier: MemoryTier;
+	content: string;
+	reason?: string;
+	timestamp?: string;
+}
+
+export interface ContextInsights {
+	matched_concepts: string[];
+	relevant_patterns: InsightMemoryRef[];
+	past_outcomes: PastFailure[];
+	proactive_insights: TierRecommendation[];
+	topic_continuity: { topics: string[]; links: Array<{ from: string; to: string; weight?: number }> };
+	repetition: { is_repeated: boolean; similar_query?: string; last_seen_at?: string };
+	you_already_know: InsightMemoryRef[];
+	directives: string[];
+}
+
+export interface StatsSnapshot {
+	user_id: string;
+	as_of: string;
+	tiers: Record<
+		MemoryTier,
+		{
+			active_count: number;
+			archived_count: number;
+			deleted_count: number;
+			uses_total: number;
+			success_rate: number;
+		}
+	>;
+	action_effectiveness: Array<{
+		context_type: ContextType;
+		action_type: ActionType;
+		success_rate: number;
+		total_uses: number;
+		examples: Array<{ timestamp: string; outcome: Outcome; doc_id: string | null }>;
+	}>;
+}
+

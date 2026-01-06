@@ -1,6 +1,25 @@
 # Project Status
 
-**Last Updated**: December 30, 2025
+**Last Updated**: January 6, 2026
+
+## Standup - January 6, 2026
+
+### ✅ Done
+- **Fixed critical tool filtering bug** - Docling tools were being stripped when documents attached. Model hallucinated because it couldn't access `docling_convert`.
+- **Root cause**: Tool filter only matched query keywords, ignored document attachments. Query "מה הנקודות החשובות במסמך?" matched "reasoning" → only `sequentialthinking` available.
+- **Fix implemented** (4 files):
+  - `toolFilter.ts`: Added "document" category + `hasDocuments` flag
+  - `serviceContainer.ts` + `serviceRegistration.ts`: Updated interfaces
+  - `runMcpFlow.ts`: Check `hasDocumentAttachments()` BEFORE filtering
+
+### 🔄 Next
+- Monitor production behavior with fix deployed
+- User will test full flow with PDF upload + Hebrew query
+
+### 🚫 Blockers
+- None
+
+---
 
 ## RAG Trace Panel Implementation (2025-12-30)
 

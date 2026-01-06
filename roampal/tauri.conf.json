@@ -1,0 +1,85 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build:prod",
+    "devPath": "http://localhost:5174",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "DictaChat",
+    "version": "1.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": true,
+      "shell": {
+        "all": false,
+        "open": true
+      },
+      "window": {
+        "all": true
+      },
+      "fs": {
+        "all": false,
+        "scope": []
+      },
+      "path": {
+        "all": true
+      },
+      "process": {
+        "all": true
+      },
+      "dialog": {
+        "all": true
+      },
+      "http": {
+        "all": true,
+        "scope": [
+          "http://localhost:8765/**"
+        ]
+      }
+    },
+    "bundle": {
+      "active": true,
+      "targets": [],
+      "identifier": "com.dictachat.app",
+      "windows": {
+        "nsis": {
+          "compression": "zlib"
+        }
+      },
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "resources": [
+        "README.txt",
+        "LICENSE.txt",
+        "backend",
+        "binaries/python",
+        "binaries/models"
+      ],
+      "publisher": "ilan elhayani",
+      "copyright": "© 2026 DictaChat"
+    },
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' http://localhost:8765 http://127.0.0.1:8765 ws://localhost:8765 ws://127.0.0.1:8765; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "DictaChat - Your Private locally running Intelligent Hebrew AI",
+        "width": 1400,
+        "height": 900,
+        "minWidth": 900,
+        "minHeight": 600,
+        "center": true
+      }
+    ]
+  }
+}
