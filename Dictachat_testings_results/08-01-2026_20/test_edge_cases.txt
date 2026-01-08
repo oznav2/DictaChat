@@ -1,0 +1,23 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_edge_cases.test.ts
+
+test_edge_cases.test.ts::Edge Cases::Empty Input Handling::test_empty_string_content PASSED [  6%]
+test_edge_cases.test.ts::Edge Cases::Empty Input Handling::test_whitespace_only_content PASSED [ 13%]
+test_edge_cases.test.ts::Edge Cases::Long Content Handling::test_very_long_content PASSED [ 20%]
+test_edge_cases.test.ts::Edge Cases::Long Content Handling::test_content_size_limits PASSED [ 26%]
+test_edge_cases.test.ts::Edge Cases::Special Characters::test_unicode_content PASSED [ 33%]
+test_edge_cases.test.ts::Edge Cases::Special Characters::test_special_characters PASSED [ 40%]
+test_edge_cases.test.ts::Edge Cases::Hebrew Edge Cases::test_hebrew_rtl_markers PASSED [ 46%]
+test_edge_cases.test.ts::Edge Cases::Hebrew Edge Cases::test_hebrew_numbers_mixed PASSED [ 53%]
+test_edge_cases.test.ts::Edge Cases::Numeric Content::test_numeric_content PASSED [ 60%]
+test_edge_cases.test.ts::Edge Cases::ID Format Validation::test_id_format_validation PASSED [ 66%]
+test_edge_cases.test.ts::Edge Cases::ID Format Validation::test_duplicate_id_handling PASSED [ 73%]
+test_edge_cases.test.ts::Edge Cases::Embedding Validation::test_embedding_dimension_validation PASSED [ 80%]
+test_edge_cases.test.ts::Edge Cases::Rapid Operations::test_rapid_concurrent_adds PASSED [ 86%]
+test_edge_cases.test.ts::Edge Cases::Rapid Operations::test_rapid_search_operations PASSED [ 93%]
+test_edge_cases.test.ts::Edge Cases::Summary Test::test_edge_cases PASSED [100%]
+
+============================= test summary =============================
+======================== 15 passed in 1.218144441s ========================

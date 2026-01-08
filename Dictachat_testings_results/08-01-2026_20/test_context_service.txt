@@ -1,0 +1,32 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_context_service.test.ts
+
+test_context_service.test.ts::TestPrefetchServiceInit::should initialize with default config PASSED [  4%]
+test_context_service.test.ts::TestPrefetchServiceInit::should accept custom config PASSED [  8%]
+test_context_service.test.ts::TestAlwaysInjectMemories::should fetch identity memories PASSED [ 12%]
+test_context_service.test.ts::TestAlwaysInjectMemories::should return empty when circuit breaker is open PASSED [ 16%]
+test_context_service.test.ts::TestAlwaysInjectMemories::should handle scroll errors gracefully PASSED [ 20%]
+test_context_service.test.ts::TestTierPlanDetermination::should always include working and memory_bank PASSED [ 25%]
+test_context_service.test.ts::TestTierPlanDetermination::should include books tier when documents attached PASSED [ 29%]
+test_context_service.test.ts::TestTierPlanDetermination::should include patterns tier PASSED [ 33%]
+test_context_service.test.ts::TestContextLimitEstimation::should use default limit for simple queries PASSED [ 37%]
+test_context_service.test.ts::TestContextLimitEstimation::should reduce limit when documents attached PASSED [ 41%]
+test_context_service.test.ts::TestContextLimitEstimation::should increase limit for complex queries PASSED [ 45%]
+test_context_service.test.ts::TestContextLimitEstimation::should respect explicitly passed limit PASSED [ 50%]
+test_context_service.test.ts::TestContextFormatting::should format identity section PASSED [ 54%]
+test_context_service.test.ts::TestContextFormatting::should format search results with positions PASSED [ 58%]
+test_context_service.test.ts::TestContextFormatting::should include recent topic hint PASSED [ 62%]
+test_context_service.test.ts::TestContextFormatting::should return empty string when no context PASSED [ 66%]
+test_context_service.test.ts::TestConfidenceCalculation::should return high confidence with good context PASSED [ 70%]
+test_context_service.test.ts::TestConfidenceCalculation::should return medium confidence with some context PASSED [ 75%]
+test_context_service.test.ts::TestConfidenceCalculation::should return low confidence with no context PASSED [ 79%]
+test_context_service.test.ts::TestDebugInformation::should include timing information PASSED [ 83%]
+test_context_service.test.ts::TestDebugInformation::should include individual stage timings PASSED [ 87%]
+test_context_service.test.ts::TestHebrewContent::should handle Hebrew identity content PASSED [ 91%]
+test_context_service.test.ts::TestHebrewContent::should handle Hebrew search results PASSED [ 95%]
+test_context_service.test.ts::TestSummary::should generate context service test summary PASSED [100%]
+
+============================= test summary =============================
+======================== 24 passed in 1.184324450s ========================

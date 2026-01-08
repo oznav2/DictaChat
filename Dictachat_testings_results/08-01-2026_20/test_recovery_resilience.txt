@@ -1,0 +1,19 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_recovery_resilience.test.ts
+
+test_recovery_resilience.test.ts::Recovery & Resilience::Write Failure Recovery::test_write_retry_success PASSED [  9%]
+test_recovery_resilience.test.ts::Recovery & Resilience::Write Failure Recovery::test_hebrew_write_recovery PASSED [ 18%]
+test_recovery_resilience.test.ts::Recovery & Resilience::Read Failure Graceful Degradation::test_read_graceful_degradation PASSED [ 27%]
+test_recovery_resilience.test.ts::Recovery & Resilience::Corruption Handling::test_corruption_detection PASSED [ 36%]
+test_recovery_resilience.test.ts::Recovery & Resilience::Corruption Handling::test_hebrew_corruption_handling PASSED [ 45%]
+test_recovery_resilience.test.ts::Recovery & Resilience::Data Integrity Verification::test_metadata_persistence PASSED [ 54%]
+test_recovery_resilience.test.ts::Recovery & Resilience::Data Integrity Verification::test_id_format_validation PASSED [ 63%]
+test_recovery_resilience.test.ts::Recovery & Resilience::Timeout Handling::test_timeout_partial_results PASSED [ 72%]
+test_recovery_resilience.test.ts::Recovery & Resilience::Recovery Statistics::test_recovery_rate_tracking PASSED [ 81%]
+test_recovery_resilience.test.ts::Recovery & Resilience::Bilingual Recovery::test_bilingual_data_recovery PASSED [ 90%]
+test_recovery_resilience.test.ts::Recovery & Resilience::Summary Test::test_recovery_resilience PASSED [100%]
+
+============================= test summary =============================
+======================== 11 passed in 1.370675197s ========================

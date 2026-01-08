@@ -69,3 +69,7 @@ datagov/__pycache__
 datagov/schemas/environment
 .trae/documents
 .planning
+blog
+roampal
+rompal_implementation_plan.md
+Roampal_Architecture.md

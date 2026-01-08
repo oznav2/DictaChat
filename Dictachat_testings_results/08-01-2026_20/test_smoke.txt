@@ -1,0 +1,31 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_smoke.test.ts
+
+test_smoke.test.ts::TestBackendSmoke::Module Imports::should import UnifiedMemoryFacade without error PASSED [  4%]
+test_smoke.test.ts::TestBackendSmoke::Module Imports::should import SearchService without error PASSED [  8%]
+test_smoke.test.ts::TestBackendSmoke::Module Imports::should import OutcomeService without error PASSED [ 13%]
+test_smoke.test.ts::TestBackendSmoke::Module Imports::should import PromotionService without error PASSED [ 17%]
+test_smoke.test.ts::TestBackendSmoke::Module Imports::should import ContextService without error PASSED [ 21%]
+test_smoke.test.ts::TestBackendSmoke::Module Imports::should import KnowledgeGraphService without error PASSED [ 26%]
+test_smoke.test.ts::TestBackendSmoke::Service Instantiation::should instantiate UnifiedMemoryFacade PASSED [ 30%]
+test_smoke.test.ts::TestRequiredDependencies::should have all required TypeScript types available PASSED [ 34%]
+test_smoke.test.ts::TestRequiredDependencies::should have mock utilities available PASSED [ 39%]
+test_smoke.test.ts::TestMemoryOperations::should add and search for memories PASSED [ 43%]
+test_smoke.test.ts::TestMemoryOperations::should store a new memory PASSED [ 47%]
+test_smoke.test.ts::TestMemoryOperations::should record outcome for memories PASSED [ 52%]
+test_smoke.test.ts::TestMemoryOperations::should prefetch context for conversation PASSED [ 56%]
+test_smoke.test.ts::TestHealthCheck::should report facade health status PASSED [ 60%]
+test_smoke.test.ts::TestHealthCheck::should work in noop mode when disabled PASSED [ 65%]
+test_smoke.test.ts::TestEdgeCases::should handle empty query gracefully PASSED [ 69%]
+test_smoke.test.ts::TestEdgeCases::should handle Hebrew and Unicode content PASSED [ 73%]
+test_smoke.test.ts::TestEdgeCases::should handle service errors gracefully PASSED [ 78%]
+test_smoke.test.ts::TestEdgeCases::should handle missing user ID PASSED [ 82%]
+test_smoke.test.ts::TestAPIEndpointShapes::should return correct search response shape PASSED [ 86%]
+test_smoke.test.ts::TestAPIEndpointShapes::should return correct store response shape PASSED [ 91%]
+test_smoke.test.ts::TestAPIEndpointShapes::should return correct stats response shape PASSED [ 95%]
+test_smoke.test.ts::TestSummary::should generate smoke test summary PASSED [100%]
+
+============================= test summary =============================
+======================== 23 passed in 1.237824440s ========================

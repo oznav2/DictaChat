@@ -1,0 +1,69 @@
+============================= test session starts =============================
+platform: node v20.18.1
+test framework: vitest
+timestamp: 2026-01-08T00:59:00.508Z
+rootdir: /home/ilan/BricksLLM/frontend-huggingface/src/lib/server/memory/__tests__
+
+collecting ... collected 9 items
+
+test_dictachat_vs_vector_db::test_basic_search_comparison PASSED (6ms) [total_queries=3.000, vector_db_correct=2.000, dictachat_correct=2.000, vector_accuracy=67.000, dictachat_accuracy=67.000] [ 11%]
+test_dictachat_vs_vector_db::test_relationship_traversal PASSED (2ms) [vector_found_ai=1.000, dictachat_found_ai=1.000, dictachat_boosted_results=3.000, kg_advantage=0.000] [ 22%]
+test_dictachat_vs_vector_db::test_hebrew_relationship_traversal PASSED (1ms) [hebrew_vector_results=3.000, hebrew_dictachat_results=3.000, hebrew_boosted=3.000] [ 33%]
+test_dictachat_vs_vector_db::test_feedback_learning PASSED (0ms) [initial_email_rank=1.000, learned_email_rank=1.000, rank_improved=0.000, vector_db_static=1.000, learning_advantage=1.000] [ 44%]
+test_dictachat_vs_vector_db::test_cumulative_learning PASSED (0ms) [restaurant_c_rank=1.000, restaurant_c_boosted=1.000, cumulative_learning_effective=1.000] [ 56%]
+test_dictachat_vs_vector_db::test_contextual_search PASSED (0ms) [vector_results=3.000, work_context_relevant=1.000, morning_context_relevant=0.000, context_awareness_score=1.000] [ 67%]
+test_dictachat_vs_vector_db::test_bilingual_comparison PASSED (0ms) [vector_en_results=2.000, dicta_en_results=2.000, vector_he_results=2.000, dicta_he_results=2.000, vector_cross_lingual=0.000, dicta_cross_lingual=0.000] [ 78%]
+test_dictachat_vs_vector_db::test_latency_comparison PASSED (3ms) [vector_avg_ms=0.100, dicta_avg_ms=0.000, dicta_overhead_ms=-0.100, overhead_percent=-100.000, iterations=10.000] [ 89%]
+test_dictachat_vs_vector_db::test_dictachat_vs_vector_db PASSED (1ms) [test_items=6.000, queries_run=4.000, vector_total_score=12.000, dicta_total_score=21.000, dicta_advantage=9.000, advantage_percent=75.000, kg_active=1.000, learning_active=1.000, context_active=1.000] [100%]
+
+============================== benchmark summary ==============================
+
+Metrics Summary:
+  total_queries: avg=3.000, min=3.000, max=3.000
+  vector_db_correct: avg=2.000, min=2.000, max=2.000
+  dictachat_correct: avg=2.000, min=2.000, max=2.000
+  vector_accuracy: avg=67.000, min=67.000, max=67.000
+  dictachat_accuracy: avg=67.000, min=67.000, max=67.000
+  vector_found_ai: avg=1.000, min=1.000, max=1.000
+  dictachat_found_ai: avg=1.000, min=1.000, max=1.000
+  dictachat_boosted_results: avg=3.000, min=3.000, max=3.000
+  kg_advantage: avg=0.000, min=0.000, max=0.000
+  hebrew_vector_results: avg=3.000, min=3.000, max=3.000
+  hebrew_dictachat_results: avg=3.000, min=3.000, max=3.000
+  hebrew_boosted: avg=3.000, min=3.000, max=3.000
+  initial_email_rank: avg=1.000, min=1.000, max=1.000
+  learned_email_rank: avg=1.000, min=1.000, max=1.000
+  rank_improved: avg=0.000, min=0.000, max=0.000
+  vector_db_static: avg=1.000, min=1.000, max=1.000
+  learning_advantage: avg=1.000, min=1.000, max=1.000
+  restaurant_c_rank: avg=1.000, min=1.000, max=1.000
+  restaurant_c_boosted: avg=1.000, min=1.000, max=1.000
+  cumulative_learning_effective: avg=1.000, min=1.000, max=1.000
+  vector_results: avg=3.000, min=3.000, max=3.000
+  work_context_relevant: avg=1.000, min=1.000, max=1.000
+  morning_context_relevant: avg=0.000, min=0.000, max=0.000
+  context_awareness_score: avg=1.000, min=1.000, max=1.000
+  vector_en_results: avg=2.000, min=2.000, max=2.000
+  dicta_en_results: avg=2.000, min=2.000, max=2.000
+  vector_he_results: avg=2.000, min=2.000, max=2.000
+  dicta_he_results: avg=2.000, min=2.000, max=2.000
+  vector_cross_lingual: avg=0.000, min=0.000, max=0.000
+  dicta_cross_lingual: avg=0.000, min=0.000, max=0.000
+  vector_avg_ms: avg=0.100, min=0.100, max=0.100
+  dicta_avg_ms: avg=0.000, min=0.000, max=0.000
+  dicta_overhead_ms: avg=-0.100, min=-0.100, max=-0.100
+  overhead_percent: avg=-100.000, min=-100.000, max=-100.000
+  iterations: avg=10.000, min=10.000, max=10.000
+  test_items: avg=6.000, min=6.000, max=6.000
+  queries_run: avg=4.000, min=4.000, max=4.000
+  vector_total_score: avg=12.000, min=12.000, max=12.000
+  dicta_total_score: avg=21.000, min=21.000, max=21.000
+  dicta_advantage: avg=9.000, min=9.000, max=9.000
+  advantage_percent: avg=75.000, min=75.000, max=75.000
+  kg_active: avg=1.000, min=1.000, max=1.000
+  learning_active: avg=1.000, min=1.000, max=1.000
+  context_active: avg=1.000, min=1.000, max=1.000
+
+============================== test results ===================================
+9 passed, 0 failed in 0.03s
+===============================================================================

@@ -1,0 +1,19 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: latency-benchmark.test.ts
+
+latency-benchmark.test.ts::Latency Benchmark::Embedding Latency::should meet latency targets for embedding generation PASSED [  9%]
+latency-benchmark.test.ts::Latency Benchmark::Embedding Latency::should have consistent embedding latency PASSED [ 18%]
+latency-benchmark.test.ts::Latency Benchmark::Vector Search Latency::should meet latency targets for vector search PASSED [ 27%]
+latency-benchmark.test.ts::Latency Benchmark::Vector Search Latency::should scale linearly with result limit PASSED [ 36%]
+latency-benchmark.test.ts::Latency Benchmark::Store Memory Latency::should meet latency targets for memory storage PASSED [ 45%]
+latency-benchmark.test.ts::Latency Benchmark::LLM Response Latency::should meet latency targets for LLM generation PASSED [ 54%]
+latency-benchmark.test.ts::Latency Benchmark::Combined Operations Latency::should meet latency targets for embed + search pipeline PASSED [ 63%]
+latency-benchmark.test.ts::Latency Benchmark::Combined Operations Latency::should meet latency targets for full retrieval flow PASSED [ 72%]
+latency-benchmark.test.ts::Latency Benchmark::Cache Efficiency::should show improved latency on cache hits PASSED [ 81%]
+latency-benchmark.test.ts::Latency Benchmark::Concurrency Performance::should handle concurrent operations efficiently PASSED [ 90%]
+latency-benchmark.test.ts::Latency Benchmark::Collection Size Impact::should maintain acceptable latency as collection grows PASSED [100%]
+
+============================= test summary =============================
+======================== 11 passed in 1.257803963s ========================

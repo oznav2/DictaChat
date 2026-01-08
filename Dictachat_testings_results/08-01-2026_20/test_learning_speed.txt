@@ -1,0 +1,17 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_learning_speed.test.ts
+
+test_learning_speed.test.ts::Learning Speed::Cold Start Baseline::test_cold_start_baseline PASSED [ 11%]
+test_learning_speed.test.ts::Learning Speed::Learning Curve::test_learning_curve PASSED [ 22%]
+test_learning_speed.test.ts::Learning Speed::Adaptation Speed::test_adaptation_speed PASSED [ 33%]
+test_learning_speed.test.ts::Learning Speed::Knowledge Retention::test_knowledge_retention PASSED [ 44%]
+test_learning_speed.test.ts::Learning Speed::Pattern Recognition::test_pattern_recognition PASSED [ 55%]
+test_learning_speed.test.ts::Learning Speed::Context Specialization::test_context_specialization PASSED [ 66%]
+test_learning_speed.test.ts::Learning Speed::Learning Efficiency::test_learning_efficiency PASSED [ 77%]
+test_learning_speed.test.ts::Learning Speed::Bilingual Learning::test_hebrew_learning_speed PASSED [ 88%]
+test_learning_speed.test.ts::Learning Speed::Summary Test::test_learning_speed PASSED [100%]
+
+============================= test summary =============================
+======================== 9 passed in 1.375705236s ========================

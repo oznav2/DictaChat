@@ -1,0 +1,18 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_outcome_learning_ab.test.ts
+
+test_outcome_learning_ab.test.ts::Outcome Learning A/B Tests::Learning vs No-Learning Comparison::test_ab_learning_effectiveness PASSED [ 10%]
+test_outcome_learning_ab.test.ts::Outcome Learning A/B Tests::Feedback Impact Analysis::test_positive_negative_impact PASSED [ 20%]
+test_outcome_learning_ab.test.ts::Outcome Learning A/B Tests::Feedback Impact Analysis::test_hebrew_feedback_impact PASSED [ 30%]
+test_outcome_learning_ab.test.ts::Outcome Learning A/B Tests::Learning Convergence::test_convergence_speed PASSED [ 40%]
+test_outcome_learning_ab.test.ts::Outcome Learning A/B Tests::Learning Convergence::test_learning_stability PASSED [ 50%]
+test_outcome_learning_ab.test.ts::Outcome Learning A/B Tests::Context-Specific Learning::test_context_isolation PASSED [ 60%]
+test_outcome_learning_ab.test.ts::Outcome Learning A/B Tests::Wilson Score Confidence::test_wilson_score_calculation PASSED [ 70%]
+test_outcome_learning_ab.test.ts::Outcome Learning A/B Tests::Wilson Score Confidence::test_confidence_growth PASSED [ 80%]
+test_outcome_learning_ab.test.ts::Outcome Learning A/B Tests::Bilingual Learning Comparison::test_bilingual_learning_parity PASSED [ 90%]
+test_outcome_learning_ab.test.ts::Outcome Learning A/B Tests::Summary Test::test_outcome_learning_ab PASSED [100%]
+
+============================= test summary =============================
+======================== 10 passed in 1.196919267s ========================

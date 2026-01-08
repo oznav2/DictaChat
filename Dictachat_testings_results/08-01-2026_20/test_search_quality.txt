@@ -1,0 +1,17 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_search_quality.test.ts
+
+test_search_quality.test.ts::Search Quality::Synonym Understanding::test_synonym_understanding PASSED [ 11%]
+test_search_quality.test.ts::Search Quality::Synonym Understanding::test_hebrew_synonym_understanding PASSED [ 22%]
+test_search_quality.test.ts::Search Quality::Typo Tolerance::test_typo_tolerance PASSED [ 33%]
+test_search_quality.test.ts::Search Quality::Acronym Expansion::test_acronym_expansion PASSED [ 44%]
+test_search_quality.test.ts::Search Quality::Result Diversity::test_result_diversity PASSED [ 55%]
+test_search_quality.test.ts::Search Quality::Recency vs Relevance::test_recency_vs_relevance PASSED [ 66%]
+test_search_quality.test.ts::Search Quality::Partial Match Quality::test_partial_match_quality PASSED [ 77%]
+test_search_quality.test.ts::Search Quality::Bilingual Search::test_bilingual_search_quality PASSED [ 88%]
+test_search_quality.test.ts::Search Quality::Retrieval Metrics::test_search_quality PASSED [100%]
+
+============================= test summary =============================
+======================== 9 passed in 1.187845438s ========================

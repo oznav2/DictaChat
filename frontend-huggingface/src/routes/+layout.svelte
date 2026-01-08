@@ -24,6 +24,12 @@
 	import BackgroundGenerationPoller from "$lib/components/BackgroundGenerationPoller.svelte";
 	import { requireAuthUser } from "$lib/utils/auth";
 	import { browser } from "$app/environment";
+	import { memoryUi } from "$lib/stores/memoryUi";
+	import RightMemoryDock from "$lib/components/memory/RightMemoryDock.svelte";
+	import PersonalityModal from "$lib/components/memory/PersonalityModal.svelte";
+	import BooksProcessorModal from "$lib/components/memory/BooksProcessorModal.svelte";
+	import MemoryBankModal from "$lib/components/memory/MemoryBankModal.svelte";
+	import ScoringRequiredModal from "$lib/components/memory/ScoringRequiredModal.svelte";
 
 	let { data = $bindable(), children } = $props();
 
@@ -40,6 +46,10 @@
 
 	let isNavCollapsed = $state(false);
 	let sidebarWidth = $state(290);
+
+	// Right memory dock state from store
+	let isRightDockOpen = $derived($memoryUi.rightDock.isOpen);
+	let rightDockWidth = $derived($memoryUi.rightDock.widthPx);
 
 	let errorToastTimeout: ReturnType<typeof setTimeout>;
 	let currentError: string | undefined = $state();
@@ -125,6 +135,14 @@
 				sidebarWidth = Math.min(500, Math.max(200, parsed));
 			}
 		}
+
+		// Install memory UI event listeners
+		const cleanupMemoryUi = memoryUi.installEventListeners();
+		memoryUi.setEnabled(true);
+
+		return () => {
+			cleanupMemoryUi();
+		};
 	});
 
 	function handleSidebarResize(width: number) {
@@ -268,7 +286,7 @@
 
 <div
 	class="fixed grid h-full w-screen grid-cols-1 grid-rows-[auto,1fr] overflow-hidden text-smd transition-[300ms] [transition-property:grid-template-columns] dark:text-gray-300 md:grid-rows-[1fr]"
-	style={`grid-template-columns: ${!isNavCollapsed ? `${Math.min(500, Math.max(0, sidebarWidth))}px` : "0px"} 1fr;`}
+	style={`grid-template-columns: ${!isNavCollapsed ? `${Math.min(500, Math.max(0, sidebarWidth))}px` : "0px"} 1fr ${isRightDockOpen ? `${rightDockWidth}px` : "0px"};`}
 >
 	<ExpandNavigation
 		isCollapsed={isNavCollapsed}
@@ -314,6 +332,23 @@
 		<Toast message={currentError} />
 	{/if}
 	{@render children?.()}
+
+	<!-- Right Memory Dock (Desktop) -->
+	<div class="hidden h-full overflow-hidden md:block">
+		<RightMemoryDock />
+	</div>
+
+	<!-- Memory System Modals -->
+	{#if $memoryUi.modals.personalityOpen}
+		<PersonalityModal />
+	{/if}
+	{#if $memoryUi.modals.booksProcessorOpen}
+		<BooksProcessorModal />
+	{/if}
+	{#if $memoryUi.modals.memoryBankOpen}
+		<MemoryBankModal />
+	{/if}
+	<ScoringRequiredModal />
 
 	{#if publicConfig.PUBLIC_PLAUSIBLE_SCRIPT_URL}
 		<script>

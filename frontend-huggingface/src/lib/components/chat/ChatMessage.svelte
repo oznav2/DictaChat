@@ -23,6 +23,7 @@
 	import { requireAuthUser } from "$lib/utils/auth";
 	import ToolUpdate from "./ToolUpdate.svelte";
 	import TracePanel from "./TracePanel.svelte";
+	import MemoryContextIndicator from "./MemoryContextIndicator.svelte";
 	import { isMessageToolUpdate, isMessageTraceUpdate } from "$lib/utils/messageUpdates";
 	import {
 		MessageUpdateType,
@@ -524,6 +525,15 @@
 						<TracePanel runId={traceRunId} language={traceLanguage} />
 					</div>
 				{/if}
+
+				<!-- Memory Context Indicator (citations, known context, feedback) -->
+				<div data-exclude-from-copy>
+					<MemoryContextIndicator
+						messageId={message.id}
+						isRTL={isRTL}
+						isStreaming={isLast && loading}
+					/>
+				</div>
 			</div>
 		</div>
 

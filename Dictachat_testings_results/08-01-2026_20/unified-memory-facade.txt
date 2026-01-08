@@ -1,0 +1,44 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: unified-memory-facade.test.ts
+
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Initialization::should create facade with default config PASSED [  2%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Initialization::should create facade with custom config PASSED [  5%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Initialization::should implement singleton pattern PASSED [  8%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Initialization::should allow setting custom instance PASSED [ 11%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Search Operations::should search with default parameters PASSED [ 13%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Search Operations::should search with collection filter PASSED [ 16%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Search Operations::should handle search errors gracefully PASSED [ 19%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Store Operations::should store memory with required fields PASSED [ 22%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Store Operations::should store with optional metadata PASSED [ 25%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Outcome Recording::should record positive outcome PASSED [ 27%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Outcome Recording::should record action outcome PASSED [ 30%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Outcome Recording::should record response with key takeaway PASSED [ 33%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Goals Management::should get empty goals for new user PASSED [ 36%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Goals Management::should add and retrieve goal PASSED [ 38%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Goals Management::should remove goal PASSED [ 41%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Values Management::should get empty values for new user PASSED [ 44%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Values Management::should add value PASSED [ 47%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Values Management::should remove value PASSED [ 50%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Arbitrary Data Storage::should store arbitrary data PASSED [ 52%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Arbitrary Data Storage::should retrieve null for non-existent key PASSED [ 55%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Books Management::should list empty books for new user PASSED [ 58%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Books Management::should retrieve from books using search PASSED [ 61%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Books Management::should remove book PASSED [ 63%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Context Services::should prefetch context PASSED [ 66%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Context Services::should get cold start context PASSED [ 69%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Context Services::should get context insights PASSED [ 72%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Ops Services::should get stats PASSED [ 75%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Ops Services::should export backup PASSED [ 77%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Ops Services::should import backup PASSED [ 80%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Ops Services::should trigger promote now PASSED [ 83%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Feedback Recording::should record positive feedback PASSED [ 86%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Feedback Recording::should record negative feedback PASSED [ 88%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Feedback Recording::should record response feedback PASSED [ 91%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Noop Services Fallback::should use noop search when no service provided PASSED [ 94%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Noop Services Fallback::should use noop store when no service provided PASSED [ 97%]
+unified-memory-facade.test.ts::UnifiedMemoryFacade::Noop Services Fallback::should use noop context when disabled PASSED [100%]
+
+============================= test summary =============================
+======================== 36 passed in 1.155276736s ========================

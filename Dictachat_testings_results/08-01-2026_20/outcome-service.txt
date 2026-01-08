@@ -1,0 +1,35 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: outcome-service.test.ts
+
+outcome-service.test.ts::OutcomeServiceImpl::Initialization::should create service with required dependencies PASSED [  3%]
+outcome-service.test.ts::OutcomeServiceImpl::Initialization::should use default config when not provided PASSED [  7%]
+outcome-service.test.ts::OutcomeServiceImpl::Record Outcome::should record worked outcome PASSED [ 11%]
+outcome-service.test.ts::OutcomeServiceImpl::Record Outcome::should record failed outcome PASSED [ 14%]
+outcome-service.test.ts::OutcomeServiceImpl::Record Outcome::should record partial outcome PASSED [ 18%]
+outcome-service.test.ts::OutcomeServiceImpl::Record Outcome::should skip empty memory IDs PASSED [ 22%]
+outcome-service.test.ts::OutcomeServiceImpl::Record Outcome::should skip undefined memory IDs PASSED [ 25%]
+outcome-service.test.ts::OutcomeServiceImpl::Record Outcome::should record outcome for multiple memories PASSED [ 29%]
+outcome-service.test.ts::OutcomeServiceImpl::Protected Tiers::should not score books tier PASSED [ 33%]
+outcome-service.test.ts::OutcomeServiceImpl::Protected Tiers::should not score memory_bank tier PASSED [ 37%]
+outcome-service.test.ts::OutcomeServiceImpl::Protected Tiers::should score working tier PASSED [ 40%]
+outcome-service.test.ts::OutcomeServiceImpl::Protected Tiers::should score patterns tier PASSED [ 44%]
+outcome-service.test.ts::OutcomeServiceImpl::Protected Tiers::should filter protected tiers in mixed batch PASSED [ 48%]
+outcome-service.test.ts::OutcomeServiceImpl::Record Response::should store key takeaway PASSED [ 51%]
+outcome-service.test.ts::OutcomeServiceImpl::Record Response::should embed key takeaway PASSED [ 55%]
+outcome-service.test.ts::OutcomeServiceImpl::Record Response::should index takeaway in Qdrant PASSED [ 59%]
+outcome-service.test.ts::OutcomeServiceImpl::Record Response::should use default unknown outcome PASSED [ 62%]
+outcome-service.test.ts::OutcomeServiceImpl::Record Response::should use worked outcome score PASSED [ 66%]
+outcome-service.test.ts::OutcomeServiceImpl::Record Response::should call clearTurnTracking PASSED [ 70%]
+outcome-service.test.ts::OutcomeServiceImpl::Related Memory Resolution::should resolve positional references PASSED [ 74%]
+outcome-service.test.ts::OutcomeServiceImpl::Related Memory Resolution::should resolve explicit memory IDs PASSED [ 77%]
+outcome-service.test.ts::OutcomeServiceImpl::Related Memory Resolution::should handle mixed positional and explicit refs PASSED [ 81%]
+outcome-service.test.ts::OutcomeServiceImpl::Related Memory Resolution::should fall back to all results when no related specified PASSED [ 85%]
+outcome-service.test.ts::OutcomeServiceImpl::Qdrant Integration::should update Qdrant composite score PASSED [ 88%]
+outcome-service.test.ts::OutcomeServiceImpl::Error Handling::should handle memory not found gracefully PASSED [ 92%]
+outcome-service.test.ts::OutcomeServiceImpl::Error Handling::should continue processing after individual error PASSED [ 96%]
+outcome-service.test.ts::OutcomeServiceImpl::Error Handling::should handle embedding failure gracefully PASSED [100%]
+
+============================= test summary =============================
+======================== 27 passed in 1.167831676s ========================

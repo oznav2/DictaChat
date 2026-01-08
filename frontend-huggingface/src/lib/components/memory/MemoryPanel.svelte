@@ -1,0 +1,293 @@
+<script lang="ts">
+	import { onMount } from "svelte";
+	import { base } from "$app/paths";
+	import { memoryUi } from "$lib/stores/memoryUi";
+	import type { MemoryTier } from "$lib/types/MemoryMeta";
+
+	interface MemoryStats {
+		byTier: Record<MemoryTier, { count: number; avgScore: number }>;
+		totalActive: number;
+		totalArchived: number;
+		qdrantHealth: { healthy: boolean; pointCount?: number };
+		lastPromotion?: string;
+	}
+
+	interface MemoryItem {
+		memory_id: string;
+		content: string;
+		tier: MemoryTier;
+		wilson_score: number;
+		created_at: string;
+		tags?: string[];
+	}
+
+	let selectedTier = $state<MemoryTier | "all">("all");
+	let sortBy = $state<"recent" | "score">("recent");
+	let stats = $state<MemoryStats | null>(null);
+	let memories = $state<MemoryItem[]>([]);
+	let isLoading = $state(false);
+	let showHelp = $state(false);
+
+	const tierDescriptions: Record<MemoryTier, { name: string; desc: string }> = {
+		working: {
+			name: "זיכרון עבודה",
+			desc: "מידע מהשיחה הנוכחית, נשמר לטווח קצר",
+		},
+		history: {
+			name: "היסטוריה",
+			desc: "שיחות קודמות ואינטראקציות עבר",
+		},
+		patterns: {
+			name: "דפוסים",
+			desc: "תבניות שלמדתי מהשימוש שלך",
+		},
+		books: {
+			name: "ספרים",
+			desc: "מסמכים וקבצים שהעלית",
+		},
+		memory_bank: {
+			name: "בנק זיכרון",
+			desc: "מידע שהצמדת באופן ידני",
+		},
+	};
+
+	function getTierColor(tier: MemoryTier): string {
+		const colors: Record<MemoryTier, string> = {
+			working: "bg-blue-500",
+			history: "bg-purple-500",
+			patterns: "bg-green-500",
+			books: "bg-amber-500",
+			memory_bank: "bg-pink-500",
+		};
+		return colors[tier] ?? "bg-gray-500";
+	}
+
+	async function loadStats() {
+		try {
+			const response = await fetch(`${base}/api/memory/stats`);
+			if (!response.ok) throw new Error(`Failed to fetch stats: ${response.status}`);
+			const data = await response.json();
+			stats = data;
+		} catch (err) {
+			console.error("Failed to load memory stats:", err);
+		}
+	}
+
+	async function loadMemories() {
+		isLoading = true;
+		try {
+			const params = new URLSearchParams();
+			if (selectedTier !== "all") params.set("tier", selectedTier);
+			params.set("sort_by", sortBy);
+			params.set("limit", "100");
+
+			const response = await fetch(`${base}/api/memory/search?${params}`);
+			if (!response.ok) throw new Error(`Failed to fetch memories: ${response.status}`);
+			const data = await response.json();
+
+			memories = data.memories ?? [];
+		} catch (err) {
+			console.error("Failed to load memories:", err);
+			memories = [];
+		} finally {
+			isLoading = false;
+		}
+	}
+
+	async function refresh() {
+		await Promise.all([loadStats(), loadMemories()]);
+	}
+
+	function openMemoryBank() {
+		memoryUi.openMemoryBank();
+	}
+
+	onMount(() => {
+		refresh();
+	});
+
+	$effect(() => {
+		// Re-fetch when tier or sort changes
+		if (selectedTier || sortBy) {
+			loadMemories();
+		}
+	});
+</script>
+
+<div class="flex h-full flex-col gap-3 p-3" dir="rtl">
+	<!-- Stats Overview -->
+	{#if stats}
+		<div class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-700/50">
+			<div class="mb-2 flex items-center justify-between">
+				<h3 class="text-sm font-medium text-gray-700 dark:text-gray-200">סטטיסטיקות</h3>
+				<button
+					type="button"
+					onclick={refresh}
+					class="rounded p-1 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-600"
+					title="רענן"
+					aria-label="רענן"
+				>
+					<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+						/>
+					</svg>
+				</button>
+			</div>
+
+			<!-- Tier Bars -->
+			<div class="space-y-2">
+				{#each Object.entries(stats.byTier) as [tier, data]}
+					<div class="flex items-center gap-2">
+						<span class="w-16 text-xs text-gray-600 dark:text-gray-300">
+							{tierDescriptions[tier as MemoryTier]?.name ?? tier}
+						</span>
+						<div class="h-2 flex-1 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-600">
+							<div
+								class={["h-full rounded-full transition-all", getTierColor(tier as MemoryTier)]}
+								style="width: {Math.min(100, (data.count / Math.max(1, stats.totalActive)) * 100)}%"
+							></div>
+						</div>
+						<span class="w-8 text-left text-xs text-gray-500 dark:text-gray-400">
+							{data.count}
+						</span>
+					</div>
+				{/each}
+			</div>
+
+			<!-- Health Status -->
+			<div class="mt-3 flex items-center gap-2 border-t border-gray-200 pt-2 dark:border-gray-600">
+				<span
+					class={[
+						"size-2 rounded-full",
+						stats.qdrantHealth.healthy ? "bg-green-500" : "bg-red-500",
+					]}
+				></span>
+				<span class="text-xs text-gray-600 dark:text-gray-300">
+					{stats.qdrantHealth.healthy ? "מערכת תקינה" : "בעיית חיבור"}
+				</span>
+				<span class="mr-auto text-xs text-gray-400">
+					{stats.totalActive} פעילים
+				</span>
+			</div>
+		</div>
+	{/if}
+
+	<!-- Filter Controls -->
+	<div class="flex items-center gap-2">
+		<select
+			bind:value={selectedTier}
+			class="flex-1 rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+		>
+			<option value="all">כל הסוגים</option>
+			{#each Object.entries(tierDescriptions) as [tier, info]}
+				<option value={tier}>{info.name}</option>
+			{/each}
+		</select>
+
+		<select
+			bind:value={sortBy}
+			class="flex-1 rounded-lg border border-gray-200 bg-white px-2 py-1.5 text-xs outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100"
+		>
+			<option value="recent">עדכניות</option>
+			<option value="score">ציון</option>
+		</select>
+
+		<button
+			type="button"
+			onclick={() => (showHelp = !showHelp)}
+			class="rounded p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600"
+			title="עזרה"
+			aria-label="עזרה"
+		>
+			<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+				/>
+			</svg>
+		</button>
+	</div>
+
+	<!-- Help Panel -->
+	{#if showHelp}
+		<div class="rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-900/30">
+			<h4 class="mb-2 text-sm font-medium text-blue-800 dark:text-blue-200">סוגי זיכרון</h4>
+			<div class="space-y-1.5">
+				{#each Object.entries(tierDescriptions) as [tier, info]}
+					<div class="flex items-start gap-2">
+						<span class={["mt-1 size-2 rounded-full", getTierColor(tier as MemoryTier)]}></span>
+						<div>
+							<span class="text-xs font-medium text-blue-700 dark:text-blue-300">{info.name}</span>
+							<span class="text-xs text-blue-600 dark:text-blue-400"> - {info.desc}</span>
+						</div>
+					</div>
+				{/each}
+			</div>
+		</div>
+	{/if}
+
+	<!-- Memory List -->
+	<div class="flex-1 overflow-y-auto">
+		{#if isLoading}
+			<div class="flex items-center justify-center py-8">
+				<div
+					class="size-6 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500"
+				></div>
+			</div>
+		{:else if memories.length === 0}
+			<div class="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+				אין זיכרונות להצגה
+			</div>
+		{:else}
+			<div class="flex flex-col gap-2">
+				{#each memories as memory}
+					<div
+						class="rounded-lg border border-gray-200 bg-white p-2.5 dark:border-gray-600 dark:bg-gray-700"
+					>
+						<div class="mb-1.5 flex items-center gap-1.5">
+							<span class={["size-2 rounded-full", getTierColor(memory.tier)]}></span>
+							<span class="text-xs text-gray-500 dark:text-gray-400">
+								{tierDescriptions[memory.tier]?.name ?? memory.tier}
+							</span>
+							<span class="mr-auto text-xs text-gray-400">
+								{(memory.wilson_score * 100).toFixed(0)}%
+							</span>
+						</div>
+						<p class="line-clamp-2 text-sm text-gray-700 dark:text-gray-200">
+							{memory.content}
+						</p>
+						{#if memory.tags && memory.tags.length > 0}
+							<div class="mt-1.5 flex flex-wrap gap-1">
+								{#each memory.tags.slice(0, 3) as tag}
+									<span
+										class="rounded bg-gray-100 px-1 py-0.5 text-[10px] text-gray-500 dark:bg-gray-600 dark:text-gray-400"
+									>
+										{tag}
+									</span>
+								{/each}
+								{#if memory.tags.length > 3}
+									<span class="text-[10px] text-gray-400">+{memory.tags.length - 3}</span>
+								{/if}
+							</div>
+						{/if}
+					</div>
+				{/each}
+			</div>
+		{/if}
+	</div>
+
+	<!-- Memory Bank Button -->
+	<button
+		type="button"
+		onclick={openMemoryBank}
+		class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+	>
+		פתח את בנק הזיכרון...
+	</button>
+</div>

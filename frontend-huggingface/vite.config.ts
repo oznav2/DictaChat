@@ -52,6 +52,13 @@ export default defineConfig({
 		include: ["uuid", "sharp", "clsx", "@braintree/sanitize-url"],
 		exclude: ["mermaid", "dayjs"],
 	},
+	build: {
+		rollupOptions: {
+			// Mark ioredis as external - it's optionally used for caching
+			// and gracefully falls back when not available
+			external: ["ioredis"],
+		},
+	},
 	test: {
 		workspace: [
 			{

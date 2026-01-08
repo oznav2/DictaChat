@@ -1,0 +1,28 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_working_memory_cleanup.test.ts
+
+test_working_memory_cleanup.test.ts::TestWorkingMemoryCleanupPersistence::should delete old working memories (>24h) PASSED [  5%]
+test_working_memory_cleanup.test.ts::TestWorkingMemoryCleanupPersistence::should keep new working memories (<24h) PASSED [ 10%]
+test_working_memory_cleanup.test.ts::TestWorkingMemoryCleanupPersistence::should handle empty working collection PASSED [ 15%]
+test_working_memory_cleanup.test.ts::TestPromotionServiceCleanup::should cleanup old memories on startup PASSED [ 20%]
+test_working_memory_cleanup.test.ts::TestPromotionServiceCleanup::should promote valuable memories instead of deleting PASSED [ 25%]
+test_working_memory_cleanup.test.ts::TestPromotionServiceCleanup::should require both score AND uses for promotion PASSED [ 30%]
+test_working_memory_cleanup.test.ts::TestHistoryMemoryCleanup::should cleanup old history memories (>30d) PASSED [ 35%]
+test_working_memory_cleanup.test.ts::TestHistoryMemoryCleanup::should promote valuable history to patterns PASSED [ 40%]
+test_working_memory_cleanup.test.ts::TestGarbageCleanup::should delete memories with score < 0.2 PASSED [ 45%]
+test_working_memory_cleanup.test.ts::TestGarbageCleanup::should delete garbage from all tiers PASSED [ 50%]
+test_working_memory_cleanup.test.ts::TestGhostEntryHandling::should handle missing document gracefully PASSED [ 55%]
+test_working_memory_cleanup.test.ts::TestGhostEntryHandling::should handle empty collection PASSED [ 60%]
+test_working_memory_cleanup.test.ts::TestGhostEntryHandling::should handle delete of non-existent document PASSED [ 65%]
+test_working_memory_cleanup.test.ts::TestCleanupScheduling::should run cleanup multiple times safely PASSED [ 70%]
+test_working_memory_cleanup.test.ts::TestCleanupScheduling::should handle concurrent cleanup calls PASSED [ 75%]
+test_working_memory_cleanup.test.ts::TestPromotionThresholdEdgeCases::should not promote at exact threshold boundary (score) PASSED [ 80%]
+test_working_memory_cleanup.test.ts::TestPromotionThresholdEdgeCases::should not promote at exact threshold boundary (uses) PASSED [ 85%]
+test_working_memory_cleanup.test.ts::TestPromotionThresholdEdgeCases::should delete just below threshold PASSED [ 90%]
+test_working_memory_cleanup.test.ts::TestTTLEdgeCases::should keep memory at exactly 24h boundary PASSED [ 95%]
+test_working_memory_cleanup.test.ts::TestTTLEdgeCases::should delete memory just over 24h boundary PASSED [100%]
+
+============================= test summary =============================
+======================== 20 passed in 1.096262306s ========================

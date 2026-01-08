@@ -1,0 +1,46 @@
+{{!-- @description: Proactive memory suggestions based on conversation context --}}
+{{!-- @category: context --}}
+
+{{#ifNotEmpty suggestions}}
+{{#ifLang "he"}}
+מידע רלוונטי שאולי יעזור:
+{{else}}
+Relevant information that might help:
+{{/ifLang}}
+
+{{#each suggestions}}
+{{#ifLang "he"}}
+{{#if this.is_strong_match}}
+**רלוונטי מאוד:** {{this.content}}
+{{else}}
+- {{this.content}}
+{{/if}}
+{{#if this.source}}[מקור: {{this.source}}]{{/if}}
+{{#if this.last_used}}(שימוש אחרון: {{formatDate this.last_used}}){{/if}}
+{{else}}
+{{#if this.is_strong_match}}
+**Highly relevant:** {{this.content}}
+{{else}}
+- {{this.content}}
+{{/if}}
+{{#if this.source}}[Source: {{this.source}}]{{/if}}
+{{#if this.last_used}}(Last used: {{formatDate this.last_used}}){{/if}}
+{{/ifLang}}
+{{/each}}
+{{/ifNotEmpty}}
+
+{{#if topic_shift}}
+{{#ifLang "he"}}
+זוהה מעבר נושא: טוען הקשר חדש עבור "{{new_topic}}".
+{{else}}
+Topic shift detected: Loading new context for "{{new_topic}}".
+{{/ifLang}}
+{{/if}}
+
+{{#if continuing_topic}}
+{{#ifLang "he"}}
+ממשיך דיון על: {{join continuing_topics ", "}}
+{{else}}
+Continuing discussion about: {{join continuing_topics ", "}}
+{{/ifLang}}
+{{/if}}

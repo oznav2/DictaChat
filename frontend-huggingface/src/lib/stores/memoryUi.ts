@@ -2,7 +2,7 @@ import { browser } from "$app/environment";
 import { writable, type Writable, get } from "svelte/store";
 import type { MemoryMetaV1 } from "$lib/types/MemoryMeta";
 
-export type RightDockTab = "search" | "memory" | "knowledge";
+export type RightDockTab = "search" | "memory" | "knowledge" | "health" | "latency";
 
 export type MemoryUiEvents =
 	| "memoryui:toggleRightDock"
@@ -12,7 +12,9 @@ export type MemoryUiEvents =
 	| "memoryui:setConversation"
 	| "memoryui:assistantStreamStarted"
 	| "memoryui:assistantStreamFinished"
-	| "memoryui:memoryMetaUpdated";
+	| "memoryui:memoryMetaUpdated"
+	| "memoryui:setBlockingScoring"
+	| "memoryui:clearBlockingScoring";
 
 export interface MemoryUiState {
 	enabled: boolean;
@@ -252,6 +254,28 @@ function createMemoryUiStore() {
 		}));
 	}
 
+	function setBlockingScoring(params: { messageId: string; required: boolean }) {
+		store.update((s) => ({
+			...s,
+			session: {
+				...s.session,
+				blockingScoringRequired: params.required,
+				lastUnscoredMessageId: params.required ? params.messageId : null,
+			},
+		}));
+	}
+
+	function clearBlockingScoring() {
+		store.update((s) => ({
+			...s,
+			session: {
+				...s.session,
+				blockingScoringRequired: false,
+				lastUnscoredMessageId: null,
+			},
+		}));
+	}
+
 	function memoryMetaUpdated(params: { conversationId: string; messageId: string; meta: MemoryMetaV1 }) {
 		store.update((s) => ({
 			...s,
@@ -368,6 +392,14 @@ function createMemoryUiStore() {
 					if (d?.conversationId && d?.messageId && d?.meta) memoryMetaUpdated(d);
 				},
 			],
+			[
+				"memoryui:setBlockingScoring",
+				(e) => {
+					const d = (e as CustomEvent).detail as { messageId: string; required: boolean };
+					if (d?.messageId !== undefined) setBlockingScoring(d);
+				},
+			],
+			["memoryui:clearBlockingScoring", () => clearBlockingScoring()],
 		];
 
 		for (const [name, handler] of handlers) {
@@ -398,6 +430,8 @@ function createMemoryUiStore() {
 		closeMemoryBank,
 		assistantStreamStarted,
 		assistantStreamFinished,
+		setBlockingScoring,
+		clearBlockingScoring,
 		memoryMetaUpdated,
 		toggleKnownContextExpanded,
 		toggleCitationsExpanded,

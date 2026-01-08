@@ -1,0 +1,39 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_routing_service.test.ts
+
+test_routing_service.test.ts::TestQueryPreprocessing::should extract entities from text PASSED [  3%]
+test_routing_service.test.ts::TestQueryPreprocessing::should extract multiple entities PASSED [  6%]
+test_routing_service.test.ts::TestQueryPreprocessing::should handle empty text PASSED [  9%]
+test_routing_service.test.ts::TestQueryPreprocessing::should extract Hebrew text PASSED [ 12%]
+test_routing_service.test.ts::TestQueryPreprocessing::should limit entities to 10 PASSED [ 16%]
+test_routing_service.test.ts::TestQueryPreprocessing::should filter common words PASSED [ 19%]
+test_routing_service.test.ts::TestTierScoreCalculation::should calculate tier scores with no data PASSED [ 22%]
+test_routing_service.test.ts::TestTierScoreCalculation::should calculate tier scores with routing data PASSED [ 25%]
+test_routing_service.test.ts::TestTierScoreCalculation::should aggregate scores across multiple concepts PASSED [ 29%]
+test_routing_service.test.ts::TestTierScoreCalculation::should return empty tier scores for empty concepts PASSED [ 32%]
+test_routing_service.test.ts::TestTierScoreCalculation::should handle unknown concept gracefully PASSED [ 35%]
+test_routing_service.test.ts::TestQueryRouting::should route to all tiers with no patterns (exploration phase) PASSED [ 38%]
+test_routing_service.test.ts::TestQueryRouting::should route to all tiers with low confidence scores PASSED [ 41%]
+test_routing_service.test.ts::TestQueryRouting::should select top tiers with medium confidence PASSED [ 45%]
+test_routing_service.test.ts::TestQueryRouting::should select fewer tiers with high confidence PASSED [ 48%]
+test_routing_service.test.ts::TestQueryRouting::should search all tiers when no concepts found PASSED [ 51%]
+test_routing_service.test.ts::TestRoutingStatsUpdate::should update routing stats after worked outcome PASSED [ 54%]
+test_routing_service.test.ts::TestRoutingStatsUpdate::should update routing stats after failed outcome PASSED [ 58%]
+test_routing_service.test.ts::TestRoutingStatsUpdate::should update stats for multiple concepts PASSED [ 61%]
+test_routing_service.test.ts::TestRoutingStatsUpdate::should update existing stats correctly PASSED [ 64%]
+test_routing_service.test.ts::TestContextTypeDetection::should detect docker context PASSED [ 67%]
+test_routing_service.test.ts::TestContextTypeDetection::should detect debugging context PASSED [ 70%]
+test_routing_service.test.ts::TestContextTypeDetection::should detect datagov context PASSED [ 74%]
+test_routing_service.test.ts::TestContextTypeDetection::should detect document context PASSED [ 77%]
+test_routing_service.test.ts::TestContextTypeDetection::should detect coding context PASSED [ 80%]
+test_routing_service.test.ts::TestContextTypeDetection::should detect web search context PASSED [ 83%]
+test_routing_service.test.ts::TestContextTypeDetection::should detect memory context PASSED [ 87%]
+test_routing_service.test.ts::TestContextTypeDetection::should detect Hebrew memory context PASSED [ 90%]
+test_routing_service.test.ts::TestContextTypeDetection::should default to general context PASSED [ 93%]
+test_routing_service.test.ts::TestContextTypeDetection::should use recent messages for context PASSED [ 96%]
+test_routing_service.test.ts::TestContextInsights::should return context insights PASSED [100%]
+
+============================= test summary =============================
+======================== 31 passed in 1.077398402s ========================

@@ -1,0 +1,32 @@
+{{!-- @description: Injects memory context into prompts for personalized responses --}}
+{{!-- @category: context --}}
+
+{{#ifLang "he"}}
+על סמך מה שאני יודע עליך:
+{{else}}
+Based on what I know about you:
+{{/ifLang}}
+
+{{#ifNotEmpty memories}}
+{{#each memories}}
+{{#ifLang "he"}}
+- {{this.content}} {{#if this.confidence}}(ודאות: {{percent this.confidence}}){{/if}}
+{{else}}
+- {{this.content}} {{#if this.confidence}}(confidence: {{percent this.confidence}}){{/if}}
+{{/if}}
+{{/each}}
+{{else}}
+{{#ifLang "he"}}
+אין עדיין מידע אישי שמור.
+{{else}}
+No personal information stored yet.
+{{/ifLang}}
+{{/ifNotEmpty}}
+
+{{#if context_summary}}
+{{#ifLang "he"}}
+הקשר נוכחי: {{context_summary}}
+{{else}}
+Current context: {{context_summary}}
+{{/ifLang}}
+{{/if}}

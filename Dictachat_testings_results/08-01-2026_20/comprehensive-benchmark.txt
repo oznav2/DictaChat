@@ -1,0 +1,31 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: comprehensive-benchmark.test.ts
+
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Cold Start Condition::should perform well at cold_start maturity level PASSED [  4%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Cold Start Condition::should perform well at early maturity level PASSED [  8%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Cold Start Condition::should perform well at established maturity level PASSED [ 13%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Cold Start Condition::should perform well at proven maturity level PASSED [ 17%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Cold Start Condition::should perform well at mature maturity level PASSED [ 21%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::With Context Condition::should perform well at cold_start maturity level with context PASSED [ 26%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::With Context Condition::should perform well at early maturity level with context PASSED [ 30%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::With Context Condition::should perform well at established maturity level with context PASSED [ 34%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::With Context Condition::should perform well at proven maturity level with context PASSED [ 39%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::With Context Condition::should perform well at mature maturity level with context PASSED [ 43%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Cross Domain Condition::should generalize to unseen domains at cold_start maturity PASSED [ 47%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Cross Domain Condition::should generalize to unseen domains at early maturity PASSED [ 52%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Cross Domain Condition::should generalize to unseen domains at established maturity PASSED [ 56%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Cross Domain Condition::should generalize to unseen domains at proven maturity PASSED [ 60%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Cross Domain Condition::should generalize to unseen domains at mature maturity PASSED [ 65%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Hebrew Queries Condition::should handle Hebrew queries at cold_start maturity PASSED [ 69%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Hebrew Queries Condition::should handle Hebrew queries at early maturity PASSED [ 73%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Hebrew Queries Condition::should handle Hebrew queries at established maturity PASSED [ 78%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Hebrew Queries Condition::should handle Hebrew queries at proven maturity PASSED [ 82%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Hebrew Queries Condition::should handle Hebrew queries at mature maturity PASSED [ 86%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Maturity Progression::should show improved performance as maturity increases PASSED [ 91%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Quality Threshold Tests::should meet minimum MRR threshold across conditions PASSED [ 95%]
+comprehensive-benchmark.test.ts::Comprehensive Benchmark::Quality Threshold Tests::should meet minimum nDCG threshold across conditions PASSED [100%]
+
+============================= test summary =============================
+======================== 23 passed in 1.211567103s ========================

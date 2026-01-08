@@ -1,0 +1,51 @@
+{{!-- @description: Summarizes retrieved context for LLM consumption --}}
+{{!-- @category: context --}}
+
+{{#ifLang "he"}}
+סיכום הקשר:
+{{else}}
+Context Summary:
+{{/ifLang}}
+
+{{#if topic}}
+{{#ifLang "he"}}
+נושא: {{topic}}
+{{else}}
+Topic: {{topic}}
+{{/ifLang}}
+{{/if}}
+
+{{#ifNotEmpty relevant_memories}}
+{{#ifLang "he"}}
+זיכרונות רלוונטיים ({{relevant_memories.length}}):
+{{else}}
+Relevant Memories ({{relevant_memories.length}}):
+{{/ifLang}}
+{{#each relevant_memories}}
+{{add @index 1}}. {{truncate this.content 200}}
+   {{#ifLang "he"}}
+   - ציון: {{percent this.score}} | שימושים: {{default this.uses 0}}
+   {{else}}
+   - Score: {{percent this.score}} | Uses: {{default this.uses 0}}
+   {{/ifLang}}
+{{/each}}
+{{/ifNotEmpty}}
+
+{{#ifNotEmpty patterns}}
+{{#ifLang "he"}}
+דפוסים מוכחים:
+{{else}}
+Proven Patterns:
+{{/ifLang}}
+{{#each patterns}}
+- {{this.description}} {{#ifLang "he"}}(הצליח {{this.success_count}} פעמים){{else}}(succeeded {{this.success_count}} times){{/ifLang}}
+{{/each}}
+{{/ifNotEmpty}}
+
+{{#if confidence}}
+{{#ifLang "he"}}
+רמת ודאות כוללת: {{confidence}}
+{{else}}
+Overall Confidence: {{confidence}}
+{{/ifLang}}
+{{/if}}

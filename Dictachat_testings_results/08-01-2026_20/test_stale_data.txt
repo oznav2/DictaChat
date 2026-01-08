@@ -1,0 +1,20 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_stale_data.test.ts
+
+test_stale_data.test.ts::Stale Data Handling::TTL Expiration::test_ttl_expiration_detection PASSED [  8%]
+test_stale_data.test.ts::Stale Data Handling::TTL Expiration::test_hebrew_ttl_expiration PASSED [ 16%]
+test_stale_data.test.ts::Stale Data Handling::Freshness Scoring::test_freshness_score_calculation PASSED [ 25%]
+test_stale_data.test.ts::Stale Data Handling::Freshness Scoring::test_freshness_weighted_search PASSED [ 33%]
+test_stale_data.test.ts::Stale Data Handling::Automatic Staleness Flagging::test_auto_staleness_detection PASSED [ 41%]
+test_stale_data.test.ts::Stale Data Handling::Automatic Staleness Flagging::test_hebrew_staleness_flagging PASSED [ 50%]
+test_stale_data.test.ts::Stale Data Handling::Update vs Replace Decisions::test_update_vs_replace PASSED [ 58%]
+test_stale_data.test.ts::Stale Data Handling::Update vs Replace Decisions::test_bilingual_update_chain PASSED [ 66%]
+test_stale_data.test.ts::Stale Data Handling::Tombstone Handling::test_tombstone_for_deleted_items PASSED [ 75%]
+test_stale_data.test.ts::Stale Data Handling::Tombstone Handling::test_hebrew_tombstone PASSED [ 83%]
+test_stale_data.test.ts::Stale Data Handling::Data Decay Simulation::test_access_frequency_decay PASSED [ 91%]
+test_stale_data.test.ts::Stale Data Handling::Summary Test::test_stale_data PASSED [100%]
+
+============================= test summary =============================
+======================== 12 passed in 1.133328635s ========================

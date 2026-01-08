@@ -1,0 +1,22 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_outcome_behavior.test.ts
+
+test_outcome_behavior.test.ts::TestOutcomeBehavior::should accept valid outcome values PASSED [  7%]
+test_outcome_behavior.test.ts::TestOutcomeBehavior::should have scoring threshold constants PASSED [ 14%]
+test_outcome_behavior.test.ts::TestOutcomeBehavior::should have correct threshold values PASSED [ 21%]
+test_outcome_behavior.test.ts::TestPromotionBehavior::should have promotion methods on facade PASSED [ 28%]
+test_outcome_behavior.test.ts::TestPromotionBehavior::should have async promotion methods PASSED [ 35%]
+test_outcome_behavior.test.ts::TestActionOutcome::should create action outcome with required fields PASSED [ 42%]
+test_outcome_behavior.test.ts::TestActionOutcome::should convert action outcome to dict PASSED [ 50%]
+test_outcome_behavior.test.ts::TestActionOutcome::should create action outcome from dict PASSED [ 57%]
+test_outcome_behavior.test.ts::TestOutcomeRecordingIntegration::should record outcome through facade PASSED [ 64%]
+test_outcome_behavior.test.ts::TestOutcomeRecordingIntegration::should record action outcome through facade PASSED [ 71%]
+test_outcome_behavior.test.ts::TestOutcomeRecordingIntegration::should record response with key takeaway PASSED [ 78%]
+test_outcome_behavior.test.ts::TestWilsonScoreBehavior::should return neutral score for zero uses PASSED [ 85%]
+test_outcome_behavior.test.ts::TestWilsonScoreBehavior::should rank proven record higher than perfect newcomer PASSED [ 92%]
+test_outcome_behavior.test.ts::TestWilsonScoreBehavior::should always return score between 0 and 1 PASSED [100%]
+
+============================= test summary =============================
+======================== 14 passed in 1.209686228s ========================

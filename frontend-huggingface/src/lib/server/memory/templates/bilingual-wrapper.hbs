@@ -1,0 +1,37 @@
+{{!-- @description: Wraps content in both languages for bilingual output --}}
+{{!-- @category: utility --}}
+
+{{#if show_both}}
+{{!-- Display both languages side by side --}}
+<div class="bilingual-content">
+<div class="lang-en" dir="ltr">
+{{#ifLang "en"}}
+{{content_en}}
+{{/ifLang}}
+</div>
+<div class="lang-he" dir="rtl">
+{{#ifLang "he"}}
+{{content_he}}
+{{/ifLang}}
+</div>
+</div>
+{{else}}
+{{!-- Display based on current language setting --}}
+{{#ifLang "he"}}
+<div dir="rtl">
+{{coalesce content_he content_en content}}
+</div>
+{{else}}
+<div dir="ltr">
+{{coalesce content_en content_he content}}
+</div>
+{{/ifLang}}
+{{/if}}
+
+{{#if include_translation_note}}
+{{#ifLang "he"}}
+[תרגום זמין באנגלית]
+{{else}}
+[Translation available in Hebrew]
+{{/ifLang}}
+{{/if}}

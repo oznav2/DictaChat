@@ -1,0 +1,35 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_search_service.test.ts
+
+test_search_service.test.ts::TestSearchServiceInit::should initialize with all dependencies PASSED [  3%]
+test_search_service.test.ts::TestSearchServiceInit::should accept optional reranker PASSED [  7%]
+test_search_service.test.ts::TestMainSearch::should generate embedding for query PASSED [ 11%]
+test_search_service.test.ts::TestMainSearch::should call both vector and lexical search PASSED [ 14%]
+test_search_service.test.ts::TestMainSearch::should return list of results by default PASSED [ 18%]
+test_search_service.test.ts::TestMainSearch::should return debug metadata PASSED [ 22%]
+test_search_service.test.ts::TestMainSearch::should respect limit parameter PASSED [ 25%]
+test_search_service.test.ts::TestMainSearch::should filter by min score PASSED [ 29%]
+test_search_service.test.ts::TestMainSearch::should handle empty query PASSED [ 33%]
+test_search_service.test.ts::TestMainSearch::should merge results from both sources PASSED [ 37%]
+test_search_service.test.ts::TestSearchCircuitBreaker::should fallback to lexical when qdrant circuit open PASSED [ 40%]
+test_search_service.test.ts::TestSearchCircuitBreaker::should fallback to vector when bm25 circuit open PASSED [ 44%]
+test_search_service.test.ts::TestSearchCircuitBreaker::should return empty when both circuits open PASSED [ 48%]
+test_search_service.test.ts::TestRRFFusion::should rank documents appearing in both sources higher PASSED [ 51%]
+test_search_service.test.ts::TestRRFFusion::should preserve rankings within single source PASSED [ 55%]
+test_search_service.test.ts::TestSearchResultStructure::should include position in results PASSED [ 59%]
+test_search_service.test.ts::TestSearchResultStructure::should include tier in results PASSED [ 62%]
+test_search_service.test.ts::TestSearchResultStructure::should include memory_id in results PASSED [ 66%]
+test_search_service.test.ts::TestSearchResultStructure::should include score_summary in results PASSED [ 70%]
+test_search_service.test.ts::TestSearchResultStructure::should include content in results PASSED [ 74%]
+test_search_service.test.ts::TestSearchResultStructure::should include preview in results PASSED [ 77%]
+test_search_service.test.ts::TestConfidenceCalculation::should return low confidence for empty results PASSED [ 81%]
+test_search_service.test.ts::TestConfidenceCalculation::should return medium confidence for normal results PASSED [ 85%]
+test_search_service.test.ts::TestDebugTimings::should include total_ms in timings PASSED [ 88%]
+test_search_service.test.ts::TestSearchServiceImplRecencyDetection::should detect recency from English keywords PASSED [ 92%]
+test_search_service.test.ts::TestSearchServiceImplRecencyDetection::should detect recency from Hebrew keywords PASSED [ 96%]
+test_search_service.test.ts::TestSearchServiceImplRecencyDetection::should not detect recency in normal query PASSED [100%]
+
+============================= test summary =============================
+======================== 27 passed in 1.048457851s ========================

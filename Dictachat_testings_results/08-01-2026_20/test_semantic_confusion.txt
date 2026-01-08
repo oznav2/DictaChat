@@ -1,0 +1,21 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_semantic_confusion.test.ts
+
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Homonym Handling::test_english_homonyms PASSED [  7%]
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Homonym Handling::test_hebrew_homonyms PASSED [ 15%]
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Synonym Recognition::test_synonym_grouping PASSED [ 23%]
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Synonym Recognition::test_hebrew_synonyms PASSED [ 30%]
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Near-Duplicate Detection::test_subtle_differences PASSED [ 38%]
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Near-Duplicate Detection::test_hebrew_near_duplicates PASSED [ 46%]
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Context-Dependent Meanings::test_context_disambiguation PASSED [ 53%]
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Context-Dependent Meanings::test_hebrew_context_disambiguation PASSED [ 61%]
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Entity Disambiguation::test_person_disambiguation PASSED [ 69%]
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Entity Disambiguation::test_hebrew_person_disambiguation PASSED [ 76%]
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Cross-Language Semantic Matching::test_bilingual_concept_matching PASSED [ 84%]
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Semantic Drift Detection::test_meaning_evolution PASSED [ 92%]
+test_semantic_confusion.test.ts::Semantic Confusion Handling::Summary Test::test_semantic_confusion PASSED [100%]
+
+============================= test summary =============================
+======================== 13 passed in 1.261043366s ========================

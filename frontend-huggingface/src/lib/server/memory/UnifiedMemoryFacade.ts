@@ -11,6 +11,50 @@ import type {
 } from "./types";
 import type { MemoryConfig } from "./memory_config";
 import { defaultMemoryConfig } from "./memory_config";
+import { logger } from "$lib/server/logger";
+import type { PromotionService } from "./learning/PromotionService";
+
+/**
+ * BookChunk represents a chunk of text from an uploaded book
+ */
+export interface BookChunk {
+	chunkId: string;
+	bookId: string;
+	title: string;
+	author: string | null;
+	chunkIndex: number;
+	content: string;
+	score?: number;
+}
+
+/**
+ * Book metadata returned by listBooks
+ */
+export interface BookListItem {
+	id: string;
+	title: string;
+	uploadedAt: Date;
+}
+
+/**
+ * User profile document structure for goals/values storage
+ */
+interface UserProfileDocument {
+	userId: string;
+	goals: string[];
+	values: string[];
+	updatedAt: Date;
+}
+
+/**
+ * Arbitrary user data document structure
+ */
+interface UserDataDocument {
+	userId: string;
+	key: string;
+	data: unknown;
+	updatedAt: Date;
+}
 
 export interface SearchService {
 	search(params: SearchParams): Promise<SearchResponse>;
@@ -170,6 +214,22 @@ export interface ImportBackupParams {
 	payload: unknown;
 }
 
+export interface RecordFeedbackParams {
+	userId: string;
+	memoryId: string;
+	score: -1 | 0 | 1;
+	conversationId?: string;
+	messageId?: string;
+}
+
+export interface RecordResponseFeedbackParams {
+	userId: string;
+	conversationId?: string;
+	messageId?: string;
+	score: -1 | 0 | 1;
+	citationCount?: number;
+}
+
 function createMemoryId(prefix = "mem_") {
 	const uuid =
 		typeof globalThis.crypto?.randomUUID === "function" ? globalThis.crypto.randomUUID() : null;
@@ -306,17 +366,23 @@ function createNoopServices(): ResolvedServices {
 }
 
 export class UnifiedMemoryFacade {
+	private static instance: UnifiedMemoryFacade | null = null;
 	private readonly config: MemoryConfig;
 	private readonly services: ResolvedServices;
+	private promotionService?: PromotionService;
+	private initialized = false;
 
 	constructor({
 		config = defaultMemoryConfig,
 		services = {},
+		promotionService,
 	}: {
 		config?: MemoryConfig;
 		services?: UnifiedMemoryFacadeServices;
+		promotionService?: PromotionService;
 	} = {}) {
 		this.config = config;
+		this.promotionService = promotionService;
 		const noop = createNoopServices();
 
 		this.services = {
@@ -328,6 +394,67 @@ export class UnifiedMemoryFacade {
 			context: { ...noop.context, ...(services.context ?? {}) } as ContextService,
 			ops: { ...noop.ops, ...(services.ops ?? {}) } as OpsService,
 		};
+	}
+
+	/**
+	 * Initialize the memory facade - starts promotion scheduler
+	 * Call this after creating the facade to enable autonomous memory lifecycle
+	 */
+	async initialize(): Promise<void> {
+		if (this.initialized) {
+			logger.warn("UnifiedMemoryFacade already initialized");
+			return;
+		}
+
+		// Start promotion scheduler for autonomous memory lifecycle
+		if (this.promotionService) {
+			await this.promotionService.startScheduler();
+			logger.info("Memory promotion scheduler started (runs every 30 minutes)");
+		}
+
+		this.initialized = true;
+		logger.info("UnifiedMemoryFacade initialized");
+	}
+
+	/**
+	 * Shutdown the memory facade - stops promotion scheduler
+	 * Call this on application shutdown for clean resource release
+	 */
+	async shutdown(): Promise<void> {
+		if (!this.initialized) {
+			return;
+		}
+
+		// Stop promotion scheduler
+		if (this.promotionService) {
+			this.promotionService.stopScheduler();
+			logger.info("Memory promotion scheduler stopped");
+		}
+
+		this.initialized = false;
+		logger.info("UnifiedMemoryFacade shutdown complete");
+	}
+
+	/**
+	 * Check if the facade is initialized
+	 */
+	isInitialized(): boolean {
+		return this.initialized;
+	}
+
+	static getInstance(): UnifiedMemoryFacade {
+		if (!UnifiedMemoryFacade.instance) {
+			UnifiedMemoryFacade.instance = new UnifiedMemoryFacade();
+		}
+		return UnifiedMemoryFacade.instance;
+	}
+
+	static setInstance(facade: UnifiedMemoryFacade): void {
+		UnifiedMemoryFacade.instance = facade;
+	}
+
+	static resetInstance(): void {
+		UnifiedMemoryFacade.instance = null;
 	}
 
 	static create({
@@ -413,5 +540,310 @@ export class UnifiedMemoryFacade {
 
 	async importBackup(params: ImportBackupParams): Promise<void> {
 		return this.services.ops.importBackup(params);
+	}
+
+	async recordFeedback(params: RecordFeedbackParams): Promise<void> {
+		// Record feedback score for a specific memory item
+		// This adjusts the memory's score based on user feedback
+		const outcome: Outcome = params.score === 1 ? "positive" : params.score === -1 ? "negative" : "neutral";
+		await this.services.outcomes.recordOutcome({
+			userId: params.userId,
+			outcome,
+			relatedMemoryIds: [params.memoryId],
+		});
+	}
+
+	async recordResponseFeedback(params: RecordResponseFeedbackParams): Promise<void> {
+		// Record general feedback for a response
+		// This is used for analytics and improving memory retrieval
+		const outcome: Outcome = params.score === 1 ? "positive" : params.score === -1 ? "negative" : "neutral";
+		await this.services.outcomes.recordOutcome({
+			userId: params.userId,
+			outcome,
+			relatedMemoryIds: [],
+		});
+	}
+
+	// ============================================
+	// Goals Management (Core Interface Parity)
+	// ============================================
+
+	/**
+	 * Get all goals for a user
+	 * @param userId - The user ID
+	 * @returns Array of goal strings
+	 */
+	async getGoals(userId: string): Promise<string[]> {
+		try {
+			const { Database } = await import("$lib/server/database");
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const userProfilesCollection = client.db().collection<UserProfileDocument>("user_profiles");
+
+			const profile = await userProfilesCollection.findOne({ userId });
+			return profile?.goals ?? [];
+		} catch (err) {
+			logger.warn({ err, userId }, "Failed to get goals");
+			return [];
+		}
+	}
+
+	/**
+	 * Add a goal for a user
+	 * @param userId - The user ID
+	 * @param goal - The goal to add
+	 */
+	async addGoal(userId: string, goal: string): Promise<void> {
+		try {
+			const { Database } = await import("$lib/server/database");
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const userProfilesCollection = client.db().collection<UserProfileDocument>("user_profiles");
+
+			await userProfilesCollection.updateOne(
+				{ userId },
+				{
+					$addToSet: { goals: goal },
+					$set: { updatedAt: new Date() },
+					$setOnInsert: { values: [] },
+				},
+				{ upsert: true }
+			);
+			logger.info({ userId, goal }, "Goal added");
+		} catch (err) {
+			logger.error({ err, userId, goal }, "Failed to add goal");
+			throw err;
+		}
+	}
+
+	/**
+	 * Remove a goal for a user
+	 * @param userId - The user ID
+	 * @param goal - The goal to remove
+	 */
+	async removeGoal(userId: string, goal: string): Promise<void> {
+		try {
+			const { Database } = await import("$lib/server/database");
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const userProfilesCollection = client.db().collection<UserProfileDocument>("user_profiles");
+
+			await userProfilesCollection.updateOne(
+				{ userId },
+				{
+					$pull: { goals: goal },
+					$set: { updatedAt: new Date() },
+				}
+			);
+			logger.info({ userId, goal }, "Goal removed");
+		} catch (err) {
+			logger.error({ err, userId, goal }, "Failed to remove goal");
+			throw err;
+		}
+	}
+
+	// ============================================
+	// Values Management (Core Interface Parity)
+	// ============================================
+
+	/**
+	 * Get all values for a user
+	 * @param userId - The user ID
+	 * @returns Array of value strings
+	 */
+	async getValues(userId: string): Promise<string[]> {
+		try {
+			const { Database } = await import("$lib/server/database");
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const userProfilesCollection = client.db().collection<UserProfileDocument>("user_profiles");
+
+			const profile = await userProfilesCollection.findOne({ userId });
+			return profile?.values ?? [];
+		} catch (err) {
+			logger.warn({ err, userId }, "Failed to get values");
+			return [];
+		}
+	}
+
+	/**
+	 * Add a value for a user
+	 * @param userId - The user ID
+	 * @param value - The value to add
+	 */
+	async addValue(userId: string, value: string): Promise<void> {
+		try {
+			const { Database } = await import("$lib/server/database");
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const userProfilesCollection = client.db().collection<UserProfileDocument>("user_profiles");
+
+			await userProfilesCollection.updateOne(
+				{ userId },
+				{
+					$addToSet: { values: value },
+					$set: { updatedAt: new Date() },
+					$setOnInsert: { goals: [] },
+				},
+				{ upsert: true }
+			);
+			logger.info({ userId, value }, "Value added");
+		} catch (err) {
+			logger.error({ err, userId, value }, "Failed to add value");
+			throw err;
+		}
+	}
+
+	/**
+	 * Remove a value for a user
+	 * @param userId - The user ID
+	 * @param value - The value to remove
+	 */
+	async removeValue(userId: string, value: string): Promise<void> {
+		try {
+			const { Database } = await import("$lib/server/database");
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const userProfilesCollection = client.db().collection<UserProfileDocument>("user_profiles");
+
+			await userProfilesCollection.updateOne(
+				{ userId },
+				{
+					$pull: { values: value },
+					$set: { updatedAt: new Date() },
+				}
+			);
+			logger.info({ userId, value }, "Value removed");
+		} catch (err) {
+			logger.error({ err, userId, value }, "Failed to remove value");
+			throw err;
+		}
+	}
+
+	// ============================================
+	// Arbitrary Data Storage (Core Interface Parity)
+	// ============================================
+
+	/**
+	 * Store arbitrary data for a user under a specific key
+	 * @param userId - The user ID
+	 * @param key - The storage key
+	 * @param data - The data to store (any JSON-serializable value)
+	 */
+	async storeArbitraryData(userId: string, key: string, data: unknown): Promise<void> {
+		try {
+			const { Database } = await import("$lib/server/database");
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const userDataCollection = client.db().collection<UserDataDocument>("user_data");
+
+			await userDataCollection.updateOne(
+				{ userId, key },
+				{
+					$set: {
+						data,
+						updatedAt: new Date(),
+					},
+				},
+				{ upsert: true }
+			);
+			logger.info({ userId, key }, "Arbitrary data stored");
+		} catch (err) {
+			logger.error({ err, userId, key }, "Failed to store arbitrary data");
+			throw err;
+		}
+	}
+
+	/**
+	 * Retrieve arbitrary data for a user by key
+	 * @param userId - The user ID
+	 * @param key - The storage key
+	 * @returns The stored data or null if not found
+	 */
+	async retrieveArbitraryData(userId: string, key: string): Promise<unknown | null> {
+		try {
+			const { Database } = await import("$lib/server/database");
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const userDataCollection = client.db().collection<UserDataDocument>("user_data");
+
+			const doc = await userDataCollection.findOne({ userId, key });
+			return doc?.data ?? null;
+		} catch (err) {
+			logger.warn({ err, userId, key }, "Failed to retrieve arbitrary data");
+			return null;
+		}
+	}
+
+	// ============================================
+	// Books Management (Core Interface Parity)
+	// ============================================
+
+	/**
+	 * List all books uploaded by a user
+	 * @param userId - The user ID
+	 * @returns Array of book metadata
+	 */
+	async listBooks(userId: string): Promise<BookListItem[]> {
+		try {
+			const { Database } = await import("$lib/server/database");
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const booksCollection = client.db().collection("books");
+
+			const books = await booksCollection
+				.find({ userId })
+				.sort({ uploadTimestamp: -1 })
+				.toArray();
+
+			return books.map((book) => ({
+				id: (book._id as { toString(): string }).toString(),
+				title: book.title as string,
+				uploadedAt: book.uploadTimestamp as Date,
+			}));
+		} catch (err) {
+			logger.warn({ err, userId }, "Failed to list books");
+			return [];
+		}
+	}
+
+	/**
+	 * Retrieve relevant chunks from user's books based on a query
+	 * Uses the memory search system to find relevant book content
+	 * @param userId - The user ID
+	 * @param query - The search query
+	 * @param limit - Maximum number of chunks to return (default: 5)
+	 * @returns Array of matching book chunks
+	 */
+	async retrieveFromBooks(userId: string, query: string, limit = 5): Promise<BookChunk[]> {
+		try {
+			// Use the existing search service with books tier filter
+			const searchResults = await this.search({
+				userId,
+				query,
+				collections: ["books"],
+				limit,
+			});
+
+			// Transform search results to BookChunk format
+			return searchResults.results.map((result) => {
+				// Extract book metadata from the result's citations if available
+				const bookCitation = result.citations.find((c) => c.book);
+				const bookMeta = bookCitation?.book;
+
+				return {
+					chunkId: result.memory_id,
+					bookId: bookMeta?.book_id ?? "",
+					title: bookMeta?.title ?? "Unknown",
+					author: bookMeta?.author ?? null,
+					chunkIndex: bookMeta?.chunk_index ?? 0,
+					content: result.content,
+					score: result.score_summary.final_score,
+				};
+			});
+		} catch (err) {
+			logger.warn({ err, userId, query }, "Failed to retrieve from books");
+			return [];
+		}
 	}
 }

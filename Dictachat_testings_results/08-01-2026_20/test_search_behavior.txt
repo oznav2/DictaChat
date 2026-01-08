@@ -1,0 +1,22 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_search_behavior.test.ts
+
+test_search_behavior.test.ts::TestSearchBehavior::should return array from search PASSED [  7%]
+test_search_behavior.test.ts::TestSearchBehavior::should respect the limit parameter PASSED [ 14%]
+test_search_behavior.test.ts::TestSearchBehavior::should return results with expected structure PASSED [ 21%]
+test_search_behavior.test.ts::TestSearchBehavior::should handle empty query without crashing PASSED [ 28%]
+test_search_behavior.test.ts::TestSearchBehavior::should filter by collection when specified PASSED [ 35%]
+test_search_behavior.test.ts::TestSearchBehavior::should return consistent ranking for same query PASSED [ 42%]
+test_search_behavior.test.ts::TestWilsonScore::should be calculable PASSED [ 50%]
+test_search_behavior.test.ts::TestWilsonScore::should return 0.5 for zero uses PASSED [ 57%]
+test_search_behavior.test.ts::TestWilsonScore::should rank proven higher than perfect newcomer PASSED [ 64%]
+test_search_behavior.test.ts::TestWilsonScore::should always return between 0 and 1 PASSED [ 71%]
+test_search_behavior.test.ts::TestMCPToolShapes::should return expected shape from search PASSED [ 78%]
+test_search_behavior.test.ts::TestMCPToolShapes::should return expected shape from cold start context PASSED [ 85%]
+test_search_behavior.test.ts::TestMCPToolShapes::should have expected parameters for store PASSED [ 92%]
+test_search_behavior.test.ts::TestCharacterizationQueries::should handle all characterization queries PASSED [100%]
+
+============================= test summary =============================
+======================== 14 passed in 1.389301454s ========================

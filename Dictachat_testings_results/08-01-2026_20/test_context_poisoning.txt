@@ -1,0 +1,18 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_context_poisoning.test.ts
+
+test_context_poisoning.test.ts::Context Poisoning Prevention::Exact Duplicate Poisoning::test_exact_duplicate_poisoning PASSED [ 10%]
+test_context_poisoning.test.ts::Context Poisoning Prevention::Exact Duplicate Poisoning::test_hebrew_duplicate_poisoning PASSED [ 20%]
+test_context_poisoning.test.ts::Context Poisoning Prevention::Near Duplicate Confusion::test_near_duplicate_confusion PASSED [ 30%]
+test_context_poisoning.test.ts::Context Poisoning Prevention::Entity Confusion::test_entity_confusion PASSED [ 40%]
+test_context_poisoning.test.ts::Context Poisoning Prevention::Entity Confusion::test_hebrew_entity_confusion PASSED [ 50%]
+test_context_poisoning.test.ts::Context Poisoning Prevention::Temporal Confusion::test_temporal_confusion PASSED [ 60%]
+test_context_poisoning.test.ts::Context Poisoning Prevention::Negation Poisoning::test_negation_poisoning PASSED [ 70%]
+test_context_poisoning.test.ts::Context Poisoning Prevention::Negation Poisoning::test_hebrew_negation_poisoning PASSED [ 80%]
+test_context_poisoning.test.ts::Context Poisoning Prevention::Cross-Language Poisoning::test_cross_language_confusion PASSED [ 90%]
+test_context_poisoning.test.ts::Context Poisoning Prevention::Summary Test::test_context_poisoning PASSED [100%]
+
+============================= test summary =============================
+======================== 10 passed in 1.140413254s ========================

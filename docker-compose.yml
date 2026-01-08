@@ -39,6 +39,34 @@ services:
       retries: 5
       start_period: 10s
 
+  qdrant:
+    image: qdrant/qdrant:v1.7.4
+    container_name: bricksllm-qdrant
+    restart: unless-stopped
+    ports:
+      - '${QDRANT_PORT:-6333}:6333'
+      - '${QDRANT_GRPC_PORT:-6334}:6334'
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__GRPC_PORT=6334
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__LOG_LEVEL=INFO
+    networks:
+      - bricksllm-network
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:6333/readyz']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
+
   postgresql:
     image: postgres:16.1-alpine
     container_name: bricksllm-postgresql
@@ -72,6 +100,13 @@ services:
     container_name: bricksllm-llama
     restart: unless-stopped
     runtime: nvidia
+    depends_on:
+      qdrant:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
     environment:
       CUDA_VISIBLE_DEVICES: ${GPU_DEVICE_IDS:-0}
       SYSTEM_PROMPT: ${SYSTEM_PROMPT}
@@ -216,6 +251,25 @@ services:
       - RERANKER_THRESHOLD=0.7
       - MAX_CONTEXT_CHUNKS=10
       - CONTEXT_TOKEN_BUDGET=8000
+      # Memory System Configuration
+      - MEMORY_SYSTEM_ENABLED=${MEMORY_SYSTEM_ENABLED:-true}
+      - MEMORY_UI_ENABLED=${MEMORY_UI_ENABLED:-true}
+      - MEMORY_QDRANT_ENABLED=${MEMORY_QDRANT_ENABLED:-true}
+      - MEMORY_BM25_ENABLED=${MEMORY_BM25_ENABLED:-true}
+      - MEMORY_RERANK_ENABLED=${MEMORY_RERANK_ENABLED:-true}
+      - MEMORY_OUTCOME_ENABLED=${MEMORY_OUTCOME_ENABLED:-true}
+      - MEMORY_PROMOTION_ENABLED=${MEMORY_PROMOTION_ENABLED:-true}
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - QDRANT_COLLECTION=${QDRANT_COLLECTION:-memories_v1}
+      - QDRANT_VECTOR_SIZE=${QDRANT_VECTOR_SIZE:-768}
+      - MEMORY_INITIAL_SCORE=${MEMORY_INITIAL_SCORE:-0.5}
+      - MEMORY_POSITIVE_BOOST=${MEMORY_POSITIVE_BOOST:-0.2}
+      - MEMORY_NEGATIVE_PENALTY=${MEMORY_NEGATIVE_PENALTY:-0.3}
+      - MEMORY_TOP_K=${MEMORY_TOP_K:-10}
+      - MEMORY_SEARCH_LIMIT=${MEMORY_SEARCH_LIMIT:-20}
+      - MEMORY_LLM_BASE_URL=http://bricksllm:8002/v1
+      - MEMORY_LLM_MODEL=${MEMORY_LLM_MODEL:-dictalm-3.0}
     ports:
       - "8004:3000"
     volumes:
@@ -225,6 +279,7 @@ services:
     depends_on:
       - mongo
       - mcp-sse-proxy
+      - qdrant
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
@@ -391,6 +446,8 @@ volumes:
   postgresql_data:
     driver: local
   mongo_data:
+    driver: local
+  qdrant_data:
     driver: local
   huggingface_cache:
     driver: local

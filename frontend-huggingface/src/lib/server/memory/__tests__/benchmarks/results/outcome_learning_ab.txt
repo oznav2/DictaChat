@@ -1,0 +1,84 @@
+============================= test session starts =============================
+platform: node v20.18.1
+test framework: vitest
+timestamp: 2026-01-08T00:59:05.434Z
+rootdir: /home/ilan/BricksLLM/frontend-huggingface/src/lib/server/memory/__tests__
+
+collecting ... collected 10 items
+
+test_outcome_learning_ab::test_ab_learning_effectiveness PASSED (4ms) [learning_group_italian_rank=1.000, control_group_italian_rank=3.000, learning_improved_rank=1.000, italian_confidence=72.000, learning_enabled_a=1.000, learning_enabled_b=0.000] [ 10%]
+test_outcome_learning_ab::test_positive_negative_impact PASSED (0ms) [initial_a_score=50.000, final_a_score=100.000, initial_b_score=50.000, final_b_score=0.000, a_confidence=84.000, b_confidence=0.000, positive_impact=1.000, negative_impact=1.000] [ 20%]
+test_outcome_learning_ab::test_hebrew_feedback_impact PASSED (1ms) [hebrew_a_score=100.000, hebrew_b_score=0.000, hebrew_a_confidence=80.000, hebrew_learning_effective=1.000] [ 30%]
+test_outcome_learning_ab::test_convergence_speed PASSED (1ms) [iterations_to_converge=8.000, final_confidence=70.000, target_confidence=70.000, converged=1.000, samples_needed=8.000] [ 40%]
+test_outcome_learning_ab::test_learning_stability PASSED (0ms) [high_confidence=84.000, after_negative=61.000, stability_ratio=73.000, stable=1.000] [ 50%]
+test_outcome_learning_ab::test_context_isolation PASSED (0ms) [work_a_score=100.000, work_b_score=0.000, home_a_score=0.000, home_b_score=100.000, work_prefers_a=1.000, home_prefers_b=1.000, context_isolation=1.000] [ 60%]
+test_outcome_learning_ab::test_wilson_score_calculation PASSED (0ms) [test_cases=5.000, accurate_calculations=5.000, accuracy_rate=100.000, min_score=0.000, max_score=89.000] [ 70%]
+test_outcome_learning_ab::test_confidence_growth PASSED (0ms) [sample_sizes_tested=6.000, min_confidence=0.000, max_confidence=71.000, confidence_monotonic=1.000, confidence_at_100=71.000] [ 80%]
+test_outcome_learning_ab::test_bilingual_learning_parity PASSED (1ms) [english_a_score=100.000, english_b_score=0.000, hebrew_a_score=100.000, hebrew_b_score=0.000, english_diff=100.000, hebrew_diff=100.000, learning_parity=1.000] [ 90%]
+test_outcome_learning_ab::test_outcome_learning_ab PASSED (3ms) [items_tested=5.000, feedback_rounds=20.000, learning_high_rank=1.000, control_high_rank=3.000, learning_improved=1.000, high_quality_confidence=84.000, low_quality_confidence=0.000, quality_differentiation=1.000, ab_test_success=1.000] [100%]
+
+============================== benchmark summary ==============================
+
+Metrics Summary:
+  learning_group_italian_rank: avg=1.000, min=1.000, max=1.000
+  control_group_italian_rank: avg=3.000, min=3.000, max=3.000
+  learning_improved_rank: avg=1.000, min=1.000, max=1.000
+  italian_confidence: avg=72.000, min=72.000, max=72.000
+  learning_enabled_a: avg=1.000, min=1.000, max=1.000
+  learning_enabled_b: avg=0.000, min=0.000, max=0.000
+  initial_a_score: avg=50.000, min=50.000, max=50.000
+  final_a_score: avg=100.000, min=100.000, max=100.000
+  initial_b_score: avg=50.000, min=50.000, max=50.000
+  final_b_score: avg=0.000, min=0.000, max=0.000
+  a_confidence: avg=84.000, min=84.000, max=84.000
+  b_confidence: avg=0.000, min=0.000, max=0.000
+  positive_impact: avg=1.000, min=1.000, max=1.000
+  negative_impact: avg=1.000, min=1.000, max=1.000
+  hebrew_a_score: avg=100.000, min=100.000, max=100.000
+  hebrew_b_score: avg=0.000, min=0.000, max=0.000
+  hebrew_a_confidence: avg=80.000, min=80.000, max=80.000
+  hebrew_learning_effective: avg=1.000, min=1.000, max=1.000
+  iterations_to_converge: avg=8.000, min=8.000, max=8.000
+  final_confidence: avg=70.000, min=70.000, max=70.000
+  target_confidence: avg=70.000, min=70.000, max=70.000
+  converged: avg=1.000, min=1.000, max=1.000
+  samples_needed: avg=8.000, min=8.000, max=8.000
+  high_confidence: avg=84.000, min=84.000, max=84.000
+  after_negative: avg=61.000, min=61.000, max=61.000
+  stability_ratio: avg=73.000, min=73.000, max=73.000
+  stable: avg=1.000, min=1.000, max=1.000
+  work_a_score: avg=100.000, min=100.000, max=100.000
+  work_b_score: avg=0.000, min=0.000, max=0.000
+  home_a_score: avg=0.000, min=0.000, max=0.000
+  home_b_score: avg=100.000, min=100.000, max=100.000
+  work_prefers_a: avg=1.000, min=1.000, max=1.000
+  home_prefers_b: avg=1.000, min=1.000, max=1.000
+  context_isolation: avg=1.000, min=1.000, max=1.000
+  test_cases: avg=5.000, min=5.000, max=5.000
+  accurate_calculations: avg=5.000, min=5.000, max=5.000
+  accuracy_rate: avg=100.000, min=100.000, max=100.000
+  min_score: avg=0.000, min=0.000, max=0.000
+  max_score: avg=89.000, min=89.000, max=89.000
+  sample_sizes_tested: avg=6.000, min=6.000, max=6.000
+  min_confidence: avg=0.000, min=0.000, max=0.000
+  max_confidence: avg=71.000, min=71.000, max=71.000
+  confidence_monotonic: avg=1.000, min=1.000, max=1.000
+  confidence_at_100: avg=71.000, min=71.000, max=71.000
+  english_a_score: avg=100.000, min=100.000, max=100.000
+  english_b_score: avg=0.000, min=0.000, max=0.000
+  english_diff: avg=100.000, min=100.000, max=100.000
+  hebrew_diff: avg=100.000, min=100.000, max=100.000
+  learning_parity: avg=1.000, min=1.000, max=1.000
+  items_tested: avg=5.000, min=5.000, max=5.000
+  feedback_rounds: avg=20.000, min=20.000, max=20.000
+  learning_high_rank: avg=1.000, min=1.000, max=1.000
+  control_high_rank: avg=3.000, min=3.000, max=3.000
+  learning_improved: avg=1.000, min=1.000, max=1.000
+  high_quality_confidence: avg=84.000, min=84.000, max=84.000
+  low_quality_confidence: avg=0.000, min=0.000, max=0.000
+  quality_differentiation: avg=1.000, min=1.000, max=1.000
+  ab_test_success: avg=1.000, min=1.000, max=1.000
+
+============================== test results ===================================
+10 passed, 0 failed in 0.03s
+===============================================================================

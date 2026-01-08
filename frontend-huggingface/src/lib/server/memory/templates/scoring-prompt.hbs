@@ -1,0 +1,46 @@
+{{!-- @description: Memory scoring explanation for transparency --}}
+{{!-- @category: learning --}}
+
+{{#ifLang "he"}}
+ציון זיכרון: {{percent score}}
+{{else}}
+Memory Score: {{percent score}}
+{{/ifLang}}
+
+{{#ifLang "he"}}
+פירוט הציון:
+- דמיון אמבדינג: {{percent embedding_similarity}}
+- ציון למידה (Wilson): {{percent wilson_score}}
+- שימושים: {{uses}}
+- תוצאה אחרונה: {{#if last_outcome}}{{last_outcome}}{{else}}לא נבדק{{/if}}
+{{else}}
+Score breakdown:
+- Embedding similarity: {{percent embedding_similarity}}
+- Learned score (Wilson): {{percent wilson_score}}
+- Uses: {{uses}}
+- Last outcome: {{#if last_outcome}}{{last_outcome}}{{else}}untested{{/if}}
+{{/ifLang}}
+
+{{#if is_proven}}
+{{#ifLang "he"}}
+זיכרון מוכח: זיכרון זה הוכיח את עצמו עם {{uses}} שימושים מוצלחים.
+{{else}}
+Proven memory: This memory has proven itself with {{uses}} successful uses.
+{{/ifLang}}
+{{/if}}
+
+{{#if is_emerging}}
+{{#ifLang "he"}}
+דפוס מתהווה: זיכרון זה מראה סימנים מבטיחים אך צריך יותר נתונים.
+{{else}}
+Emerging pattern: This memory shows promising signs but needs more data.
+{{/ifLang}}
+{{/if}}
+
+{{#if is_failing}}
+{{#ifLang "he"}}
+דפוס כושל: זיכרון זה לא הניב תוצאות טובות לאחרונה.
+{{else}}
+Failing pattern: This memory hasn't produced good results recently.
+{{/ifLang}}
+{{/if}}

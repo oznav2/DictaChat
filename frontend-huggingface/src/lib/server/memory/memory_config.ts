@@ -134,7 +134,7 @@ export const defaultMemoryConfig: MemoryConfig = {
 	timeouts: {
 		end_to_end_search_ms: 15_000,
 		end_to_end_prefetch_ms: 6_000,
-		qdrant_query_ms: 1_500,
+		qdrant_query_ms: 10_000, // 10s for first-use model loading, SQLite locks, HNSW scenarios
 		mongo_text_query_ms: 1_500,
 		mongo_aggregate_ms: 1_500,
 		reranker_ms: 4_000,

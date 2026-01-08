@@ -1,0 +1,17 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_dictachat_vs_vector_db.test.ts
+
+test_dictachat_vs_vector_db.test.ts::DictaChat vs Vector DB Comparison::Semantic Search Quality::test_basic_search_comparison PASSED [ 11%]
+test_dictachat_vs_vector_db.test.ts::DictaChat vs Vector DB Comparison::Knowledge Graph Advantage::test_relationship_traversal PASSED [ 22%]
+test_dictachat_vs_vector_db.test.ts::DictaChat vs Vector DB Comparison::Knowledge Graph Advantage::test_hebrew_relationship_traversal PASSED [ 33%]
+test_dictachat_vs_vector_db.test.ts::DictaChat vs Vector DB Comparison::Learning Advantage::test_feedback_learning PASSED [ 44%]
+test_dictachat_vs_vector_db.test.ts::DictaChat vs Vector DB Comparison::Learning Advantage::test_cumulative_learning PASSED [ 55%]
+test_dictachat_vs_vector_db.test.ts::DictaChat vs Vector DB Comparison::Context-Aware Retrieval::test_contextual_search PASSED [ 66%]
+test_dictachat_vs_vector_db.test.ts::DictaChat vs Vector DB Comparison::Bilingual Performance::test_bilingual_comparison PASSED [ 77%]
+test_dictachat_vs_vector_db.test.ts::DictaChat vs Vector DB Comparison::Performance Metrics::test_latency_comparison PASSED [ 88%]
+test_dictachat_vs_vector_db.test.ts::DictaChat vs Vector DB Comparison::Summary Test::test_dictachat_vs_vector_db PASSED [100%]
+
+============================= test summary =============================
+======================== 9 passed in 1.092013310s ========================

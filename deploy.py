@@ -589,15 +589,59 @@ def deploy_retrieval_verbose():
     except Exception as e:
         console.print(f"[warning]⚠ Could not monitor retrieval logs: {e}[/]")
 
+def deploy_qdrant_verbose():
+    console.print("\n[info]Initializing Qdrant Vector Database (Memory System)...[/]")
+
+    # 1. Check if container is already running and healthy
+    inspect = subprocess.run(
+        RUNTIME_CMD + ["inspect", "--format", "{{.State.Status}}", "bricksllm-qdrant"],
+        capture_output=True,
+        text=True
+    )
+    if inspect.returncode == 0 and inspect.stdout.strip() == "running":
+        console.print("[success]✔ Qdrant service is already running[/]")
+        return
+
+    # 2. Start qdrant specifically
+    subprocess.run(COMPOSE_CMD + ["up", "-d", "qdrant"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    # 3. Wait for Qdrant to be ready (healthcheck)
+    console.print("[dim]Waiting for Qdrant to initialize...[/]")
+    try:
+        import requests
+    except ImportError:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "requests"])
+        import requests
+
+    qdrant_health_url = "http://localhost:6333/readyz"
+    start_time = time.time()
+    max_wait = 60  # 60 seconds max
+
+    while time.time() - start_time < max_wait:
+        try:
+            response = requests.get(qdrant_health_url, timeout=2)
+            if response.status_code == 200:
+                console.print("[success]✔ Qdrant vector database ready![/]")
+                console.print("[dim]  Memory system storage initialized[/]")
+                return
+        except requests.RequestException:
+            pass
+        time.sleep(2)
+
+    console.print("[warning]⚠ Qdrant startup monitoring timed out (service might still be loading)[/]")
+
 def deploy_services():
     console.print("\n[step]Step 5: Deploying Services...[/]")
-    
+
     # Deploy Docling first with verbose logs
     deploy_docling_verbose()
-    
+
     # Deploy Retrieval second with verbose logs
     deploy_retrieval_verbose()
-    
+
+    # Deploy Qdrant for Memory System
+    deploy_qdrant_verbose()
+
     with console.status("[bold green]Starting remaining services with Compose...[/]"):
         if subprocess.run(COMPOSE_CMD + ["up", "-d"]).returncode == 0:
             console.print("[success]✔ Services started successfully[/]")
@@ -695,6 +739,7 @@ def main():
         console.print("  • Document Engine UI:  http://localhost:5001/ui                • ")
         console.print("  • Embedding API:       http://localhost:5005                   • ")
         console.print("  • Reranking API:       http://localhost:5006                   • ")
+        console.print("  • Qdrant (Memory):     http://localhost:6333                   • ")
         console.print("                                      ")
         console.print("  • Model Configuration (from .env):                     • ")
         console.print("  • Context Size: 32768 tokens (default)                 • ")

@@ -1,0 +1,63 @@
+================================================================================
+MEMORY SYSTEM LATENCY BENCHMARK REPORT
+================================================================================
+Timestamp: 2026-01-08T00:58:54.657Z
+Iterations: 100
+Warmup: 10
+
+LATENCY TARGETS:
+  P50: < 100ms
+  P95: < 300ms
+  P99: < 500ms
+
+--------------------------------------------------------------------------------
+RESULTS BY OPERATION:
+--------------------------------------------------------------------------------
+
+[PASS] embedding
+  Samples: 100
+  Min: 0.00ms | Max: 0.06ms
+  Mean: 0.00ms | Std: 0.01ms
+  P50: 0.00ms | P95: 0.00ms | P99: 0.01ms
+
+[PASS] vector_search
+  Samples: 100
+  Min: 0.08ms | Max: 0.73ms
+  Mean: 0.10ms | Std: 0.07ms
+  P50: 0.08ms | P95: 0.14ms | P99: 0.17ms
+
+[PASS] store_memory
+  Samples: 100
+  Min: 0.01ms | Max: 0.54ms
+  Mean: 0.02ms | Std: 0.07ms
+  P50: 0.01ms | P95: 0.02ms | P99: 0.41ms
+
+[PASS] llm_generation
+  Samples: 100
+  Min: 0.00ms | Max: 0.00ms
+  Mean: 0.00ms | Std: 0.00ms
+  P50: 0.00ms | P95: 0.00ms | P99: 0.00ms
+
+[PASS] embed_search_pipeline
+  Samples: 100
+  Min: 0.18ms | Max: 0.87ms
+  Mean: 0.21ms | Std: 0.07ms
+  P50: 0.20ms | P95: 0.23ms | P99: 0.34ms
+
+[PASS] full_retrieval_flow
+  Samples: 50
+  Min: 0.18ms | Max: 0.54ms
+  Mean: 0.22ms | Std: 0.07ms
+  P50: 0.20ms | P95: 0.34ms | P99: 0.54ms
+
+[PASS] concurrent_operations
+  Samples: 5
+  Min: 2.47ms | Max: 3.06ms
+  Mean: 2.65ms | Std: 0.22ms
+  P50: 2.56ms | P95: 3.06ms | P99: 3.06ms
+
+--------------------------------------------------------------------------------
+SUMMARY:
+  Passed: 7/7 operations
+  Overall: ALL TARGETS MET
+================================================================================

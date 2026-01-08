@@ -1,0 +1,40 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_knowledge_graph_service.test.ts
+
+test_knowledge_graph_service.test.ts::TestEntityExtraction::should extract capitalized words as entities PASSED [  3%]
+test_knowledge_graph_service.test.ts::TestEntityExtraction::should extract capitalized words individually PASSED [  6%]
+test_knowledge_graph_service.test.ts::TestEntityExtraction::should extract Hebrew words PASSED [  9%]
+test_knowledge_graph_service.test.ts::TestEntityExtraction::should filter out common words PASSED [ 12%]
+test_knowledge_graph_service.test.ts::TestEntityExtraction::should filter short words PASSED [ 15%]
+test_knowledge_graph_service.test.ts::TestEntityExtraction::should return empty array for empty text PASSED [ 18%]
+test_knowledge_graph_service.test.ts::TestEntityExtraction::should limit entities to 10 PASSED [ 21%]
+test_knowledge_graph_service.test.ts::TestEntityExtraction::should include confidence in extracted entities PASSED [ 25%]
+test_knowledge_graph_service.test.ts::TestRoutingKG::should return default tier plan for empty concepts PASSED [ 28%]
+test_knowledge_graph_service.test.ts::TestRoutingKG::should return optimized tier plan with stats PASSED [ 31%]
+test_knowledge_graph_service.test.ts::TestRoutingKG::should create routing stats on first update PASSED [ 34%]
+test_knowledge_graph_service.test.ts::TestRoutingKG::should track success and failure outcomes PASSED [ 37%]
+test_knowledge_graph_service.test.ts::TestContentKG::should create nodes for entities PASSED [ 40%]
+test_knowledge_graph_service.test.ts::TestContentKG::should create edges between co-occurring entities PASSED [ 43%]
+test_knowledge_graph_service.test.ts::TestContentKG::should return entity boosts for memories PASSED [ 46%]
+test_knowledge_graph_service.test.ts::TestContentKG::should return related entities PASSED [ 50%]
+test_knowledge_graph_service.test.ts::TestActionKG::should start turn tracking PASSED [ 53%]
+test_knowledge_graph_service.test.ts::TestActionKG::should record action in turn PASSED [ 56%]
+test_knowledge_graph_service.test.ts::TestActionKG::should apply outcome to turn actions PASSED [ 59%]
+test_knowledge_graph_service.test.ts::TestActionKG::should return action effectiveness PASSED [ 62%]
+test_knowledge_graph_service.test.ts::TestContextDetection::should detect docker context PASSED [ 65%]
+test_knowledge_graph_service.test.ts::TestContextDetection::should detect debugging context PASSED [ 68%]
+test_knowledge_graph_service.test.ts::TestContextDetection::should detect datagov context PASSED [ 71%]
+test_knowledge_graph_service.test.ts::TestContextDetection::should detect doc_rag context PASSED [ 75%]
+test_knowledge_graph_service.test.ts::TestContextDetection::should detect coding context PASSED [ 78%]
+test_knowledge_graph_service.test.ts::TestContextDetection::should detect web_search context PASSED [ 81%]
+test_knowledge_graph_service.test.ts::TestContextDetection::should detect memory_management context PASSED [ 84%]
+test_knowledge_graph_service.test.ts::TestContextDetection::should default to general context PASSED [ 87%]
+test_knowledge_graph_service.test.ts::TestContextDetection::should detect Hebrew search context PASSED [ 90%]
+test_knowledge_graph_service.test.ts::TestContextInsights::should return combined context insights PASSED [ 93%]
+test_knowledge_graph_service.test.ts::TestKGCleanup::should cleanup memory references PASSED [ 96%]
+test_knowledge_graph_service.test.ts::TestSummary::should generate knowledge graph test summary PASSED [100%]
+
+============================= test summary =============================
+======================== 32 passed in 1.376427312s ========================

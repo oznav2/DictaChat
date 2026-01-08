@@ -1,0 +1,21 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_token_efficiency.test.ts
+
+test_token_efficiency.test.ts::Token Efficiency::Token Counting::test_english_token_estimation PASSED [  7%]
+test_token_efficiency.test.ts::Token Efficiency::Token Counting::test_hebrew_token_estimation PASSED [ 15%]
+test_token_efficiency.test.ts::Token Efficiency::Token Counting::test_bilingual_token_estimation PASSED [ 23%]
+test_token_efficiency.test.ts::Token Efficiency::Compression Efficiency::test_memory_compression_ratio PASSED [ 30%]
+test_token_efficiency.test.ts::Token Efficiency::Compression Efficiency::test_hebrew_compression_ratio PASSED [ 38%]
+test_token_efficiency.test.ts::Token Efficiency::Context Budget Management::test_budget_allocation PASSED [ 46%]
+test_token_efficiency.test.ts::Token Efficiency::Context Budget Management::test_hebrew_budget_allocation PASSED [ 53%]
+test_token_efficiency.test.ts::Token Efficiency::Deduplication Savings::test_deduplication_efficiency PASSED [ 61%]
+test_token_efficiency.test.ts::Token Efficiency::Deduplication Savings::test_hebrew_deduplication PASSED [ 69%]
+test_token_efficiency.test.ts::Token Efficiency::Summarization Efficiency::test_multi_memory_summarization PASSED [ 76%]
+test_token_efficiency.test.ts::Token Efficiency::Summarization Efficiency::test_hebrew_summarization PASSED [ 84%]
+test_token_efficiency.test.ts::Token Efficiency::Context Window Utilization::test_optimal_context_packing PASSED [ 92%]
+test_token_efficiency.test.ts::Token Efficiency::Summary Test::test_token_efficiency PASSED [100%]
+
+============================= test summary =============================
+======================== 13 passed in 1.119490782s ========================

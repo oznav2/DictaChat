@@ -1,0 +1,29 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_promotion_service.test.ts
+
+test_promotion_service.test.ts::TestPromotionServiceInit::should initialize with default config PASSED [  4%]
+test_promotion_service.test.ts::TestPromotionServiceInit::should use custom config PASSED [  9%]
+test_promotion_service.test.ts::TestWorkingToHistoryPromotion::should promote working memory with high score and uses PASSED [ 14%]
+test_promotion_service.test.ts::TestWorkingToHistoryPromotion::should not promote if score too low PASSED [ 19%]
+test_promotion_service.test.ts::TestWorkingToHistoryPromotion::should not promote if uses too low PASSED [ 23%]
+test_promotion_service.test.ts::TestHistoryToPatternsPromotion::should promote history memory with very high score PASSED [ 28%]
+test_promotion_service.test.ts::TestHistoryToPatternsPromotion::should not promote to patterns if score below threshold PASSED [ 33%]
+test_promotion_service.test.ts::TestTTLCleanup::should archive expired working memories PASSED [ 38%]
+test_promotion_service.test.ts::TestTTLCleanup::should preserve high-value expired memories PASSED [ 42%]
+test_promotion_service.test.ts::TestGarbageCleanup::should archive memory with very low score PASSED [ 47%]
+test_promotion_service.test.ts::TestGarbageCleanup::should preserve unused low-score memories PASSED [ 52%]
+test_promotion_service.test.ts::TestScheduler::should start scheduler PASSED [ 57%]
+test_promotion_service.test.ts::TestScheduler::should stop scheduler PASSED [ 61%]
+test_promotion_service.test.ts::TestScheduler::should prevent concurrent runs PASSED [ 66%]
+test_promotion_service.test.ts::TestTriggerForUser::should trigger cycle for specific user PASSED [ 71%]
+test_promotion_service.test.ts::TestPromotionStats::should return complete stats structure PASSED [ 76%]
+test_promotion_service.test.ts::TestPromotionStats::should track errors in stats PASSED [ 80%]
+test_promotion_service.test.ts::TestPromotionRules::should have correct working → history thresholds PASSED [ 85%]
+test_promotion_service.test.ts::TestPromotionRules::should have correct history → patterns thresholds PASSED [ 90%]
+test_promotion_service.test.ts::TestPromotionRules::should have correct garbage threshold PASSED [ 95%]
+test_promotion_service.test.ts::TestSummary::should generate promotion service test summary PASSED [100%]
+
+============================= test summary =============================
+======================== 21 passed in 1.246798958s ========================

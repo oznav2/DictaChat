@@ -1,0 +1,23 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_catastrophic_forgetting.test.ts
+
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Sequential Storage Preservation::should retain all memories after sequential storage PASSED [  6%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Sequential Storage Preservation::should retain Hebrew memories alongside English ones PASSED [ 13%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Sequential Storage Preservation::should not lose early memories when storing many new ones PASSED [ 20%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Bulk Storage Integrity::should preserve all items in bulk storage operation PASSED [ 26%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Bulk Storage Integrity::should handle mixed language bulk storage PASSED [ 33%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Tier Promotion Preservation::should preserve memory content during tier promotion PASSED [ 40%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Tier Promotion Preservation::should preserve Hebrew content during tier transitions PASSED [ 46%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Wilson Score Stability::should not corrupt memory during Wilson score updates PASSED [ 53%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Wilson Score Stability::should maintain separate scores for different memories PASSED [ 60%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Search Result Stability::should find old memories even after many new additions PASSED [ 66%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Search Result Stability::should find Hebrew memories after English flood PASSED [ 73%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Concept Extraction Consistency::should extract same concepts before and after storage PASSED [ 80%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Metadata Isolation::should not cross-contaminate metadata between memories PASSED [ 86%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Stress Test: High Volume::should handle 1000 sequential writes without data loss PASSED [ 93%]
+test_catastrophic_forgetting.test.ts::Catastrophic Forgetting Prevention::Stress Test: High Volume::should maintain search quality with 1000 documents PASSED [100%]
+
+============================= test summary =============================
+======================== 15 passed in 1.205730887s ========================

@@ -1,0 +1,31 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_ghost_registry.test.ts
+
+test_ghost_registry.test.ts::TestGhostRegistry::test_init_without_data_dir PASSED [  4%]
+test_ghost_registry.test.ts::TestGhostRegistry::test_init_with_data_dir PASSED [  8%]
+test_ghost_registry.test.ts::TestGhostRegistry::test_add_single_ghost PASSED [ 13%]
+test_ghost_registry.test.ts::TestGhostRegistry::test_add_multiple_ghosts PASSED [ 17%]
+test_ghost_registry.test.ts::TestGhostRegistry::test_add_duplicates_not_counted PASSED [ 21%]
+test_ghost_registry.test.ts::TestGhostRegistry::test_filter_ghosts_removes_ghost_results PASSED [ 26%]
+test_ghost_registry.test.ts::TestGhostRegistry::test_filter_ghosts_uses_doc_id_fallback PASSED [ 30%]
+test_ghost_registry.test.ts::TestGhostRegistry::test_filter_ghosts_empty_registry_returns_all PASSED [ 34%]
+test_ghost_registry.test.ts::TestGhostRegistry::test_clear_removes_all_ghosts PASSED [ 39%]
+test_ghost_registry.test.ts::TestGhostRegistry::test_get_all_returns_list PASSED [ 43%]
+test_ghost_registry.test.ts::TestGhostRegistrySingleton::test_get_ghost_registry_creates_singleton PASSED [ 47%]
+test_ghost_registry.test.ts::TestGhostRegistrySingleton::test_reset_ghost_registry_clears_singleton PASSED [ 52%]
+test_ghost_registry.test.ts::TestQdrantStatusFiltering::test_status_filter_excludes_archived PASSED [ 56%]
+test_ghost_registry.test.ts::TestQdrantStatusFiltering::test_no_status_filter_returns_all PASSED [ 60%]
+test_ghost_registry.test.ts::TestQdrantStatusFiltering::test_archive_operation_creates_ghost PASSED [ 65%]
+test_ghost_registry.test.ts::TestQdrantStatusFiltering::test_delete_operation_removes_completely PASSED [ 69%]
+test_ghost_registry.test.ts::TestQdrantStatusFiltering::test_only_archived_filter PASSED [ 73%]
+test_ghost_registry.test.ts::TestBookRemovalGhostBehavior::test_remove_book_archives_chunks PASSED [ 78%]
+test_ghost_registry.test.ts::TestBookRemovalGhostBehavior::test_remove_book_hard_delete_from_qdrant PASSED [ 82%]
+test_ghost_registry.test.ts::TestGhostFilterIntegration::test_ghost_filter_preserves_order PASSED [ 86%]
+test_ghost_registry.test.ts::TestGhostFilterIntegration::test_ghost_filter_handles_mixed_id_keys PASSED [ 91%]
+test_ghost_registry.test.ts::TestGhostFilterIntegration::test_ghost_filter_large_set PASSED [ 95%]
+test_ghost_registry.test.ts::TestGhostRegistrySummary::prints_test_summary PASSED [100%]
+
+============================= test summary =============================
+======================== 23 passed in 1.165672701s ========================

@@ -1,0 +1,33 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: search-service.test.ts
+
+search-service.test.ts::SearchServiceImpl::Initialization::should create service with required dependencies PASSED [  4%]
+search-service.test.ts::SearchServiceImpl::Initialization::should use default config when not provided PASSED [  8%]
+search-service.test.ts::SearchServiceImpl::Initialization::should use custom config when provided PASSED [ 12%]
+search-service.test.ts::SearchServiceImpl::Basic Search::should execute search with all tiers by default PASSED [ 16%]
+search-service.test.ts::SearchServiceImpl::Basic Search::should search specific tiers when specified PASSED [ 20%]
+search-service.test.ts::SearchServiceImpl::Basic Search::should return results from hybrid search PASSED [ 24%]
+search-service.test.ts::SearchServiceImpl::Basic Search::should include debug information in response PASSED [ 28%]
+search-service.test.ts::SearchServiceImpl::Sort Mode Detection::should detect recency mode from "last" keyword PASSED [ 32%]
+search-service.test.ts::SearchServiceImpl::Sort Mode Detection::should detect recency mode from Hebrew keyword "לאחרונה" PASSED [ 36%]
+search-service.test.ts::SearchServiceImpl::Sort Mode Detection::should use relevance mode by default PASSED [ 40%]
+search-service.test.ts::SearchServiceImpl::Sort Mode Detection::should allow explicit sort mode override PASSED [ 44%]
+search-service.test.ts::SearchServiceImpl::Position Tracking::should track position map after search PASSED [ 48%]
+search-service.test.ts::SearchServiceImpl::Position Tracking::should track last search results PASSED [ 52%]
+search-service.test.ts::SearchServiceImpl::Position Tracking::should track last query normalized PASSED [ 56%]
+search-service.test.ts::SearchServiceImpl::Position Tracking::should clear turn tracking PASSED [ 60%]
+search-service.test.ts::SearchServiceImpl::Position Tracking::should update tracking on each search PASSED [ 64%]
+search-service.test.ts::SearchServiceImpl::Tier Resolution::should search all tiers when "all" specified PASSED [ 68%]
+search-service.test.ts::SearchServiceImpl::Tier Resolution::should search only books tier PASSED [ 72%]
+search-service.test.ts::SearchServiceImpl::Tier Resolution::should search memory_bank tier PASSED [ 76%]
+search-service.test.ts::SearchServiceImpl::Error Handling::should propagate hybrid search errors PASSED [ 80%]
+search-service.test.ts::SearchServiceImpl::Error Handling::should handle empty results gracefully PASSED [ 84%]
+search-service.test.ts::SearchServiceImpl::Retrieval Metrics::should calculate MRR correctly PASSED [ 88%]
+search-service.test.ts::SearchServiceImpl::Retrieval Metrics::should calculate nDCG@5 correctly PASSED [ 92%]
+search-service.test.ts::SearchServiceImpl::Retrieval Metrics::should calculate Precision@K correctly PASSED [ 96%]
+search-service.test.ts::SearchServiceImpl::Retrieval Metrics::should return 0 MRR when no relevant results PASSED [100%]
+
+============================= test summary =============================
+======================== 25 passed in 1.400065095s ========================

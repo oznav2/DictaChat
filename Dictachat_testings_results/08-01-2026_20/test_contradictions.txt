@@ -1,0 +1,17 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: test_contradictions.test.ts
+
+test_contradictions.test.ts::Contradiction Handling::Direct Contradiction::test_direct_contradiction PASSED [ 11%]
+test_contradictions.test.ts::Contradiction Handling::Direct Contradiction::test_hebrew_direct_contradiction PASSED [ 22%]
+test_contradictions.test.ts::Contradiction Handling::Many Wrong vs One Right::test_many_wrong_vs_one_right PASSED [ 33%]
+test_contradictions.test.ts::Contradiction Handling::Temporal Update::test_temporal_update PASSED [ 44%]
+test_contradictions.test.ts::Contradiction Handling::Temporal Update::test_hebrew_temporal_update PASSED [ 55%]
+test_contradictions.test.ts::Contradiction Handling::Confidence Conflict::test_confidence_conflict PASSED [ 66%]
+test_contradictions.test.ts::Contradiction Handling::Implicit Contradiction::test_implicit_contradiction PASSED [ 77%]
+test_contradictions.test.ts::Contradiction Handling::Implicit Contradiction::test_hebrew_implicit_contradiction PASSED [ 88%]
+test_contradictions.test.ts::Contradiction Handling::Summary Test::test_contradictions PASSED [100%]
+
+============================= test summary =============================
+======================== 9 passed in 1.061106926s ========================

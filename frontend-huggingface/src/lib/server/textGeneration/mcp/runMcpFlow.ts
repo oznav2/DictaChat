@@ -41,6 +41,16 @@ import {
 	detectQueryLanguage,
 	type RAGContextResult
 } from "./ragIntegration";
+import {
+	prefetchMemoryContext,
+	formatMemoryPromptSections,
+	getUserIdFromConversation,
+	recordResponseOutcome,
+	storeWorkingMemory,
+	extractExplicitToolRequest,
+	type MemoryContextResult,
+	type SearchPositionMap,
+} from "./memoryIntegration";
 
 /**
  * Clean string to ensure valid UTF-8 and remove invalid characters
@@ -432,6 +442,57 @@ export async function* runMcpFlow({
 		// Tool prompt injection - either XML format (for llama.cpp) or simple list (for native tools)
 		const prepromptPieces: string[] = [];
 
+		// ============================================
+		// MEMORY SYSTEM INTEGRATION (Section 9 from rompal_implementation_plan.md)
+		// Point A: Prefetch context before inference
+		// Point B: Confidence-based tool gating
+		// Point C: Inject personality (Section 1) + memory context (Section 2)
+		// ============================================
+		const userId = getUserIdFromConversation(conv as { sessionId?: string; userId?: string });
+		const conversationId = conv._id?.toString() ?? "";
+		let memoryResult: MemoryContextResult | null = null;
+		let searchPositionMap: SearchPositionMap = {};
+		const explicitToolRequest = extractExplicitToolRequest(userQuery);
+
+		try {
+			// Build recent messages for context-aware retrieval
+			const recentMessages = messages.slice(-5).map((m) => ({
+				role: m.from ?? "user",
+				content: typeof m.content === "string" ? m.content : JSON.stringify(m.content),
+			}));
+
+			memoryResult = await prefetchMemoryContext(userId, userQuery, {
+				conversationId,
+				recentMessages,
+				hasDocuments,
+				signal: abortSignal,
+			});
+
+			// Store searchPositionMap for outcome tracking
+			searchPositionMap = memoryResult.searchPositionMap;
+
+			// Prepend memory sections (personality first, then memory context with confidence hint)
+			const memorySections = formatMemoryPromptSections(memoryResult);
+			for (const section of memorySections) {
+				prepromptPieces.push(section);
+			}
+
+			if (memoryResult.timing.personalityMs > 0 || memoryResult.timing.memoryMs > 0) {
+				logger.debug("[mcp] Memory context prefetched", {
+					hasPersonality: !!memoryResult.personalityPrompt,
+					hasMemoryContext: !!memoryResult.memoryContext,
+					isOperational: memoryResult.isOperational,
+					retrievalConfidence: memoryResult.retrievalConfidence,
+					memoriesRetrieved: Object.keys(searchPositionMap).length,
+					personalityMs: memoryResult.timing.personalityMs,
+					memoryMs: memoryResult.timing.memoryMs,
+				});
+			}
+		} catch (err) {
+			// Memory system must never block streaming - fail silently
+			logger.warn("[mcp] Memory prefetch failed, continuing without memory context", { error: String(err) });
+		}
+
 		if (toolsToUse.length > 0 && !useNativeTools) {
 			// Detect Hebrew intent (research vs search) to guide tool selection
 			const hebrewIntent = detectHebrewIntent(userQuery);
@@ -686,6 +747,9 @@ Even if the document content is in Hebrew or another language, your response mus
 
 		// Constants for memory management and performance
 		const MAX_CONTENT_LENGTH = 50000; // 50KB limit for content accumulation
+
+		// Track all tool executions for outcome recording (Point D from rompal_implementation_plan.md)
+		const executedToolsTracker: Array<{ name: string; success: boolean; latencyMs?: number }> = [];
 
 		for (let loop = 0; loop < 10; loop += 1) {
 			lastAssistantContent = "";
@@ -1232,6 +1296,17 @@ Even if the document content is in Hebrew or another language, your response mus
 							}
 						);
 
+						// Track executed tools for outcome recording (Point D)
+						for (const run of event.summary.toolRuns ?? []) {
+							// Determine success based on output - empty or error-like output indicates failure
+							const hasValidOutput = Boolean(run.output && run.output.length > 0 && !run.output.startsWith("Error:"));
+							executedToolsTracker.push({
+								name: run.name,
+								success: hasValidOutput,
+								// Latency not available in ToolRun type, will be undefined
+							});
+						}
+
 						// VERBOSE DEBUGGING: Log the exact context being sent to the model for the follow-up
 						logger.debug("[mcp] context prepared for follow-up generation", {
 							loop: loop + 1,
@@ -1322,6 +1397,42 @@ Even if the document content is in Hebrew or another language, your response mus
 				{ length: lastAssistantContent.length, loop },
 				"[mcp] final answer emitted (no tool_calls)"
 			);
+
+			// ============================================
+			// MEMORY SYSTEM: Outcome Tracking (Point D from rompal_implementation_plan.md)
+			// Record outcome after response completion for learning
+			// ============================================
+			try {
+				// Record response outcome for memory learning (async, non-blocking)
+				recordResponseOutcome({
+					userId,
+					conversationId,
+					searchPositionMap,
+					toolsUsed: executedToolsTracker,
+					success: true,
+					hasError: false,
+				}).catch((err) => {
+					logger.debug("[mcp] Failed to record response outcome", { error: String(err) });
+				});
+
+				// Store working memory from exchange (async, non-blocking)
+				if (lastAssistantContent.trim().length > 50) {
+					storeWorkingMemory({
+						userId,
+						conversationId,
+						userQuery,
+						assistantResponse: lastAssistantContent.slice(0, 2000), // Limit stored response size
+						toolsUsed: executedToolsTracker.map((t) => t.name),
+						memoriesUsed: Object.keys(searchPositionMap),
+					}).catch((err) => {
+						logger.debug("[mcp] Failed to store working memory", { error: String(err) });
+					});
+				}
+			} catch (memErr) {
+				// Memory tracking must never block or throw
+				logger.debug("[mcp] Memory outcome tracking failed", { error: String(memErr) });
+			}
+
 			return true;
 		}
 		console.warn("[mcp] exceeded tool-followup loops; falling back");

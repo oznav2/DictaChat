@@ -1,0 +1,27 @@
+============================= test session starts =============================
+platform Linux -- Node v20.18.1, vitest
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
+test file: torture-suite.test.ts
+
+torture-suite.test.ts::Torture Test Suite::1. High Volume Operations::should handle high volume document insertion PASSED [  5%]
+torture-suite.test.ts::Torture Test Suite::1. High Volume Operations::should handle high volume searches PASSED [ 10%]
+torture-suite.test.ts::Torture Test Suite::2. Large Payload Handling::should handle large content payloads PASSED [ 15%]
+torture-suite.test.ts::Torture Test Suite::2. Large Payload Handling::should handle maximum content length PASSED [ 21%]
+torture-suite.test.ts::Torture Test Suite::3. Concurrent Operations::should handle concurrent insertions PASSED [ 26%]
+torture-suite.test.ts::Torture Test Suite::3. Concurrent Operations::should handle concurrent searches PASSED [ 31%]
+torture-suite.test.ts::Torture Test Suite::3. Concurrent Operations::should handle mixed concurrent operations PASSED [ 36%]
+torture-suite.test.ts::Torture Test Suite::4. Rapid Sequential Operations::should handle rapid sequential insertions PASSED [ 42%]
+torture-suite.test.ts::Torture Test Suite::5. Edge Case Inputs::should handle empty content PASSED [ 47%]
+torture-suite.test.ts::Torture Test Suite::5. Edge Case Inputs::should handle special characters PASSED [ 52%]
+torture-suite.test.ts::Torture Test Suite::5. Edge Case Inputs::should handle null and undefined in metadata PASSED [ 57%]
+torture-suite.test.ts::Torture Test Suite::6. Unicode and RTL Handling::should handle various Unicode strings PASSED [ 63%]
+torture-suite.test.ts::Torture Test Suite::6. Unicode and RTL Handling::should search with Hebrew queries PASSED [ 68%]
+torture-suite.test.ts::Torture Test Suite::7. Resource Cleanup::should properly clean up deleted documents PASSED [ 73%]
+torture-suite.test.ts::Torture Test Suite::8. Long Running Stability::should maintain stability over many iterations PASSED [ 78%]
+torture-suite.test.ts::Torture Test Suite::9. Boundary Conditions::should handle search with limit 0 PASSED [ 84%]
+torture-suite.test.ts::Torture Test Suite::9. Boundary Conditions::should handle search with very high limit PASSED [ 89%]
+torture-suite.test.ts::Torture Test Suite::9. Boundary Conditions::should handle duplicate document IDs PASSED [ 94%]
+torture-suite.test.ts::Torture Test Suite::10. Error Recovery::should continue operating after errors PASSED [100%]
+
+============================= test summary =============================
+======================== 19 passed in 1.643890788s ========================
