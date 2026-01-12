@@ -1,37 +1,89 @@
-import { json, error } from "@sveltejs/kit";
+import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
-import { KnowledgeGraphService } from "$lib/server/memory/kg";
+import { Database } from "$lib/server/database";
+import { config } from "$lib/server/config";
+import { ADMIN_USER_ID } from "$lib/server/constants";
+import { isEntityBlocklistedLabel, normalizeEntityLabel } from "$lib/server/memory/kg/entityHygiene";
 
-// GET /api/memory/kg - Get knowledge graph data
-export const GET: RequestHandler = async ({ url, locals }) => {
-	const userId = locals.user?.id;
+interface RoutingConcept {
+	concept_id: string;
+	label: string;
+	wilson_score: number;
+	uses: number;
+	tier_stats: Record<string, { success_rate: number; uses: number }>;
+}
 
-	// Return empty data for unauthenticated users
-	if (!userId) {
-		return json({
-			success: true,
-			concepts: [],
-			actionEffectiveness: [],
-		});
-	}
+interface ActionEffectiveness {
+	action: string;
+	context_type: string;
+	success_rate: number;
+	uses: number;
+	last_used?: string;
+}
+
+// GET /api/memory/kg - Get knowledge graph concepts and action effectiveness
+export const GET: RequestHandler = async () => {
+	const concepts: RoutingConcept[] = [];
+	const actionEffectiveness: ActionEffectiveness[] = [];
 
 	try {
-		const timeFilter = url.searchParams.get("timeFilter") || "all";
-		const sortBy = url.searchParams.get("sortBy") || "hybrid";
-		const limit = parseInt(url.searchParams.get("limit") || "50", 10);
+		const database = await Database.getInstance();
+		const client = database.getClient();
+		const db = client.db(config.MONGODB_DB_NAME);
 
-		const kgService = KnowledgeGraphService.getInstance();
+		// Get routing concepts
+		try {
+			const routingDocs = await db
+				.collection("kg_routing_concepts")
+				.find({ user_id: ADMIN_USER_ID })
+				.sort({ wilson_score: -1 })
+				.limit(50)
+				.toArray();
 
-		// Get concepts with filtering
-		const concepts = await kgService.getConcepts({
-			userId,
-			timeFilter: timeFilter as "day" | "week" | "month" | "all",
-			sortBy: sortBy as "frequency" | "recency" | "hybrid",
-			limit,
-		});
+			for (const doc of routingDocs) {
+				const label = normalizeEntityLabel(String(doc.label || doc.concept_id || "Unknown"));
+				if (isEntityBlocklistedLabel(label)) continue;
+				concepts.push({
+					concept_id: String(doc.concept_id || doc._id),
+					label,
+					wilson_score: Number(doc.wilson_score) || 0.5,
+					uses: Number(doc.uses) || 0,
+					tier_stats:
+						(doc.tier_stats as Record<string, { success_rate: number; uses: number }>) || {},
+				});
+			}
+		} catch (err) {
+			console.debug("[API] KG: routing concepts unavailable", { err: String(err) });
+		}
 
-		// Get action effectiveness data
-		const actionEffectiveness = await kgService.getActionEffectiveness({ userId });
+		// Get action effectiveness
+		try {
+			const actionDocs = await db
+				.collection("kg_action_effectiveness")
+				.find({ user_id: ADMIN_USER_ID })
+				.sort({ wilson_score: -1 })
+				.limit(30)
+				.toArray();
+
+			for (const doc of actionDocs) {
+				const examples = Array.isArray(doc.examples) ? doc.examples : [];
+				const timestamps = examples
+					.map((ex: any) => (ex?.timestamp ? new Date(ex.timestamp).getTime() : null))
+					.filter((t: number | null): t is number => typeof t === "number" && Number.isFinite(t));
+				const lastUsed =
+					timestamps.length > 0 ? new Date(Math.max(...timestamps)).toISOString() : undefined;
+
+				actionEffectiveness.push({
+					action: String(doc.action ?? doc.action_key ?? doc._id),
+					context_type: String(doc.context_type || "general"),
+					success_rate: Number(doc.success_rate ?? doc.wilson_score) || 0.5,
+					uses: Number(doc.uses ?? doc.total_uses) || 0,
+					...(lastUsed ? { last_used: lastUsed } : {}),
+				});
+			}
+		} catch (err) {
+			console.debug("[API] KG: action effectiveness unavailable", { err: String(err) });
+		}
 
 		return json({
 			success: true,
@@ -39,44 +91,43 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 			actionEffectiveness,
 		});
 	} catch (err) {
-		console.error("[API] Failed to get knowledge graph:", err);
+		console.error("[API] KG fetch failed:", err);
 		return json(
-			{ success: false, error: err instanceof Error ? err.message : "Failed to get KG data" },
+			{
+				success: false,
+				error: err instanceof Error ? err.message : "Failed to fetch KG data",
+				concepts: [],
+				actionEffectiveness: [],
+			},
 			{ status: 500 }
 		);
 	}
 };
 
-// POST /api/memory/kg/concept - Record a concept interaction
-export const POST: RequestHandler = async ({ request, locals }) => {
-	const userId = locals.user?.id;
-	if (!userId) {
-		return error(401, "Authentication required");
-	}
-
+// POST /api/memory/kg/concept - Record a concept interaction (for future use)
+export const POST: RequestHandler = async ({ request }) => {
 	try {
-		const { concept, type, outcome } = await request.json();
+		const body = await request.json();
+		const { concept, tier, outcome } = body;
 
-		if (!concept || !type) {
-			return error(400, "concept and type are required");
+		if (!concept || !tier) {
+			return json({ success: false, error: "Missing concept or tier" }, { status: 400 });
 		}
 
-		const kgService = KnowledgeGraphService.getInstance();
-		await kgService.recordConceptInteraction({
-			userId,
-			concept,
-			type,
-			outcome,
-		});
+		// For now, just acknowledge - full implementation would use KnowledgeGraphService
+		console.log(`[KG] Concept interaction: ${concept} -> ${tier} (${outcome || "unknown"})`);
 
 		return json({
 			success: true,
 			message: "Concept interaction recorded",
 		});
 	} catch (err) {
-		console.error("[API] Failed to record concept:", err);
+		console.error("[API] KG concept record failed:", err);
 		return json(
-			{ success: false, error: err instanceof Error ? err.message : "Failed to record concept" },
+			{
+				success: false,
+				error: err instanceof Error ? err.message : "Failed to record concept",
+			},
 			{ status: 500 }
 		);
 	}

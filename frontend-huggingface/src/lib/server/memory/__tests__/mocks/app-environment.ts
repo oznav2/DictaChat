@@ -6,4 +6,4 @@
 export const dev = false;
 export const building = false;
 export const browser = false;
-export const version = 'test';
+export const version = "test";

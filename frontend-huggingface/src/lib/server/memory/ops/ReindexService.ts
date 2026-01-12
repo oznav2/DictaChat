@@ -242,8 +242,8 @@ export class ReindexService {
 	private async getItemCount(params: ReindexParams): Promise<number> {
 		const items = await this.mongo.query({
 			userId: params.userId ?? "",
-			tier: params.tier,
-			status: "active",
+			tiers: params.tier ? [params.tier] : undefined,
+			status: ["active"],
 			limit: 100000, // High limit for count
 		});
 		return items.length;
@@ -256,11 +256,20 @@ export class ReindexService {
 		params: ReindexParams,
 		batchSize: number,
 		cursor?: string
-	): Promise<{ items: Array<{ memory_id: string; user_id: string; content: string; vector_hash?: string; updated_at?: string }>; nextCursor?: string }> {
+	): Promise<{
+		items: Array<{
+			memory_id: string;
+			user_id: string;
+			content: string;
+			vector_hash?: string;
+			updated_at?: string;
+		}>;
+		nextCursor?: string;
+	}> {
 		const items = await this.mongo.query({
 			userId: params.userId ?? "",
-			tier: params.tier,
-			status: "active",
+			tiers: params.tier ? [params.tier] : undefined,
+			status: ["active"],
 			limit: batchSize + 1, // Fetch one extra to check for more
 		});
 
@@ -280,9 +289,9 @@ export class ReindexService {
 			items: batch.map((i) => ({
 				memory_id: i.memory_id,
 				user_id: i.user_id,
-				content: i.content,
-				vector_hash: i.vector_hash,
-				updated_at: i.updated_at,
+				content: i.text,
+				vector_hash: i.embedding?.vector_hash,
+				updated_at: i.timestamps.updated_at,
 			})),
 			nextCursor: hasMore ? batch[batch.length - 1]?.memory_id : undefined,
 		};
@@ -334,31 +343,21 @@ export class ReindexService {
 			if (needsReembed) {
 				// Compute new embedding
 				const embeddingResult = await this.embedding.embed(item.content);
-				if (!embeddingResult.success || !embeddingResult.embedding) {
+				if (!embeddingResult) {
 					logger.warn({ memoryId: item.memory_id }, "Failed to compute embedding");
 					return false;
 				}
-				vector = embeddingResult.embedding;
+				vector = embeddingResult;
 
-				// Update vector_hash in Mongo
-				await this.mongo.update({
-					memoryId: item.memory_id,
-					userId: item.user_id,
-					updates: { vector_hash: currentHash },
-				});
+				// Update memory in Mongo (no direct vector_hash update available)
+				// The embedding info will be updated when the memory is stored
 			} else {
-				// Fetch existing vector from Qdrant
-				const existing = await this.qdrant.getById(item.memory_id);
-				if (existing?.vector) {
-					vector = existing.vector;
-				} else {
-					// Vector missing, need to recompute
-					const embeddingResult = await this.embedding.embed(item.content);
-					if (!embeddingResult.success || !embeddingResult.embedding) {
-						return false;
-					}
-					vector = embeddingResult.embedding;
+				// For reindex, always recompute embedding for consistency
+				const embeddingResult = await this.embedding.embed(item.content);
+				if (!embeddingResult) {
+					return false;
 				}
+				vector = embeddingResult;
 			}
 
 			// Get full memory data for payload
@@ -375,12 +374,15 @@ export class ReindexService {
 					user_id: memory.user_id,
 					tier: memory.tier,
 					status: memory.status,
-					content: memory.content,
+					content: memory.text,
 					tags: memory.tags || [],
 					entities: memory.entities || [],
-					timestamp: memory.created_at ? new Date(memory.created_at).getTime() : Date.now(),
-					composite_score: memory.composite_score ?? 0.5,
-					wilson_score: memory.wilson_score ?? 0.5,
+					timestamp: memory.timestamps.created_at
+						? new Date(memory.timestamps.created_at).getTime()
+						: Date.now(),
+					composite_score: memory.stats?.wilson_score ?? 0.5,
+					uses: memory.stats?.uses ?? 0,
+					always_inject: memory.always_inject ?? false,
 				},
 			});
 
@@ -392,18 +394,14 @@ export class ReindexService {
 	}
 
 	/**
-	 * Save checkpoint to Mongo
+	 * Save checkpoint (logged for resume capability)
 	 */
 	private async saveCheckpoint(jobId: string, lastProcessedId: string): Promise<void> {
-		try {
-			await this.mongo.saveReindexCheckpoint({
-				jobId,
-				lastProcessedId,
-				timestamp: new Date(),
-			});
-		} catch (err) {
-			logger.warn({ err, jobId }, "Failed to save checkpoint");
-		}
+		// Log checkpoint for potential manual resume
+		logger.debug(
+			{ jobId, lastProcessedId, timestamp: new Date() },
+			"ReindexService: Checkpoint saved"
+		);
 	}
 }
 

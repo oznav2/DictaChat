@@ -1,38 +1,42 @@
-{{!-- @description: Reminds the LLM of user goals during conversation --}}
-{{!-- @category: context --}}
+{{! @description: Reminds the LLM of user goals during conversation }}
+{{! @category: context }}
 
 {{#ifLang "he"}}
-זכור את המטרות של המשתמש:
+	זכור את המטרות של המשתמש:
 {{else}}
-Remember the user's goals:
+	Remember the user's goals:
 {{/ifLang}}
 
 {{#ifNotEmpty goals}}
-{{#each goals}}
-{{#ifLang "he"}}
-{{add @index 1}}. {{this.description}}
-   {{#if this.priority}}(עדיפות: {{this.priority}}){{/if}}
-   {{#if this.deadline}}(דדליין: {{formatDate this.deadline}}){{/if}}
-   {{#if this.progress}}[התקדמות: {{percent this.progress}}]{{/if}}
+	{{#each goals}}
+		{{#ifLang "he"}}
+			{{add @index 1}}.
+			{{this.description}}
+			{{#if this.priority}}(עדיפות: {{this.priority}}){{/if}}
+			{{#if this.deadline}}(דדליין: {{formatDate this.deadline}}){{/if}}
+			{{#if this.progress}}[התקדמות: {{percent this.progress}}]{{/if}}
+		{{else}}
+			{{add @index 1}}.
+			{{this.description}}
+			{{#if this.priority}}(Priority: {{this.priority}}){{/if}}
+			{{#if this.deadline}}(Deadline: {{formatDate this.deadline}}){{/if}}
+			{{#if this.progress}}[Progress: {{percent this.progress}}]{{/if}}
+		{{/ifLang}}
+	{{/each}}
 {{else}}
-{{add @index 1}}. {{this.description}}
-   {{#if this.priority}}(Priority: {{this.priority}}){{/if}}
-   {{#if this.deadline}}(Deadline: {{formatDate this.deadline}}){{/if}}
-   {{#if this.progress}}[Progress: {{percent this.progress}}]{{/if}}
-{{/ifLang}}
-{{/each}}
-{{else}}
-{{#ifLang "he"}}
-לא הוגדרו מטרות ספציפיות.
-{{else}}
-No specific goals defined.
-{{/ifLang}}
+	{{#ifLang "he"}}
+		לא הוגדרו מטרות ספציפיות.
+	{{else}}
+		No specific goals defined.
+	{{/ifLang}}
 {{/ifNotEmpty}}
 
 {{#if current_focus}}
-{{#ifLang "he"}}
-מיקוד נוכחי: {{current_focus}}
-{{else}}
-Current focus: {{current_focus}}
-{{/ifLang}}
+	{{#ifLang "he"}}
+		מיקוד נוכחי:
+		{{current_focus}}
+	{{else}}
+		Current focus:
+		{{current_focus}}
+	{{/ifLang}}
 {{/if}}

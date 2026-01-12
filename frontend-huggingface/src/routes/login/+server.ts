@@ -1,5 +1,6 @@
 import { triggerOauthFlow } from "$lib/server/auth";
+import type { RequestHandler } from "./$types";
 
-export async function GET(event) {
+export const GET: RequestHandler = async (event) => {
 	return await triggerOauthFlow(event);
-}
+};

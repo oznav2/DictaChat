@@ -2,8 +2,9 @@ import { UrlDependency } from "$lib/types/UrlDependency";
 import type { ConvSidebar } from "$lib/types/ConvSidebar";
 import { useAPIClient, handleResponse } from "$lib/APIClient";
 import { getConfigManager } from "$lib/utils/PublicConfig.svelte";
+import type { LayoutLoad } from "./$types";
 
-export const load = async ({ depends, fetch, url }) => {
+export const load: LayoutLoad = async ({ depends, fetch, url }) => {
 	depends(UrlDependency.ConversationList);
 
 	const client = useAPIClient({ fetch, origin: url.origin });

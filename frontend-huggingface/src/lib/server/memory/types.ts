@@ -81,6 +81,27 @@ export interface MemoryVersioningInfo {
 	supersedes_memory_id: string | null;
 }
 
+// "none" disables MongoDB language-specific stemming - best for bilingual content
+export type MemoryLanguage = "he" | "en" | "mixed" | "none";
+
+export interface MemoryPersonalityInfo {
+	source_personality_id: string | null;
+	source_personality_name: string | null;
+}
+
+/**
+ * Maps memories to personalities for cross-personality access
+ */
+export interface PersonalityMemoryMapping {
+	mapping_id: string;
+	user_id: string;
+	memory_id: string;
+	personality_id: string;
+	personality_name: string;
+	access_level: "owner" | "shared" | "inherited";
+	created_at: string;
+}
+
 export interface MemoryItem {
 	memory_id: string;
 	user_id: string;
@@ -98,6 +119,9 @@ export interface MemoryItem {
 	timestamps: MemoryTimestamps;
 	embedding?: MemoryEmbeddingInfo;
 	versioning?: MemoryVersioningInfo;
+	personality?: MemoryPersonalityInfo;
+	language?: MemoryLanguage;
+	translation_ref_id?: string | null;
 }
 
 export type ActionType =
@@ -138,6 +162,8 @@ export interface StageTimingsMs {
 	candidate_merge_ms?: number;
 	rerank_ms?: number;
 	kg_insights_ms?: number;
+	known_solution_lookup?: number;
+	entity_boost_ms?: number;
 }
 
 export interface SearchScoreSummary {
@@ -230,7 +256,10 @@ export interface ContextInsights {
 	relevant_patterns: InsightMemoryRef[];
 	past_outcomes: PastFailure[];
 	proactive_insights: TierRecommendation[];
-	topic_continuity: { topics: string[]; links: Array<{ from: string; to: string; weight?: number }> };
+	topic_continuity: {
+		topics: string[];
+		links: Array<{ from: string; to: string; weight?: number }>;
+	};
 	repetition: { is_repeated: boolean; similar_query?: string; last_seen_at?: string };
 	you_already_know: InsightMemoryRef[];
 	directives: string[];
@@ -239,6 +268,10 @@ export interface ContextInsights {
 export interface StatsSnapshot {
 	user_id: string;
 	as_of: string;
+	cache_hit_rate?: number | null;
+	promotion_rate?: number | null;
+	demotion_rate?: number | null;
+	derived_window_ms?: number | null;
 	tiers: Record<
 		MemoryTier,
 		{
@@ -257,4 +290,3 @@ export interface StatsSnapshot {
 		examples: Array<{ timestamp: string; outcome: Outcome; doc_id: string | null }>;
 	}>;
 }
-

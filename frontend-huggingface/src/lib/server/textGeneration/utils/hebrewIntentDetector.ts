@@ -10,7 +10,11 @@
 
 export type DetectedIntent = "official_data" | "research" | "search" | null;
 
-export type PerplexityTool = "perplexity_ask" | "perplexity_search" | "perplexity_research" | "perplexity_reason";
+export type PerplexityTool =
+	| "perplexity_ask"
+	| "perplexity_search"
+	| "perplexity_research"
+	| "perplexity_reason";
 
 export interface PerplexityToolScore {
 	tool: PerplexityTool;

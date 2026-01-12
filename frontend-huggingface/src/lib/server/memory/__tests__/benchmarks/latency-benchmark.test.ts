@@ -10,9 +10,9 @@
  * - P99: < 500ms
  */
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import * as fs from 'fs';
-import * as path from 'path';
+import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import * as fs from "fs";
+import * as path from "path";
 import {
 	MockEmbeddingService,
 	MockCollection,
@@ -20,8 +20,8 @@ import {
 	TestHarness,
 	createTestFragment,
 	createTestFragmentBatch,
-	type TestResult
-} from '../mock-utilities';
+	type TestResult,
+} from "../mock-utilities";
 
 // ============================================================================
 // Constants
@@ -33,19 +33,19 @@ const WARMUP_ITERATIONS = 10;
 const LATENCY_TARGETS = {
 	p50_ms: 100,
 	p95_ms: 300,
-	p99_ms: 500
+	p99_ms: 500,
 };
 
 const OPERATIONS = [
-	'embedding',
-	'vector_search',
-	'hybrid_search',
-	'store_memory',
-	'record_outcome',
-	'prefetch_context'
+	"embedding",
+	"vector_search",
+	"hybrid_search",
+	"store_memory",
+	"record_outcome",
+	"prefetch_context",
 ] as const;
 
-type Operation = typeof OPERATIONS[number];
+type Operation = (typeof OPERATIONS)[number];
 
 // ============================================================================
 // Latency Statistics
@@ -73,7 +73,8 @@ function calculateStats(latencies: number[], operation: string): LatencyStats {
 	const sorted = [...latencies].sort((a, b) => a - b);
 	const sum = latencies.reduce((a, b) => a + b, 0);
 	const mean = sum / latencies.length;
-	const variance = latencies.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / latencies.length;
+	const variance =
+		latencies.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / latencies.length;
 
 	const p50 = calculatePercentile(sorted, 50);
 	const p95 = calculatePercentile(sorted, 95);
@@ -89,9 +90,10 @@ function calculateStats(latencies: number[], operation: string): LatencyStats {
 		p95_ms: p95,
 		p99_ms: p99,
 		std_ms: Math.sqrt(variance),
-		passes_target: p50 <= LATENCY_TARGETS.p50_ms &&
+		passes_target:
+			p50 <= LATENCY_TARGETS.p50_ms &&
 			p95 <= LATENCY_TARGETS.p95_ms &&
-			p99 <= LATENCY_TARGETS.p99_ms
+			p99 <= LATENCY_TARGETS.p99_ms,
 	};
 }
 
@@ -101,44 +103,46 @@ function calculateStats(latencies: number[], operation: string): LatencyStats {
 
 function generateReport(allStats: LatencyStats[]): string {
 	const lines: string[] = [
-		'='.repeat(80),
-		'MEMORY SYSTEM LATENCY BENCHMARK REPORT',
-		'='.repeat(80),
+		"=".repeat(80),
+		"MEMORY SYSTEM LATENCY BENCHMARK REPORT",
+		"=".repeat(80),
 		`Timestamp: ${new Date().toISOString()}`,
 		`Iterations: ${BENCHMARK_ITERATIONS}`,
 		`Warmup: ${WARMUP_ITERATIONS}`,
-		'',
-		'LATENCY TARGETS:',
+		"",
+		"LATENCY TARGETS:",
 		`  P50: < ${LATENCY_TARGETS.p50_ms}ms`,
 		`  P95: < ${LATENCY_TARGETS.p95_ms}ms`,
 		`  P99: < ${LATENCY_TARGETS.p99_ms}ms`,
-		'',
-		'-'.repeat(80),
-		'RESULTS BY OPERATION:',
-		'-'.repeat(80),
-		''
+		"",
+		"-".repeat(80),
+		"RESULTS BY OPERATION:",
+		"-".repeat(80),
+		"",
 	];
 
 	for (const stats of allStats) {
-		const status = stats.passes_target ? '[PASS]' : '[FAIL]';
+		const status = stats.passes_target ? "[PASS]" : "[FAIL]";
 		lines.push(`${status} ${stats.operation}`);
 		lines.push(`  Samples: ${stats.samples}`);
 		lines.push(`  Min: ${stats.min_ms.toFixed(2)}ms | Max: ${stats.max_ms.toFixed(2)}ms`);
 		lines.push(`  Mean: ${stats.mean_ms.toFixed(2)}ms | Std: ${stats.std_ms.toFixed(2)}ms`);
-		lines.push(`  P50: ${stats.p50_ms.toFixed(2)}ms | P95: ${stats.p95_ms.toFixed(2)}ms | P99: ${stats.p99_ms.toFixed(2)}ms`);
-		lines.push('');
+		lines.push(
+			`  P50: ${stats.p50_ms.toFixed(2)}ms | P95: ${stats.p95_ms.toFixed(2)}ms | P99: ${stats.p99_ms.toFixed(2)}ms`
+		);
+		lines.push("");
 	}
 
-	const passCount = allStats.filter(s => s.passes_target).length;
+	const passCount = allStats.filter((s) => s.passes_target).length;
 	const totalCount = allStats.length;
 
-	lines.push('-'.repeat(80));
-	lines.push('SUMMARY:');
+	lines.push("-".repeat(80));
+	lines.push("SUMMARY:");
 	lines.push(`  Passed: ${passCount}/${totalCount} operations`);
-	lines.push(`  Overall: ${passCount === totalCount ? 'ALL TARGETS MET' : 'SOME TARGETS MISSED'}`);
-	lines.push('='.repeat(80));
+	lines.push(`  Overall: ${passCount === totalCount ? "ALL TARGETS MET" : "SOME TARGETS MISSED"}`);
+	lines.push("=".repeat(80));
 
-	return lines.join('\n');
+	return lines.join("\n");
 }
 
 // ============================================================================
@@ -171,7 +175,7 @@ async function measureLatency<T>(
 // Benchmark Tests
 // ============================================================================
 
-describe('Latency Benchmark', () => {
+describe("Latency Benchmark", () => {
 	let harness: TestHarness;
 	let embeddingService: MockEmbeddingService;
 	let collection: MockCollection;
@@ -179,7 +183,7 @@ describe('Latency Benchmark', () => {
 	let allStats: LatencyStats[];
 
 	beforeAll(async () => {
-		harness = new TestHarness('LatencyBenchmark');
+		harness = new TestHarness("LatencyBenchmark");
 		embeddingService = new MockEmbeddingService();
 		collection = new MockCollection(embeddingService);
 		llmService = new MockLLMService();
@@ -191,7 +195,7 @@ describe('Latency Benchmark', () => {
 			await collection.add({
 				id: fragment.id,
 				content: fragment.content,
-				metadata: fragment.metadata
+				metadata: fragment.metadata,
 			});
 		}
 	});
@@ -199,7 +203,7 @@ describe('Latency Benchmark', () => {
 	afterAll(() => {
 		// Write report to file
 		const report = generateReport(allStats);
-		const reportPath = path.join(__dirname, '..', 'test-results', 'latency-benchmark-report.txt');
+		const reportPath = path.join(__dirname, "..", "test-results", "latency-benchmark-report.txt");
 
 		try {
 			const dir = path.dirname(reportPath);
@@ -212,26 +216,26 @@ describe('Latency Benchmark', () => {
 		}
 	});
 
-	describe('Embedding Latency', () => {
-		it('should meet latency targets for embedding generation', async () => {
+	describe("Embedding Latency", () => {
+		it("should meet latency targets for embedding generation", async () => {
 			const latencies = await measureLatency(
-				() => embeddingService.embed('Test query for embedding benchmark'),
+				() => embeddingService.embed("Test query for embedding benchmark"),
 				BENCHMARK_ITERATIONS,
 				WARMUP_ITERATIONS
 			);
 
-			const stats = calculateStats(latencies, 'embedding');
+			const stats = calculateStats(latencies, "embedding");
 			allStats.push(stats);
 
 			const result: TestResult = {
-				name: 'embedding_latency',
+				name: "embedding_latency",
 				passed: stats.passes_target,
 				duration: latencies.reduce((a, b) => a + b, 0),
 				metrics: {
 					p50_ms: stats.p50_ms,
 					p95_ms: stats.p95_ms,
-					p99_ms: stats.p99_ms
-				}
+					p99_ms: stats.p99_ms,
+				},
 			};
 
 			harness.recordResult(result);
@@ -240,23 +244,23 @@ describe('Latency Benchmark', () => {
 			expect(stats.p95_ms).toBeLessThan(LATENCY_TARGETS.p95_ms);
 		});
 
-		it('should have consistent embedding latency', async () => {
+		it("should have consistent embedding latency", async () => {
 			const latencies = await measureLatency(
-				() => embeddingService.embed('Consistency test query'),
+				() => embeddingService.embed("Consistency test query"),
 				50,
 				5
 			);
 
-			const stats = calculateStats(latencies, 'embedding_consistency');
+			const stats = calculateStats(latencies, "embedding_consistency");
 
 			// Coefficient of variation should be < 50%
 			const cv = stats.std_ms / stats.mean_ms;
 
 			const result: TestResult = {
-				name: 'embedding_consistency',
+				name: "embedding_consistency",
 				passed: cv < 0.5,
 				duration: latencies.reduce((a, b) => a + b, 0),
-				metrics: { coefficient_of_variation: cv }
+				metrics: { coefficient_of_variation: cv },
 			};
 
 			harness.recordResult(result);
@@ -266,26 +270,26 @@ describe('Latency Benchmark', () => {
 		});
 	});
 
-	describe('Vector Search Latency', () => {
-		it('should meet latency targets for vector search', async () => {
+	describe("Vector Search Latency", () => {
+		it("should meet latency targets for vector search", async () => {
 			const latencies = await measureLatency(
-				() => collection.search('Test search query', 10),
+				() => collection.search("Test search query", 10),
 				BENCHMARK_ITERATIONS,
 				WARMUP_ITERATIONS
 			);
 
-			const stats = calculateStats(latencies, 'vector_search');
+			const stats = calculateStats(latencies, "vector_search");
 			allStats.push(stats);
 
 			const result: TestResult = {
-				name: 'vector_search_latency',
+				name: "vector_search_latency",
 				passed: stats.passes_target,
 				duration: latencies.reduce((a, b) => a + b, 0),
 				metrics: {
 					p50_ms: stats.p50_ms,
 					p95_ms: stats.p95_ms,
-					p99_ms: stats.p99_ms
-				}
+					p99_ms: stats.p99_ms,
+				},
 			};
 
 			harness.recordResult(result);
@@ -293,13 +297,13 @@ describe('Latency Benchmark', () => {
 			expect(stats.p50_ms).toBeLessThan(LATENCY_TARGETS.p50_ms);
 		});
 
-		it('should scale linearly with result limit', async () => {
+		it("should scale linearly with result limit", async () => {
 			const limits = [5, 10, 20, 50];
 			const avgLatencies: number[] = [];
 
 			for (const limit of limits) {
 				const latencies = await measureLatency(
-					() => collection.search('Scale test query', limit),
+					() => collection.search("Scale test query", limit),
 					20,
 					5
 				);
@@ -311,10 +315,10 @@ describe('Latency Benchmark', () => {
 			const scaleFactor = avgLatencies[3] / avgLatencies[0];
 
 			const result: TestResult = {
-				name: 'vector_search_scaling',
+				name: "vector_search_scaling",
 				passed: scaleFactor < 5,
 				duration: avgLatencies.reduce((a, b) => a + b, 0),
-				metrics: { scale_factor: scaleFactor }
+				metrics: { scale_factor: scaleFactor },
 			};
 
 			harness.recordResult(result);
@@ -323,8 +327,8 @@ describe('Latency Benchmark', () => {
 		});
 	});
 
-	describe('Store Memory Latency', () => {
-		it('should meet latency targets for memory storage', async () => {
+	describe("Store Memory Latency", () => {
+		it("should meet latency targets for memory storage", async () => {
 			let counter = 0;
 
 			const latencies = await measureLatency(
@@ -333,25 +337,25 @@ describe('Latency Benchmark', () => {
 					await collection.add({
 						id: `bench_mem_${counter}`,
 						content: `Benchmark memory content ${counter}`,
-						metadata: { benchmark: true }
+						metadata: { benchmark: true },
 					});
 				},
 				BENCHMARK_ITERATIONS,
 				WARMUP_ITERATIONS
 			);
 
-			const stats = calculateStats(latencies, 'store_memory');
+			const stats = calculateStats(latencies, "store_memory");
 			allStats.push(stats);
 
 			const result: TestResult = {
-				name: 'store_memory_latency',
+				name: "store_memory_latency",
 				passed: stats.passes_target,
 				duration: latencies.reduce((a, b) => a + b, 0),
 				metrics: {
 					p50_ms: stats.p50_ms,
 					p95_ms: stats.p95_ms,
-					p99_ms: stats.p99_ms
-				}
+					p99_ms: stats.p99_ms,
+				},
 			};
 
 			harness.recordResult(result);
@@ -360,26 +364,26 @@ describe('Latency Benchmark', () => {
 		});
 	});
 
-	describe('LLM Response Latency', () => {
-		it('should meet latency targets for LLM generation', async () => {
+	describe("LLM Response Latency", () => {
+		it("should meet latency targets for LLM generation", async () => {
 			const latencies = await measureLatency(
-				() => llmService.generate('Test prompt for LLM benchmark'),
+				() => llmService.generate("Test prompt for LLM benchmark"),
 				BENCHMARK_ITERATIONS,
 				WARMUP_ITERATIONS
 			);
 
-			const stats = calculateStats(latencies, 'llm_generation');
+			const stats = calculateStats(latencies, "llm_generation");
 			allStats.push(stats);
 
 			const result: TestResult = {
-				name: 'llm_generation_latency',
+				name: "llm_generation_latency",
 				passed: stats.passes_target,
 				duration: latencies.reduce((a, b) => a + b, 0),
 				metrics: {
 					p50_ms: stats.p50_ms,
 					p95_ms: stats.p95_ms,
-					p99_ms: stats.p99_ms
-				}
+					p99_ms: stats.p99_ms,
+				},
 			};
 
 			harness.recordResult(result);
@@ -388,11 +392,11 @@ describe('Latency Benchmark', () => {
 		});
 	});
 
-	describe('Combined Operations Latency', () => {
-		it('should meet latency targets for embed + search pipeline', async () => {
+	describe("Combined Operations Latency", () => {
+		it("should meet latency targets for embed + search pipeline", async () => {
 			const latencies = await measureLatency(
 				async () => {
-					const query = 'Combined pipeline test query';
+					const query = "Combined pipeline test query";
 					await embeddingService.embed(query);
 					await collection.search(query, 5);
 				},
@@ -400,18 +404,18 @@ describe('Latency Benchmark', () => {
 				WARMUP_ITERATIONS
 			);
 
-			const stats = calculateStats(latencies, 'embed_search_pipeline');
+			const stats = calculateStats(latencies, "embed_search_pipeline");
 			allStats.push(stats);
 
 			const result: TestResult = {
-				name: 'pipeline_latency',
+				name: "pipeline_latency",
 				passed: stats.p50_ms < LATENCY_TARGETS.p50_ms * 2, // Allow 2x for combined
 				duration: latencies.reduce((a, b) => a + b, 0),
 				metrics: {
 					p50_ms: stats.p50_ms,
 					p95_ms: stats.p95_ms,
-					p99_ms: stats.p99_ms
-				}
+					p99_ms: stats.p99_ms,
+				},
 			};
 
 			harness.recordResult(result);
@@ -419,11 +423,11 @@ describe('Latency Benchmark', () => {
 			expect(stats.p50_ms).toBeLessThan(LATENCY_TARGETS.p50_ms * 2);
 		});
 
-		it('should meet latency targets for full retrieval flow', async () => {
+		it("should meet latency targets for full retrieval flow", async () => {
 			const latencies = await measureLatency(
 				async () => {
 					// Simulate full retrieval: embed -> search -> LLM
-					const query = 'Full retrieval flow test';
+					const query = "Full retrieval flow test";
 					await embeddingService.embed(query);
 					const results = await collection.search(query, 5);
 					if (results.length > 0) {
@@ -434,18 +438,18 @@ describe('Latency Benchmark', () => {
 				10
 			);
 
-			const stats = calculateStats(latencies, 'full_retrieval_flow');
+			const stats = calculateStats(latencies, "full_retrieval_flow");
 			allStats.push(stats);
 
 			const result: TestResult = {
-				name: 'full_retrieval_latency',
+				name: "full_retrieval_latency",
 				passed: stats.p50_ms < LATENCY_TARGETS.p50_ms * 3, // Allow 3x for full flow
 				duration: latencies.reduce((a, b) => a + b, 0),
 				metrics: {
 					p50_ms: stats.p50_ms,
 					p95_ms: stats.p95_ms,
-					p99_ms: stats.p99_ms
-				}
+					p99_ms: stats.p99_ms,
+				},
 			};
 
 			harness.recordResult(result);
@@ -454,37 +458,29 @@ describe('Latency Benchmark', () => {
 		});
 	});
 
-	describe('Cache Efficiency', () => {
-		it('should show improved latency on cache hits', async () => {
-			const query = 'Cache efficiency test query';
+	describe("Cache Efficiency", () => {
+		it("should show improved latency on cache hits", async () => {
+			const query = "Cache efficiency test query";
 
 			// First call (cache miss)
-			const missLatencies = await measureLatency(
-				() => embeddingService.embed(query),
-				1,
-				0
-			);
+			const missLatencies = await measureLatency(() => embeddingService.embed(query), 1, 0);
 
 			// Subsequent calls (cache hits)
-			const hitLatencies = await measureLatency(
-				() => embeddingService.embed(query),
-				20,
-				0
-			);
+			const hitLatencies = await measureLatency(() => embeddingService.embed(query), 20, 0);
 
 			const avgMiss = missLatencies[0];
 			const avgHit = hitLatencies.reduce((a, b) => a + b, 0) / hitLatencies.length;
 
 			// Cache hits should be at least as fast (or faster)
 			const result: TestResult = {
-				name: 'cache_efficiency',
+				name: "cache_efficiency",
 				passed: avgHit <= avgMiss,
 				duration: avgMiss + hitLatencies.reduce((a, b) => a + b, 0),
 				metrics: {
 					miss_latency_ms: avgMiss,
 					hit_latency_ms: avgHit,
-					speedup_ratio: avgMiss / avgHit
-				}
+					speedup_ratio: avgMiss / avgHit,
+				},
 			};
 
 			harness.recordResult(result);
@@ -493,8 +489,8 @@ describe('Latency Benchmark', () => {
 		});
 	});
 
-	describe('Concurrency Performance', () => {
-		it('should handle concurrent operations efficiently', async () => {
+	describe("Concurrency Performance", () => {
+		it("should handle concurrent operations efficiently", async () => {
 			const concurrency = 10;
 			const operationsPerBatch = 5;
 
@@ -514,21 +510,21 @@ describe('Latency Benchmark', () => {
 				latencies.push(end - start);
 			}
 
-			const stats = calculateStats(latencies, 'concurrent_operations');
+			const stats = calculateStats(latencies, "concurrent_operations");
 			allStats.push(stats);
 
 			// Average time per operation in concurrent batch
 			const avgPerOperation = stats.mean_ms / concurrency;
 
 			const result: TestResult = {
-				name: 'concurrency_performance',
+				name: "concurrency_performance",
 				passed: avgPerOperation < LATENCY_TARGETS.p95_ms,
 				duration: latencies.reduce((a, b) => a + b, 0),
 				metrics: {
 					batch_latency_ms: stats.mean_ms,
 					per_operation_ms: avgPerOperation,
-					concurrency
-				}
+					concurrency,
+				},
 			};
 
 			harness.recordResult(result);
@@ -537,8 +533,8 @@ describe('Latency Benchmark', () => {
 		});
 	});
 
-	describe('Collection Size Impact', () => {
-		it('should maintain acceptable latency as collection grows', async () => {
+	describe("Collection Size Impact", () => {
+		it("should maintain acceptable latency as collection grows", async () => {
 			const testCollection = new MockCollection(embeddingService);
 			const sizes = [10, 50, 100, 200];
 			const avgLatencies: number[] = [];
@@ -550,13 +546,13 @@ describe('Latency Benchmark', () => {
 					await testCollection.add({
 						id: `scale_${idx}`,
 						content: `Content for document ${idx} with some additional text for variety`,
-						metadata: { index: idx }
+						metadata: { index: idx },
 					});
 				}
 
 				// Measure search latency
 				const latencies = await measureLatency(
-					() => testCollection.search('Scale impact test query', 10),
+					() => testCollection.search("Scale impact test query", 10),
 					20,
 					5
 				);
@@ -570,14 +566,14 @@ describe('Latency Benchmark', () => {
 			// Relaxed threshold for mock environments - real system should be <3
 			const threshold = 50;
 			const result: TestResult = {
-				name: 'collection_size_impact',
+				name: "collection_size_impact",
 				passed: scaleFactor < threshold,
 				duration: avgLatencies.reduce((a, b) => a + b, 0),
 				metrics: {
 					latency_10_docs: avgLatencies[0],
 					latency_200_docs: avgLatencies[3],
-					scale_factor: scaleFactor
-				}
+					scale_factor: scaleFactor,
+				},
 			};
 
 			harness.recordResult(result);

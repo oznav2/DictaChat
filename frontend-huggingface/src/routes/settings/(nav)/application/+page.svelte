@@ -15,6 +15,8 @@
 	import { onMount } from "svelte";
 	import { browser } from "$app/environment";
 	import { getThemePreference, setTheme, type ThemePreference } from "$lib/switchTheme";
+	import { terminalMode } from "$lib/stores/terminalMode";
+	import { apiRequest } from "$lib/utils/apiClient";
 
 	const publicConfig = usePublicConfig();
 	let settings = useSettingsStore();
@@ -37,6 +39,13 @@
 	}
 	function setDirectPaste(v: boolean) {
 		settings.update((s) => ({ ...s, directPaste: v }));
+	}
+
+	function getTerminalMode() {
+		return $terminalMode;
+	}
+	function setTerminalMode(v: boolean) {
+		terminalMode.set(v);
 	}
 
 	const client = useAPIClient();
@@ -85,6 +94,8 @@
 				billingOrgsLoading = false;
 			}
 		}
+
+		await loadProviderStatus();
 	});
 
 	let themePref = $state<ThemePreference>(browser ? getThemePreference() : "system");
@@ -92,6 +103,47 @@
 	// Admin: model refresh UI state
 	let refreshing = $state(false);
 	let refreshMessage = $state<string | null>(null);
+
+	type CurrentModel = {
+		id: string;
+		name: string;
+		displayName: string;
+		multimodal: boolean;
+		supportsTools: boolean;
+		isRouter: boolean;
+	};
+
+	type ProviderStatus = {
+		provider: string;
+		base_url_origin: string | null;
+		configured: boolean;
+		ok: boolean;
+		latency_ms: number | null;
+		error: string | null;
+	};
+
+	let currentModel = $state<CurrentModel | null>(null);
+	let providerStatuses = $state<ProviderStatus[]>([]);
+	let providerStatusError = $state<string | null>(null);
+
+	async function loadProviderStatus() {
+		providerStatusError = null;
+		try {
+			const current = (await apiRequest<{ model?: CurrentModel }>(`${base}/api/model/current`, {
+				timeoutMs: 5000,
+				retries: 0,
+			})) as { model?: CurrentModel };
+			currentModel = current?.model ?? null;
+
+			const detect = (await apiRequest<{ providers?: ProviderStatus[] }>(
+				`${base}/api/model/providers/detect`,
+				{ timeoutMs: 5000, retries: 0 }
+			)) as { providers?: ProviderStatus[] };
+			providerStatuses = Array.isArray(detect?.providers) ? (detect.providers as ProviderStatus[]) : [];
+		} catch (e) {
+			providerStatusError = "Failed to detect providers";
+		}
+	}
 </script>
 
 <div class="flex w-full flex-col gap-4">
@@ -109,6 +161,67 @@
 			>
 		</div>
 	{/if}
+
+	<div class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+		<div class="flex items-start justify-between gap-3">
+			<div class="min-w-0">
+				<div class="text-[13px] font-medium text-gray-800 dark:text-gray-200">מודל פעיל וספקים</div>
+				<div class="mt-0.5 text-[12px] text-gray-500 dark:text-gray-400">
+					{#if currentModel}
+						{currentModel.displayName} ({currentModel.id})
+					{:else}
+						לא זמין
+					{/if}
+				</div>
+			</div>
+			<button
+				type="button"
+				class="btn rounded-md text-xs"
+				onclick={loadProviderStatus}
+				aria-label="Refresh provider status"
+			>
+				רענן
+			</button>
+		</div>
+
+		{#if providerStatusError}
+			<div class="mt-2 rounded-md bg-red-50 px-2 py-1 text-xs text-red-700 dark:bg-red-500/10 dark:text-red-300">
+				{providerStatusError}
+			</div>
+		{/if}
+
+		{#if providerStatuses.length > 0}
+			<div class="mt-2 space-y-1">
+				{#each providerStatuses as p (p.provider)}
+					<div class="flex items-center justify-between gap-2 text-[12px]">
+						<div class="min-w-0 truncate text-gray-600 dark:text-gray-300">
+							<span class="font-medium">{p.provider}</span>
+							{#if p.base_url_origin}
+								<span class="ml-1 text-gray-400">{p.base_url_origin}</span>
+							{/if}
+						</div>
+						<div class="flex items-center gap-2">
+							{#if p.latency_ms !== null}
+								<span class="text-gray-400">{p.latency_ms}ms</span>
+							{/if}
+							<span
+								class={[
+									"rounded-full px-2 py-0.5 text-[11px] font-semibold",
+									p.ok
+										? "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-300"
+										: "bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-300",
+								]}
+							>
+								{p.ok ? "OK" : p.error ?? "DOWN"}
+							</span>
+						</div>
+					</div>
+				{/each}
+			</div>
+		{:else}
+			<div class="mt-2 text-[12px] text-gray-500 dark:text-gray-400">לא נמצאו ספקים</div>
+		{/if}
+	</div>
 	{#if !!publicConfig.PUBLIC_COMMIT_SHA}
 		<div
 			class="flex flex-col items-start justify-between text-xl font-semibold text-gray-800 dark:text-gray-200"
@@ -192,6 +305,16 @@
 						</p>
 					</div>
 					<Switch name="disableStream" bind:checked={getDisableStream, setDisableStream} />
+				</div>
+
+				<div class="flex items-start justify-between py-3">
+					<div>
+						<div class="text-[13px] font-medium text-gray-800 dark:text-gray-200">מצב טרמינל</div>
+						<p class="text-[12px] text-gray-500 dark:text-gray-400">
+							עיצוב מינימלי עם פונט מונוספייס והצגת user/assistant.
+						</p>
+					</div>
+					<Switch name="terminalMode" bind:checked={getTerminalMode, setTerminalMode} />
 				</div>
 
 				<div class="flex items-start justify-between py-3">

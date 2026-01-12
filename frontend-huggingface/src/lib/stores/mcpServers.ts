@@ -9,6 +9,7 @@ import { base } from "$app/paths";
 import { env as publicEnv } from "$env/dynamic/public";
 import { browser } from "$app/environment";
 import type { MCPServer, ServerStatus, MCPTool } from "$lib/types/Tool";
+import type { KeyValuePair } from "$lib/types/Tool";
 
 // Namespace storage by app identity to avoid collisions across apps
 function toKeyPart(s: string | undefined): string {
@@ -249,6 +250,52 @@ export function addCustomServer(server: Omit<MCPServer, "id" | "type" | "status"
 	refreshMcpServers();
 
 	return newServer.id;
+}
+
+export function importCustomServersFromScan(
+	servers: Array<{
+		name: string;
+		url: string;
+		headers?: Record<string, string>;
+		env?: Record<string, string>;
+	}>
+): { added: number; skipped: number } {
+	const existingCustom = loadCustomServers();
+	const existingUrls = new Set(existingCustom.map((s) => s.url));
+
+	const toPairs = (record: Record<string, string> | undefined): KeyValuePair[] | undefined => {
+		if (!record) return undefined;
+		return Object.entries(record).map(([key, value]) => ({ key, value }));
+	};
+
+	let added = 0;
+	let skipped = 0;
+	const nextCustom = [...existingCustom];
+
+	for (const s of servers) {
+		if (!s?.name || !s?.url) continue;
+		if (existingUrls.has(s.url)) {
+			skipped++;
+			continue;
+		}
+		const newServer: MCPServer = {
+			id: crypto.randomUUID(),
+			name: s.name,
+			url: s.url,
+			type: "custom",
+			headers: toPairs(s.headers),
+			env: toPairs(s.env),
+			status: undefined,
+		};
+		nextCustom.push(newServer);
+		existingUrls.add(s.url);
+		added++;
+	}
+
+	saveCustomServers(nextCustom);
+	refreshMcpServers();
+
+	return { added, skipped };
 }
 
 /**

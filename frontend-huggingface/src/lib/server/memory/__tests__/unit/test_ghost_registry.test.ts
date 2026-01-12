@@ -547,7 +547,10 @@ describe("TestGhostRegistry", () => {
 
 		const result: TestResult = {
 			name: testName,
-			passed: new Set(allGhosts).size === 2 && allGhosts.includes("chunk_1") && allGhosts.includes("chunk_2"),
+			passed:
+				new Set(allGhosts).size === 2 &&
+				allGhosts.includes("chunk_1") &&
+				allGhosts.includes("chunk_2"),
 			duration: Date.now() - startTime,
 		};
 

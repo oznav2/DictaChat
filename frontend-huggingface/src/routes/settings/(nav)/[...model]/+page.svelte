@@ -49,6 +49,26 @@
 		}));
 	}
 
+	function getMaxTokensOverride() {
+		return $settings.maxTokensOverrides?.[page.params.model] ?? 0;
+	}
+	function setMaxTokensOverride(v: number) {
+		settings.update((s) => ({
+			...s,
+			maxTokensOverrides: { ...s.maxTokensOverrides, [page.params.model]: v },
+		}));
+	}
+
+	function getTruncateOverride() {
+		return $settings.truncateOverrides?.[page.params.model] ?? 0;
+	}
+	function setTruncateOverride(v: number) {
+		settings.update((s) => ({
+			...s,
+			truncateOverrides: { ...s.truncateOverrides, [page.params.model]: v },
+		}));
+	}
+
 	function getCustomPrompt() {
 		return $settings.customPrompts?.[page.params.model] ?? "";
 	}
@@ -97,6 +117,18 @@
 	// Ensure hidePromptExamples has an entry for this model so the switch can bind safely
 	$effect(() => {
 		settings.initValue("hidePromptExamples", page.params.model, false);
+	});
+
+	$effect(() => {
+		const modelMaxTokens = (model?.parameters as unknown as { max_tokens?: number } | undefined)
+			?.max_tokens;
+		settings.initValue("maxTokensOverrides", page.params.model, modelMaxTokens ?? 0);
+	});
+
+	$effect(() => {
+		const modelTruncate = (model?.parameters as unknown as { truncate?: number } | undefined)
+			?.truncate;
+		settings.initValue("truncateOverrides", page.params.model, modelTruncate ?? 0);
 	});
 </script>
 
@@ -234,6 +266,52 @@
 			class="mt-3 rounded-xl border border-gray-200 bg-white px-3 shadow-sm dark:border-gray-700 dark:bg-gray-800"
 		>
 			<div class="divide-y divide-gray-200 dark:divide-gray-700">
+				<div class="flex items-start justify-between py-3">
+					<div>
+						<div class="text-[13px] font-medium text-gray-800 dark:text-gray-200">
+							מגבלות טוקנים (Context)
+						</div>
+						<div class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+							0 משתמש בברירת המחדל של המודל
+						</div>
+					</div>
+					<div class="flex items-center gap-3">
+						<label class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
+							<span>max_tokens</span>
+							<input
+								class="w-24 rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
+								type="number"
+								min="0"
+								step="1"
+								value={getMaxTokensOverride()}
+								oninput={(e) => {
+									const next = Number.parseInt(
+										(e.currentTarget as HTMLInputElement).value || "0",
+										10
+									);
+									setMaxTokensOverride(Number.isFinite(next) ? next : 0);
+								}}
+							/>
+						</label>
+						<label class="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
+							<span>truncate</span>
+							<input
+								class="w-24 rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
+								type="number"
+								min="0"
+								step="1"
+								value={getTruncateOverride()}
+								oninput={(e) => {
+									const next = Number.parseInt(
+										(e.currentTarget as HTMLInputElement).value || "0",
+										10
+									);
+									setTruncateOverride(Number.isFinite(next) ? next : 0);
+								}}
+							/>
+						</label>
+					</div>
+				</div>
 				<div class="flex items-start justify-between py-3">
 					<div>
 						<div class="text-[13px] font-medium text-gray-800 dark:text-gray-200">

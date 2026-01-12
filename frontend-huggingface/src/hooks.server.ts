@@ -1,6 +1,6 @@
 import { config, ready } from "$lib/server/config";
 import type { Handle, HandleServerError, ServerInit, HandleFetch } from "@sveltejs/kit";
-import { collections } from "$lib/server/database";
+import { collections, Database } from "$lib/server/database";
 import { base } from "$app/paths";
 import {
 	authenticateRequest,
@@ -20,6 +20,203 @@ import { adminTokenManager } from "$lib/server/adminToken";
 import { isHostLocalhost } from "$lib/server/isURLLocal";
 import { MetricsServer } from "$lib/server/metrics";
 import { loadMcpServersOnStartup } from "$lib/server/mcp/registry";
+import { env } from "$env/dynamic/private";
+import { ADMIN_USER_ID } from "$lib/server/constants";
+import {
+	UnifiedMemoryFacade,
+	defaultMemoryConfig,
+	getMemoryEnvConfig,
+	getMemoryFeatureFlags,
+	MemoryMongoStore,
+	QdrantAdapter,
+	DictaEmbeddingClient,
+	SearchService as HybridSearchService,
+	Bm25Adapter,
+	SearchServiceImpl,
+	PrefetchServiceImpl,
+	StoreServiceImpl,
+	OutcomeServiceImpl,
+	KnowledgeGraphService,
+	MEMORY_COLLECTIONS,
+	type MemoryItemDocument,
+	createReindexService,
+	createConsistencyService,
+	createOpsServiceImpl,
+	PromotionService,
+} from "$lib/server/memory";
+import { ActionKgServiceImpl } from "$lib/server/memory/services/ActionKgServiceImpl";
+import { ContextServiceImpl } from "$lib/server/memory/services/ContextServiceImpl";
+
+let memoryInitPromise: Promise<void> | null = null;
+
+async function initializeMemoryFacadeOnce(): Promise<void> {
+	if (memoryInitPromise) return memoryInitPromise;
+	memoryInitPromise = (async () => {
+		const flags = getMemoryFeatureFlags();
+		logger.info({ flags }, "[Memory System] Feature flags at startup");
+		
+		if (!flags.systemEnabled) {
+			logger.warn("[Memory System] System disabled via feature flag (MEMORY_SYSTEM_ENABLED)");
+			return;
+		}
+
+		logger.info("[Memory System] Initializing memory system components...");
+		const envConfig = getMemoryEnvConfig();
+		const memoryConfig = {
+			...defaultMemoryConfig,
+			qdrant: {
+				...defaultMemoryConfig.qdrant,
+				collection_name: envConfig.qdrantCollection,
+				expected_embedding_dims: envConfig.qdrantVectorSize,
+			},
+		};
+
+		const database = await Database.getInstance();
+		const client = database.getClient();
+		const db = client.db(config.MONGODB_DB_NAME);
+
+		const mongoStore = new MemoryMongoStore({
+			client,
+			dbName: config.MONGODB_DB_NAME,
+			config: memoryConfig,
+		});
+		await mongoStore.initialize();
+
+		const qdrantAdapter = new QdrantAdapter({
+			host: envConfig.qdrantHost,
+			port: envConfig.qdrantPort,
+			https: env.QDRANT_HTTPS === "true",
+			apiKey: env.QDRANT_API_KEY,
+			config: memoryConfig,
+		});
+		await qdrantAdapter.initialize();
+
+		const isDocker = env.DOCKER_ENV === "true";
+		const embeddingEndpoint =
+			env.EMBEDDING_SERVICE_URL ?? (isDocker ? "http://dicta-retrieval:5005" : "http://localhost:5005");
+		const rerankerEndpoint =
+			env.RERANKER_SERVICE_URL ?? (isDocker ? "http://dicta-retrieval:5006" : "http://localhost:5006");
+		const embeddingClient = new DictaEmbeddingClient({
+			endpoint: embeddingEndpoint,
+			config: memoryConfig,
+		});
+
+		const bm25Adapter = new Bm25Adapter({
+			collection: db.collection<MemoryItemDocument>(MEMORY_COLLECTIONS.ITEMS),
+			config: memoryConfig,
+		});
+		const hybridSearch = new HybridSearchService({
+			qdrantAdapter,
+			bm25Adapter,
+			embeddingClient,
+			rerankerEndpoint,
+			config: memoryConfig,
+		});
+
+		const kgService = new KnowledgeGraphService({ db, config: memoryConfig });
+		await kgService.initialize();
+
+		const searchService = new SearchServiceImpl({
+			hybridSearch,
+			config: memoryConfig,
+			kgService,
+			mongoStore: {
+				getKnownSolution: (userId, problemHash) => mongoStore.getKnownSolution(userId, problemHash),
+			},
+		});
+
+		const prefetchService = new PrefetchServiceImpl({
+			hybridSearch,
+			qdrantAdapter,
+			config: memoryConfig,
+		});
+
+		const storeService = new StoreServiceImpl({
+			mongoStore,
+			qdrantAdapter,
+			embeddingClient,
+			config: memoryConfig,
+		});
+
+		const outcomeService = new OutcomeServiceImpl({
+			mongoStore,
+			qdrantAdapter,
+			embeddingClient,
+			kgService,
+			config: memoryConfig,
+			getSearchPositionMap: () => searchService.getSearchPositionMap(),
+			getLastSearchResults: () => searchService.getLastSearchResults(),
+			getLastQueryNormalized: () => searchService.getLastQueryNormalized(),
+			getLastSearchTiers: () => searchService.getLastSearchTiers(),
+			clearTurnTracking: () => searchService.clearTurnTracking(),
+		});
+
+		const actionKgService = new ActionKgServiceImpl({
+			kgService,
+			config: memoryConfig,
+			defaultUserId: ADMIN_USER_ID,
+		});
+
+		const contextService = new ContextServiceImpl({
+			searchService: hybridSearch,
+			kgService,
+			config: memoryConfig,
+		});
+
+		const promotionService = new PromotionService({
+			mongoStore,
+			qdrantAdapter,
+			config: memoryConfig,
+		});
+		promotionService.startScheduler().catch((err) => {
+			logger.error({ err }, "PromotionService scheduler failed to start");
+		});
+
+		const reindexService = createReindexService({
+			mongoStore,
+			qdrantAdapter,
+			embeddingClient,
+			config: memoryConfig,
+		});
+
+		const consistencyService = createConsistencyService({
+			mongoStore,
+			qdrantAdapter,
+			embeddingClient,
+			config: memoryConfig,
+		});
+		consistencyService.startScheduler();
+
+		const opsService = createOpsServiceImpl({
+			mongoStore,
+			qdrantAdapter,
+			embeddingClient,
+			promotionService,
+			reindexService,
+			consistencyService,
+			config: memoryConfig,
+			db,
+		});
+
+		const facade = new UnifiedMemoryFacade({
+			config: memoryConfig,
+			services: {
+				search: searchService,
+				prefetch: prefetchService,
+				store: storeService,
+				outcomes: outcomeService,
+				actionKg: actionKgService,
+				context: contextService,
+				ops: opsService,
+			},
+		});
+
+		UnifiedMemoryFacade.setInstance(facade);
+		await facade.initialize();
+	})();
+
+	return memoryInitPromise;
+}
 
 export const init: ServerInit = async () => {
 	// Wait for config to be fully loaded
@@ -48,6 +245,7 @@ export const init: ServerInit = async () => {
 		}
 
 		checkAndRunMigrations();
+		await initializeMemoryFacadeOnce();
 		refreshConversationStats();
 
 		// Load MCP servers at startup

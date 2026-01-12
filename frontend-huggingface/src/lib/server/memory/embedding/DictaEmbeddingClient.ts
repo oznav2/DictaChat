@@ -79,6 +79,8 @@ export class DictaEmbeddingClient {
 	// In-memory cache (Redis is optional enhancement)
 	private memoryCache: Map<string, number[]> = new Map();
 	private readonly maxCacheSize = 10000;
+	private cacheEvents: Array<{ ts: number; hits: number; misses: number }> = [];
+	private readonly maxCacheEvents = 5000;
 
 	constructor(params: DictaEmbeddingClientConfig) {
 		this.endpoint = params.endpoint;
@@ -185,12 +187,53 @@ export class DictaEmbeddingClient {
 		// Filter out empty results
 		const validResults = results.filter((r) => r.vector.length > 0);
 
+		this.recordCacheEvent(cacheHits, uncachedTexts.length);
+
 		return {
 			results: validResults,
 			cacheHits,
 			cacheMisses: uncachedTexts.length,
 			latencyMs: Date.now() - startTime,
 		};
+	}
+
+	getCacheMetrics(windowMs: number): {
+		hit_rate: number | null;
+		hits: number;
+		misses: number;
+		window_ms: number;
+		as_of: string;
+	} {
+		const now = Date.now();
+		const cutoff = now - Math.max(0, windowMs);
+		let hits = 0;
+		let misses = 0;
+
+		for (let i = this.cacheEvents.length - 1; i >= 0; i--) {
+			const e = this.cacheEvents[i];
+			if (e.ts < cutoff) break;
+			hits += e.hits;
+			misses += e.misses;
+		}
+
+		const denom = hits + misses;
+		return {
+			hit_rate: denom > 0 ? hits / denom : null,
+			hits,
+			misses,
+			window_ms: Math.max(0, windowMs),
+			as_of: new Date(now).toISOString(),
+		};
+	}
+
+	private recordCacheEvent(hits: number, misses: number) {
+		if (!Number.isFinite(hits) || !Number.isFinite(misses)) return;
+		if (hits <= 0 && misses <= 0) return;
+
+		this.cacheEvents.push({ ts: Date.now(), hits, misses });
+		if (this.cacheEvents.length > this.maxCacheEvents) {
+			this.cacheEvents.splice(0, this.cacheEvents.length - this.maxCacheEvents);
+		}
 	}
 
 	/**

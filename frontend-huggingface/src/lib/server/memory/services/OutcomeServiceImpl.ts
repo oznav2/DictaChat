@@ -5,15 +5,19 @@
  * - Recording outcomes for retrieved memories
  * - Storing key takeaways from exchanges
  * - Selective scoring based on related references
+ * - KG routing updates (Roampal-aligned)
+ * - Time-weighted score decay
  */
 
 import { logger } from "$lib/server/logger";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
-import type { Outcome } from "../types";
+import type { MemoryTier, Outcome } from "../types";
+import { buildProblemHash } from "../utils/problemSignature";
 import type { MemoryMongoStore } from "../stores/MemoryMongoStore";
 import type { QdrantAdapter } from "../adapters/QdrantAdapter";
 import type { DictaEmbeddingClient } from "../embedding/DictaEmbeddingClient";
+import type { KnowledgeGraphService } from "../kg/KnowledgeGraphService";
 import type {
 	OutcomeService,
 	RecordOutcomeParams,
@@ -24,10 +28,13 @@ export interface OutcomeServiceImplConfig {
 	mongoStore: MemoryMongoStore;
 	qdrantAdapter: QdrantAdapter;
 	embeddingClient: DictaEmbeddingClient;
+	kgService?: KnowledgeGraphService;
 	config?: MemoryConfig;
 	// Callback to get current search position map
 	getSearchPositionMap?: () => Map<number, string>;
 	getLastSearchResults?: () => string[];
+	getLastQueryNormalized?: () => string;
+	getLastSearchTiers?: () => MemoryTier[];
 	clearTurnTracking?: () => void;
 }
 
@@ -50,25 +57,32 @@ export class OutcomeServiceImpl implements OutcomeService {
 	private mongo: MemoryMongoStore;
 	private qdrant: QdrantAdapter;
 	private embedding: DictaEmbeddingClient;
+	private kgService: KnowledgeGraphService | null;
 	private config: MemoryConfig;
 	private getSearchPositionMap: () => Map<number, string>;
 	private getLastSearchResults: () => string[];
+	private getLastQueryNormalized: () => string;
+	private getLastSearchTiers: () => MemoryTier[];
 	private clearTurnTracking: () => void;
 
 	constructor(params: OutcomeServiceImplConfig) {
 		this.mongo = params.mongoStore;
 		this.qdrant = params.qdrantAdapter;
 		this.embedding = params.embeddingClient;
+		this.kgService = params.kgService ?? null;
 		this.config = params.config ?? defaultMemoryConfig;
 
 		// Default no-op callbacks
 		this.getSearchPositionMap = params.getSearchPositionMap ?? (() => new Map());
 		this.getLastSearchResults = params.getLastSearchResults ?? (() => []);
+		this.getLastQueryNormalized = params.getLastQueryNormalized ?? (() => "");
+		this.getLastSearchTiers = params.getLastSearchTiers ?? (() => []);
 		this.clearTurnTracking = params.clearTurnTracking ?? (() => {});
 	}
 
 	/**
 	 * Record outcome for specific memories
+	 * Roampal-aligned: Updates KG routing FIRST, then scores
 	 */
 	async recordOutcome(params: RecordOutcomeParams): Promise<void> {
 		const { userId, outcome, relatedMemoryIds } = params;
@@ -80,7 +94,13 @@ export class OutcomeServiceImpl implements OutcomeService {
 
 		const startTime = Date.now();
 
-		// Record outcome for each memory
+		// Step 1: Update KG routing FIRST (Roampal pattern)
+		// This allows KG to learn which collections answer which queries
+		await this.updateKgRouting(userId, outcome);
+		const queryForKnownSolution = this.getLastQueryNormalized();
+		const problemHash = queryForKnownSolution ? buildProblemHash(queryForKnownSolution) : null;
+
+		// Step 2: Record outcome for each memory with time-weighted scoring
 		for (const memoryId of relatedMemoryIds) {
 			try {
 				// Get current memory to check tier
@@ -91,18 +111,35 @@ export class OutcomeServiceImpl implements OutcomeService {
 				}
 
 				// Skip protected tiers (books, memory_bank don't get scored)
+				// But KG routing was still updated above
 				if (PROTECTED_TIERS.has(memory.tier)) {
-					logger.debug({ memoryId, tier: memory.tier }, "Skipping protected tier");
+					logger.debug(
+						{ memoryId, tier: memory.tier },
+						"Skipping protected tier (KG still updated)"
+					);
 					continue;
 				}
 
-				// Record outcome in MongoDB
+				// Calculate time weight (Roampal pattern)
+				const timeWeight = this.calculateTimeWeight(memory.timestamps.updated_at);
+
+				// Record outcome in MongoDB with time-weighted adjustment
 				await this.mongo.recordOutcome({
 					memoryId,
+					userId,
 					outcome,
-					source: "explicit",
-					confidence: 0.9,
+					contextType: "chat",
+					feedbackSource: "explicit",
+					timeWeight, // Pass time weight for score calculation
 				});
+
+				if (outcome === "worked" && memory.tier === "patterns" && problemHash) {
+					await this.mongo.recordKnownSolution({
+						userId,
+						problemHash,
+						memoryId,
+					});
+				}
 
 				// Update Qdrant composite score
 				const newScore = await this.calculateNewCompositeScore(memoryId, userId);
@@ -128,6 +165,58 @@ export class OutcomeServiceImpl implements OutcomeService {
 	}
 
 	/**
+	 * Update KG routing based on outcome (Roampal pattern)
+	 * Learns which collections answer which query types
+	 */
+	private async updateKgRouting(userId: string, outcome: Outcome): Promise<void> {
+		if (!this.kgService) {
+			return;
+		}
+
+		const query = this.getLastQueryNormalized();
+		const tiers = this.getLastSearchTiers();
+
+		if (!query || tiers.length === 0) {
+			return;
+		}
+
+		try {
+			// Extract concepts from query for routing learning
+			const entities = this.kgService.extractEntities(query);
+			const concepts = entities.map((e) => e.label.toLowerCase());
+
+			if (concepts.length > 0) {
+				await this.kgService.updateRoutingStats(userId, concepts, tiers, outcome);
+				logger.debug(
+					{ userId, concepts: concepts.slice(0, 3), tiers, outcome },
+					"KG routing updated"
+				);
+			}
+		} catch (err) {
+			logger.error({ err }, "Failed to update KG routing");
+		}
+	}
+
+	/**
+	 * Calculate time weight for score updates (Roampal pattern)
+	 * Recent outcomes have more impact; old memories decay
+	 */
+	private calculateTimeWeight(lastUsed: string | null): number {
+		if (!lastUsed) {
+			return 1.0;
+		}
+
+		try {
+			const lastUsedDate = new Date(lastUsed);
+			const ageDays = (Date.now() - lastUsedDate.getTime()) / (1000 * 60 * 60 * 24);
+			// Decay over month: 1.0 / (1 + age_days / 30)
+			return 1.0 / (1 + ageDays / 30);
+		} catch {
+			return 1.0;
+		}
+	}
+
+	/**
 	 * Record response with key takeaway and selective scoring
 	 */
 	async recordResponse(params: RecordResponseParams): Promise<void> {
@@ -142,33 +231,38 @@ export class OutcomeServiceImpl implements OutcomeService {
 				tier: "working",
 				text: keyTakeaway,
 				tags: ["key_takeaway"],
-				metadata: {
-					type: "key_takeaway",
-					initial_outcome: outcome,
-					initial_score: OUTCOME_SCORES[outcome],
+				source: {
+					type: "system",
+					conversation_id: null,
+					message_id: null,
+					tool_name: null,
+					tool_run_id: null,
+					doc_id: null,
+					chunk_id: null,
 				},
 			});
 
-			// Index in Qdrant
-			await this.qdrant.upsert({
-				id: storeResult.memoryId,
-				vector,
-				payload: {
-					user_id: userId,
-					tier: "working",
-					status: "active",
-					content: keyTakeaway,
-					tags: ["key_takeaway"],
-					entities: [],
-					importance: OUTCOME_SCORES[outcome],
-					composite_score: OUTCOME_SCORES[outcome],
-					always_inject: false,
-					timestamp: Date.now(),
-					uses: 0,
-				},
-			});
+			if (storeResult) {
+				// Index in Qdrant
+				await this.qdrant.upsert({
+					id: storeResult.memory_id,
+					vector,
+					payload: {
+						user_id: userId,
+						tier: "working",
+						status: "active",
+						content: keyTakeaway,
+						tags: ["key_takeaway"],
+						entities: [],
+						composite_score: OUTCOME_SCORES[outcome],
+						always_inject: false,
+						timestamp: Date.now(),
+						uses: 0,
+					},
+				});
 
-			logger.debug({ memoryId: storeResult.memoryId }, "Key takeaway stored");
+				logger.debug({ memoryId: storeResult.memory_id }, "Key takeaway stored");
+			}
 		}
 
 		// Step 2: Resolve which memories to score
@@ -253,7 +347,7 @@ export class OutcomeServiceImpl implements OutcomeService {
 			if (!memory) return null;
 
 			// Wilson score is already calculated by MemoryMongoStore
-			return memory.wilson_score ?? 0.5;
+			return memory.stats?.wilson_score ?? 0.5;
 		} catch {
 			return null;
 		}

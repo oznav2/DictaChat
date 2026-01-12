@@ -9,9 +9,13 @@
 
 import type { Collection, Db } from "mongodb";
 import { logger } from "$lib/server/logger";
+import { onExit } from "$lib/server/exitHandler";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
 import type { MemoryTier, Outcome } from "../types";
+import { KgWriteBuffer } from "./KgWriteBuffer";
+import { isEntityBlocklistedLabel, normalizeEntityLabel } from "./entityHygiene";
+import { findEnglishTranslation, findHebrewTranslation } from "../seed/bilingualEntities";
 import type {
 	RoutingConcept,
 	RoutingStats,
@@ -75,6 +79,8 @@ const MAX_ACTION_EXAMPLES = 20;
 export class KnowledgeGraphService {
 	private db: Db;
 	private config: MemoryConfig;
+	private writeBuffer: KgWriteBuffer | null = null;
+	private flushImmediately: boolean;
 
 	// Collections
 	private routingConcepts!: Collection<RoutingConcept>;
@@ -82,6 +88,7 @@ export class KnowledgeGraphService {
 	private kgNodes!: Collection<KgNode>;
 	private kgEdges!: Collection<KgEdge>;
 	private actionEffectiveness!: Collection<ActionEffectiveness>;
+	private contextActionEffectiveness!: Collection<any>;
 
 	// Per-turn action cache (keyed by conversation_id:turn_id)
 	private turnCache = new Map<string, TurnContext>();
@@ -89,6 +96,7 @@ export class KnowledgeGraphService {
 	constructor(params: KnowledgeGraphServiceConfig) {
 		this.db = params.db;
 		this.config = params.config ?? defaultMemoryConfig;
+		this.flushImmediately = import.meta.env.MODE === "test";
 	}
 
 	/**
@@ -100,11 +108,31 @@ export class KnowledgeGraphService {
 		this.kgNodes = this.db.collection("kg_nodes");
 		this.kgEdges = this.db.collection("kg_edges");
 		this.actionEffectiveness = this.db.collection("kg_action_effectiveness");
+		this.contextActionEffectiveness = this.db.collection("kg_context_action_effectiveness");
 
 		// Create indexes
 		await this.createIndexes();
 
+		this.writeBuffer = new KgWriteBuffer({
+			kgNodes: this.kgNodes,
+			kgEdges: this.kgEdges,
+			actionEffectiveness: this.actionEffectiveness,
+			contextActionEffectiveness: this.contextActionEffectiveness,
+			flushIntervalMs: 1500,
+			autoFlush: import.meta.env.MODE !== "test",
+			maxActionExamples: MAX_ACTION_EXAMPLES,
+		});
+
+		onExit(async () => {
+			this.writeBuffer?.stop();
+			await this.writeBuffer?.flush();
+		});
+
 		logger.info("KnowledgeGraphService initialized");
+	}
+
+	async flushWrites(): Promise<void> {
+		await this.writeBuffer?.flush();
 	}
 
 	/**
@@ -129,6 +157,11 @@ export class KnowledgeGraphService {
 			{ user_id: 1, context_type: 1, action: 1, tier: 1 },
 			{ unique: true }
 		);
+		await this.contextActionEffectiveness.createIndex(
+			{ user_id: 1, context_type: 1, action: 1, tier_key: 1 },
+			{ unique: true }
+		);
+		await this.contextActionEffectiveness.createIndex({ user_id: 1, context_type: 1, wilson_score: -1 });
 	}
 
 	// ============================================
@@ -222,68 +255,100 @@ export class KnowledgeGraphService {
 		outcome: Outcome
 	): Promise<void> {
 		const now = new Date();
+		if (concepts.length === 0) return;
 
-		for (const conceptId of concepts) {
-			// Ensure concept exists
-			await this.routingConcepts.updateOne(
-				{ user_id: userId, concept_id: conceptId },
-				{
-					$setOnInsert: {
-						label: conceptId,
-						aliases: [],
-						first_seen_at: now,
-					},
+		const existingStats = await this.routingStats
+			.find({ user_id: userId, concept_id: { $in: concepts } })
+			.toArray();
+		const statsByConcept = new Map(existingStats.map((s) => [s.concept_id, s]));
+
+		const conceptOps: Array<{
+			updateOne: {
+				filter: Record<string, unknown>;
+				update: Record<string, unknown>;
+				upsert: true;
+			};
+		}> = concepts.map((conceptId) => ({
+			updateOne: {
+				filter: { user_id: userId, concept_id: conceptId },
+				update: {
+					$setOnInsert: { label: conceptId, aliases: [], first_seen_at: now },
 					$set: { last_seen_at: now },
 				},
-				{ upsert: true }
-			);
+				upsert: true,
+			},
+		}));
 
-			// Get or create stats
-			let stats = await this.routingStats.findOne({
-				user_id: userId,
-				concept_id: conceptId,
-			});
-
-			if (!stats) {
-				const tierRates: Record<string, TierStats> = {};
-				for (const tier of ALL_TIERS) {
-					tierRates[tier] = defaultTierStats();
-				}
-				stats = {
-					user_id: userId,
-					concept_id: conceptId,
-					tier_success_rates: tierRates as Record<MemoryTier, TierStats>,
-					best_tiers_cached: [],
-				};
+		const statsOps: Array<{
+			updateOne: {
+				filter: Record<string, unknown>;
+				update: Record<string, unknown>;
+				upsert: true;
+			};
+		}> = concepts.map((conceptId) => {
+			const stats = statsByConcept.get(conceptId);
+			const tierRates: Record<string, TierStats> = {};
+			for (const t of ALL_TIERS) {
+				tierRates[t] = stats?.tier_success_rates[t] ?? defaultTierStats();
 			}
+			const currentStats = tierRates as Record<MemoryTier, TierStats>;
 
-			// Update stats for each tier that was searched
 			for (const tier of tiers) {
-				const tierStats = stats.tier_success_rates[tier];
+				const tierStats = currentStats[tier];
 				tierStats.uses++;
 				tierStats[outcome]++;
 				tierStats.last_used_at = now;
 
-				// Recalculate success rate (worked / (worked + failed))
 				const total = tierStats.worked + tierStats.failed;
 				tierStats.success_rate = total > 0 ? tierStats.worked / total : 0.5;
 				tierStats.wilson_score = calculateWilsonScore(tierStats.worked, total);
 			}
 
-			// Update best tiers cache
-			stats.best_tiers_cached = ALL_TIERS.filter(
-				(t) => stats!.tier_success_rates[t].wilson_score > 0.5
-			).sort(
-				(a, b) =>
-					stats!.tier_success_rates[b].wilson_score - stats!.tier_success_rates[a].wilson_score
+			const bestTiers = ALL_TIERS.filter((t) => currentStats[t].wilson_score > 0.5).sort(
+				(a, b) => currentStats[b].wilson_score - currentStats[a].wilson_score
 			);
 
-			// Save
-			await this.routingStats.updateOne(
-				{ user_id: userId, concept_id: conceptId },
-				{ $set: stats },
-				{ upsert: true }
-			);
+			return {
+				updateOne: {
+					filter: { user_id: userId, concept_id: conceptId },
+					update: { $set: { tier_success_rates: currentStats, best_tiers_cached: bestTiers } },
+					upsert: true,
+				},
+			};
+		});
+
+		try {
+			const conceptBulkWrite = (this.routingConcepts as unknown as { bulkWrite?: unknown }).bulkWrite;
+			if (conceptOps.length) {
+				if (typeof conceptBulkWrite === "function") {
+					await (this.routingConcepts as any).bulkWrite(conceptOps, { ordered: false });
+				} else {
+					await Promise.all(
+						conceptOps.map((op) =>
+							(this.routingConcepts as any).updateOne(op.updateOne.filter, op.updateOne.update, {
+								upsert: op.updateOne.upsert,
+							})
+						)
+					);
+				}
+			}
+
+			const statsBulkWrite = (this.routingStats as unknown as { bulkWrite?: unknown }).bulkWrite;
+			if (statsOps.length) {
+				if (typeof statsBulkWrite === "function") {
+					await (this.routingStats as any).bulkWrite(statsOps, { ordered: false });
+				} else {
+					await Promise.all(
+						statsOps.map((op) =>
+							(this.routingStats as any).updateOne(op.updateOne.filter, op.updateOne.update, {
+								upsert: op.updateOne.upsert,
+							})
+						)
+					);
+				}
+			}
+		} catch (err) {
+			logger.error({ err }, "Failed to update routing stats");
 		}
 	}
 
@@ -303,11 +368,16 @@ export class KnowledgeGraphService {
 		const words = text.split(/\s+/);
 		for (const word of words) {
 			// Clean punctuation from word edges
-			const cleanWord = word.replace(/^[^\w\u0590-\u05FF]+|[^\w\u0590-\u05FF]+$/g, "");
+			const cleanWord = normalizeEntityLabel(word);
 			if (cleanWord.length <= 2) continue;
 
 			// Check for English capitalized words (including CamelCase like TypeScript, JavaScript)
-			if (/^[A-Z][a-zA-Z]*$/.test(cleanWord) && !isCommonWord(cleanWord) && !seen.has(cleanWord)) {
+			if (
+				/^[A-Z][a-zA-Z]*$/.test(cleanWord) &&
+				!isCommonWord(cleanWord) &&
+				!isEntityBlocklistedLabel(cleanWord) &&
+				!seen.has(cleanWord)
+			) {
 				seen.add(cleanWord);
 				entities.push({
 					label: cleanWord,
@@ -322,10 +392,11 @@ export class KnowledgeGraphService {
 		const hebrewMatches = text.match(hebrewPattern) ?? [];
 
 		for (const match of hebrewMatches) {
-			if (match.length > 2 && !isCommonWord(match) && !seen.has(match)) {
+			const clean = normalizeEntityLabel(match);
+			if (clean.length > 2 && !isCommonWord(clean) && !isEntityBlocklistedLabel(clean) && !seen.has(clean)) {
 				seen.add(match);
 				entities.push({
-					label: match,
+					label: clean,
 					type: "concept",
 					confidence: 0.5,
 				});
@@ -347,62 +418,52 @@ export class KnowledgeGraphService {
 	): Promise<void> {
 		const now = new Date();
 		const quality = importance * confidence;
+		if (!this.writeBuffer) return;
 
-		// Update/create nodes
-		for (const entity of entities) {
+		const filtered = entities
+			.map((e) => ({ ...e, label: normalizeEntityLabel(e.label) }))
+			.filter((e) => e.label.length > 2 && !isEntityBlocklistedLabel(e.label));
+
+		for (const entity of filtered) {
 			const nodeId = generateNodeId(entity.label);
-
-			await this.kgNodes.updateOne(
-				{ user_id: userId, node_id: nodeId },
-				{
-					$setOnInsert: {
-						label: entity.label,
-						node_type: entity.type === "concept" ? "concept" : "entity",
-						aliases: [],
-						first_seen_at: now,
-					},
-					$set: { last_seen_at: now },
-					$inc: {
-						mentions: 1,
-						quality_sum: quality,
-					},
-					$addToSet: { memory_ids: memoryId },
-				},
-				{ upsert: true }
+			const aliases = Array.from(
+				new Set(
+					[findHebrewTranslation(entity.label), findEnglishTranslation(entity.label)]
+						.filter((v): v is string => typeof v === "string" && v.length > 0)
+						.map(normalizeEntityLabel)
+						.filter((v) => v.length > 0 && !isEntityBlocklistedLabel(v))
+				)
 			);
+			this.writeBuffer.enqueueNode({
+				userId,
+				nodeId,
+				label: entity.label,
+				nodeType: entity.type === "concept" ? "concept" : "entity",
+				aliases,
+				memoryId,
+				quality,
+				now,
+			});
+		}
 
-			// Update avg_quality
-			const node = await this.kgNodes.findOne({ user_id: userId, node_id: nodeId });
-			if (node && node.mentions > 0) {
-				await this.kgNodes.updateOne(
-					{ user_id: userId, node_id: nodeId },
-					{ $set: { avg_quality: node.quality_sum / node.mentions } }
-				);
+		for (let i = 0; i < filtered.length; i++) {
+			for (let j = i + 1; j < filtered.length; j++) {
+				const sourceId = generateNodeId(filtered[i].label);
+				const targetId = generateNodeId(filtered[j].label);
+				const edgeId = `${sourceId}:${targetId}`;
+				this.writeBuffer.enqueueEdge({
+					userId,
+					edgeId,
+					sourceId,
+					targetId,
+					relationType: "co_occurs",
+					now,
+				});
 			}
 		}
 
-		// Create edges for co-occurring entities
-		for (let i = 0; i < entities.length; i++) {
-			for (let j = i + 1; j < entities.length; j++) {
-				const sourceId = generateNodeId(entities[i].label);
-				const targetId = generateNodeId(entities[j].label);
-				const edgeId = `${sourceId}:${targetId}`;
-
-				await this.kgEdges.updateOne(
-					{ user_id: userId, edge_id: edgeId },
-					{
-						$setOnInsert: {
-							source_id: sourceId,
-							target_id: targetId,
-							relation_type: "co_occurs",
-							first_seen_at: now,
-						},
-						$set: { last_seen_at: now },
-						$inc: { weight: 1 },
-					},
-					{ upsert: true }
-				);
-			}
+		if (this.flushImmediately) {
+			await this.writeBuffer.flush();
 		}
 	}
 
@@ -421,12 +482,13 @@ export class KnowledgeGraphService {
 				})
 				.toArray();
 
-			if (nodes.length > 0) {
-				const totalBoost = nodes.reduce((sum, node) => sum + node.avg_quality * 0.2, 0);
+			const usable = nodes.filter((n) => !isEntityBlocklistedLabel(String(n.label ?? "")));
+			if (usable.length > 0) {
+				const totalBoost = usable.reduce((sum, node) => sum + node.avg_quality * 0.2, 0);
 				boosts.push({
 					memory_id: memoryId,
 					boost: Math.min(0.5, totalBoost), // Cap at 50%
-					matched_entities: nodes.map((n) => n.label),
+					matched_entities: usable.map((n) => n.label),
 				});
 			}
 		}
@@ -438,7 +500,10 @@ export class KnowledgeGraphService {
 	 * Get related entities for a concept
 	 */
 	async getRelatedEntities(userId: string, labels: string[], limit = 10): Promise<KgNode[]> {
-		const nodeIds = labels.map(generateNodeId);
+		const nodeIds = labels
+			.map(normalizeEntityLabel)
+			.filter((l) => l.length > 2 && !isEntityBlocklistedLabel(l))
+			.map(generateNodeId);
 
 		// Get edges from these nodes
 		const edges = await this.kgEdges
@@ -458,7 +523,7 @@ export class KnowledgeGraphService {
 		}
 
 		// Fetch related nodes
-		return this.kgNodes
+		const nodes = await this.kgNodes
 			.find({
 				user_id: userId,
 				node_id: { $in: Array.from(relatedIds) },
@@ -466,6 +531,7 @@ export class KnowledgeGraphService {
 			.sort({ avg_quality: -1 })
 			.limit(limit)
 			.toArray();
+		return nodes.filter((n) => !isEntityBlocklistedLabel(String(n.label ?? "")));
 	}
 
 	// ============================================
@@ -566,50 +632,18 @@ export class KnowledgeGraphService {
 		outcome: Outcome,
 		example: ActionExample
 	): Promise<void> {
-		const filter = {
-			user_id: userId,
-			context_type: contextType,
+		if (!this.writeBuffer) return;
+		this.writeBuffer.enqueueAction({
+			userId,
+			contextType,
 			action,
 			tier,
-		};
-
-		// Get existing or create new
-		let record = await this.actionEffectiveness.findOne(filter);
-
-		if (!record) {
-			record = {
-				user_id: userId,
-				context_type: contextType,
-				action,
-				tier,
-				success_rate: 0.5,
-				wilson_score: 0.5,
-				uses: 0,
-				worked: 0,
-				failed: 0,
-				partial: 0,
-				unknown: 0,
-				examples: [],
-			};
+			outcome,
+			example,
+		});
+		if (this.flushImmediately) {
+			await this.writeBuffer.flush();
 		}
-
-		// Update counts
-		record.uses++;
-		record[outcome]++;
-
-		// Recalculate success rate
-		const total = record.worked + record.failed;
-		record.success_rate = total > 0 ? record.worked / total : 0.5;
-		record.wilson_score = calculateWilsonScore(record.worked, total);
-
-		// Add example (bounded)
-		record.examples.push(example);
-		if (record.examples.length > MAX_ACTION_EXAMPLES) {
-			record.examples = record.examples.slice(-MAX_ACTION_EXAMPLES);
-		}
-
-		// Save
-		await this.actionEffectiveness.updateOne(filter, { $set: record }, { upsert: true });
 	}
 
 	/**
@@ -820,43 +854,43 @@ function isCommonWord(word: string): boolean {
 		"Two",
 		"Three",
 		// Hebrew common words (pronouns, conjunctions, prepositions, question words)
-		"זה",     // this
-		"זאת",    // this (feminine)
-		"את",     // you (feminine) / direct object marker
-		"של",     // of
-		"על",     // on/about
-		"עם",     // with
-		"אני",    // I
-		"הוא",    // he
-		"היא",    // she
-		"הם",     // they (masculine)
-		"הן",     // they (feminine)
-		"אתה",    // you (masculine)
-		"אתם",    // you (plural masculine)
-		"אתן",    // you (plural feminine)
-		"לא",     // no/not
-		"כן",     // yes
-		"מה",     // what
-		"איך",    // how
-		"למה",    // why
-		"מתי",    // when
-		"איפה",   // where
-		"כמה",    // how much/many
-		"אחד",    // one
-		"שני",    // two
-		"שלוש",   // three
-		"או",     // or
-		"גם",     // also
-		"רק",     // only
-		"אם",     // if
-		"כי",     // because
-		"אבל",    // but
-		"בגלל",   // because of
-		"לפני",   // before
-		"אחרי",   // after
-		"בין",    // between
-		"תחת",    // under
-		"מעל",    // above
+		"זה", // this
+		"זאת", // this (feminine)
+		"את", // you (feminine) / direct object marker
+		"של", // of
+		"על", // on/about
+		"עם", // with
+		"אני", // I
+		"הוא", // he
+		"היא", // she
+		"הם", // they (masculine)
+		"הן", // they (feminine)
+		"אתה", // you (masculine)
+		"אתם", // you (plural masculine)
+		"אתן", // you (plural feminine)
+		"לא", // no/not
+		"כן", // yes
+		"מה", // what
+		"איך", // how
+		"למה", // why
+		"מתי", // when
+		"איפה", // where
+		"כמה", // how much/many
+		"אחד", // one
+		"שני", // two
+		"שלוש", // three
+		"או", // or
+		"גם", // also
+		"רק", // only
+		"אם", // if
+		"כי", // because
+		"אבל", // but
+		"בגלל", // because of
+		"לפני", // before
+		"אחרי", // after
+		"בין", // between
+		"תחת", // under
+		"מעל", // above
 	]);
 	return common.has(word);
 }

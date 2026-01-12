@@ -47,6 +47,12 @@ export interface HybridSearchParams {
 	limit?: number;
 	enableRerank?: boolean;
 	minScore?: number;
+	/** Current personality ID for filtering */
+	personalityId?: string | null;
+	/** Include memories from all personalities (cross-personality search) */
+	includeAllPersonalities?: boolean;
+	/** Specific personality IDs to include in search */
+	includePersonalityIds?: string[] | null;
 }
 
 interface CandidateResult {
@@ -100,11 +106,7 @@ export class SearchService {
 		const timeoutMs = this.config.timeouts.end_to_end_search_ms;
 
 		try {
-			return await this.withTimeout(
-				this._executeSearch(params),
-				timeoutMs,
-				"search"
-			);
+			return await this.withTimeout(this._executeSearch(params), timeoutMs, "search");
 		} catch (err) {
 			const errorMessage = err instanceof Error ? err.message : String(err);
 			logger.error({ err, timeoutMs }, "Search failed or timed out");
@@ -379,14 +381,13 @@ export class SearchService {
 		const toRerank = candidates.slice(0, rerankK);
 
 		// Prepare documents for reranking
-		const documents = toRerank.map((c) => c.content.slice(0, this.config.caps.rerank_max_input_chars));
+		const documents = toRerank.map((c) =>
+			c.content.slice(0, this.config.caps.rerank_max_input_chars)
+		);
 
 		try {
 			const controller = new AbortController();
-			const timeoutId = setTimeout(
-				() => controller.abort(),
-				this.config.timeouts.reranker_ms
-			);
+			const timeoutId = setTimeout(() => controller.abort(), this.config.timeouts.reranker_ms);
 
 			const response = await fetch(this.rerankerEndpoint, {
 				method: "POST",
@@ -401,7 +402,7 @@ export class SearchService {
 				throw new Error(`Reranker returned ${response.status}`);
 			}
 
-			const data = await response.json() as { results: Array<{ index: number; score: number }> };
+			const data = (await response.json()) as { results: Array<{ index: number; score: number }> };
 
 			// Apply CE scores
 			const ceWeights = this.config.weights.cross_encoder_blend;
@@ -414,8 +415,7 @@ export class SearchService {
 
 					// Blend original RRF score with CE score
 					candidate.finalScore =
-						candidate.rrfScore * ceWeights.original_weight +
-						result.score * ceWeights.ce_weight;
+						candidate.rrfScore * ceWeights.original_weight + result.score * ceWeights.ce_weight;
 				}
 			}
 

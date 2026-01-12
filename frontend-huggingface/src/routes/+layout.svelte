@@ -29,14 +29,16 @@
 	import PersonalityModal from "$lib/components/memory/PersonalityModal.svelte";
 	import BooksProcessorModal from "$lib/components/memory/BooksProcessorModal.svelte";
 	import MemoryBankModal from "$lib/components/memory/MemoryBankModal.svelte";
+	import MemoryEducationModal from "$lib/components/memory/MemoryEducationModal.svelte";
 	import ScoringRequiredModal from "$lib/components/memory/ScoringRequiredModal.svelte";
+	import UpdateBanner from "$lib/components/UpdateBanner.svelte";
+	import { runStorageMigration } from "$lib/utils/storageMigration";
 
 	let { data = $bindable(), children } = $props();
 
 	setContext("publicConfig", data.publicConfig);
 
 	const publicConfig = data.publicConfig;
-	console.log("DEBUG: publicConfig.PUBLIC_APP_ASSETS =", publicConfig.PUBLIC_APP_ASSETS);
 	const client = useAPIClient();
 
 	let conversations = $state(data.conversations);
@@ -123,6 +125,8 @@
 
 	onMount(() => {
 		if (!browser) return;
+
+		runStorageMigration();
 
 		if (window.innerWidth < 768) {
 			isNavCollapsed = true;
@@ -331,6 +335,7 @@
 	{#if currentError}
 		<Toast message={currentError} />
 	{/if}
+	<UpdateBanner />
 	{@render children?.()}
 
 	<!-- Right Memory Dock (Desktop) -->
@@ -347,6 +352,9 @@
 	{/if}
 	{#if $memoryUi.modals.memoryBankOpen}
 		<MemoryBankModal />
+	{/if}
+	{#if $memoryUi.modals.memoryEducationOpen}
+		<MemoryEducationModal />
 	{/if}
 	<ScoringRequiredModal />
 

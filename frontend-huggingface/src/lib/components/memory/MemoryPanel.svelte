@@ -1,15 +1,26 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import { browser } from "$app/environment";
 	import { base } from "$app/paths";
 	import { memoryUi } from "$lib/stores/memoryUi";
 	import type { MemoryTier } from "$lib/types/MemoryMeta";
+	import MemoryDetailModal from "./MemoryDetailModal.svelte";
+	import VirtualList from "$lib/components/common/VirtualList.svelte";
+	import { scoreToBgColor } from "$lib/utils/memoryScore";
 
-	interface MemoryStats {
-		byTier: Record<MemoryTier, { count: number; avgScore: number }>;
-		totalActive: number;
-		totalArchived: number;
-		qdrantHealth: { healthy: boolean; pointCount?: number };
-		lastPromotion?: string;
+	interface StatsSnapshot {
+		user_id: string;
+		as_of: string;
+		tiers: Record<
+			MemoryTier,
+			{
+				active_count: number;
+				archived_count: number;
+				deleted_count: number;
+				uses_total: number;
+				success_rate: number;
+			}
+		>;
 	}
 
 	interface MemoryItem {
@@ -19,14 +30,21 @@
 		wilson_score: number;
 		created_at: string;
 		tags?: string[];
+		outcomes?: { worked: number; failed: number; partial: number };
+		last_used?: string;
 	}
 
 	let selectedTier = $state<MemoryTier | "all">("all");
+	let selectedMemory = $state<MemoryItem | null>(null);
 	let sortBy = $state<"recent" | "score">("recent");
-	let stats = $state<MemoryStats | null>(null);
+	let stats = $state<StatsSnapshot | null>(null);
 	let memories = $state<MemoryItem[]>([]);
 	let isLoading = $state(false);
 	let showHelp = $state(false);
+
+	// Virtual list settings
+	const MEMORY_ITEM_HEIGHT = 90; // Approximate height of each memory item
+	let listContainerHeight = $state(300);
 
 	const tierDescriptions: Record<MemoryTier, { name: string; desc: string }> = {
 		working: {
@@ -62,12 +80,23 @@
 		return colors[tier] ?? "bg-gray-500";
 	}
 
+	function getTotalActiveCount(snapshot: StatsSnapshot | null): number {
+		if (!snapshot?.tiers) return 0;
+		return Object.values(snapshot.tiers).reduce((sum, t) => sum + t.active_count, 0);
+	}
+
+	function formatTimestamp(timestamp: string | null | undefined): string {
+		if (!timestamp) return "לא ידוע";
+		const date = new Date(timestamp);
+		return date.toLocaleString("he-IL", { dateStyle: "short", timeStyle: "short" });
+	}
+
 	async function loadStats() {
 		try {
 			const response = await fetch(`${base}/api/memory/stats`);
 			if (!response.ok) throw new Error(`Failed to fetch stats: ${response.status}`);
 			const data = await response.json();
-			stats = data;
+			stats = data?.stats ?? null;
 		} catch (err) {
 			console.error("Failed to load memory stats:", err);
 		}
@@ -102,8 +131,38 @@
 		memoryUi.openMemoryBank();
 	}
 
+	function openMemoryEducation() {
+		memoryUi.openMemoryEducation();
+	}
+
+	function openMemoryDetail(memory: MemoryItem) {
+		selectedMemory = memory;
+	}
+
+	function closeMemoryDetail() {
+		selectedMemory = null;
+	}
+
+	function handleMemoryArchived(id: string) {
+		memories = memories.filter((m) => m.memory_id !== id);
+		loadStats();
+	}
+
+	function handleMemoryGhosted(id: string) {
+		memories = memories.filter((m) => m.memory_id !== id);
+		loadStats();
+	}
+
 	onMount(() => {
 		refresh();
+		memoryUi.openMemoryEducationIfNeeded();
+
+		if (!browser) return;
+		const handler = () => {
+			refresh();
+		};
+		window.addEventListener("memoryUpdated", handler);
+		return () => window.removeEventListener("memoryUpdated", handler);
 	});
 
 	$effect(() => {
@@ -117,7 +176,9 @@
 <div class="flex h-full flex-col gap-3 p-3" dir="rtl">
 	<!-- Stats Overview -->
 	{#if stats}
-		<div class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-700/50">
+		<div
+			class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-700/50"
+		>
 			<div class="mb-2 flex items-center justify-between">
 				<h3 class="text-sm font-medium text-gray-700 dark:text-gray-200">סטטיסטיקות</h3>
 				<button
@@ -140,7 +201,7 @@
 
 			<!-- Tier Bars -->
 			<div class="space-y-2">
-				{#each Object.entries(stats.byTier) as [tier, data]}
+				{#each Object.entries(stats.tiers) as [tier, data]}
 					<div class="flex items-center gap-2">
 						<span class="w-16 text-xs text-gray-600 dark:text-gray-300">
 							{tierDescriptions[tier as MemoryTier]?.name ?? tier}
@@ -148,30 +209,26 @@
 						<div class="h-2 flex-1 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-600">
 							<div
 								class={["h-full rounded-full transition-all", getTierColor(tier as MemoryTier)]}
-								style="width: {Math.min(100, (data.count / Math.max(1, stats.totalActive)) * 100)}%"
+								style="width: {Math.min(
+									100,
+									(data.active_count / Math.max(1, getTotalActiveCount(stats))) * 100
+								)}%"
 							></div>
 						</div>
 						<span class="w-8 text-left text-xs text-gray-500 dark:text-gray-400">
-							{data.count}
+							{data.active_count}
 						</span>
 					</div>
 				{/each}
 			</div>
 
-			<!-- Health Status -->
-			<div class="mt-3 flex items-center gap-2 border-t border-gray-200 pt-2 dark:border-gray-600">
-				<span
-					class={[
-						"size-2 rounded-full",
-						stats.qdrantHealth.healthy ? "bg-green-500" : "bg-red-500",
-					]}
-				></span>
+			<div
+				class="mt-3 flex items-center justify-between border-t border-gray-200 pt-2 dark:border-gray-600"
+			>
 				<span class="text-xs text-gray-600 dark:text-gray-300">
-					{stats.qdrantHealth.healthy ? "מערכת תקינה" : "בעיית חיבור"}
+					{getTotalActiveCount(stats)} פעילים
 				</span>
-				<span class="mr-auto text-xs text-gray-400">
-					{stats.totalActive} פעילים
-				</span>
+				<span class="text-xs text-gray-400">עודכן: {formatTimestamp(stats.as_of)}</span>
 			</div>
 		</div>
 	{/if}
@@ -216,7 +273,9 @@
 
 	<!-- Help Panel -->
 	{#if showHelp}
-		<div class="rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-900/30">
+		<div
+			class="rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-900/30"
+		>
 			<h4 class="mb-2 text-sm font-medium text-blue-800 dark:text-blue-200">סוגי זיכרון</h4>
 			<div class="space-y-1.5">
 				{#each Object.entries(tierDescriptions) as [tier, info]}
@@ -228,6 +287,15 @@
 						</div>
 					</div>
 				{/each}
+			</div>
+			<div class="mt-3 flex justify-end">
+				<button
+					type="button"
+					onclick={openMemoryEducation}
+					class="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700"
+				>
+					למידע נוסף
+				</button>
 			</div>
 		</div>
 	{/if}
@@ -245,40 +313,56 @@
 				אין זיכרונות להצגה
 			</div>
 		{:else}
-			<div class="flex flex-col gap-2">
-				{#each memories as memory}
-					<div
-						class="rounded-lg border border-gray-200 bg-white p-2.5 dark:border-gray-600 dark:bg-gray-700"
+			<VirtualList
+				items={memories}
+				itemHeight={MEMORY_ITEM_HEIGHT}
+				containerHeight={listContainerHeight}
+				overscan={3}
+			>
+				{#snippet children({ item: memory })}
+					{@const mem = memory as MemoryItem}
+					<button
+						type="button"
+						onclick={() => openMemoryDetail(mem)}
+						class="mb-2 w-full cursor-pointer rounded-lg border border-gray-200 bg-white p-2.5 text-right transition-colors hover:border-blue-300 hover:bg-blue-50 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-blue-500 dark:hover:bg-gray-600"
 					>
 						<div class="mb-1.5 flex items-center gap-1.5">
-							<span class={["size-2 rounded-full", getTierColor(memory.tier)]}></span>
+							<span class={["size-2 rounded-full", getTierColor(mem.tier)]}></span>
 							<span class="text-xs text-gray-500 dark:text-gray-400">
-								{tierDescriptions[memory.tier]?.name ?? memory.tier}
+								{tierDescriptions[mem.tier]?.name ?? mem.tier}
 							</span>
 							<span class="mr-auto text-xs text-gray-400">
-								{(memory.wilson_score * 100).toFixed(0)}%
+								{(mem.wilson_score * 100).toFixed(0)}%
 							</span>
 						</div>
+						<div
+							class="mb-1.5 h-1.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-600"
+						>
+							<div
+								class={["h-full rounded-full transition-all", scoreToBgColor(mem.wilson_score)]}
+								style="width: {Math.max(0, Math.min(100, mem.wilson_score * 100))}%"
+							></div>
+						</div>
 						<p class="line-clamp-2 text-sm text-gray-700 dark:text-gray-200">
-							{memory.content}
+							{mem.content}
 						</p>
-						{#if memory.tags && memory.tags.length > 0}
+						{#if mem.tags && mem.tags.length > 0}
 							<div class="mt-1.5 flex flex-wrap gap-1">
-								{#each memory.tags.slice(0, 3) as tag}
+								{#each mem.tags.slice(0, 3) as tag}
 									<span
 										class="rounded bg-gray-100 px-1 py-0.5 text-[10px] text-gray-500 dark:bg-gray-600 dark:text-gray-400"
 									>
 										{tag}
 									</span>
 								{/each}
-								{#if memory.tags.length > 3}
-									<span class="text-[10px] text-gray-400">+{memory.tags.length - 3}</span>
+								{#if mem.tags.length > 3}
+									<span class="text-[10px] text-gray-400">+{mem.tags.length - 3}</span>
 								{/if}
 							</div>
 						{/if}
-					</div>
-				{/each}
-			</div>
+					</button>
+				{/snippet}
+			</VirtualList>
 		{/if}
 	</div>
 
@@ -291,3 +375,11 @@
 		פתח את בנק הזיכרון...
 	</button>
 </div>
+
+<!-- Memory Detail Modal -->
+<MemoryDetailModal
+	memory={selectedMemory}
+	onclose={closeMemoryDetail}
+	onarchived={handleMemoryArchived}
+	onghosted={handleMemoryGhosted}
+/>

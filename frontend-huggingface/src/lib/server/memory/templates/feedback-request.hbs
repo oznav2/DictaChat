@@ -1,38 +1,43 @@
-{{!-- @description: Asks for user feedback on response quality --}}
-{{!-- @category: feedback --}}
+{{! @description: Asks for user feedback on response quality }}
+{{! @category: feedback }}
 
 {{#ifLang "he"}}
-{{#if is_complex_response}}
-האם התשובה הייתה מועילה? המשוב שלך עוזר לי להשתפר.
+	{{#if is_complex_response}}
+		האם התשובה הייתה מועילה? המשוב שלך עוזר לי להשתפר.
+	{{else}}
+		האם זה עזר?
+	{{/if}}
 {{else}}
-האם זה עזר?
-{{/if}}
-{{else}}
-{{#if is_complex_response}}
-Was this response helpful? Your feedback helps me improve.
-{{else}}
-Was this helpful?
-{{/if}}
+	{{#if is_complex_response}}
+		Was this response helpful? Your feedback helps me improve.
+	{{else}}
+		Was this helpful?
+	{{/if}}
 {{/ifLang}}
 
 {{#if specific_feedback_needed}}
-{{#ifLang "he"}}
-במיוחד, הייתי רוצה לדעת:
-{{#each feedback_questions}}
-- {{this}}
-{{/each}}
-{{else}}
-Specifically, I'd like to know:
-{{#each feedback_questions}}
-- {{this}}
-{{/each}}
-{{/ifLang}}
+	{{#ifLang "he"}}
+		במיוחד, הייתי רוצה לדעת:
+		{{#each feedback_questions}}
+			-
+			{{this}}
+		{{/each}}
+	{{else}}
+		Specifically, I'd like to know:
+		{{#each feedback_questions}}
+			-
+			{{this}}
+		{{/each}}
+	{{/ifLang}}
 {{/if}}
 
 {{#if used_memories}}
-{{#ifLang "he"}}
-השתמשתי ב-{{used_memories.length}} זיכרונות להכנת תשובה זו.
-{{else}}
-I used {{used_memories.length}} memories to prepare this response.
-{{/ifLang}}
+	{{#ifLang "he"}}
+		השתמשתי ב-{{used_memories.length}}
+		זיכרונות להכנת תשובה זו.
+	{{else}}
+		I used
+		{{used_memories.length}}
+		memories to prepare this response.
+	{{/ifLang}}
 {{/if}}

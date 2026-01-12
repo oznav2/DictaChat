@@ -8,11 +8,12 @@ import { uploadFile } from "@huggingface/hub";
 import parquet from "parquetjs";
 import { z } from "zod";
 import { logger } from "$lib/server/logger.js";
+import type { RequestHandler } from "./$types";
 
 // Triger like this:
 // curl -X POST "http://localhost:5173/chat/admin/export" -H "Authorization: Bearer <ADMIN_API_SECRET>" -H "Content-Type: application/json" -d '{"model": "OpenAssistant/oasst-sft-6-llama-30b-xor"}'
 
-export async function POST({ request }) {
+export const POST: RequestHandler = async ({ request }) => {
 	if (!config.PARQUET_EXPORT_DATASET || !config.PARQUET_EXPORT_HF_TOKEN) {
 		error(500, "Parquet export is not configured.");
 	}
@@ -156,4 +157,4 @@ export async function POST({ request }) {
 	await unlink(fileName);
 
 	return new Response();
-}
+};

@@ -7,7 +7,6 @@
 	const publicConfig = usePublicConfig();
 	import CopyToClipBoardBtn from "../CopyToClipBoardBtn.svelte";
 	import IconLoading from "../icons/IconLoading.svelte";
-	import CarbonCopy from "~icons/carbon/copy";
 	import CarbonRotate360 from "~icons/carbon/rotate-360";
 	import CarbonDownload from "~icons/carbon/download";
 	import JSZip from "jszip";
@@ -24,14 +23,21 @@
 	import ToolUpdate from "./ToolUpdate.svelte";
 	import TracePanel from "./TracePanel.svelte";
 	import MemoryContextIndicator from "./MemoryContextIndicator.svelte";
+	import CodeChangePreview from "./CodeChangePreview.svelte";
 	import { isMessageToolUpdate, isMessageTraceUpdate } from "$lib/utils/messageUpdates";
+	import { extractPatchesFromText } from "$lib/utils/codeChanges";
 	import {
 		MessageUpdateType,
 		MessageTraceUpdateType,
 		type MessageToolUpdate,
-		type MessageTraceUpdate
 	} from "$lib/types/MessageUpdate";
-	import { handleMessageTraceUpdate, runs, getActiveRunId } from "$lib/stores/traceStore";
+	import { handleMessageTraceUpdate } from "$lib/stores/traceStore";
+	import { memoryUi } from "$lib/stores/memoryUi";
+	import { terminalMode } from "$lib/stores/terminalMode";
+	import CitationTooltip from "./CitationTooltip.svelte";
+	import MemoryProcessingStatus from "./MemoryProcessingStatus.svelte";
+	import { getTierIcon, formatConfidence } from "$lib/utils/citationParser";
+	import type { ParsedCitation } from "$lib/utils/citationParser";
 
 	interface Props {
 		message: Message;
@@ -39,6 +45,7 @@
 		isAuthor?: boolean;
 		readOnly?: boolean;
 		isTapped?: boolean;
+		groupedWithPrevious?: boolean;
 		alternatives?: Message["id"][];
 		editMsdgId?: Message["id"] | null;
 		isLast?: boolean;
@@ -52,6 +59,7 @@
 		isAuthor: _isAuthor = true,
 		readOnly: _readOnly = false,
 		isTapped = $bindable(false),
+		groupedWithPrevious = false,
 		alternatives = [],
 		editMsdgId = $bindable(null),
 		isLast = false,
@@ -62,15 +70,125 @@
 	let contentEl: HTMLElement | undefined = $state();
 	let isRTL = $derived(detectRTLLanguage(message.content));
 	let isUserRTL = $derived(message.from === "user" && detectRTLLanguage(message.content));
+	let isTerminalMode = $derived($terminalMode);
 	let isCopied = $state(false);
 	let messageWidth: number = $state(0);
 	let messageInfoWidth: number = $state(0);
+
+	// Citation tooltip state
+	let activeCitationIndex = $state<number | null>(null);
+	let citationTooltipPosition = $state<{ x: number; y: number } | null>(null);
+
+	// Get citations from memory store
+	let memoryCitations = $derived($memoryUi.data.lastCitationsByMessageId[message.id] ?? []);
+
+	// Build ParsedCitation for active citation
+	let activeCitation = $derived.by(() => {
+		if (activeCitationIndex === null || memoryCitations.length === 0) return null;
+		const citationData = memoryCitations[activeCitationIndex - 1]; // 1-indexed
+		if (!citationData) return null;
+		return {
+			index: activeCitationIndex,
+			memoryId: citationData.memory_id,
+			tier: citationData.tier,
+			confidence: citationData.wilson_score ?? citationData.confidence ?? 0.5,
+			excerpt: citationData.content?.slice(0, 150) ?? "",
+			position: { start: 0, end: 0 },
+		} as ParsedCitation;
+	});
+
+	// Memory processing state (only show for current streaming message)
+	let memoryProcessing = $derived($memoryUi.processing);
+	let showMemoryStatus = $derived(isLast && loading && memoryProcessing.status !== "idle");
 
 	$effect(() => {
 		// referenced to appease linter for currently-unused props
 		void _isAuthor;
 		void _readOnly;
 	});
+
+	// Enhance citation markers [n] in rendered content
+	$effect(() => {
+		if (!contentEl || memoryCitations.length === 0) return;
+
+		// Find all text nodes containing [n] patterns
+		const walker = document.createTreeWalker(contentEl, NodeFilter.SHOW_TEXT, null);
+		const nodesToProcess: { node: Text; matches: RegExpMatchArray[] }[] = [];
+
+		let node: Text | null;
+		while ((node = walker.nextNode() as Text | null)) {
+			const text = node.textContent || "";
+			const matches = [...text.matchAll(/\[(\d+)\]/g)];
+			if (matches.length > 0) {
+				nodesToProcess.push({ node, matches });
+			}
+		}
+
+		// Process nodes in reverse to avoid position issues
+		for (const { node, matches } of nodesToProcess.reverse()) {
+			const parent = node.parentNode;
+			if (!parent) continue;
+
+			// Skip if already processed
+			if ((parent as Element).hasAttribute?.("data-citation-index")) continue;
+
+			let lastIndex = 0;
+			const fragments: (string | HTMLSpanElement)[] = [];
+			const text = node.textContent || "";
+
+			for (const match of matches) {
+				if (match.index === undefined) continue;
+				const matchStart = match.index;
+				const matchEnd = matchStart + match[0].length;
+				const citationIndex = parseInt(match[1], 10);
+				const citationData = memoryCitations[citationIndex - 1];
+
+				// Add text before the match
+				if (matchStart > lastIndex) {
+					fragments.push(text.slice(lastIndex, matchStart));
+				}
+
+				// Create citation span
+				const span = document.createElement("span");
+				span.textContent = match[0];
+				span.setAttribute("data-citation-index", String(citationIndex));
+				span.className = "citation-marker cursor-pointer rounded px-0.5 hover:opacity-80 ";
+
+				if (citationData) {
+					const confidence = citationData.wilson_score ?? citationData.confidence ?? 0.5;
+					span.className +=
+						confidence >= 0.9
+							? "text-green-500 bg-green-500/20"
+							: confidence >= 0.7
+								? "text-yellow-500 bg-yellow-500/20"
+								: "text-orange-500 bg-orange-500/20";
+					span.title = `${getTierIcon(citationData.tier)} ${citationData.tier} - ${formatConfidence(confidence)}`;
+				} else {
+					span.className += "text-blue-500 bg-blue-500/20";
+				}
+
+				fragments.push(span);
+				lastIndex = matchEnd;
+			}
+
+			// Add remaining text
+			if (lastIndex < text.length) {
+				fragments.push(text.slice(lastIndex));
+			}
+
+			// Replace the text node with fragments
+			const container = document.createDocumentFragment();
+			for (const fragment of fragments) {
+				if (typeof fragment === "string") {
+					container.appendChild(document.createTextNode(fragment));
+				} else {
+					container.appendChild(fragment);
+				}
+			}
+			parent.replaceChild(container, node);
+		}
+	});
+
 	function handleKeyDown(e: KeyboardEvent) {
 		if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
 			editFormEl?.requestSubmit();
@@ -78,6 +196,44 @@
 		if (e.key === "Escape") {
 			editMsdgId = null;
 		}
+	}
+
+	// Handle citation marker clicks via event delegation
+	function handleContentClick(event: Event) {
+		const target = event.target as HTMLElement;
+		// Check if clicked element or parent is a citation marker
+		const citationMarker = target.closest("[data-citation-index]");
+		if (citationMarker) {
+			const index = parseInt(citationMarker.getAttribute("data-citation-index") ?? "0", 10);
+			if (index > 0) {
+				const rect = citationMarker.getBoundingClientRect();
+				citationTooltipPosition = { x: rect.left, y: rect.bottom + 4 };
+				activeCitationIndex = index;
+			}
+		}
+	}
+
+	function handleCitationMouseEnter(event: MouseEvent) {
+		const target = event.target as HTMLElement;
+		const citationMarker = target.closest("[data-citation-index]");
+		if (citationMarker) {
+			const index = parseInt(citationMarker.getAttribute("data-citation-index") ?? "0", 10);
+			if (index > 0) {
+				const rect = citationMarker.getBoundingClientRect();
+				citationTooltipPosition = { x: rect.left, y: rect.bottom + 4 };
+				activeCitationIndex = index;
+			}
+		}
+	}
+
+	function handleCitationMouseLeave() {
+		activeCitationIndex = null;
+		citationTooltipPosition = null;
+	}
+
+	function closeCitationTooltip() {
+		activeCitationIndex = null;
+		citationTooltipPosition = null;
 	}
 
 	function handleCopy(event: ClipboardEvent) {
@@ -155,7 +311,7 @@
 
 		// Look for common filename patterns in comments
 		// e.g. # filename: script.py, // File: index.js, <!-- main.html -->
-		const filenameRegex = /(?:filename|file):\s*([a-zA-Z0-9_\-\.]+)/i;
+		const filenameRegex = /(?:filename|file):\s*([a-zA-Z0-9_.-]+)/i;
 
 		for (const line of firstFewLines) {
 			const match = line.match(filenameRegex);
@@ -437,7 +593,9 @@
 {#if message.from === "assistant"}
 	<div
 		bind:offsetWidth={messageWidth}
-		class="group relative -mb-4 flex w-fit max-w-full items-start justify-start gap-4 pb-4 leading-relaxed max-sm:mb-1 {message.routerMetadata &&
+		class="group relative {groupedWithPrevious
+			? '-mb-2 pb-2'
+			: '-mb-4 pb-4'} flex w-fit max-w-full items-start justify-start gap-4 leading-relaxed max-sm:mb-1 {message.routerMetadata &&
 		messageInfoWidth >= messageWidth
 			? 'mb-1'
 			: ''}"
@@ -448,14 +606,27 @@
 		onkeydown={() => (isTapped = !isTapped)}
 		dir={isRTL ? "rtl" : "ltr"}
 	>
-		<MessageAvatar
-			classNames="mt-5 size-3.5 flex-none select-none rounded-full shadow-lg max-sm:hidden"
-			animating={isLast && loading}
-			modelName={message.routerMetadata?.model ?? ""}
-		/>
+		{#if groupedWithPrevious}
+			<div class="mt-5 size-3.5 flex-none max-sm:hidden"></div>
+		{:else if isTerminalMode}
+			<div class="mt-5 w-20 flex-none text-xs text-gray-500 dark:text-gray-400 max-sm:hidden">
+				assistant&gt;
+			</div>
+		{:else}
+			<MessageAvatar
+				classNames="mt-5 size-3.5 flex-none select-none rounded-full shadow-lg max-sm:hidden"
+				animating={isLast && loading}
+				modelName={message.routerMetadata?.model ?? ""}
+			/>
+		{/if}
 		<div
-			class="relative flex min-w-[60px] flex-col gap-2 break-words rounded-2xl border border-gray-100 bg-gradient-to-br from-gray-50 px-5 py-3.5 text-gray-600 prose-pre:my-2 dark:border-gray-800 dark:from-gray-800/80 dark:text-gray-300"
+			class={isTerminalMode
+				? "relative flex min-w-[60px] flex-col gap-2 break-words rounded-lg border border-gray-800 bg-gray-950 px-4 py-3 font-mono text-gray-100"
+				: "relative flex min-w-[60px] flex-col gap-2 break-words rounded-2xl border border-gray-100 bg-gradient-to-br from-gray-50 px-5 py-3.5 text-gray-600 prose-pre:my-2 dark:border-gray-800 dark:from-gray-800/80 dark:text-gray-300"}
 		>
+			{#if isTerminalMode && !groupedWithPrevious}
+				<div class="text-[11px] text-gray-400">assistant&gt;</div>
+			{/if}
 			{#if message.files?.length}
 				<div class="flex h-fit flex-wrap gap-x-5 gap-y-2">
 					{#each message.files as file (file.value)}
@@ -464,9 +635,33 @@
 				</div>
 			{/if}
 
-			<div bind:this={contentEl} oncopy={handleCopy}>
+			<div
+				bind:this={contentEl}
+				oncopy={handleCopy}
+				onclick={handleContentClick}
+				onkeydown={(e) => {
+					if (e.key === "Enter" || e.key === " ") {
+						e.preventDefault();
+						handleContentClick(e);
+					}
+				}}
+				onmouseenter={handleCitationMouseEnter}
+				onmouseleave={handleCitationMouseLeave}
+				role="button"
+				tabindex="0"
+				aria-label="תוכן הודעה"
+			>
 				{#if isLast && loading && blocks.length === 0}
 					<IconLoading classNames="loading inline ml-2 first:ml-0" />
+				{/if}
+				{#if showMemoryStatus}
+					<div class="mb-2">
+						<MemoryProcessingStatus
+							status={memoryProcessing.status}
+							count={memoryProcessing.foundCount}
+							{isRTL}
+						/>
+					</div>
 				{/if}
 				{#each blocks as block, blockIndex (block.type === "tool" ? `${block.uuid}-${blockIndex}` : `text-${blockIndex}`)}
 					{@const nextBlock = blocks[blockIndex + 1]}
@@ -503,18 +698,25 @@
 										hasNext={hasMoreLinkable}
 									/>
 								{:else if part && part.trim().length > 0}
+									{@const extracted = extractPatchesFromText(part)}
+									<CodeChangePreview content={part} />
 									<div
 										class="prose max-w-none dark:prose-invert max-sm:prose-sm prose-headings:font-semibold prose-h1:text-lg prose-h2:text-base prose-h3:text-base prose-pre:bg-gray-800 prose-img:my-0 prose-img:rounded-lg dark:prose-pre:bg-gray-900"
 									>
-										<MarkdownRenderer content={part} loading={isLast && loading} />
+										<MarkdownRenderer
+											content={extracted.strippedText}
+											loading={isLast && loading}
+										/>
 									</div>
 								{/if}
 							{/each}
 						{:else}
+							{@const extracted = extractPatchesFromText(block.content)}
+							<CodeChangePreview content={block.content} />
 							<div
 								class="prose max-w-none dark:prose-invert max-sm:prose-sm prose-headings:font-semibold prose-h1:text-lg prose-h2:text-base prose-h3:text-base prose-pre:bg-gray-800 prose-img:my-0 prose-img:rounded-lg dark:prose-pre:bg-gray-900"
 							>
-								<MarkdownRenderer content={block.content} loading={isLast && loading} />
+								<MarkdownRenderer content={extracted.strippedText} loading={isLast && loading} />
 							</div>
 						{/if}
 					{/if}
@@ -528,12 +730,27 @@
 
 				<!-- Memory Context Indicator (citations, known context, feedback) -->
 				<div data-exclude-from-copy>
-					<MemoryContextIndicator
-						messageId={message.id}
-						isRTL={isRTL}
-						isStreaming={isLast && loading}
-					/>
+					<MemoryContextIndicator messageId={message.id} {isRTL} isStreaming={isLast && loading} />
 				</div>
+
+				<!-- Citation Tooltip (shown on hover over citation markers) -->
+				{#if activeCitation && citationTooltipPosition}
+					<div
+						class="fixed z-50"
+						style="left: {citationTooltipPosition.x}px; top: {citationTooltipPosition.y}px;"
+						onmouseleave={closeCitationTooltip}
+						role="presentation"
+					>
+						<CitationTooltip
+							citation={activeCitation}
+							{isRTL}
+							onClickDetail={(memoryId) => {
+								memoryUi.setSelectedMemoryId(memoryId);
+								closeCitationTooltip();
+							}}
+						/>
+					</div>
+				{/if}
 			</div>
 		</div>
 
@@ -631,9 +848,11 @@
 {/if}
 {#if message.from === "user"}
 	<div
-		class="group relative {alternatives.length > 1 && editMsdgId === null
-			? 'mb-10'
-			: 'mb-6'} w-full items-start justify-start gap-4 max-sm:text-sm"
+		class="group relative {groupedWithPrevious
+			? 'mb-3'
+			: alternatives.length > 1 && editMsdgId === null
+				? 'mb-10'
+				: 'mb-6'} w-full items-start justify-start gap-4 max-sm:text-sm"
 		data-message-id={message.id}
 		data-message-type="user"
 		role="presentation"
@@ -653,8 +872,13 @@
 			<div class="flex w-full flex-row flex-nowrap">
 				{#if !editMode}
 					<p
-						class="disabled w-full appearance-none whitespace-break-spaces text-wrap break-words rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 px-5 py-3.5 text-gray-700 shadow-sm dark:border-blue-900/30 dark:from-blue-950/30 dark:text-gray-300"
+						class={isTerminalMode
+							? "disabled w-full appearance-none whitespace-break-spaces text-wrap break-words rounded-lg border border-gray-800 bg-gray-950 px-4 py-3 font-mono text-gray-100 shadow-sm"
+							: "disabled w-full appearance-none whitespace-break-spaces text-wrap break-words rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 px-5 py-3.5 text-gray-700 shadow-sm dark:border-blue-900/30 dark:from-blue-950/30 dark:text-gray-300"}
 					>
+						{#if isTerminalMode && !groupedWithPrevious}
+							<span class="mb-1 block text-[11px] text-gray-400">user&gt;</span>
+						{/if}
 						{message.content.trim()}
 					</p>
 					<div

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { usePublicConfig } from "$lib/utils/PublicConfig.svelte";
+	import { base } from "$app/paths";
 	import Modal from "$lib/components/Modal.svelte";
 	import ServerCard from "./ServerCard.svelte";
 	import AddServerForm from "./AddServerForm.svelte";
@@ -10,10 +11,12 @@
 		addCustomServer,
 		refreshMcpServers,
 		healthCheckServer,
+		importCustomServersFromScan,
 	} from "$lib/stores/mcpServers";
 	import type { KeyValuePair } from "$lib/types/Tool";
 	import IconAddLarge from "~icons/carbon/add-large";
 	import IconRefresh from "~icons/carbon/renew";
+	import IconSearch from "~icons/carbon/search";
 	import LucideHammer from "~icons/lucide/hammer";
 	import IconMCP from "$lib/components/icons/IconMCP.svelte";
 
@@ -28,6 +31,7 @@
 	type View = "list" | "add";
 	let currentView = $state<View>("list");
 	let isRefreshing = $state(false);
+	let scanStatus = $state<string | null>(null);
 
 	const baseServers = $derived($allMcpServers.filter((s) => s.type === "base"));
 	const customServers = $derived($allMcpServers.filter((s) => s.type === "custom"));
@@ -52,6 +56,20 @@
 			await Promise.allSettled(servers.map((s) => healthCheckServer(s)));
 		} finally {
 			isRefreshing = false;
+		}
+	}
+
+	async function handleScan() {
+		scanStatus = "סורק…";
+		try {
+			const res = await fetch(`${base}/api/mcp/scan`);
+			const data = await res.json().catch(() => null);
+			if (!res.ok || !data?.success) throw new Error(String(data?.error ?? `HTTP ${res.status}`));
+			const servers = Array.isArray(data.servers) ? data.servers : [];
+			const result = importCustomServersFromScan(servers);
+			scanStatus = `נוספו ${result.added}, דולגו ${result.skipped}`;
+		} catch (err) {
+			scanStatus = err instanceof Error ? err.message : "סריקה נכשלה";
 		}
 	}
 </script>
@@ -112,6 +130,13 @@
 						{isRefreshing ? "מרענן…" : "רענן"}
 					</button>
 					<button
+						onclick={handleScan}
+						class="btn gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+					>
+						<IconSearch class="size-4" />
+						סרוק
+					</button>
+					<button
 						onclick={() => (currentView = "add")}
 						class="btn flex items-center gap-0.5 rounded-lg bg-blue-600 py-1.5 pl-2 pr-3 text-sm font-medium text-white hover:bg-blue-600"
 					>
@@ -120,6 +145,9 @@
 					</button>
 				</div>
 			</div>
+			{#if scanStatus}
+				<div class="mb-4 text-xs text-gray-600 dark:text-gray-300">{scanStatus}</div>
+			{/if}
 			<div class="space-y-5">
 				<!-- Base Servers -->
 				{#if baseServers.length > 0}

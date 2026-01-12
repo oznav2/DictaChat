@@ -36,11 +36,7 @@ export async function callMcpTool(
 	server: McpServerConfig,
 	tool: string,
 	args: unknown = {},
-	{
-		timeoutMs,
-		signal,
-		client,
-	}: { timeoutMs?: number; signal?: AbortSignal; client?: Client } = {}
+	{ timeoutMs, signal, client }: { timeoutMs?: number; signal?: AbortSignal; client?: Client } = {}
 ): Promise<McpToolTextResponse> {
 	// Determine appropriate timeout based on tool type
 	// Research-intensive tools (perplexity) get extended timeout

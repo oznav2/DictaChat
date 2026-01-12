@@ -2,21 +2,51 @@ import { json, error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { collections } from "$lib/server/database";
 import { ObjectId } from "mongodb";
+import { ADMIN_USER_ID } from "$lib/server/constants";
+import { extractDocumentText } from "$lib/server/textGeneration/mcp/services/doclingClient";
+import { writeFile, mkdir, unlink } from "fs/promises";
+import { existsSync } from "fs";
+import { join } from "path";
+import { createHash } from "crypto";
+
+const BOOK_UPLOADS_DIR = "/app/uploads/books";
+
+async function saveTempFile(file: File): Promise<string> {
+	if (!existsSync(BOOK_UPLOADS_DIR)) {
+		await mkdir(BOOK_UPLOADS_DIR, { recursive: true });
+	}
+	const buffer = await file.arrayBuffer();
+	const hash = createHash("sha256").update(Buffer.from(buffer)).digest("hex").slice(0, 16);
+	const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+	const filePath = join(BOOK_UPLOADS_DIR, `${hash}_${safeName}`);
+	await writeFile(filePath, Buffer.from(buffer));
+	return filePath;
+}
+
+function getMimeFromExtension(ext: string): string {
+	const mimeMap: Record<string, string> = {
+		".pdf": "application/pdf",
+		".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+		".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+		".xls": "application/vnd.ms-excel",
+		".csv": "text/csv",
+		".tsv": "text/tab-separated-values",
+		".txt": "text/plain",
+		".md": "text/markdown",
+		".html": "text/html",
+		".htm": "text/html",
+		".rtf": "application/rtf",
+	};
+	return mimeMap[ext] || "application/octet-stream";
+}
 
 // GET /api/memory/books - List uploaded books
-export const GET: RequestHandler = async ({ locals }) => {
-	const userId = locals.user?.id;
-
-	// Return empty list for unauthenticated users
-	if (!userId) {
-		return json({
-			success: true,
-			books: [],
-		});
-	}
-
+export const GET: RequestHandler = async () => {
 	try {
-		const books = await collections.books.find({ userId }).sort({ uploadTimestamp: -1 }).toArray();
+		const books = await collections.books
+			.find({ userId: ADMIN_USER_ID })
+			.sort({ uploadTimestamp: -1 })
+			.toArray();
 
 		return json({
 			success: true,
@@ -30,6 +60,9 @@ export const GET: RequestHandler = async ({ locals }) => {
 					chunks_processed: b.chunksProcessed,
 				},
 				status: b.status,
+				processingStage: b.processingStage,
+				processingMessage: b.processingMessage,
+				doclingStatus: b.doclingStatus,
 			})),
 		});
 	} catch (err) {
@@ -42,12 +75,7 @@ export const GET: RequestHandler = async ({ locals }) => {
 };
 
 // POST /api/memory/books/upload - Upload and process a book
-export const POST: RequestHandler = async ({ request, locals }) => {
-	const userId = locals.user?.id;
-	if (!userId) {
-		return error(401, "Authentication required");
-	}
-
+export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const formData = await request.formData();
 		const file = formData.get("file") as File | null;
@@ -63,7 +91,19 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			return error(400, "File too large. Maximum size is 10MB.");
 		}
 
-		const allowedExtensions = [".txt", ".md", ".pdf", ".docx", ".html", ".rtf"];
+		const allowedExtensions = [
+			".txt",
+			".md",
+			".pdf",
+			".docx",
+			".xlsx",
+			".xls",
+			".csv",
+			".tsv",
+			".html",
+			".htm",
+			".rtf",
+		];
 		const extension = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
 		if (!allowedExtensions.includes(extension)) {
 			return error(400, "Unsupported file type. Allowed: " + allowedExtensions.join(", "));
@@ -71,17 +111,40 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 		const bookTitle = title || file.name.replace(/\.[^/.]+$/, "");
 
-		const existingBook = await collections.books.findOne({
-			userId,
+		// Check for duplicate by title
+		const existingBookByTitle = await collections.books.findOne({
+			userId: ADMIN_USER_ID,
 			title: bookTitle,
 		});
 
-		if (existingBook) {
+		if (existingBookByTitle) {
 			return json(
 				{
 					success: false,
 					processing_status: "duplicate",
 					message: "A book with this title already exists in your library",
+					existing_book_id: existingBookByTitle._id.toString(),
+				},
+				{ status: 409 }
+			);
+		}
+
+		// Also check for duplicate by file content hash (catches same file with different title)
+		const fileBuffer = await file.arrayBuffer();
+		const fileHash = createHash("sha256").update(Buffer.from(fileBuffer)).digest("hex");
+
+		const existingBookByHash = await collections.books.findOne({
+			userId: ADMIN_USER_ID,
+			fileHash,
+		});
+
+		if (existingBookByHash) {
+			return json(
+				{
+					success: false,
+					processing_status: "duplicate",
+					message: `This file already exists as "${existingBookByHash.title}"`,
+					existing_book_id: existingBookByHash._id.toString(),
 				},
 				{ status: 409 }
 			);
@@ -92,19 +155,26 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 		await collections.books.insertOne({
 			_id: bookId,
-			userId,
+			userId: ADMIN_USER_ID,
 			title: bookTitle,
 			author: author || "Unknown",
 			uploadTimestamp: new Date(),
 			status: "processing",
+			processingStage: "queued",
+			processingMessage: "Queued",
 			totalChunks: 0,
 			chunksProcessed: 0,
 			taskId: taskId.toString(),
+			fileHash, // Store for duplicate detection
+			fileName: file.name,
+			fileSize: file.size,
 		});
 
-		processBookInBackground(userId, bookId.toString(), taskId.toString(), file).catch((err) => {
-			console.error("[API] Book processing failed:", err);
-		});
+		processBookInBackground(ADMIN_USER_ID, bookId.toString(), taskId.toString(), file).catch(
+			(err) => {
+				console.error("[API] Book processing failed:", err);
+			}
+		);
 
 		return json({
 			success: true,
@@ -127,23 +197,119 @@ async function processBookInBackground(
 	taskId: string,
 	file: File
 ): Promise<void> {
-	try {
-		const content = await file.text();
-		const chunkSize = 1000;
-		const overlap = 200;
-		const chunks: string[] = [];
+	let tempFilePath: string | undefined;
 
-		for (let i = 0; i < content.length; i += chunkSize - overlap) {
-			chunks.push(content.slice(i, i + chunkSize));
+	try {
+		const extension = file.name.substring(file.name.lastIndexOf(".")).toLowerCase();
+		const mimeType = file.type || getMimeFromExtension(extension);
+		const plainTextExtensions = [".txt", ".md", ".csv", ".tsv"];
+
+		let extractedText: string;
+		let numPages: number | undefined;
+		let format: string | undefined;
+
+		if (plainTextExtensions.includes(extension)) {
+			await collections.books.updateOne(
+				{ _id: new ObjectId(bookId) },
+				{ $set: { processingStage: "reading", processingMessage: "Reading file..." } }
+			);
+			// Direct text for plain files
+			extractedText = await file.text();
+			console.log(`[API] Plain text extracted: ${extractedText.length} chars`);
+		} else {
+			// Use Docling for PDF, DOCX, etc.
+			console.log(`[API] Processing ${extension} file with Docling...`);
+			await collections.books.updateOne(
+				{ _id: new ObjectId(bookId) },
+				{
+					$set: {
+						processingStage: "docling",
+						processingMessage: "Extracting text via Docling...",
+						doclingStatus: "starting",
+						doclingTaskId: null,
+					},
+				}
+			);
+			tempFilePath = await saveTempFile(file);
+			console.log(`[API] Temp file saved: ${tempFilePath}`);
+
+			try {
+				let lastDoclingStatus: string | null = null;
+				const result = await extractDocumentText(tempFilePath, {
+					onStatus: async ({ taskId: doclingTaskId, status }) => {
+						if (status === lastDoclingStatus) return;
+						lastDoclingStatus = status;
+						await collections.books.updateOne(
+							{ _id: new ObjectId(bookId) },
+							{
+								$set: {
+									doclingStatus: status,
+									doclingTaskId: doclingTaskId === "sync" ? null : doclingTaskId,
+									processingStage: "docling",
+									processingMessage: `Docling: ${status}`,
+								},
+							}
+						);
+					},
+				});
+				extractedText = result.text;
+				numPages = result.pages;
+				format = result.format;
+				console.log(`[API] Docling extracted: ${extractedText.length} chars, ${numPages} pages`);
+			} catch (doclingErr) {
+				console.error(`[API] Docling extraction failed:`, doclingErr);
+				throw new Error(
+					`Document extraction failed: ${doclingErr instanceof Error ? doclingErr.message : "Unknown error"}`
+				);
+			}
 		}
+
+		// Check if extraction produced any content
+		if (!extractedText || extractedText.trim().length === 0) {
+			throw new Error(
+				"No text could be extracted from the document. The file may be empty, image-only, or corrupted."
+			);
+		}
+
+		// Generate document hash for dedup
+		const documentHash = createHash("sha256").update(extractedText).digest("hex");
 
 		await collections.books.updateOne(
 			{ _id: new ObjectId(bookId) },
-			{ $set: { totalChunks: chunks.length } }
+			{ $set: { processingStage: "chunking", processingMessage: "Chunking document..." } }
+		);
+
+		// Chunk with overlap
+		const chunkSize = 1000;
+		const overlap = 200;
+		const chunks: string[] = [];
+		for (let i = 0; i < extractedText.length; i += chunkSize - overlap) {
+			chunks.push(extractedText.slice(i, i + chunkSize));
+		}
+
+		console.log(`[API] Created ${chunks.length} chunks for book ${bookId}`);
+
+		await collections.books.updateOne(
+			{ _id: new ObjectId(bookId) },
+			{
+				$set: {
+					totalChunks: chunks.length,
+					numPages,
+					fileType: format || extension.replace(".", ""),
+					processingStage: "ingesting",
+					processingMessage: "Ingesting chunks...",
+				},
+			}
 		);
 
 		const { UnifiedMemoryFacade } = await import("$lib/server/memory");
 		const facade = UnifiedMemoryFacade.getInstance();
+
+		const bookDoc = await collections.books.findOne({ _id: new ObjectId(bookId) });
+		const bookTitleMeta = typeof bookDoc?.title === "string" ? bookDoc.title : "Unknown";
+		const bookAuthorMeta = typeof bookDoc?.author === "string" ? bookDoc.author : null;
+		const uploadTimestampMeta =
+			bookDoc?.uploadTimestamp instanceof Date ? bookDoc.uploadTimestamp.toISOString() : null;
 
 		for (let i = 0; i < chunks.length; i++) {
 			await facade.store({
@@ -154,16 +320,39 @@ async function processBookInBackground(
 					book_id: bookId,
 					chunk_index: i,
 					task_id: taskId,
+					title: bookTitleMeta,
+					author: bookAuthorMeta,
+					upload_timestamp: uploadTimestampMeta,
+					file_type: format || extension.replace(".", ""),
+					mime_type: mimeType,
+					num_pages: numPages ?? null,
+					document_hash: documentHash,
 				},
 			});
 
 			await collections.books.updateOne(
 				{ _id: new ObjectId(bookId) },
-				{ $set: { chunksProcessed: i + 1 } }
+				{
+					$set: {
+						chunksProcessed: i + 1,
+						processingStage: "ingesting",
+						processingMessage: `Ingesting chunk ${i + 1}/${chunks.length}...`,
+					},
+				}
 			);
 		}
 
-		await collections.books.updateOne({ _id: new ObjectId(bookId) }, { $set: { status: "completed" } });
+		await collections.books.updateOne(
+			{ _id: new ObjectId(bookId) },
+			{
+				$set: {
+					status: "completed",
+					processingStage: "completed",
+					processingMessage: "Completed. Knowledge added to the graph.",
+					doclingStatus: "completed",
+				},
+			}
+		);
 	} catch (err) {
 		console.error("[API] Book processing error:", err);
 		await collections.books.updateOne(
@@ -171,9 +360,20 @@ async function processBookInBackground(
 			{
 				$set: {
 					status: "failed",
+					processingStage: "failed",
+					processingMessage: "Failed",
 					error: err instanceof Error ? err.message : "Processing failed",
 				},
 			}
 		);
+	} finally {
+		// Cleanup temp file
+		if (tempFilePath) {
+			try {
+				await unlink(tempFilePath);
+			} catch {
+				// Ignore cleanup errors
+			}
+		}
 	}
 }

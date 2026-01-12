@@ -2,8 +2,9 @@ import { useAPIClient, handleResponse } from "$lib/APIClient";
 import { UrlDependency } from "$lib/types/UrlDependency";
 import { redirect } from "@sveltejs/kit";
 import { base } from "$app/paths";
+import type { PageLoad } from "./$types";
 
-export const load = async ({ params, depends, fetch, url }) => {
+export const load: PageLoad = async ({ params, depends, fetch, url }) => {
 	depends(UrlDependency.Conversation);
 
 	const client = useAPIClient({ fetch, origin: url.origin });

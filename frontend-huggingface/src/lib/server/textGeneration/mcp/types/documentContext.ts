@@ -11,26 +11,26 @@ import type { ObjectId } from "mongodb";
  * Document classification types
  */
 export type DocumentClassification =
-  | "legal"
-  | "financial"
-  | "technical"
-  | "medical"
-  | "academic"
-  | "government"
-  | "business"
-  | "general";
+	| "legal"
+	| "financial"
+	| "technical"
+	| "medical"
+	| "academic"
+	| "government"
+	| "business"
+	| "general";
 
 /**
  * Chunk types based on document structure
  */
 export type ChunkType =
-  | "paragraph"
-  | "table"
-  | "list"
-  | "header"
-  | "citation"
-  | "code"
-  | "footnote";
+	| "paragraph"
+	| "table"
+	| "list"
+	| "header"
+	| "citation"
+	| "code"
+	| "footnote";
 
 /**
  * Supported languages
@@ -45,125 +45,125 @@ export type SupportedLanguage = "he" | "en" | "mixed";
  * Document metadata (for retrieval, NOT injected to LLM)
  */
 export interface DocumentMetadata {
-  classification: DocumentClassification;
-  subject: string;
-  keywords: {
-    hebrew: string[];
-    english: string[];
-  };
-  citations: string[];
-  datePublished?: Date;
-  source?: string;
-  authors: string[];
-  language: SupportedLanguage;
-  extractedAt: Date;
+	classification: DocumentClassification;
+	subject: string;
+	keywords: {
+		hebrew: string[];
+		english: string[];
+	};
+	citations: string[];
+	datePublished?: Date;
+	source?: string;
+	authors: string[];
+	language: SupportedLanguage;
+	extractedAt: Date;
 }
 
 /**
  * User context extracted from queries (compact, injected to LLM)
  */
 export interface UserContext {
-  profession?: string;           // e.g., "Israeli lawyer"
-  expertiseLevel?: string;       // "expert", "beginner"
-  preferredLanguage: SupportedLanguage;
-  customContext: string[];       // Other extracted preferences
+	profession?: string; // e.g., "Israeli lawyer"
+	expertiseLevel?: string; // "expert", "beginner"
+	preferredLanguage: SupportedLanguage;
+	customContext: string[]; // Other extracted preferences
 }
 
 /**
  * Augmentation history record
  */
 export interface AugmentationRecord {
-  timestamp: Date;
-  reason: string;
-  chunksAdded: number;
+	timestamp: Date;
+	reason: string;
+	chunksAdded: number;
 }
 
 /**
  * Main document context schema (MongoDB: document_contexts)
  */
 export interface DocumentContext {
-  _id: ObjectId;
+	_id: ObjectId;
 
-  // Identity
-  conversationId: string;
-  documentHash: string;           // SHA-256 of file content
-  fileName: string;
-  mimeType: string;
+	// Identity
+	conversationId: string;
+	documentHash: string; // SHA-256 of file content
+	fileName: string;
+	mimeType: string;
 
-  // Metadata
-  metadata: DocumentMetadata;
+	// Metadata
+	metadata: DocumentMetadata;
 
-  // User context
-  userContext: UserContext;
+	// User context
+	userContext: UserContext;
 
-  // Chunk info
-  chunkCount: number;
-  totalTokens: number;
+	// Chunk info
+	chunkCount: number;
+	totalTokens: number;
 
-  // Lifecycle
-  createdAt: Date;
-  lastAccessedAt: Date;
-  augmentationHistory: AugmentationRecord[];
+	// Lifecycle
+	createdAt: Date;
+	lastAccessedAt: Date;
+	augmentationHistory: AugmentationRecord[];
 }
 
 /**
  * Document chunk schema (MongoDB: document_chunks)
  */
 export interface DocumentChunk {
-  _id: ObjectId;
-  documentId: ObjectId;           // Reference to document_contexts
-  conversationId: string;
+	_id: ObjectId;
+	documentId: ObjectId; // Reference to document_contexts
+	conversationId: string;
 
-  // Content
-  content: string;
-  chunkIndex: number;
-  tokenCount: number;
+	// Content
+	content: string;
+	chunkIndex: number;
+	tokenCount: number;
 
-  // Semantic info
-  sectionTitle?: string;
-  chunkType: ChunkType;
+	// Semantic info
+	sectionTitle?: string;
+	chunkType: ChunkType;
 
-  // Vector embedding (1024-dim from dicta-retrieval)
-  embedding: number[];
+	// Vector embedding (1024-dim from dicta-retrieval)
+	embedding: number[];
 
-  // Retrieval stats
-  retrievalCount: number;
-  lastRetrievedAt?: Date;
-  averageRerankerScore: number;
+	// Retrieval stats
+	retrievalCount: number;
+	lastRetrievedAt?: Date;
+	averageRerankerScore: number;
 }
 
 /**
  * Learned fact from conversation
  */
 export interface LearnedFact {
-  fact: string;
-  source: "document" | "user" | "inference";
-  confidence: number;
-  addedAt: Date;
+	fact: string;
+	source: "document" | "user" | "inference";
+	confidence: number;
+	addedAt: Date;
 }
 
 /**
  * Query history record
  */
 export interface QueryHistoryRecord {
-  query: string;
-  language: SupportedLanguage;
-  answeredFromCache: boolean;
-  timestamp: Date;
+	query: string;
+	language: SupportedLanguage;
+	answeredFromCache: boolean;
+	timestamp: Date;
 }
 
 /**
  * Conversation memory schema (MongoDB: conversation_memory)
  */
 export interface ConversationMemory {
-  _id: ObjectId;
-  conversationId: string;
+	_id: ObjectId;
+	conversationId: string;
 
-  // Accumulated context from assistant responses
-  learnedFacts: LearnedFact[];
+	// Accumulated context from assistant responses
+	learnedFacts: LearnedFact[];
 
-  // Query history for context
-  queryHistory: QueryHistoryRecord[];
+	// Query history for context
+	queryHistory: QueryHistoryRecord[];
 }
 
 // ============================================
@@ -174,62 +174,62 @@ export interface ConversationMemory {
  * Document ingestion parameters
  */
 export interface IngestParams {
-  runId: string;
-  conversationId: string;
-  filePath: string;
-  fileName: string;
-  mimeType: string;
-  userQuery: string;
+	runId: string;
+	conversationId: string;
+	filePath: string;
+	fileName: string;
+	mimeType: string;
+	userQuery: string;
 }
 
 /**
  * Context retrieval parameters
  */
 export interface RetrieveParams {
-  runId: string;
-  conversationId: string;
-  query: string;
+	runId: string;
+	conversationId: string;
+	query: string;
 }
 
 /**
  * Context augmentation parameters
  */
 export interface AugmentParams {
-  runId: string;
-  conversationId: string;
-  query: string;
-  filePath: string;
+	runId: string;
+	conversationId: string;
+	query: string;
+	filePath: string;
 }
 
 /**
  * Retrieval result from RAG
  */
 export interface RetrievalResult {
-  hasContext: boolean;
-  chunks: Array<DocumentChunk & { score?: number }>;
-  userContext?: UserContext;
-  needsToolCall: boolean;
-  tier?: 1 | 2 | 3;
-  requiresAssessment?: boolean;
+	hasContext: boolean;
+	chunks: Array<DocumentChunk & { score?: number }>;
+	userContext?: UserContext;
+	needsToolCall: boolean;
+	tier?: 1 | 2 | 3;
+	requiresAssessment?: boolean;
 }
 
 /**
  * Chunker result
  */
 export interface ChunkResult {
-  content: string;
-  tokenCount: number;
-  sectionTitle?: string;
-  type: ChunkType;
+	content: string;
+	tokenCount: number;
+	sectionTitle?: string;
+	type: ChunkType;
 }
 
 /**
  * Reranked result from reranker service
  */
 export interface RerankedResult {
-  content: string;
-  score: number;
-  chunkId: string;
-  originalIndex: number;
-  tokenCount?: number;
+	content: string;
+	score: number;
+	chunkId: string;
+	originalIndex: number;
+	tokenCount?: number;
 }

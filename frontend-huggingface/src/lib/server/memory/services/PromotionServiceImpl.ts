@@ -8,7 +8,11 @@
 import { logger } from "$lib/server/logger";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
-import { PromotionService, type PromotionServiceConfig, type PromotionStats } from "../learning/PromotionService";
+import {
+	PromotionService,
+	type PromotionServiceConfig,
+	type PromotionStats,
+} from "../learning/PromotionService";
 
 export interface PromotionServiceImplConfig {
 	promotionService?: PromotionService;

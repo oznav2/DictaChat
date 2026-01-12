@@ -1,8 +1,107 @@
+<!-- Updated: Fixed assistant response emission + MongoDB memory storage errors -->
 # Project Status
 
-**Last Updated**: January 8, 2026
+**Last Updated**: January 13, 2026
 
 ---
+
+## Standup (January 13, 2026)
+
+### What I Did
+- **Fixed empty assistant responses**: `sequentialthinking` tool was causing empty responses when processing documents - Hebrew JSON parsing failed, leaving only `<think>` blocks with no actual answer. Excluded it from document processing since DictaLM-Thinking already has native thinking.
+- **Fixed MongoDB memory storage**: Store operations were silently failing with `"language override unsupported: mixed"`. Changed default language to `"none"` for bilingual content.
+
+### What's Next
+- Test PDF upload end-to-end to verify fixes
+- Memory Bank UI wiring validation
+- RoamPal parity comparison (agent_chat.py, memory_visualization_enhanced.py)
+
+### Blockers
+- None
+
+---
+
+## Current Snapshot (January 12, 2026)
+
+### ✅ Implemented
+
+- **Instruction Update**: Synchronized Trae IDE rules (`.trae/rules/project_rules.md`) with `CLAUDE.md` for end-to-end parity.
+- **Instruction Update**: Refined `CLAUDE.md` Critical Rules to integrate the **RoamPal Parity Protocol** as the primary research and implementation standard.
+- **Critical Fix**: Memory system silent failure (NoOp fallback) resolved.
+- **Critical Fix**: Docling-to-Memory bridge wiring.
+- P0: Memory wiring regressions (citations, memory panel, metrics)
+- P0: Export/Backup flow (settings/backup + endpoints)
+- P0: Developer tools panel (settings/dev)
+- P0: CodeChangePreview (dry-run/apply Trae Begin Patch)
+- P1: Action effectiveness in Knowledge Graph (orange nodes)
+- P1: Message grouping by sender/time
+- P1: Model token limit controls (max_tokens / truncate)
+- P1: Score visualization bars in MemoryPanel
+- P1: 5s polling (MemoryHealthPanel) + identity polling (NavMenu)
+- P1: Missing parity endpoints (patterns performance, decay schedule/force, content graph stats/backfill, concept definition, system health/version)
+- P1: memoryUpdated event bus (book ingest/delete + memory actions) wired to refresh memory panels
+- P1: apiRequest wrapper (retries + idempotency key) for consistent frontend API calls
+- P2: Books WS progress + Docling status streaming
+- P2: Book ingestion watchdog (5-minute no-progress timeout) to prevent stuck uploads
+- P2: Book chunk attribution + scoped delete (removeBook only archives the book’s chunks)
+- P2: Educational onboarding modal(s) for memory system
+- P2: Virtual scrolling in MemoryBankModal
+- P2: MCP config scan/import flow (scan endpoint + UI import)
+- P2: Update banner (version polling + reload CTA)
+- P2: Terminal chat mode (monospace thread rendering + settings toggle)
+- P2: localStorage migration utility for legacy non-namespaced keys
+- P2: Score bars inside SourceBadge (FragmentBadges parity)
+- P2: Standardized timing fields in API responses (built_ms + retrievalDebug stage timings)
+- P2: MemoryHealthPanel derived metrics backed by real API fields
+- P2: Settings nested modal flow + provider detection polish
+- P2: Memory Bank bulk archive/delete multi-select flows
+- P2: Integrations settings page (non-MCP) + health checks
+- P2: Backup parity (estimate + pre-restore snapshot restore wrapper)
+- P2: Knowledge graph debounced writes + batching
+- P2: Knowledge graph entity hygiene blocklist
+- P2: Knowledge graph query modes (routing | content | both)
+- P2: Context-action effectiveness rollups
+- P2: Known-solution tracking (problem→solution)
+- P2: Dev-visible timings + graph regression test
+- Engineering hygiene: resolve repo-wide Prettier warnings (lint passes)
+
+### ⏳ Pending
+
+- Knowledge graph parity: (complete)
+- Regression coverage: graph endpoint N+1 guard + dev-visible timings surfaced in dev tools
+
+## Review (January 12, 2026)
+
+- **Fixed Docling Path Bug**: Preserved `message.files[].path` through preprocessing, ensured Docling-target files exist on disk under `/app/uploads/<conversationId>/...`, and added a safety rewrite so Docling tool calls that guess a SHA-only filename are corrected to the real upload path when available.
+- **Fixed Docling→Memory Ingestion Reliability**: Updated `StoreServiceImpl` to store memories to MongoDB even when embeddings or Qdrant indexing fails, so Docling outputs still appear in Memory Bank/Stats and can be reindexed later.
+- **Fixed Memory Bridge**: Updated `bridgeDoclingToMemory` in `toolInvocation.ts` to check initialization status and added logging.
+- **Fixed Silent NoOp Bug**: Resolved a critical bug in `UnifiedMemoryFacade.ts` where spreading service instances (`...services.store`) lost their methods, causing the system to fallback to NoOp implementations. Replaced spread syntax with direct assignment and casting.
+- **Fixed Linter Errors**: Resolved TypeScript errors in `UnifiedMemoryFacade.ts` related to `Partial<Service>` assignment.
+- **Verified Data Flow**: Confirmed that document chunks are now correctly stored in MongoDB and visible in the UI stats.
+
+## Review (January 11, 2026)
+
+- Added missing parity API endpoints and wired them into memory UI panels for visibility and ops control.
+- Implemented a simple memoryUpdated event bus so book ingest/delete and memory actions refresh panels without reload.
+- Added update banner, terminal mode toggle, MCP config scan/import, and a small localStorage migration utility.
+- Consolidated remaining parity work into `frontend-huggingface/roampal_gaps.md` (backlog-only).
+
+## ✅ Books WS Progress + Docling Status (January 11, 2026)
+
+- Added a streaming progress channel at `/api/book-upload/ws/progress/{taskId}` and updated BooksProcessorModal to consume it in real time.
+- Book ingestion now reports Docling container status, chunk ingestion progress, and a clear “knowledge added to the graph” completion message.
+
+## Review
+
+- Backend now persists `processingStage`, `processingMessage`, `doclingStatus`, `doclingTaskId`, and `error` on book records during ingestion.
+- Frontend modal now uses a resilient real-time stream with polling fallback (same 5-minute timeout behavior).
+
+## ✅ Phase 1 UI Polish (January 11, 2026)
+
+- Implemented chat message grouping by sender/time (reduces repeated assistant avatar + spacing).
+- Added per-model token limit controls (max_tokens / truncate) and applied them during generation via Settings overrides.
+- Added Wilson score bars to MemoryPanel items (color-coded) for faster quality scanning.
+- Switched MemoryHealthPanel polling cadence to 5s and added NavMenu identity refresh polling.
 
 ## 🎉 Implementation Plan Validation Report - COMPLETE (January 7, 2026)
 
@@ -420,6 +519,85 @@ All 10 phases of the memory system have been implemented:
 | Benchmark Suite | Low | Pending |
 | API Documentation | Low | Pending |
 | Production Deployment Guide | Low | Pending |
+
+---
+
+## Standup - January 11, 2026 (Evening)
+
+### ✅ Done
+- **Complete Roampal parity analysis** - Analyzed all 37 Roampal UI components vs 35+ BricksLLM Svelte components
+- **Created roampal_gaps.md** - Comprehensive gap analysis with explicit implementation instructions
+- **Identified 20 total gaps** across 4 priority levels (P0-P3, 67-83 hours total)
+- **Found 3 critical wiring bugs**:
+  - MemoryPanel.svelte uses GET instead of POST for search
+  - Citation flow broken (memoryMetaUpdated never called)
+  - ActionKgServiceImpl disconnected from runMcpFlow
+- **Documented 8 architectural gaps** (B-I) from additional analysis:
+  - Event bus, SDK layer, storage migration, MCP discovery, etc.
+- **Added risk factors** for each priority level
+
+### 🔄 Next
+- Fix P0 wiring bugs (Citation flow, MemoryPanel HTTP, ActionKgService)
+- Implement memory event bus for cross-component updates
+- Add apiClient wrapper with retries/idempotency
+
+### 🚫 Blockers
+- None
+
+---
+
+## Standup - January 11, 2026
+
+### ✅ Done
+- **Wired personality badges into sidebar** - ChatTitle component now shows colored badges next to conversation titles
+- **Conversations store personality on creation** - `personalityId` and `personalityBadge` fields set automatically
+- **Enhanced PDF deduplication** - Added file hash-based duplicate detection (catches same file with different title)
+- **Improved book processing diagnostics** - Better logging for Docling extraction, explicit errors for empty documents
+- **Verified UI components** - Graph toggle, TracePanel memory steps, and source attribution all working
+- **Fixed P0 memory citation wiring** - FinalAnswer now carries `memoryMeta`; UI calls `memoryMetaUpdated`
+- **Fixed MemoryPanel stats shape** - Panel now reads `/api/memory/stats` correctly and derives tier counts
+- **Removed fake health metrics placeholders** - Cache hit / promotion / demotion now render as unavailable
+- **Fixed Handlebars template parse error** - `memory-injection.hbs` closes `ifLang` correctly
+- **Reworked memory facade startup init** - Correct adapter/service wiring in `hooks.server.ts`
+- **Noted runtime dependencies** - TracePanel tracing, Docling ingestion, embeddings/reranker endpoints
+- **Added Action KG visualization** - KnowledgeGraphPanel now includes action nodes (orange)
+- **Added code diff preview** - ChatMessage renders CodeChangePreview for patch blocks
+- **Added patch apply workflow** - Admin can dry-run/apply Trae Begin Patch from chat (per-file selection)
+- **Added backup & restore** - Export/import memory system backups (JSON/ZIP) from Settings
+- **Added developer tools** - Settings Dev Tools for stats/promote/reindex/consistency ops
+
+### 🔄 Next
+- P1: Message grouping by sender/time (ChatWindow)
+- P1: Model context limits UI (settings)
+- P1: Score visualization bars (MemoryPanel + SourceBadge)
+- P1: Tighten polling (MemoryHealthPanel to 5s) + assistant name polling (NavMenu)
+- P2: Virtual scrolling (MemoryBankModal) + nested settings modals
+- Repo hygiene: run Prettier --write (lint currently fails on formatting diffs)
+
+### 🚫 Blockers
+- None
+
+---
+
+## Standup - January 9, 2026
+
+### ✅ Done
+- **Production TypeScript: 0 errors** - Fixed all 102+ TS errors across memory services and routes
+- **Fixed 12 memory service files**:
+  - ReindexService, OpsServiceImpl, KnowledgeGraphService, ConsistencyService
+  - MemoryMongoStore, OutcomeServiceImpl, PrefetchServiceImpl, SearchServiceImpl
+  - ContextServiceImpl, ActionKgServiceImpl, tools/index.ts
+- **Fixed 10 SvelteKit route files** with proper `RequestHandler`/`PageLoad` types:
+  - login/callback, login, models, stop-generating, share
+  - prompt, message DELETE, admin/export, settings routes
+- **Key fixes**: MongoDB driver types, Qdrant payload types, embedding service returns, SvelteKit handler types
+
+### 🔄 Next
+- Fix remaining 21 test file errors (optional)
+- Integration testing with real services
+
+### 🚫 Blockers
+- None
 
 ---
 

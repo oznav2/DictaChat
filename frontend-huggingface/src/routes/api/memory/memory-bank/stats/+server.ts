@@ -1,35 +1,22 @@
-import { json, error } from "@sveltejs/kit";
+import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { collections } from "$lib/server/database";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 
 // GET /api/memory/memory-bank/stats - Get memory bank statistics
-export const GET: RequestHandler = async ({ locals }) => {
-	const userId = locals.user?.id;
-
-	// Return empty stats for unauthenticated users
-	if (!userId) {
-		return json({
-			success: true,
-			total_memories: 0,
-			active: 0,
-			archived: 0,
-			unique_tags: 0,
-			tags: [],
-		});
-	}
-
+export const GET: RequestHandler = async () => {
 	try {
 		// Get counts
 		const [active, archived, total] = await Promise.all([
-			collections.memoryBank.countDocuments({ userId, status: "active" }),
-			collections.memoryBank.countDocuments({ userId, status: "archived" }),
-			collections.memoryBank.countDocuments({ userId }),
+			collections.memoryBank.countDocuments({ userId: ADMIN_USER_ID, status: "active" }),
+			collections.memoryBank.countDocuments({ userId: ADMIN_USER_ID, status: "archived" }),
+			collections.memoryBank.countDocuments({ userId: ADMIN_USER_ID }),
 		]);
 
 		// Get unique tags
 		const tagAggregation = await collections.memoryBank
 			.aggregate([
-				{ $match: { userId } },
+				{ $match: { userId: ADMIN_USER_ID } },
 				{ $unwind: "$tags" },
 				{ $group: { _id: "$tags" } },
 				{ $sort: { _id: 1 } },

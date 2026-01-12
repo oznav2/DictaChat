@@ -8,6 +8,7 @@
 
 	import EditConversationModal from "$lib/components/EditConversationModal.svelte";
 	import DeleteConversationModal from "$lib/components/DeleteConversationModal.svelte";
+	import ChatTitle from "$lib/components/chat/ChatTitle.svelte";
 	import { requireAuthUser } from "$lib/utils/auth";
 
 	interface Props {
@@ -31,7 +32,7 @@
 		{conv.id === page.params.id ? 'bg-gray-100 dark:bg-gray-700' : ''}"
 >
 	<div class="my-2 min-w-0 flex-1 truncate first-letter:uppercase">
-		<span>{conv.title}</span>
+		<ChatTitle title={conv.title} personalityBadge={conv.personalityBadge} />
 	</div>
 
 	{#if !readOnly}

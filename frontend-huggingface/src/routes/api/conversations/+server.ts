@@ -2,8 +2,9 @@ import { collections } from "$lib/server/database";
 import { authCondition } from "$lib/server/auth";
 import type { Conversation } from "$lib/types/Conversation";
 import { CONV_NUM_PER_PAGE } from "$lib/constants/pagination";
+import type { RequestHandler } from "./$types";
 
-export async function GET({ locals, url }) {
+export const GET: RequestHandler = async ({ locals, url }) => {
 	const p = parseInt(url.searchParams.get("p") ?? "0");
 	if (locals.user?._id || locals.sessionId) {
 		const convs = await collections.conversations
@@ -35,9 +36,9 @@ export async function GET({ locals, url }) {
 	} else {
 		return Response.json({ message: "Must have session cookie" }, { status: 401 });
 	}
-}
+};
 
-export async function DELETE({ locals }) {
+export const DELETE: RequestHandler = async ({ locals }) => {
 	if (locals.user?._id || locals.sessionId) {
 		await collections.conversations.deleteMany({
 			...authCondition(locals),
@@ -45,4 +46,4 @@ export async function DELETE({ locals }) {
 	}
 
 	return new Response();
-}
+};

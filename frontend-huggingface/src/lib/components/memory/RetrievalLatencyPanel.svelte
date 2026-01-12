@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount, onDestroy } from "svelte";
 	import { memoryUi } from "$lib/stores/memoryUi";
 	import type { MemoryTier } from "$lib/types/MemoryMeta";
 
@@ -40,12 +39,14 @@
 	let debugData = $derived(storeState.data.lastRetrievalDebug);
 
 	// Local state for accumulated metrics
-	let latencyHistory = $state<Array<{
-		timestamp: string;
-		latencyMs: number;
-		tier: MemoryTier;
-		confidence: "high" | "medium" | "low";
-	}>>([]);
+	let latencyHistory = $state<
+		Array<{
+			timestamp: string;
+			latencyMs: number;
+			tier: MemoryTier;
+			confidence: "high" | "medium" | "low";
+		}>
+	>([]);
 
 	let latencyData = $state<LatencyData>({
 		byTier: {
@@ -69,14 +70,6 @@
 		},
 		recentQueries: [],
 	});
-
-	const tierLabels: Record<MemoryTier, { name: string; color: string }> = {
-		working: { name: "עבודה", color: "text-blue-600 dark:text-blue-400" },
-		history: { name: "היסטוריה", color: "text-purple-600 dark:text-purple-400" },
-		patterns: { name: "דפוסים", color: "text-green-600 dark:text-green-400" },
-		books: { name: "ספרים", color: "text-amber-600 dark:text-amber-400" },
-		memory_bank: { name: "בנק", color: "text-pink-600 dark:text-pink-400" },
-	};
 
 	function createEmptyTierMetric(tier: MemoryTier): LatencyMetric {
 		return {
@@ -106,7 +99,8 @@
 		if (!stageTiming) return;
 
 		// Calculate total latency
-		const totalMs = stageTiming.total_prefetch_ms ?? 
+		const totalMs =
+			stageTiming.total_prefetch_ms ??
 			Object.values(stageTiming).reduce((sum, val) => sum + (typeof val === "number" ? val : 0), 0);
 
 		// Determine which tier was primarily used
@@ -223,7 +217,12 @@
 
 	{#if latencyData.overall.totalQueries === 0}
 		<div class="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-			<svg class="mx-auto mb-2 size-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+			<svg
+				class="mx-auto mb-2 size-8 text-gray-400"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+			>
 				<path
 					stroke-linecap="round"
 					stroke-linejoin="round"
@@ -236,7 +235,9 @@
 		</div>
 	{:else}
 		<!-- Overall Latency Stats -->
-		<div class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-700/50">
+		<div
+			class="rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-600 dark:bg-gray-700/50"
+		>
 			<h4 class="mb-2 text-xs font-medium text-gray-600 dark:text-gray-300">סטטיסטיקות כלליות</h4>
 			<div class="grid grid-cols-4 gap-2 text-center">
 				<div>
@@ -271,8 +272,12 @@
 
 		<!-- Latency by Stage (from last query) -->
 		{#if debugData?.stage_timings_ms}
-			<div class="rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-600 dark:bg-gray-700">
-				<h4 class="mb-2 text-xs font-medium text-gray-600 dark:text-gray-300">זמנים לפי שלב (שאילתה אחרונה)</h4>
+			<div
+				class="rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-600 dark:bg-gray-700"
+			>
+				<h4 class="mb-2 text-xs font-medium text-gray-600 dark:text-gray-300">
+					זמנים לפי שלב (שאילתה אחרונה)
+				</h4>
 				<div class="space-y-1.5">
 					{#each Object.entries(debugData.stage_timings_ms as Record<string, number>) as [stage, ms]}
 						<div class="flex items-center justify-between text-xs">
@@ -290,7 +295,9 @@
 
 		<!-- Recent Queries -->
 		{#if latencyData.recentQueries.length > 0}
-			<div class="rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-600 dark:bg-gray-700">
+			<div
+				class="rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-600 dark:bg-gray-700"
+			>
 				<h4 class="mb-2 text-xs font-medium text-gray-600 dark:text-gray-300">שאילתות אחרונות</h4>
 				<div class="space-y-1.5">
 					{#each latencyData.recentQueries as query}
@@ -298,7 +305,11 @@
 							<div class="flex items-center gap-2">
 								<span class="text-gray-400">{formatTimestamp(query.timestamp)}</span>
 								<span class={getConfidenceColor(query.confidence) + " rounded px-1.5 py-0.5"}>
-									{query.confidence === "high" ? "גבוה" : query.confidence === "medium" ? "בינוני" : "נמוך"}
+									{query.confidence === "high"
+										? "גבוה"
+										: query.confidence === "medium"
+											? "בינוני"
+											: "נמוך"}
 								</span>
 							</div>
 							<span class={getLatencyColor(query.latencyMs)}>
@@ -311,7 +322,9 @@
 		{/if}
 
 		<!-- Cache Effectiveness -->
-		<div class="rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-600 dark:bg-gray-700">
+		<div
+			class="rounded-lg border border-gray-200 bg-white p-3 dark:border-gray-600 dark:bg-gray-700"
+		>
 			<h4 class="mb-2 text-xs font-medium text-gray-600 dark:text-gray-300">יעילות קאש</h4>
 			<div class="flex items-center gap-3">
 				<div class="flex-1">

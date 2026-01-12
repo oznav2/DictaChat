@@ -1,7 +1,13 @@
 import { json, error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
-import type { MemoryMetaV1, MemoryCitationV1, KnownContextV1, MemoryTier } from "$lib/types/MemoryMeta";
+import type {
+	MemoryMetaV1,
+	MemoryCitationV1,
+	KnownContextV1,
+	MemoryTier,
+} from "$lib/types/MemoryMeta";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 
 /**
  * Exchange Hook API - Called before LLM inference to inject memory context
@@ -31,12 +37,7 @@ function isValidTier(tier: string): tier is MemoryTier {
 	return VALID_TIERS.includes(tier as MemoryTier);
 }
 
-export const POST: RequestHandler = async ({ request, locals }) => {
-	const userId = locals.user?.id;
-	if (!userId) {
-		return error(401, "Authentication required");
-	}
-
+export const POST: RequestHandler = async ({ request }) => {
 	const body: ExchangeRequest = await request.json();
 	const { conversationId, messageId, messages, limit = 10 } = body;
 
@@ -61,7 +62,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	if (!query.trim()) {
 		return json({
 			messages,
-			memoryMeta: createEmptyMemoryMeta(conversationId, messageId, userId),
+			memoryMeta: createEmptyMemoryMeta(conversationId, messageId, ADMIN_USER_ID),
 		});
 	}
 
@@ -74,7 +75,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	// Prefetch context from memory
 	const startTime = Date.now();
 	const prefetchResult = await facade.prefetchContext({
-		userId,
+		userId: ADMIN_USER_ID,
 		conversationId,
 		query,
 		recentMessages,
@@ -87,7 +88,8 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	const modifiedMessages = [...messages];
 	if (prefetchResult.memoryContextInjection.trim()) {
 		const systemIndex = modifiedMessages.findIndex((m) => m.role === "system");
-		const memorySystemContent = "<memory_context>\n" + prefetchResult.memoryContextInjection + "\n</memory_context>";
+		const memorySystemContent =
+			"<memory_context>\n" + prefetchResult.memoryContextInjection + "\n</memory_context>";
 
 		if (systemIndex >= 0) {
 			modifiedMessages[systemIndex] = {
@@ -106,7 +108,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	const memoryMeta = buildMemoryMeta({
 		conversationId,
 		messageId,
-		userId,
+		userId: ADMIN_USER_ID,
 		query,
 		prefetchResult,
 		prefetchMs,
@@ -194,6 +196,15 @@ function buildMemoryMeta({
 			matched_concepts: [],
 			active_concepts: [],
 		},
+		retrievalDebug: {
+			confidence: prefetchResult.retrievalDebug.confidence,
+			fallbacks_used: prefetchResult.retrievalDebug.fallbacks_used,
+			stage_timings_ms: {
+				...prefetchResult.retrievalDebug.stage_timings_ms,
+				total_prefetch_ms: prefetchMs,
+			},
+			errors: prefetchResult.retrievalDebug.errors,
+		},
 		debug: {
 			retrieval_confidence: prefetchResult.retrievalConfidence,
 			fallbacks_used: prefetchResult.retrievalDebug.fallbacks_used,
@@ -226,27 +237,25 @@ function parseMemoryContext(contextText: string): {
 	}
 
 	// Parse memory entries line by line
-	// Format: [tier:memory_id] content
+	// Format (supported):
+	// - [tier:memory_id] content
+	// - [n] [tier:memory_id] content
 	const lines = contextText.split("\n");
 	for (const line of lines) {
-		const bracketEnd = line.indexOf("]");
-		if (bracketEnd > 0 && line.startsWith("[")) {
-			const bracketContent = line.substring(1, bracketEnd);
-			const colonIndex = bracketContent.indexOf(":");
-			if (colonIndex > 0) {
-				const tierCandidate = bracketContent.substring(0, colonIndex);
-				const memoryId = bracketContent.substring(colonIndex + 1);
-				const content = line.substring(bracketEnd + 1).trim();
+		const match = line.match(/\[(working|history|patterns|books|memory_bank):([^\]]+)\]\s*(.*)$/);
+		if (!match) continue;
+		const [, tierCandidate, memoryIdRaw, contentRaw] = match;
+		const memoryId = memoryIdRaw.trim();
+		const content = (contentRaw ?? "").trim();
+		if (!isValidTier(tierCandidate) || !memoryId) continue;
 
-				if (tierCandidate && isValidTier(tierCandidate) && memoryId && content) {
-					citations.push({ tier: tierCandidate, memory_id: memoryId.trim() });
-					knownContextItems.push({
-						tier: tierCandidate,
-						memory_id: memoryId.trim(),
-						content: content,
-					});
-				}
-			}
+		citations.push({ tier: tierCandidate, memory_id: memoryId, content: content || undefined });
+		if (content) {
+			knownContextItems.push({
+				tier: tierCandidate,
+				memory_id: memoryId,
+				content,
+			});
 		}
 	}
 

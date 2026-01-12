@@ -2,8 +2,9 @@ import { authCondition } from "$lib/server/auth";
 import { collections } from "$lib/server/database";
 import { error } from "@sveltejs/kit";
 import { ObjectId } from "mongodb";
+import type { RequestHandler } from "./$types";
 
-export async function DELETE({ locals, params }) {
+export const DELETE: RequestHandler = async ({ locals, params }) => {
 	const messageId = params.messageId;
 
 	if (!messageId || typeof messageId !== "string") {
@@ -39,4 +40,4 @@ export async function DELETE({ locals, params }) {
 	);
 
 	return new Response();
-}
+};

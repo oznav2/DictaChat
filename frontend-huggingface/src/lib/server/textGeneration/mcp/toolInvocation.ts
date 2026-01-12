@@ -1,7 +1,14 @@
 import { randomUUID } from "crypto";
 import { logger } from "../../logger";
+import { existsSync } from "fs";
+import { readdir } from "fs/promises";
+import { join } from "path";
 import type { MessageUpdate, MessageTraceUpdate } from "$lib/types/MessageUpdate";
-import { MessageToolUpdateType, MessageUpdateType, MessageTraceUpdateType } from "$lib/types/MessageUpdate";
+import {
+	MessageToolUpdateType,
+	MessageUpdateType,
+	MessageTraceUpdateType,
+} from "$lib/types/MessageUpdate";
 import { ToolResultStatus } from "$lib/types/Tool";
 import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import type { McpToolMapping } from "$lib/server/mcp/tools";
@@ -24,6 +31,8 @@ import {
 	getFallbackChain,
 } from "./toolIntelligenceRegistry";
 import type { Client } from "@modelcontextprotocol/sdk/client";
+import { UnifiedMemoryFacade } from "$lib/server/memory";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 
 // ============================================
 // DOCLING TOOL TRACE INTEGRATION
@@ -36,7 +45,7 @@ const DOCLING_TOOL_NAMES = new Set([
 	"docling_convert",
 	"docling_ocr",
 	"docling-convert",
-	"docling-ocr"
+	"docling-ocr",
 ]);
 
 /**
@@ -45,6 +54,116 @@ const DOCLING_TOOL_NAMES = new Set([
 function isDoclingTool(toolName: string): boolean {
 	const nameLower = toolName.toLowerCase();
 	return DOCLING_TOOL_NAMES.has(nameLower) || nameLower.includes("docling");
+}
+
+const UPLOADS_DIR = "/app/uploads";
+
+function extractShaCandidate(input: string): string | null {
+	if (!input) return null;
+	const match = input.match(/[a-f0-9]{32,64}/i);
+	return match ? match[0] : null;
+}
+
+async function resolveDoclingFilePath(
+	requestedPath: string,
+	conversationId?: string
+): Promise<string> {
+	if (requestedPath && existsSync(requestedPath)) return requestedPath;
+
+	const sha = extractShaCandidate(requestedPath);
+	if (!sha || !conversationId) return requestedPath;
+
+	const convDir = join(UPLOADS_DIR, conversationId);
+	try {
+		const entries = await readdir(convDir);
+		const prefix = `${sha.slice(0, 8)}_`;
+		const match = entries.find((e) => e.startsWith(prefix));
+		return match ? join(convDir, match) : requestedPath;
+	} catch {
+		return requestedPath;
+	}
+}
+
+/**
+ * Bridge docling tool output to the memory system
+ * This ensures documents processed via tool calls are stored in memory
+ * for visibility in the Memory Panel and future retrieval
+ */
+async function bridgeDoclingToMemory(
+	conversationId: string,
+	toolName: string,
+	output: string,
+	fileName?: string
+): Promise<void> {
+	if (!output || output.trim().length < 50) {
+		logger.debug("[mcp→memory] Skipping bridge - output too short or empty");
+		return;
+	}
+
+	try {
+		logger.info(
+			{ conversationId, toolName, outputLength: output.length },
+			"[mcp→memory] Bridging docling output to memory system"
+		);
+
+		const facade = UnifiedMemoryFacade.getInstance();
+		if (!facade.isInitialized()) {
+			logger.warn("[mcp→memory] Memory system not initialized, skipping bridge");
+			return;
+		}
+
+		const documentId = `docling:${conversationId}:${Date.now()}`;
+
+		// Chunk with overlap (same as books endpoint)
+		const chunkSize = 1000;
+		const overlap = 200;
+		const chunks: string[] = [];
+		const text = output.trim();
+
+		for (let i = 0; i < text.length; i += chunkSize - overlap) {
+			const chunk = text.slice(i, i + chunkSize);
+			if (chunk.trim().length > 20) {
+				chunks.push(chunk);
+			}
+		}
+
+		logger.info(
+			{ conversationId, chunkCount: chunks.length },
+			"[mcp→memory] Created chunks from docling output"
+		);
+
+		for (let i = 0; i < chunks.length; i++) {
+			const res = await facade.store({
+				userId: ADMIN_USER_ID,
+				tier: "books",
+				text: chunks[i],
+				metadata: {
+					book_id: documentId,
+					chunk_index: i,
+					title: fileName || `Document from ${toolName}`,
+					file_type: "docling_extract",
+					source: "docling_tool",
+					conversation_id: conversationId,
+					tool_name: toolName,
+				},
+			});
+			logger.debug(
+				{ chunkIndex: i, memoryId: res.memory_id },
+				"[mcp→memory] Stored docling chunk"
+			);
+		}
+
+		logger.info(
+			{ conversationId, chunkCount: chunks.length, documentId },
+			"[mcp→memory] Successfully bridged docling output to memory"
+		);
+	} catch (err) {
+		logger.error(
+			{ err, conversationId, toolName },
+			"[mcp→memory] Failed to bridge docling output to memory"
+		);
+		// Don't throw - memory storage is enhancement, not critical path
+	}
 }
 
 /**
@@ -66,7 +185,11 @@ function getToolLabel(toolName: string): { he: string; en: string } {
 	}
 
 	// Search tools
-	if (nameLower.includes("search") || nameLower.includes("tavily") || nameLower.includes("perplexity")) {
+	if (
+		nameLower.includes("search") ||
+		nameLower.includes("tavily") ||
+		nameLower.includes("perplexity")
+	) {
 		return { he: "מחפש מידע", en: "Searching" };
 	}
 
@@ -88,7 +211,7 @@ function createDoclingTraceRunCreated(runId: string, conversationId: string): Me
 		subtype: MessageTraceUpdateType.RunCreated,
 		runId,
 		conversationId,
-		timestamp: Date.now()
+		timestamp: Date.now(),
 	};
 }
 
@@ -110,8 +233,8 @@ function createDoclingTraceStepCreated(
 			parentId: null,
 			label,
 			status,
-			timestamp: Date.now()
-		}
+			timestamp: Date.now(),
+		},
 	};
 }
 
@@ -129,7 +252,7 @@ function createDoclingTraceStepStatus(
 		runId,
 		stepId,
 		status,
-		timestamp: Date.now()
+		timestamp: Date.now(),
 	};
 }
 
@@ -141,7 +264,7 @@ function createDoclingTraceRunCompleted(runId: string): MessageTraceUpdate {
 		type: MessageUpdateType.Trace,
 		subtype: MessageTraceUpdateType.RunCompleted,
 		runId,
-		timestamp: Date.now()
+		timestamp: Date.now(),
 	};
 }
 
@@ -219,110 +342,156 @@ function toGracefulError(toolName: string, rawError: string): string {
 	// ========== TIMEOUT ERRORS ==========
 	if (errorLower.includes("timeout") || errorLower.includes("timed out")) {
 		if (toolName.includes("research") || toolName.includes("perplexity")) {
-			return `⏱️ **המחקר לקח יותר מדי זמן**\n\n` +
+			return (
+				`⏱️ **המחקר לקח יותר מדי זמן**\n\n` +
 				`השירות ${displayName} מבצע חיפוש מעמיק שלפעמים דורש זמן רב.\n\n` +
 				`**מה לעשות:**\n` +
 				`• נסה שאלה קצרה ופשוטה יותר\n` +
 				`• פצל את השאלה לכמה שאלות נפרדות\n` +
-				`• ${suggestion}`;
+				`• ${suggestion}`
+			);
 		}
 		if (toolName.includes("datagov")) {
-			return `⏱️ **הגישה למאגרי המידע הממשלתיים ארכה זמן רב**\n\n` +
+			return (
+				`⏱️ **הגישה למאגרי המידע הממשלתיים ארכה זמן רב**\n\n` +
 				`המאגרים הממשלתיים מכילים מיליוני רשומות וחיפוש רחב עלול להיות איטי.\n\n` +
 				`**מה לעשות:**\n` +
 				`• הוסף מילות מפתח ספציפיות (שם משרד, שנה, אזור)\n` +
-				`• ${suggestion}`;
+				`• ${suggestion}`
+			);
 		}
-		return `⏱️ **הפעולה ארכה זמן רב מדי**\n\n` +
+		return (
+			`⏱️ **הפעולה ארכה זמן רב מדי**\n\n` +
 			`${displayName} לא הספיק לסיים את הפעולה בזמן הקצוב.\n\n` +
 			`**מה לעשות:**\n` +
 			`• נסה שוב עם בקשה פשוטה יותר\n` +
-			`• ${suggestion}`;
+			`• ${suggestion}`
+		);
 	}
 
 	// ========== CONNECTION ERRORS ==========
 	if (errorLower.includes("not connected") || errorLower.includes("connection")) {
-		return `🔌 **שירות ${displayName} אינו זמין כרגע**\n\n` +
+		return (
+			`🔌 **שירות ${displayName} אינו זמין כרגע**\n\n` +
 			`ייתכן שיש תקלה זמנית בשירות או בחיבור לאינטרנט.\n\n` +
 			`**מה לעשות:**\n` +
 			`• נסה שוב בעוד מספר שניות\n` +
-			`• אם הבעיה נמשכת, השתמש בניסוח אחר או שאל שאלה דומה`;
+			`• אם הבעיה נמשכת, השתמש בניסוח אחר או שאל שאלה דומה`
+		);
 	}
 
 	// ========== NOT FOUND / EMPTY RESULTS ==========
-	if (errorLower.includes("not found") || errorLower.includes("404") || errorLower.includes("no results")) {
+	if (
+		errorLower.includes("not found") ||
+		errorLower.includes("404") ||
+		errorLower.includes("no results")
+	) {
 		if (toolName.includes("datagov")) {
-			return `🔍 **לא נמצא מידע במאגרים הממשלתיים**\n\n` +
+			return (
+				`🔍 **לא נמצא מידע במאגרים הממשלתיים**\n\n` +
 				`ייתכן שהמידע המבוקש לא קיים במאגרים הרשמיים, או שהניסוח לא מדויק.\n\n` +
 				`**מה לעשות:**\n` +
 				`• נסה מילות מפתח רשמיות (למשל: "לשכת הסטטיסטיקה" במקום "סטטיסטיקה")\n` +
 				`• ציין שם משרד ממשלתי ספציפי\n` +
-				`• ${suggestion}`;
+				`• ${suggestion}`
+			);
 		}
-		return `🔍 **לא נמצאו תוצאות**\n\n` +
+		return (
+			`🔍 **לא נמצאו תוצאות**\n\n` +
 			`${displayName} לא מצא מידע התואם לבקשה.\n\n` +
 			`**מה לעשות:**\n` +
 			`• נסה מילות מפתח שונות\n` +
-			`• ${suggestion}`;
+			`• ${suggestion}`
+		);
 	}
 
 	// ========== VALIDATION / PARAMETER ERRORS ==========
-	if (errorLower.includes("invalid") || errorLower.includes("required") || errorLower.includes("missing")) {
+	if (
+		errorLower.includes("invalid") ||
+		errorLower.includes("required") ||
+		errorLower.includes("missing")
+	) {
 		if (toolName.includes("file") || toolName.includes("directory")) {
-			return `📂 **בעיה בנתיב הקובץ**\n\n` +
+			return (
+				`📂 **בעיה בנתיב הקובץ**\n\n` +
 				`הנתיב שהוזן אינו תקין או שהקובץ/תיקייה לא נמצאו.\n\n` +
 				`**מה לעשות:**\n` +
 				`• ודא שהנתיב מדויק (כולל סיומת קובץ אם רלוונטי)\n` +
-				`• ${suggestion}`;
+				`• ${suggestion}`
+			);
 		}
 		if (toolName.includes("fetch") || toolName.includes("extract")) {
-			return `🌐 **בעיה בכתובת האינטרנט**\n\n` +
+			return (
+				`🌐 **בעיה בכתובת האינטרנט**\n\n` +
 				`הכתובת שהוזנה אינה תקינה או שהאתר לא נגיש.\n\n` +
 				`**מה לעשות:**\n` +
 				`• ודא שהכתובת מתחילה ב-https://\n` +
 				`• בדוק שהכתובת נכתבה נכון\n` +
-				`• ${suggestion}`;
+				`• ${suggestion}`
+			);
 		}
-		return `📝 **חסר מידע לביצוע הפעולה**\n\n` +
+		return (
+			`📝 **חסר מידע לביצוע הפעולה**\n\n` +
 			`${displayName} צריך פרטים נוספים כדי לבצע את הבקשה.\n\n` +
 			`**מה לעשות:**\n` +
 			`• נסח את הבקשה בצורה מפורטת יותר\n` +
-			`• ${suggestion}`;
+			`• ${suggestion}`
+		);
 	}
 
 	// ========== RATE LIMIT ERRORS ==========
-	if (errorLower.includes("rate limit") || errorLower.includes("too many") || errorLower.includes("quota")) {
-		return `⚡ **הגעת למגבלת בקשות**\n\n` +
+	if (
+		errorLower.includes("rate limit") ||
+		errorLower.includes("too many") ||
+		errorLower.includes("quota")
+	) {
+		return (
+			`⚡ **הגעת למגבלת בקשות**\n\n` +
 			`נשלחו יותר מדי בקשות ל-${displayName} בזמן קצר.\n\n` +
 			`**מה לעשות:**\n` +
 			`• המתן דקה ונסה שוב\n` +
-			`• צמצם את מספר הבקשות`;
+			`• צמצם את מספר הבקשות`
+		);
 	}
 
 	// ========== AUTH ERRORS ==========
-	if (errorLower.includes("unauthorized") || errorLower.includes("forbidden") || errorLower.includes("auth")) {
-		return `🔐 **בעיית הרשאה**\n\n` +
+	if (
+		errorLower.includes("unauthorized") ||
+		errorLower.includes("forbidden") ||
+		errorLower.includes("auth")
+	) {
+		return (
+			`🔐 **בעיית הרשאה**\n\n` +
 			`אין הרשאה לגשת ל-${displayName}. ייתכן שחסרה הגדרת API Key.\n\n` +
 			`**מה לעשות:**\n` +
-			`• פנה למנהל המערכת לבדיקת ההגדרות`;
+			`• פנה למנהל המערכת לבדיקת ההגדרות`
+		);
 	}
 
 	// ========== SERVER ERRORS ==========
-	if (errorLower.includes("500") || errorLower.includes("server error") || errorLower.includes("internal")) {
-		return `⚠️ **תקלה בשירות ${displayName}**\n\n` +
+	if (
+		errorLower.includes("500") ||
+		errorLower.includes("server error") ||
+		errorLower.includes("internal")
+	) {
+		return (
+			`⚠️ **תקלה בשירות ${displayName}**\n\n` +
 			`השירות נתקל בבעיה פנימית.\n\n` +
 			`**מה לעשות:**\n` +
 			`• נסה שוב בעוד כמה שניות\n` +
-			`• אם הבעיה נמשכת, נסה לנסח את השאלה אחרת`;
+			`• אם הבעיה נמשכת, נסה לנסח את השאלה אחרת`
+		);
 	}
 
 	// ========== DEFAULT - GENERIC BUT HELPFUL ==========
 	const gracefulMessage = getGracefulFailureMessage(toolName);
-	return `⚠️ **${displayName} נתקל בבעיה**\n\n` +
+	return (
+		`⚠️ **${displayName} נתקל בבעיה**\n\n` +
 		`${gracefulMessage}\n\n` +
 		`**מה לעשות:**\n` +
 		`• ${suggestion}\n` +
-		`• נסה לנסח את הבקשה בצורה שונה`;
+		`• נסה לנסח את הבקשה בצורה שונה`
+	);
 }
 
 /**
@@ -455,6 +624,14 @@ function isRecoverableError(error: string): boolean {
 	}
 	if (errorLower.includes("invalid") && errorLower.includes("api key")) {
 		return false; // API key issues
+	}
+	if (
+		errorLower.includes("file not found") ||
+		errorLower.includes("not found on disk") ||
+		errorLower.includes("no such file") ||
+		errorLower.includes("enoent")
+	) {
+		return false;
 	}
 
 	// Recoverable errors - try fallback
@@ -681,7 +858,8 @@ export async function* executeToolCalls({
 
 			if (mcpInfo) {
 				// Tool pattern recognized but MCP not enabled
-				userFriendlyError = `The "${mcpInfo.displayName}" MCP server is not enabled. ` +
+				userFriendlyError =
+					`The "${mcpInfo.displayName}" MCP server is not enabled. ` +
 					`Please enable the "${mcpInfo.mcpName}" MCP in your settings to use the ${p.call.name} tool.`;
 				logger.warn(
 					{ toolName: p.call.name, mcpName: mcpInfo.mcpName },
@@ -689,12 +867,10 @@ export async function* executeToolCalls({
 				);
 			} else {
 				// Unknown tool pattern
-				userFriendlyError = `Tool "${p.call.name}" is not available. ` +
+				userFriendlyError =
+					`Tool "${p.call.name}" is not available. ` +
 					`Please check if the required MCP server is enabled in your settings.`;
-				logger.warn(
-					{ toolName: p.call.name, normalizedName },
-					"[mcp] Unknown tool requested"
-				);
+				logger.warn({ toolName: p.call.name, normalizedName }, "[mcp] Unknown tool requested");
 			}
 
 			q.push({
@@ -716,7 +892,7 @@ export async function* executeToolCalls({
 			});
 			return;
 		}
-		let client = clientMap.get(mappingEntry.server);
+		const client = clientMap.get(mappingEntry.server);
 
 		// Helper to execute tool call with retry logic for connection issues
 		const executeCall = async (
@@ -738,6 +914,25 @@ export async function* executeToolCalls({
 						{ server: mappingEntry.server, tool: mappingEntry.tool },
 						"[mcp] retrying tool invocation after connection error"
 					);
+				}
+
+				if (conversationId && isDoclingTool(p.call.name)) {
+					const filePath =
+						typeof (p.argsObj as { file_path?: unknown })?.file_path === "string"
+							? ((p.argsObj as { file_path: string }).file_path as string)
+							: undefined;
+					if (filePath) {
+						const resolved = await resolveDoclingFilePath(filePath, conversationId);
+						if (resolved && resolved !== filePath) {
+							(p.argsObj as { file_path: string }).file_path = resolved;
+							p.paramsClean.file_path = resolved;
+						}
+						if (!existsSync((p.argsObj as { file_path: string }).file_path)) {
+							throw new Error(
+								`Docling file not found on disk: ${(p.argsObj as { file_path: string }).file_path}`
+							);
+						}
+					}
 				}
 
 				const toolResponse: McpToolTextResponse = await callMcpTool(
@@ -895,7 +1090,8 @@ export async function* executeToolCalls({
 								});
 								return; // Exit - we succeeded with fallback
 							} catch (fallbackErr) {
-								const fallbackMessage = fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr);
+								const fallbackMessage =
+									fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr);
 								logger.warn(
 									{ fallbackTool: fallbackToolName, err: fallbackMessage },
 									"[mcp] fallback tool also failed, trying next"
@@ -982,6 +1178,18 @@ export async function* executeToolCalls({
 		}
 
 		// ============================================
+		// BRIDGE DOCLING OUTPUT TO MEMORY SYSTEM
+		// When a docling tool successfully extracts text, store it
+		// in the memory system for visibility in Memory Panel
+		// ============================================
+		if (isTrackedTool && !r.error && r.output && conversationId) {
+			// Fire and forget - don't block tool execution
+			bridgeDoclingToMemory(conversationId, toolName, r.output).catch((err) => {
+				logger.warn({ err, toolName }, "[mcp] Memory bridge failed (non-blocking)");
+			});
+		}
+
+		// ============================================
 		// EMIT TRACE STEP COMPLETION FOR REAL TOOL CALLS
 		// These appear AFTER the result update, so the trace
 		// completes when the user can see the actual output
@@ -992,11 +1200,7 @@ export async function* executeToolCalls({
 				// Update step status to done or error
 				yield {
 					type: "update",
-					update: createDoclingTraceStepStatus(
-						traceRunId,
-						stepId,
-						r.error ? "error" : "done"
-					),
+					update: createDoclingTraceStepStatus(traceRunId, stepId, r.error ? "error" : "done"),
 				};
 
 				logger.debug("[mcp] Emitted trace step completion for real tool", {

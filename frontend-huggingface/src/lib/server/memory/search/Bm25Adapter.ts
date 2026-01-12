@@ -143,7 +143,8 @@ export class Bm25Adapter {
 			const errorMessage = err instanceof Error ? err.message : String(err);
 
 			// Check if it's a timeout
-			const timedOut = errorMessage.includes("timed out") || errorMessage.includes("exceeded time limit");
+			const timedOut =
+				errorMessage.includes("timed out") || errorMessage.includes("exceeded time limit");
 
 			if (timedOut) {
 				logger.warn({ query: params.query, timeout: timeoutMs }, "BM25 search timed out");

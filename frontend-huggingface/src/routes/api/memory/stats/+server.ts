@@ -1,32 +1,20 @@
-import { json, error } from "@sveltejs/kit";
+import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 
 // GET /api/memory/stats - Get memory statistics
-export const GET: RequestHandler = async ({ locals }) => {
-	const userId = locals.user?.id;
-
-	// Return empty stats for unauthenticated users
-	if (!userId) {
-		return json({
-			success: true,
-			stats: {
-				user_id: "anonymous",
-				as_of: new Date().toISOString(),
-				tiers: {
-					working: { active_count: 0, archived_count: 0, deleted_count: 0, uses_total: 0, success_rate: 0 },
-					history: { active_count: 0, archived_count: 0, deleted_count: 0, uses_total: 0, success_rate: 0 },
-					patterns: { active_count: 0, archived_count: 0, deleted_count: 0, uses_total: 0, success_rate: 0 },
-					books: { active_count: 0, archived_count: 0, deleted_count: 0, uses_total: 0, success_rate: 0 },
-					memory_bank: { active_count: 0, archived_count: 0, deleted_count: 0, uses_total: 0, success_rate: 0 },
-				},
-			},
-		});
-	}
-
+export const GET: RequestHandler = async () => {
 	try {
+		console.log(`[API] Fetching memory stats for user: ${ADMIN_USER_ID}`);
 		const facade = UnifiedMemoryFacade.getInstance();
-		const stats = await facade.getStats(userId);
+		if (!facade.isInitialized()) {
+			console.warn("[API] Memory facade not initialized");
+			return json({ success: false, error: "System not ready" });
+		}
+		
+		const stats = await facade.getStats(ADMIN_USER_ID);
+		console.log(`[API] Got memory stats:`, JSON.stringify(stats));
 
 		return json({
 			success: true,

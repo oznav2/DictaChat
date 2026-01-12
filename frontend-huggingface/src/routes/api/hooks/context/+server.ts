@@ -2,6 +2,7 @@ import { json, error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
 import type { MemoryTier } from "$lib/types/MemoryMeta";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 
 /**
  * Context Hook API - Retrieves relevant context for a query
@@ -39,19 +40,9 @@ export interface ContextResponse {
 
 const ALL_TIERS: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
 
-export const POST: RequestHandler = async ({ request, locals }) => {
-	const userId = locals.user?.id;
-	if (!userId) {
-		return error(401, "Authentication required");
-	}
-
+export const POST: RequestHandler = async ({ request }) => {
 	const body: ContextRequest = await request.json();
-	const {
-		query,
-		limit = 10,
-		tiers = ALL_TIERS,
-		sortBy = "relevance",
-	} = body;
+	const { query, limit = 10, tiers = ALL_TIERS, sortBy = "relevance" } = body;
 
 	if (!query || typeof query !== "string") {
 		return error(400, "query is required");
@@ -71,7 +62,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	const startTime = Date.now();
 	const searchResult = await facade.search({
-		userId,
+		userId: ADMIN_USER_ID,
 		query: query.trim(),
 		collections: validTiers,
 		limit: Math.min(limit, 50),
@@ -96,7 +87,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 	return json({
 		contexts,
-		total: searchResult.total,
+		total: searchResult.results.length,
 		query,
 		tiersSearched: validTiers,
 		latencyMs,
@@ -104,12 +95,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	} satisfies ContextResponse);
 };
 
-export const GET: RequestHandler = async ({ url, locals }) => {
-	const userId = locals.user?.id;
-	if (!userId) {
-		return error(401, "Authentication required");
-	}
-
+export const GET: RequestHandler = async ({ url }) => {
 	const query = url.searchParams.get("query");
 	const limitStr = url.searchParams.get("limit");
 	const tiersStr = url.searchParams.get("tiers");
@@ -128,7 +114,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
 	const startTime = Date.now();
 	const searchResult = await facade.search({
-		userId,
+		userId: ADMIN_USER_ID,
 		query: query.trim(),
 		collections: tiers.length > 0 ? tiers : ALL_TIERS,
 		limit: Math.min(limit, 50),
@@ -148,7 +134,7 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
 	return json({
 		contexts,
-		total: searchResult.total,
+		total: searchResult.results.length,
 		query,
 		tiersSearched: tiers.length > 0 ? tiers : ALL_TIERS,
 		latencyMs,
@@ -166,9 +152,7 @@ function determineConfidence(contexts: ContextItem[]): "high" | "medium" | "low"
 
 	const topScore = contexts[0]?.score ?? 0;
 	const avgScore =
-		contexts.length > 0
-			? contexts.reduce((sum, c) => sum + c.score, 0) / contexts.length
-			: 0;
+		contexts.length > 0 ? contexts.reduce((sum, c) => sum + c.score, 0) / contexts.length : 0;
 
 	if (topScore >= 0.8 && avgScore >= 0.5) return "high";
 	if (topScore >= 0.5 && avgScore >= 0.3) return "medium";

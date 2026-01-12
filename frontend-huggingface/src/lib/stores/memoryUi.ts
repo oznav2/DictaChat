@@ -9,6 +9,7 @@ export type MemoryUiEvents =
 	| "memoryui:openPersonality"
 	| "memoryui:openBooksProcessor"
 	| "memoryui:openMemoryBank"
+	| "memoryui:openMemoryEducation"
 	| "memoryui:setConversation"
 	| "memoryui:assistantStreamStarted"
 	| "memoryui:assistantStreamFinished"
@@ -27,6 +28,7 @@ export interface MemoryUiState {
 		personalityOpen: boolean;
 		booksProcessorOpen: boolean;
 		memoryBankOpen: boolean;
+		memoryEducationOpen: boolean;
 	};
 	session: {
 		activeConversationId: string | null;
@@ -42,7 +44,14 @@ export interface MemoryUiState {
 		lastKnownContextTextByMessageId: Record<string, string>;
 		lastCitationsByMessageId: Record<
 			string,
-			Array<{ tier: string; memory_id: string; doc_id?: string | null }>
+			Array<{
+				tier: string;
+				memory_id: string;
+				doc_id?: string | null;
+				content?: string;
+				wilson_score?: number;
+				confidence?: number;
+			}>
 		>;
 		lastMemoryMetaByMessageId: Record<string, MemoryMetaV1>;
 	};
@@ -50,11 +59,18 @@ export interface MemoryUiState {
 		expandedKnownContextByMessageId: Record<string, boolean>;
 		expandedCitationsByMessageId: Record<string, boolean>;
 		feedbackEligibleByMessageId: Record<string, boolean>;
+		selectedMemoryId: string | null;
+	};
+	processing: {
+		status: "idle" | "searching" | "found" | "storing" | "learning";
+		foundCount: number;
+		lastQuery: string | null;
 	};
 }
 
 const RIGHT_DOCK_WIDTH_STORAGE_KEY = "rightDockWidth";
 const RIGHT_DOCK_OPEN_STORAGE_KEY = "rightDockOpen";
+const MEMORY_EDUCATION_SEEN_STORAGE_KEY = "memoryEducationSeen";
 
 function readNumberFromStorage(key: string, fallback: number) {
 	if (!browser) return fallback;
@@ -86,6 +102,7 @@ const initialState: MemoryUiState = {
 		personalityOpen: false,
 		booksProcessorOpen: false,
 		memoryBankOpen: false,
+		memoryEducationOpen: false,
 	},
 	session: {
 		activeConversationId: null,
@@ -106,6 +123,12 @@ const initialState: MemoryUiState = {
 		expandedKnownContextByMessageId: {},
 		expandedCitationsByMessageId: {},
 		feedbackEligibleByMessageId: {},
+		selectedMemoryId: null,
+	},
+	processing: {
+		status: "idle",
+		foundCount: 0,
+		lastQuery: null,
 	},
 };
 
@@ -224,6 +247,23 @@ function createMemoryUiStore() {
 		store.update((s) => ({ ...s, modals: { ...s.modals, memoryBankOpen: false } }));
 	}
 
+	function openMemoryEducation() {
+		store.update((s) => ({ ...s, modals: { ...s.modals, memoryEducationOpen: true } }));
+	}
+
+	function closeMemoryEducation(params?: { markSeen?: boolean }) {
+		store.update((s) => ({ ...s, modals: { ...s.modals, memoryEducationOpen: false } }));
+		if (browser && params?.markSeen) {
+			window.localStorage.setItem(MEMORY_EDUCATION_SEEN_STORAGE_KEY, "true");
+		}
+	}
+
+	function openMemoryEducationIfNeeded() {
+		if (!browser) return;
+		const seen = readBooleanFromStorage(MEMORY_EDUCATION_SEEN_STORAGE_KEY, false);
+		if (!seen) openMemoryEducation();
+	}
+
 	function assistantStreamStarted(params: { conversationId: string; messageId: string }) {
 		store.update((s) => ({
 			...s,
@@ -276,7 +316,11 @@ function createMemoryUiStore() {
 		}));
 	}
 
-	function memoryMetaUpdated(params: { conversationId: string; messageId: string; meta: MemoryMetaV1 }) {
+	function memoryMetaUpdated(params: {
+		conversationId: string;
+		messageId: string;
+		meta: MemoryMetaV1;
+	}) {
 		store.update((s) => ({
 			...s,
 			session: {
@@ -286,7 +330,8 @@ function createMemoryUiStore() {
 			data: {
 				...s.data,
 				activeConcepts: (params.meta.context_insights?.matched_concepts ?? []).slice(0, 8),
-				lastContextInsights: (params.meta.context_insights as unknown as Record<string, unknown>) ?? null,
+				lastContextInsights:
+					(params.meta.context_insights as unknown as Record<string, unknown>) ?? null,
 				lastRetrievalDebug: (params.meta.debug as unknown as Record<string, unknown>) ?? null,
 				lastKnownContextTextByMessageId: {
 					...s.data.lastKnownContextTextByMessageId,
@@ -298,6 +343,9 @@ function createMemoryUiStore() {
 						tier: c.tier,
 						memory_id: c.memory_id,
 						doc_id: c.doc_id ?? null,
+						content: c.content ?? c.text ?? undefined,
+						wilson_score: c.wilson_score ?? undefined,
+						confidence: c.confidence ?? c.score ?? undefined,
 					})),
 				},
 				lastMemoryMetaByMessageId: {
@@ -341,6 +389,59 @@ function createMemoryUiStore() {
 		}));
 	}
 
+	function setSelectedMemoryId(memoryId: string | null) {
+		store.update((s) => ({
+			...s,
+			ui: {
+				...s.ui,
+				selectedMemoryId: memoryId,
+			},
+		}));
+	}
+
+	function setProcessingStatus(status: MemoryUiState["processing"]["status"]) {
+		store.update((s) => ({
+			...s,
+			processing: {
+				...s.processing,
+				status,
+			},
+		}));
+	}
+
+	function setProcessingFound(count: number) {
+		store.update((s) => ({
+			...s,
+			processing: {
+				...s.processing,
+				status: "found",
+				foundCount: count,
+			},
+		}));
+	}
+
+	function setProcessingSearching(query: string) {
+		store.update((s) => ({
+			...s,
+			processing: {
+				...s.processing,
+				status: "searching",
+				lastQuery: query,
+			},
+		}));
+	}
+
+	function resetProcessing() {
+		store.update((s) => ({
+			...s,
+			processing: {
+				status: "idle",
+				foundCount: 0,
+				lastQuery: null,
+			},
+		}));
+	}
+
 	function dispatch<K extends MemoryUiEvents>(type: K, detail?: unknown) {
 		if (!browser) return;
 		window.dispatchEvent(new CustomEvent(type, { detail }));
@@ -360,6 +461,7 @@ function createMemoryUiStore() {
 			["memoryui:openPersonality", () => openPersonality()],
 			["memoryui:openBooksProcessor", () => openBooksProcessor()],
 			["memoryui:openMemoryBank", () => openMemoryBank()],
+			["memoryui:openMemoryEducation", () => openMemoryEducation()],
 			[
 				"memoryui:setConversation",
 				(e) => {
@@ -428,6 +530,9 @@ function createMemoryUiStore() {
 		closeBooksProcessor,
 		openMemoryBank,
 		closeMemoryBank,
+		openMemoryEducation,
+		closeMemoryEducation,
+		openMemoryEducationIfNeeded,
 		assistantStreamStarted,
 		assistantStreamFinished,
 		setBlockingScoring,
@@ -435,6 +540,11 @@ function createMemoryUiStore() {
 		memoryMetaUpdated,
 		toggleKnownContextExpanded,
 		toggleCitationsExpanded,
+		setSelectedMemoryId,
+		setProcessingStatus,
+		setProcessingFound,
+		setProcessingSearching,
+		resetProcessing,
 		dispatch,
 		installEventListeners,
 		getState: () => get(store),
@@ -442,4 +552,3 @@ function createMemoryUiStore() {
 }
 
 export const memoryUi = createMemoryUiStore();
-

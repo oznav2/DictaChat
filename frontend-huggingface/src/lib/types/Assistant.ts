@@ -21,6 +21,8 @@ export interface Assistant extends Timestamps {
 		top_p?: number;
 		frequency_penalty?: number;
 		top_k?: number;
+		max_tokens?: number;
+		truncate?: number;
 	};
 	dynamicPrompt?: boolean;
 	searchTokens: string[];

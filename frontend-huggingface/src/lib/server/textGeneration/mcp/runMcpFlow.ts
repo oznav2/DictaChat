@@ -3,7 +3,10 @@ import {
 	MessageUpdateType,
 	type MessageUpdate,
 	MessageToolUpdateType,
+	MessageTraceUpdateType,
+	MessageMemoryUpdateType,
 } from "$lib/types/MessageUpdate";
+import { TRACE_STEPS } from "./constants/traceSteps";
 import { getMcpServers } from "$lib/server/mcp/registry";
 import { validateMcpServerUrlCached } from "$lib/server/urlValidationCache";
 import { resetMcpToolsCache } from "$lib/server/mcp/tools";
@@ -39,7 +42,7 @@ import JSON5 from "json5";
 import {
 	hasDocumentAttachments,
 	detectQueryLanguage,
-	type RAGContextResult
+	type RAGContextResult,
 } from "./ragIntegration";
 import {
 	prefetchMemoryContext,
@@ -51,6 +54,7 @@ import {
 	type MemoryContextResult,
 	type SearchPositionMap,
 } from "./memoryIntegration";
+import type { MemoryMetaV1, MemoryTier } from "$lib/types/MemoryMeta";
 
 /**
  * Clean string to ensure valid UTF-8 and remove invalid characters
@@ -100,6 +104,30 @@ function stripLeadingToolCallsPayload(text: string): { text: string; removed: bo
 	return { text: rebuilt.trim(), removed: rebuilt !== text };
 }
 
+function parseMemoryContextForUi(contextText: string): {
+	citations: Array<{ tier: MemoryTier; memory_id: string; content?: string }>;
+	knownContextItems: Array<{ tier: MemoryTier; memory_id: string; content: string }>;
+} {
+	const citations: Array<{ tier: MemoryTier; memory_id: string; content?: string }> = [];
+	const knownContextItems: Array<{ tier: MemoryTier; memory_id: string; content: string }> = [];
+
+	const lines = contextText.split("\n");
+	for (const line of lines) {
+		const marker = line.match(/\[(working|history|patterns|books|memory_bank):([^\]]+)\]/);
+		if (!marker) continue;
+
+		const tier = marker[1] as MemoryTier;
+		const memory_id = marker[2].trim();
+		const content = line.slice(marker.index! + marker[0].length).trim();
+		if (!memory_id) continue;
+
+		citations.push({ tier, memory_id, content: content || undefined });
+		if (content) knownContextItems.push({ tier, memory_id, content });
+	}
+
+	return { citations, knownContextItems };
+}
+
 export type RunMcpFlowContext = Pick<
 	TextGenerationContext,
 	"model" | "conv" | "assistant" | "forceMultimodal" | "forceTools" | "locals"
@@ -139,7 +167,9 @@ export async function* runMcpFlow({
 			{ baseServers: servers.map((s) => ({ name: s.name, url: s.url })), count: servers.length },
 			"[mcp] base servers loaded"
 		);
-	} catch {}
+	} catch (err) {
+		logger.debug("[mcp] base servers debug log failed", { err: String(err) });
+	}
 
 	// Merge in request-provided custom servers (if any)
 	try {
@@ -175,7 +205,9 @@ export async function* runMcpFlow({
 					},
 					"[mcp] merged request-provided servers"
 				);
-			} catch {}
+			} catch (err) {
+				logger.debug("[mcp] merged server debug log failed", { err: String(err) });
+			}
 		}
 
 		// If the client specified a selection by name, filter to those
@@ -190,9 +222,14 @@ export async function* runMcpFlow({
 					{ selectedNames: names, before, after: servers.map((s) => s.name) },
 					"[mcp] applied name selection"
 				);
-			} catch {}
+			} catch (err) {
+				logger.debug("[mcp] name selection debug log failed", { err: String(err) });
+			}
 		}
-	} catch {
+	} catch (err) {
+		logger.debug("[mcp] server selection merge failed; continuing with env servers", {
+			err: String(err),
+		});
 		// ignore selection merge errors and proceed with env servers
 	}
 
@@ -210,7 +247,8 @@ export async function* runMcpFlow({
 			try {
 				// Use cached URL validation to reduce redundancy and improve performance
 				return validateMcpServerUrlCached(s.url).isValid;
-			} catch {
+			} catch (err) {
+				logger.debug("[mcp] URL validation failed; rejecting server", { err: String(err) });
 				return false;
 			}
 		});
@@ -228,7 +266,9 @@ export async function* runMcpFlow({
 				});
 				logger.warn("[mcp] rejected servers by URL safety", { rejected: rejectedWithReasons });
 			}
-		} catch {}
+		} catch (err) {
+			logger.debug("[mcp] rejected servers logging failed", { err: String(err) });
+		}
 	}
 	if (servers.length === 0) {
 		logger.warn("[mcp] all selected MCP servers rejected by URL safety guard");
@@ -254,7 +294,10 @@ export async function* runMcpFlow({
 							headers: { ...(s.headers ?? {}), Authorization: `Bearer ${userToken}` },
 						};
 					}
-				} catch {
+				} catch (err) {
+					logger.debug("[mcp] HF token overlay skipped (server entry parse error)", {
+						err: String(err),
+					});
 					// ignore URL parse errors and leave server unchanged
 				}
 				return s;
@@ -262,10 +305,15 @@ export async function* runMcpFlow({
 			if (overlayApplied.length > 0) {
 				try {
 					console.debug({ overlayApplied }, "[mcp] forwarded HF token to servers");
-				} catch {}
+				} catch (err) {
+					logger.debug("[mcp] HF token overlay debug log failed", { err: String(err) });
+				}
 			}
 		}
-	} catch {
+	} catch (err) {
+		logger.debug("[mcp] HF token overlay failed; continuing without forwarding", {
+			err: String(err),
+		});
 		// best-effort overlay; continue if anything goes wrong
 	}
 	console.debug(
@@ -296,7 +344,8 @@ export async function* runMcpFlow({
 			);
 			return false;
 		}
-	} catch {
+	} catch (err) {
+		logger.debug("[mcp] tools gate evaluation failed; proceeding", { err: String(err) });
 		// If anything goes wrong reading the flag, proceed (previous behavior)
 	}
 
@@ -451,10 +500,43 @@ export async function* runMcpFlow({
 		const userId = getUserIdFromConversation(conv as { sessionId?: string; userId?: string });
 		const conversationId = conv._id?.toString() ?? "";
 		let memoryResult: MemoryContextResult | null = null;
+		let memoryMeta: MemoryMetaV1 | undefined;
 		let searchPositionMap: SearchPositionMap = {};
 		const explicitToolRequest = extractExplicitToolRequest(userQuery);
 
+		// Generate a unique run ID for memory trace events
+		const memoryTraceRunId = `mem-${randomUUID().slice(0, 8)}`;
+		const memorySearchStepId = `${TRACE_STEPS.MEMORY_SEARCH.id}-${Date.now()}`;
+
 		try {
+			// Emit memory search started trace event
+			yield {
+				type: MessageUpdateType.Trace,
+				subtype: MessageTraceUpdateType.RunCreated,
+				runId: memoryTraceRunId,
+				conversationId,
+				timestamp: Date.now(),
+			};
+
+			yield {
+				type: MessageUpdateType.Trace,
+				subtype: MessageTraceUpdateType.StepCreated,
+				runId: memoryTraceRunId,
+				step: {
+					id: memorySearchStepId,
+					parentId: null,
+					label: TRACE_STEPS.MEMORY_SEARCH.label,
+					status: "running",
+					timestamp: Date.now(),
+				},
+			};
+
+			// Emit Memory Searching event for real-time UI feedback
+			yield {
+				type: MessageUpdateType.Memory,
+				subtype: MessageMemoryUpdateType.Searching,
+				query: userQuery,
+			};
 			// Build recent messages for context-aware retrieval
 			const recentMessages = messages.slice(-5).map((m) => ({
 				role: m.from ?? "user",
@@ -471,11 +553,140 @@ export async function* runMcpFlow({
 			// Store searchPositionMap for outcome tracking
 			searchPositionMap = memoryResult.searchPositionMap;
 
+			if (memoryResult.memoryContext) {
+				const parsedContext = parseMemoryContextForUi(memoryResult.memoryContext);
+				const tiersUsed = Array.from(new Set(parsedContext.citations.map((c) => c.tier)));
+
+				const stageTimings: Record<string, number> = {};
+				const rawTimings = memoryResult.retrievalDebug?.stage_timings_ms ?? {};
+				for (const [k, v] of Object.entries(rawTimings)) {
+					if (typeof v === "number") stageTimings[k] = v;
+				}
+
+				const byMemoryId = Object.fromEntries(
+					Object.entries(searchPositionMap).map(([memory_id, entry]) => [
+						memory_id,
+						{ position: entry.position, tier: entry.tier },
+					])
+				);
+				const byPosition = Object.entries(searchPositionMap)
+					.map(([memory_id, entry]) => ({ memory_id, tier: entry.tier, position: entry.position }))
+					.sort((a, b) => a.position - b.position);
+
+				memoryMeta = {
+					schema_version: "v1",
+					conversation_id: conversationId,
+					assistant_message_id: "",
+					user_id: userId,
+					created_at: new Date().toISOString(),
+					retrieval: {
+						query: userQuery,
+						normalized_query: null,
+						limit: parsedContext.citations.length,
+						sort_by: null,
+						tiers_considered: ["working", "history", "patterns", "books", "memory_bank"],
+						tiers_used: tiersUsed,
+						search_position_map: {
+							by_position: byPosition,
+							by_memory_id: byMemoryId,
+						},
+					},
+					known_context: {
+						known_context_text: memoryResult.memoryContext,
+						known_context_items: parsedContext.knownContextItems.map((i) => ({
+							tier: i.tier,
+							memory_id: i.memory_id,
+							content: i.content,
+						})),
+					},
+					citations: parsedContext.citations.map((c) => ({
+						tier: c.tier,
+						memory_id: c.memory_id,
+						content: c.content,
+					})),
+					context_insights: {
+						matched_concepts: [],
+						active_concepts: [],
+						tier_recommendations: null,
+						you_already_know: null,
+						directives: null,
+					},
+					debug: {
+						retrieval_confidence: memoryResult.retrievalConfidence,
+						fallbacks_used: memoryResult.retrievalDebug?.fallbacks_used ?? [],
+						stage_timings_ms: stageTimings,
+						errors: (memoryResult.retrievalDebug?.errors ?? []).map((e) => ({
+							stage: e.stage,
+							message: e.message,
+							code: e.code ?? null,
+						})),
+						vector_stage_status: null,
+					},
+					feedback: {
+						eligible: parsedContext.citations.length > 0,
+						interrupted: false,
+						eligible_reason: parsedContext.citations.length > 0 ? null : "no_citations",
+					},
+				};
+			}
+
+			// Emit memory search done
+			yield {
+				type: MessageUpdateType.Trace,
+				subtype: MessageTraceUpdateType.StepStatus,
+				runId: memoryTraceRunId,
+				stepId: memorySearchStepId,
+				status: "done",
+				timestamp: Date.now(),
+			};
+
+			// Emit memory found step if we have results
+			const memoriesFound = Object.keys(searchPositionMap).length;
+			if (memoriesFound > 0) {
+				const memoryFoundStepId = `${TRACE_STEPS.MEMORY_FOUND.id}-${Date.now()}`;
+				yield {
+					type: MessageUpdateType.Trace,
+					subtype: MessageTraceUpdateType.StepCreated,
+					runId: memoryTraceRunId,
+					step: {
+						id: memoryFoundStepId,
+						parentId: null,
+						label: {
+							he: `נמצאו ${memoriesFound} זיכרונות (${memoryResult.retrievalConfidence})`,
+							en: `Found ${memoriesFound} memories (${memoryResult.retrievalConfidence})`,
+						},
+						status: "done",
+						timestamp: Date.now(),
+					},
+				};
+			}
+
+			// Emit Memory Found event for real-time UI feedback
+			yield {
+				type: MessageUpdateType.Memory,
+				subtype: MessageMemoryUpdateType.Found,
+				count: memoriesFound,
+				confidence:
+					memoryResult.retrievalConfidence === "high"
+						? 0.9
+						: memoryResult.retrievalConfidence === "medium"
+							? 0.7
+							: 0.5,
+			};
+
 			// Prepend memory sections (personality first, then memory context with confidence hint)
 			const memorySections = formatMemoryPromptSections(memoryResult);
 			for (const section of memorySections) {
 				prepromptPieces.push(section);
 			}
+
+			// Emit run completed
+			yield {
+				type: MessageUpdateType.Trace,
+				subtype: MessageTraceUpdateType.RunCompleted,
+				runId: memoryTraceRunId,
+				timestamp: Date.now(),
+			};
 
 			if (memoryResult.timing.personalityMs > 0 || memoryResult.timing.memoryMs > 0) {
 				logger.debug("[mcp] Memory context prefetched", {
@@ -489,8 +700,25 @@ export async function* runMcpFlow({
 				});
 			}
 		} catch (err) {
+			// Mark search step as error
+			yield {
+				type: MessageUpdateType.Trace,
+				subtype: MessageTraceUpdateType.StepStatus,
+				runId: memoryTraceRunId,
+				stepId: memorySearchStepId,
+				status: "error",
+				timestamp: Date.now(),
+			};
+			yield {
+				type: MessageUpdateType.Trace,
+				subtype: MessageTraceUpdateType.RunCompleted,
+				runId: memoryTraceRunId,
+				timestamp: Date.now(),
+			};
 			// Memory system must never block streaming - fail silently
-			logger.warn("[mcp] Memory prefetch failed, continuing without memory context", { error: String(err) });
+			logger.warn("[mcp] Memory prefetch failed, continuing without memory context", {
+				error: String(err),
+			});
 		}
 
 		if (toolsToUse.length > 0 && !useNativeTools) {
@@ -879,7 +1107,9 @@ Even if the document content is in Hebrew or another language, your response mus
 								"[mcp] observed streamed tool_call delta"
 							);
 							firstToolDeltaLogged = true;
-						} catch {}
+						} catch (err) {
+							logger.debug("[mcp] tool_call delta debug log failed", { err: String(err) });
+						}
 					}
 				}
 
@@ -980,10 +1210,7 @@ Even if the document content is in Hebrew or another language, your response mus
 					const effectiveLength = lastAssistantContent.length - contentStartIndex;
 
 					const shouldStream =
-						!sawToolCall &&
-						!hasToolCallInContent &&
-						(inThinkBlock ||
-							effectiveLength > 50);
+						!sawToolCall && !hasToolCallInContent && (inThinkBlock || effectiveLength > 50);
 
 					if (shouldStream) {
 						// Stream any new content that hasn't been sent yet
@@ -1031,7 +1258,7 @@ Even if the document content is in Hebrew or another language, your response mus
 						// Flush any remaining safe content before the tool call
 						// This ensures that <think> blocks or introductory text are not cut off
 						const safeContentEnd = toolCallsPayloadStart;
-						
+
 						// We rely on tokenCount as the authoritative cursor of what has been yielded
 						if (safeContentEnd > tokenCount) {
 							const toYield = lastAssistantContent.slice(tokenCount, safeContentEnd);
@@ -1118,6 +1345,47 @@ Even if the document content is in Hebrew or another language, your response mus
 						"[mcp] error parsing tool_calls JSON",
 						e instanceof Error ? e : new Error(String(e))
 					);
+				}
+			}
+
+			// Additional fallback: Parse <tool_call>...</tool_call> XML format
+			// Some models (e.g., via Open WebUI templates) output tool calls in XML tags
+			if (Object.keys(toolCallState).length === 0) {
+				const toolCallTagRegex = /<tool_call>\s*([\s\S]*?)\s*<\/tool_call>/gi;
+				let xmlMatch;
+				let xmlIndex = 0;
+				while ((xmlMatch = toolCallTagRegex.exec(lastAssistantContent)) !== null) {
+					try {
+						const innerJson = xmlMatch[1].trim();
+						if (innerJson.startsWith("{")) {
+							const parsed = JSON5.parse(innerJson) as {
+								name?: string;
+								arguments?: unknown;
+								parameters?: unknown;
+							};
+							if (parsed.name && typeof parsed.name === "string") {
+								const params = parsed.parameters || parsed.arguments || {};
+								const args =
+									typeof params === "object" ? JSON.stringify(params) : String(params || "{}");
+								toolCallState[xmlIndex] = {
+									id: `call_xml_${Math.random().toString(36).slice(2)}`,
+									name: parsed.name,
+									arguments: args,
+								};
+								xmlIndex++;
+							}
+						}
+					} catch (xmlErr) {
+						logger.warn("[mcp] failed to parse <tool_call> XML content", {
+							error: xmlErr instanceof Error ? xmlErr.message : String(xmlErr),
+							content: xmlMatch[1].slice(0, 100),
+						});
+					}
+				}
+				if (Object.keys(toolCallState).length > 0) {
+					logger.info("[mcp] successfully parsed tool_calls from XML format", {
+						count: Object.keys(toolCallState).length,
+					});
 				}
 			}
 
@@ -1299,7 +1567,9 @@ Even if the document content is in Hebrew or another language, your response mus
 						// Track executed tools for outcome recording (Point D)
 						for (const run of event.summary.toolRuns ?? []) {
 							// Determine success based on output - empty or error-like output indicates failure
-							const hasValidOutput = Boolean(run.output && run.output.length > 0 && !run.output.startsWith("Error:"));
+							const hasValidOutput = Boolean(
+								run.output && run.output.length > 0 && !run.output.startsWith("Error:")
+							);
 							executedToolsTracker.push({
 								name: run.name,
 								success: hasValidOutput,
@@ -1354,9 +1624,7 @@ Even if the document content is in Hebrew or another language, your response mus
 
 			// Remove <reasoning> tags from output (common in Perplexity/research tool responses)
 			// Strip the tags but keep the content - the reasoning is valuable, just not the markup
-			cleanedContent = cleanedContent
-				.replace(/<reasoning>/gi, "")
-				.replace(/<\/reasoning>/gi, "");
+			cleanedContent = cleanedContent.replace(/<reasoning>/gi, "").replace(/<\/reasoning>/gi, "");
 
 			// Also remove other common internal tags that shouldn't appear in user output
 			// These are model artifacts that leak through from tool responses
@@ -1392,6 +1660,7 @@ Even if the document content is in Hebrew or another language, your response mus
 				type: MessageUpdateType.FinalAnswer,
 				text: lastAssistantContent,
 				interrupted: false,
+				memoryMeta,
 			};
 			console.info(
 				{ length: lastAssistantContent.length, loop },
@@ -1415,8 +1684,22 @@ Even if the document content is in Hebrew or another language, your response mus
 					logger.debug("[mcp] Failed to record response outcome", { error: String(err) });
 				});
 
+				// Emit Memory Outcome event for learning feedback
+				yield {
+					type: MessageUpdateType.Memory,
+					subtype: MessageMemoryUpdateType.Outcome,
+					outcome: "positive",
+					memoryIds: Object.keys(searchPositionMap),
+				};
+
 				// Store working memory from exchange (async, non-blocking)
 				if (lastAssistantContent.trim().length > 50) {
+					// Emit Memory Storing event for real-time UI feedback
+					yield {
+						type: MessageUpdateType.Memory,
+						subtype: MessageMemoryUpdateType.Storing,
+						tier: "working",
+					};
 					storeWorkingMemory({
 						userId,
 						conversationId,
@@ -1424,6 +1707,9 @@ Even if the document content is in Hebrew or another language, your response mus
 						assistantResponse: lastAssistantContent.slice(0, 2000), // Limit stored response size
 						toolsUsed: executedToolsTracker.map((t) => t.name),
 						memoriesUsed: Object.keys(searchPositionMap),
+						// Cross-personality memory tracking
+						personalityId: conv.personalityId || "default",
+						personalityName: conv.personalityBadge?.name || "DictaChat",
 					}).catch((err) => {
 						logger.debug("[mcp] Failed to store working memory", { error: String(err) });
 					});

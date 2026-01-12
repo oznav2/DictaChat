@@ -13,6 +13,8 @@ type SettingsStore = {
 	customPrompts: Record<string, string>;
 	multimodalOverrides: Record<string, boolean>;
 	toolsOverrides: Record<string, boolean>;
+	maxTokensOverrides: Record<string, number>;
+	truncateOverrides: Record<string, number>;
 	recentlySaved: boolean;
 	disableStream: boolean;
 	directPaste: boolean;
@@ -25,7 +27,7 @@ type SettingsStoreWritable = Writable<SettingsStore> & {
 	initValue: <K extends keyof SettingsStore>(
 		key: K,
 		nestedKey: string,
-		value: string | boolean
+		value: string | boolean | number
 	) => Promise<void>;
 };
 
@@ -82,10 +84,10 @@ export function createSettingsStore(initialValue: Omit<SettingsStore, "recentlyS
 	async function initValue<K extends keyof SettingsStore>(
 		key: K,
 		nestedKey: string,
-		value: string | boolean
+		value: string | boolean | number
 	) {
 		const currentStore = get(baseStore);
-		const currentNestedObject = currentStore[key] as Record<string, string | boolean>;
+		const currentNestedObject = currentStore[key] as Record<string, string | boolean | number>;
 
 		// Only initialize if undefined
 		if (currentNestedObject?.[nestedKey] !== undefined) {

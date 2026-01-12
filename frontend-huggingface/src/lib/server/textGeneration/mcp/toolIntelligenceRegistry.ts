@@ -206,7 +206,12 @@ const TOOL_INTELLIGENCE: ToolIntelligence[] = [
 		displayName: "Perplexity Q&A",
 		priority: 95,
 		fallbackChain: ["perplexity-search", "tavily-search"],
-		conflictsWith: ["perplexity-research", "perplexity-search", "perplexity-reason", "tavily-search"],
+		conflictsWith: [
+			"perplexity-research",
+			"perplexity-search",
+			"perplexity-reason",
+			"tavily-search",
+		],
 		latency: {
 			typical: 15000,
 			timeout: 120000,
@@ -1007,7 +1012,10 @@ export function scoreToolForQuery(toolName: string, query: string): number {
 /**
  * Get all tools sorted by score for a given query
  */
-export function rankToolsForQuery(query: string, availableTools: string[]): Array<{
+export function rankToolsForQuery(
+	query: string,
+	availableTools: string[]
+): Array<{
 	tool: string;
 	score: number;
 	latencyTier: LatencyTier;
@@ -1059,7 +1067,14 @@ export function isToolRegistered(toolName: string): boolean {
 /**
  * Tool categories for grouping in capability manifest
  */
-type ToolCategory = "research" | "search" | "data" | "documents" | "files" | "development" | "utility";
+type ToolCategory =
+	| "research"
+	| "search"
+	| "data"
+	| "documents"
+	| "files"
+	| "development"
+	| "utility";
 
 interface ToolCategoryInfo {
 	name: string;
@@ -1193,7 +1208,8 @@ export function generatePostExecutionSuggestions(usedTool: string, query: string
 	// Quick search → Suggest deeper research
 	if (usedToolLower.includes("tavily") || usedToolLower === "perplexity-search") {
 		// Check if query seems complex enough to warrant deeper research
-		const complexitySignals = /מחקר|ניתוח|השווא|מקיף|מפורט|research|analysis|compare|comprehensive|detailed/i;
+		const complexitySignals =
+			/מחקר|ניתוח|השווא|מקיף|מפורט|research|analysis|compare|comprehensive|detailed/i;
 		if (complexitySignals.test(query)) {
 			return `\n\n💡 **הצעה**: התשובה מבוססת על חיפוש מהיר. לניתוח מעמיק יותר, אוכל לבצע מחקר עם Perplexity Research שיספק תוצאות מקיפות יותר.`;
 		}

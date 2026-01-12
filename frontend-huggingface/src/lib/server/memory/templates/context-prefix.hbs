@@ -1,56 +1,70 @@
-{{!-- @description: Contextual embedding prefix generation for improved retrieval --}}
-{{!-- @category: retrieval --}}
+{{! @description: Contextual embedding prefix generation for improved retrieval }}
+{{! @category: retrieval }}
 
 {{#ifLang "he"}}
-{{#eq context_type "coding"}}
-קוד ותכנות: {{query}}
+	{{#eq context_type "coding"}}
+		קוד ותכנות:
+		{{query}}
+	{{else}}
+		{{#eq context_type "debug"}}
+			תיקון באגים ופתרון בעיות:
+			{{query}}
+		{{else}}
+			{{#eq context_type "research"}}
+				מחקר ולמידה:
+				{{query}}
+			{{else}}
+				{{#eq context_type "planning"}}
+					תכנון ואסטרטגיה:
+					{{query}}
+				{{else}}
+					{{#eq context_type "error"}}
+						טיפול בשגיאות:
+						{{query}}
+					{{else}}
+						שאילתה כללית:
+						{{query}}
+					{{/eq}}
+				{{/eq}}
+			{{/eq}}
+		{{/eq}}
+	{{/eq}}
 {{else}}
-{{#eq context_type "debug"}}
-תיקון באגים ופתרון בעיות: {{query}}
-{{else}}
-{{#eq context_type "research"}}
-מחקר ולמידה: {{query}}
-{{else}}
-{{#eq context_type "planning"}}
-תכנון ואסטרטגיה: {{query}}
-{{else}}
-{{#eq context_type "error"}}
-טיפול בשגיאות: {{query}}
-{{else}}
-שאילתה כללית: {{query}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
-{{else}}
-{{#eq context_type "coding"}}
-Code and programming: {{query}}
-{{else}}
-{{#eq context_type "debug"}}
-Debugging and troubleshooting: {{query}}
-{{else}}
-{{#eq context_type "research"}}
-Research and learning: {{query}}
-{{else}}
-{{#eq context_type "planning"}}
-Planning and strategy: {{query}}
-{{else}}
-{{#eq context_type "error"}}
-Error handling: {{query}}
-{{else}}
-General query: {{query}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
+	{{#eq context_type "coding"}}
+		Code and programming:
+		{{query}}
+	{{else}}
+		{{#eq context_type "debug"}}
+			Debugging and troubleshooting:
+			{{query}}
+		{{else}}
+			{{#eq context_type "research"}}
+				Research and learning:
+				{{query}}
+			{{else}}
+				{{#eq context_type "planning"}}
+					Planning and strategy:
+					{{query}}
+				{{else}}
+					{{#eq context_type "error"}}
+						Error handling:
+						{{query}}
+					{{else}}
+						General query:
+						{{query}}
+					{{/eq}}
+				{{/eq}}
+			{{/eq}}
+		{{/eq}}
+	{{/eq}}
 {{/ifLang}}
 
 {{#if entities}}
-{{#ifLang "he"}}
-ישויות: {{join entities ", "}}
-{{else}}
-Entities: {{join entities ", "}}
-{{/ifLang}}
+	{{#ifLang "he"}}
+		ישויות:
+		{{join entities ", "}}
+	{{else}}
+		Entities:
+		{{join entities ", "}}
+	{{/ifLang}}
 {{/if}}

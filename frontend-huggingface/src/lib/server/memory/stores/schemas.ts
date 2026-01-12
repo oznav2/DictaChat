@@ -99,6 +99,26 @@ export interface MemoryItemDocument {
 		current_version: number;
 		supersedes_memory_id: string | null;
 	};
+
+	// Personality tracking (for cross-personality memory access)
+	personality: {
+		source_personality_id: string | null;
+		source_personality_name: string | null;
+	};
+
+	// Bilingual support - "none" disables language-specific stemming
+	language: "he" | "en" | "mixed" | "none";
+	translation_ref_id: string | null;
+}
+
+export interface KnownSolutionDocument {
+	_id: ObjectId;
+	user_id: string;
+	problem_hash: string;
+	memory_id: string;
+	success_count: number;
+	first_used_at: Date;
+	last_used_at: Date;
 }
 
 /**
@@ -256,6 +276,21 @@ export interface KgEdgeDocument {
 }
 
 /**
+ * personality_memory_mappings collection - Cross-personality memory access
+ * Maps memories to personalities for shared access across personas
+ */
+export interface PersonalityMemoryMappingDocument {
+	_id: ObjectId;
+	mapping_id: string; // UUID
+	user_id: string;
+	memory_id: string; // References memory_items.memory_id
+	personality_id: string;
+	personality_name: string;
+	access_level: "owner" | "shared" | "inherited";
+	created_at: Date;
+}
+
+/**
  * reindex_checkpoints collection - Tracks reindex progress
  * Allows resumable reindexing from MongoDB to Qdrant
  */
@@ -369,6 +404,12 @@ export const MEMORY_COLLECTION_INDEXES = {
 		{ key: { action_type: 1, context_type: 1, outcome: 1 } },
 	],
 
+	known_solutions: [
+		{ key: { user_id: 1, problem_hash: 1 }, unique: true },
+		{ key: { user_id: 1, last_used_at: -1 } },
+		{ key: { user_id: 1, success_count: -1 } },
+	],
+
 	kg_nodes: [
 		{ key: { node_id: 1 }, unique: true },
 		{ key: { user_id: 1, graph_type: 1, label: 1 } },
@@ -383,15 +424,19 @@ export const MEMORY_COLLECTION_INDEXES = {
 		{ key: { source_node_id: 1, target_node_id: 1, graph_type: 1 } },
 	],
 
+	personality_memory_mappings: [
+		{ key: { mapping_id: 1 }, unique: true },
+		{ key: { user_id: 1, personality_id: 1 } },
+		{ key: { user_id: 1, memory_id: 1 } },
+		{ key: { memory_id: 1, access_level: 1 } },
+	],
+
 	reindex_checkpoints: [
 		{ key: { checkpoint_id: 1 }, unique: true },
 		{ key: { user_id: 1, status: 1 } },
 	],
 
-	consistency_logs: [
-		{ key: { log_id: 1 }, unique: true },
-		{ key: { user_id: 1, started_at: -1 } },
-	],
+	consistency_logs: [{ key: { log_id: 1 }, unique: true }, { key: { user_id: 1, started_at: -1 } }],
 };
 
 /**
@@ -402,8 +447,10 @@ export const MEMORY_COLLECTIONS = {
 	VERSIONS: "memory_versions",
 	OUTCOMES: "memory_outcomes",
 	ACTION_OUTCOMES: "action_outcomes",
+	KNOWN_SOLUTIONS: "known_solutions",
 	KG_NODES: "kg_nodes",
 	KG_EDGES: "kg_edges",
+	PERSONALITY_MAPPINGS: "personality_memory_mappings",
 	REINDEX_CHECKPOINTS: "reindex_checkpoints",
 	CONSISTENCY_LOGS: "consistency_logs",
 } as const;

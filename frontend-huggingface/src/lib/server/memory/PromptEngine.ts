@@ -70,13 +70,16 @@ const DEFAULT_CONFIG: Partial<PromptConfig> = {
 
 function registerHelpers(handlebars: typeof Handlebars): void {
 	// Conditional helper for language
-	handlebars.registerHelper("ifLang", function (this: unknown, lang: string, options: Handlebars.HelperOptions) {
-		const context = this as Record<string, unknown>;
-		if (context.language === lang) {
-			return options.fn(this);
+	handlebars.registerHelper(
+		"ifLang",
+		function (this: unknown, lang: string, options: Handlebars.HelperOptions) {
+			const context = this as Record<string, unknown>;
+			if (context.language === lang) {
+				return options.fn(this);
+			}
+			return options.inverse(this);
 		}
-		return options.inverse(this);
-	});
+	);
 
 	// RTL wrapper for Hebrew text
 	handlebars.registerHelper("rtl", function (text: string) {
@@ -115,12 +118,15 @@ function registerHelpers(handlebars: typeof Handlebars): void {
 	});
 
 	// Conditional block for non-empty arrays
-	handlebars.registerHelper("ifNotEmpty", function (this: unknown, arr: unknown[], options: Handlebars.HelperOptions) {
-		if (Array.isArray(arr) && arr.length > 0) {
-			return options.fn(this);
+	handlebars.registerHelper(
+		"ifNotEmpty",
+		function (this: unknown, arr: unknown[], options: Handlebars.HelperOptions) {
+			if (Array.isArray(arr) && arr.length > 0) {
+				return options.fn(this);
+			}
+			return options.inverse(this);
 		}
-		return options.inverse(this);
-	});
+	);
 
 	// Math helpers
 	handlebars.registerHelper("add", function (a: number, b: number) {
@@ -322,7 +328,9 @@ export class PromptEngine {
 			logger.debug({ id, variables: variables.length, language }, "Template loaded");
 		} catch (err) {
 			logger.error({ err, id }, "Failed to load template");
-			throw new Error(`Failed to load template '${id}': ${err instanceof Error ? err.message : String(err)}`);
+			throw new Error(
+				`Failed to load template '${id}': ${err instanceof Error ? err.message : String(err)}`
+			);
 		}
 	}
 
@@ -541,7 +549,9 @@ export class PromptEngine {
 	 * List templates by language
 	 */
 	listTemplatesByLanguage(language: PromptLanguage): PromptTemplate[] {
-		return this.listTemplates().filter((t) => t.language === language || t.language === "bilingual");
+		return this.listTemplates().filter(
+			(t) => t.language === language || t.language === "bilingual"
+		);
 	}
 
 	/**
@@ -595,7 +605,10 @@ export class PromptEngine {
 	/**
 	 * Validate variables against template requirements
 	 */
-	validateVariables(templateId: string, variables: Record<string, unknown>): { valid: boolean; missing: string[] } {
+	validateVariables(
+		templateId: string,
+		variables: Record<string, unknown>
+	): { valid: boolean; missing: string[] } {
 		const info = this.getTemplateInfo(templateId);
 		if (!info) {
 			return { valid: false, missing: [] };
@@ -634,7 +647,9 @@ let _instance: PromptEngine | null = null;
 /**
  * Get or create the singleton PromptEngine instance
  */
-export function getPromptEngine(config?: Partial<PromptConfig> & { templatesDir: string }): PromptEngine {
+export function getPromptEngine(
+	config?: Partial<PromptConfig> & { templatesDir: string }
+): PromptEngine {
 	if (!_instance && !config) {
 		throw new Error("PromptEngine not initialized. Call with config first.");
 	}
@@ -649,7 +664,9 @@ export function getPromptEngine(config?: Partial<PromptConfig> & { templatesDir:
 /**
  * Create a new PromptEngine instance (for testing/isolation)
  */
-export function createPromptEngine(config: Partial<PromptConfig> & { templatesDir: string }): PromptEngine {
+export function createPromptEngine(
+	config: Partial<PromptConfig> & { templatesDir: string }
+): PromptEngine {
 	return new PromptEngine(config);
 }
 

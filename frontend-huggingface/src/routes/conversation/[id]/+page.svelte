@@ -9,7 +9,12 @@
 	import { ERROR_MESSAGES, error } from "$lib/stores/errors";
 	import { findCurrentModel } from "$lib/utils/models";
 	import type { Message } from "$lib/types/Message";
-	import { MessageUpdateStatus, MessageUpdateType } from "$lib/types/MessageUpdate";
+	import {
+		MessageUpdateStatus,
+		MessageUpdateType,
+		MessageMemoryUpdateType,
+	} from "$lib/types/MessageUpdate";
+	import { memoryUi } from "$lib/stores/memoryUi";
 	import titleUpdate from "$lib/stores/titleUpdate";
 	import file2base64 from "$lib/utils/file2base64";
 	import { addChildren } from "$lib/utils/tree/addChildren";
@@ -17,6 +22,7 @@
 	import { fetchMessageUpdates } from "$lib/utils/messageUpdates";
 	import type { v4 } from "uuid";
 	import { useSettingsStore } from "$lib/stores/settings.js";
+	import { derived as deriveStore } from "svelte/store";
 	import { enabledServers } from "$lib/stores/mcpServers";
 	import { browser } from "$app/environment";
 	import {
@@ -42,6 +48,9 @@
 	$effect(() => {
 		conversations = data.conversations;
 	});
+
+	const settings = useSettingsStore();
+	const disableStreamSetting = deriveStore(settings, (s) => s.disableStream);
 
 	function createMessagesPath<T>(messages: TreeNode<T>[], msgId?: TreeId): TreeNode<T>[] {
 		if (initialRun) {
@@ -235,8 +244,39 @@
 
 			files = [];
 			let buffer = "";
+			let bufferedStreamLen = 0;
 			// Initialize lastUpdateTime outside the loop to persist between updates
 			let lastUpdateTime = new Date();
+			const flushStreamBuffer = (currentTime: Date) => {
+				if ($disableStreamSetting) return;
+				if (buffer.length === 0) return;
+
+				messageToWriteTo.content += buffer;
+				const len = buffer.length;
+				buffer = "";
+				bufferedStreamLen += len;
+				lastUpdateTime = currentTime;
+
+				const existingUpdates = messageToWriteTo.updates ?? [];
+				const lastUpdate = existingUpdates.at(-1);
+				const marker = {
+					type: MessageUpdateType.Stream as const,
+					token: "",
+					len: bufferedStreamLen,
+				};
+
+				if (lastUpdate?.type === MessageUpdateType.Stream && lastUpdate.token === "") {
+					const merged = {
+						...lastUpdate,
+						token: "",
+						len: (lastUpdate.len ?? 0) + bufferedStreamLen,
+					};
+					messageToWriteTo.updates = [...existingUpdates.slice(0, -1), merged];
+				} else {
+					messageToWriteTo.updates = [...existingUpdates, marker];
+				}
+				bufferedStreamLen = 0;
+			};
 
 			for await (const update of messageUpdatesIterator) {
 				if ($isAborted) {
@@ -246,32 +286,13 @@
 
 				// Remove null characters added due to remote keylogging prevention
 				// See server code for more details
-				if (update.type === MessageUpdateType.Stream) {
+				if (update.type === MessageUpdateType.Stream)
 					update.token = update.token.replaceAll("\0", "");
-				}
 
 				const isKeepAlive =
 					update.type === MessageUpdateType.Status &&
 					update.status === MessageUpdateStatus.KeepAlive;
 
-				if (!isKeepAlive) {
-					if (update.type === MessageUpdateType.Stream) {
-						const existingUpdates = messageToWriteTo.updates ?? [];
-						const lastUpdate = existingUpdates.at(-1);
-						if (lastUpdate?.type === MessageUpdateType.Stream) {
-							// Create fresh objects/arrays so the UI reacts to merged tokens
-							const merged = {
-								...lastUpdate,
-								token: (lastUpdate.token ?? "") + (update.token ?? ""),
-							};
-							messageToWriteTo.updates = [...existingUpdates.slice(0, -1), merged];
-						} else {
-							messageToWriteTo.updates = [...existingUpdates, update];
-						}
-					} else {
-						messageToWriteTo.updates = [...(messageToWriteTo.updates ?? []), update];
-					}
-				}
 				const currentTime = new Date();
 
 				// If we receive a non-stream update (e.g. tool/status/final answer),
@@ -279,23 +300,28 @@
 				// mid-sentence while tools are running or the final answer arrives.
 				if (
 					update.type !== MessageUpdateType.Stream &&
-					!$settings.disableStream &&
+					!$disableStreamSetting &&
 					buffer.length > 0
 				) {
-					messageToWriteTo.content += buffer;
-					buffer = "";
-					lastUpdateTime = currentTime;
+					flushStreamBuffer(currentTime);
 				}
 
-				if (update.type === MessageUpdateType.Stream && !$settings.disableStream) {
-					buffer += update.token;
-					// Check if this is the first update or if enough time has passed
-					if (currentTime.getTime() - lastUpdateTime.getTime() > updateDebouncer.maxUpdateTime) {
-						messageToWriteTo.content += buffer;
-						buffer = "";
-						lastUpdateTime = currentTime;
+				if (
+					!isKeepAlive &&
+					update.type !== MessageUpdateType.Stream &&
+					update.type !== MessageUpdateType.FinalAnswer
+				) {
+					messageToWriteTo.updates = [...(messageToWriteTo.updates ?? []), update];
+				}
+
+				if (update.type === MessageUpdateType.Stream) {
+					if (!$disableStreamSetting) {
+						buffer += update.token;
+						if (currentTime.getTime() - lastUpdateTime.getTime() > updateDebouncer.maxUpdateTime) {
+							flushStreamBuffer(currentTime);
+						}
+						pending = false;
 					}
-					pending = false;
 				} else if (update.type === MessageUpdateType.FinalAnswer) {
 					// Mirror server-side merge behavior so the UI reflects the
 					// final text once tools complete, while preserving any
@@ -339,6 +365,17 @@
 						// the provider's final text is authoritative.
 						messageToWriteTo.content = update.text ?? "";
 					}
+
+					if (update.memoryMeta) {
+						memoryUi.memoryMetaUpdated({
+							conversationId: page.params.id,
+							messageId: messageToWriteTo.id,
+							meta: update.memoryMeta,
+						});
+					}
+					if (!isKeepAlive) {
+						messageToWriteTo.updates = [...(messageToWriteTo.updates ?? []), update];
+					}
 				} else if (
 					update.type === MessageUpdateType.Status &&
 					update.status === MessageUpdateStatus.Error
@@ -370,6 +407,19 @@
 						route: update.route,
 						model: update.model,
 					};
+				} else if (update.type === MessageUpdateType.Memory) {
+					// Handle memory system events for real-time UI feedback
+					if (update.subtype === MessageMemoryUpdateType.Searching) {
+						memoryUi.setProcessingSearching(update.query);
+					} else if (update.subtype === MessageMemoryUpdateType.Found) {
+						memoryUi.setProcessingFound(update.count);
+					} else if (update.subtype === MessageMemoryUpdateType.Storing) {
+						memoryUi.setProcessingStatus("storing");
+					} else if (update.subtype === MessageMemoryUpdateType.Outcome) {
+						memoryUi.setProcessingStatus("learning");
+						// Clear status after a short delay
+						setTimeout(() => memoryUi.resetProcessing(), 2000);
+					}
 				}
 			}
 		} catch (err) {
@@ -386,6 +436,7 @@
 		} finally {
 			$loading = false;
 			pending = false;
+			memoryUi.resetProcessing();
 			await invalidateAll();
 		}
 	}
@@ -450,7 +501,6 @@
 		messagesPath = createMessagesPath(messages, msgId);
 	}
 
-	const settings = useSettingsStore();
 	let messages = $state(data.messages);
 	$effect(() => {
 		messages = data.messages;

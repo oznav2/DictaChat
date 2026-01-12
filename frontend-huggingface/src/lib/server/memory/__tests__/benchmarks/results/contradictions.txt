@@ -1,19 +1,19 @@
 ============================= test session starts =============================
 platform: node v20.18.1
 test framework: vitest
-timestamp: 2026-01-08T00:58:59.152Z
-rootdir: /home/ilan/BricksLLM/frontend-huggingface/src/lib/server/memory/__tests__
+timestamp: 2026-01-11T16:08:11.579Z
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
 
 collecting ... collected 9 items
 
-test_contradictions::test_direct_contradiction PASSED (3ms) [found_both_facts=1.000, higher_confidence_ranked_first=1.000, result_count=2.000] [ 11%]
-test_contradictions::test_hebrew_direct_contradiction PASSED (1ms) [result_count=2.000, found_hebrew_facts=1.000] [ 22%]
-test_contradictions::test_many_wrong_vs_one_right PASSED (1ms) [wrong_facts_stored=4.000, wrong_in_top_5=4.000, correct_in_top_5=1.000, total_results=5.000] [ 33%]
-test_contradictions::test_temporal_update PASSED (1ms) [old_fact_found=1.000, new_fact_found=1.000, total_results=2.000] [ 44%]
-test_contradictions::test_hebrew_temporal_update PASSED (1ms) [hebrew_results=2.000] [ 56%]
-test_contradictions::test_confidence_conflict PASSED (1ms) [results_count=3.000, highest_confidence_in_results=0.950, lowest_confidence_in_results=0.300] [ 67%]
-test_contradictions::test_implicit_contradiction PASSED (0ms) [implicit_contradictions_found=3.000, total_results=3.000] [ 78%]
-test_contradictions::test_hebrew_implicit_contradiction PASSED (1ms) [hebrew_implicit_found=2.000] [ 89%]
+test_contradictions::test_direct_contradiction PASSED (5ms) [found_both_facts=1.000, higher_confidence_ranked_first=1.000, result_count=2.000] [ 11%]
+test_contradictions::test_hebrew_direct_contradiction PASSED (3ms) [result_count=2.000, found_hebrew_facts=1.000] [ 22%]
+test_contradictions::test_many_wrong_vs_one_right PASSED (5ms) [wrong_facts_stored=4.000, wrong_in_top_5=4.000, correct_in_top_5=1.000, total_results=5.000] [ 33%]
+test_contradictions::test_temporal_update PASSED (2ms) [old_fact_found=1.000, new_fact_found=1.000, total_results=2.000] [ 44%]
+test_contradictions::test_hebrew_temporal_update PASSED (2ms) [hebrew_results=2.000] [ 56%]
+test_contradictions::test_confidence_conflict PASSED (5ms) [results_count=3.000, highest_confidence_in_results=0.950, lowest_confidence_in_results=0.300] [ 67%]
+test_contradictions::test_implicit_contradiction PASSED (1ms) [implicit_contradictions_found=3.000, total_results=3.000] [ 78%]
+test_contradictions::test_hebrew_implicit_contradiction PASSED (0ms) [hebrew_implicit_found=2.000] [ 89%]
 test_contradictions::test_contradictions PASSED (1ms) [contradictory_entries=8.000, queries_run=4.000, queries_found_contradictions=4.000, success_rate=1.000] [100%]
 
 ============================== benchmark summary ==============================
@@ -41,5 +41,5 @@ Metrics Summary:
   success_rate: avg=1.000, min=1.000, max=1.000
 
 ============================== test results ===================================
-9 passed, 0 failed in 0.02s
+9 passed, 0 failed in 0.05s
 ===============================================================================

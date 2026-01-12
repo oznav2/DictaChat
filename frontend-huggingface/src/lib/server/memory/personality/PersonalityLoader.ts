@@ -11,6 +11,8 @@ import { existsSync, readFileSync, statSync } from "fs";
 import { join } from "path";
 import YAML from "yaml";
 import { logger } from "$lib/server/logger";
+import { collections } from "$lib/server/database";
+import type { ObjectId } from "mongodb";
 
 /**
  * Personality YAML schema
@@ -154,6 +156,10 @@ export class PersonalityLoader {
 	private cacheMtime: number = 0;
 	private cacheRaw: PersonalityYAML | null = null;
 
+	// Per-user personality cache (database-stored)
+	private userCache = new Map<string, { content: string; loadedAt: Date }>();
+	private readonly USER_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
 	private readonly templatePath: string;
 	private readonly defaultPresetPath: string;
 
@@ -236,6 +242,148 @@ export class PersonalityLoader {
 		this.cacheRaw = null;
 		this.cacheMtime = 0;
 		logger.debug("Personality cache invalidated");
+	}
+
+	// ========================================
+	// Database-aware methods (roampal parity)
+	// ========================================
+
+	/**
+	 * Get personality for a specific user (database-first, fallback to default template)
+	 */
+	async getPersonality(userId: string | ObjectId): Promise<{
+		name: string;
+		content: string;
+		isDefault: boolean;
+	}> {
+		const userIdStr = typeof userId === "string" ? userId : userId.toString();
+
+		// Check cache first
+		const cached = this.userCache.get(userIdStr);
+		if (cached && Date.now() - cached.loadedAt.getTime() < this.USER_CACHE_TTL) {
+			return { name: "custom", content: cached.content, isDefault: false };
+		}
+
+		try {
+			// Try database
+			const doc = await collections.userPersonality.findOne({ userId: userIdStr });
+
+			if (doc?.yaml_content) {
+				this.userCache.set(userIdStr, {
+					content: doc.yaml_content,
+					loadedAt: new Date(),
+				});
+				return {
+					name: doc.preset_name || "custom",
+					content: doc.yaml_content,
+					isDefault: false,
+				};
+			}
+		} catch (err) {
+			logger.warn({ err, userId: userIdStr }, "Failed to load user personality from database");
+		}
+
+		// Return default template
+		return {
+			name: "default",
+			content: this.loadTemplate(),
+			isDefault: true,
+		};
+	}
+
+	/**
+	 * Validate YAML structure
+	 */
+	validateYaml(yamlContent: string): { valid: boolean; error?: string } {
+		try {
+			const parsed = YAML.parse(yamlContent);
+
+			// Validate required fields based on schema
+			if (!parsed || typeof parsed !== "object") {
+				return { valid: false, error: "YAML must be an object" };
+			}
+
+			// Check for identity (required by our schema)
+			if (!parsed.identity || typeof parsed.identity !== "object") {
+				return { valid: false, error: "identity section is required" };
+			}
+
+			if (!parsed.identity.name || typeof parsed.identity.name !== "string") {
+				return { valid: false, error: "identity.name is required" };
+			}
+
+			// Optional: validate known keys
+			const validKeys = [
+				"identity",
+				"communication",
+				"response_behavior",
+				"memory_usage",
+				"formatting",
+				"personality_traits",
+				"custom_instructions",
+			];
+			const keys = Object.keys(parsed);
+			const invalidKeys = keys.filter((k) => !validKeys.includes(k));
+
+			if (invalidKeys.length > 0) {
+				return {
+					valid: false,
+					error: `Unknown keys: ${invalidKeys.join(", ")}`,
+				};
+			}
+
+			return { valid: true };
+		} catch (err) {
+			return {
+				valid: false,
+				error: err instanceof Error ? err.message : "Invalid YAML syntax",
+			};
+		}
+	}
+
+	/**
+	 * Reload personality cache for a user
+	 */
+	async reloadPersonality(userId: string | ObjectId): Promise<void> {
+		const userIdStr = typeof userId === "string" ? userId : userId.toString();
+		this.userCache.delete(userIdStr);
+		await this.getPersonality(userIdStr); // Re-cache
+		logger.debug({ userId: userIdStr }, "User personality cache reloaded");
+	}
+
+	/**
+	 * Get available personality presets
+	 */
+	async getPresets(): Promise<
+		Array<{
+			name: string;
+			description: string;
+			preview: string;
+			yaml_content?: string;
+		}>
+	> {
+		return [
+			{
+				name: "default",
+				description: "Standard DictaChat assistant - helpful and professional",
+				preview: "Balanced, clear, efficient",
+			},
+			{
+				name: "friendly",
+				description: "Warm and conversational tone",
+				preview: "Casual, encouraging, personable",
+			},
+			{
+				name: "technical",
+				description: "Precise and detail-oriented for developers",
+				preview: "Technical, thorough, precise",
+			},
+			{
+				name: "creative",
+				description: "Imaginative and expressive style",
+				preview: "Creative, expressive, innovative",
+			},
+		];
 	}
 }
 

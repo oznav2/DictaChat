@@ -90,6 +90,7 @@ export class PromotionService {
 	// Prevent concurrent runs
 	private isRunning = false;
 	private lastRunAt: Date | null = null;
+	private lastCycleStats: PromotionStats | null = null;
 
 	// Scheduler interval handle
 	private schedulerInterval: NodeJS.Timeout | null = null;
@@ -165,6 +166,7 @@ export class PromotionService {
 			stats.errors += garbageResults.errors;
 
 			this.lastRunAt = new Date();
+			this.lastCycleStats = stats;
 		} finally {
 			this.isRunning = false;
 			stats.durationMs = Date.now() - startTime;
@@ -177,9 +179,7 @@ export class PromotionService {
 	/**
 	 * Run promotion rules
 	 */
-	private async runPromotions(
-		userId?: string
-	): Promise<{ promoted: number; errors: number }> {
+	private async runPromotions(userId?: string): Promise<{ promoted: number; errors: number }> {
 		let promoted = 0;
 		let errors = 0;
 
@@ -197,10 +197,7 @@ export class PromotionService {
 						await this.promoteMemory(candidate.memory_id, candidate.user_id, rule.toTier);
 						promoted++;
 					} catch (err) {
-						logger.error(
-							{ err, memoryId: candidate.memory_id },
-							"Failed to promote memory"
-						);
+						logger.error({ err, memoryId: candidate.memory_id }, "Failed to promote memory");
 						errors++;
 					}
 				}
@@ -235,32 +232,26 @@ export class PromotionService {
 
 		const memories = await this.mongo.query({
 			userId: userId ?? "",
-			tier,
-			status: "active",
+			tiers: [tier],
+			status: ["active"],
 			limit: 100,
 		});
 
 		// Filter by score and uses
 		return memories
-			.filter((m) => (m.wilson_score ?? 0) >= minScore && (m.uses ?? 0) >= minUses)
+			.filter((m) => (m.stats?.wilson_score ?? 0) >= minScore && (m.stats?.uses ?? 0) >= minUses)
 			.map((m) => ({ memory_id: m.memory_id, user_id: m.user_id }));
 	}
 
 	/**
 	 * Promote a memory to a new tier
 	 */
-	private async promoteMemory(
-		memoryId: string,
-		userId: string,
-		toTier: MemoryTier
-	): Promise<void> {
+	private async promoteMemory(memoryId: string, userId: string, toTier: MemoryTier): Promise<void> {
 		// Update MongoDB
 		await this.mongo.update({
 			memoryId,
 			userId,
-			updates: {
-				tier: toTier,
-			},
+			tier: toTier,
 		});
 
 		// Update Qdrant payload
@@ -272,9 +263,7 @@ export class PromotionService {
 	/**
 	 * Run TTL-based cleanup
 	 */
-	private async runTtlCleanup(
-		userId?: string
-	): Promise<{ archived: number; errors: number }> {
+	private async runTtlCleanup(userId?: string): Promise<{ archived: number; errors: number }> {
 		let archived = 0;
 		let errors = 0;
 		const now = Date.now();
@@ -289,7 +278,7 @@ export class PromotionService {
 						// Check if high-value and should be preserved
 						if (rule.preserveHighValue) {
 							const memory = await this.mongo.getById(candidate.memory_id, candidate.user_id);
-							if (memory && (memory.wilson_score ?? 0) >= rule.preserveScoreThreshold) {
+							if (memory && (memory.stats?.wilson_score ?? 0) >= rule.preserveScoreThreshold) {
 								continue; // Skip high-value memories
 							}
 						}
@@ -323,23 +312,21 @@ export class PromotionService {
 	): Promise<Array<{ memory_id: string; user_id: string }>> {
 		const memories = await this.mongo.query({
 			userId: userId ?? "",
-			tier,
-			status: "active",
+			tiers: [tier],
+			status: ["active"],
 			limit: 100,
 		});
 
 		// Filter by creation date
 		return memories
-			.filter((m) => m.created_at && new Date(m.created_at) < cutoffDate)
+			.filter((m) => m.timestamps.created_at && new Date(m.timestamps.created_at) < cutoffDate)
 			.map((m) => ({ memory_id: m.memory_id, user_id: m.user_id }));
 	}
 
 	/**
 	 * Run garbage cleanup for low-score memories
 	 */
-	private async runGarbageCleanup(
-		userId?: string
-	): Promise<{ archived: number; errors: number }> {
+	private async runGarbageCleanup(userId?: string): Promise<{ archived: number; errors: number }> {
 		let archived = 0;
 		let errors = 0;
 
@@ -377,16 +364,15 @@ export class PromotionService {
 	): Promise<Array<{ memory_id: string; user_id: string }>> {
 		const memories = await this.mongo.query({
 			userId: userId ?? "",
-			tier,
-			status: "active",
+			tiers: [tier],
+			status: ["active"],
 			limit: 100,
 		});
 
 		// Filter by low score AND has been used at least once
 		return memories
 			.filter(
-				(m) =>
-					(m.wilson_score ?? 0.5) < GARBAGE_SCORE_THRESHOLD && (m.uses ?? 0) > 0
+				(m) => (m.stats?.wilson_score ?? 0.5) < GARBAGE_SCORE_THRESHOLD && (m.stats?.uses ?? 0) > 0
 			)
 			.map((m) => ({ memory_id: m.memory_id, user_id: m.user_id }));
 	}
@@ -409,6 +395,10 @@ export class PromotionService {
 	 */
 	getLastRunAt(): Date | null {
 		return this.lastRunAt;
+	}
+
+	getLastCycleStats(): PromotionStats | null {
+		return this.lastCycleStats;
 	}
 
 	/**

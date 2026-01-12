@@ -24,14 +24,17 @@ import type {
 	ActionOutcome,
 	ContextType,
 	ActionType,
+	SearchResult,
 } from "../types";
 import type {
 	MemoryItemDocument,
 	MemoryVersionDocument,
 	MemoryOutcomeDocument,
 	ActionOutcomeDocument,
+	KnownSolutionDocument,
 	KgNodeDocument,
 	KgEdgeDocument,
+	PersonalityMemoryMappingDocument,
 	ReindexCheckpointDocument,
 	ConsistencyLogDocument,
 } from "./schemas";
@@ -55,6 +58,9 @@ export interface StoreMemoryParams {
 	source: MemoryItem["source"];
 	quality?: MemoryItem["quality"];
 	expiresAt?: Date | null;
+	personalityId?: string | null;
+	personalityName?: string | null;
+	language?: "he" | "en" | "mixed" | "none";
 }
 
 export interface UpdateMemoryParams {
@@ -95,6 +101,8 @@ export interface RecordOutcomeParams {
 	answerAttemptId?: string | null;
 	feedbackSource?: "explicit" | "implicit" | "auto_detected";
 	feedbackText?: string | null;
+	/** Time weight for score decay (Roampal pattern: 1.0 / (1 + age_days / 30)) */
+	timeWeight?: number;
 }
 
 export interface RecordActionOutcomeParams {
@@ -142,8 +150,10 @@ export class MemoryMongoStore {
 	private versions!: Collection<MemoryVersionDocument>;
 	private outcomes!: Collection<MemoryOutcomeDocument>;
 	private actionOutcomes!: Collection<ActionOutcomeDocument>;
+	private knownSolutions!: Collection<KnownSolutionDocument>;
 	private kgNodes!: Collection<KgNodeDocument>;
 	private kgEdges!: Collection<KgEdgeDocument>;
+	private personalityMappings!: Collection<PersonalityMemoryMappingDocument>;
 	private reindexCheckpoints!: Collection<ReindexCheckpointDocument>;
 	private consistencyLogs!: Collection<ConsistencyLogDocument>;
 
@@ -165,8 +175,12 @@ export class MemoryMongoStore {
 		this.actionOutcomes = this.db.collection<ActionOutcomeDocument>(
 			MEMORY_COLLECTIONS.ACTION_OUTCOMES
 		);
+		this.knownSolutions = this.db.collection<KnownSolutionDocument>(MEMORY_COLLECTIONS.KNOWN_SOLUTIONS);
 		this.kgNodes = this.db.collection<KgNodeDocument>(MEMORY_COLLECTIONS.KG_NODES);
 		this.kgEdges = this.db.collection<KgEdgeDocument>(MEMORY_COLLECTIONS.KG_EDGES);
+		this.personalityMappings = this.db.collection<PersonalityMemoryMappingDocument>(
+			MEMORY_COLLECTIONS.PERSONALITY_MAPPINGS
+		);
 		this.reindexCheckpoints = this.db.collection<ReindexCheckpointDocument>(
 			MEMORY_COLLECTIONS.REINDEX_CHECKPOINTS
 		);
@@ -182,29 +196,61 @@ export class MemoryMongoStore {
 	}
 
 	private async createIndexes(): Promise<void> {
-		const collections: Record<string, Collection<unknown>> = {
-			[MEMORY_COLLECTIONS.ITEMS]: this.items,
-			[MEMORY_COLLECTIONS.VERSIONS]: this.versions,
-			[MEMORY_COLLECTIONS.OUTCOMES]: this.outcomes,
-			[MEMORY_COLLECTIONS.ACTION_OUTCOMES]: this.actionOutcomes,
-			[MEMORY_COLLECTIONS.KG_NODES]: this.kgNodes,
-			[MEMORY_COLLECTIONS.KG_EDGES]: this.kgEdges,
-			[MEMORY_COLLECTIONS.REINDEX_CHECKPOINTS]: this.reindexCheckpoints,
-			[MEMORY_COLLECTIONS.CONSISTENCY_LOGS]: this.consistencyLogs,
-		};
+		// Create indexes for each collection individually to maintain type safety
+		const indexConfigs: Array<{
+			collection: Collection<Document>;
+			indexes: (typeof MEMORY_COLLECTION_INDEXES)[keyof typeof MEMORY_COLLECTION_INDEXES];
+		}> = [
+			{
+				collection: this.items as unknown as Collection<Document>,
+				indexes: MEMORY_COLLECTION_INDEXES[MEMORY_COLLECTIONS.ITEMS],
+			},
+			{
+				collection: this.versions as unknown as Collection<Document>,
+				indexes: MEMORY_COLLECTION_INDEXES[MEMORY_COLLECTIONS.VERSIONS],
+			},
+			{
+				collection: this.outcomes as unknown as Collection<Document>,
+				indexes: MEMORY_COLLECTION_INDEXES[MEMORY_COLLECTIONS.OUTCOMES],
+			},
+			{
+				collection: this.actionOutcomes as unknown as Collection<Document>,
+				indexes: MEMORY_COLLECTION_INDEXES[MEMORY_COLLECTIONS.ACTION_OUTCOMES],
+			},
+			{
+				collection: this.knownSolutions as unknown as Collection<Document>,
+				indexes: MEMORY_COLLECTION_INDEXES[MEMORY_COLLECTIONS.KNOWN_SOLUTIONS],
+			},
+			{
+				collection: this.kgNodes as unknown as Collection<Document>,
+				indexes: MEMORY_COLLECTION_INDEXES[MEMORY_COLLECTIONS.KG_NODES],
+			},
+			{
+				collection: this.kgEdges as unknown as Collection<Document>,
+				indexes: MEMORY_COLLECTION_INDEXES[MEMORY_COLLECTIONS.KG_EDGES],
+			},
+			{
+				collection: this.reindexCheckpoints as unknown as Collection<Document>,
+				indexes: MEMORY_COLLECTION_INDEXES[MEMORY_COLLECTIONS.REINDEX_CHECKPOINTS],
+			},
+			{
+				collection: this.consistencyLogs as unknown as Collection<Document>,
+				indexes: MEMORY_COLLECTION_INDEXES[MEMORY_COLLECTIONS.CONSISTENCY_LOGS],
+			},
+		];
 
-		for (const [collName, indexes] of Object.entries(MEMORY_COLLECTION_INDEXES)) {
-			const collection = collections[collName];
-			if (!collection) continue;
+		for (const config of indexConfigs) {
+			if (!config.indexes) continue;
 
-			for (const indexDef of indexes) {
+			for (const indexDef of config.indexes) {
 				try {
-					await collection.createIndex(indexDef.key as IndexDescription, {
+					// indexDef.key is the index specification
+					const indexSpec = indexDef.key ?? indexDef;
+					await config.collection.createIndex(indexSpec as unknown as Record<string, 1 | -1>, {
 						background: true,
-						...(indexDef as object),
 					});
 				} catch (err) {
-					logger.warn({ err, collection: collName, index: indexDef }, "Failed to create index");
+					logger.warn({ err, index: indexDef }, "Failed to create index");
 				}
 			}
 		}
@@ -221,7 +267,10 @@ export class MemoryMongoStore {
 	): Promise<T | null> {
 		try {
 			const timeoutPromise = new Promise<never>((_, reject) => {
-				setTimeout(() => reject(new Error(`${operationName} timed out after ${timeoutMs}ms`)), timeoutMs);
+				setTimeout(
+					() => reject(new Error(`${operationName} timed out after ${timeoutMs}ms`)),
+					timeoutMs
+				);
 			});
 
 			return await Promise.race([operation(), timeoutPromise]);
@@ -229,6 +278,86 @@ export class MemoryMongoStore {
 			logger.warn({ err, operation: operationName, timeoutMs }, "MongoDB operation failed");
 			return null;
 		}
+	}
+
+	async recordKnownSolution(params: {
+		userId: string;
+		problemHash: string;
+		memoryId: string;
+		now?: Date;
+	}): Promise<void> {
+		const now = params.now ?? new Date();
+		await this.withTimeout(
+			async () => {
+				await this.knownSolutions.updateOne(
+					{ user_id: params.userId, problem_hash: params.problemHash },
+					[
+						{
+							$set: {
+								user_id: params.userId,
+								problem_hash: params.problemHash,
+								memory_id: params.memoryId,
+								first_used_at: { $ifNull: ["$first_used_at", now] },
+								last_used_at: now,
+								success_count: {
+									$cond: [
+										{ $eq: ["$memory_id", params.memoryId] },
+										{ $add: [{ $ifNull: ["$success_count", 0] }, 1] },
+										1,
+									],
+								},
+							},
+						},
+					],
+					{ upsert: true }
+				);
+				return true;
+			},
+			this.config.timeouts.mongo_text_query_ms,
+			"recordKnownSolution"
+		);
+	}
+
+	async getKnownSolution(userId: string, problemHash: string): Promise<SearchResult | null> {
+		const doc = await this.withTimeout(
+			async () => this.knownSolutions.findOne({ user_id: userId, problem_hash: problemHash }),
+			this.config.timeouts.mongo_text_query_ms,
+			"getKnownSolution"
+		);
+		if (!doc) return null;
+
+		const memory = await this.getById(String(doc.memory_id), userId);
+		if (!memory) return null;
+		if (memory.tier !== "patterns") return null;
+
+		const citations = [
+			{
+				source_type: memory.source.type,
+				memory_id: memory.memory_id,
+				conversation_id: memory.source.conversation_id ?? null,
+				message_id: memory.source.message_id ?? null,
+				tool_name: memory.source.tool_name ?? null,
+				doc_id: memory.source.doc_id ?? null,
+				chunk_id: memory.source.chunk_id ?? null,
+				...(memory.source.book ? { book: memory.source.book } : {}),
+			},
+		];
+
+		return {
+			position: 1,
+			tier: memory.tier,
+			memory_id: memory.memory_id,
+			content: memory.text,
+			preview: memory.summary ?? memory.text.slice(0, 200),
+			citations,
+			score_summary: {
+				final_score: 999,
+				wilson_score: memory.stats?.wilson_score ?? undefined,
+				uses: memory.stats?.uses ?? undefined,
+				updated_at: memory.timestamps?.updated_at ?? null,
+				created_at: memory.timestamps?.created_at ?? null,
+			},
+		};
 	}
 
 	// ============================================
@@ -241,6 +370,15 @@ export class MemoryMongoStore {
 	async store(params: StoreMemoryParams): Promise<MemoryItem | null> {
 		const memoryId = uuidv4();
 		const now = new Date();
+
+		logger.info(
+			{ 
+				dbName: this.db.databaseName, 
+				collection: this.items.collectionName,
+				memoryId 
+			}, 
+			"[MemoryMongoStore] storing item"
+		);
 
 		const doc: MemoryItemDocument = {
 			_id: new ObjectId(),
@@ -289,6 +427,14 @@ export class MemoryMongoStore {
 				current_version: 1,
 				supersedes_memory_id: null,
 			},
+			personality: {
+				source_personality_id: params.personalityId ?? null,
+				source_personality_name: params.personalityName ?? null,
+			},
+			// MongoDB text indexes don't support "mixed" - use "none" to disable language-specific stemming
+			// This is optimal for bilingual Hebrew/English content
+			language: params.language && params.language !== "mixed" ? params.language : "none",
+			translation_ref_id: null,
 		};
 
 		const result = await this.withTimeout(
@@ -360,15 +506,15 @@ export class MemoryMongoStore {
 
 		const result = await this.withTimeout(
 			async () => {
-				const updated = await this.items.findOneAndUpdate(
+				const doc = (await this.items.findOneAndUpdate(
 					{ memory_id: params.memoryId, user_id: params.userId },
 					{
 						$set: updateFields,
 						$inc: { "versioning.current_version": 1 },
 					},
 					{ returnDocument: "after" }
-				);
-				return updated ? this.documentToMemoryItem(updated) : null;
+				)) as unknown as MemoryItemDocument | null;
+				return doc ? this.documentToMemoryItem(doc) : null;
 			},
 			this.config.timeouts.mongo_aggregate_ms,
 			"update"
@@ -376,7 +522,12 @@ export class MemoryMongoStore {
 
 		if (result) {
 			// Create version record (fire-and-forget)
-			const changeType = params.tier !== current.tier ? "promote" : params.status === "archived" ? "archive" : "update";
+			const changeType =
+				params.tier !== current.tier
+					? "promote"
+					: params.status === "archived"
+						? "archive"
+						: "update";
 			this.createVersion(
 				params.memoryId,
 				params.userId,
@@ -560,6 +711,8 @@ export class MemoryMongoStore {
 					.maxTimeMS(this.config.timeouts.mongo_aggregate_ms)
 					.toArray();
 
+				logger.info({ userId, counts }, "[MemoryMongoStore] countByTier raw result");
+
 				const tierCounts: Record<MemoryTier, number> = {
 					working: 0,
 					history: 0,
@@ -587,21 +740,24 @@ export class MemoryMongoStore {
 
 	/**
 	 * Record an outcome for a memory and update its stats
+	 * Roampal-aligned: Uses time-weighted score deltas
 	 */
 	async recordOutcome(params: RecordOutcomeParams): Promise<boolean> {
 		const now = new Date();
 		const outcomeId = uuidv4();
 
-		// Calculate score delta
+		// Calculate time-weighted score delta (Roampal pattern)
 		const deltas = this.config.outcome_deltas;
-		const scoreDelta = deltas[params.outcome];
+		const baseDelta = deltas[params.outcome];
+		const timeWeight = params.timeWeight ?? 1.0;
+		const scoreDelta = baseDelta * timeWeight;
 
 		const result = await this.withTimeout(
 			async () => {
 				// Update memory stats atomically
 				const outcomeField = `stats.${params.outcome}_count`;
 
-				const updated = await this.items.findOneAndUpdate(
+				const updated = (await this.items.findOneAndUpdate(
 					{ memory_id: params.memoryId, user_id: params.userId },
 					{
 						$inc: {
@@ -614,7 +770,7 @@ export class MemoryMongoStore {
 						},
 					},
 					{ returnDocument: "after" }
-				);
+				)) as unknown as MemoryItemDocument | null;
 
 				if (!updated) return false;
 
@@ -710,7 +866,14 @@ export class MemoryMongoStore {
 		userId: string,
 		actionType?: ActionType,
 		contextType?: ContextType
-	): Promise<Array<{ actionType: ActionType; contextType: ContextType; successRate: number; totalUses: number }>> {
+	): Promise<
+		Array<{
+			actionType: ActionType;
+			contextType: ContextType;
+			successRate: number;
+			totalUses: number;
+		}>
+	> {
 		const match: Record<string, unknown> = { user_id: userId };
 		if (actionType) match.action_type = actionType;
 		if (contextType) match.context_type = contextType;
@@ -935,6 +1098,14 @@ export class MemoryMongoStore {
 				current_version: doc.versioning.current_version,
 				supersedes_memory_id: doc.versioning.supersedes_memory_id,
 			},
+			personality: doc.personality
+				? {
+						source_personality_id: doc.personality.source_personality_id,
+						source_personality_name: doc.personality.source_personality_name,
+					}
+				: undefined,
+			language: doc.language,
+			translation_ref_id: doc.translation_ref_id,
 		};
 	}
 
@@ -947,8 +1118,10 @@ export class MemoryMongoStore {
 			versions: this.versions,
 			outcomes: this.outcomes,
 			actionOutcomes: this.actionOutcomes,
+			knownSolutions: this.knownSolutions,
 			kgNodes: this.kgNodes,
 			kgEdges: this.kgEdges,
+			personalityMappings: this.personalityMappings,
 			reindexCheckpoints: this.reindexCheckpoints,
 			consistencyLogs: this.consistencyLogs,
 		};

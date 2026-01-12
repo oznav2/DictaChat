@@ -62,11 +62,9 @@ export class ContextServiceImpl implements ContextService {
 
 			// Format results into context injection string
 			const contextLines = searchResult.results.map((r, i) => `${i + 1}. ${r.preview}`);
-			const contextText = [
-				coldStartConfig.header,
-				...contextLines,
-				coldStartConfig.footer,
-			].join("\n");
+			const contextText = [coldStartConfig.header, ...contextLines, coldStartConfig.footer].join(
+				"\n"
+			);
 
 			return {
 				text: contextText,
@@ -121,17 +119,20 @@ export class ContextServiceImpl implements ContextService {
 			return {
 				matched_concepts: conceptLabels.slice(0, 5),
 				relevant_patterns: kgInsights.tier_recommendations.map((r) => ({
-					pattern: `Use ${r.tier} tier`,
-					confidence: r.wilson_score,
+					memory_id: "",
+					tier: r.tier,
+					content: `Use ${r.tier} tier (score: ${r.wilson_score.toFixed(2)})`,
+					success_rate: r.wilson_score,
 				})),
 				past_outcomes: kgInsights.action_stats.map((a) => ({
-					action: a.action,
-					outcome: a.recommendation,
-					frequency: a.uses,
+					memory_id: "",
+					tier: "working" as const,
+					content: `Action: ${a.action} - ${a.recommendation}`,
+					reason: a.recommendation,
 				})),
 				proactive_insights: kgInsights.related_entities.map((e) => ({
-					insight: `Related concept: ${e.label}`,
-					relevance: e.quality,
+					concept: e.label,
+					recommendations: [],
 				})),
 				topic_continuity: { topics: conceptLabels, links: [] },
 				repetition: { is_repeated: false },

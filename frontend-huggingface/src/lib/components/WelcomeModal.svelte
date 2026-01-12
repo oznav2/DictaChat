@@ -39,11 +39,12 @@
 
 		<div class="text-gray-700 dark:text-gray-200">
 			<p class="text-[15px] leading-relaxed">
-				ברוכים הבאים ל-{publicConfig.PUBLIC_APP_NAME}, ממשק הגישה שלך למודל החינמי הכי חכם בשפה העברית
+				ברוכים הבאים ל-{publicConfig.PUBLIC_APP_NAME}, ממשק הגישה שלך למודל החינמי הכי חכם בשפה
+				העברית
 			</p>
 			<p class="mt-3 text-[15px] leading-relaxed">
-				<IconOmni classNames="-translate-y-px" /> ארכיטקטורה שנבנתה במיוחד עבור יכולותיו של מודל שמיועד לעבוד בסביבה מקומית
-				במסגרת שתאפשר לכם לנהל שיחה עם בינה מלאכותית בפרטיות מלאה וכמעט בחינם
+				<IconOmni classNames="-translate-y-px" /> ארכיטקטורה שנבנתה במיוחד עבור יכולותיו של מודל שמיועד
+				לעבוד בסביבה מקומית במסגרת שתאפשר לכם לנהל שיחה עם בינה מלאכותית בפרטיות מלאה וכמעט בחינם
 			</p>
 			<p class="mt-3 text-[15px] leading-relaxed">
 				כשכל תהליכי האופטימיזציה וההגדרות כבר נעשו עבורכם

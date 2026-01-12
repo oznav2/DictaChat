@@ -1,43 +1,51 @@
-{{!-- @description: Identifies patterns in user behavior for proactive assistance --}}
-{{!-- @category: learning --}}
+{{! @description: Identifies patterns in user behavior for proactive assistance }}
+{{! @category: learning }}
 
 {{#ifLang "he"}}
-דפוסים שזוהו בהתנהגות המשתמש:
+	דפוסים שזוהו בהתנהגות המשתמש:
 {{else}}
-Patterns identified in user behavior:
+	Patterns identified in user behavior:
 {{/ifLang}}
 
 {{#ifNotEmpty patterns}}
-{{#each patterns}}
-{{#ifLang "he"}}
-## {{this.name}}
-- תדירות: {{this.frequency}} פעמים
-- הקשרים נפוצים: {{join this.contexts ", "}}
-{{#if this.last_seen}}- נראה לאחרונה: {{formatDate this.last_seen}}{{/if}}
-{{#if this.success_rate}}- שיעור הצלחה: {{percent this.success_rate}}{{/if}}
-{{#if this.suggestion}}- המלצה: {{this.suggestion}}{{/if}}
-{{else}}
-## {{this.name}}
-- Frequency: {{this.frequency}} times
-- Common contexts: {{join this.contexts ", "}}
-{{#if this.last_seen}}- Last seen: {{formatDate this.last_seen}}{{/if}}
-{{#if this.success_rate}}- Success rate: {{percent this.success_rate}}{{/if}}
-{{#if this.suggestion}}- Suggestion: {{this.suggestion}}{{/if}}
-{{/ifLang}}
+	{{#each patterns}}
+		{{#ifLang "he"}}
+			##
+			{{this.name}}
+			- תדירות:
+			{{this.frequency}}
+			פעמים - הקשרים נפוצים:
+			{{join this.contexts ", "}}
+			{{#if this.last_seen}}- נראה לאחרונה: {{formatDate this.last_seen}}{{/if}}
+			{{#if this.success_rate}}- שיעור הצלחה: {{percent this.success_rate}}{{/if}}
+			{{#if this.suggestion}}- המלצה: {{this.suggestion}}{{/if}}
+		{{else}}
+			##
+			{{this.name}}
+			- Frequency:
+			{{this.frequency}}
+			times - Common contexts:
+			{{join this.contexts ", "}}
+			{{#if this.last_seen}}- Last seen: {{formatDate this.last_seen}}{{/if}}
+			{{#if this.success_rate}}- Success rate: {{percent this.success_rate}}{{/if}}
+			{{#if this.suggestion}}- Suggestion: {{this.suggestion}}{{/if}}
+		{{/ifLang}}
 
-{{/each}}
+	{{/each}}
 {{else}}
-{{#ifLang "he"}}
-לא זוהו דפוסים משמעותיים עדיין. המערכת לומדת מהאינטראקציות שלך.
-{{else}}
-No significant patterns identified yet. The system is learning from your interactions.
-{{/ifLang}}
+	{{#ifLang "he"}}
+		לא זוהו דפוסים משמעותיים עדיין. המערכת לומדת מהאינטראקציות שלך.
+	{{else}}
+		No significant patterns identified yet. The system is learning from your interactions.
+	{{/ifLang}}
 {{/ifNotEmpty}}
 
 {{#if emerging_pattern}}
-{{#ifLang "he"}}
-דפוס מתהווה: {{emerging_pattern}}
-{{else}}
-Emerging pattern: {{emerging_pattern}}
-{{/ifLang}}
+	{{#ifLang "he"}}
+		דפוס מתהווה:
+		{{emerging_pattern}}
+	{{else}}
+		Emerging pattern:
+		{{emerging_pattern}}
+	{{/ifLang}}
 {{/if}}

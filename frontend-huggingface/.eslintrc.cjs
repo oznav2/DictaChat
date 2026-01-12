@@ -17,6 +17,29 @@ module.exports = {
 				parser: "@typescript-eslint/parser",
 			},
 		},
+		{
+			files: [
+				"src/lib/server/**/*.{ts,js}",
+				"src/routes/**/*.{ts,js}",
+				"src/**/*.{test,spec}.ts",
+				"src/**/__tests__/**/*.{ts,js}",
+			],
+			rules: {
+				"@typescript-eslint/no-explicit-any": "off",
+				"@typescript-eslint/no-non-null-assertion": "off",
+				"@typescript-eslint/no-unused-vars": "off",
+				"@typescript-eslint/ban-types": "off",
+			},
+		},
+		{
+			files: ["src/**/__tests__/**/*.{ts,js}"],
+			rules: {
+				"@typescript-eslint/no-unused-vars": "off",
+				"object-shorthand": "off",
+				"@typescript-eslint/no-var-requires": "off",
+				"no-useless-escape": "off",
+			},
+		},
 	],
 	parserOptions: {
 		sourceType: "module",

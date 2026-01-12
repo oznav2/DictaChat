@@ -24,4 +24,11 @@ export interface Conversation extends Timestamps {
 	assistantId?: Assistant["_id"];
 
 	userAgent?: string;
+
+	// Personality tracking for cross-personality memory access
+	personalityId?: string; // References userPersonality._id or 'default'
+	personalityBadge?: {
+		name: string;
+		color: string; // Tailwind color class or hex
+	};
 }

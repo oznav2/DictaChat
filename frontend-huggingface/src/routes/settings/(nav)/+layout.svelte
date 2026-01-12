@@ -8,6 +8,9 @@
 	import CarbonClose from "~icons/carbon/close";
 	import CarbonTextLongParagraph from "~icons/carbon/text-long-paragraph";
 	import CarbonChevronLeft from "~icons/carbon/chevron-left";
+	import CarbonDownload from "~icons/carbon/download";
+	import CarbonTerminal from "~icons/carbon/terminal";
+	import CarbonPlug from "~icons/carbon/plug";
 	import LucideImage from "~icons/lucide/image";
 	import LucideHammer from "~icons/lucide/hammer";
 	import IconGear from "~icons/bi/gear-fill";
@@ -16,6 +19,7 @@
 	import { browser } from "$app/environment";
 	import { isDesktop } from "$lib/utils/isDesktop";
 	import { debounce } from "$lib/utils/debounce";
+	import { canPopSettingsStack, popSettingsStack, resetSettingsStack, syncSettingsStackTo } from "$lib/stores/settingsStack";
 
 	interface Props {
 		data: LayoutData;
@@ -62,6 +66,7 @@
 	onMount(() => {
 		// Show content when not on the root settings page
 		showContent = page.url.pathname !== `${base}/settings`;
+		resetSettingsStack(`${base}/settings`, page.url.pathname);
 		// Initial desktop redirect check
 		checkDesktopRedirect();
 
@@ -82,6 +87,7 @@
 		}
 		// Show content when not on the root settings page
 		showContent = page.url.pathname !== `${base}/settings`;
+		syncSettingsStackTo(page.url.pathname);
 		// Check desktop redirect after navigation
 		checkDesktopRedirect();
 		// After navigation, keep the selected model in view
@@ -89,6 +95,17 @@
 	});
 
 	const settings = useSettingsStore();
+
+	function handleClose() {
+		if (canPopSettingsStack()) {
+			const next = popSettingsStack();
+			if (next) {
+				goto(next);
+				return;
+			}
+		}
+		goto(previousPage);
+	}
 
 	// Local filter for model list (hyphen/space insensitive)
 	let modelFilter = $state("");
@@ -105,6 +122,13 @@
 				class="btn rounded-lg md:hidden"
 				aria-label="Back to menu"
 				onclick={() => {
+					if (canPopSettingsStack()) {
+						const next = popSettingsStack();
+						if (next) {
+							goto(next);
+							return;
+						}
+					}
 					showContent = false;
 					goto(`${base}/settings`);
 				}}
@@ -119,7 +143,7 @@
 			class="btn rounded-lg"
 			aria-label="Close settings"
 			onclick={() => {
-				goto(previousPage);
+				handleClose();
 			}}
 		>
 			<CarbonClose
@@ -222,6 +246,42 @@
 			>
 				<IconGear class="mr-0.5 text-xxs" />
 				הגדרות מערכת
+			</button>
+			<button
+				type="button"
+				onclick={() => goto(`${base}/settings/backup`)}
+				class="group sticky bottom-10 mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
+					.url.pathname === `${base}/settings/backup`
+					? '!bg-gray-100 !text-gray-800 dark:!bg-gray-700 dark:!text-gray-200'
+					: 'bg-white dark:bg-gray-800'}"
+				aria-label="Backup and restore"
+			>
+				<CarbonDownload class="mr-0.5 text-xxs" />
+				גיבוי ושחזור
+			</button>
+			<button
+				type="button"
+				onclick={() => goto(`${base}/settings/integrations`)}
+				class="group sticky bottom-20 mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
+					.url.pathname === `${base}/settings/integrations`
+					? '!bg-gray-100 !text-gray-800 dark:!bg-gray-700 dark:!text-gray-200'
+					: 'bg-white dark:bg-gray-800'}"
+				aria-label="Integrations"
+			>
+				<CarbonPlug class="mr-0.5 text-xxs" />
+				אינטגרציות
+			</button>
+			<button
+				type="button"
+				onclick={() => goto(`${base}/settings/dev`)}
+				class="group sticky bottom-32 mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
+					.url.pathname === `${base}/settings/dev`
+					? '!bg-gray-100 !text-gray-800 dark:!bg-gray-700 dark:!text-gray-200'
+					: 'bg-white dark:bg-gray-800'}"
+				aria-label="Developer tools"
+			>
+				<CarbonTerminal class="mr-0.5 text-xxs" />
+				כלי פיתוח
 			</button>
 		</div>
 	{/if}

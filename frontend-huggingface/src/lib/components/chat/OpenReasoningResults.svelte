@@ -15,6 +15,10 @@
 	let initialized = $state(false);
 	let isRTL = $derived(detectRTLLanguage(content));
 
+	$effect(() => {
+		void hasNext;
+	});
+
 	// Track loading transitions to auto-expand/collapse
 	$effect(() => {
 		// Auto-expand on first render if already loading

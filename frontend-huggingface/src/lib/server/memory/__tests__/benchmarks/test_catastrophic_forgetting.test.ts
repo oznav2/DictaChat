@@ -14,9 +14,9 @@
  * Output: Generates benchmark results to benchmarks/results/catastrophic_forgetting.txt
  */
 
-import { describe, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
-import { join, dirname } from 'path';
+import { describe, it, expect, beforeEach, afterEach, afterAll } from "vitest";
+import { writeFileSync, mkdirSync, existsSync } from "fs";
+import { join, dirname } from "path";
 import {
 	MockEmbeddingService,
 	MockTimeManager,
@@ -26,7 +26,7 @@ import {
 	createTestMetadata,
 	mockExtractConcepts,
 	calculateWilsonScore,
-} from '../mock-utilities';
+} from "../mock-utilities";
 
 // ============================================================================
 // Benchmark Reporter - Generates Roampal-style output
@@ -59,25 +59,25 @@ class BenchmarkReporter {
 		const failed = this.results.length - passed;
 
 		const lines: string[] = [
-			'============================= test session starts =============================',
+			"============================= test session starts =============================",
 			`platform: node ${process.version}`,
 			`test framework: vitest`,
 			`timestamp: ${new Date().toISOString()}`,
 			`rootdir: ${process.cwd()}`,
-			'',
+			"",
 			`collecting ... collected ${this.results.length} items`,
-			'',
+			"",
 		];
 
 		// Test results
 		this.results.forEach((result, idx) => {
 			const pct = Math.round(((idx + 1) / this.results.length) * 100);
-			const status = result.passed ? 'PASSED' : 'FAILED';
+			const status = result.passed ? "PASSED" : "FAILED";
 			const metrics = result.metrics
 				? ` [${Object.entries(result.metrics)
 						.map(([k, v]) => `${k}=${v}`)
-						.join(', ')}]`
-				: '';
+						.join(", ")}]`
+				: "";
 			lines.push(
 				`${this.suiteName}::${result.name} ${status} (${result.duration}ms)${metrics} [${pct.toString().padStart(3)}%]`
 			);
@@ -86,15 +86,15 @@ class BenchmarkReporter {
 			}
 		});
 
-		lines.push('');
-		lines.push('============================== benchmark summary ==============================');
+		lines.push("");
+		lines.push("============================== benchmark summary ==============================");
 
 		// Detailed metrics summary
 		const metricsMap = new Map<string, number[]>();
 		this.results.forEach((r) => {
 			if (r.metrics) {
 				Object.entries(r.metrics).forEach(([k, v]) => {
-					if (typeof v === 'number') {
+					if (typeof v === "number") {
 						if (!metricsMap.has(k)) metricsMap.set(k, []);
 						metricsMap.get(k)!.push(v);
 					}
@@ -103,8 +103,8 @@ class BenchmarkReporter {
 		});
 
 		if (metricsMap.size > 0) {
-			lines.push('');
-			lines.push('Metrics Summary:');
+			lines.push("");
+			lines.push("Metrics Summary:");
 			metricsMap.forEach((values, key) => {
 				const avg = values.reduce((a, b) => a + b, 0) / values.length;
 				const min = Math.min(...values);
@@ -113,27 +113,27 @@ class BenchmarkReporter {
 			});
 		}
 
-		lines.push('');
-		lines.push('============================== test results ===================================');
+		lines.push("");
+		lines.push("============================== test results ===================================");
 		lines.push(`${passed} passed, ${failed} failed in ${totalDuration}s`);
-		lines.push('===============================================================================');
+		lines.push("===============================================================================");
 
-		return lines.join('\n');
+		return lines.join("\n");
 	}
 
 	saveReport(filename: string): void {
-		const resultsDir = join(dirname(new URL(import.meta.url).pathname), 'results');
+		const resultsDir = join(dirname(new URL(import.meta.url).pathname), "results");
 		if (!existsSync(resultsDir)) {
 			mkdirSync(resultsDir, { recursive: true });
 		}
 		const filepath = join(resultsDir, filename);
-		writeFileSync(filepath, this.generateReport(), 'utf-8');
+		writeFileSync(filepath, this.generateReport(), "utf-8");
 		console.log(`\n📊 Benchmark results saved to: ${filepath}`);
 	}
 }
 
 // Global reporter for this test file
-const reporter = new BenchmarkReporter('test_catastrophic_forgetting');
+const reporter = new BenchmarkReporter("test_catastrophic_forgetting");
 
 // Helper to wrap tests with metric recording
 function recordedTest(
@@ -165,16 +165,16 @@ function recordedTest(
 	};
 }
 
-describe('Catastrophic Forgetting Prevention', () => {
+describe("Catastrophic Forgetting Prevention", () => {
 	let harness: TestHarness;
 	let embeddingService: MockEmbeddingService;
 	let timeManager: MockTimeManager;
 	let collection: MockCollection;
 
 	beforeEach(() => {
-		harness = new TestHarness('CatastrophicForgetting');
+		harness = new TestHarness("CatastrophicForgetting");
 		embeddingService = new MockEmbeddingService(42);
-		timeManager = new MockTimeManager(new Date('2026-01-01T00:00:00Z'));
+		timeManager = new MockTimeManager(new Date("2026-01-01T00:00:00Z"));
 		collection = new MockCollection(embeddingService);
 	});
 
@@ -184,11 +184,11 @@ describe('Catastrophic Forgetting Prevention', () => {
 
 	// Save benchmark report after all tests complete
 	afterAll(() => {
-		reporter.saveReport('catastrophic_forgetting.txt');
+		reporter.saveReport("catastrophic_forgetting.txt");
 	});
 
-	describe('Sequential Storage Preservation', () => {
-		it('should retain all memories after sequential storage', async () => {
+	describe("Sequential Storage Preservation", () => {
+		it("should retain all memories after sequential storage", async () => {
 			const memoryCount = 50;
 			const storedIds: string[] = [];
 
@@ -197,7 +197,7 @@ describe('Catastrophic Forgetting Prevention', () => {
 				const fragment = createTestFragment({
 					id: `seq_mem_${i}`,
 					content: `Sequential memory ${i}: Important fact about topic ${i}`,
-					maturity: 'cold_start',
+					maturity: "cold_start",
 				});
 				await collection.add(fragment);
 				storedIds.push(fragment.id);
@@ -215,17 +215,17 @@ describe('Catastrophic Forgetting Prevention', () => {
 			expect(collection.count()).toBe(memoryCount);
 		});
 
-		it('should retain Hebrew memories alongside English ones', async () => {
+		it("should retain Hebrew memories alongside English ones", async () => {
 			const hebrewMemories = [
-				{ id: 'he_1', content: 'המשפחה שלי גרה בירושלים' },
-				{ id: 'he_2', content: 'אני עובד בחברת הייטק בתל אביב' },
-				{ id: 'he_3', content: 'הילדים שלי לומדים בבית ספר יסודי' },
+				{ id: "he_1", content: "המשפחה שלי גרה בירושלים" },
+				{ id: "he_2", content: "אני עובד בחברת הייטק בתל אביב" },
+				{ id: "he_3", content: "הילדים שלי לומדים בבית ספר יסודי" },
 			];
 
 			const englishMemories = [
-				{ id: 'en_1', content: 'My favorite hobby is reading books' },
-				{ id: 'en_2', content: 'I work as a software engineer' },
-				{ id: 'en_3', content: 'My car is a Tesla Model 3' },
+				{ id: "en_1", content: "My favorite hobby is reading books" },
+				{ id: "en_2", content: "I work as a software engineer" },
+				{ id: "en_3", content: "My car is a Tesla Model 3" },
 			];
 
 			// Store Hebrew memories first
@@ -233,7 +233,7 @@ describe('Catastrophic Forgetting Prevention', () => {
 				await collection.add({
 					id: mem.id,
 					content: mem.content,
-					metadata: createTestMetadata({ user_id: 'bilingual_user' }),
+					metadata: createTestMetadata({ user_id: "bilingual_user" }),
 				});
 			}
 
@@ -242,7 +242,7 @@ describe('Catastrophic Forgetting Prevention', () => {
 				await collection.add({
 					id: mem.id,
 					content: mem.content,
-					metadata: createTestMetadata({ user_id: 'bilingual_user' }),
+					metadata: createTestMetadata({ user_id: "bilingual_user" }),
 				});
 			}
 
@@ -263,7 +263,7 @@ describe('Catastrophic Forgetting Prevention', () => {
 			expect(collection.count()).toBe(6);
 		});
 
-		it('should not lose early memories when storing many new ones', async () => {
+		it("should not lose early memories when storing many new ones", async () => {
 			// Store 10 "old" memories
 			const oldMemories = Array.from({ length: 10 }, (_, i) => ({
 				id: `old_mem_${i}`,
@@ -274,7 +274,7 @@ describe('Catastrophic Forgetting Prevention', () => {
 				await collection.add({
 					id: mem.id,
 					content: mem.content,
-					metadata: createTestMetadata({ tier: 'warm' }),
+					metadata: createTestMetadata({ tier: "warm" }),
 				});
 			}
 
@@ -286,7 +286,7 @@ describe('Catastrophic Forgetting Prevention', () => {
 				await collection.add({
 					id: `new_mem_${i}`,
 					content: `New memory ${i}: Recent information`,
-					metadata: createTestMetadata({ tier: 'hot' }),
+					metadata: createTestMetadata({ tier: "hot" }),
 				});
 			}
 
@@ -304,14 +304,14 @@ describe('Catastrophic Forgetting Prevention', () => {
 		});
 	});
 
-	describe('Bulk Storage Integrity', () => {
-		it('should preserve all items in bulk storage operation', async () => {
+	describe("Bulk Storage Integrity", () => {
+		it("should preserve all items in bulk storage operation", async () => {
 			const batchSize = 100;
 			const fragments = Array.from({ length: batchSize }, (_, i) =>
 				createTestFragment({
 					id: `bulk_${i}`,
 					content: `Bulk memory item ${i}`,
-					maturity: 'cold_start',
+					maturity: "cold_start",
 				})
 			);
 
@@ -330,13 +330,13 @@ describe('Catastrophic Forgetting Prevention', () => {
 			}
 		});
 
-		it('should handle mixed language bulk storage', async () => {
+		it("should handle mixed language bulk storage", async () => {
 			const mixedMemories = [
-				{ id: 'mix_1', content: 'My name is John' },
-				{ id: 'mix_2', content: 'השם שלי הוא יוחנן' },
-				{ id: 'mix_3', content: 'I live in ירושלים Jerusalem' },
-				{ id: 'mix_4', content: 'אני גר in Tel Aviv תל אביב' },
-				{ id: 'mix_5', content: 'Work at Google עובד בגוגל' },
+				{ id: "mix_1", content: "My name is John" },
+				{ id: "mix_2", content: "השם שלי הוא יוחנן" },
+				{ id: "mix_3", content: "I live in ירושלים Jerusalem" },
+				{ id: "mix_4", content: "אני גר in Tel Aviv תל אביב" },
+				{ id: "mix_5", content: "Work at Google עובד בגוגל" },
 			];
 
 			await Promise.all(
@@ -358,16 +358,16 @@ describe('Catastrophic Forgetting Prevention', () => {
 		});
 	});
 
-	describe('Tier Promotion Preservation', () => {
-		it('should preserve memory content during tier promotion', async () => {
-			const originalContent = 'Critical user preference: Always use dark mode';
-			const memId = 'promo_test_1';
+	describe("Tier Promotion Preservation", () => {
+		it("should preserve memory content during tier promotion", async () => {
+			const originalContent = "Critical user preference: Always use dark mode";
+			const memId = "promo_test_1";
 
 			// Store in hot tier
 			await collection.add({
 				id: memId,
 				content: originalContent,
-				metadata: { ...createTestMetadata({ tier: 'hot' }), wilson_score: 0.5 },
+				metadata: { ...createTestMetadata({ tier: "hot" }), wilson_score: 0.5 },
 			});
 
 			// Simulate usage that would trigger promotion
@@ -376,7 +376,7 @@ describe('Catastrophic Forgetting Prevention', () => {
 
 			// Update metadata to simulate promotion to warm
 			collection.updateMetadata(memId, {
-				tier: 'warm',
+				tier: "warm",
 				wilson_score: 0.7,
 				use_count: 10,
 				success_count: 8,
@@ -385,21 +385,21 @@ describe('Catastrophic Forgetting Prevention', () => {
 			// Verify content unchanged after "promotion"
 			const promotedDoc = collection.get(memId);
 			expect(promotedDoc?.content).toBe(originalContent);
-			expect(promotedDoc?.metadata.tier).toBe('warm');
+			expect(promotedDoc?.metadata.tier).toBe("warm");
 		});
 
-		it('should preserve Hebrew content during tier transitions', async () => {
-			const hebrewContent = 'אני אוהב לקרוא ספרים בעברית ובאנגלית';
-			const memId = 'hebrew_promo_1';
+		it("should preserve Hebrew content during tier transitions", async () => {
+			const hebrewContent = "אני אוהב לקרוא ספרים בעברית ובאנגלית";
+			const memId = "hebrew_promo_1";
 
 			await collection.add({
 				id: memId,
 				content: hebrewContent,
-				metadata: createTestMetadata({ tier: 'hot' }),
+				metadata: createTestMetadata({ tier: "hot" }),
 			});
 
 			// Multiple tier transitions
-			const tiers: Array<'hot' | 'warm' | 'cold'> = ['warm', 'cold', 'warm'];
+			const tiers: Array<"hot" | "warm" | "cold"> = ["warm", "cold", "warm"];
 			for (const tier of tiers) {
 				collection.updateMetadata(memId, { tier });
 				const doc = collection.get(memId);
@@ -408,10 +408,10 @@ describe('Catastrophic Forgetting Prevention', () => {
 		});
 	});
 
-	describe('Wilson Score Stability', () => {
-		it('should not corrupt memory during Wilson score updates', async () => {
-			const memId = 'wilson_test_1';
-			const content = 'Important fact that needs scoring';
+	describe("Wilson Score Stability", () => {
+		it("should not corrupt memory during Wilson score updates", async () => {
+			const memId = "wilson_test_1";
+			const content = "Important fact that needs scoring";
 
 			await collection.add({
 				id: memId,
@@ -446,11 +446,11 @@ describe('Catastrophic Forgetting Prevention', () => {
 			expect(finalDoc?.metadata.use_count).toBe(50);
 		});
 
-		it('should maintain separate scores for different memories', async () => {
+		it("should maintain separate scores for different memories", async () => {
 			const memories = [
-				{ id: 'score_1', content: 'Memory with high success' },
-				{ id: 'score_2', content: 'Memory with low success' },
-				{ id: 'score_3', content: 'Memory with medium success' },
+				{ id: "score_1", content: "Memory with high success" },
+				{ id: "score_2", content: "Memory with low success" },
+				{ id: "score_3", content: "Memory with medium success" },
 			];
 
 			// Store memories
@@ -463,30 +463,30 @@ describe('Catastrophic Forgetting Prevention', () => {
 			}
 
 			// Update with different success rates
-			collection.updateMetadata('score_1', {
+			collection.updateMetadata("score_1", {
 				wilson_score: calculateWilsonScore(19, 20),
 				use_count: 20,
 				success_count: 19,
 			});
-			collection.updateMetadata('score_2', {
+			collection.updateMetadata("score_2", {
 				wilson_score: calculateWilsonScore(2, 20),
 				use_count: 20,
 				success_count: 2,
 			});
-			collection.updateMetadata('score_3', {
+			collection.updateMetadata("score_3", {
 				wilson_score: calculateWilsonScore(10, 20),
 				use_count: 20,
 				success_count: 10,
 			});
 
 			// Verify each memory has correct content and independent score
-			const doc1 = collection.get('score_1');
-			const doc2 = collection.get('score_2');
-			const doc3 = collection.get('score_3');
+			const doc1 = collection.get("score_1");
+			const doc2 = collection.get("score_2");
+			const doc3 = collection.get("score_3");
 
-			expect(doc1?.content).toBe('Memory with high success');
-			expect(doc2?.content).toBe('Memory with low success');
-			expect(doc3?.content).toBe('Memory with medium success');
+			expect(doc1?.content).toBe("Memory with high success");
+			expect(doc2?.content).toBe("Memory with low success");
+			expect(doc3?.content).toBe("Memory with medium success");
 
 			// Scores should be different
 			expect(doc1?.metadata.wilson_score).toBeGreaterThan(doc3?.metadata.wilson_score as number);
@@ -494,18 +494,18 @@ describe('Catastrophic Forgetting Prevention', () => {
 		});
 	});
 
-	describe('Search Result Stability', () => {
-		it('should find old memories even after many new additions', async () => {
+	describe("Search Result Stability", () => {
+		it("should find old memories even after many new additions", async () => {
 			// Store a distinctive old memory
 			const oldMemory = {
-				id: 'distinctive_old',
-				content: 'The user prefers TypeScript over JavaScript for all projects',
+				id: "distinctive_old",
+				content: "The user prefers TypeScript over JavaScript for all projects",
 			};
 
 			await collection.add({
 				id: oldMemory.id,
 				content: oldMemory.content,
-				metadata: createTestMetadata({ tier: 'warm' }),
+				metadata: createTestMetadata({ tier: "warm" }),
 			});
 
 			// Add 100 unrelated memories
@@ -513,23 +513,23 @@ describe('Catastrophic Forgetting Prevention', () => {
 				await collection.add({
 					id: `noise_${i}`,
 					content: `Random fact number ${i} about various topics`,
-					metadata: createTestMetadata({ tier: 'hot' }),
+					metadata: createTestMetadata({ tier: "hot" }),
 				});
 			}
 
 			// Search for the old memory
-			const results = await collection.search('TypeScript JavaScript preference', 10);
+			const results = await collection.search("TypeScript JavaScript preference", 10);
 
 			// Old memory should be in top results
-			const oldFound = results.some((r) => r.document.id === 'distinctive_old');
+			const oldFound = results.some((r) => r.document.id === "distinctive_old");
 			expect(oldFound).toBe(true);
 		});
 
-		it('should find Hebrew memories after English flood', async () => {
+		it("should find Hebrew memories after English flood", async () => {
 			// Store Hebrew memory
 			const hebrewMem = {
-				id: 'hebrew_searchable',
-				content: 'המשתמש מעדיף קפה שחור בלי סוכר',
+				id: "hebrew_searchable",
+				content: "המשתמש מעדיף קפה שחור בלי סוכר",
 			};
 
 			await collection.add({
@@ -548,20 +548,20 @@ describe('Catastrophic Forgetting Prevention', () => {
 			}
 
 			// Search in Hebrew
-			const results = await collection.search('קפה שחור', 10);
+			const results = await collection.search("קפה שחור", 10);
 
 			// Should find the Hebrew memory
-			const found = results.some((r) => r.document.id === 'hebrew_searchable');
+			const found = results.some((r) => r.document.id === "hebrew_searchable");
 			expect(found).toBe(true);
 		});
 	});
 
-	describe('Concept Extraction Consistency', () => {
-		it('should extract same concepts before and after storage', () => {
+	describe("Concept Extraction Consistency", () => {
+		it("should extract same concepts before and after storage", () => {
 			const testTexts = [
-				'The React framework is used for building user interfaces',
-				'המשתמש עובד בחברת הייטק בתל אביב',
-				'Machine Learning and Artificial Intelligence are transforming industries',
+				"The React framework is used for building user interfaces",
+				"המשתמש עובד בחברת הייטק בתל אביב",
+				"Machine Learning and Artificial Intelligence are transforming industries",
 			];
 
 			for (const text of testTexts) {
@@ -577,38 +577,38 @@ describe('Catastrophic Forgetting Prevention', () => {
 		});
 	});
 
-	describe('Metadata Isolation', () => {
-		it('should not cross-contaminate metadata between memories', async () => {
+	describe("Metadata Isolation", () => {
+		it("should not cross-contaminate metadata between memories", async () => {
 			const mem1 = {
-				id: 'meta_1',
-				content: 'Memory one',
-				metadata: { custom_field: 'value_1', tier: 'hot' },
+				id: "meta_1",
+				content: "Memory one",
+				metadata: { custom_field: "value_1", tier: "hot" },
 			};
 			const mem2 = {
-				id: 'meta_2',
-				content: 'Memory two',
-				metadata: { custom_field: 'value_2', tier: 'warm' },
+				id: "meta_2",
+				content: "Memory two",
+				metadata: { custom_field: "value_2", tier: "warm" },
 			};
 
 			await collection.add(mem1);
 			await collection.add(mem2);
 
 			// Update mem1 metadata
-			collection.updateMetadata('meta_1', { custom_field: 'updated_1' });
+			collection.updateMetadata("meta_1", { custom_field: "updated_1" });
 
 			// Verify mem2 metadata unchanged
-			const doc2 = collection.get('meta_2');
-			expect(doc2?.metadata.custom_field).toBe('value_2');
-			expect(doc2?.metadata.tier).toBe('warm');
+			const doc2 = collection.get("meta_2");
+			expect(doc2?.metadata.custom_field).toBe("value_2");
+			expect(doc2?.metadata.tier).toBe("warm");
 
 			// Verify mem1 updated correctly
-			const doc1 = collection.get('meta_1');
-			expect(doc1?.metadata.custom_field).toBe('updated_1');
+			const doc1 = collection.get("meta_1");
+			expect(doc1?.metadata.custom_field).toBe("updated_1");
 		});
 	});
 
-	describe('Stress Test: High Volume', () => {
-		it('should handle 1000 sequential writes without data loss', async () => {
+	describe("Stress Test: High Volume", () => {
+		it("should handle 1000 sequential writes without data loss", async () => {
 			const count = 1000;
 
 			for (let i = 0; i < count; i++) {
@@ -630,11 +630,11 @@ describe('Catastrophic Forgetting Prevention', () => {
 			}
 		});
 
-		it('should maintain search quality with 1000 documents', async () => {
+		it("should maintain search quality with 1000 documents", async () => {
 			// Add a needle
 			await collection.add({
-				id: 'needle',
-				content: 'The secret password is elephant42',
+				id: "needle",
+				content: "The secret password is elephant42",
 				metadata: createTestMetadata(),
 			});
 
@@ -648,10 +648,10 @@ describe('Catastrophic Forgetting Prevention', () => {
 			}
 
 			// Search for needle
-			const results = await collection.search('secret password elephant', 5);
+			const results = await collection.search("secret password elephant", 5);
 
 			// Needle should be in top results
-			const needleRank = results.findIndex((r) => r.document.id === 'needle');
+			const needleRank = results.findIndex((r) => r.document.id === "needle");
 			expect(needleRank).toBeGreaterThanOrEqual(0);
 			expect(needleRank).toBeLessThan(5);
 		});

@@ -8,6 +8,7 @@ import { DEFAULT_SETTINGS, type SettingsEditable } from "$lib/types/Settings";
 import { z } from "zod";
 import { config } from "$lib/server/config";
 import { logger } from "$lib/server/logger";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 
 export const userGroup = new Elysia()
 	.use(authPlugin)
@@ -74,6 +75,8 @@ export const userGroup = new Elysia()
 					customPrompts: settings?.customPrompts ?? {},
 					multimodalOverrides: settings?.multimodalOverrides ?? {},
 					toolsOverrides: settings?.toolsOverrides ?? {},
+					maxTokensOverrides: settings?.maxTokensOverrides ?? {},
+					truncateOverrides: settings?.truncateOverrides ?? {},
 					billingOrganization: settings?.billingOrganization ?? undefined,
 				};
 			})
@@ -90,6 +93,8 @@ export const userGroup = new Elysia()
 						customPrompts: z.record(z.string()).default({}),
 						multimodalOverrides: z.record(z.boolean()).default({}),
 						toolsOverrides: z.record(z.boolean()).default({}),
+						maxTokensOverrides: z.record(z.number().int().min(0)).default({}),
+						truncateOverrides: z.record(z.number().int().min(0)).default({}),
 						disableStream: z.boolean().default(false),
 						directPaste: z.boolean().default(false),
 						hidePromptExamples: z.record(z.boolean()).default({}),
@@ -116,14 +121,10 @@ export const userGroup = new Elysia()
 				// return ok response
 				return new Response();
 			})
-			.get("/reports", async ({ locals }) => {
-				if (!locals.user || !locals.sessionId) {
-					return [];
-				}
-
+			.get("/reports", async () => {
 				const reports = await collections.reports
 					.find({
-						createdBy: locals.user?._id ?? locals.sessionId,
+						createdBy: ADMIN_USER_ID,
 					})
 					.toArray();
 				return reports;

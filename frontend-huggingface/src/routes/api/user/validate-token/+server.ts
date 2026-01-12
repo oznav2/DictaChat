@@ -1,11 +1,12 @@
 import { adminTokenManager } from "$lib/server/adminToken";
 import { z } from "zod";
+import type { RequestHandler } from "./$types";
 
 const validateTokenSchema = z.object({
 	token: z.string(),
 });
 
-export const POST = async ({ request, locals }) => {
+export const POST: RequestHandler = async ({ request, locals }) => {
 	const { success, data } = validateTokenSchema.safeParse(await request.json());
 
 	if (!success) {

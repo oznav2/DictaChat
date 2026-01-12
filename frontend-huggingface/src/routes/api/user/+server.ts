@@ -1,4 +1,6 @@
-export async function GET({ locals }) {
+import type { RequestHandler } from "./$types";
+
+export const GET: RequestHandler = async ({ locals }) => {
 	if (locals.user) {
 		const res = {
 			id: locals.user._id,
@@ -12,4 +14,4 @@ export async function GET({ locals }) {
 		return Response.json(res);
 	}
 	return Response.json({ message: "Must be signed in" }, { status: 401 });
-}
+};

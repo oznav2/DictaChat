@@ -73,6 +73,39 @@ def get_file_hash(file_path):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
 
+def get_directory_hash(dir_path, extensions=None):
+    """Calculate hash of all source files in a directory to detect code changes.
+
+    Args:
+        dir_path: Path to directory
+        extensions: List of file extensions to include (e.g., ['.ts', '.svelte'])
+    """
+    if not dir_path.exists():
+        return None
+
+    extensions = extensions or ['.ts', '.svelte', '.js', '.css', '.html']
+    hash_md5 = hashlib.md5()
+
+    # Get all matching files, sorted for consistent hashing
+    files = []
+    for ext in extensions:
+        files.extend(dir_path.rglob(f"*{ext}"))
+
+    # Exclude node_modules and build artifacts
+    files = [f for f in files if 'node_modules' not in str(f) and '.svelte-kit' not in str(f) and 'build' not in str(f)]
+    files = sorted(files)
+
+    for file_path in files:
+        try:
+            # Include relative path in hash so renames are detected
+            rel_path = file_path.relative_to(dir_path)
+            hash_md5.update(str(rel_path).encode())
+            hash_md5.update(file_path.read_bytes())
+        except (IOError, OSError):
+            continue
+
+    return hash_md5.hexdigest()
+
 def load_state():
     """Load deployment state from hidden file."""
     if STATE_FILE.exists():
@@ -88,23 +121,36 @@ def save_state(state):
     with open(STATE_FILE, "w") as f:
         json.dump(state, f, indent=4)
 
+FRONTEND_DIR = SCRIPT_DIR / "frontend-huggingface" / "src"
+MCP_PROXY_DIR = SCRIPT_DIR / "mcp-sse-proxy"
+
 def check_fast_track_eligibility(state, force=False):
     """Determine if fast-track mode can be used."""
     if force:
         return False, "Force flag used"
-    
+
     if not state.get("last_successful_deployment"):
         return False, "No previous successful deployment found"
-    
+
     # Check if critical configuration files have changed
     current_env_hash = get_file_hash(ENV_FILE)
     if state.get("env_hash") != current_env_hash:
         return False, ".env file has changed"
-        
+
     current_compose_hash = get_file_hash(DOCKER_COMPOSE_FILE)
     if state.get("compose_hash") != current_compose_hash:
         return False, "docker-compose.yml has changed"
-        
+
+    # Check if frontend source code has changed
+    current_frontend_hash = get_directory_hash(FRONTEND_DIR)
+    if state.get("frontend_hash") != current_frontend_hash:
+        return False, "Frontend source code has changed"
+
+    # Check if MCP proxy source code has changed
+    current_mcp_hash = get_directory_hash(MCP_PROXY_DIR, extensions=['.ts', '.js', '.json'])
+    if state.get("mcp_proxy_hash") != current_mcp_hash:
+        return False, "MCP proxy source code has changed"
+
     # Check if docker is still available (basic check)
     if shutil.which(RUNTIME_CMD[0]) is None:
         return False, f"{RUNTIME_CMD[0]} not found"
@@ -653,7 +699,9 @@ def deploy_services():
     state = {
         "last_successful_deployment": time.time(),
         "env_hash": get_file_hash(ENV_FILE),
-        "compose_hash": get_file_hash(DOCKER_COMPOSE_FILE)
+        "compose_hash": get_file_hash(DOCKER_COMPOSE_FILE),
+        "frontend_hash": get_directory_hash(FRONTEND_DIR),
+        "mcp_proxy_hash": get_directory_hash(MCP_PROXY_DIR, extensions=['.ts', '.js', '.json'])
     }
     save_state(state)
 

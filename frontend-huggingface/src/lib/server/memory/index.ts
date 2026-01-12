@@ -1,10 +1,7 @@
 export { UnifiedMemoryFacade } from "./UnifiedMemoryFacade";
 export type {
 	ActionKgService,
-	ConsistencyCheckParams,
 	ContextService,
-	ExportBackupParams,
-	ExportBackupResult,
 	GetActionEffectivenessParams,
 	GetColdStartContextParams,
 	GetColdStartContextResult,
@@ -19,17 +16,17 @@ export type {
 	ReindexFromMongoParams,
 	RemoveBookParams,
 	SearchParams,
-	SearchService,
 	StoreParams,
 	StoreResult,
 	StoreService,
 	UnifiedMemoryFacadeServices,
-	ImportBackupParams,
 	RecordFeedbackParams,
 	RecordResponseFeedbackParams,
 	// Core Interface Parity types
 	BookChunk,
 	BookListItem,
+	ConsistencyCheckParams as FacadeConsistencyCheckParams,
+	SearchService as FacadeSearchService,
 } from "./UnifiedMemoryFacade";
 export { defaultMemoryConfig } from "./memory_config";
 export type { MemoryConfig } from "./memory_config";
@@ -86,7 +83,10 @@ export { RedisEmbeddingCache, createRedisEmbeddingCache } from "./embedding";
 export type { RedisEmbeddingCacheConfig, CacheGetResult, CacheBatchGetResult } from "./embedding";
 
 // Contextual Embedding (LLM-powered context prefix generation)
-export { ContextualEmbeddingService, createContextualEmbeddingService } from "./ContextualEmbeddingService";
+export {
+	ContextualEmbeddingService,
+	createContextualEmbeddingService,
+} from "./ContextualEmbeddingService";
 export type { ContextualEmbeddingConfig, ContextualChunk } from "./ContextualEmbeddingService";
 
 // Search
@@ -159,7 +159,12 @@ export type {
 } from "./kg";
 
 // Learning (Outcome Detection & Promotion)
-export { OutcomeDetector, createOutcomeDetector, PromotionService, createPromotionService } from "./learning";
+export {
+	OutcomeDetector,
+	createOutcomeDetector,
+	PromotionService,
+	createPromotionService,
+} from "./learning";
 export type {
 	ConversationMessage,
 	OutcomeDetectionResult,
@@ -206,7 +211,6 @@ export type {
 	ExportBackupResult,
 	ImportBackupParams,
 	ImportBackupResult,
-	MemoryStats,
 } from "./ops";
 
 // Prompt Engine (Handlebars-based template system)
@@ -244,7 +248,11 @@ export {
 	buildFailureWarning,
 	buildErrorMessage,
 } from "./BilingualPrompts";
-export type { SupportedLanguage, BilingualPrompt, BilingualPromptWithContext } from "./BilingualPrompts";
+export type {
+	SupportedLanguage,
+	BilingualPrompt,
+	BilingualPromptWithContext,
+} from "./BilingualPrompts";
 
 // Retrieval (RRF Fusion, Dynamic Weighting, Quality Enforcement, Organic Recall)
 export {

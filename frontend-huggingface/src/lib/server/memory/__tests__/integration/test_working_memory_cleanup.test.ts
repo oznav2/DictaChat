@@ -72,28 +72,43 @@ const mockStore = {
 	initialize: vi.fn().mockResolvedValue(undefined),
 	query: vi.fn().mockImplementation(async (params) => {
 		const tier = params.tier || "working";
-		const memories = tier === "working" ? mockWorkingMemories :
-			tier === "history" ? mockHistoryMemories : mockPatternsMemories;
+		const memories =
+			tier === "working"
+				? mockWorkingMemories
+				: tier === "history"
+					? mockHistoryMemories
+					: mockPatternsMemories;
 		return Array.from(memories.values());
 	}),
 	getById: vi.fn().mockImplementation(async (id) => {
-		return mockWorkingMemories.get(id) || mockHistoryMemories.get(id) || mockPatternsMemories.get(id) || null;
+		return (
+			mockWorkingMemories.get(id) ||
+			mockHistoryMemories.get(id) ||
+			mockPatternsMemories.get(id) ||
+			null
+		);
 	}),
 	delete: vi.fn().mockImplementation(async (id) => {
-		const deleted = mockWorkingMemories.delete(id) ||
+		const deleted =
+			mockWorkingMemories.delete(id) ||
 			mockHistoryMemories.delete(id) ||
 			mockPatternsMemories.delete(id);
 		return deleted;
 	}),
 	store: vi.fn().mockImplementation(async (memory) => {
 		const tier = memory.tier || "working";
-		const memories = tier === "working" ? mockWorkingMemories :
-			tier === "history" ? mockHistoryMemories : mockPatternsMemories;
+		const memories =
+			tier === "working"
+				? mockWorkingMemories
+				: tier === "history"
+					? mockHistoryMemories
+					: mockPatternsMemories;
 		memories.set(memory.id, memory);
 		return memory.id;
 	}),
 	update: vi.fn().mockImplementation(async (id, updates) => {
-		let memory = mockWorkingMemories.get(id) || mockHistoryMemories.get(id) || mockPatternsMemories.get(id);
+		let memory =
+			mockWorkingMemories.get(id) || mockHistoryMemories.get(id) || mockPatternsMemories.get(id);
 		if (memory) {
 			memory = { ...memory, ...updates };
 			if (memory.tier === "working") mockWorkingMemories.set(id, memory);
@@ -105,13 +120,21 @@ const mockStore = {
 	}),
 	count: vi.fn().mockImplementation(async (params) => {
 		const tier = params?.tier || "working";
-		const memories = tier === "working" ? mockWorkingMemories :
-			tier === "history" ? mockHistoryMemories : mockPatternsMemories;
+		const memories =
+			tier === "working"
+				? mockWorkingMemories
+				: tier === "history"
+					? mockHistoryMemories
+					: mockPatternsMemories;
 		return memories.size;
 	}),
 	listIds: vi.fn().mockImplementation(async (tier) => {
-		const memories = tier === "working" ? mockWorkingMemories :
-			tier === "history" ? mockHistoryMemories : mockPatternsMemories;
+		const memories =
+			tier === "working"
+				? mockWorkingMemories
+				: tier === "history"
+					? mockHistoryMemories
+					: mockPatternsMemories;
 		return Array.from(memories.keys());
 	}),
 };
@@ -382,10 +405,7 @@ describe("TestPromotionServiceCleanup", () => {
 				createMemoryWithAge("working_delete_me", 30, 0.3, 1)
 			);
 			// This one should STAY (new)
-			mockWorkingMemories.set(
-				"working_keep_me",
-				createMemoryWithAge("working_keep_me", 2, 0.5, 1)
-			);
+			mockWorkingMemories.set("working_keep_me", createMemoryWithAge("working_keep_me", 2, 0.5, 1));
 
 			const result = await runWorkingMemoryCleanup("test-user");
 
@@ -536,10 +556,7 @@ describe("TestGarbageCleanup", () => {
 				createMemoryWithAge("working_garbage_2", 10, 0.15)
 			);
 			// Good memory
-			mockWorkingMemories.set(
-				"working_good",
-				createMemoryWithAge("working_good", 5, 0.6)
-			);
+			mockWorkingMemories.set("working_good", createMemoryWithAge("working_good", 5, 0.6));
 
 			const deleted = await runGarbageCleanup("test-user");
 
@@ -681,7 +698,10 @@ describe("TestCleanupScheduling", () => {
 		try {
 			// Create multiple old memories
 			for (let i = 0; i < 10; i++) {
-				mockWorkingMemories.set(`working_old_${i}`, createMemoryWithAge(`working_old_${i}`, 30, 0.3));
+				mockWorkingMemories.set(
+					`working_old_${i}`,
+					createMemoryWithAge(`working_old_${i}`, 30, 0.3)
+				);
 			}
 			mockWorkingMemories.set("working_new", createMemoryWithAge("working_new", 2, 0.5));
 

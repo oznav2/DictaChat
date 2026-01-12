@@ -9,6 +9,11 @@ export interface MemoryCitationV1 {
 	memory_id: string;
 	doc_id?: string | null;
 	chunk_id?: string | null;
+	content?: string;
+	text?: string;
+	wilson_score?: number;
+	confidence?: number;
+	score?: number;
 }
 
 export interface MemorySearchPositionV1 {
@@ -38,6 +43,8 @@ export interface KnownContextItemV1 {
 	content: string;
 	doc_id?: string | null;
 	score_summary?: Record<string, unknown> | null;
+	wilson_score?: number;
+	confidence?: number;
 }
 
 export interface KnownContextV1 {
@@ -80,6 +87,13 @@ export interface MemoryDebugMetaV1 {
 	vector_stage_status?: VectorStageStatus | null;
 }
 
+export interface RetrievalDebugV1 {
+	confidence: RetrievalConfidence;
+	fallbacks_used: string[];
+	stage_timings_ms: Record<string, number>;
+	errors: MemoryDebugErrorV1[];
+}
+
 export interface MemoryFeedbackMetaV1 {
 	eligible: boolean;
 	interrupted: boolean;
@@ -98,7 +112,7 @@ export interface MemoryMetaV1 {
 	known_context: KnownContextV1;
 	citations: MemoryCitationV1[];
 	context_insights: ContextInsightsMetaV1;
+	retrievalDebug?: RetrievalDebugV1;
 	debug: MemoryDebugMetaV1;
 	feedback: MemoryFeedbackMetaV1;
 }
-

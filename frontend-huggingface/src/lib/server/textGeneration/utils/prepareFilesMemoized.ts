@@ -37,7 +37,9 @@ class MessagePreparationCache {
 					msg.files?.map((file) => ({
 						name: file.name,
 						mime: file.mime,
+						path: file.path ?? null,
 						size: file.value?.length || 0,
+						type: file.type,
 					})) || [],
 			})),
 			isMultimodal,

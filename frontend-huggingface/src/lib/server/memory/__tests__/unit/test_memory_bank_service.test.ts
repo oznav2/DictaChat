@@ -15,7 +15,7 @@
  *     npx vitest run src/lib/server/memory/__tests__/unit/test_memory_bank_service.test.ts
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 
 // =============================================================================
 // Test Result Tracking
@@ -41,7 +41,7 @@ function recordResult(name: string, passed: boolean, details?: string, error?: s
 // Mock MongoDB collections
 const mockItemsCollection = {
 	createIndex: vi.fn().mockResolvedValue(undefined),
-	insertOne: vi.fn().mockResolvedValue({ insertedId: 'test_id' }),
+	insertOne: vi.fn().mockResolvedValue({ insertedId: "test_id" }),
 	findOne: vi.fn().mockResolvedValue(null),
 	findOneAndUpdate: vi.fn().mockResolvedValue(null),
 	updateOne: vi.fn().mockResolvedValue({ modifiedCount: 1 }),
@@ -61,7 +61,7 @@ const mockItemsCollection = {
 
 const mockVersionsCollection = {
 	createIndex: vi.fn().mockResolvedValue(undefined),
-	insertOne: vi.fn().mockResolvedValue({ insertedId: 'version_id' }),
+	insertOne: vi.fn().mockResolvedValue({ insertedId: "version_id" }),
 	find: vi.fn().mockReturnValue({
 		sort: vi.fn().mockReturnThis(),
 		limit: vi.fn().mockReturnThis(),
@@ -71,12 +71,12 @@ const mockVersionsCollection = {
 
 const mockOutcomesCollection = {
 	createIndex: vi.fn().mockResolvedValue(undefined),
-	insertOne: vi.fn().mockResolvedValue({ insertedId: 'outcome_id' }),
+	insertOne: vi.fn().mockResolvedValue({ insertedId: "outcome_id" }),
 };
 
 const mockActionOutcomesCollection = {
 	createIndex: vi.fn().mockResolvedValue(undefined),
-	insertOne: vi.fn().mockResolvedValue({ insertedId: 'action_id' }),
+	insertOne: vi.fn().mockResolvedValue({ insertedId: "action_id" }),
 	aggregate: vi.fn().mockReturnValue({
 		maxTimeMS: vi.fn().mockReturnThis(),
 		toArray: vi.fn().mockResolvedValue([]),
@@ -86,13 +86,18 @@ const mockActionOutcomesCollection = {
 const mockDb = {
 	collection: vi.fn((name: string) => {
 		switch (name) {
-			case 'memory_items': return mockItemsCollection;
-			case 'memory_versions': return mockVersionsCollection;
-			case 'memory_outcomes': return mockOutcomesCollection;
-			case 'memory_action_outcomes': return mockActionOutcomesCollection;
-			default: return {
-				createIndex: vi.fn().mockResolvedValue(undefined),
-			};
+			case "memory_items":
+				return mockItemsCollection;
+			case "memory_versions":
+				return mockVersionsCollection;
+			case "memory_outcomes":
+				return mockOutcomesCollection;
+			case "memory_action_outcomes":
+				return mockActionOutcomesCollection;
+			default:
+				return {
+					createIndex: vi.fn().mockResolvedValue(undefined),
+				};
 		}
 	}),
 };
@@ -101,7 +106,7 @@ const mockMongoClient = {
 	db: vi.fn().mockReturnValue(mockDb),
 };
 
-vi.mock('$lib/server/logger', () => ({
+vi.mock("$lib/server/logger", () => ({
 	logger: {
 		info: vi.fn(),
 		debug: vi.fn(),
@@ -110,47 +115,47 @@ vi.mock('$lib/server/logger', () => ({
 	},
 }));
 
-vi.mock('$env/dynamic/private', () => ({
+vi.mock("$env/dynamic/private", () => ({
 	env: {},
 }));
 
-vi.mock('mongodb', async () => {
-	const actual = await vi.importActual('mongodb');
+vi.mock("mongodb", async () => {
+	const actual = await vi.importActual("mongodb");
 	return {
 		...actual,
-		ObjectId: vi.fn().mockImplementation(() => ({ toString: () => 'mock_object_id' })),
+		ObjectId: vi.fn().mockImplementation(() => ({ toString: () => "mock_object_id" })),
 	};
 });
 
-vi.mock('uuid', () => ({
-	v4: vi.fn().mockReturnValue('mock_uuid'),
+vi.mock("uuid", () => ({
+	v4: vi.fn().mockReturnValue("mock_uuid"),
 }));
 
 // =============================================================================
 // TestMemoryMongoStoreInit: Test initialization
 // =============================================================================
 
-describe('TestMemoryMongoStoreInit', () => {
+describe("TestMemoryMongoStoreInit", () => {
 	/**
 	 * test_init_with_defaults
 	 *
 	 * Should initialize with default config.
 	 */
-	it('should initialize with default config', async () => {
-		const testName = 'test_init_with_defaults';
+	it("should initialize with default config", async () => {
+		const testName = "test_init_with_defaults";
 		try {
-			const { MemoryMongoStore } = await import('../../stores/MemoryMongoStore');
+			const { MemoryMongoStore } = await import("../../stores/MemoryMongoStore");
 
 			const store = new MemoryMongoStore({
 				client: mockMongoClient as any,
-				dbName: 'test_db',
+				dbName: "test_db",
 			});
 
 			expect(store).toBeDefined();
 			expect(store.initialize).toBeDefined();
 			expect(store.store).toBeDefined();
 
-			recordResult(testName, true, 'Store initialized with defaults');
+			recordResult(testName, true, "Store initialized with defaults");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -162,14 +167,14 @@ describe('TestMemoryMongoStoreInit', () => {
 	 *
 	 * Should create indexes on initialization.
 	 */
-	it('should create indexes on initialization', async () => {
-		const testName = 'test_init_creates_indexes';
+	it("should create indexes on initialization", async () => {
+		const testName = "test_init_creates_indexes";
 		try {
-			const { MemoryMongoStore } = await import('../../stores/MemoryMongoStore');
+			const { MemoryMongoStore } = await import("../../stores/MemoryMongoStore");
 
 			const store = new MemoryMongoStore({
 				client: mockMongoClient as any,
-				dbName: 'test_db',
+				dbName: "test_db",
 			});
 
 			await store.initialize();
@@ -177,7 +182,7 @@ describe('TestMemoryMongoStoreInit', () => {
 			// Should have called createIndex on items collection
 			expect(mockItemsCollection.createIndex).toHaveBeenCalled();
 
-			recordResult(testName, true, 'Indexes created on initialization');
+			recordResult(testName, true, "Indexes created on initialization");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -189,16 +194,16 @@ describe('TestMemoryMongoStoreInit', () => {
 // TestStore: Test memory storage
 // =============================================================================
 
-describe('TestStore', () => {
+describe("TestStore", () => {
 	let store: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { MemoryMongoStore } = await import('../../stores/MemoryMongoStore');
+		const { MemoryMongoStore } = await import("../../stores/MemoryMongoStore");
 		store = new MemoryMongoStore({
 			client: mockMongoClient as any,
-			dbName: 'test_db',
+			dbName: "test_db",
 		});
 		await store.initialize();
 	});
@@ -208,26 +213,26 @@ describe('TestStore', () => {
 	 *
 	 * Should store memory with correct metadata.
 	 */
-	it('should store memory with correct metadata', async () => {
-		const testName = 'test_store_basic';
+	it("should store memory with correct metadata", async () => {
+		const testName = "test_store_basic";
 		try {
 			const result = await store.store({
-				userId: 'user_123',
-				tier: 'memory_bank',
-				text: 'User prefers dark mode',
-				tags: ['preference'],
-				source: { type: 'user_input' },
+				userId: "user_123",
+				tier: "memory_bank",
+				text: "User prefers dark mode",
+				tags: ["preference"],
+				source: { type: "user_input" },
 			});
 
 			expect(mockItemsCollection.insertOne).toHaveBeenCalled();
 
 			const insertCall = mockItemsCollection.insertOne.mock.calls[0][0];
-			expect(insertCall.text).toBe('User prefers dark mode');
-			expect(insertCall.tier).toBe('memory_bank');
-			expect(insertCall.status).toBe('active');
-			expect(insertCall.tags).toEqual(['preference']);
+			expect(insertCall.text).toBe("User prefers dark mode");
+			expect(insertCall.tier).toBe("memory_bank");
+			expect(insertCall.status).toBe("active");
+			expect(insertCall.tags).toEqual(["preference"]);
 
-			recordResult(testName, true, 'Memory stored with correct metadata');
+			recordResult(testName, true, "Memory stored with correct metadata");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -239,15 +244,15 @@ describe('TestStore', () => {
 	 *
 	 * Should store with custom quality parameters.
 	 */
-	it('should store with custom quality parameters', async () => {
-		const testName = 'test_store_with_quality';
+	it("should store with custom quality parameters", async () => {
+		const testName = "test_store_with_quality";
 		try {
 			await store.store({
-				userId: 'user_123',
-				tier: 'memory_bank',
-				text: 'Critical info',
-				tags: ['identity'],
-				source: { type: 'user_input' },
+				userId: "user_123",
+				tier: "memory_bank",
+				text: "Critical info",
+				tags: ["identity"],
+				source: { type: "user_input" },
 				quality: {
 					importance: 0.95,
 					confidence: 0.9,
@@ -260,7 +265,7 @@ describe('TestStore', () => {
 			expect(insertCall.quality.importance).toBe(0.95);
 			expect(insertCall.quality.confidence).toBe(0.9);
 
-			recordResult(testName, true, 'Memory stored with quality parameters');
+			recordResult(testName, true, "Memory stored with quality parameters");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -272,14 +277,14 @@ describe('TestStore', () => {
 	 *
 	 * Should initialize stats with correct defaults.
 	 */
-	it('should initialize stats with correct defaults', async () => {
-		const testName = 'test_store_initializes_stats';
+	it("should initialize stats with correct defaults", async () => {
+		const testName = "test_store_initializes_stats";
 		try {
 			await store.store({
-				userId: 'user_123',
-				tier: 'working',
-				text: 'Test memory',
-				source: { type: 'conversation' },
+				userId: "user_123",
+				tier: "working",
+				text: "Test memory",
+				source: { type: "conversation" },
 			});
 
 			const insertCall = mockItemsCollection.insertOne.mock.calls[0][0];
@@ -289,7 +294,7 @@ describe('TestStore', () => {
 			expect(insertCall.stats.worked_count).toBe(0);
 			expect(insertCall.stats.failed_count).toBe(0);
 
-			recordResult(testName, true, 'Stats initialized with defaults');
+			recordResult(testName, true, "Stats initialized with defaults");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -301,16 +306,16 @@ describe('TestStore', () => {
 // TestQuery: Test memory queries
 // =============================================================================
 
-describe('TestQuery', () => {
+describe("TestQuery", () => {
 	let store: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { MemoryMongoStore } = await import('../../stores/MemoryMongoStore');
+		const { MemoryMongoStore } = await import("../../stores/MemoryMongoStore");
 		store = new MemoryMongoStore({
 			client: mockMongoClient as any,
-			dbName: 'test_db',
+			dbName: "test_db",
 		});
 		await store.initialize();
 	});
@@ -320,15 +325,15 @@ describe('TestQuery', () => {
 	 *
 	 * Should filter to active status by default.
 	 */
-	it('should filter to active status by default', async () => {
-		const testName = 'test_query_defaults_to_active';
+	it("should filter to active status by default", async () => {
+		const testName = "test_query_defaults_to_active";
 		try {
-			await store.query({ userId: 'user_123' });
+			await store.query({ userId: "user_123" });
 
 			const findCall = mockItemsCollection.find.mock.calls[0][0];
-			expect(findCall.status).toBe('active');
+			expect(findCall.status).toBe("active");
 
-			recordResult(testName, true, 'Query defaults to active status');
+			recordResult(testName, true, "Query defaults to active status");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -340,18 +345,18 @@ describe('TestQuery', () => {
 	 *
 	 * Should filter by tiers.
 	 */
-	it('should filter by tiers', async () => {
-		const testName = 'test_query_filters_by_tier';
+	it("should filter by tiers", async () => {
+		const testName = "test_query_filters_by_tier";
 		try {
 			await store.query({
-				userId: 'user_123',
-				tiers: ['working', 'history'],
+				userId: "user_123",
+				tiers: ["working", "history"],
 			});
 
 			const findCall = mockItemsCollection.find.mock.calls[0][0];
-			expect(findCall.tier).toEqual({ $in: ['working', 'history'] });
+			expect(findCall.tier).toEqual({ $in: ["working", "history"] });
 
-			recordResult(testName, true, 'Query filters by tiers');
+			recordResult(testName, true, "Query filters by tiers");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -363,18 +368,18 @@ describe('TestQuery', () => {
 	 *
 	 * Should filter by tags.
 	 */
-	it('should filter by tags', async () => {
-		const testName = 'test_query_filters_by_tags';
+	it("should filter by tags", async () => {
+		const testName = "test_query_filters_by_tags";
 		try {
 			await store.query({
-				userId: 'user_123',
-				tags: ['identity', 'preference'],
+				userId: "user_123",
+				tags: ["identity", "preference"],
 			});
 
 			const findCall = mockItemsCollection.find.mock.calls[0][0];
-			expect(findCall.tags).toEqual({ $in: ['identity', 'preference'] });
+			expect(findCall.tags).toEqual({ $in: ["identity", "preference"] });
 
-			recordResult(testName, true, 'Query filters by tags');
+			recordResult(testName, true, "Query filters by tags");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -386,18 +391,18 @@ describe('TestQuery', () => {
 	 *
 	 * Should filter by minimum score.
 	 */
-	it('should filter by minimum score', async () => {
-		const testName = 'test_query_filters_by_score';
+	it("should filter by minimum score", async () => {
+		const testName = "test_query_filters_by_score";
 		try {
 			await store.query({
-				userId: 'user_123',
+				userId: "user_123",
 				minScore: 0.7,
 			});
 
 			const findCall = mockItemsCollection.find.mock.calls[0][0];
-			expect(findCall['stats.wilson_score']).toEqual({ $gte: 0.7 });
+			expect(findCall["stats.wilson_score"]).toEqual({ $gte: 0.7 });
 
-			recordResult(testName, true, 'Query filters by score');
+			recordResult(testName, true, "Query filters by score");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -409,18 +414,18 @@ describe('TestQuery', () => {
 	 *
 	 * Should respect query limit.
 	 */
-	it('should respect query limit', async () => {
-		const testName = 'test_query_respects_limit';
+	it("should respect query limit", async () => {
+		const testName = "test_query_respects_limit";
 		try {
 			await store.query({
-				userId: 'user_123',
+				userId: "user_123",
 				limit: 5,
 			});
 
 			const findChain = mockItemsCollection.find();
 			expect(findChain.limit).toHaveBeenCalledWith(5);
 
-			recordResult(testName, true, 'Query respects limit');
+			recordResult(testName, true, "Query respects limit");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -432,16 +437,16 @@ describe('TestQuery', () => {
 // TestUpdate: Test memory updates
 // =============================================================================
 
-describe('TestUpdate', () => {
+describe("TestUpdate", () => {
 	let store: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { MemoryMongoStore } = await import('../../stores/MemoryMongoStore');
+		const { MemoryMongoStore } = await import("../../stores/MemoryMongoStore");
 		store = new MemoryMongoStore({
 			client: mockMongoClient as any,
-			dbName: 'test_db',
+			dbName: "test_db",
 		});
 		await store.initialize();
 	});
@@ -451,33 +456,33 @@ describe('TestUpdate', () => {
 	 *
 	 * Should increment version on update.
 	 */
-	it('should increment version on update', async () => {
-		const testName = 'test_update_increments_version';
+	it("should increment version on update", async () => {
+		const testName = "test_update_increments_version";
 		try {
 			// Mock existing document
 			mockItemsCollection.findOne.mockResolvedValueOnce({
-				memory_id: 'mem_123',
-				user_id: 'user_123',
+				memory_id: "mem_123",
+				user_id: "user_123",
 				versioning: { current_version: 1 },
 			});
 
 			mockItemsCollection.findOneAndUpdate.mockResolvedValueOnce({
-				memory_id: 'mem_123',
-				user_id: 'user_123',
-				text: 'Updated text',
+				memory_id: "mem_123",
+				user_id: "user_123",
+				text: "Updated text",
 				versioning: { current_version: 2 },
 			});
 
 			await store.update({
-				memoryId: 'mem_123',
-				userId: 'user_123',
-				text: 'Updated text',
+				memoryId: "mem_123",
+				userId: "user_123",
+				text: "Updated text",
 			});
 
 			const updateCall = mockItemsCollection.findOneAndUpdate.mock.calls[0];
-			expect(updateCall[1].$inc['versioning.current_version']).toBe(1);
+			expect(updateCall[1].$inc["versioning.current_version"]).toBe(1);
 
-			recordResult(testName, true, 'Version incremented on update');
+			recordResult(testName, true, "Version incremented on update");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -489,20 +494,20 @@ describe('TestUpdate', () => {
 	 *
 	 * Should return null if memory not found.
 	 */
-	it('should return null if memory not found', async () => {
-		const testName = 'test_update_not_found';
+	it("should return null if memory not found", async () => {
+		const testName = "test_update_not_found";
 		try {
 			mockItemsCollection.findOne.mockResolvedValueOnce(null);
 
 			const result = await store.update({
-				memoryId: 'nonexistent',
-				userId: 'user_123',
-				text: 'Updated text',
+				memoryId: "nonexistent",
+				userId: "user_123",
+				text: "Updated text",
 			});
 
 			expect(result).toBeNull();
 
-			recordResult(testName, true, 'Returns null for not found');
+			recordResult(testName, true, "Returns null for not found");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -514,22 +519,22 @@ describe('TestUpdate', () => {
 	 *
 	 * Should create version record on update.
 	 */
-	it('should create version record on update', async () => {
-		const testName = 'test_update_creates_version';
+	it("should create version record on update", async () => {
+		const testName = "test_update_creates_version";
 		try {
 			const baseDocument = {
-				memory_id: 'mem_123',
-				user_id: 'user_123',
+				memory_id: "mem_123",
+				user_id: "user_123",
 				org_id: null,
-				tier: 'working',
-				status: 'active',
+				tier: "working",
+				status: "active",
 				tags: [],
 				always_inject: false,
-				text: 'Original text',
+				text: "Original text",
 				summary: null,
 				entities: [],
 				source: {
-					type: 'user',
+					type: "user",
 					conversation_id: null,
 					message_id: null,
 					tool_name: null,
@@ -559,23 +564,23 @@ describe('TestUpdate', () => {
 
 			mockItemsCollection.findOneAndUpdate.mockResolvedValueOnce({
 				...baseDocument,
-				text: 'Updated text',
+				text: "Updated text",
 				updated_at: new Date(),
 				versioning: { current_version: 2, supersedes_memory_id: null },
 			});
 
 			await store.update({
-				memoryId: 'mem_123',
-				userId: 'user_123',
-				text: 'Updated text',
+				memoryId: "mem_123",
+				userId: "user_123",
+				text: "Updated text",
 			});
 
 			// Wait for async version creation
-			await new Promise(resolve => setTimeout(resolve, 10));
+			await new Promise((resolve) => setTimeout(resolve, 10));
 
 			expect(mockVersionsCollection.insertOne).toHaveBeenCalled();
 
-			recordResult(testName, true, 'Version record created');
+			recordResult(testName, true, "Version record created");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -587,16 +592,16 @@ describe('TestUpdate', () => {
 // TestArchive: Test memory archiving
 // =============================================================================
 
-describe('TestArchive', () => {
+describe("TestArchive", () => {
 	let store: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { MemoryMongoStore } = await import('../../stores/MemoryMongoStore');
+		const { MemoryMongoStore } = await import("../../stores/MemoryMongoStore");
 		store = new MemoryMongoStore({
 			client: mockMongoClient as any,
-			dbName: 'test_db',
+			dbName: "test_db",
 		});
 		await store.initialize();
 	});
@@ -606,23 +611,23 @@ describe('TestArchive', () => {
 	 *
 	 * Should set status to archived.
 	 */
-	it('should set status to archived', async () => {
-		const testName = 'test_archive_sets_status';
+	it("should set status to archived", async () => {
+		const testName = "test_archive_sets_status";
 		try {
 			// Document structure must match MemoryItemDocument (flat fields, not nested timestamps)
 			const fullDocument = {
-				memory_id: 'mem_123',
-				user_id: 'user_123',
+				memory_id: "mem_123",
+				user_id: "user_123",
 				org_id: null,
-				tier: 'working',
-				status: 'active',
+				tier: "working",
+				status: "active",
 				tags: [],
 				always_inject: false,
-				text: 'test memory',
+				text: "test memory",
 				summary: null,
 				entities: [],
 				source: {
-					type: 'user',
+					type: "user",
 					conversation_id: null,
 					message_id: null,
 					tool_name: null,
@@ -652,18 +657,18 @@ describe('TestArchive', () => {
 
 			mockItemsCollection.findOneAndUpdate.mockResolvedValueOnce({
 				...fullDocument,
-				status: 'archived',
+				status: "archived",
 				archived_at: new Date(),
 			});
 
-			const result = await store.archive('mem_123', 'user_123', 'outdated');
+			const result = await store.archive("mem_123", "user_123", "outdated");
 
 			expect(result).toBe(true);
 
 			const updateCall = mockItemsCollection.findOneAndUpdate.mock.calls[0];
-			expect(updateCall[1].$set.status).toBe('archived');
+			expect(updateCall[1].$set.status).toBe("archived");
 
-			recordResult(testName, true, 'Status set to archived');
+			recordResult(testName, true, "Status set to archived");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -675,27 +680,27 @@ describe('TestArchive', () => {
 	 *
 	 * Should set archived_at timestamp.
 	 */
-	it('should set archived_at timestamp', async () => {
-		const testName = 'test_archive_sets_timestamp';
+	it("should set archived_at timestamp", async () => {
+		const testName = "test_archive_sets_timestamp";
 		try {
 			mockItemsCollection.findOne.mockResolvedValueOnce({
-				memory_id: 'mem_123',
-				user_id: 'user_123',
-				status: 'active',
+				memory_id: "mem_123",
+				user_id: "user_123",
+				status: "active",
 				versioning: { current_version: 1 },
 			});
 
 			mockItemsCollection.findOneAndUpdate.mockResolvedValueOnce({
-				memory_id: 'mem_123',
-				status: 'archived',
+				memory_id: "mem_123",
+				status: "archived",
 			});
 
-			await store.archive('mem_123', 'user_123');
+			await store.archive("mem_123", "user_123");
 
 			const updateCall = mockItemsCollection.findOneAndUpdate.mock.calls[0];
 			expect(updateCall[1].$set.archived_at).toBeDefined();
 
-			recordResult(testName, true, 'Archived_at timestamp set');
+			recordResult(testName, true, "Archived_at timestamp set");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -707,16 +712,16 @@ describe('TestArchive', () => {
 // TestOutcomeRecording: Test outcome recording and Wilson scores
 // =============================================================================
 
-describe('TestOutcomeRecording', () => {
+describe("TestOutcomeRecording", () => {
 	let store: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { MemoryMongoStore } = await import('../../stores/MemoryMongoStore');
+		const { MemoryMongoStore } = await import("../../stores/MemoryMongoStore");
 		store = new MemoryMongoStore({
 			client: mockMongoClient as any,
-			dbName: 'test_db',
+			dbName: "test_db",
 		});
 		await store.initialize();
 	});
@@ -726,11 +731,11 @@ describe('TestOutcomeRecording', () => {
 	 *
 	 * Should increment uses count.
 	 */
-	it('should increment uses count', async () => {
-		const testName = 'test_record_outcome_increments_uses';
+	it("should increment uses count", async () => {
+		const testName = "test_record_outcome_increments_uses";
 		try {
 			mockItemsCollection.findOneAndUpdate.mockResolvedValueOnce({
-				memory_id: 'mem_123',
+				memory_id: "mem_123",
 				stats: {
 					uses: 1,
 					worked_count: 1,
@@ -740,16 +745,16 @@ describe('TestOutcomeRecording', () => {
 			});
 
 			await store.recordOutcome({
-				memoryId: 'mem_123',
-				userId: 'user_123',
-				outcome: 'worked',
-				contextType: 'general',
+				memoryId: "mem_123",
+				userId: "user_123",
+				outcome: "worked",
+				contextType: "general",
 			});
 
 			const updateCall = mockItemsCollection.findOneAndUpdate.mock.calls[0];
-			expect(updateCall[1].$inc['stats.uses']).toBe(1);
+			expect(updateCall[1].$inc["stats.uses"]).toBe(1);
 
-			recordResult(testName, true, 'Uses count incremented');
+			recordResult(testName, true, "Uses count incremented");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -761,11 +766,11 @@ describe('TestOutcomeRecording', () => {
 	 *
 	 * Should increment specific outcome count.
 	 */
-	it('should increment specific outcome count', async () => {
-		const testName = 'test_record_outcome_increments_outcome_count';
+	it("should increment specific outcome count", async () => {
+		const testName = "test_record_outcome_increments_outcome_count";
 		try {
 			mockItemsCollection.findOneAndUpdate.mockResolvedValueOnce({
-				memory_id: 'mem_123',
+				memory_id: "mem_123",
 				stats: {
 					uses: 1,
 					worked_count: 0,
@@ -775,16 +780,16 @@ describe('TestOutcomeRecording', () => {
 			});
 
 			await store.recordOutcome({
-				memoryId: 'mem_123',
-				userId: 'user_123',
-				outcome: 'failed',
-				contextType: 'general',
+				memoryId: "mem_123",
+				userId: "user_123",
+				outcome: "failed",
+				contextType: "general",
 			});
 
 			const updateCall = mockItemsCollection.findOneAndUpdate.mock.calls[0];
-			expect(updateCall[1].$inc['stats.failed_count']).toBe(1);
+			expect(updateCall[1].$inc["stats.failed_count"]).toBe(1);
 
-			recordResult(testName, true, 'Outcome count incremented');
+			recordResult(testName, true, "Outcome count incremented");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -796,11 +801,11 @@ describe('TestOutcomeRecording', () => {
 	 *
 	 * Should recalculate Wilson score.
 	 */
-	it('should recalculate Wilson score', async () => {
-		const testName = 'test_record_outcome_updates_wilson';
+	it("should recalculate Wilson score", async () => {
+		const testName = "test_record_outcome_updates_wilson";
 		try {
 			mockItemsCollection.findOneAndUpdate.mockResolvedValueOnce({
-				memory_id: 'mem_123',
+				memory_id: "mem_123",
 				stats: {
 					uses: 5,
 					worked_count: 4,
@@ -811,19 +816,19 @@ describe('TestOutcomeRecording', () => {
 			});
 
 			await store.recordOutcome({
-				memoryId: 'mem_123',
-				userId: 'user_123',
-				outcome: 'worked',
-				contextType: 'general',
+				memoryId: "mem_123",
+				userId: "user_123",
+				outcome: "worked",
+				contextType: "general",
 			});
 
 			// Second updateOne should update Wilson score
 			expect(mockItemsCollection.updateOne).toHaveBeenCalled();
 
 			const wilsonUpdate = mockItemsCollection.updateOne.mock.calls[0];
-			expect(wilsonUpdate[1].$set['stats.wilson_score']).toBeDefined();
+			expect(wilsonUpdate[1].$set["stats.wilson_score"]).toBeDefined();
 
-			recordResult(testName, true, 'Wilson score updated');
+			recordResult(testName, true, "Wilson score updated");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -835,11 +840,11 @@ describe('TestOutcomeRecording', () => {
 	 *
 	 * Should create outcome event record.
 	 */
-	it('should create outcome event record', async () => {
-		const testName = 'test_record_outcome_creates_event';
+	it("should create outcome event record", async () => {
+		const testName = "test_record_outcome_creates_event";
 		try {
 			mockItemsCollection.findOneAndUpdate.mockResolvedValueOnce({
-				memory_id: 'mem_123',
+				memory_id: "mem_123",
 				stats: {
 					uses: 1,
 					worked_count: 1,
@@ -849,20 +854,20 @@ describe('TestOutcomeRecording', () => {
 			});
 
 			await store.recordOutcome({
-				memoryId: 'mem_123',
-				userId: 'user_123',
-				outcome: 'worked',
-				contextType: 'coding_help',
+				memoryId: "mem_123",
+				userId: "user_123",
+				outcome: "worked",
+				contextType: "coding_help",
 			});
 
 			expect(mockOutcomesCollection.insertOne).toHaveBeenCalled();
 
 			const outcomeDoc = mockOutcomesCollection.insertOne.mock.calls[0][0];
-			expect(outcomeDoc.memory_id).toBe('mem_123');
-			expect(outcomeDoc.outcome).toBe('worked');
-			expect(outcomeDoc.context_type).toBe('coding_help');
+			expect(outcomeDoc.memory_id).toBe("mem_123");
+			expect(outcomeDoc.outcome).toBe("worked");
+			expect(outcomeDoc.context_type).toBe("coding_help");
 
-			recordResult(testName, true, 'Outcome event created');
+			recordResult(testName, true, "Outcome event created");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -874,16 +879,16 @@ describe('TestOutcomeRecording', () => {
 // TestCountByTier: Test tier counting
 // =============================================================================
 
-describe('TestCountByTier', () => {
+describe("TestCountByTier", () => {
 	let store: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { MemoryMongoStore } = await import('../../stores/MemoryMongoStore');
+		const { MemoryMongoStore } = await import("../../stores/MemoryMongoStore");
 		store = new MemoryMongoStore({
 			client: mockMongoClient as any,
-			dbName: 'test_db',
+			dbName: "test_db",
 		});
 		await store.initialize();
 	});
@@ -893,19 +898,19 @@ describe('TestCountByTier', () => {
 	 *
 	 * Should return counts per tier.
 	 */
-	it('should return counts per tier', async () => {
-		const testName = 'test_count_by_tier';
+	it("should return counts per tier", async () => {
+		const testName = "test_count_by_tier";
 		try {
 			mockItemsCollection.aggregate.mockReturnValueOnce({
 				maxTimeMS: vi.fn().mockReturnThis(),
 				toArray: vi.fn().mockResolvedValue([
-					{ _id: 'working', count: 10 },
-					{ _id: 'history', count: 25 },
-					{ _id: 'patterns', count: 5 },
+					{ _id: "working", count: 10 },
+					{ _id: "history", count: 25 },
+					{ _id: "patterns", count: 5 },
 				]),
 			});
 
-			const counts = await store.countByTier('user_123');
+			const counts = await store.countByTier("user_123");
 
 			expect(counts.working).toBe(10);
 			expect(counts.history).toBe(25);
@@ -925,15 +930,15 @@ describe('TestCountByTier', () => {
 	 *
 	 * Should return zeros for new user.
 	 */
-	it('should return zeros for new user', async () => {
-		const testName = 'test_count_by_tier_empty';
+	it("should return zeros for new user", async () => {
+		const testName = "test_count_by_tier_empty";
 		try {
 			mockItemsCollection.aggregate.mockReturnValueOnce({
 				maxTimeMS: vi.fn().mockReturnThis(),
 				toArray: vi.fn().mockResolvedValue([]),
 			});
 
-			const counts = await store.countByTier('new_user');
+			const counts = await store.countByTier("new_user");
 
 			expect(counts.working).toBe(0);
 			expect(counts.history).toBe(0);
@@ -941,7 +946,7 @@ describe('TestCountByTier', () => {
 			expect(counts.books).toBe(0);
 			expect(counts.memory_bank).toBe(0);
 
-			recordResult(testName, true, 'Returns zeros for new user');
+			recordResult(testName, true, "Returns zeros for new user");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -953,16 +958,16 @@ describe('TestCountByTier', () => {
 // TestVersionHistory: Test version history retrieval
 // =============================================================================
 
-describe('TestVersionHistory', () => {
+describe("TestVersionHistory", () => {
 	let store: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { MemoryMongoStore } = await import('../../stores/MemoryMongoStore');
+		const { MemoryMongoStore } = await import("../../stores/MemoryMongoStore");
 		store = new MemoryMongoStore({
 			client: mockMongoClient as any,
-			dbName: 'test_db',
+			dbName: "test_db",
 		});
 		await store.initialize();
 	});
@@ -972,8 +977,8 @@ describe('TestVersionHistory', () => {
 	 *
 	 * Should return version history.
 	 */
-	it('should return version history', async () => {
-		const testName = 'test_get_version_history';
+	it("should return version history", async () => {
+		const testName = "test_get_version_history";
 		try {
 			mockVersionsCollection.find.mockReturnValueOnce({
 				sort: vi.fn().mockReturnThis(),
@@ -981,20 +986,20 @@ describe('TestVersionHistory', () => {
 				toArray: vi.fn().mockResolvedValue([
 					{
 						version_number: 2,
-						text: 'Updated text',
-						change_type: 'update',
+						text: "Updated text",
+						change_type: "update",
 						created_at: new Date(),
 					},
 					{
 						version_number: 1,
-						text: 'Original text',
-						change_type: 'create',
+						text: "Original text",
+						change_type: "create",
 						created_at: new Date(),
 					},
 				]),
 			});
 
-			const history = await store.getVersionHistory('mem_123', 'user_123');
+			const history = await store.getVersionHistory("mem_123", "user_123");
 
 			expect(history.length).toBe(2);
 			expect(history[0].versionNumber).toBe(2);
@@ -1012,16 +1017,16 @@ describe('TestVersionHistory', () => {
 // TestAlwaysInject: Test always-inject functionality
 // =============================================================================
 
-describe('TestAlwaysInject', () => {
+describe("TestAlwaysInject", () => {
 	let store: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { MemoryMongoStore } = await import('../../stores/MemoryMongoStore');
+		const { MemoryMongoStore } = await import("../../stores/MemoryMongoStore");
 		store = new MemoryMongoStore({
 			client: mockMongoClient as any,
-			dbName: 'test_db',
+			dbName: "test_db",
 		});
 		await store.initialize();
 	});
@@ -1031,16 +1036,16 @@ describe('TestAlwaysInject', () => {
 	 *
 	 * Should return always-inject memories.
 	 */
-	it('should return always-inject memories', async () => {
-		const testName = 'test_get_always_inject';
+	it("should return always-inject memories", async () => {
+		const testName = "test_get_always_inject";
 		try {
-			await store.getAlwaysInject('user_123');
+			await store.getAlwaysInject("user_123");
 
 			const findCall = mockItemsCollection.find.mock.calls[0][0];
 			expect(findCall.always_inject).toBe(true);
-			expect(findCall.status).toEqual({ $in: ['active'] });
+			expect(findCall.status).toEqual({ $in: ["active"] });
 
-			recordResult(testName, true, 'Always-inject query correct');
+			recordResult(testName, true, "Always-inject query correct");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -1052,12 +1057,12 @@ describe('TestAlwaysInject', () => {
 // Summary Report
 // =============================================================================
 
-describe('TestSummary', () => {
-	it('should generate memory bank service test summary', () => {
-		console.log('\n=== MEMORY BANK SERVICE TEST SUMMARY ===\n');
+describe("TestSummary", () => {
+	it("should generate memory bank service test summary", () => {
+		console.log("\n=== MEMORY BANK SERVICE TEST SUMMARY ===\n");
 
-		const passed = testResults.filter(r => r.passed).length;
-		const failed = testResults.filter(r => !r.passed).length;
+		const passed = testResults.filter((r) => r.passed).length;
+		const failed = testResults.filter((r) => !r.passed).length;
 
 		console.log(`Total Tests: ${testResults.length}`);
 		console.log(`Passed: ${passed}`);
@@ -1065,13 +1070,15 @@ describe('TestSummary', () => {
 		console.log(`Pass Rate: ${((passed / testResults.length) * 100).toFixed(1)}%`);
 
 		if (failed > 0) {
-			console.log('\nFailed Tests:');
-			testResults.filter(r => !r.passed).forEach(r => {
-				console.log(`  - ${r.name}: ${r.error}`);
-			});
+			console.log("\nFailed Tests:");
+			testResults
+				.filter((r) => !r.passed)
+				.forEach((r) => {
+					console.log(`  - ${r.name}: ${r.error}`);
+				});
 		}
 
-		console.log('\n========================================\n');
+		console.log("\n========================================\n");
 
 		expect(true).toBe(true);
 	});

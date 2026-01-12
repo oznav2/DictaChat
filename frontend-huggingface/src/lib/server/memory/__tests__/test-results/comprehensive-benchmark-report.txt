@@ -1,7 +1,7 @@
 ====================================================================================================
 COMPREHENSIVE MEMORY SYSTEM BENCHMARK REPORT
 ====================================================================================================
-Timestamp: 2026-01-08T00:58:52.663Z
+Timestamp: 2026-01-11T16:08:11.310Z
 Conditions: 4
 Maturity Levels: 5
 Total Test Cases: 20
@@ -20,83 +20,83 @@ DETAILED RESULTS BY CONDITION AND MATURITY:
 --------------------------------------------------
 [PASS] cold_start
     MRR: 1.0000 | nDCG: 0.6844 | P@5: 0.6000
-    Latency: 2.09ms
+    Latency: 9.61ms
 [PASS] early
     MRR: 1.0000 | nDCG: 0.6844 | P@5: 0.6000
-    Latency: 0.29ms
+    Latency: 0.30ms
 [PASS] established
     MRR: 1.0000 | nDCG: 0.6844 | P@5: 0.6000
-    Latency: 0.23ms
+    Latency: 0.15ms
 [PASS] proven
     MRR: 1.0000 | nDCG: 0.6844 | P@5: 0.6000
-    Latency: 0.09ms
+    Latency: 0.13ms
 [PASS] mature
     MRR: 1.0000 | nDCG: 0.6844 | P@5: 0.6000
-    Latency: 0.08ms
+    Latency: 0.14ms
 
 ### WITH_CONTEXT ###
 --------------------------------------------------
 [PASS] cold_start
     MRR: 1.0000 | nDCG: 0.5531 | P@5: 0.4000
-    Latency: 0.25ms
+    Latency: 0.43ms
 [PASS] early
     MRR: 1.0000 | nDCG: 0.5531 | P@5: 0.4000
-    Latency: 0.08ms
+    Latency: 0.22ms
 [PASS] established
     MRR: 1.0000 | nDCG: 0.5531 | P@5: 0.4000
-    Latency: 0.08ms
+    Latency: 0.13ms
 [PASS] proven
     MRR: 1.0000 | nDCG: 0.5531 | P@5: 0.4000
-    Latency: 0.11ms
+    Latency: 0.17ms
 [PASS] mature
     MRR: 1.0000 | nDCG: 0.5531 | P@5: 0.4000
-    Latency: 0.11ms
+    Latency: 0.14ms
 
 ### CROSS_DOMAIN ###
 --------------------------------------------------
 [PASS] cold_start
     MRR: 1.0000 | nDCG: 0.6844 | P@5: 0.6000
-    Latency: 2.72ms
+    Latency: 0.44ms
 [PASS] early
     MRR: 1.0000 | nDCG: 0.6844 | P@5: 0.6000
-    Latency: 0.09ms
+    Latency: 0.14ms
 [PASS] established
     MRR: 1.0000 | nDCG: 0.6844 | P@5: 0.6000
-    Latency: 0.07ms
+    Latency: 0.12ms
 [PASS] proven
     MRR: 1.0000 | nDCG: 0.6844 | P@5: 0.6000
-    Latency: 0.08ms
+    Latency: 0.12ms
 [PASS] mature
     MRR: 1.0000 | nDCG: 0.6844 | P@5: 0.6000
-    Latency: 0.06ms
+    Latency: 0.11ms
 
 ### HEBREW_QUERIES ###
 --------------------------------------------------
 [PASS] cold_start
     MRR: 1.0000 | nDCG: 1.0000 | P@5: 1.0000
-    Latency: 0.61ms
+    Latency: 0.17ms
 [PASS] early
     MRR: 1.0000 | nDCG: 1.0000 | P@5: 1.0000
-    Latency: 1.11ms
+    Latency: 0.03ms
 [PASS] established
     MRR: 1.0000 | nDCG: 1.0000 | P@5: 1.0000
-    Latency: 0.05ms
+    Latency: 0.03ms
 [PASS] proven
     MRR: 1.0000 | nDCG: 1.0000 | P@5: 1.0000
     Latency: 0.02ms
 [PASS] mature
     MRR: 1.0000 | nDCG: 1.0000 | P@5: 1.0000
-    Latency: 0.01ms
+    Latency: 0.02ms
 
 ----------------------------------------------------------------------------------------------------
 CONDITION SUMMARIES:
 ----------------------------------------------------------------------------------------------------
 Condition           Avg MRR     Avg nDCG    Avg P@5     Avg Latency    Pass Rate
 --------------------------------------------------------------------------------
-cold_start          1.0000      0.6844      0.6000      0.55ms         100.0%
-with_context        1.0000      0.5531      0.4000      0.13ms         100.0%
-cross_domain        1.0000      0.6844      0.6000      0.60ms         100.0%
-hebrew_queries      1.0000      1.0000      1.0000      0.36ms         100.0%
+cold_start          1.0000      0.6844      0.6000      2.07ms         100.0%
+with_context        1.0000      0.5531      0.4000      0.22ms         100.0%
+cross_domain        1.0000      0.6844      0.6000      0.19ms         100.0%
+hebrew_queries      1.0000      1.0000      1.0000      0.05ms         100.0%
 
 ====================================================================================================
 OVERALL: 20/20 tests passed (100.0%)

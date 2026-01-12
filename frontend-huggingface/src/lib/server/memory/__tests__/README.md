@@ -67,19 +67,19 @@ npx vitest --config src/lib/server/memory/__tests__/vitest.config.ts
 
 ### Unit Tests
 
-| Test File | Coverage |
-|-----------|----------|
+| Test File                       | Coverage                                                                    |
+| ------------------------------- | --------------------------------------------------------------------------- |
 | `unified-memory-facade.test.ts` | Facade initialization, search, store, goals/values, books, context services |
-| `search-service.test.ts` | Hybrid search, sort modes, tier resolution, position tracking |
-| `outcome-service.test.ts` | Outcome recording, protected tiers, related memory resolution |
+| `search-service.test.ts`        | Hybrid search, sort modes, tier resolution, position tracking               |
+| `outcome-service.test.ts`       | Outcome recording, protected tiers, related memory resolution               |
 
 ### Benchmarks
 
-| Benchmark | Description | Targets |
-|-----------|-------------|---------|
-| `latency-benchmark.test.ts` | Latency measurements | P50 < 100ms, P95 < 300ms, P99 < 500ms |
-| `comprehensive-benchmark.test.ts` | 4 conditions × 5 maturity levels | MRR > 0.5, nDCG > 0.6, P@5 > 0.4 |
-| `torture-suite.test.ts` | Stress tests and edge cases | 10 torture scenarios |
+| Benchmark                         | Description                      | Targets                               |
+| --------------------------------- | -------------------------------- | ------------------------------------- |
+| `latency-benchmark.test.ts`       | Latency measurements             | P50 < 100ms, P95 < 300ms, P99 < 500ms |
+| `comprehensive-benchmark.test.ts` | 4 conditions × 5 maturity levels | MRR > 0.5, nDCG > 0.6, P@5 > 0.4      |
+| `torture-suite.test.ts`           | Stress tests and edge cases      | 10 torture scenarios                  |
 
 ## Mock Utilities
 
@@ -96,30 +96,30 @@ The `mock-utilities.ts` file provides:
 
 ```typescript
 import {
-  MockEmbeddingService,
-  MockCollection,
-  createTestFragment,
-  calculateAllMetrics,
-  MATURITY_LEVELS
-} from '../mock-utilities';
+	MockEmbeddingService,
+	MockCollection,
+	createTestFragment,
+	calculateAllMetrics,
+	MATURITY_LEVELS,
+} from "../mock-utilities";
 
 const embedding = new MockEmbeddingService();
 const collection = new MockCollection(embedding);
 
 // Create test data
 const fragment = createTestFragment({
-  maturity: 'established',
-  content: 'Test content'
+	maturity: "established",
+	content: "Test content",
 });
 
 await collection.add(fragment);
 
 // Search and measure
-const results = await collection.search('query', 5);
+const results = await collection.search("query", 5);
 const metrics = calculateAllMetrics(
-  results.map(r => r.document.id),
-  new Set(['expected_id']),
-  5
+	results.map((r) => r.document.id),
+	new Set(["expected_id"]),
+	5
 );
 ```
 
@@ -128,6 +128,7 @@ const metrics = calculateAllMetrics(
 ### Text Report
 
 Human-readable format with:
+
 - Summary statistics
 - Per-suite breakdown
 - Pass/fail status
@@ -150,14 +151,14 @@ Machine-parseable format for CI/CD integration:
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `MEMORY_BENCHMARK_MODE` | `true` | Disables certain features during testing |
-| `MOCK_LLM` | `true` | Uses mock LLM instead of real API |
-| `MOCK_EMBEDDINGS` | `true` | Uses mock embeddings |
-| `SILENT_TESTS` | `false` | Silences console output |
-| `TEST_MONGODB_URI` | `mongodb://localhost:27017/bricksllm_test` | Test database |
-| `TEST_QDRANT_URL` | `http://localhost:6333` | Test vector store |
+| Variable                | Default                                    | Description                              |
+| ----------------------- | ------------------------------------------ | ---------------------------------------- |
+| `MEMORY_BENCHMARK_MODE` | `true`                                     | Disables certain features during testing |
+| `MOCK_LLM`              | `true`                                     | Uses mock LLM instead of real API        |
+| `MOCK_EMBEDDINGS`       | `true`                                     | Uses mock embeddings                     |
+| `SILENT_TESTS`          | `false`                                    | Silences console output                  |
+| `TEST_MONGODB_URI`      | `mongodb://localhost:27017/bricksllm_test` | Test database                            |
+| `TEST_QDRANT_URL`       | `http://localhost:6333`                    | Test vector store                        |
 
 ## Quality Targets
 
@@ -175,13 +176,13 @@ Machine-parseable format for CI/CD integration:
 
 ### Maturity Levels
 
-| Level | Uses | Score | Description |
-|-------|------|-------|-------------|
-| cold_start | 0 | 0.5 | New memory, no feedback |
-| early | 2 | 0.55 | Few uses, slight learning |
-| established | 10 | 0.7 | Regular use, good performance |
-| proven | 25 | 0.85 | Proven reliability |
-| mature | 50 | 0.95 | Highly trusted memory |
+| Level       | Uses | Score | Description                   |
+| ----------- | ---- | ----- | ----------------------------- |
+| cold_start  | 0    | 0.5   | New memory, no feedback       |
+| early       | 2    | 0.55  | Few uses, slight learning     |
+| established | 10   | 0.7   | Regular use, good performance |
+| proven      | 25   | 0.85  | Proven reliability            |
+| mature      | 50   | 0.95  | Highly trusted memory         |
 
 ## CI/CD Integration
 

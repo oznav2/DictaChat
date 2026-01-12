@@ -79,6 +79,23 @@ export interface MemoryRetrievalServiceConfig {
 	config?: MemoryConfig;
 }
 
+/**
+ * Cross-personality search options
+ * Allows memories from different personalities to be searched together
+ */
+export interface CrossPersonalitySearchOptions {
+	/** Current personality ID making the search */
+	currentPersonalityId?: string | null;
+	/** List of personality IDs to include in search (null = all personalities) */
+	includePersonalityIds?: string[] | null;
+	/** Whether to include memories with no personality (legacy/shared) */
+	includeSharedMemories?: boolean;
+	/** Whether to boost memories from current personality */
+	boostCurrentPersonality?: boolean;
+	/** Boost factor for current personality memories (default 1.2) */
+	currentPersonalityBoost?: number;
+}
+
 // ============================================
 // RRF Fusion Implementation
 // ============================================
@@ -286,9 +303,9 @@ export function applyDynamicWeightsToResults(
 		const weights = calculateDynamicWeights(result.tier, uses, wilsonScore, qualityScore);
 
 		// Recalculate final score with dynamic weights
-		const embeddingSimilarity = result.score_summary.dense_similarity ?? result.score_summary.final_score;
-		const learnedScore =
-			result.tier === "memory_bank" ? (qualityScore ?? 0.5) : wilsonScore;
+		const embeddingSimilarity =
+			result.score_summary.dense_similarity ?? result.score_summary.final_score;
+		const learnedScore = result.tier === "memory_bank" ? (qualityScore ?? 0.5) : wilsonScore;
 
 		const newFinalScore = applyDynamicWeights(embeddingSimilarity, learnedScore, weights);
 
@@ -421,9 +438,10 @@ export function enforceMemoryBankQuality(
 		const confidence = memory?.quality?.confidence ?? 0.5;
 
 		// Get current distance (convert from similarity if needed)
-		const currentSimilarity = result.score_summary.dense_similarity ?? result.score_summary.final_score;
+		const currentSimilarity =
+			result.score_summary.dense_similarity ?? result.score_summary.final_score;
 		// Approximate distance from similarity (inverse of Stage 2)
-		const currentDistance = currentSimilarity > 0 ? (1 / currentSimilarity) - 1 : 10;
+		const currentDistance = currentSimilarity > 0 ? 1 / currentSimilarity - 1 : 10;
 
 		// Apply 3-stage enforcement
 		const { similarity, qualityMultiplier } = applyMemoryBankQualityEnforcement(
@@ -545,7 +563,13 @@ export class MemoryRetrievalService {
 		userId: string,
 		options?: {
 			recentTopics?: string[];
-			pastOutcomes?: Array<{ memoryId: string; outcome: Outcome; tier: MemoryTier; content: string; reason?: string }>;
+			pastOutcomes?: Array<{
+				memoryId: string;
+				outcome: Outcome;
+				tier: MemoryTier;
+				content: string;
+				reason?: string;
+			}>;
 			tierStats?: Map<string, TierEffectiveness[]>;
 			relatedMemories?: MemoryItem[];
 		}
@@ -567,7 +591,11 @@ export class MemoryRetrievalService {
 
 			for (const memory of highPerformers.slice(0, 3)) {
 				proactiveInsights.push(
-					'Pattern "' + this.truncate(memory.text, 100) + '" has ' + Math.round((memory.stats?.success_rate ?? 0.5) * 100) + '% success rate'
+					'Pattern "' +
+						this.truncate(memory.text, 100) +
+						'" has ' +
+						Math.round((memory.stats?.success_rate ?? 0.5) * 100) +
+						"% success rate"
 				);
 			}
 		}
@@ -592,7 +620,7 @@ export class MemoryRetrievalService {
 
 			if (workingItems.length >= 2) {
 				patternRecognition.push(
-					'Detected recurring theme: ' + workingItems.length + ' recent items on similar topic'
+					"Detected recurring theme: " + workingItems.length + " recent items on similar topic"
 				);
 			}
 		}
@@ -600,14 +628,15 @@ export class MemoryRetrievalService {
 		// 4. Topic continuity from recent conversation
 		if (options?.recentTopics?.length) {
 			const matchingTopics = options.recentTopics.filter((topic) =>
-				queryConcepts.some((concept) =>
-					topic.toLowerCase().includes(concept.toLowerCase()) ||
-					concept.toLowerCase().includes(topic.toLowerCase())
+				queryConcepts.some(
+					(concept) =>
+						topic.toLowerCase().includes(concept.toLowerCase()) ||
+						concept.toLowerCase().includes(topic.toLowerCase())
 				)
 			);
 
 			if (matchingTopics.length > 0) {
-				topicContinuity.push('Continuing discussion about: ' + matchingTopics.join(", "));
+				topicContinuity.push("Continuing discussion about: " + matchingTopics.join(", "));
 			}
 		}
 
@@ -701,7 +730,13 @@ export class MemoryRetrievalService {
 				if (rec.recommendations.length > 0) {
 					const best = rec.recommendations[0];
 					lines.push(
-						"  - For '" + rec.concept + "', check " + best.tier + " collection (historically " + Math.round(best.success_rate * 100) + "% effective)"
+						"  - For '" +
+							rec.concept +
+							"', check " +
+							best.tier +
+							" collection (historically " +
+							Math.round(best.success_rate * 100) +
+							"% effective)"
 					);
 				}
 			}
@@ -849,6 +884,82 @@ export class MemoryRetrievalService {
 	private truncate(text: string, maxLength: number): string {
 		if (text.length <= maxLength) return text;
 		return text.slice(0, maxLength - 3) + "...";
+	}
+
+	/**
+	 * Build a MongoDB filter for cross-personality search
+	 *
+	 * Returns filter conditions that match memories from:
+	 * - Current personality (if specified)
+	 * - Other included personalities
+	 * - Shared/legacy memories (no personality)
+	 */
+	buildCrossPersonalityFilter(options: CrossPersonalitySearchOptions): Record<string, unknown> {
+		const conditions: Record<string, unknown>[] = [];
+
+		// Include memories with no personality (shared/legacy)
+		if (options.includeSharedMemories !== false) {
+			conditions.push({
+				$or: [{ "personality.source_personality_id": null }, { personality: { $exists: false } }],
+			});
+		}
+
+		// Include specific personalities
+		if (options.includePersonalityIds?.length) {
+			conditions.push({
+				"personality.source_personality_id": { $in: options.includePersonalityIds },
+			});
+		} else if (options.currentPersonalityId) {
+			// If no specific list, at least include current personality
+			conditions.push({
+				"personality.source_personality_id": options.currentPersonalityId,
+			});
+		}
+
+		// If no conditions, match all (no personality filter)
+		if (conditions.length === 0) {
+			return {};
+		}
+
+		return { $or: conditions };
+	}
+
+	/**
+	 * Apply personality boost to search results
+	 *
+	 * Boosts memories from the current personality to prioritize
+	 * personality-specific context while still showing cross-personality results
+	 */
+	applyPersonalityBoost(
+		results: WeightedResult[],
+		memoryItems: Map<string, MemoryItem>,
+		options: CrossPersonalitySearchOptions
+	): WeightedResult[] {
+		if (!options.boostCurrentPersonality || !options.currentPersonalityId) {
+			return results;
+		}
+
+		const boostFactor = options.currentPersonalityBoost ?? 1.2;
+
+		return results
+			.map((result) => {
+				const memory = memoryItems.get(result.memory_id);
+				const memoryPersonalityId = memory?.personality?.source_personality_id;
+
+				// Boost if from current personality
+				if (memoryPersonalityId === options.currentPersonalityId) {
+					return {
+						...result,
+						score_summary: {
+							...result.score_summary,
+							final_score: result.score_summary.final_score * boostFactor,
+						},
+					};
+				}
+
+				return result;
+			})
+			.sort((a, b) => b.score_summary.final_score - a.score_summary.final_score);
 	}
 
 	/**

@@ -16,6 +16,7 @@ import type { QdrantAdapter } from "../adapters/QdrantAdapter";
 import type { DictaEmbeddingClient } from "../embedding/DictaEmbeddingClient";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
+import type { MemoryTier, MemoryStatus } from "../types";
 
 /**
  * Consistency check parameters
@@ -89,9 +90,12 @@ export class ConsistencyService {
 		}
 
 		// Run first check after 5 minutes (let system stabilize)
-		setTimeout(async () => {
-			await this.runCheck({ dryRun: false, sampleSize: 100 });
-		}, 5 * 60 * 1000);
+		setTimeout(
+			async () => {
+				await this.runCheck({ dryRun: false, sampleSize: 100 });
+			},
+			5 * 60 * 1000
+		);
 
 		// Schedule regular checks
 		this.schedulerInterval = setInterval(async () => {
@@ -138,7 +142,7 @@ export class ConsistencyService {
 			// Step 1: Get sample of active Mongo items
 			const mongoItems = await this.mongo.query({
 				userId: params.userId ?? "",
-				status: "active",
+				status: ["active"],
 				limit: sampleSize,
 			});
 			result.mongoCount = mongoItems.length;
@@ -147,7 +151,8 @@ export class ConsistencyService {
 			for (const item of mongoItems) {
 				result.totalChecked++;
 
-				const qdrantPoint = await this.qdrant.getById(item.memory_id);
+				const qdrantResults = await this.qdrant.getByIds([item.memory_id]);
+				const qdrantPoint = qdrantResults.length > 0 ? qdrantResults[0] : null;
 				if (!qdrantPoint) {
 					const issue: ConsistencyIssue = {
 						type: "missing_in_qdrant",
@@ -158,7 +163,18 @@ export class ConsistencyService {
 					};
 
 					if (!dryRun) {
-						const repaired = await this.repairMissingInQdrant(item);
+						const repaired = await this.repairMissingInQdrant({
+							memory_id: item.memory_id,
+							user_id: item.user_id,
+							content: item.text,
+							tier: item.tier,
+							status: item.status,
+							tags: item.tags,
+							entities: item.entities,
+							created_at: item.timestamps.created_at,
+							composite_score: item.stats?.wilson_score ?? 0.5,
+							wilson_score: item.stats?.wilson_score ?? 0.5,
+						});
 						issue.repaired = repaired;
 						if (repaired) {
 							result.issuesRepaired++;
@@ -237,8 +253,8 @@ export class ConsistencyService {
 		memory_id: string;
 		user_id: string;
 		content: string;
-		tier: string;
-		status: string;
+		tier: MemoryTier;
+		status: MemoryStatus;
 		tags?: string[];
 		entities?: string[];
 		created_at?: string;
@@ -247,8 +263,8 @@ export class ConsistencyService {
 	}): Promise<boolean> {
 		try {
 			// Generate embedding
-			const embeddingResult = await this.embedding.embed(item.content);
-			if (!embeddingResult.success || !embeddingResult.embedding) {
+			const vector = await this.embedding.embed(item.content);
+			if (!vector) {
 				logger.warn({ memoryId: item.memory_id }, "Failed to generate embedding for repair");
 				return false;
 			}
@@ -256,7 +272,7 @@ export class ConsistencyService {
 			// Upsert to Qdrant
 			await this.qdrant.upsert({
 				id: item.memory_id,
-				vector: embeddingResult.embedding,
+				vector,
 				payload: {
 					user_id: item.user_id,
 					tier: item.tier,
@@ -266,7 +282,8 @@ export class ConsistencyService {
 					entities: item.entities || [],
 					timestamp: item.created_at ? new Date(item.created_at).getTime() : Date.now(),
 					composite_score: item.composite_score ?? 0.5,
-					wilson_score: item.wilson_score ?? 0.5,
+					always_inject: false,
+					uses: 0,
 				},
 			});
 
@@ -283,7 +300,7 @@ export class ConsistencyService {
 	 */
 	private async repairOrphanInQdrant(memoryId: string): Promise<boolean> {
 		try {
-			await this.qdrant.delete(memoryId);
+			await this.qdrant.delete([memoryId]);
 			logger.info({ memoryId }, "Repaired: deleted orphan point from Qdrant");
 			return true;
 		} catch (err) {
@@ -294,18 +311,31 @@ export class ConsistencyService {
 
 	/**
 	 * Sample points from Qdrant for orphan check
+	 * Uses search with a broad query to sample points
 	 */
 	private async sampleQdrantPoints(
 		userId: string | undefined,
 		limit: number
 	): Promise<Array<{ id: string; payload?: Record<string, unknown> }>> {
 		try {
-			// Use scroll to get a sample of points
-			const results = await this.qdrant.scroll({
+			// Use getByIds with empty filter or search with broad query
+			// Since scroll is not directly available, we'll search with user filter
+			if (!userId) {
+				return []; // Can't sample without user context
+			}
+
+			// Get a sample using a zero vector search (returns random-ish results)
+			const zeroVector = new Array(1024).fill(0);
+			const results = await this.qdrant.search({
 				userId,
+				vector: zeroVector,
 				limit,
+				status: ["active"],
 			});
-			return results.map((r) => ({ id: r.id, payload: r.payload }));
+			return results.map((r) => ({
+				id: r.id,
+				payload: r.payload as unknown as Record<string, unknown>,
+			}));
 		} catch (err) {
 			logger.warn({ err }, "Failed to sample Qdrant points");
 			return [];
@@ -313,11 +343,12 @@ export class ConsistencyService {
 	}
 
 	/**
-	 * Log check result to Mongo
+	 * Log check result
 	 */
 	private async logCheckResult(result: ConsistencyCheckResult): Promise<void> {
-		try {
-			await this.mongo.logConsistencyCheck({
+		// Log to console - Mongo logging can be added later if needed
+		logger.info(
+			{
 				checkedAt: result.checkedAt,
 				durationMs: result.durationMs,
 				totalChecked: result.totalChecked,
@@ -325,10 +356,9 @@ export class ConsistencyService {
 				issuesRepaired: result.issuesRepaired,
 				mongoCount: result.mongoCount,
 				qdrantCount: result.qdrantCount,
-			});
-		} catch (err) {
-			logger.warn({ err }, "Failed to log consistency check result");
-		}
+			},
+			"ConsistencyService: Check result logged"
+		);
 	}
 
 	/**

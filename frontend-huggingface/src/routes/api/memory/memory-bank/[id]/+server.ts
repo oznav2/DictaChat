@@ -2,14 +2,10 @@ import { json, error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { collections } from "$lib/server/database";
 import { ObjectId } from "mongodb";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 
 // PUT /api/memory/memory-bank/[id] - Update memory (archive/restore)
-export const PUT: RequestHandler = async ({ params, request, locals }) => {
-	const userId = locals.user?.id;
-	if (!userId) {
-		return error(401, "Authentication required");
-	}
-
+export const PUT: RequestHandler = async ({ params, request }) => {
 	const { id } = params;
 	if (!id || !ObjectId.isValid(id)) {
 		return error(400, "Invalid memory ID");
@@ -37,7 +33,7 @@ export const PUT: RequestHandler = async ({ params, request, locals }) => {
 		}
 
 		const result = await collections.memoryBank.updateOne(
-			{ _id: new ObjectId(id), userId },
+			{ _id: new ObjectId(id), userId: ADMIN_USER_ID },
 			{ $set: updateData }
 		);
 
@@ -59,12 +55,7 @@ export const PUT: RequestHandler = async ({ params, request, locals }) => {
 };
 
 // DELETE /api/memory/memory-bank/[id] - Delete memory permanently
-export const DELETE: RequestHandler = async ({ params, locals }) => {
-	const userId = locals.user?.id;
-	if (!userId) {
-		return error(401, "Authentication required");
-	}
-
+export const DELETE: RequestHandler = async ({ params }) => {
 	const { id } = params;
 	if (!id || !ObjectId.isValid(id)) {
 		return error(400, "Invalid memory ID");
@@ -73,7 +64,7 @@ export const DELETE: RequestHandler = async ({ params, locals }) => {
 	try {
 		const result = await collections.memoryBank.deleteOne({
 			_id: new ObjectId(id),
-			userId,
+			userId: ADMIN_USER_ID,
 		});
 
 		if (result.deletedCount === 0) {

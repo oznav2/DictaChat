@@ -259,10 +259,7 @@ export function getBothLanguages(key: string): BilingualPrompt | null {
  * Render a bilingual prompt with variable interpolation
  * Variables are denoted by {{variableName}} in the prompt strings
  */
-export function renderBilingual(
-	key: string,
-	vars: Record<string, unknown> = {}
-): BilingualPrompt {
+export function renderBilingual(key: string, vars: Record<string, unknown> = {}): BilingualPrompt {
 	const prompt = BILINGUAL_PROMPTS[key];
 	if (!prompt) {
 		console.warn(`Bilingual prompt key not found: ${key}`);

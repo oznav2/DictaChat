@@ -15,7 +15,7 @@
  * Output: Generates benchmark results to benchmarks/results/recovery_resilience.txt
  */
 
-import { describe, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, afterAll } from "vitest";
 import {
 	MockEmbeddingService,
 	MockCollection,
@@ -24,23 +24,29 @@ import {
 	verifyDocIdFormat,
 	verifyMetadataPersistence,
 	BenchmarkReporter,
-} from '../mock-utilities';
+} from "../mock-utilities";
 
 // Global reporter for this test file
-const reporter = new BenchmarkReporter('test_recovery_resilience');
+const reporter = new BenchmarkReporter("test_recovery_resilience");
 
 // Helper to record test metrics
-function recordTest(name: string, passed: boolean, duration: number, metrics?: Record<string, number | string>, error?: string): void {
+function recordTest(
+	name: string,
+	passed: boolean,
+	duration: number,
+	metrics?: Record<string, number | string>,
+	error?: string
+): void {
 	reporter.recordTest({ name, passed, duration, metrics, error });
 }
 
 // Simulated failure modes
-type FailureMode = 'none' | 'write_failure' | 'read_failure' | 'corruption' | 'timeout' | 'partial';
+type FailureMode = "none" | "write_failure" | "read_failure" | "corruption" | "timeout" | "partial";
 
 // Resilient collection wrapper with failure simulation
 class ResilientCollection {
 	private collection: MockCollection;
-	private failureMode: FailureMode = 'none';
+	private failureMode: FailureMode = "none";
 	private failureRate: number = 0;
 	private recoveryAttempts: number = 0;
 	private successfulRecoveries: number = 0;
@@ -55,10 +61,14 @@ class ResilientCollection {
 	}
 
 	private shouldFail(): boolean {
-		return this.failureMode !== 'none' && Math.random() < this.failureRate;
+		return this.failureMode !== "none" && Math.random() < this.failureRate;
 	}
 
-	async add(item: { id: string; content: string; metadata?: Record<string, unknown> }): Promise<{ success: boolean; recovered: boolean; attempts: number }> {
+	async add(item: {
+		id: string;
+		content: string;
+		metadata?: Record<string, unknown>;
+	}): Promise<{ success: boolean; recovered: boolean; attempts: number }> {
 		let attempts = 0;
 		const maxAttempts = 3;
 
@@ -66,21 +76,21 @@ class ResilientCollection {
 			attempts++;
 			this.recoveryAttempts++;
 
-			if (this.failureMode === 'write_failure' && this.shouldFail()) {
+			if (this.failureMode === "write_failure" && this.shouldFail()) {
 				continue; // Retry
 			}
 
-			if (this.failureMode === 'partial' && this.shouldFail()) {
+			if (this.failureMode === "partial" && this.shouldFail()) {
 				// Partial write - data might be incomplete
 				await this.collection.add({
 					...item,
-					metadata: { ...item.metadata, _partial: true },
+					metadata: { ...(item.metadata ?? {}), _partial: true },
 				});
 				continue; // Retry to complete
 			}
 
 			// Success
-			await this.collection.add(item);
+			await this.collection.add({ ...item, metadata: item.metadata ?? {} });
 			if (attempts > 1) {
 				this.successfulRecoveries++;
 			}
@@ -90,13 +100,22 @@ class ResilientCollection {
 		return { success: false, recovered: false, attempts };
 	}
 
-	async search(query: string, limit: number): Promise<{ results: Array<{ document: { id: string; content: string; metadata: Record<string, unknown> }; score: number }>; degraded: boolean }> {
-		if (this.failureMode === 'read_failure' && this.shouldFail()) {
+	async search(
+		query: string,
+		limit: number
+	): Promise<{
+		results: Array<{
+			document: { id: string; content: string; metadata: Record<string, unknown> };
+			score: number;
+		}>;
+		degraded: boolean;
+	}> {
+		if (this.failureMode === "read_failure" && this.shouldFail()) {
 			// Return empty results as graceful degradation
 			return { results: [], degraded: true };
 		}
 
-		if (this.failureMode === 'timeout' && this.shouldFail()) {
+		if (this.failureMode === "timeout" && this.shouldFail()) {
 			// Simulate timeout with partial results
 			const results = await this.collection.search(query, Math.ceil(limit / 2));
 			return { results, degraded: true };
@@ -105,8 +124,8 @@ class ResilientCollection {
 		const results = await this.collection.search(query, limit);
 
 		// Filter out corrupted entries
-		if (this.failureMode === 'corruption') {
-			const filtered = results.filter(r => !r.document.metadata._corrupted);
+		if (this.failureMode === "corruption") {
+			const filtered = results.filter((r) => !r.document.metadata._corrupted);
 			return { results: filtered, degraded: filtered.length < results.length };
 		}
 
@@ -127,13 +146,13 @@ class ResilientCollection {
 	}
 }
 
-describe('Recovery & Resilience', () => {
+describe("Recovery & Resilience", () => {
 	let harness: TestHarness;
 	let embeddingService: MockEmbeddingService;
 	let resilientCollection: ResilientCollection;
 
 	beforeEach(() => {
-		harness = new TestHarness('RecoveryResilience');
+		harness = new TestHarness("RecoveryResilience");
 		embeddingService = new MockEmbeddingService(42);
 		resilientCollection = new ResilientCollection(embeddingService);
 	});
@@ -143,25 +162,25 @@ describe('Recovery & Resilience', () => {
 	});
 
 	afterAll(() => {
-		reporter.saveReport('recovery_resilience.txt');
+		reporter.saveReport("recovery_resilience.txt");
 	});
 
-	describe('Write Failure Recovery', () => {
-		it('test_write_retry_success', async () => {
+	describe("Write Failure Recovery", () => {
+		it("test_write_retry_success", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
 
 			try {
 				// Set 30% failure rate
-				resilientCollection.setFailureMode('write_failure', 0.3);
+				resilientCollection.setFailureMode("write_failure", 0.3);
 
 				const items = [
-					{ id: 'w1', content: 'User name is John' },
-					{ id: 'w2', content: 'User works at TechCorp' },
-					{ id: 'w3', content: 'User birthday in March' },
-					{ id: 'w4', content: 'User lives in San Francisco' },
-					{ id: 'w5', content: 'User has a dog named Max' },
+					{ id: "w1", content: "User name is John" },
+					{ id: "w2", content: "User works at TechCorp" },
+					{ id: "w3", content: "User birthday in March" },
+					{ id: "w4", content: "User lives in San Francisco" },
+					{ id: "w5", content: "User has a dog named Max" },
 				];
 
 				let successCount = 0;
@@ -190,22 +209,22 @@ describe('Recovery & Resilience', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_write_retry_success', passed, Date.now() - start, metrics);
+				recordTest("test_write_retry_success", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_hebrew_write_recovery', async () => {
+		it("test_hebrew_write_recovery", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
 
 			try {
-				resilientCollection.setFailureMode('write_failure', 0.25);
+				resilientCollection.setFailureMode("write_failure", 0.25);
 
 				const hebrewItems = [
-					{ id: 'hw1', content: 'שם המשתמש הוא יוסי' },
-					{ id: 'hw2', content: 'המשתמש עובד בגוגל' },
-					{ id: 'hw3', content: 'יום ההולדת של המשתמש במרץ' },
+					{ id: "hw1", content: "שם המשתמש הוא יוסי" },
+					{ id: "hw2", content: "המשתמש עובד בגוגל" },
+					{ id: "hw3", content: "יום ההולדת של המשתמש במרץ" },
 				];
 
 				let successCount = 0;
@@ -225,32 +244,32 @@ describe('Recovery & Resilience', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_hebrew_write_recovery', passed, Date.now() - start, metrics);
+				recordTest("test_hebrew_write_recovery", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Read Failure Graceful Degradation', () => {
-		it('test_read_graceful_degradation', async () => {
+	describe("Read Failure Graceful Degradation", () => {
+		it("test_read_graceful_degradation", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
 
 			try {
 				// First, add data without failures
-				resilientCollection.setFailureMode('none');
-				await resilientCollection.add({ id: 'r1', content: 'Important user data' });
-				await resilientCollection.add({ id: 'r2', content: 'Another important fact' });
+				resilientCollection.setFailureMode("none");
+				await resilientCollection.add({ id: "r1", content: "Important user data" });
+				await resilientCollection.add({ id: "r2", content: "Another important fact" });
 
 				// Now enable read failures
-				resilientCollection.setFailureMode('read_failure', 0.5);
+				resilientCollection.setFailureMode("read_failure", 0.5);
 
 				let degradedSearches = 0;
 				let successfulSearches = 0;
 				const totalSearches = 10;
 
 				for (let i = 0; i < totalSearches; i++) {
-					const { results, degraded } = await resilientCollection.search('user data', 5);
+					const { results, degraded } = await resilientCollection.search("user data", 5);
 					if (degraded) {
 						degradedSearches++;
 					} else if (results.length > 0) {
@@ -271,44 +290,44 @@ describe('Recovery & Resilience', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_read_graceful_degradation', passed, Date.now() - start, metrics);
+				recordTest("test_read_graceful_degradation", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Corruption Handling', () => {
-		it('test_corruption_detection', async () => {
+	describe("Corruption Handling", () => {
+		it("test_corruption_detection", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
 
 			try {
 				// Add normal data
-				resilientCollection.setFailureMode('none');
+				resilientCollection.setFailureMode("none");
 				const normalCollection = new MockCollection(embeddingService);
 
 				await normalCollection.add({
-					id: 'c1',
-					content: 'Valid user data',
+					id: "c1",
+					content: "Valid user data",
 					metadata: { ...createTestMetadata(), _corrupted: false },
 				});
 
 				await normalCollection.add({
-					id: 'c2',
-					content: 'Corrupted entry',
+					id: "c2",
+					content: "Corrupted entry",
 					metadata: { ...createTestMetadata(), _corrupted: true },
 				});
 
 				await normalCollection.add({
-					id: 'c3',
-					content: 'Another valid entry',
+					id: "c3",
+					content: "Another valid entry",
 					metadata: { ...createTestMetadata(), _corrupted: false },
 				});
 
 				// Search and filter corruption
-				const allResults = await normalCollection.search('user data entry', 10);
-				const validResults = allResults.filter(r => !r.document.metadata._corrupted);
-				const corruptedResults = allResults.filter(r => r.document.metadata._corrupted);
+				const allResults = await normalCollection.search("user data entry", 10);
+				const validResults = allResults.filter((r) => !r.document.metadata._corrupted);
+				const corruptedResults = allResults.filter((r) => r.document.metadata._corrupted);
 
 				metrics = {
 					total_entries: allResults.length,
@@ -322,11 +341,11 @@ describe('Recovery & Resilience', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_corruption_detection', passed, Date.now() - start, metrics);
+				recordTest("test_corruption_detection", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_hebrew_corruption_handling', async () => {
+		it("test_hebrew_corruption_handling", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -336,26 +355,26 @@ describe('Recovery & Resilience', () => {
 
 				// Add Hebrew data with some corruption
 				await normalCollection.add({
-					id: 'hc1',
-					content: 'נתוני משתמש תקינים',
-					metadata: { ...createTestMetadata(), _corrupted: false, language: 'he' },
+					id: "hc1",
+					content: "נתוני משתמש תקינים",
+					metadata: { ...createTestMetadata(), _corrupted: false, language: "he" },
 				});
 
 				await normalCollection.add({
-					id: 'hc2',
-					content: 'נתונים פגומים',
-					metadata: { ...createTestMetadata(), _corrupted: true, language: 'he' },
+					id: "hc2",
+					content: "נתונים פגומים",
+					metadata: { ...createTestMetadata(), _corrupted: true, language: "he" },
 				});
 
-				const results = await normalCollection.search('נתוני משתמש', 10);
-				const validHebrew = results.filter(r =>
-					r.document.metadata.language === 'he' && !r.document.metadata._corrupted
+				const results = await normalCollection.search("נתוני משתמש", 10);
+				const validHebrew = results.filter(
+					(r) => r.document.metadata.language === "he" && !r.document.metadata._corrupted
 				);
 
 				metrics = {
-					hebrew_total: results.filter(r => r.document.metadata.language === 'he').length,
+					hebrew_total: results.filter((r) => r.document.metadata.language === "he").length,
 					hebrew_valid: validHebrew.length,
-					hebrew_corruption_detected: results.some(r => r.document.metadata._corrupted) ? 1 : 0,
+					hebrew_corruption_detected: results.some((r) => r.document.metadata._corrupted) ? 1 : 0,
 				};
 
 				expect(validHebrew.length).toBeGreaterThan(0);
@@ -363,13 +382,13 @@ describe('Recovery & Resilience', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_hebrew_corruption_handling', passed, Date.now() - start, metrics);
+				recordTest("test_hebrew_corruption_handling", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Data Integrity Verification', () => {
-		it('test_metadata_persistence', async () => {
+	describe("Data Integrity Verification", () => {
+		it("test_metadata_persistence", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -379,18 +398,18 @@ describe('Recovery & Resilience', () => {
 
 				const originalMetadata = {
 					...createTestMetadata(),
-					custom_field: 'test_value',
+					custom_field: "test_value",
 					numeric_field: 42,
-					nested: { key: 'value' },
+					nested: { key: "value" },
 				};
 
 				await collection.add({
-					id: 'int1',
-					content: 'Test content for integrity check',
+					id: "int1",
+					content: "Test content for integrity check",
 					metadata: originalMetadata,
 				});
 
-				const results = await collection.search('integrity check', 1);
+				const results = await collection.search("integrity check", 1);
 				const retrieved = results[0]?.document.metadata;
 
 				// Verify persistence
@@ -398,7 +417,8 @@ describe('Recovery & Resilience', () => {
 
 				metrics = {
 					fields_checked: Object.keys(originalMetadata).length,
-					fields_persisted: Object.keys(originalMetadata).length - verification.missing_fields.length,
+					fields_persisted:
+						Object.keys(originalMetadata).length - verification.missing_fields.length,
 					integrity_valid: verification.valid ? 1 : 0,
 					missing_fields: verification.missing_fields.length,
 				};
@@ -408,23 +428,23 @@ describe('Recovery & Resilience', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_metadata_persistence', passed, Date.now() - start, metrics);
+				recordTest("test_metadata_persistence", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_id_format_validation', async () => {
+		it("test_id_format_validation", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
 
 			try {
 				const testIds = [
-					'valid_id_123',
-					'another-valid-id',
-					'id_with_underscore',
-					'', // invalid
-					'a'.repeat(300), // too long
-					'id with spaces', // invalid chars
+					"valid_id_123",
+					"another-valid-id",
+					"id_with_underscore",
+					"", // invalid
+					"a".repeat(300), // too long
+					"id with spaces", // invalid chars
 				];
 
 				let validCount = 0;
@@ -451,20 +471,20 @@ describe('Recovery & Resilience', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_id_format_validation', passed, Date.now() - start, metrics);
+				recordTest("test_id_format_validation", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Timeout Handling', () => {
-		it('test_timeout_partial_results', async () => {
+	describe("Timeout Handling", () => {
+		it("test_timeout_partial_results", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
 
 			try {
 				// Add data first
-				resilientCollection.setFailureMode('none');
+				resilientCollection.setFailureMode("none");
 				for (let i = 0; i < 10; i++) {
 					await resilientCollection.add({
 						id: `t${i}`,
@@ -473,14 +493,14 @@ describe('Recovery & Resilience', () => {
 				}
 
 				// Enable timeout mode
-				resilientCollection.setFailureMode('timeout', 0.5);
+				resilientCollection.setFailureMode("timeout", 0.5);
 
 				let fullResults = 0;
 				let partialResults = 0;
 				const searchCount = 10;
 
 				for (let i = 0; i < searchCount; i++) {
-					const { results, degraded } = await resilientCollection.search('test content', 5);
+					const { results, degraded } = await resilientCollection.search("test content", 5);
 					if (degraded) {
 						partialResults++;
 					} else {
@@ -493,7 +513,7 @@ describe('Recovery & Resilience', () => {
 					full_results: fullResults,
 					partial_results: partialResults,
 					partial_rate: Math.round((partialResults / searchCount) * 100),
-					system_resilient: (fullResults + partialResults) === searchCount ? 1 : 0,
+					system_resilient: fullResults + partialResults === searchCount ? 1 : 0,
 				};
 
 				// All searches should return something
@@ -502,20 +522,20 @@ describe('Recovery & Resilience', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_timeout_partial_results', passed, Date.now() - start, metrics);
+				recordTest("test_timeout_partial_results", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Recovery Statistics', () => {
-		it('test_recovery_rate_tracking', async () => {
+	describe("Recovery Statistics", () => {
+		it("test_recovery_rate_tracking", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
 
 			try {
 				resilientCollection.resetStats();
-				resilientCollection.setFailureMode('write_failure', 0.4);
+				resilientCollection.setFailureMode("write_failure", 0.4);
 
 				// Perform multiple writes
 				for (let i = 0; i < 20; i++) {
@@ -540,26 +560,26 @@ describe('Recovery & Resilience', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_recovery_rate_tracking', passed, Date.now() - start, metrics);
+				recordTest("test_recovery_rate_tracking", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Bilingual Recovery', () => {
-		it('test_bilingual_data_recovery', async () => {
+	describe("Bilingual Recovery", () => {
+		it("test_bilingual_data_recovery", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
 
 			try {
-				resilientCollection.setFailureMode('write_failure', 0.25);
+				resilientCollection.setFailureMode("write_failure", 0.25);
 
 				const bilingualData = [
-					{ id: 'bi1', content: 'User name is John', lang: 'en' },
-					{ id: 'bi2', content: 'שם המשתמש הוא יוחנן', lang: 'he' },
-					{ id: 'bi3', content: 'User works at company', lang: 'en' },
-					{ id: 'bi4', content: 'המשתמש עובד בחברה', lang: 'he' },
-					{ id: 'bi5', content: 'Mixed content בעברית ואנגלית', lang: 'mixed' },
+					{ id: "bi1", content: "User name is John", lang: "en" },
+					{ id: "bi2", content: "שם המשתמש הוא יוחנן", lang: "he" },
+					{ id: "bi3", content: "User works at company", lang: "en" },
+					{ id: "bi4", content: "המשתמש עובד בחברה", lang: "he" },
+					{ id: "bi5", content: "Mixed content בעברית ואנגלית", lang: "mixed" },
 				];
 
 				let enSuccess = 0;
@@ -573,34 +593,38 @@ describe('Recovery & Resilience', () => {
 						metadata: { language: item.lang },
 					});
 					if (result.success) {
-						if (item.lang === 'en') enSuccess++;
-						else if (item.lang === 'he') heSuccess++;
+						if (item.lang === "en") enSuccess++;
+						else if (item.lang === "he") heSuccess++;
 						else mixedSuccess++;
 					}
 				}
 
 				metrics = {
-					english_items: bilingualData.filter(d => d.lang === 'en').length,
-					hebrew_items: bilingualData.filter(d => d.lang === 'he').length,
-					mixed_items: bilingualData.filter(d => d.lang === 'mixed').length,
+					english_items: bilingualData.filter((d) => d.lang === "en").length,
+					hebrew_items: bilingualData.filter((d) => d.lang === "he").length,
+					mixed_items: bilingualData.filter((d) => d.lang === "mixed").length,
 					english_recovered: enSuccess,
 					hebrew_recovered: heSuccess,
 					mixed_recovered: mixedSuccess,
-					total_recovery_rate: Math.round(((enSuccess + heSuccess + mixedSuccess) / bilingualData.length) * 100),
+					total_recovery_rate: Math.round(
+						((enSuccess + heSuccess + mixedSuccess) / bilingualData.length) * 100
+					),
 				};
 
-				expect(enSuccess + heSuccess + mixedSuccess).toBeGreaterThanOrEqual(bilingualData.length * 0.6);
+				expect(enSuccess + heSuccess + mixedSuccess).toBeGreaterThanOrEqual(
+					bilingualData.length * 0.6
+				);
 			} catch (e) {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_bilingual_data_recovery', passed, Date.now() - start, metrics);
+				recordTest("test_bilingual_data_recovery", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Summary Test', () => {
-		it('test_recovery_resilience', async () => {
+	describe("Summary Test", () => {
+		it("test_recovery_resilience", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -608,9 +632,9 @@ describe('Recovery & Resilience', () => {
 			try {
 				// Comprehensive resilience test
 				const testScenarios = [
-					{ mode: 'write_failure' as FailureMode, rate: 0.3, items: 5 },
-					{ mode: 'read_failure' as FailureMode, rate: 0.3, items: 5 },
-					{ mode: 'timeout' as FailureMode, rate: 0.3, items: 5 },
+					{ mode: "write_failure" as FailureMode, rate: 0.3, items: 5 },
+					{ mode: "read_failure" as FailureMode, rate: 0.3, items: 5 },
+					{ mode: "timeout" as FailureMode, rate: 0.3, items: 5 },
 				];
 
 				let totalWriteSuccess = 0;
@@ -621,7 +645,10 @@ describe('Recovery & Resilience', () => {
 					const testCollection = new ResilientCollection(embeddingService);
 
 					// Write phase
-					testCollection.setFailureMode(scenario.mode === 'write_failure' ? scenario.mode : 'none', scenario.rate);
+					testCollection.setFailureMode(
+						scenario.mode === "write_failure" ? scenario.mode : "none",
+						scenario.rate
+					);
 					for (let i = 0; i < scenario.items; i++) {
 						const result = await testCollection.add({
 							id: `res_${scenario.mode}_${i}`,
@@ -631,9 +658,14 @@ describe('Recovery & Resilience', () => {
 					}
 
 					// Read phase
-					testCollection.setFailureMode(scenario.mode === 'read_failure' || scenario.mode === 'timeout' ? scenario.mode : 'none', scenario.rate);
+					testCollection.setFailureMode(
+						scenario.mode === "read_failure" || scenario.mode === "timeout"
+							? scenario.mode
+							: "none",
+						scenario.rate
+					);
 					for (let i = 0; i < 3; i++) {
-						const { results, degraded } = await testCollection.search('resilience test', 5);
+						const { results, degraded } = await testCollection.search("resilience test", 5);
 						if (results.length > 0) totalReadSuccess++;
 						if (degraded) totalDegraded++;
 					}
@@ -650,7 +682,9 @@ describe('Recovery & Resilience', () => {
 					total_read_attempts: totalReads,
 					total_read_successes: totalReadSuccess,
 					degraded_responses: totalDegraded,
-					system_resilience_score: Math.round(((totalWriteSuccess / totalItems) * 50 + (totalReadSuccess / totalReads) * 50)),
+					system_resilience_score: Math.round(
+						(totalWriteSuccess / totalItems) * 50 + (totalReadSuccess / totalReads) * 50
+					),
 				};
 
 				// System should be at least 60% resilient
@@ -659,7 +693,7 @@ describe('Recovery & Resilience', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_recovery_resilience', passed, Date.now() - start, metrics);
+				recordTest("test_recovery_resilience", passed, Date.now() - start, metrics);
 			}
 		});
 	});

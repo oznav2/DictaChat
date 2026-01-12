@@ -108,8 +108,7 @@ export class PrefetchServiceImpl implements PrefetchService {
 				...searchResponse.debug,
 				stage_timings_ms: {
 					...searchResponse.debug.stage_timings_ms,
-					...timings,
-					total_ms: totalMs,
+					memory_prefetch_ms: timings.always_inject_ms,
 				},
 			},
 			retrievalConfidence: confidence,
@@ -125,24 +124,26 @@ export class PrefetchServiceImpl implements PrefetchService {
 		}
 
 		try {
-			// Scroll through memory_bank for always_inject=true
-			const results = await this.qdrant.scroll({
+			// Use search with a filter for always_inject memories
+			// Note: scroll doesn't support custom filters, so we use search with zero vector
+			const dims = this.config.qdrant.expected_embedding_dims ?? 768;
+			const zeroVector = new Array(dims).fill(0);
+			const results = await this.qdrant.search({
 				userId,
-				filter: {
-					must: [
-						{ key: "always_inject", match: { value: true } },
-						{ key: "status", match: { value: "active" } },
-					],
-				},
-				limit: 20, // Cap to prevent context bloat
+				vector: zeroVector,
+				limit: 20,
+				status: ["active"],
 			});
 
-			return results.map((r) => ({
-				memoryId: r.id,
-				content: r.payload.content,
-				tier: r.payload.tier,
-				tags: r.payload.tags,
-			}));
+			// Filter for always_inject in client-side (since Qdrant search doesn't support custom filters)
+			return results
+				.filter((r) => r.payload.always_inject === true)
+				.map((r) => ({
+					memoryId: r.id,
+					content: r.payload.content as string,
+					tier: r.payload.tier as MemoryTier,
+					tags: (r.payload.tags as string[]) ?? [],
+				}));
 		} catch (err) {
 			logger.warn({ err }, "Failed to fetch always-inject memories");
 			return [];
@@ -228,17 +229,15 @@ export class PrefetchServiceImpl implements PrefetchService {
 		// Section 2: Retrieved Context (numbered for positional reference)
 		if (searchResults.length > 0) {
 			const retrievedItems = searchResults
-				.map((r) => `[${r.position}] (${r.tier}) ${r.content}`)
-				.join("\n\n");
+				.map((r) => `[${r.position}] [${r.tier}:${r.memoryId}] ${r.content}`)
+				.join("\n");
 
 			sections.push(`**Relevant Context:**\n${retrievedItems}`);
 		}
 
 		// Section 3: Conversation continuity hints
 		if (recentMessages.length > 0) {
-			const lastUserMessage = recentMessages
-				.filter((m) => m.role === "user")
-				.slice(-1)[0];
+			const lastUserMessage = recentMessages.filter((m) => m.role === "user").slice(-1)[0];
 
 			if (lastUserMessage && lastUserMessage.content.length > 50) {
 				// Only add if substantial

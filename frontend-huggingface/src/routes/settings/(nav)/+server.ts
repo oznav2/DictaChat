@@ -2,8 +2,9 @@ import { collections } from "$lib/server/database";
 import { z } from "zod";
 import { authCondition } from "$lib/server/auth";
 import { DEFAULT_SETTINGS, type SettingsEditable } from "$lib/types/Settings";
+import type { RequestHandler } from "./$types";
 
-export async function POST({ request, locals }) {
+export const POST: RequestHandler = async ({ request, locals }) => {
 	const body = await request.json();
 
 	const { welcomeModalSeen, ...settings } = z
@@ -16,6 +17,8 @@ export async function POST({ request, locals }) {
 			customPrompts: z.record(z.string()).default({}),
 			multimodalOverrides: z.record(z.boolean()).default({}),
 			toolsOverrides: z.record(z.boolean()).default({}),
+			maxTokensOverrides: z.record(z.number().int().min(0)).default({}),
+			truncateOverrides: z.record(z.number().int().min(0)).default({}),
 			disableStream: z.boolean().default(false),
 			directPaste: z.boolean().default(false),
 			hidePromptExamples: z.record(z.boolean()).default({}),
@@ -41,4 +44,4 @@ export async function POST({ request, locals }) {
 	);
 	// return ok response
 	return new Response();
-}
+};

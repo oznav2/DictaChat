@@ -9,10 +9,24 @@ import type {
 	RetrievalConfidence,
 	SearchDebug,
 } from "./types";
+import type {
+	ExportBackupParams,
+	ExportBackupResult,
+	ImportBackupParams,
+	ImportBackupResult,
+} from "./ops/OpsServiceImpl";
 import type { MemoryConfig } from "./memory_config";
 import { defaultMemoryConfig } from "./memory_config";
 import { logger } from "$lib/server/logger";
-import type { PromotionService } from "./learning/PromotionService";
+import type { PromotionService, PromotionStats } from "./learning/PromotionService";
+import type { ReindexProgress, ReindexResult } from "./ops/ReindexService";
+import type { ConsistencyCheckResult } from "./ops/ConsistencyService";
+import {
+	getGhostRegistry,
+	type GhostRegistry,
+	type GhostMemoryParams,
+} from "./services/GhostRegistry";
+import { getWilsonScoreService, type WilsonScoreService } from "./services/WilsonScoreService";
 
 /**
  * BookChunk represents a chunk of text from an uploaded book
@@ -77,7 +91,7 @@ export interface OutcomeService {
 export interface ActionKgService {
 	recordActionOutcome(action: ActionOutcome): Promise<void>;
 	getActionEffectiveness(
-		params: GetActionEffectivenessParams,
+		params: GetActionEffectivenessParams
 	): Promise<StatsSnapshot["action_effectiveness"]>;
 }
 
@@ -87,11 +101,13 @@ export interface ContextService {
 }
 
 export interface OpsService {
-	promoteNow(userId?: string): Promise<void>;
-	reindexFromMongo(params: ReindexFromMongoParams): Promise<void>;
-	consistencyCheck(params: ConsistencyCheckParams): Promise<void>;
+	promoteNow(userId?: string): Promise<PromotionStats>;
+	reindexFromMongo(params: ReindexFromMongoParams): Promise<ReindexResult>;
+	getReindexProgress(): ReindexProgress | null;
+	pauseReindex(): boolean;
+	consistencyCheck(params: ConsistencyCheckParams): Promise<ConsistencyCheckResult>;
 	exportBackup(params: ExportBackupParams): Promise<ExportBackupResult>;
-	importBackup(params: ImportBackupParams): Promise<void>;
+	importBackup(params: ImportBackupParams): Promise<ImportBackupResult>;
 	getStats(userId: string): Promise<StatsSnapshot>;
 }
 
@@ -129,6 +145,24 @@ export interface SearchParams {
 	sortBy?: SortBy;
 	metadata?: Record<string, unknown>;
 	signal?: AbortSignal;
+	/** Current personality ID (for personality-aware search) */
+	personalityId?: string | null;
+	/** Include memories from all personalities (cross-personality search) */
+	includeAllPersonalities?: boolean;
+	/** Specific personality IDs to include in search */
+	includePersonalityIds?: string[] | null;
+}
+
+/** Source attribution for memory items (Phase 9.9) */
+export interface MemorySourceAttribution {
+	type: "tool" | "conversation" | "manual" | "document";
+	tool_name?: string | null;
+	url?: string | null;
+	description?: string | null;
+	description_he?: string | null;
+	conversation_id?: string | null;
+	conversation_title?: string | null;
+	collected_at?: Date | null;
 }
 
 export interface StoreParams {
@@ -140,6 +174,11 @@ export interface StoreParams {
 	importance?: number;
 	confidence?: number;
 	alwaysInject?: boolean;
+	personalityId?: string | null;
+	personalityName?: string | null;
+	language?: "he" | "en" | "mixed" | "none";
+	/** Source attribution (Phase 9.9) */
+	source?: MemorySourceAttribution;
 }
 
 export interface StoreResult {
@@ -196,22 +235,8 @@ export interface ReindexFromMongoParams {
 
 export interface ConsistencyCheckParams {
 	userId?: string;
-}
-
-export interface ExportBackupParams {
-	userId: string;
-	includeBooks?: boolean;
-}
-
-export interface ExportBackupResult {
-	exportedAt: string;
-	size_bytes: number;
-	payload: unknown;
-}
-
-export interface ImportBackupParams {
-	userId: string;
-	payload: unknown;
+	dryRun?: boolean;
+	sampleSize?: number;
 }
 
 export interface RecordFeedbackParams {
@@ -351,15 +376,64 @@ function createNoopServices(): ResolvedServices {
 			getContextInsights: async () => createNoopContextInsights(),
 		},
 		ops: {
-			promoteNow: async () => {},
-			reindexFromMongo: async () => {},
-			consistencyCheck: async () => {},
+			promoteNow: async () => ({
+				promoted: 0,
+				archived: 0,
+				deleted: 0,
+				errors: 0,
+				durationMs: 0,
+			}),
+			reindexFromMongo: async () => ({
+				success: true,
+				jobId: "noop",
+				totalProcessed: 0,
+				totalFailed: 0,
+				durationMs: 0,
+			}),
+			getReindexProgress: () => null,
+			pauseReindex: () => false,
+			consistencyCheck: async () => ({
+				success: true,
+				checkedAt: new Date(),
+				issuesFound: 0,
+				issuesRepaired: 0,
+				totalChecked: 0,
+				durationMs: 0,
+				issues: [],
+				mongoCount: 0,
+				qdrantCount: 0,
+			}),
 			exportBackup: async () => ({
 				exportedAt: new Date().toISOString(),
 				size_bytes: 0,
-				payload: null,
+				payload: {
+					version: "2.0.0",
+					exportedAt: new Date().toISOString(),
+					userId: "noop",
+					collections: {},
+					meta: { format: "bricksllm_backup" },
+				},
 			}),
-			importBackup: async () => {},
+			importBackup: async () => ({
+				success: true,
+				dryRun: true,
+				stats: {
+					memoriesImported: 0,
+					memoriesSkipped: 0,
+					versionsImported: 0,
+					outcomesImported: 0,
+					actionOutcomesImported: 0,
+					kgNodesImported: 0,
+					kgEdgesImported: 0,
+					routingConceptsImported: 0,
+					routingStatsImported: 0,
+					actionEffectivenessImported: 0,
+					personalityMappingsImported: 0,
+					reindexCheckpointsImported: 0,
+					consistencyLogsImported: 0,
+				},
+				errors: [],
+			}),
 			getStats: async (userId: string) => createNoopStatsSnapshot(userId),
 		},
 	};
@@ -370,7 +444,13 @@ export class UnifiedMemoryFacade {
 	private readonly config: MemoryConfig;
 	private readonly services: ResolvedServices;
 	private promotionService?: PromotionService;
+	private ghostRegistry!: GhostRegistry;
+	private wilsonScoreService!: WilsonScoreService;
 	private initialized = false;
+
+	// Auto-promote trigger: every 20 messages (Roampal pattern)
+	private messageCount = 0;
+	private static readonly AUTO_PROMOTE_INTERVAL = 20;
 
 	constructor({
 		config = defaultMemoryConfig,
@@ -383,16 +463,18 @@ export class UnifiedMemoryFacade {
 	} = {}) {
 		this.config = config;
 		this.promotionService = promotionService;
+		this.ghostRegistry = getGhostRegistry();
+		this.wilsonScoreService = getWilsonScoreService();
 		const noop = createNoopServices();
 
 		this.services = {
-			search: { ...noop.search, ...(services.search ?? {}) } as SearchService,
-			prefetch: { ...noop.prefetch, ...(services.prefetch ?? {}) } as PrefetchService,
-			store: { ...noop.store, ...(services.store ?? {}) } as StoreService,
-			outcomes: { ...noop.outcomes, ...(services.outcomes ?? {}) } as OutcomeService,
-			actionKg: { ...noop.actionKg, ...(services.actionKg ?? {}) } as ActionKgService,
-			context: { ...noop.context, ...(services.context ?? {}) } as ContextService,
-			ops: { ...noop.ops, ...(services.ops ?? {}) } as OpsService,
+			search: (services.search ?? noop.search) as SearchService,
+			prefetch: (services.prefetch ?? noop.prefetch) as PrefetchService,
+			store: (services.store ?? noop.store) as StoreService,
+			outcomes: (services.outcomes ?? noop.outcomes) as OutcomeService,
+			actionKg: (services.actionKg ?? noop.actionKg) as ActionKgService,
+			context: (services.context ?? noop.context) as ContextService,
+			ops: (services.ops ?? noop.ops) as OpsService,
 		};
 	}
 
@@ -444,6 +526,7 @@ export class UnifiedMemoryFacade {
 
 	static getInstance(): UnifiedMemoryFacade {
 		if (!UnifiedMemoryFacade.instance) {
+			logger.warn("UnifiedMemoryFacade.getInstance() called before initialization - creating NoOp instance");
 			UnifiedMemoryFacade.instance = new UnifiedMemoryFacade();
 		}
 		return UnifiedMemoryFacade.instance;
@@ -479,7 +562,20 @@ export class UnifiedMemoryFacade {
 	}
 
 	async search(params: SearchParams): Promise<SearchResponse> {
-		return this.services.search.search(params);
+		const response = await this.services.search.search(params);
+
+		// Filter out ghosted memories from results
+		if (response.results.length > 0) {
+			const memoryIds = response.results.map((r) => r.memory_id);
+			const visibleIds = await this.ghostRegistry.filterGhosted(params.userId, memoryIds);
+			const visibleIdSet = new Set(visibleIds);
+
+			response.results = response.results
+				.filter((r) => visibleIdSet.has(r.memory_id))
+				.map((r, idx) => ({ ...r, position: idx + 1 }));
+		}
+
+		return response;
 	}
 
 	async store(params: StoreParams): Promise<StoreResult> {
@@ -495,14 +591,12 @@ export class UnifiedMemoryFacade {
 	}
 
 	async getActionEffectiveness(
-		params: GetActionEffectivenessParams,
+		params: GetActionEffectivenessParams
 	): Promise<StatsSnapshot["action_effectiveness"]> {
 		return this.services.actionKg.getActionEffectiveness(params);
 	}
 
-	async getColdStartContext(
-		params: GetColdStartContextParams,
-	): Promise<GetColdStartContextResult> {
+	async getColdStartContext(params: GetColdStartContextParams): Promise<GetColdStartContextResult> {
 		return this.services.context.getColdStartContext(params);
 	}
 
@@ -518,15 +612,51 @@ export class UnifiedMemoryFacade {
 		return this.services.ops.getStats(userId);
 	}
 
-	async promoteNow(userId?: string): Promise<void> {
+	async promoteNow(userId?: string): Promise<PromotionStats> {
 		return this.services.ops.promoteNow(userId);
 	}
 
-	async reindexFromMongo(params: ReindexFromMongoParams): Promise<void> {
+	/**
+	 * Increment message count and trigger auto-promotion every 20 messages (Roampal pattern)
+	 * Call this after each user message to enable autonomous memory lifecycle
+	 * @param userId - The user ID for promotion scope
+	 */
+	async incrementMessageCount(userId?: string): Promise<void> {
+		this.messageCount++;
+
+		if (this.messageCount % UnifiedMemoryFacade.AUTO_PROMOTE_INTERVAL === 0) {
+			logger.info(
+				{ messageCount: this.messageCount, userId },
+				"Auto-promote triggered (every 20 messages)"
+			);
+
+			// Run promotion in background - don't block the message flow
+			this.promoteNow(userId).catch((err) => {
+				logger.error({ err, userId }, "Auto-promote failed");
+			});
+		}
+	}
+
+	/**
+	 * Get current message count (for debugging/monitoring)
+	 */
+	getMessageCount(): number {
+		return this.messageCount;
+	}
+
+	async reindexFromMongo(params: ReindexFromMongoParams): Promise<ReindexResult> {
 		return this.services.ops.reindexFromMongo(params);
 	}
 
-	async consistencyCheck(params: ConsistencyCheckParams): Promise<void> {
+	getReindexProgress(): ReindexProgress | null {
+		return this.services.ops.getReindexProgress();
+	}
+
+	pauseReindex(): boolean {
+		return this.services.ops.pauseReindex();
+	}
+
+	async consistencyCheck(params: ConsistencyCheckParams): Promise<ConsistencyCheckResult> {
 		return this.services.ops.consistencyCheck(params);
 	}
 
@@ -538,14 +668,16 @@ export class UnifiedMemoryFacade {
 		return this.services.ops.exportBackup(params);
 	}
 
-	async importBackup(params: ImportBackupParams): Promise<void> {
+	async importBackup(params: ImportBackupParams): Promise<ImportBackupResult> {
 		return this.services.ops.importBackup(params);
 	}
 
 	async recordFeedback(params: RecordFeedbackParams): Promise<void> {
 		// Record feedback score for a specific memory item
 		// This adjusts the memory's score based on user feedback
-		const outcome: Outcome = params.score === 1 ? "positive" : params.score === -1 ? "negative" : "neutral";
+		// Map user feedback to Outcome type: 1=worked, -1=failed, 0=partial
+		const outcome: Outcome =
+			params.score === 1 ? "worked" : params.score === -1 ? "failed" : "partial";
 		await this.services.outcomes.recordOutcome({
 			userId: params.userId,
 			outcome,
@@ -556,12 +688,68 @@ export class UnifiedMemoryFacade {
 	async recordResponseFeedback(params: RecordResponseFeedbackParams): Promise<void> {
 		// Record general feedback for a response
 		// This is used for analytics and improving memory retrieval
-		const outcome: Outcome = params.score === 1 ? "positive" : params.score === -1 ? "negative" : "neutral";
+		// Map user feedback to Outcome type: 1=worked, -1=failed, 0=partial
+		const outcome: Outcome =
+			params.score === 1 ? "worked" : params.score === -1 ? "failed" : "partial";
 		await this.services.outcomes.recordOutcome({
 			userId: params.userId,
 			outcome,
 			relatedMemoryIds: [],
 		});
+	}
+
+	// ============================================
+	// Ghost Registry (Soft-Delete) Methods
+	// ============================================
+
+	/**
+	 * Ghost (soft-delete) a memory - it won't appear in search results
+	 * but can be restored later
+	 */
+	async ghostMemory(params: GhostMemoryParams): Promise<boolean> {
+		return this.ghostRegistry.ghostMemory(params);
+	}
+
+	/**
+	 * Restore a ghosted memory - makes it visible in search results again
+	 */
+	async restoreMemory(userId: string, memoryId: string): Promise<boolean> {
+		return this.ghostRegistry.restoreMemory(userId, memoryId);
+	}
+
+	/**
+	 * Check if a memory is currently ghosted
+	 */
+	async isMemoryGhosted(userId: string, memoryId: string): Promise<boolean> {
+		return this.ghostRegistry.isGhosted(userId, memoryId);
+	}
+
+	/**
+	 * Get all ghosted memories for a user
+	 */
+	async getGhostedMemories(userId: string) {
+		return this.ghostRegistry.getGhostedMemories(userId);
+	}
+
+	// ============================================
+	// Wilson Score Methods
+	// ============================================
+
+	/**
+	 * Check if a memory is eligible for promotion based on Wilson score
+	 */
+	checkPromotionEligibility(stats: { wilsonScore: number; accessCount: number; createdAt: Date }): {
+		eligible: boolean;
+		reason?: string;
+	} {
+		return this.wilsonScoreService.checkPromotionEligibility(stats);
+	}
+
+	/**
+	 * Calculate Wilson score for a memory
+	 */
+	calculateWilsonScore(hits: number, misses: number): number {
+		return this.wilsonScoreService.calculateFromStats(hits, misses);
 	}
 
 	// ============================================
@@ -791,10 +979,7 @@ export class UnifiedMemoryFacade {
 			const client = db.getClient();
 			const booksCollection = client.db().collection("books");
 
-			const books = await booksCollection
-				.find({ userId })
-				.sort({ uploadTimestamp: -1 })
-				.toArray();
+			const books = await booksCollection.find({ userId }).sort({ uploadTimestamp: -1 }).toArray();
 
 			return books.map((book) => ({
 				id: (book._id as { toString(): string }).toString(),

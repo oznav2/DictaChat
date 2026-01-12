@@ -1,6 +1,7 @@
 import { json, error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 
 /**
  * Score Hook API - Records user feedback for memory scoring
@@ -31,12 +32,7 @@ export interface ScoreResponse {
 	timestamp: string;
 }
 
-export const POST: RequestHandler = async ({ request, locals }) => {
-	const userId = locals.user?.id;
-	if (!userId) {
-		return error(401, "Authentication required");
-	}
-
+export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const body: ScoreRequest = await request.json();
 		const { messageId, conversationId, score, memoryIds, feedback } = body;
@@ -67,7 +63,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 				if (typeof memoryId === "string" && memoryId.trim()) {
 					try {
 						await facade.recordFeedback({
-							userId,
+							userId: ADMIN_USER_ID,
 							memoryId: memoryId.trim(),
 							score: score as -1 | 0 | 1,
 							conversationId,
@@ -84,7 +80,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 		// Record general response feedback (for analytics)
 		await facade.recordResponseFeedback({
-			userId,
+			userId: ADMIN_USER_ID,
 			conversationId,
 			messageId,
 			score: score as -1 | 0 | 1,
@@ -92,7 +88,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		});
 
 		// Log feedback for analytics
-		console.log(`[Score] User ${userId} scored ${memoryIds.length} memories with ${score}`, {
+		console.log(`[Score] User ${ADMIN_USER_ID} scored ${memoryIds.length} memories with ${score}`, {
 			messageId,
 			conversationId,
 			memoryIds,
@@ -122,12 +118,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
  * GET endpoint for retrieving scoring status
  * Useful for checking if a message has already been scored
  */
-export const GET: RequestHandler = async ({ url, locals }) => {
-	const userId = locals.user?.id;
-	if (!userId) {
-		return error(401, "Authentication required");
-	}
-
+export const GET: RequestHandler = async ({ url }) => {
 	const messageId = url.searchParams.get("messageId");
 	const conversationId = url.searchParams.get("conversationId");
 

@@ -12,9 +12,15 @@ import {
 	type MessageTraceStepCreatedUpdate,
 	type MessageTraceStepStatusUpdate,
 	type MessageTraceStepDetailUpdate,
+	type MessageMemoryUpdate,
+	type MessageMemorySearchingUpdate,
+	type MessageMemoryFoundUpdate,
+	type MessageMemoryStoringUpdate,
+	type MessageMemoryOutcomeUpdate,
 	MessageUpdateType,
 	MessageToolUpdateType,
 	MessageTraceUpdateType,
+	MessageMemoryUpdateType,
 } from "$lib/types/MessageUpdate";
 
 import { page } from "$app/state";
@@ -300,6 +306,30 @@ export const isMessageTraceStepDetailUpdate = (
 	update: MessageUpdate
 ): update is MessageTraceStepDetailUpdate =>
 	isMessageTraceUpdate(update) && update.subtype === MessageTraceUpdateType.StepDetail;
+
+// Memory update type guards for UI rendering
+export const isMessageMemoryUpdate = (update: MessageUpdate): update is MessageMemoryUpdate =>
+	update.type === MessageUpdateType.Memory;
+
+export const isMessageMemorySearchingUpdate = (
+	update: MessageUpdate
+): update is MessageMemorySearchingUpdate =>
+	isMessageMemoryUpdate(update) && update.subtype === MessageMemoryUpdateType.Searching;
+
+export const isMessageMemoryFoundUpdate = (
+	update: MessageUpdate
+): update is MessageMemoryFoundUpdate =>
+	isMessageMemoryUpdate(update) && update.subtype === MessageMemoryUpdateType.Found;
+
+export const isMessageMemoryStoringUpdate = (
+	update: MessageUpdate
+): update is MessageMemoryStoringUpdate =>
+	isMessageMemoryUpdate(update) && update.subtype === MessageMemoryUpdateType.Storing;
+
+export const isMessageMemoryOutcomeUpdate = (
+	update: MessageUpdate
+): update is MessageMemoryOutcomeUpdate =>
+	isMessageMemoryUpdate(update) && update.subtype === MessageMemoryUpdateType.Outcome;
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const waitForEvent = (eventTarget: EventTarget, eventName: string) =>

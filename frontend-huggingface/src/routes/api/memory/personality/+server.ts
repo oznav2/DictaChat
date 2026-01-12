@@ -1,27 +1,14 @@
 import { json, error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
-import { PersonalityLoader } from "$lib/server/memory/personality";
+import { getPersonalityLoader } from "$lib/server/memory/personality";
 import { collections } from "$lib/server/database";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 
 // GET /api/memory/personality - Get current personality settings
-export const GET: RequestHandler = async ({ locals }) => {
-	const userId = locals.user?.id;
-
-	// Return default personality for unauthenticated users
-	if (!userId) {
-		return json({
-			success: true,
-			personality: {
-				name: "default",
-				content: "",
-				isDefault: true,
-			},
-		});
-	}
-
+export const GET: RequestHandler = async () => {
 	try {
-		const loader = PersonalityLoader.getInstance();
-		const personality = await loader.getPersonality(userId);
+		const loader = getPersonalityLoader();
+		const personality = await loader.getPersonality(ADMIN_USER_ID);
 
 		return json({
 			success: true,
@@ -37,12 +24,7 @@ export const GET: RequestHandler = async ({ locals }) => {
 };
 
 // POST /api/memory/personality - Save personality settings
-export const POST: RequestHandler = async ({ request, locals }) => {
-	const userId = locals.user?.id;
-	if (!userId) {
-		return error(401, "Authentication required");
-	}
-
+export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const { yaml_content, preset_name, preset_description } = await request.json();
 
@@ -51,7 +33,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		}
 
 		// Validate YAML structure
-		const loader = PersonalityLoader.getInstance();
+		const loader = getPersonalityLoader();
 		const validation = loader.validateYaml(yaml_content);
 		if (!validation.valid) {
 			return json({ success: false, error: validation.error }, { status: 400 });
@@ -59,10 +41,10 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 		// Save to database
 		await collections.userPersonality.updateOne(
-			{ userId },
+			{ userId: ADMIN_USER_ID },
 			{
 				$set: {
-					userId,
+					userId: ADMIN_USER_ID,
 					yaml_content,
 					preset_name: preset_name || null,
 					preset_description: preset_description || null,
@@ -76,7 +58,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		);
 
 		// Reload personality cache
-		await loader.reloadPersonality(userId);
+		await loader.reloadPersonality(ADMIN_USER_ID);
 
 		return json({
 			success: true,

@@ -10,13 +10,6 @@ import mimeTypes from "mime-types";
 export const GET: RequestHandler = async ({ locals, params }) => {
 	const sha256 = z.string().parse(params.sha256);
 
-	const userId = locals.user?._id ?? locals.sessionId;
-
-	// check user
-	if (!userId) {
-		error(401, "Unauthorized");
-	}
-
 	if (params.id.length !== 7) {
 		const convId = new ObjectId(z.string().parse(params.id));
 

@@ -5,6 +5,7 @@ import { base } from "$app/paths";
 import { config } from "$lib/server/config";
 import JSON5 from "json5";
 import { updateUser } from "./updateUser.js";
+import type { RequestHandler } from "./$types";
 
 const sanitizeJSONEnv = (val: string, fallback: string) => {
 	const raw = (val ?? "").trim();
@@ -24,7 +25,7 @@ const allowedUserDomains = z
 	.default([])
 	.parse(JSON5.parse(sanitizeJSONEnv(config.ALLOWED_USER_DOMAINS, "[]")));
 
-export async function GET({ url, locals, cookies, request, getClientAddress }) {
+export const GET: RequestHandler = async ({ url, locals, cookies, request, getClientAddress }) => {
 	const { error: errorName, error_description: errorDescription } = z
 		.object({
 			error: z.string().optional(),
@@ -100,4 +101,4 @@ export async function GET({ url, locals, cookies, request, getClientAddress }) {
 		return redirect(302, next);
 	}
 	return redirect(302, `${base}/`);
-}
+};

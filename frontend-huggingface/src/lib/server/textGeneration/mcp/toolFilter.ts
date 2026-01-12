@@ -121,22 +121,12 @@ const TOOL_CATEGORIES: Record<string, { keywords: RegExp; tools: string[] }> = {
 	// Tavily is explicitly EXCLUDED for research intent
 	deepResearch: {
 		keywords: /\b(research|deep dive|in-depth|comprehensive|analyze)\b|מחקר|לחקור|ניתוח מעמיק/i,
-		tools: [
-			"perplexity-ask",
-			"perplexity-search",
-			"perplexity-research",
-			"perplexity-reason",
-		],
+		tools: ["perplexity-ask", "perplexity-search", "perplexity-research", "perplexity-reason"],
 	},
 	// SIMPLE SEARCH: Tavily (חפש, search, find)
 	simpleSearch: {
 		keywords: /\b(search|find|look up|what is|who is)\b|חפש|חיפוש|מצא/i,
-		tools: [
-			"tavily-search",
-			"tavily-extract",
-			"tavily-map",
-			"fetch",
-		],
+		tools: ["tavily-search", "tavily-extract", "tavily-map", "fetch"],
 	},
 	// GENERAL INFO: Perplexity preferred (info, news, explain, etc.)
 	// NOTE: Tavily is NOT included here - use simpleSearch category for Tavily
@@ -362,8 +352,12 @@ function selectBestPerplexityTool(
 	const bestTool = scores[0];
 
 	console.log(`[tool-filter] Perplexity scoring for query: "${userQuery.slice(0, 50)}..."`);
-	console.log(`[tool-filter] Scores: ${JSON.stringify(scores.map((s) => ({ tool: s.tool, score: s.score, signals: s.matchedSignals })))}`);
-	console.log(`[tool-filter] Selected: ${bestTool.tool} (score: ${bestTool.score}, signals: ${bestTool.matchedSignals.join(", ")})`);
+	console.log(
+		`[tool-filter] Scores: ${JSON.stringify(scores.map((s) => ({ tool: s.tool, score: s.score, signals: s.matchedSignals })))}`
+	);
+	console.log(
+		`[tool-filter] Selected: ${bestTool.tool} (score: ${bestTool.score}, signals: ${bestTool.matchedSignals.join(", ")})`
+	);
 
 	// Get the valid name variants for the best tool
 	const validNames = PERPLEXITY_TOOL_VARIANTS[bestTool.tool] || [bestTool.tool];
@@ -374,19 +368,27 @@ function selectBestPerplexityTool(
 	);
 
 	if (!selectedPerplexityTool) {
-		console.warn(`[tool-filter] Best Perplexity tool ${bestTool.tool} not found in available tools`);
+		console.warn(
+			`[tool-filter] Best Perplexity tool ${bestTool.tool} not found in available tools`
+		);
 		// Fallback: remove all Perplexity tools and keep others
 		return currentFiltered.filter((t) => !TOOL_PATTERNS.perplexity.test(t.function.name));
 	}
 
 	// Remove ALL Perplexity tools from filtered, then add only the best one at the front
-	const nonPerplexityTools = currentFiltered.filter((t) => !TOOL_PATTERNS.perplexity.test(t.function.name));
+	const nonPerplexityTools = currentFiltered.filter(
+		(t) => !TOOL_PATTERNS.perplexity.test(t.function.name)
+	);
 
 	// Also remove Tavily to prevent confusion when Perplexity is selected
-	const withoutTavily = nonPerplexityTools.filter((t) => !TOOL_PATTERNS.tavily.test(t.function.name));
+	const withoutTavily = nonPerplexityTools.filter(
+		(t) => !TOOL_PATTERNS.tavily.test(t.function.name)
+	);
 
 	const result = [selectedPerplexityTool, ...withoutTavily];
-	console.log(`[tool-filter] Final Perplexity selection: ${selectedPerplexityTool.function.name}, total tools: ${result.length}`);
+	console.log(
+		`[tool-filter] Final Perplexity selection: ${selectedPerplexityTool.function.name}, total tools: ${result.length}`
+	);
 
 	return result;
 }
@@ -445,6 +447,12 @@ export function filterToolsByIntent(
 		}
 	}
 
+	// Exclude sequentialthinking when documents are attached - the model already has native
+	// <think> capability and sequentialthinking can cause issues with Hebrew JSON parsing
+	if (hasDocuments) {
+		relevantToolNames.delete("sequentialthinking");
+	}
+
 	// If no specific intent detected, default to research tools
 	if (matchedCategories.length === 0) {
 		matchedCategories.push("research");
@@ -468,13 +476,14 @@ export function filterToolsByIntent(
 		if (hebrewIntent === "official_data") {
 			// User explicitly wants official Israeli government data -> DataGov ONLY
 			// EXCLUDE all other search tools to prevent model confusion
-			const datagovTools = allTools.filter((t) =>
-				t.function.name === "datagov_query" ||
-				TOOL_PATTERNS.datagov.test(t.function.name)
+			const datagovTools = allTools.filter(
+				(t) => t.function.name === "datagov_query" || TOOL_PATTERNS.datagov.test(t.function.name)
 			);
 			if (datagovTools.length > 0) {
 				filtered = datagovTools;
-				console.log(`[tool-filter] Official data: filtered to ${datagovTools.length} DataGov tools`);
+				console.log(
+					`[tool-filter] Official data: filtered to ${datagovTools.length} DataGov tools`
+				);
 			}
 		} else if (hebrewIntent === "research") {
 			// User explicitly wants "Deep Research" (מחקר) -> Single BEST Perplexity tool
@@ -482,9 +491,7 @@ export function filterToolsByIntent(
 			filtered = selectBestPerplexityTool(allTools, userQuery, filtered);
 		} else if (hebrewIntent === "search") {
 			// User explicitly wants "Simple Search" (חפש) -> Tavily preferred
-			const tavilyTools = allTools.filter((t) =>
-				TOOL_PATTERNS.tavily.test(t.function.name)
-			);
+			const tavilyTools = allTools.filter((t) => TOOL_PATTERNS.tavily.test(t.function.name));
 			if (tavilyTools.length > 0) {
 				const tavilyNames = new Set(tavilyTools.map((t) => t.function.name));
 				const others = filtered.filter((t) => !tavilyNames.has(t.function.name));
@@ -496,7 +503,9 @@ export function filterToolsByIntent(
 
 	// INTELLIGENT PERPLEXITY SELECTION: If we have multiple Perplexity tools, pick only the best one
 	// This prevents model confusion and ensures accurate tool selection
-	const perplexityInFiltered = filtered.filter((t) => TOOL_PATTERNS.perplexity.test(t.function.name));
+	const perplexityInFiltered = filtered.filter((t) =>
+		TOOL_PATTERNS.perplexity.test(t.function.name)
+	);
 	if (perplexityInFiltered.length > 1) {
 		filtered = selectBestPerplexityTool(allTools, userQuery, filtered);
 	}

@@ -58,7 +58,7 @@ export async function uploadFile(file: File, conv: Conversation): Promise<Messag
 				mime: file.type,
 				name: file.name,
 				// Add filesystem path for MCP tools
-				...(filePath && { path: filePath })
+				...(filePath && { path: filePath }),
 			})
 		);
 		upload.once("error", reject);

@@ -1,14 +1,10 @@
 import { json, error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 
 // POST /api/memory/feedback - Submit feedback for a response
-export const POST: RequestHandler = async ({ request, locals }) => {
-	const userId = locals.user?.id;
-	if (!userId) {
-		return error(401, "Authentication required");
-	}
-
+export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const body = await request.json();
 		const { messageId, conversationId, score, citations } = body;
@@ -28,7 +24,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			for (const memoryId of citations) {
 				if (typeof memoryId === "string") {
 					await facade.recordFeedback({
-						userId,
+						userId: ADMIN_USER_ID,
 						memoryId,
 						score,
 						conversationId,
@@ -40,7 +36,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 
 		// Also record general response feedback
 		await facade.recordResponseFeedback({
-			userId,
+			userId: ADMIN_USER_ID,
 			conversationId,
 			messageId,
 			score,

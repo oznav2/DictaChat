@@ -38,8 +38,7 @@ Example: If search_memory returned 5 results and only [1] and [3] were useful:
 		properties: {
 			key_takeaway: {
 				type: "string",
-				description:
-					"1-2 sentence summary of what was learned or accomplished in this exchange",
+				description: "1-2 sentence summary of what was learned or accomplished in this exchange",
 			},
 			outcome: {
 				type: "string",

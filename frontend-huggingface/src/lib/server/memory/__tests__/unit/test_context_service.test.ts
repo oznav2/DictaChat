@@ -14,7 +14,7 @@
  *     npx vitest run src/lib/server/memory/__tests__/unit/test_context_service.test.ts
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 
 // =============================================================================
 // Test Result Tracking
@@ -44,7 +44,7 @@ const mockHybridSearch = {
 		debug: {
 			query_analysis: {},
 			stage_timings_ms: {},
-			confidence: 'medium',
+			confidence: "medium",
 			errors: [],
 			fallbacks_used: [],
 		},
@@ -57,7 +57,7 @@ const mockQdrantAdapter = {
 	scroll: vi.fn().mockResolvedValue([]),
 };
 
-vi.mock('$lib/server/logger', () => ({
+vi.mock("$lib/server/logger", () => ({
 	logger: {
 		info: vi.fn(),
 		debug: vi.fn(),
@@ -66,7 +66,7 @@ vi.mock('$lib/server/logger', () => ({
 	},
 }));
 
-vi.mock('$env/dynamic/private', () => ({
+vi.mock("$env/dynamic/private", () => ({
 	env: {},
 }));
 
@@ -74,16 +74,16 @@ vi.mock('$env/dynamic/private', () => ({
 // TestPrefetchServiceInit: Test service initialization
 // =============================================================================
 
-describe('TestPrefetchServiceInit', () => {
+describe("TestPrefetchServiceInit", () => {
 	/**
 	 * test_init_with_defaults
 	 *
 	 * Should initialize with default config.
 	 */
-	it('should initialize with default config', async () => {
-		const testName = 'test_init_with_defaults';
+	it("should initialize with default config", async () => {
+		const testName = "test_init_with_defaults";
 		try {
-			const { PrefetchServiceImpl } = await import('../../services/PrefetchServiceImpl');
+			const { PrefetchServiceImpl } = await import("../../services/PrefetchServiceImpl");
 
 			const service = new PrefetchServiceImpl({
 				hybridSearch: mockHybridSearch as any,
@@ -93,7 +93,7 @@ describe('TestPrefetchServiceInit', () => {
 			expect(service).toBeDefined();
 			expect(service.prefetchContext).toBeDefined();
 
-			recordResult(testName, true, 'Service initialized with defaults');
+			recordResult(testName, true, "Service initialized with defaults");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -105,10 +105,10 @@ describe('TestPrefetchServiceInit', () => {
 	 *
 	 * Should accept custom config.
 	 */
-	it('should accept custom config', async () => {
-		const testName = 'test_init_with_custom_config';
+	it("should accept custom config", async () => {
+		const testName = "test_init_with_custom_config";
 		try {
-			const { PrefetchServiceImpl } = await import('../../services/PrefetchServiceImpl');
+			const { PrefetchServiceImpl } = await import("../../services/PrefetchServiceImpl");
 
 			const customConfig = {
 				caps: {
@@ -125,7 +125,7 @@ describe('TestPrefetchServiceInit', () => {
 
 			expect(service).toBeDefined();
 
-			recordResult(testName, true, 'Service initialized with custom config');
+			recordResult(testName, true, "Service initialized with custom config");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -137,13 +137,13 @@ describe('TestPrefetchServiceInit', () => {
 // TestAlwaysInjectMemories: Test always-inject memory fetching
 // =============================================================================
 
-describe('TestAlwaysInjectMemories', () => {
+describe("TestAlwaysInjectMemories", () => {
 	let service: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { PrefetchServiceImpl } = await import('../../services/PrefetchServiceImpl');
+		const { PrefetchServiceImpl } = await import("../../services/PrefetchServiceImpl");
 		service = new PrefetchServiceImpl({
 			hybridSearch: mockHybridSearch as any,
 			qdrantAdapter: mockQdrantAdapter as any,
@@ -155,40 +155,40 @@ describe('TestAlwaysInjectMemories', () => {
 	 *
 	 * Should fetch always-inject memories with identity tag.
 	 */
-	it('should fetch identity memories', async () => {
-		const testName = 'test_fetches_identity_memories';
+	it("should fetch identity memories", async () => {
+		const testName = "test_fetches_identity_memories";
 		try {
 			// Mock identity memories
 			mockQdrantAdapter.scroll.mockResolvedValueOnce([
 				{
-					id: 'mem_1',
+					id: "mem_1",
 					payload: {
-						content: 'User prefers Hebrew responses',
-						tier: 'memory_bank',
-						tags: ['identity'],
+						content: "User prefers Hebrew responses",
+						tier: "memory_bank",
+						tags: ["identity"],
 					},
 				},
 				{
-					id: 'mem_2',
+					id: "mem_2",
 					payload: {
-						content: 'User is a software developer',
-						tier: 'memory_bank',
-						tags: ['identity', 'profession'],
+						content: "User is a software developer",
+						tier: "memory_bank",
+						tags: ["identity", "profession"],
 					},
 				},
 			]);
 
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Tell me about Python',
+				userId: "user_123",
+				query: "Tell me about Python",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
 			expect(mockQdrantAdapter.scroll).toHaveBeenCalled();
-			expect(result.memoryContextInjection).toContain('User Identity');
+			expect(result.memoryContextInjection).toContain("User Identity");
 
-			recordResult(testName, true, 'Identity memories fetched');
+			recordResult(testName, true, "Identity memories fetched");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -200,14 +200,14 @@ describe('TestAlwaysInjectMemories', () => {
 	 *
 	 * Should return empty when circuit breaker is open.
 	 */
-	it('should return empty when circuit breaker is open', async () => {
-		const testName = 'test_circuit_breaker_open';
+	it("should return empty when circuit breaker is open", async () => {
+		const testName = "test_circuit_breaker_open";
 		try {
 			mockQdrantAdapter.isCircuitOpen.mockReturnValueOnce(true);
 
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test query',
+				userId: "user_123",
+				query: "Test query",
 				recentMessages: [],
 				hasDocuments: false,
 			});
@@ -215,7 +215,7 @@ describe('TestAlwaysInjectMemories', () => {
 			// Should not call scroll when circuit is open
 			expect(mockQdrantAdapter.scroll).not.toHaveBeenCalled();
 
-			recordResult(testName, true, 'Circuit breaker handled correctly');
+			recordResult(testName, true, "Circuit breaker handled correctly");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -227,22 +227,22 @@ describe('TestAlwaysInjectMemories', () => {
 	 *
 	 * Should handle scroll errors gracefully.
 	 */
-	it('should handle scroll errors gracefully', async () => {
-		const testName = 'test_scroll_error';
+	it("should handle scroll errors gracefully", async () => {
+		const testName = "test_scroll_error";
 		try {
-			mockQdrantAdapter.scroll.mockRejectedValueOnce(new Error('Qdrant unavailable'));
+			mockQdrantAdapter.scroll.mockRejectedValueOnce(new Error("Qdrant unavailable"));
 
 			// Should not throw
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test query',
+				userId: "user_123",
+				query: "Test query",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
 			expect(result).toBeDefined();
 
-			recordResult(testName, true, 'Scroll error handled gracefully');
+			recordResult(testName, true, "Scroll error handled gracefully");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -254,13 +254,13 @@ describe('TestAlwaysInjectMemories', () => {
 // TestTierPlanDetermination: Test tier selection logic
 // =============================================================================
 
-describe('TestTierPlanDetermination', () => {
+describe("TestTierPlanDetermination", () => {
 	let service: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { PrefetchServiceImpl } = await import('../../services/PrefetchServiceImpl');
+		const { PrefetchServiceImpl } = await import("../../services/PrefetchServiceImpl");
 		service = new PrefetchServiceImpl({
 			hybridSearch: mockHybridSearch as any,
 			qdrantAdapter: mockQdrantAdapter as any,
@@ -272,21 +272,21 @@ describe('TestTierPlanDetermination', () => {
 	 *
 	 * Should always include working and memory_bank tiers.
 	 */
-	it('should always include working and memory_bank', async () => {
-		const testName = 'test_basic_tiers';
+	it("should always include working and memory_bank", async () => {
+		const testName = "test_basic_tiers";
 		try {
 			await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test',
+				userId: "user_123",
+				query: "Test",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
 			const searchCall = mockHybridSearch.search.mock.calls[0][0];
-			expect(searchCall.tiers).toContain('working');
-			expect(searchCall.tiers).toContain('memory_bank');
+			expect(searchCall.tiers).toContain("working");
+			expect(searchCall.tiers).toContain("memory_bank");
 
-			recordResult(testName, true, `Tiers: ${searchCall.tiers.join(', ')}`);
+			recordResult(testName, true, `Tiers: ${searchCall.tiers.join(", ")}`);
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -298,20 +298,20 @@ describe('TestTierPlanDetermination', () => {
 	 *
 	 * Should include books tier when documents are attached.
 	 */
-	it('should include books tier when documents attached', async () => {
-		const testName = 'test_books_with_documents';
+	it("should include books tier when documents attached", async () => {
+		const testName = "test_books_with_documents";
 		try {
 			await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test',
+				userId: "user_123",
+				query: "Test",
 				recentMessages: [],
 				hasDocuments: true,
 			});
 
 			const searchCall = mockHybridSearch.search.mock.calls[0][0];
-			expect(searchCall.tiers).toContain('books');
+			expect(searchCall.tiers).toContain("books");
 
-			recordResult(testName, true, 'Books tier included with documents');
+			recordResult(testName, true, "Books tier included with documents");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -323,20 +323,20 @@ describe('TestTierPlanDetermination', () => {
 	 *
 	 * Should include patterns tier for learned behaviors.
 	 */
-	it('should include patterns tier', async () => {
-		const testName = 'test_patterns_tier';
+	it("should include patterns tier", async () => {
+		const testName = "test_patterns_tier";
 		try {
 			await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test',
+				userId: "user_123",
+				query: "Test",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
 			const searchCall = mockHybridSearch.search.mock.calls[0][0];
-			expect(searchCall.tiers).toContain('patterns');
+			expect(searchCall.tiers).toContain("patterns");
 
-			recordResult(testName, true, 'Patterns tier included');
+			recordResult(testName, true, "Patterns tier included");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -348,13 +348,13 @@ describe('TestTierPlanDetermination', () => {
 // TestContextLimitEstimation: Test context limit calculation
 // =============================================================================
 
-describe('TestContextLimitEstimation', () => {
+describe("TestContextLimitEstimation", () => {
 	let service: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { PrefetchServiceImpl } = await import('../../services/PrefetchServiceImpl');
+		const { PrefetchServiceImpl } = await import("../../services/PrefetchServiceImpl");
 		service = new PrefetchServiceImpl({
 			hybridSearch: mockHybridSearch as any,
 			qdrantAdapter: mockQdrantAdapter as any,
@@ -372,12 +372,12 @@ describe('TestContextLimitEstimation', () => {
 	 *
 	 * Should use default limit for simple queries.
 	 */
-	it('should use default limit for simple queries', async () => {
-		const testName = 'test_default_limit';
+	it("should use default limit for simple queries", async () => {
+		const testName = "test_default_limit";
 		try {
 			await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Short query',
+				userId: "user_123",
+				query: "Short query",
 				recentMessages: [],
 				hasDocuments: false,
 			});
@@ -397,12 +397,12 @@ describe('TestContextLimitEstimation', () => {
 	 *
 	 * Should reduce limit when documents are attached.
 	 */
-	it('should reduce limit when documents attached', async () => {
-		const testName = 'test_reduced_limit_documents';
+	it("should reduce limit when documents attached", async () => {
+		const testName = "test_reduced_limit_documents";
 		try {
 			await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test query',
+				userId: "user_123",
+				query: "Test query",
 				recentMessages: [],
 				hasDocuments: true,
 			});
@@ -424,14 +424,14 @@ describe('TestContextLimitEstimation', () => {
 	 *
 	 * Should increase limit for complex queries.
 	 */
-	it('should increase limit for complex queries', async () => {
-		const testName = 'test_increased_limit_complex';
+	it("should increase limit for complex queries", async () => {
+		const testName = "test_increased_limit_complex";
 		try {
 			// Query longer than 200 chars
-			const longQuery = 'A'.repeat(250);
+			const longQuery = "A".repeat(250);
 
 			await service.prefetchContext({
-				userId: 'user_123',
+				userId: "user_123",
 				query: longQuery,
 				recentMessages: [],
 				hasDocuments: false,
@@ -452,12 +452,12 @@ describe('TestContextLimitEstimation', () => {
 	 *
 	 * Should respect explicitly passed limit.
 	 */
-	it('should respect explicitly passed limit', async () => {
-		const testName = 'test_explicit_limit';
+	it("should respect explicitly passed limit", async () => {
+		const testName = "test_explicit_limit";
 		try {
 			await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test',
+				userId: "user_123",
+				query: "Test",
 				recentMessages: [],
 				hasDocuments: false,
 				limit: 5,
@@ -478,13 +478,13 @@ describe('TestContextLimitEstimation', () => {
 // TestContextFormatting: Test context injection formatting
 // =============================================================================
 
-describe('TestContextFormatting', () => {
+describe("TestContextFormatting", () => {
 	let service: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { PrefetchServiceImpl } = await import('../../services/PrefetchServiceImpl');
+		const { PrefetchServiceImpl } = await import("../../services/PrefetchServiceImpl");
 		service = new PrefetchServiceImpl({
 			hybridSearch: mockHybridSearch as any,
 			qdrantAdapter: mockQdrantAdapter as any,
@@ -496,31 +496,31 @@ describe('TestContextFormatting', () => {
 	 *
 	 * Should format identity section correctly.
 	 */
-	it('should format identity section', async () => {
-		const testName = 'test_identity_section';
+	it("should format identity section", async () => {
+		const testName = "test_identity_section";
 		try {
 			mockQdrantAdapter.scroll.mockResolvedValueOnce([
 				{
-					id: 'mem_1',
+					id: "mem_1",
 					payload: {
-						content: 'User speaks Hebrew',
-						tier: 'memory_bank',
-						tags: ['identity'],
+						content: "User speaks Hebrew",
+						tier: "memory_bank",
+						tags: ["identity"],
 					},
 				},
 			]);
 
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test',
+				userId: "user_123",
+				query: "Test",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
-			expect(result.memoryContextInjection).toContain('User Identity');
-			expect(result.memoryContextInjection).toContain('User speaks Hebrew');
+			expect(result.memoryContextInjection).toContain("User Identity");
+			expect(result.memoryContextInjection).toContain("User speaks Hebrew");
 
-			recordResult(testName, true, 'Identity section formatted');
+			recordResult(testName, true, "Identity section formatted");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -532,46 +532,46 @@ describe('TestContextFormatting', () => {
 	 *
 	 * Should format search results with positions.
 	 */
-	it('should format search results with positions', async () => {
-		const testName = 'test_search_results_format';
+	it("should format search results with positions", async () => {
+		const testName = "test_search_results_format";
 		try {
 			mockHybridSearch.search.mockResolvedValueOnce({
 				results: [
 					{
 						position: 1,
-						tier: 'working',
-						content: 'First result content',
-						memory_id: 'mem_1',
+						tier: "working",
+						content: "First result content",
+						memory_id: "mem_1",
 					},
 					{
 						position: 2,
-						tier: 'patterns',
-						content: 'Second result content',
-						memory_id: 'mem_2',
+						tier: "patterns",
+						content: "Second result content",
+						memory_id: "mem_2",
 					},
 				],
 				debug: {
 					stage_timings_ms: {},
-					confidence: 'high',
+					confidence: "high",
 					errors: [],
 					fallbacks_used: [],
 				},
 			});
 
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test',
+				userId: "user_123",
+				query: "Test",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
-			expect(result.memoryContextInjection).toContain('Relevant Context');
-			expect(result.memoryContextInjection).toContain('[1]');
-			expect(result.memoryContextInjection).toContain('[2]');
-			expect(result.memoryContextInjection).toContain('(working)');
-			expect(result.memoryContextInjection).toContain('(patterns)');
+			expect(result.memoryContextInjection).toContain("Relevant Context");
+			expect(result.memoryContextInjection).toContain("[1]");
+			expect(result.memoryContextInjection).toContain("[2]");
+			expect(result.memoryContextInjection).toContain("(working)");
+			expect(result.memoryContextInjection).toContain("(patterns)");
 
-			recordResult(testName, true, 'Search results formatted with positions');
+			recordResult(testName, true, "Search results formatted with positions");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -583,24 +583,25 @@ describe('TestContextFormatting', () => {
 	 *
 	 * Should include recent topic hint.
 	 */
-	it('should include recent topic hint', async () => {
-		const testName = 'test_recent_topic';
+	it("should include recent topic hint", async () => {
+		const testName = "test_recent_topic";
 		try {
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Follow up question',
+				userId: "user_123",
+				query: "Follow up question",
 				recentMessages: [
 					{
-						role: 'user',
-						content: 'This is a substantial previous message about Python programming and async patterns',
+						role: "user",
+						content:
+							"This is a substantial previous message about Python programming and async patterns",
 					},
 				],
 				hasDocuments: false,
 			});
 
-			expect(result.memoryContextInjection).toContain('Recent Topic');
+			expect(result.memoryContextInjection).toContain("Recent Topic");
 
-			recordResult(testName, true, 'Recent topic included');
+			recordResult(testName, true, "Recent topic included");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -612,30 +613,30 @@ describe('TestContextFormatting', () => {
 	 *
 	 * Should return empty string when no context.
 	 */
-	it('should return empty string when no context', async () => {
-		const testName = 'test_empty_context';
+	it("should return empty string when no context", async () => {
+		const testName = "test_empty_context";
 		try {
 			mockQdrantAdapter.scroll.mockResolvedValueOnce([]);
 			mockHybridSearch.search.mockResolvedValueOnce({
 				results: [],
 				debug: {
 					stage_timings_ms: {},
-					confidence: 'low',
+					confidence: "low",
 					errors: [],
 					fallbacks_used: [],
 				},
 			});
 
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test',
+				userId: "user_123",
+				query: "Test",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
-			expect(result.memoryContextInjection).toBe('');
+			expect(result.memoryContextInjection).toBe("");
 
-			recordResult(testName, true, 'Empty context handled');
+			recordResult(testName, true, "Empty context handled");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -647,13 +648,13 @@ describe('TestContextFormatting', () => {
 // TestConfidenceCalculation: Test retrieval confidence
 // =============================================================================
 
-describe('TestConfidenceCalculation', () => {
+describe("TestConfidenceCalculation", () => {
 	let service: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { PrefetchServiceImpl } = await import('../../services/PrefetchServiceImpl');
+		const { PrefetchServiceImpl } = await import("../../services/PrefetchServiceImpl");
 		service = new PrefetchServiceImpl({
 			hybridSearch: mockHybridSearch as any,
 			qdrantAdapter: mockQdrantAdapter as any,
@@ -665,38 +666,44 @@ describe('TestConfidenceCalculation', () => {
 	 *
 	 * Should return high confidence with good context.
 	 */
-	it('should return high confidence with good context', async () => {
-		const testName = 'test_high_confidence';
+	it("should return high confidence with good context", async () => {
+		const testName = "test_high_confidence";
 		try {
 			// Mock good identity context
 			mockQdrantAdapter.scroll.mockResolvedValueOnce([
-				{ id: 'mem_1', payload: { content: 'Identity 1', tier: 'memory_bank', tags: ['identity'] } },
-				{ id: 'mem_2', payload: { content: 'Identity 2', tier: 'memory_bank', tags: ['identity'] } },
+				{
+					id: "mem_1",
+					payload: { content: "Identity 1", tier: "memory_bank", tags: ["identity"] },
+				},
+				{
+					id: "mem_2",
+					payload: { content: "Identity 2", tier: "memory_bank", tags: ["identity"] },
+				},
 			]);
 
 			// Mock good search results
 			mockHybridSearch.search.mockResolvedValueOnce({
 				results: [
-					{ position: 1, tier: 'working', content: 'Result 1', memory_id: 'mem_3' },
-					{ position: 2, tier: 'working', content: 'Result 2', memory_id: 'mem_4' },
-					{ position: 3, tier: 'patterns', content: 'Result 3', memory_id: 'mem_5' },
+					{ position: 1, tier: "working", content: "Result 1", memory_id: "mem_3" },
+					{ position: 2, tier: "working", content: "Result 2", memory_id: "mem_4" },
+					{ position: 3, tier: "patterns", content: "Result 3", memory_id: "mem_5" },
 				],
 				debug: {
 					stage_timings_ms: { total_ms: 50 },
-					confidence: 'high',
+					confidence: "high",
 					errors: [],
 					fallbacks_used: [],
 				},
 			});
 
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test',
+				userId: "user_123",
+				query: "Test",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
-			expect(result.retrievalConfidence).toBe('high');
+			expect(result.retrievalConfidence).toBe("high");
 
 			recordResult(testName, true, `Confidence: ${result.retrievalConfidence}`);
 		} catch (error) {
@@ -710,35 +717,36 @@ describe('TestConfidenceCalculation', () => {
 	 *
 	 * Should return medium confidence with some context.
 	 */
-	it('should return medium confidence with some context', async () => {
-		const testName = 'test_medium_confidence';
+	it("should return medium confidence with some context", async () => {
+		const testName = "test_medium_confidence";
 		try {
 			// Mock some identity context
 			mockQdrantAdapter.scroll.mockResolvedValueOnce([
-				{ id: 'mem_1', payload: { content: 'Identity 1', tier: 'memory_bank', tags: ['identity'] } },
+				{
+					id: "mem_1",
+					payload: { content: "Identity 1", tier: "memory_bank", tags: ["identity"] },
+				},
 			]);
 
 			// Mock some search results
 			mockHybridSearch.search.mockResolvedValueOnce({
-				results: [
-					{ position: 1, tier: 'working', content: 'Result 1', memory_id: 'mem_2' },
-				],
+				results: [{ position: 1, tier: "working", content: "Result 1", memory_id: "mem_2" }],
 				debug: {
 					stage_timings_ms: {},
-					confidence: 'medium',
+					confidence: "medium",
 					errors: [],
 					fallbacks_used: [],
 				},
 			});
 
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test',
+				userId: "user_123",
+				query: "Test",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
-			expect(result.retrievalConfidence).toBe('medium');
+			expect(result.retrievalConfidence).toBe("medium");
 
 			recordResult(testName, true, `Confidence: ${result.retrievalConfidence}`);
 		} catch (error) {
@@ -752,28 +760,28 @@ describe('TestConfidenceCalculation', () => {
 	 *
 	 * Should return low confidence with no context.
 	 */
-	it('should return low confidence with no context', async () => {
-		const testName = 'test_low_confidence';
+	it("should return low confidence with no context", async () => {
+		const testName = "test_low_confidence";
 		try {
 			mockQdrantAdapter.scroll.mockResolvedValueOnce([]);
 			mockHybridSearch.search.mockResolvedValueOnce({
 				results: [],
 				debug: {
 					stage_timings_ms: {},
-					confidence: 'low',
+					confidence: "low",
 					errors: [],
-					fallbacks_used: ['noop'],
+					fallbacks_used: ["noop"],
 				},
 			});
 
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test',
+				userId: "user_123",
+				query: "Test",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
-			expect(result.retrievalConfidence).toBe('low');
+			expect(result.retrievalConfidence).toBe("low");
 
 			recordResult(testName, true, `Confidence: ${result.retrievalConfidence}`);
 		} catch (error) {
@@ -787,13 +795,13 @@ describe('TestConfidenceCalculation', () => {
 // TestDebugInformation: Test debug info in response
 // =============================================================================
 
-describe('TestDebugInformation', () => {
+describe("TestDebugInformation", () => {
 	let service: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { PrefetchServiceImpl } = await import('../../services/PrefetchServiceImpl');
+		const { PrefetchServiceImpl } = await import("../../services/PrefetchServiceImpl");
 		service = new PrefetchServiceImpl({
 			hybridSearch: mockHybridSearch as any,
 			qdrantAdapter: mockQdrantAdapter as any,
@@ -805,8 +813,8 @@ describe('TestDebugInformation', () => {
 	 *
 	 * Should include timing information in debug.
 	 */
-	it('should include timing information', async () => {
-		const testName = 'test_timing_info';
+	it("should include timing information", async () => {
+		const testName = "test_timing_info";
 		try {
 			mockHybridSearch.search.mockResolvedValueOnce({
 				results: [],
@@ -815,15 +823,15 @@ describe('TestDebugInformation', () => {
 						embedding_ms: 10,
 						search_ms: 20,
 					},
-					confidence: 'low',
+					confidence: "low",
 					errors: [],
 					fallbacks_used: [],
 				},
 			});
 
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test',
+				userId: "user_123",
+				query: "Test",
 				recentMessages: [],
 				hasDocuments: false,
 			});
@@ -832,7 +840,7 @@ describe('TestDebugInformation', () => {
 			expect(result.retrievalDebug.stage_timings_ms).toBeDefined();
 			expect(result.retrievalDebug.stage_timings_ms.total_ms).toBeDefined();
 
-			recordResult(testName, true, 'Timing info included');
+			recordResult(testName, true, "Timing info included");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -844,22 +852,22 @@ describe('TestDebugInformation', () => {
 	 *
 	 * Should include individual stage timings.
 	 */
-	it('should include individual stage timings', async () => {
-		const testName = 'test_stage_timings';
+	it("should include individual stage timings", async () => {
+		const testName = "test_stage_timings";
 		try {
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'Test',
+				userId: "user_123",
+				query: "Test",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
 			const timings = result.retrievalDebug.stage_timings_ms;
-			expect(timings).toHaveProperty('always_inject_ms');
-			expect(timings).toHaveProperty('search_ms');
-			expect(timings).toHaveProperty('format_ms');
+			expect(timings).toHaveProperty("always_inject_ms");
+			expect(timings).toHaveProperty("search_ms");
+			expect(timings).toHaveProperty("format_ms");
 
-			recordResult(testName, true, `Stages: ${Object.keys(timings).join(', ')}`);
+			recordResult(testName, true, `Stages: ${Object.keys(timings).join(", ")}`);
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -871,13 +879,13 @@ describe('TestDebugInformation', () => {
 // TestHebrewContent: Test Hebrew content handling
 // =============================================================================
 
-describe('TestHebrewContent', () => {
+describe("TestHebrewContent", () => {
 	let service: any;
 
 	beforeEach(async () => {
 		vi.clearAllMocks();
 
-		const { PrefetchServiceImpl } = await import('../../services/PrefetchServiceImpl');
+		const { PrefetchServiceImpl } = await import("../../services/PrefetchServiceImpl");
 		service = new PrefetchServiceImpl({
 			hybridSearch: mockHybridSearch as any,
 			qdrantAdapter: mockQdrantAdapter as any,
@@ -889,30 +897,30 @@ describe('TestHebrewContent', () => {
 	 *
 	 * Should handle Hebrew content in identity memories.
 	 */
-	it('should handle Hebrew identity content', async () => {
-		const testName = 'test_hebrew_identity';
+	it("should handle Hebrew identity content", async () => {
+		const testName = "test_hebrew_identity";
 		try {
 			mockQdrantAdapter.scroll.mockResolvedValueOnce([
 				{
-					id: 'mem_1',
+					id: "mem_1",
 					payload: {
-						content: 'המשתמש מדבר עברית',
-						tier: 'memory_bank',
-						tags: ['identity'],
+						content: "המשתמש מדבר עברית",
+						tier: "memory_bank",
+						tags: ["identity"],
 					},
 				},
 			]);
 
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'מה הפתרון?',
+				userId: "user_123",
+				query: "מה הפתרון?",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
-			expect(result.memoryContextInjection).toContain('המשתמש מדבר עברית');
+			expect(result.memoryContextInjection).toContain("המשתמש מדבר עברית");
 
-			recordResult(testName, true, 'Hebrew identity handled');
+			recordResult(testName, true, "Hebrew identity handled");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -924,36 +932,36 @@ describe('TestHebrewContent', () => {
 	 *
 	 * Should handle Hebrew content in search results.
 	 */
-	it('should handle Hebrew search results', async () => {
-		const testName = 'test_hebrew_search_results';
+	it("should handle Hebrew search results", async () => {
+		const testName = "test_hebrew_search_results";
 		try {
 			mockHybridSearch.search.mockResolvedValueOnce({
 				results: [
 					{
 						position: 1,
-						tier: 'working',
-						content: 'תוכן בעברית עם מידע חשוב',
-						memory_id: 'mem_1',
+						tier: "working",
+						content: "תוכן בעברית עם מידע חשוב",
+						memory_id: "mem_1",
 					},
 				],
 				debug: {
 					stage_timings_ms: {},
-					confidence: 'medium',
+					confidence: "medium",
 					errors: [],
 					fallbacks_used: [],
 				},
 			});
 
 			const result = await service.prefetchContext({
-				userId: 'user_123',
-				query: 'חפש מידע',
+				userId: "user_123",
+				query: "חפש מידע",
 				recentMessages: [],
 				hasDocuments: false,
 			});
 
-			expect(result.memoryContextInjection).toContain('תוכן בעברית');
+			expect(result.memoryContextInjection).toContain("תוכן בעברית");
 
-			recordResult(testName, true, 'Hebrew search results handled');
+			recordResult(testName, true, "Hebrew search results handled");
 		} catch (error) {
 			recordResult(testName, false, undefined, String(error));
 			throw error;
@@ -965,12 +973,12 @@ describe('TestHebrewContent', () => {
 // Summary Report
 // =============================================================================
 
-describe('TestSummary', () => {
-	it('should generate context service test summary', () => {
-		console.log('\n=== CONTEXT/PREFETCH SERVICE TEST SUMMARY ===\n');
+describe("TestSummary", () => {
+	it("should generate context service test summary", () => {
+		console.log("\n=== CONTEXT/PREFETCH SERVICE TEST SUMMARY ===\n");
 
-		const passed = testResults.filter(r => r.passed).length;
-		const failed = testResults.filter(r => !r.passed).length;
+		const passed = testResults.filter((r) => r.passed).length;
+		const failed = testResults.filter((r) => !r.passed).length;
 
 		console.log(`Total Tests: ${testResults.length}`);
 		console.log(`Passed: ${passed}`);
@@ -978,13 +986,15 @@ describe('TestSummary', () => {
 		console.log(`Pass Rate: ${((passed / testResults.length) * 100).toFixed(1)}%`);
 
 		if (failed > 0) {
-			console.log('\nFailed Tests:');
-			testResults.filter(r => !r.passed).forEach(r => {
-				console.log(`  - ${r.name}: ${r.error}`);
-			});
+			console.log("\nFailed Tests:");
+			testResults
+				.filter((r) => !r.passed)
+				.forEach((r) => {
+					console.log(`  - ${r.name}: ${r.error}`);
+				});
 		}
 
-		console.log('\n=============================================\n');
+		console.log("\n=============================================\n");
 
 		expect(true).toBe(true);
 	});

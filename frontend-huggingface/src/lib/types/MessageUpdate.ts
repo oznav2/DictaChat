@@ -1,5 +1,6 @@
 import type { InferenceProvider } from "@huggingface/inference";
 import type { ToolCall, ToolResult } from "$lib/types/Tool";
+import type { MemoryMetaV1 } from "$lib/types/MemoryMeta";
 
 export type MessageUpdate =
 	| MessageStatusUpdate
@@ -10,7 +11,8 @@ export type MessageUpdate =
 	| MessageFinalAnswerUpdate
 	| MessageReasoningUpdate
 	| MessageRouterMetadataUpdate
-	| MessageTraceUpdate;
+	| MessageTraceUpdate
+	| MessageMemoryUpdate;
 
 export enum MessageUpdateType {
 	Status = "status",
@@ -22,6 +24,7 @@ export enum MessageUpdateType {
 	Reasoning = "reasoning",
 	RouterMetadata = "routerMetadata",
 	Trace = "trace",
+	Memory = "memory",
 }
 
 // Status
@@ -115,6 +118,7 @@ export interface MessageFinalAnswerUpdate {
 	type: MessageUpdateType.FinalAnswer;
 	text: string;
 	interrupted: boolean;
+	memoryMeta?: MemoryMetaV1;
 }
 export interface MessageRouterMetadataUpdate {
 	type: MessageUpdateType.RouterMetadata;
@@ -188,3 +192,44 @@ export type MessageTraceUpdate =
 	| MessageTraceStepCreatedUpdate
 	| MessageTraceStepStatusUpdate
 	| MessageTraceStepDetailUpdate;
+
+// Memory updates (for memory system progress)
+export enum MessageMemoryUpdateType {
+	Searching = "searching",
+	Found = "found",
+	Storing = "storing",
+	Outcome = "outcome",
+}
+
+interface MessageMemoryUpdateBase<TSubtype extends MessageMemoryUpdateType> {
+	type: MessageUpdateType.Memory;
+	subtype: TSubtype;
+}
+
+export interface MessageMemorySearchingUpdate
+	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.Searching> {
+	query: string;
+}
+
+export interface MessageMemoryFoundUpdate
+	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.Found> {
+	count: number;
+	confidence?: number;
+}
+
+export interface MessageMemoryStoringUpdate
+	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.Storing> {
+	tier: string;
+}
+
+export interface MessageMemoryOutcomeUpdate
+	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.Outcome> {
+	outcome: "positive" | "negative" | "neutral";
+	memoryIds?: string[];
+}
+
+export type MessageMemoryUpdate =
+	| MessageMemorySearchingUpdate
+	| MessageMemoryFoundUpdate
+	| MessageMemoryStoringUpdate
+	| MessageMemoryOutcomeUpdate;

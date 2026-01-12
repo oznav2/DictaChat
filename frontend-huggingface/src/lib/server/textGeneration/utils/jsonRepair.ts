@@ -33,7 +33,7 @@ export function extractAndRepairJson(
 			};
 		}
 
-		let jsonStart = content.lastIndexOf("{", keyIndex);
+		const jsonStart = content.lastIndexOf("{", keyIndex);
 		if (jsonStart === -1) {
 			return {
 				success: false,

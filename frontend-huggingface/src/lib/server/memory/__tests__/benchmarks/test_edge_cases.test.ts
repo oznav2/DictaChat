@@ -16,7 +16,7 @@
  * Output: Generates benchmark results to benchmarks/results/edge_cases.txt
  */
 
-import { describe, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, afterAll } from "vitest";
 import {
 	MockEmbeddingService,
 	MockTimeManager,
@@ -27,26 +27,32 @@ import {
 	verifyEmbeddingDimension,
 	BenchmarkReporter,
 	EMBEDDING_DIM,
-} from '../mock-utilities';
+} from "../mock-utilities";
 
 // Global reporter for this test file
-const reporter = new BenchmarkReporter('test_edge_cases');
+const reporter = new BenchmarkReporter("test_edge_cases");
 
 // Helper to record test metrics
-function recordTest(name: string, passed: boolean, duration: number, metrics?: Record<string, number | string>, error?: string): void {
+function recordTest(
+	name: string,
+	passed: boolean,
+	duration: number,
+	metrics?: Record<string, number | string>,
+	error?: string
+): void {
 	reporter.recordTest({ name, passed, duration, metrics, error });
 }
 
-describe('Edge Cases', () => {
+describe("Edge Cases", () => {
 	let harness: TestHarness;
 	let embeddingService: MockEmbeddingService;
 	let timeManager: MockTimeManager;
 	let collection: MockCollection;
 
 	beforeEach(() => {
-		harness = new TestHarness('EdgeCases');
+		harness = new TestHarness("EdgeCases");
 		embeddingService = new MockEmbeddingService(42);
-		timeManager = new MockTimeManager(new Date('2026-01-01T00:00:00Z'));
+		timeManager = new MockTimeManager(new Date("2026-01-01T00:00:00Z"));
 		collection = new MockCollection(embeddingService);
 	});
 
@@ -55,11 +61,11 @@ describe('Edge Cases', () => {
 	});
 
 	afterAll(() => {
-		reporter.saveReport('edge_cases.txt');
+		reporter.saveReport("edge_cases.txt");
 	});
 
-	describe('Empty Input Handling', () => {
-		it('test_empty_string_content', async () => {
+	describe("Empty Input Handling", () => {
+		it("test_empty_string_content", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
@@ -67,17 +73,17 @@ describe('Edge Cases', () => {
 			try {
 				// Test with empty content
 				await collection.add({
-					id: 'empty_content',
-					content: '',
+					id: "empty_content",
+					content: "",
 					metadata: createTestMetadata(),
 				});
 
-				const doc = collection.get('empty_content');
+				const doc = collection.get("empty_content");
 				expect(doc).toBeDefined();
-				expect(doc?.content).toBe('');
+				expect(doc?.content).toBe("");
 
 				// Search with empty query
-				const results = await collection.search('', 5);
+				const results = await collection.search("", 5);
 
 				metrics = {
 					empty_content_stored: doc ? 1 : 0,
@@ -87,21 +93,21 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_empty_string_content', passed, Date.now() - start, metrics);
+				recordTest("test_empty_string_content", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_whitespace_only_content', async () => {
+		it("test_whitespace_only_content", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
 
 			try {
 				const whitespaceVariants = [
-					{ id: 'spaces', content: '     ' },
-					{ id: 'tabs', content: '\t\t\t' },
-					{ id: 'newlines', content: '\n\n\n' },
-					{ id: 'mixed', content: ' \t \n \t ' },
+					{ id: "spaces", content: "     " },
+					{ id: "tabs", content: "\t\t\t" },
+					{ id: "newlines", content: "\n\n\n" },
+					{ id: "mixed", content: " \t \n \t " },
 				];
 
 				for (const v of whitespaceVariants) {
@@ -127,33 +133,35 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_whitespace_only_content', passed, Date.now() - start, metrics);
+				recordTest("test_whitespace_only_content", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Long Content Handling', () => {
-		it('test_very_long_content', async () => {
+	describe("Long Content Handling", () => {
+		it("test_very_long_content", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
 
 			try {
 				// Generate very long content
-				const longContent = 'User fact: '.repeat(1000) + 'This is the important part about the user preference for dark mode.';
+				const longContent =
+					"User fact: ".repeat(1000) +
+					"This is the important part about the user preference for dark mode.";
 
 				await collection.add({
-					id: 'long_content',
+					id: "long_content",
 					content: longContent,
 					metadata: createTestMetadata(),
 				});
 
-				const doc = collection.get('long_content');
+				const doc = collection.get("long_content");
 				expect(doc).toBeDefined();
 				expect(doc?.content.length).toBe(longContent.length);
 
 				// Search should still work
-				const results = await collection.search('dark mode preference', 3);
+				const results = await collection.search("dark mode preference", 3);
 
 				metrics = {
 					content_length: longContent.length,
@@ -166,11 +174,11 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_very_long_content', passed, Date.now() - start, metrics);
+				recordTest("test_very_long_content", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_content_size_limits', async () => {
+		it("test_content_size_limits", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
@@ -181,7 +189,7 @@ describe('Edge Cases', () => {
 				const storedSizes: number[] = [];
 
 				for (const size of sizes) {
-					const content = 'x'.repeat(size);
+					const content = "x".repeat(size);
 					const id = `size_${size}`;
 
 					await collection.add({
@@ -205,25 +213,25 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_content_size_limits', passed, Date.now() - start, metrics);
+				recordTest("test_content_size_limits", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Special Characters', () => {
-		it('test_unicode_content', async () => {
+	describe("Special Characters", () => {
+		it("test_unicode_content", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
 
 			try {
 				const unicodeContent = [
-					{ id: 'emoji', content: 'User loves 🎉 parties and 🍕 pizza' },
-					{ id: 'chinese', content: 'User speaks 中文 Chinese' },
-					{ id: 'arabic', content: 'User knows العربية Arabic' },
-					{ id: 'russian', content: 'User understands Русский Russian' },
-					{ id: 'japanese', content: 'User studies 日本語 Japanese' },
-					{ id: 'korean', content: 'User learns 한국어 Korean' },
+					{ id: "emoji", content: "User loves 🎉 parties and 🍕 pizza" },
+					{ id: "chinese", content: "User speaks 中文 Chinese" },
+					{ id: "arabic", content: "User knows العربية Arabic" },
+					{ id: "russian", content: "User understands Русский Russian" },
+					{ id: "japanese", content: "User studies 日本語 Japanese" },
+					{ id: "korean", content: "User learns 한국어 Korean" },
 				];
 
 				for (const u of unicodeContent) {
@@ -255,23 +263,23 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_unicode_content', passed, Date.now() - start, metrics);
+				recordTest("test_unicode_content", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_special_characters', async () => {
+		it("test_special_characters", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
 
 			try {
 				const specialChars = [
-					{ id: 'quotes', content: "User's favorite quote is \"Hello, World!\"" },
-					{ id: 'backslash', content: 'Path is C:\\Users\\name\\file.txt' },
-					{ id: 'html', content: 'User likes <strong>bold</strong> text' },
-					{ id: 'sql', content: "User query: SELECT * FROM users WHERE name='test'" },
-					{ id: 'json', content: 'User data: {"name": "test", "age": 30}' },
-					{ id: 'null_bytes', content: 'Content with \u0000 null byte' },
+					{ id: "quotes", content: 'User\'s favorite quote is "Hello, World!"' },
+					{ id: "backslash", content: "Path is C:\\Users\\name\\file.txt" },
+					{ id: "html", content: "User likes <strong>bold</strong> text" },
+					{ id: "sql", content: "User query: SELECT * FROM users WHERE name='test'" },
+					{ id: "json", content: 'User data: {"name": "test", "age": 30}' },
+					{ id: "null_bytes", content: "Content with \u0000 null byte" },
 				];
 
 				for (const s of specialChars) {
@@ -297,13 +305,13 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_special_characters', passed, Date.now() - start, metrics);
+				recordTest("test_special_characters", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Hebrew Edge Cases', () => {
-		it('test_hebrew_rtl_markers', async () => {
+	describe("Hebrew Edge Cases", () => {
+		it("test_hebrew_rtl_markers", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
@@ -311,10 +319,10 @@ describe('Edge Cases', () => {
 			try {
 				// RTL markers and bidirectional text
 				const rtlContent = [
-					{ id: 'rtl_1', content: '\u200Fשלום עולם\u200F' }, // RLM markers
-					{ id: 'rtl_2', content: '\u202Bעברית\u202C' }, // RLE/PDF
-					{ id: 'bidi', content: 'Hello שלום World עולם' }, // Mixed
-					{ id: 'pure_hebrew', content: 'המשתמש גר בתל אביב ועובד בגוגל' },
+					{ id: "rtl_1", content: "\u200Fשלום עולם\u200F" }, // RLM markers
+					{ id: "rtl_2", content: "\u202Bעברית\u202C" }, // RLE/PDF
+					{ id: "bidi", content: "Hello שלום World עולם" }, // Mixed
+					{ id: "pure_hebrew", content: "המשתמש גר בתל אביב ועובד בגוגל" },
 				];
 
 				for (const r of rtlContent) {
@@ -326,7 +334,7 @@ describe('Edge Cases', () => {
 				}
 
 				// Search in Hebrew
-				const results = await collection.search('שלום', 3);
+				const results = await collection.search("שלום", 3);
 
 				let storedCount = 0;
 				for (const r of rtlContent) {
@@ -344,11 +352,11 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_hebrew_rtl_markers', passed, Date.now() - start, metrics);
+				recordTest("test_hebrew_rtl_markers", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_hebrew_numbers_mixed', async () => {
+		it("test_hebrew_numbers_mixed", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
@@ -356,11 +364,11 @@ describe('Edge Cases', () => {
 			try {
 				// Hebrew with numbers and mixed content
 				const mixedContent = [
-					{ id: 'phone', content: 'מספר טלפון: 054-1234567' },
-					{ id: 'date', content: 'תאריך לידה: 15/03/1990' },
-					{ id: 'address', content: 'כתובת: רחוב הרצל 123, תל אביב' },
-					{ id: 'price', content: 'מחיר: ₪150.00' },
-					{ id: 'percent', content: 'הנחה של 25% על כל המוצרים' },
+					{ id: "phone", content: "מספר טלפון: 054-1234567" },
+					{ id: "date", content: "תאריך לידה: 15/03/1990" },
+					{ id: "address", content: "כתובת: רחוב הרצל 123, תל אביב" },
+					{ id: "price", content: "מחיר: ₪150.00" },
+					{ id: "percent", content: "הנחה של 25% על כל המוצרים" },
 				];
 
 				for (const m of mixedContent) {
@@ -387,27 +395,27 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_hebrew_numbers_mixed', passed, Date.now() - start, metrics);
+				recordTest("test_hebrew_numbers_mixed", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Numeric Content', () => {
-		it('test_numeric_content', async () => {
+	describe("Numeric Content", () => {
+		it("test_numeric_content", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
 
 			try {
 				const numericContent = [
-					{ id: 'int', content: '12345' },
-					{ id: 'float', content: '123.456789' },
-					{ id: 'negative', content: '-999' },
-					{ id: 'scientific', content: '1.23e10' },
-					{ id: 'phone', content: '+1-555-123-4567' },
-					{ id: 'date', content: '2026-01-07' },
-					{ id: 'time', content: '14:30:00' },
-					{ id: 'ip', content: '192.168.1.1' },
+					{ id: "int", content: "12345" },
+					{ id: "float", content: "123.456789" },
+					{ id: "negative", content: "-999" },
+					{ id: "scientific", content: "1.23e10" },
+					{ id: "phone", content: "+1-555-123-4567" },
+					{ id: "date", content: "2026-01-07" },
+					{ id: "time", content: "14:30:00" },
+					{ id: "ip", content: "192.168.1.1" },
 				];
 
 				for (const n of numericContent) {
@@ -434,29 +442,29 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_numeric_content', passed, Date.now() - start, metrics);
+				recordTest("test_numeric_content", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('ID Format Validation', () => {
-		it('test_id_format_validation', async () => {
+	describe("ID Format Validation", () => {
+		it("test_id_format_validation", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
 
 			try {
 				const testIds = [
-					'simple_id',
-					'id-with-dashes',
-					'id_with_underscores',
-					'CamelCaseId',
-					'123numeric',
-					'a'.repeat(100), // Long ID
-					'507f1f77bcf86cd799439011', // MongoDB ObjectId format
-					'550e8400-e29b-41d4-a716-446655440000', // UUID format
-					'mem_abc123', // Memory ID format
-					'frag_xyz789', // Fragment ID format
+					"simple_id",
+					"id-with-dashes",
+					"id_with_underscores",
+					"CamelCaseId",
+					"123numeric",
+					"a".repeat(100), // Long ID
+					"507f1f77bcf86cd799439011", // MongoDB ObjectId format
+					"550e8400-e29b-41d4-a716-446655440000", // UUID format
+					"mem_abc123", // Memory ID format
+					"frag_xyz789", // Fragment ID format
 				];
 
 				let validCount = 0;
@@ -479,29 +487,29 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_id_format_validation', passed, Date.now() - start, metrics);
+				recordTest("test_id_format_validation", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_duplicate_id_handling', async () => {
+		it("test_duplicate_id_handling", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
 
 			try {
-				const duplicateId = 'duplicate_test_id';
+				const duplicateId = "duplicate_test_id";
 
 				// Store first version
 				await collection.add({
 					id: duplicateId,
-					content: 'First version of content',
+					content: "First version of content",
 					metadata: createTestMetadata(),
 				});
 
 				// Store second version with same ID (should overwrite or handle)
 				await collection.add({
 					id: duplicateId,
-					content: 'Second version of content',
+					content: "Second version of content",
 					metadata: createTestMetadata(),
 				});
 
@@ -510,7 +518,7 @@ describe('Edge Cases', () => {
 				const count = collection.count();
 
 				metrics = {
-					final_content: doc?.content === 'Second version of content' ? 'second' : 'first',
+					final_content: doc?.content === "Second version of content" ? "second" : "first",
 					collection_count: count,
 				};
 
@@ -520,20 +528,20 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_duplicate_id_handling', passed, Date.now() - start, metrics);
+				recordTest("test_duplicate_id_handling", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Embedding Validation', () => {
-		it('test_embedding_dimension_validation', async () => {
+	describe("Embedding Validation", () => {
+		it("test_embedding_dimension_validation", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
 
 			try {
 				// Generate embedding
-				const embedding = await embeddingService.embed('Test content for embedding');
+				const embedding = await embeddingService.embed("Test content for embedding");
 
 				const validation = verifyEmbeddingDimension(embedding, EMBEDDING_DIM);
 
@@ -550,13 +558,13 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_embedding_dimension_validation', passed, Date.now() - start, metrics);
+				recordTest("test_embedding_dimension_validation", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Rapid Operations', () => {
-		it('test_rapid_concurrent_adds', async () => {
+	describe("Rapid Operations", () => {
+		it("test_rapid_concurrent_adds", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
@@ -593,11 +601,11 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_rapid_concurrent_adds', passed, Date.now() - start, metrics);
+				recordTest("test_rapid_concurrent_adds", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_rapid_search_operations', async () => {
+		it("test_rapid_search_operations", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
@@ -636,13 +644,13 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_rapid_search_operations', passed, Date.now() - start, metrics);
+				recordTest("test_rapid_search_operations", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Summary Test', () => {
-		it('test_edge_cases', async () => {
+	describe("Summary Test", () => {
+		it("test_edge_cases", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number | string> = {};
@@ -650,12 +658,12 @@ describe('Edge Cases', () => {
 			try {
 				// Comprehensive edge case test
 				const edgeCases = [
-					{ id: 'empty', content: '' },
-					{ id: 'long', content: 'x'.repeat(10000) },
-					{ id: 'unicode', content: '🎉 שלום 中文 العربية' },
-					{ id: 'special', content: '<script>alert("test")</script>' },
-					{ id: 'numeric', content: '12345.67890' },
-					{ id: 'mixed', content: 'Hello שלום 123 🎉' },
+					{ id: "empty", content: "" },
+					{ id: "long", content: "x".repeat(10000) },
+					{ id: "unicode", content: "🎉 שלום 中文 العربية" },
+					{ id: "special", content: '<script>alert("test")</script>' },
+					{ id: "numeric", content: "12345.67890" },
+					{ id: "mixed", content: "Hello שלום 123 🎉" },
 				];
 
 				let storedCount = 0;
@@ -669,7 +677,7 @@ describe('Edge Cases', () => {
 				}
 
 				// Search edge cases
-				const searchQueries = ['', 'שלום', '🎉', 'script', '12345'];
+				const searchQueries = ["", "שלום", "🎉", "script", "12345"];
 				let searchSuccessCount = 0;
 				for (const q of searchQueries) {
 					try {
@@ -685,7 +693,8 @@ describe('Edge Cases', () => {
 					stored_successfully: storedCount,
 					search_queries_tested: searchQueries.length,
 					search_queries_handled: searchSuccessCount,
-					robustness_score: (storedCount + searchSuccessCount) / (edgeCases.length + searchQueries.length),
+					robustness_score:
+						(storedCount + searchSuccessCount) / (edgeCases.length + searchQueries.length),
 				};
 
 				expect(storedCount).toBe(edgeCases.length);
@@ -693,7 +702,7 @@ describe('Edge Cases', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_edge_cases', passed, Date.now() - start, metrics);
+				recordTest("test_edge_cases", passed, Date.now() - start, metrics);
 			}
 		});
 	});

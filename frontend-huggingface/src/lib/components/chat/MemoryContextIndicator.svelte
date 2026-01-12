@@ -2,14 +2,18 @@
 	import { slide, fade } from "svelte/transition";
 	import { cubicOut } from "svelte/easing";
 	import { memoryUi } from "$lib/stores/memoryUi";
-	import type { MemoryMetaV1, KnownContextItemV1, MemoryCitationV1 } from "$lib/types/MemoryMeta";
+	import {
+		getTierIcon,
+		getConfidenceColor,
+		getConfidenceBgColor,
+		formatConfidence,
+	} from "$lib/utils/citationParser";
 	import CarbonChevronDown from "~icons/carbon/chevron-down";
 	import CarbonChevronUp from "~icons/carbon/chevron-up";
 	import CarbonBook from "~icons/carbon/book";
 	import CarbonDocument from "~icons/carbon/document";
 	import CarbonThumbsUp from "~icons/carbon/thumbs-up";
 	import CarbonThumbsDown from "~icons/carbon/thumbs-down";
-	import CarbonWarning from "~icons/carbon/warning";
 	import CarbonCheckmarkOutline from "~icons/carbon/checkmark-outline";
 
 	interface Props {
@@ -24,7 +28,9 @@
 	let memoryMeta = $derived($memoryUi.data.lastMemoryMetaByMessageId[messageId]);
 	let knownContextText = $derived($memoryUi.data.lastKnownContextTextByMessageId[messageId] ?? "");
 	let citations = $derived($memoryUi.data.lastCitationsByMessageId[messageId] ?? []);
-	let isKnownContextExpanded = $derived($memoryUi.ui.expandedKnownContextByMessageId[messageId] ?? false);
+	let isKnownContextExpanded = $derived(
+		$memoryUi.ui.expandedKnownContextByMessageId[messageId] ?? false
+	);
 	let isCitationsExpanded = $derived($memoryUi.ui.expandedCitationsByMessageId[messageId] ?? false);
 	let isFeedbackEligible = $derived($memoryUi.ui.feedbackEligibleByMessageId[messageId] ?? false);
 
@@ -133,7 +139,8 @@
 						<span
 							class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400"
 						>
-							{tiersUsed.length} {isRTL ? "שכבות" : "tiers"}
+							{tiersUsed.length}
+							{isRTL ? "שכבות" : "tiers"}
 						</span>
 					{/if}
 					{#if isKnownContextExpanded}
@@ -149,9 +156,11 @@
 						transition:slide={{ duration: 200, easing: cubicOut }}
 					>
 						{#if knownContextItems.length > 0}
-							{#each knownContextItems as item, index (item.memory_id)}
+							{#each knownContextItems as item (item.memory_id)}
+								{@const itemConfidence = item.wilson_score ?? item.confidence ?? 0.5}
 								<div
-									class="flex items-start gap-2 rounded border-l-2 bg-white/60 p-2 dark:bg-gray-900/40 {item.tier === 'books'
+									class="flex items-start gap-2 rounded border-l-2 bg-white/60 p-2 dark:bg-gray-900/40 {item.tier ===
+									'books'
 										? 'border-purple-400'
 										: item.tier === 'patterns'
 											? 'border-green-400'
@@ -159,12 +168,20 @@
 												? 'border-orange-400'
 												: 'border-blue-400'}"
 								>
+									<!-- Tier icon -->
+									<span class="mt-0.5 flex-shrink-0 text-lg" title={getTierLabel(item.tier)}>
+										{getTierIcon(item.tier)}
+									</span>
 									<div class="flex-grow">
 										<div class="mb-1 flex items-center gap-2">
 											<span
 												class="rounded-full bg-gray-200 px-1.5 py-0.5 text-[10px] font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300"
 											>
 												{getTierLabel(item.tier)}
+											</span>
+											<!-- Confidence indicator -->
+											<span class="{getConfidenceColor(itemConfidence)} text-[10px] font-medium">
+												{formatConfidence(itemConfidence)}
 											</span>
 											{#if item.doc_id}
 												<span class="text-[10px] text-gray-400">
@@ -198,7 +215,8 @@
 				>
 					<CarbonDocument class="h-4 w-4 flex-shrink-0 text-gray-600 dark:text-gray-400" />
 					<span class="flex-grow text-start font-medium text-gray-700 dark:text-gray-300">
-						{citations.length} {isRTL
+						{citations.length}
+						{isRTL
 							? citations.length === 1
 								? "ציטוט"
 								: "ציטוטים"
@@ -219,21 +237,35 @@
 						transition:slide={{ duration: 200, easing: cubicOut }}
 					>
 						{#each citations as citation, index (citation.memory_id)}
+							{@const confidence = citation.wilson_score ?? citation.confidence ?? 0.5}
 							<div
 								class="flex items-center gap-2 rounded bg-white/60 px-2 py-1.5 text-xs dark:bg-gray-900/40"
 							>
+								<!-- Citation index with confidence color -->
 								<span
-									class="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-gray-200 text-[10px] font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+									class="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-medium {getConfidenceBgColor(
+										confidence
+									)} {getConfidenceColor(confidence)}"
 								>
 									{index + 1}
 								</span>
+								<!-- Tier icon -->
+								<span class="text-base" title={getTierLabel(citation.tier)}>
+									{getTierIcon(citation.tier)}
+								</span>
+								<!-- Tier label -->
 								<span
 									class="rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] text-gray-500 dark:bg-gray-800 dark:text-gray-400"
 								>
 									{getTierLabel(citation.tier)}
 								</span>
+								<!-- Content excerpt -->
 								<span class="flex-grow truncate text-gray-600 dark:text-gray-400">
-									{truncateText(citation.memory_id, 24)}
+									{truncateText(citation.content ?? citation.memory_id, 40)}
+								</span>
+								<!-- Confidence percentage -->
+								<span class="{getConfidenceColor(confidence)} text-[10px] font-medium">
+									{formatConfidence(confidence)}
 								</span>
 								{#if citation.doc_id}
 									<span class="text-[10px] text-gray-400">

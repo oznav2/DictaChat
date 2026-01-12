@@ -2,6 +2,7 @@ import { error } from "@sveltejs/kit";
 import { logger } from "$lib/server/logger.js";
 import { robustFetch } from "$lib/server/robustFetch";
 import { isValidUrl } from "$lib/server/urlSafetyEnhanced";
+import type { RequestHandler } from "./$types";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const SECURITY_HEADERS: HeadersInit = {
@@ -13,7 +14,7 @@ const SECURITY_HEADERS: HeadersInit = {
 	"Referrer-Policy": "no-referrer",
 };
 
-export async function GET({ url }) {
+export const GET: RequestHandler = async ({ url }) => {
 	const targetUrl = url.searchParams.get("url");
 
 	if (!targetUrl) {
@@ -60,4 +61,4 @@ export async function GET({ url }) {
 		logger.error({ targetUrl, error: e.message }, `Error fetching URL`);
 		throw error(500, `Failed to fetch: ${e.message}`);
 	}
-}
+};

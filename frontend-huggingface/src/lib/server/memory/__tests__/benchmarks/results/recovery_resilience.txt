@@ -1,39 +1,39 @@
 ============================= test session starts =============================
 platform: node v20.18.1
 test framework: vitest
-timestamp: 2026-01-08T00:59:07.287Z
-rootdir: /home/ilan/BricksLLM/frontend-huggingface/src/lib/server/memory/__tests__
+timestamp: 2026-01-11T16:08:10.638Z
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
 
 collecting ... collected 11 items
 
-test_recovery_resilience::test_write_retry_success PASSED (3ms) [total_items=5.000, successful_writes=5.000, recovered_writes=0.000, total_attempts=5.000, success_rate=100.000, avg_attempts=1.000] [  9%]
-test_recovery_resilience::test_hebrew_write_recovery PASSED (1ms) [hebrew_items=3.000, hebrew_successes=3.000, hebrew_success_rate=100.000] [ 18%]
-test_recovery_resilience::test_read_graceful_degradation PASSED (3ms) [total_searches=10.000, successful_searches=4.000, degraded_searches=6.000, graceful_degradation_rate=60.000] [ 27%]
-test_recovery_resilience::test_corruption_detection PASSED (1ms) [total_entries=3.000, valid_entries=2.000, corrupted_entries=1.000, corruption_filtered=1.000] [ 36%]
+test_recovery_resilience::test_write_retry_success PASSED (5ms) [total_items=5.000, successful_writes=5.000, recovered_writes=2.000, total_attempts=8.000, success_rate=100.000, avg_attempts=1.600] [  9%]
+test_recovery_resilience::test_hebrew_write_recovery PASSED (4ms) [hebrew_items=3.000, hebrew_successes=3.000, hebrew_success_rate=100.000] [ 18%]
+test_recovery_resilience::test_read_graceful_degradation PASSED (8ms) [total_searches=10.000, successful_searches=5.000, degraded_searches=5.000, graceful_degradation_rate=50.000] [ 27%]
+test_recovery_resilience::test_corruption_detection PASSED (2ms) [total_entries=3.000, valid_entries=2.000, corrupted_entries=1.000, corruption_filtered=1.000] [ 36%]
 test_recovery_resilience::test_hebrew_corruption_handling PASSED (1ms) [hebrew_total=2.000, hebrew_valid=1.000, hebrew_corruption_detected=1.000] [ 45%]
 test_recovery_resilience::test_metadata_persistence PASSED (1ms) [fields_checked=15.000, fields_persisted=15.000, integrity_valid=1.000, missing_fields=0.000] [ 55%]
 test_recovery_resilience::test_id_format_validation PASSED (1ms) [total_ids_tested=6.000, valid_ids=3.000, invalid_ids=3.000, validation_working=1.000] [ 64%]
-test_recovery_resilience::test_timeout_partial_results PASSED (2ms) [total_searches=10.000, full_results=6.000, partial_results=4.000, partial_rate=40.000, system_resilient=1.000] [ 73%]
-test_recovery_resilience::test_recovery_rate_tracking PASSED (4ms) [recovery_attempts=32.000, successful_recoveries=7.000, recovery_rate=22.000, system_self_healing=1.000] [ 82%]
+test_recovery_resilience::test_timeout_partial_results PASSED (2ms) [total_searches=10.000, full_results=7.000, partial_results=3.000, partial_rate=30.000, system_resilient=1.000] [ 73%]
+test_recovery_resilience::test_recovery_rate_tracking PASSED (5ms) [recovery_attempts=32.000, successful_recoveries=6.000, recovery_rate=19.000, system_self_healing=1.000] [ 82%]
 test_recovery_resilience::test_bilingual_data_recovery PASSED (1ms) [english_items=2.000, hebrew_items=2.000, mixed_items=1.000, english_recovered=2.000, hebrew_recovered=2.000, mixed_recovered=1.000, total_recovery_rate=100.000] [ 91%]
-test_recovery_resilience::test_recovery_resilience PASSED (2ms) [scenarios_tested=3.000, total_write_attempts=15.000, total_write_successes=15.000, write_success_rate=100.000, total_read_attempts=9.000, total_read_successes=8.000, degraded_responses=2.000, system_resilience_score=94.000] [100%]
+test_recovery_resilience::test_recovery_resilience PASSED (0ms) [scenarios_tested=3.000, total_write_attempts=15.000, total_write_successes=15.000, write_success_rate=100.000, total_read_attempts=9.000, total_read_successes=9.000, degraded_responses=0.000, system_resilience_score=100.000] [100%]
 
 ============================== benchmark summary ==============================
 
 Metrics Summary:
   total_items: avg=5.000, min=5.000, max=5.000
   successful_writes: avg=5.000, min=5.000, max=5.000
-  recovered_writes: avg=0.000, min=0.000, max=0.000
-  total_attempts: avg=5.000, min=5.000, max=5.000
+  recovered_writes: avg=2.000, min=2.000, max=2.000
+  total_attempts: avg=8.000, min=8.000, max=8.000
   success_rate: avg=100.000, min=100.000, max=100.000
-  avg_attempts: avg=1.000, min=1.000, max=1.000
+  avg_attempts: avg=1.600, min=1.600, max=1.600
   hebrew_items: avg=2.500, min=2.000, max=3.000
   hebrew_successes: avg=3.000, min=3.000, max=3.000
   hebrew_success_rate: avg=100.000, min=100.000, max=100.000
   total_searches: avg=10.000, min=10.000, max=10.000
-  successful_searches: avg=4.000, min=4.000, max=4.000
-  degraded_searches: avg=6.000, min=6.000, max=6.000
-  graceful_degradation_rate: avg=60.000, min=60.000, max=60.000
+  successful_searches: avg=5.000, min=5.000, max=5.000
+  degraded_searches: avg=5.000, min=5.000, max=5.000
+  graceful_degradation_rate: avg=50.000, min=50.000, max=50.000
   total_entries: avg=3.000, min=3.000, max=3.000
   valid_entries: avg=2.000, min=2.000, max=2.000
   corrupted_entries: avg=1.000, min=1.000, max=1.000
@@ -49,13 +49,13 @@ Metrics Summary:
   valid_ids: avg=3.000, min=3.000, max=3.000
   invalid_ids: avg=3.000, min=3.000, max=3.000
   validation_working: avg=1.000, min=1.000, max=1.000
-  full_results: avg=6.000, min=6.000, max=6.000
-  partial_results: avg=4.000, min=4.000, max=4.000
-  partial_rate: avg=40.000, min=40.000, max=40.000
+  full_results: avg=7.000, min=7.000, max=7.000
+  partial_results: avg=3.000, min=3.000, max=3.000
+  partial_rate: avg=30.000, min=30.000, max=30.000
   system_resilient: avg=1.000, min=1.000, max=1.000
   recovery_attempts: avg=32.000, min=32.000, max=32.000
-  successful_recoveries: avg=7.000, min=7.000, max=7.000
-  recovery_rate: avg=22.000, min=22.000, max=22.000
+  successful_recoveries: avg=6.000, min=6.000, max=6.000
+  recovery_rate: avg=19.000, min=19.000, max=19.000
   system_self_healing: avg=1.000, min=1.000, max=1.000
   english_items: avg=2.000, min=2.000, max=2.000
   mixed_items: avg=1.000, min=1.000, max=1.000
@@ -68,10 +68,10 @@ Metrics Summary:
   total_write_successes: avg=15.000, min=15.000, max=15.000
   write_success_rate: avg=100.000, min=100.000, max=100.000
   total_read_attempts: avg=9.000, min=9.000, max=9.000
-  total_read_successes: avg=8.000, min=8.000, max=8.000
-  degraded_responses: avg=2.000, min=2.000, max=2.000
-  system_resilience_score: avg=94.000, min=94.000, max=94.000
+  total_read_successes: avg=9.000, min=9.000, max=9.000
+  degraded_responses: avg=0.000, min=0.000, max=0.000
+  system_resilience_score: avg=100.000, min=100.000, max=100.000
 
 ============================== test results ===================================
-11 passed, 0 failed in 0.04s
+11 passed, 0 failed in 0.06s
 ===============================================================================

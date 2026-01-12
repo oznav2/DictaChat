@@ -212,4 +212,50 @@ export async function updateUser(params: {
 			$unset: { sessionId: "" },
 		}
 	);
+
+	// migrate memory system data from session to user account
+	// This ensures anonymous users don't lose their data when they login
+	const userIdStr = userId?.toString();
+	if (userIdStr && previousSessionId) {
+		// Migrate memory bank items
+		await collections.memoryBank.updateMany(
+			{ userId: previousSessionId },
+			{ $set: { userId: userIdStr } }
+		);
+
+		// Migrate uploaded books
+		await collections.books.updateMany(
+			{ userId: previousSessionId },
+			{ $set: { userId: userIdStr } }
+		);
+
+		// Migrate memory outcomes (learning data)
+		await collections.memoryOutcomes.updateMany(
+			{ userId: previousSessionId },
+			{ $set: { userId: userIdStr } }
+		);
+
+		// Migrate memory stats
+		await collections.memoryStats.updateMany(
+			{ userId: previousSessionId },
+			{ $set: { userId: userIdStr } }
+		);
+
+		// Migrate memory ghosts (soft-deleted items)
+		await collections.memoryGhosts.updateMany(
+			{ userId: previousSessionId },
+			{ $set: { userId: userIdStr } }
+		);
+
+		// Migrate user personality settings
+		await collections.userPersonality.updateOne(
+			{ userId: previousSessionId },
+			{ $set: { userId: userIdStr } }
+		);
+
+		logger.info(
+			{ previousSessionId, userId: userIdStr },
+			"Migrated session memory data to user account"
+		);
+	}
 }

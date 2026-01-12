@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Message, MessageFile } from "$lib/types/Message";
 	import { onDestroy } from "svelte";
+	import { derived as deriveStore } from "svelte/store";
 
 	import IconOmni from "$lib/components/icons/IconOmni.svelte";
 	import CarbonCaretDown from "~icons/carbon/caret-down";
@@ -85,6 +86,15 @@
 	}: Props = $props();
 
 	let isReadOnly = $derived(!models.some((model) => model.id === currentModel.id));
+	let alternativesByMessageId = $derived.by(() => {
+		const map = new Map<Message["id"], Message["id"][]>();
+		for (const group of messagesAlternatives) {
+			for (const id of group) {
+				map.set(id, group);
+			}
+		}
+		return map;
+	});
 
 	let shareModalOpen = $state(false);
 	let editMsdgId: Message["id"] | null = $state(null);
@@ -287,15 +297,19 @@
 	let scrollDependency = $derived({ signal: scrollSignal, forceReattach });
 
 	const settings = useSettingsStore();
-	let hideRouterExamples = $derived($settings.hidePromptExamples?.[currentModel.id] ?? false);
+	const hidePromptExamples = deriveStore(settings, (s) => s.hidePromptExamples);
+	const multimodalOverrides = deriveStore(settings, (s) => s.multimodalOverrides);
+	const toolsOverrides = deriveStore(settings, (s) => s.toolsOverrides);
+
+	let hideRouterExamples = $derived($hidePromptExamples?.[currentModel.id] ?? false);
 
 	// Respect per‑model multimodal toggle from settings (force enable)
-	let modelIsMultimodalOverride = $derived($settings.multimodalOverrides?.[currentModel.id]);
+	let modelIsMultimodalOverride = $derived($multimodalOverrides?.[currentModel.id]);
 	let modelIsMultimodal = $derived((modelIsMultimodalOverride ?? currentModel.multimodal) === true);
 
 	// Determine tool support for the current model (server-provided capability with user override)
 	let modelSupportsTools = $derived(
-		($settings.toolsOverrides?.[currentModel.id] ??
+		($toolsOverrides?.[currentModel.id] ??
 			(currentModel as unknown as { supportsTools?: boolean }).supportsTools) === true
 	);
 
@@ -486,10 +500,30 @@
 			{#if messages.length > 0}
 				<div class="flex h-max flex-col gap-8 pb-52">
 					{#each messages as message, idx (message.id)}
+						{@const prev = idx > 0 ? messages[idx - 1] : null}
+						{@const prevTime =
+							prev?.createdAt instanceof Date
+								? prev.createdAt.getTime()
+								: prev?.createdAt
+									? new Date(prev.createdAt as unknown as string).getTime()
+									: null}
+						{@const currTime =
+							message.createdAt instanceof Date
+								? message.createdAt.getTime()
+								: message.createdAt
+									? new Date(message.createdAt as unknown as string).getTime()
+									: null}
+						{@const groupedWithPrevious =
+							!!prev &&
+							prev.from === message.from &&
+							prevTime !== null &&
+							currTime !== null &&
+							currTime - prevTime < 2 * 60 * 1000}
 						<ChatMessage
-							{loading}
+							loading={idx === messages.length - 1 ? loading : false}
 							{message}
-							alternatives={messagesAlternatives.find((a) => a.includes(message.id)) ?? []}
+							{groupedWithPrevious}
+							alternatives={alternativesByMessageId.get(message.id) ?? []}
 							isAuthor={!shared}
 							readOnly={isReadOnly}
 							isLast={idx === messages.length - 1}

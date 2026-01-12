@@ -8,136 +8,129 @@
 import { env } from "$env/dynamic/private";
 
 export interface EmbeddingClientOptions {
-  endpoint?: string;
-  timeout?: number;
+	endpoint?: string;
+	timeout?: number;
 }
 
 interface EmbeddingItem {
-  text: string;
-  dense: number[];
-  sparse?: unknown;
-  colbert?: unknown;
+	text: string;
+	dense: number[];
+	sparse?: unknown;
+	colbert?: unknown;
 }
 
 interface EmbeddingsResponse {
-  embeddings: EmbeddingItem[];
+	embeddings: EmbeddingItem[];
 }
 
 /**
  * Client for the embedding service
  */
 export class EmbeddingClient {
-  private readonly endpoint: string;
-  private readonly timeout: number;
+	private readonly endpoint: string;
+	private readonly timeout: number;
 
-  constructor(options: EmbeddingClientOptions = {}) {
-    this.endpoint =
-      options.endpoint ||
-      env.EMBEDDING_SERVICE_URL ||
-      "http://localhost:5005";
-    this.timeout = options.timeout ?? 30000;
-  }
+	constructor(options: EmbeddingClientOptions = {}) {
+		this.endpoint = options.endpoint || env.EMBEDDING_SERVICE_URL || "http://localhost:5005";
+		this.timeout = options.timeout ?? 30000;
+	}
 
-  /**
-   * Generate embedding for a single text
-   */
-  async embed(text: string): Promise<number[]> {
-    const results = await this.embedBatch([text]);
-    return results[0] || [];
-  }
+	/**
+	 * Generate embedding for a single text
+	 */
+	async embed(text: string): Promise<number[]> {
+		const results = await this.embedBatch([text]);
+		return results[0] || [];
+	}
 
-  /**
-   * Generate embeddings for multiple texts in batch
-   */
-  async embedBatch(texts: string[]): Promise<number[][]> {
-    if (texts.length === 0) {
-      return [];
-    }
+	/**
+	 * Generate embeddings for multiple texts in batch
+	 */
+	async embedBatch(texts: string[]): Promise<number[][]> {
+		if (texts.length === 0) {
+			return [];
+		}
 
-    // For large batches, split into smaller chunks to avoid timeouts
-    const BATCH_SIZE = 50;
-    const results: number[][] = [];
+		// For large batches, split into smaller chunks to avoid timeouts
+		const BATCH_SIZE = 50;
+		const results: number[][] = [];
 
-    for (let i = 0; i < texts.length; i += BATCH_SIZE) {
-      const batch = texts.slice(i, i + BATCH_SIZE);
-      const batchResults = await this.embedBatchInternal(batch);
-      results.push(...batchResults);
-    }
+		for (let i = 0; i < texts.length; i += BATCH_SIZE) {
+			const batch = texts.slice(i, i + BATCH_SIZE);
+			const batchResults = await this.embedBatchInternal(batch);
+			results.push(...batchResults);
+		}
 
-    return results;
-  }
+		return results;
+	}
 
-  /**
-   * Internal batch embedding call
-   * Uses /embeddings endpoint with {texts: string[]} body
-   * Response format: {embeddings: [{text, dense, sparse?, colbert?}]}
-   */
-  private async embedBatchInternal(texts: string[]): Promise<number[][]> {
-    const controller = new AbortController();
-    // Longer timeout for batch operations
-    const batchTimeout = this.timeout * 2;
-    const timeoutId = setTimeout(() => controller.abort(), batchTimeout);
+	/**
+	 * Internal batch embedding call
+	 * Uses /embeddings endpoint with {texts: string[]} body
+	 * Response format: {embeddings: [{text, dense, sparse?, colbert?}]}
+	 */
+	private async embedBatchInternal(texts: string[]): Promise<number[][]> {
+		const controller = new AbortController();
+		// Longer timeout for batch operations
+		const batchTimeout = this.timeout * 2;
+		const timeoutId = setTimeout(() => controller.abort(), batchTimeout);
 
-    try {
-      const response = await fetch(`${this.endpoint}/embeddings`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ texts }),
-        signal: controller.signal
-      });
+		try {
+			const response = await fetch(`${this.endpoint}/embeddings`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ texts }),
+				signal: controller.signal,
+			});
 
-      if (!response.ok) {
-        const errorText = await response.text().catch(() => "Unknown error");
-        throw new Error(
-          `Batch embedding failed: ${response.status} ${response.statusText} - ${errorText}`
-        );
-      }
+			if (!response.ok) {
+				const errorText = await response.text().catch(() => "Unknown error");
+				throw new Error(
+					`Batch embedding failed: ${response.status} ${response.statusText} - ${errorText}`
+				);
+			}
 
-      const data = (await response.json()) as EmbeddingsResponse;
-      // Extract dense embeddings from response
-      return data.embeddings.map((item) => item.dense);
-    } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") {
-        throw new Error(
-          `Batch embedding request timed out after ${batchTimeout}ms`
-        );
-      }
-      throw error;
-    } finally {
-      clearTimeout(timeoutId);
-    }
-  }
+			const data = (await response.json()) as EmbeddingsResponse;
+			// Extract dense embeddings from response
+			return data.embeddings.map((item) => item.dense);
+		} catch (error) {
+			if (error instanceof Error && error.name === "AbortError") {
+				throw new Error(`Batch embedding request timed out after ${batchTimeout}ms`);
+			}
+			throw error;
+		} finally {
+			clearTimeout(timeoutId);
+		}
+	}
 
-  /**
-   * Check if the embedding service is healthy
-   */
-  async healthCheck(): Promise<boolean> {
-    try {
-      const response = await fetch(`${this.endpoint}/health`, {
-        method: "GET",
-        signal: AbortSignal.timeout(5000)
-      });
-      return response.ok;
-    } catch {
-      return false;
-    }
-  }
+	/**
+	 * Check if the embedding service is healthy
+	 */
+	async healthCheck(): Promise<boolean> {
+		try {
+			const response = await fetch(`${this.endpoint}/health`, {
+				method: "GET",
+				signal: AbortSignal.timeout(5000),
+			});
+			return response.ok;
+		} catch {
+			return false;
+		}
+	}
 
-  /**
-   * Get the embedding dimension (for validation)
-   */
-  async getDimension(): Promise<number> {
-    // Generate a test embedding to get dimension
-    const testEmbedding = await this.embed("test");
-    return testEmbedding.length;
-  }
+	/**
+	 * Get the embedding dimension (for validation)
+	 */
+	async getDimension(): Promise<number> {
+		// Generate a test embedding to get dimension
+		const testEmbedding = await this.embed("test");
+		return testEmbedding.length;
+	}
 }
 
 /**
  * Factory function
  */
-export function createEmbeddingClient(
-  options?: EmbeddingClientOptions
-): EmbeddingClient {
-  return new EmbeddingClient(options);
+export function createEmbeddingClient(options?: EmbeddingClientOptions): EmbeddingClient {
+	return new EmbeddingClient(options);
 }

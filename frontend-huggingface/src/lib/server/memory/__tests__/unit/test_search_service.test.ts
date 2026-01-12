@@ -129,7 +129,7 @@ class MockSearchService {
 			debug: {
 				confidence: results.length > 0 ? "medium" : "low",
 				stage_timings_ms: {
-					total_ms: Date.now() - startTime,
+					qdrant_query_ms: Date.now() - startTime,
 				},
 				fallbacks_used: [],
 				errors: [],
@@ -301,8 +301,18 @@ describe("TestMainSearch", () => {
 
 		mockBm25Adapter.search.mockResolvedValue({
 			results: [
-				{ memoryId: "doc_1", content: "test result 1", tier: "working" as MemoryTier, textScore: 0.8 },
-				{ memoryId: "doc_3", content: "test result 3", tier: "patterns" as MemoryTier, textScore: 0.6 },
+				{
+					memoryId: "doc_1",
+					content: "test result 1",
+					tier: "working" as MemoryTier,
+					textScore: 0.8,
+				},
+				{
+					memoryId: "doc_3",
+					content: "test result 3",
+					tier: "patterns" as MemoryTier,
+					textScore: 0.6,
+				},
 			],
 			error: null,
 		});
@@ -430,7 +440,11 @@ describe("TestMainSearch", () => {
 	it("should merge results from both sources", async () => {
 		const testName = "search_merges_results";
 		try {
-			const response = await service.search({ userId: "test-user", query: "test query", limit: 10 });
+			const response = await service.search({
+				userId: "test-user",
+				query: "test query",
+				limit: 10,
+			});
 
 			// doc_1 should be merged from both sources
 			const doc1 = response.results.find((r) => r.memory_id === "doc_1");
@@ -465,7 +479,12 @@ describe("TestSearchCircuitBreaker", () => {
 			mockQdrantAdapter.isCircuitOpen.mockReturnValue(true);
 			mockBm25Adapter.search.mockResolvedValue({
 				results: [
-					{ memoryId: "doc_1", content: "lexical result", tier: "working" as MemoryTier, textScore: 0.8 },
+					{
+						memoryId: "doc_1",
+						content: "lexical result",
+						tier: "working" as MemoryTier,
+						textScore: 0.8,
+					},
 				],
 				error: null,
 			});
@@ -568,8 +587,18 @@ describe("TestRRFFusion", () => {
 
 			mockBm25Adapter.search.mockResolvedValue({
 				results: [
-					{ memoryId: "doc_1", content: "shared doc", tier: "working" as MemoryTier, textScore: 0.9 },
-					{ memoryId: "doc_3", content: "lexical only", tier: "working" as MemoryTier, textScore: 0.85 },
+					{
+						memoryId: "doc_1",
+						content: "shared doc",
+						tier: "working" as MemoryTier,
+						textScore: 0.9,
+					},
+					{
+						memoryId: "doc_3",
+						content: "lexical only",
+						tier: "working" as MemoryTier,
+						textScore: 0.85,
+					},
 				],
 				error: null,
 			});
@@ -818,13 +847,13 @@ describe("TestDebugTimings", () => {
 		});
 	});
 
-	it("should include total_ms in timings", async () => {
-		const testName = "timings_include_total_ms";
+	it("should include qdrant_query_ms in timings", async () => {
+		const testName = "timings_include_qdrant_query_ms";
 		try {
 			const response = await service.search({ userId: "test-user", query: "test", limit: 5 });
 
-			expect(response.debug.stage_timings_ms.total_ms).toBeDefined();
-			expect(response.debug.stage_timings_ms.total_ms).toBeGreaterThanOrEqual(0);
+			expect(response.debug.stage_timings_ms.qdrant_query_ms).toBeDefined();
+			expect(response.debug.stage_timings_ms.qdrant_query_ms).toBeGreaterThanOrEqual(0);
 
 			testResults.push({ name: testName, passed: true });
 		} catch (error) {

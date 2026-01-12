@@ -43,6 +43,18 @@ export interface QdrantPayload {
 	composite_score: number; // Wilson score for sorting
 	uses: number;
 	always_inject: boolean;
+	doc_id?: string | null;
+	chunk_id?: string | null;
+	book?: {
+		book_id: string;
+		title: string;
+		author: string | null;
+		chunk_index: number;
+		upload_timestamp: string | null;
+		file_type: string | null;
+		mime_type: string | null;
+		document_hash: string | null;
+	};
 }
 
 export interface QdrantSearchResult {
@@ -132,7 +144,10 @@ export class QdrantAdapter {
 				return false;
 			}
 
-			logger.info({ collection: this.collectionName, dims: this.expectedDims }, "QdrantAdapter initialized");
+			logger.info(
+				{ collection: this.collectionName, dims: this.expectedDims },
+				"QdrantAdapter initialized"
+			);
 			return true;
 		} catch (err) {
 			logger.error({ err }, "Failed to initialize QdrantAdapter");
@@ -298,14 +313,10 @@ export class QdrantAdapter {
 		];
 
 		for (const idx of indexes) {
-			await this.request(
-				"PUT",
-				`/collections/${this.collectionName}/index`,
-				{
-					field_name: idx.field,
-					field_schema: idx.type,
-				}
-			);
+			await this.request("PUT", `/collections/${this.collectionName}/index`, {
+				field_name: idx.field,
+				field_schema: idx.type,
+			});
 		}
 	}
 
@@ -454,7 +465,11 @@ export class QdrantAdapter {
 	/**
 	 * Delete points by filter (e.g., all points for a user)
 	 */
-	async deleteByFilter(filter: { userId?: string; tier?: MemoryTier; status?: MemoryStatus }): Promise<boolean> {
+	async deleteByFilter(filter: {
+		userId?: string;
+		tier?: MemoryTier;
+		status?: MemoryStatus;
+	}): Promise<boolean> {
 		const must: Array<{ key: string; match: { value: string } }> = [];
 
 		if (filter.userId) {
@@ -499,7 +514,9 @@ export class QdrantAdapter {
 		}
 
 		const limit = params.limit ?? this.config.caps.search_limit_default;
-		const must: Array<Record<string, unknown>> = [{ key: "user_id", match: { value: params.userId } }];
+		const must: Array<Record<string, unknown>> = [
+			{ key: "user_id", match: { value: params.userId } },
+		];
 
 		// Add tier filter
 		if (params.tiers?.length) {
@@ -523,11 +540,9 @@ export class QdrantAdapter {
 			score_threshold: params.minScore ?? 0,
 		};
 
-		const result = await this.request<{ result: Array<{ id: string; score: number; payload: QdrantPayload }> }>(
-			"POST",
-			`/collections/${this.collectionName}/points/search`,
-			body
-		);
+		const result = await this.request<{
+			result: Array<{ id: string; score: number; payload: QdrantPayload }>;
+		}>("POST", `/collections/${this.collectionName}/points/search`, body);
 
 		if (!result) return [];
 
@@ -569,10 +584,7 @@ export class QdrantAdapter {
 	 * Update payload fields without touching vector
 	 * Used for score/usage updates
 	 */
-	async updatePayload(
-		id: string,
-		payload: Partial<QdrantPayload>
-	): Promise<boolean> {
+	async updatePayload(id: string, payload: Partial<QdrantPayload>): Promise<boolean> {
 		const body = {
 			points: [id],
 			payload,

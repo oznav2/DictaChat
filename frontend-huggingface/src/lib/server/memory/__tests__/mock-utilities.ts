@@ -5,7 +5,7 @@
  * Provides deterministic mocks for embeddings, LLM, and time management.
  */
 
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 // ============================================================================
 // Constants
@@ -16,50 +16,50 @@ export const DEFAULT_SEED = 42;
 
 export const MATURITY_LEVELS = {
 	cold_start: { uses: 0, score: 0.5, history: [] },
-	early: { uses: 2, score: 0.55, history: ['worked', 'partial'] },
-	established: { uses: 10, score: 0.7, history: Array(10).fill('worked') },
-	proven: { uses: 25, score: 0.85, history: Array(25).fill('worked') },
-	mature: { uses: 50, score: 0.95, history: Array(50).fill('worked') }
+	early: { uses: 2, score: 0.55, history: ["worked", "partial"] },
+	established: { uses: 10, score: 0.7, history: Array(10).fill("worked") },
+	proven: { uses: 25, score: 0.85, history: Array(25).fill("worked") },
+	mature: { uses: 50, score: 0.95, history: Array(50).fill("worked") },
 } as const;
 
 export type MaturityLevel = keyof typeof MATURITY_LEVELS;
 
 export const TEST_SCENARIOS = {
 	simple_recall: {
-		query: 'What is the capital of France?',
-		expected_concepts: ['geography', 'capitals', 'france'],
-		difficulty: 'easy'
+		query: "What is the capital of France?",
+		expected_concepts: ["geography", "capitals", "france"],
+		difficulty: "easy",
 	},
 	multi_hop: {
-		query: 'How does photosynthesis affect climate change?',
-		expected_concepts: ['biology', 'climate', 'photosynthesis', 'carbon'],
-		difficulty: 'medium'
+		query: "How does photosynthesis affect climate change?",
+		expected_concepts: ["biology", "climate", "photosynthesis", "carbon"],
+		difficulty: "medium",
 	},
 	hebrew_query: {
-		query: 'מה הבירה של ישראל?',
-		expected_concepts: ['geography', 'capitals', 'israel', 'hebrew'],
-		difficulty: 'medium'
+		query: "מה הבירה של ישראל?",
+		expected_concepts: ["geography", "capitals", "israel", "hebrew"],
+		difficulty: "medium",
 	},
 	hebrew_family: {
-		query: 'מי הם בני המשפחה שלי?',
-		expected_concepts: ['family', 'relationships', 'personal'],
-		difficulty: 'easy'
+		query: "מי הם בני המשפחה שלי?",
+		expected_concepts: ["family", "relationships", "personal"],
+		difficulty: "easy",
 	},
 	hebrew_work: {
-		query: 'איפה אני עובד ומה התפקיד שלי?',
-		expected_concepts: ['work', 'career', 'job', 'role'],
-		difficulty: 'easy'
+		query: "איפה אני עובד ומה התפקיד שלי?",
+		expected_concepts: ["work", "career", "job", "role"],
+		difficulty: "easy",
 	},
 	complex_reasoning: {
-		query: 'Compare the economic policies of different governments',
-		expected_concepts: ['economics', 'policy', 'government', 'comparison'],
-		difficulty: 'hard'
+		query: "Compare the economic policies of different governments",
+		expected_concepts: ["economics", "policy", "government", "comparison"],
+		difficulty: "hard",
 	},
 	bilingual_mixed: {
-		query: 'Tell me about ירושלים and its history',
-		expected_concepts: ['jerusalem', 'history', 'geography', 'israel'],
-		difficulty: 'medium'
-	}
+		query: "Tell me about ירושלים and its history",
+		expected_concepts: ["jerusalem", "history", "geography", "israel"],
+		difficulty: "medium",
+	},
 } as const;
 
 // ============================================================================
@@ -67,27 +67,187 @@ export const TEST_SCENARIOS = {
 // ============================================================================
 
 export const ENGLISH_STOPWORDS = new Set([
-	'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of',
-	'with', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has',
-	'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may',
-	'might', 'must', 'shall', 'can', 'need', 'dare', 'ought', 'used', 'i',
-	'you', 'he', 'she', 'it', 'we', 'they', 'me', 'him', 'her', 'us', 'them',
-	'my', 'your', 'his', 'its', 'our', 'their', 'this', 'that', 'these',
-	'those', 'what', 'which', 'who', 'whom', 'when', 'where', 'why', 'how',
-	'all', 'each', 'every', 'both', 'few', 'more', 'most', 'other', 'some',
-	'such', 'no', 'nor', 'not', 'only', 'own', 'same', 'so', 'than', 'too',
-	'very', 'just', 'also', 'now', 'here', 'there', 'then', 'once', 'if'
+	"the",
+	"a",
+	"an",
+	"and",
+	"or",
+	"but",
+	"in",
+	"on",
+	"at",
+	"to",
+	"for",
+	"of",
+	"with",
+	"is",
+	"are",
+	"was",
+	"were",
+	"be",
+	"been",
+	"being",
+	"have",
+	"has",
+	"had",
+	"do",
+	"does",
+	"did",
+	"will",
+	"would",
+	"could",
+	"should",
+	"may",
+	"might",
+	"must",
+	"shall",
+	"can",
+	"need",
+	"dare",
+	"ought",
+	"used",
+	"i",
+	"you",
+	"he",
+	"she",
+	"it",
+	"we",
+	"they",
+	"me",
+	"him",
+	"her",
+	"us",
+	"them",
+	"my",
+	"your",
+	"his",
+	"its",
+	"our",
+	"their",
+	"this",
+	"that",
+	"these",
+	"those",
+	"what",
+	"which",
+	"who",
+	"whom",
+	"when",
+	"where",
+	"why",
+	"how",
+	"all",
+	"each",
+	"every",
+	"both",
+	"few",
+	"more",
+	"most",
+	"other",
+	"some",
+	"such",
+	"no",
+	"nor",
+	"not",
+	"only",
+	"own",
+	"same",
+	"so",
+	"than",
+	"too",
+	"very",
+	"just",
+	"also",
+	"now",
+	"here",
+	"there",
+	"then",
+	"once",
+	"if",
 ]);
 
 export const HEBREW_STOPWORDS = new Set([
-	'של', 'את', 'על', 'עם', 'זה', 'זו', 'זאת', 'אלה', 'אלו', 'הוא', 'היא',
-	'הם', 'הן', 'אני', 'אתה', 'את', 'אנחנו', 'אתם', 'אתן', 'לא', 'כן', 'גם',
-	'רק', 'עוד', 'כל', 'כמו', 'יותר', 'פחות', 'מאוד', 'הרבה', 'קצת', 'כבר',
-	'עכשיו', 'אז', 'שם', 'פה', 'כאן', 'איפה', 'מתי', 'למה', 'איך', 'מה',
-	'מי', 'אם', 'או', 'אבל', 'כי', 'ש', 'ו', 'ה', 'ב', 'ל', 'מ', 'כ',
-	'היה', 'היתה', 'היו', 'יהיה', 'תהיה', 'להיות', 'אחד', 'אחת', 'שני',
-	'שתי', 'שלוש', 'ארבע', 'חמש', 'בין', 'אצל', 'לפני', 'אחרי', 'תחת',
-	'ליד', 'בתוך', 'מחוץ', 'דרך', 'בשביל', 'עבור', 'נגד', 'בלי', 'למרות'
+	"של",
+	"את",
+	"על",
+	"עם",
+	"זה",
+	"זו",
+	"זאת",
+	"אלה",
+	"אלו",
+	"הוא",
+	"היא",
+	"הם",
+	"הן",
+	"אני",
+	"אתה",
+	"את",
+	"אנחנו",
+	"אתם",
+	"אתן",
+	"לא",
+	"כן",
+	"גם",
+	"רק",
+	"עוד",
+	"כל",
+	"כמו",
+	"יותר",
+	"פחות",
+	"מאוד",
+	"הרבה",
+	"קצת",
+	"כבר",
+	"עכשיו",
+	"אז",
+	"שם",
+	"פה",
+	"כאן",
+	"איפה",
+	"מתי",
+	"למה",
+	"איך",
+	"מה",
+	"מי",
+	"אם",
+	"או",
+	"אבל",
+	"כי",
+	"ש",
+	"ו",
+	"ה",
+	"ב",
+	"ל",
+	"מ",
+	"כ",
+	"היה",
+	"היתה",
+	"היו",
+	"יהיה",
+	"תהיה",
+	"להיות",
+	"אחד",
+	"אחת",
+	"שני",
+	"שתי",
+	"שלוש",
+	"ארבע",
+	"חמש",
+	"בין",
+	"אצל",
+	"לפני",
+	"אחרי",
+	"תחת",
+	"ליד",
+	"בתוך",
+	"מחוץ",
+	"דרך",
+	"בשביל",
+	"עבור",
+	"נגד",
+	"בלי",
+	"למרות",
 ]);
 
 export type TestScenario = keyof typeof TEST_SCENARIOS;
@@ -138,7 +298,7 @@ export function stringToSeed(str: string): number {
 	let hash = 0;
 	for (let i = 0; i < str.length; i++) {
 		const char = str.charCodeAt(i);
-		hash = ((hash << 5) - hash) + char;
+		hash = (hash << 5) - hash + char;
 		hash = hash & hash; // Convert to 32-bit integer
 	}
 	return Math.abs(hash);
@@ -167,20 +327,127 @@ export class MockEmbeddingService {
 
 	// Common stop words to filter out for better semantic matching
 	private static STOP_WORDS = new Set([
-		'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
-		'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should',
-		'may', 'might', 'must', 'shall', 'can', 'need', 'dare', 'ought', 'used',
-		'to', 'of', 'in', 'for', 'on', 'with', 'at', 'by', 'from', 'as', 'into',
-		'through', 'during', 'before', 'after', 'above', 'below', 'between',
-		'and', 'but', 'or', 'nor', 'so', 'yet', 'both', 'either', 'neither',
-		'not', 'no', 'nor', 'only', 'own', 'same', 'than', 'too', 'very',
-		'just', 'also', 'now', 'here', 'there', 'when', 'where', 'why', 'how',
-		'all', 'each', 'every', 'any', 'some', 'such', 'what', 'which', 'who',
-		'this', 'that', 'these', 'those', 'am', 'if', 'then', 'because', 'while',
-		'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves',
-		'you', 'your', 'yours', 'yourself', 'yourselves',
-		'he', 'him', 'his', 'himself', 'she', 'her', 'hers', 'herself',
-		'it', 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves',
+		"the",
+		"a",
+		"an",
+		"is",
+		"are",
+		"was",
+		"were",
+		"be",
+		"been",
+		"being",
+		"have",
+		"has",
+		"had",
+		"do",
+		"does",
+		"did",
+		"will",
+		"would",
+		"could",
+		"should",
+		"may",
+		"might",
+		"must",
+		"shall",
+		"can",
+		"need",
+		"dare",
+		"ought",
+		"used",
+		"to",
+		"of",
+		"in",
+		"for",
+		"on",
+		"with",
+		"at",
+		"by",
+		"from",
+		"as",
+		"into",
+		"through",
+		"during",
+		"before",
+		"after",
+		"above",
+		"below",
+		"between",
+		"and",
+		"but",
+		"or",
+		"nor",
+		"so",
+		"yet",
+		"both",
+		"either",
+		"neither",
+		"not",
+		"no",
+		"nor",
+		"only",
+		"own",
+		"same",
+		"than",
+		"too",
+		"very",
+		"just",
+		"also",
+		"now",
+		"here",
+		"there",
+		"when",
+		"where",
+		"why",
+		"how",
+		"all",
+		"each",
+		"every",
+		"any",
+		"some",
+		"such",
+		"what",
+		"which",
+		"who",
+		"this",
+		"that",
+		"these",
+		"those",
+		"am",
+		"if",
+		"then",
+		"because",
+		"while",
+		"i",
+		"me",
+		"my",
+		"myself",
+		"we",
+		"our",
+		"ours",
+		"ourselves",
+		"you",
+		"your",
+		"yours",
+		"yourself",
+		"yourselves",
+		"he",
+		"him",
+		"his",
+		"himself",
+		"she",
+		"her",
+		"hers",
+		"herself",
+		"it",
+		"its",
+		"itself",
+		"they",
+		"them",
+		"their",
+		"theirs",
+		"themselves",
 	]);
 
 	/**
@@ -189,32 +456,43 @@ export class MockEmbeddingService {
 	private stem(word: string): string {
 		// Handle irregular forms first
 		const irregulars: Record<string, string> = {
-			'does': 'do', 'goes': 'go', 'has': 'have', 'is': 'be', 'are': 'be',
-			'was': 'be', 'were': 'be', 'been': 'be', 'being': 'be',
+			does: "do",
+			goes: "go",
+			has: "have",
+			is: "be",
+			are: "be",
+			was: "be",
+			were: "be",
+			been: "be",
+			being: "be",
 		};
 		if (irregulars[word]) {
 			return irregulars[word];
 		}
 
 		// Simple English suffix removal
-		if (word.endsWith('ing') && word.length > 4) {
+		if (word.endsWith("ing") && word.length > 4) {
 			return word.slice(0, -3);
 		}
-		if (word.endsWith('ed') && word.length > 3) {
+		if (word.endsWith("ed") && word.length > 3) {
 			return word.slice(0, -2);
 		}
-		if (word.endsWith('ies') && word.length > 4) {
-			return word.slice(0, -3) + 'y';
+		if (word.endsWith("ies") && word.length > 4) {
+			return word.slice(0, -3) + "y";
 		}
 		// Only remove 'es' for specific endings (ches, shes, xes, zes, sses)
-		if (word.length > 3 && (
-			word.endsWith('ches') || word.endsWith('shes') ||
-			word.endsWith('xes') || word.endsWith('zes') || word.endsWith('sses')
-		)) {
+		if (
+			word.length > 3 &&
+			(word.endsWith("ches") ||
+				word.endsWith("shes") ||
+				word.endsWith("xes") ||
+				word.endsWith("zes") ||
+				word.endsWith("sses"))
+		) {
 			return word.slice(0, -2);
 		}
 		// Remove simple 's' for plurals (likes→like, prefers→prefer)
-		if (word.endsWith('s') && word.length > 2 && !word.endsWith('ss')) {
+		if (word.endsWith("s") && word.length > 2 && !word.endsWith("ss")) {
 			return word.slice(0, -1);
 		}
 		return word;
@@ -225,13 +503,14 @@ export class MockEmbeddingService {
 	 * Handles Hebrew, English, and mixed text.
 	 */
 	private tokenize(text: string): string[] {
-		const words = text.toLowerCase()
+		const words = text
+			.toLowerCase()
 			.split(/[\s\p{P}]+/u)
-			.filter(word => word.length > 0)
-			.map(word => this.stem(word));
+			.filter((word) => word.length > 0)
+			.map((word) => this.stem(word));
 
 		// Filter stop words but keep at least some words
-		const contentWords = words.filter(w => !MockEmbeddingService.STOP_WORDS.has(w));
+		const contentWords = words.filter((w) => !MockEmbeddingService.STOP_WORDS.has(w));
 
 		// If all words are stop words, return original (stemmed) words
 		return contentWords.length > 0 ? contentWords : words;
@@ -274,14 +553,14 @@ export class MockEmbeddingService {
 
 		// Handle empty text
 		if (words.length === 0) {
-			const textSeed = stringToSeed(text || 'empty');
+			const textSeed = stringToSeed(text || "empty");
 			this.rng.reset(textSeed);
 			const embedding: number[] = [];
 			for (let i = 0; i < EMBEDDING_DIM; i++) {
 				embedding.push(this.rng.next() * 2 - 1);
 			}
 			const magnitude = Math.sqrt(embedding.reduce((sum, val) => sum + val * val, 0));
-			const normalized = embedding.map(val => val / magnitude);
+			const normalized = embedding.map((val) => val / magnitude);
 			this.cache.set(text, normalized);
 			return normalized;
 		}
@@ -301,7 +580,7 @@ export class MockEmbeddingService {
 		}
 
 		const magnitude = Math.sqrt(embedding.reduce((sum, val) => sum + val * val, 0));
-		const normalized = embedding.map(val => val / magnitude);
+		const normalized = embedding.map((val) => val / magnitude);
 
 		this.cache.set(text, normalized);
 		return normalized;
@@ -311,7 +590,7 @@ export class MockEmbeddingService {
 	 * Batch embed multiple texts
 	 */
 	async embedBatch(texts: string[]): Promise<number[][]> {
-		return Promise.all(texts.map(text => this.embed(text)));
+		return Promise.all(texts.map((text) => this.embed(text)));
 	}
 
 	/**
@@ -320,7 +599,7 @@ export class MockEmbeddingService {
 	getStats(): { callCount: number; cacheSize: number } {
 		return {
 			callCount: this.callCount,
-			cacheSize: this.cache.size
+			cacheSize: this.cache.size,
 		};
 	}
 
@@ -351,25 +630,31 @@ export class MockLLMService {
 	constructor() {
 		this.callCount = 0;
 		this.responses = new Map();
-		this.defaultResponse = 'Mock LLM response for testing purposes.';
+		this.defaultResponse = "Mock LLM response for testing purposes.";
 		this.setupDefaultResponses();
 	}
 
 	private setupDefaultResponses(): void {
 		// Concept extraction responses
-		this.responses.set('extract_concepts', JSON.stringify({
-			concepts: ['test', 'concept', 'extraction'],
-			confidence: 0.9
-		}));
+		this.responses.set(
+			"extract_concepts",
+			JSON.stringify({
+				concepts: ["test", "concept", "extraction"],
+				confidence: 0.9,
+			})
+		);
 
 		// Summary responses
-		this.responses.set('summarize', 'This is a mock summary of the content.');
+		this.responses.set("summarize", "This is a mock summary of the content.");
 
 		// Classification responses
-		this.responses.set('classify', JSON.stringify({
-			category: 'general',
-			confidence: 0.85
-		}));
+		this.responses.set(
+			"classify",
+			JSON.stringify({
+				category: "general",
+				confidence: 0.85,
+			})
+		);
 	}
 
 	/**
@@ -514,14 +799,14 @@ export function createTestFragment(options: {
 
 	return {
 		id: options.id ?? `fragment_${Date.now()}_${Math.random().toString(36).slice(2)}`,
-		content: options.content ?? 'Test fragment content for memory system testing.',
+		content: options.content ?? "Test fragment content for memory system testing.",
 		metadata: {
 			score: options.score ?? maturityConfig.score,
 			uses: options.uses ?? maturityConfig.uses,
 			outcome_history: JSON.stringify(maturityConfig.history),
 			created_at: new Date().toISOString(),
-			...options.metadata
-		}
+			...options.metadata,
+		},
 	};
 }
 
@@ -536,7 +821,7 @@ export function createTestFragmentBatch(
 		createTestFragment({
 			...options,
 			id: `fragment_batch_${i}`,
-			content: `Test fragment ${i + 1} content.`
+			content: `Test fragment ${i + 1} content.`,
 		})
 	);
 }
@@ -545,19 +830,19 @@ export function createTestFragmentBatch(
  * Generate test conversation history
  */
 export function createTestConversation(turns: number = 5): Array<{
-	role: 'user' | 'assistant';
+	role: "user" | "assistant";
 	content: string;
 }> {
-	const conversation: Array<{ role: 'user' | 'assistant'; content: string }> = [];
+	const conversation: Array<{ role: "user" | "assistant"; content: string }> = [];
 
 	for (let i = 0; i < turns; i++) {
 		conversation.push({
-			role: 'user',
-			content: `User message ${i + 1}: This is a test query about topic ${i + 1}.`
+			role: "user",
+			content: `User message ${i + 1}: This is a test query about topic ${i + 1}.`,
 		});
 		conversation.push({
-			role: 'assistant',
-			content: `Assistant response ${i + 1}: Here is information about topic ${i + 1}.`
+			role: "assistant",
+			content: `Assistant response ${i + 1}: Here is information about topic ${i + 1}.`,
 		});
 	}
 
@@ -571,10 +856,7 @@ export function createTestConversation(turns: number = 5): Array<{
 /**
  * Calculate Mean Reciprocal Rank (MRR)
  */
-export function calculateMRR(
-	results: string[],
-	relevantIds: Set<string>
-): number {
+export function calculateMRR(results: string[], relevantIds: Set<string>): number {
 	for (let i = 0; i < results.length; i++) {
 		if (relevantIds.has(results[i])) {
 			return 1 / (i + 1);
@@ -586,11 +868,7 @@ export function calculateMRR(
 /**
  * Calculate normalized Discounted Cumulative Gain at K
  */
-export function calculateNDCG(
-	results: string[],
-	relevantIds: Set<string>,
-	k: number = 5
-): number {
+export function calculateNDCG(results: string[], relevantIds: Set<string>, k: number = 5): number {
 	const dcg = results.slice(0, k).reduce((sum, id, i) => {
 		const rel = relevantIds.has(id) ? 1 : 0;
 		return sum + rel / Math.log2(i + 2);
@@ -614,7 +892,7 @@ export function calculatePrecisionAtK(
 	k: number = 5
 ): number {
 	const topK = results.slice(0, k);
-	const relevant = topK.filter(id => relevantIds.has(id)).length;
+	const relevant = topK.filter((id) => relevantIds.has(id)).length;
 	return relevant / k;
 }
 
@@ -633,7 +911,7 @@ export function calculateAllMetrics(
 	return {
 		mrr: calculateMRR(results, relevantIds),
 		ndcg: calculateNDCG(results, relevantIds, k),
-		precision: calculatePrecisionAtK(results, relevantIds, k)
+		precision: calculatePrecisionAtK(results, relevantIds, k),
 	};
 }
 
@@ -687,12 +965,15 @@ export class TestHarness {
 		getColdStartContext: ReturnType<typeof vi.fn>;
 		getContextInsights: ReturnType<typeof vi.fn>;
 	};
+	public mockPrefetch: {
+		prefetchContext: ReturnType<typeof vi.fn>;
+	};
 	public mockOps: {
 		promoteNow: ReturnType<typeof vi.fn>;
 		getStats: ReturnType<typeof vi.fn>;
 	};
 
-	constructor(suiteName: string = 'DefaultTestSuite') {
+	constructor(suiteName: string = "DefaultTestSuite") {
 		this.suiteName = suiteName;
 		this.results = [];
 		this.startTime = Date.now();
@@ -708,7 +989,7 @@ export class TestHarness {
 
 		// Initialize mock services first
 		this.mockStore = {
-			store: vi.fn().mockResolvedValue({ memory_id: 'mock_mem_id' }),
+			store: vi.fn().mockResolvedValue({ memory_id: "mock_mem_id" }),
 			get: vi.fn().mockResolvedValue(null),
 			update: vi.fn().mockResolvedValue(null),
 			archive: vi.fn().mockResolvedValue(true),
@@ -716,16 +997,17 @@ export class TestHarness {
 		};
 		// Stateful outcome recording that updates collection Wilson scores
 		this.mockOutcome = {
-			recordOutcome: vi.fn().mockImplementation(async (params: {
-				memoryIds?: string[];
-				outcome?: 'worked' | 'failed' | 'partial';
-			}) => {
-				if (params.memoryIds && params.outcome) {
-					for (const id of params.memoryIds) {
-						this.collection.recordOutcome(id, params.outcome);
+			recordOutcome: vi
+				.fn()
+				.mockImplementation(
+					async (params: { memoryIds?: string[]; outcome?: "worked" | "failed" | "partial" }) => {
+						if (params.memoryIds && params.outcome) {
+							for (const id of params.memoryIds) {
+								this.collection.recordOutcome(id, params.outcome);
+							}
+						}
 					}
-				}
-			}),
+				),
 			recordResponse: vi.fn().mockResolvedValue(undefined),
 		};
 		this.mockContext = {
@@ -740,15 +1022,24 @@ export class TestHarness {
 				you_already_know: [],
 				directives: [],
 			}),
+		};
+		this.mockPrefetch = {
 			prefetchContext: vi.fn().mockResolvedValue({
-				context: '<memory>\n</memory>',
-				insights: { matched_concepts: [], confidence: 0 },
+				memoryContextInjection: "<memory>\n</memory>",
+				retrievalDebug: { from_mongo: true, stage_timings_ms: {} },
+				retrievalConfidence: "low",
 			}),
 		};
 		this.mockOps = {
-			promoteNow: vi.fn().mockResolvedValue(undefined),
+			promoteNow: vi.fn().mockResolvedValue({
+				promoted: 0,
+				archived: 0,
+				deleted: 0,
+				errors: 0,
+				durationMs: 0,
+			}),
 			getStats: vi.fn().mockResolvedValue({
-				user_id: 'test_user',
+				user_id: "test_user",
 				as_of: new Date().toISOString(),
 				tiers: {},
 				action_effectiveness: [],
@@ -759,7 +1050,7 @@ export class TestHarness {
 		this.facade.search = this.mockSearch.search;
 		this.facade.store = this.mockStore.store;
 		this.facade.getStats = this.mockOps.getStats;
-		this.facade.prefetchContext = this.mockContext.prefetchContext;
+		this.facade.prefetchContext = this.mockPrefetch.prefetchContext;
 	}
 
 	/**
@@ -781,7 +1072,7 @@ export class TestHarness {
 	 * Generate summary report
 	 */
 	getSummary(): TestSuiteResult {
-		const passed = this.results.filter(r => r.passed).length;
+		const passed = this.results.filter((r) => r.passed).length;
 		return {
 			suiteName: this.suiteName,
 			totalTests: this.results.length,
@@ -789,7 +1080,7 @@ export class TestHarness {
 			failed: this.results.length - passed,
 			duration: Date.now() - this.startTime,
 			results: this.results,
-			timestamp: new Date().toISOString()
+			timestamp: new Date().toISOString(),
 		};
 	}
 
@@ -799,18 +1090,18 @@ export class TestHarness {
 	formatReport(): string {
 		const summary = this.getSummary();
 		const lines: string[] = [
-			'='.repeat(60),
+			"=".repeat(60),
 			`TEST SUITE: ${summary.suiteName}`,
-			'='.repeat(60),
+			"=".repeat(60),
 			`Timestamp: ${summary.timestamp}`,
 			`Duration: ${summary.duration}ms`,
 			`Total: ${summary.totalTests} | Passed: ${summary.passed} | Failed: ${summary.failed}`,
-			'-'.repeat(60),
-			''
+			"-".repeat(60),
+			"",
 		];
 
 		for (const result of summary.results) {
-			const status = result.passed ? '[PASS]' : '[FAIL]';
+			const status = result.passed ? "[PASS]" : "[FAIL]";
 			lines.push(`${status} ${result.name} (${result.duration}ms)`);
 
 			if (result.metrics) {
@@ -824,12 +1115,12 @@ export class TestHarness {
 			}
 		}
 
-		lines.push('');
-		lines.push('='.repeat(60));
-		lines.push(`RESULT: ${summary.failed === 0 ? 'ALL TESTS PASSED' : 'SOME TESTS FAILED'}`);
-		lines.push('='.repeat(60));
+		lines.push("");
+		lines.push("=".repeat(60));
+		lines.push(`RESULT: ${summary.failed === 0 ? "ALL TESTS PASSED" : "SOME TESTS FAILED"}`);
+		lines.push("=".repeat(60));
 
-		return lines.join('\n');
+		return lines.join("\n");
 	}
 
 	/**
@@ -867,7 +1158,7 @@ export class MockCollection {
 	/**
 	 * Add document to collection
 	 */
-	async add(doc: Omit<MockDocument, 'embedding'>): Promise<void> {
+	async add(doc: Omit<MockDocument, "embedding">): Promise<void> {
 		const embedding = await this.embeddingService.embed(doc.content);
 		this.documents.set(doc.id, { ...doc, embedding });
 	}
@@ -882,16 +1173,21 @@ export class MockCollection {
 	/**
 	 * Search by vector similarity
 	 */
-	async search(query: string, limit: number = 5): Promise<Array<{
-		document: MockDocument;
-		score: number;
-	}>> {
+	async search(
+		query: string,
+		limit: number = 5
+	): Promise<
+		Array<{
+			document: MockDocument;
+			score: number;
+		}>
+	> {
 		const queryEmbedding = await this.embeddingService.embed(query);
 
 		const results = Array.from(this.documents.values())
-			.map(doc => ({
+			.map((doc) => ({
 				document: doc,
-				score: this.cosineSimilarity(queryEmbedding, doc.embedding!)
+				score: this.cosineSimilarity(queryEmbedding, doc.embedding!),
 			}))
 			.sort((a, b) => b.score - a.score)
 			.slice(0, limit);
@@ -935,16 +1231,17 @@ export class MockCollection {
 	/**
 	 * Record outcome and update Wilson score
 	 */
-	recordOutcome(id: string, outcome: 'worked' | 'failed' | 'partial'): boolean {
+	recordOutcome(id: string, outcome: "worked" | "failed" | "partial"): boolean {
 		const doc = this.documents.get(id);
 		if (!doc) return false;
 
-		const outcomeHistory = JSON.parse((doc.metadata.outcome_history as string) || '[]');
+		const outcomeHistory = JSON.parse((doc.metadata.outcome_history as string) || "[]");
 		outcomeHistory.push(outcome);
 
 		const total = outcomeHistory.length;
-		const successes = outcomeHistory.filter((o: string) => o === 'worked').length +
-		                  outcomeHistory.filter((o: string) => o === 'partial').length * 0.5;
+		const successes =
+			outcomeHistory.filter((o: string) => o === "worked").length +
+			outcomeHistory.filter((o: string) => o === "partial").length * 0.5;
 
 		const wilsonScore = calculateWilsonScore(successes, total);
 
@@ -953,7 +1250,7 @@ export class MockCollection {
 			outcome_history: JSON.stringify(outcomeHistory),
 			wilson_score: wilsonScore,
 			use_count: total,
-			success_count: successes
+			success_count: successes,
 		};
 
 		return true;
@@ -988,10 +1285,10 @@ export function createMockMemoryFacade() {
 	return {
 		initialize: vi.fn().mockResolvedValue(undefined),
 		search: vi.fn().mockResolvedValue({ results: [], debug: { fallbacks_used: [] } }),
-		store: vi.fn().mockResolvedValue({ memory_id: 'mock_mem_id', success: true }),
-		storeMemory: vi.fn().mockResolvedValue({ id: 'mock_id' }),
+		store: vi.fn().mockResolvedValue({ memory_id: "mock_mem_id", success: true }),
+		storeMemory: vi.fn().mockResolvedValue({ id: "mock_id" }),
 		prefetchContext: vi.fn().mockResolvedValue({
-			context: '<memory>\n</memory>',
+			context: "<memory>\n</memory>",
 			insights: { matched_concepts: [], confidence: 0 },
 		}),
 		recordOutcome: vi.fn().mockResolvedValue({ success: true }),
@@ -1006,9 +1303,9 @@ export function createMockMemoryFacade() {
 		listBooks: vi.fn().mockResolvedValue([]),
 		retrieveFromBooks: vi.fn().mockResolvedValue([]),
 		removeBook: vi.fn().mockResolvedValue({ success: true }),
-		getHealth: vi.fn().mockReturnValue({ status: 'healthy' }),
+		getHealth: vi.fn().mockReturnValue({ status: "healthy" }),
 		getStats: vi.fn().mockResolvedValue({
-			user_id: 'test_user',
+			user_id: "test_user",
 			as_of: new Date().toISOString(),
 			tiers: {},
 			action_effectiveness: [],
@@ -1038,8 +1335,8 @@ export function createMockSearchService(collection?: MockCollection) {
 				vector_score: r.score,
 				text_score: r.score * 0.3,
 				wilson_score: (r.document.metadata?.wilson_score as number) ?? 0.5,
-				composite_score: r.score * (((r.document.metadata?.wilson_score as number) ?? 0.5) + 0.5)
-			}
+				composite_score: r.score * (((r.document.metadata?.wilson_score as number) ?? 0.5) + 0.5),
+			},
 		}));
 		return { results, totalCount: results.length };
 	};
@@ -1050,12 +1347,12 @@ export function createMockSearchService(collection?: MockCollection) {
 		semanticSearch: vi.fn().mockImplementation(async (query: string, limit: number = 10) => {
 			if (!collection) return [];
 			const raw = await collection.search(query, limit);
-			return raw.map(r => ({ id: r.document.id, score: r.score, content: r.document.content }));
+			return raw.map((r) => ({ id: r.document.id, score: r.score, content: r.document.content }));
 		}),
 		hybridSearch: vi.fn().mockImplementation(async (query: string, limit: number = 10) => {
 			if (!collection) return [];
 			return collection.search(query, limit);
-		})
+		}),
 	};
 }
 
@@ -1066,7 +1363,7 @@ export function createMockRetrievalService() {
 	return {
 		retrieve: vi.fn().mockResolvedValue({ fragments: [], metadata: {} }),
 		retrieveWithContext: vi.fn().mockResolvedValue({ fragments: [], context: {} }),
-		getRetrievalStats: vi.fn().mockReturnValue({ totalQueries: 0, avgLatency: 0 })
+		getRetrievalStats: vi.fn().mockReturnValue({ totalQueries: 0, avgLatency: 0 }),
 	};
 }
 
@@ -1079,33 +1376,141 @@ export function createMockRetrievalService() {
  */
 export const CONTEXT_KEYWORDS = {
 	work: {
-		en: ['job', 'work', 'career', 'office', 'meeting', 'project', 'deadline', 'boss', 'colleague', 'salary'],
-		he: ['עבודה', 'משרד', 'פגישה', 'פרויקט', 'דדליין', 'בוס', 'עמית', 'משכורת', 'קריירה', 'תפקיד']
+		en: [
+			"job",
+			"work",
+			"career",
+			"office",
+			"meeting",
+			"project",
+			"deadline",
+			"boss",
+			"colleague",
+			"salary",
+		],
+		he: ["עבודה", "משרד", "פגישה", "פרויקט", "דדליין", "בוס", "עמית", "משכורת", "קריירה", "תפקיד"],
 	},
 	family: {
-		en: ['family', 'mom', 'dad', 'brother', 'sister', 'child', 'parent', 'spouse', 'wife', 'husband'],
-		he: ['משפחה', 'אמא', 'אבא', 'אח', 'אחות', 'ילד', 'הורה', 'בן זוג', 'אישה', 'בעל']
+		en: [
+			"family",
+			"mom",
+			"dad",
+			"brother",
+			"sister",
+			"child",
+			"parent",
+			"spouse",
+			"wife",
+			"husband",
+		],
+		he: ["משפחה", "אמא", "אבא", "אח", "אחות", "ילד", "הורה", "בן זוג", "אישה", "בעל"],
 	},
 	health: {
-		en: ['health', 'doctor', 'medicine', 'hospital', 'sick', 'exercise', 'diet', 'sleep', 'pain', 'symptom'],
-		he: ['בריאות', 'רופא', 'תרופה', 'בית חולים', 'חולה', 'התעמלות', 'דיאטה', 'שינה', 'כאב', 'סימפטום']
+		en: [
+			"health",
+			"doctor",
+			"medicine",
+			"hospital",
+			"sick",
+			"exercise",
+			"diet",
+			"sleep",
+			"pain",
+			"symptom",
+		],
+		he: [
+			"בריאות",
+			"רופא",
+			"תרופה",
+			"בית חולים",
+			"חולה",
+			"התעמלות",
+			"דיאטה",
+			"שינה",
+			"כאב",
+			"סימפטום",
+		],
 	},
 	finance: {
-		en: ['money', 'bank', 'budget', 'invest', 'save', 'expense', 'income', 'loan', 'credit', 'payment'],
-		he: ['כסף', 'בנק', 'תקציב', 'השקעה', 'חיסכון', 'הוצאה', 'הכנסה', 'הלוואה', 'אשראי', 'תשלום']
+		en: [
+			"money",
+			"bank",
+			"budget",
+			"invest",
+			"save",
+			"expense",
+			"income",
+			"loan",
+			"credit",
+			"payment",
+		],
+		he: ["כסף", "בנק", "תקציב", "השקעה", "חיסכון", "הוצאה", "הכנסה", "הלוואה", "אשראי", "תשלום"],
 	},
 	travel: {
-		en: ['travel', 'trip', 'flight', 'hotel', 'vacation', 'destination', 'airport', 'passport', 'luggage'],
-		he: ['טיול', 'נסיעה', 'טיסה', 'מלון', 'חופשה', 'יעד', 'שדה תעופה', 'דרכון', 'מזוודה']
+		en: [
+			"travel",
+			"trip",
+			"flight",
+			"hotel",
+			"vacation",
+			"destination",
+			"airport",
+			"passport",
+			"luggage",
+		],
+		he: ["טיול", "נסיעה", "טיסה", "מלון", "חופשה", "יעד", "שדה תעופה", "דרכון", "מזוודה"],
 	},
 	education: {
-		en: ['school', 'university', 'study', 'exam', 'course', 'learn', 'teacher', 'student', 'grade', 'homework'],
-		he: ['בית ספר', 'אוניברסיטה', 'לימודים', 'מבחן', 'קורס', 'ללמוד', 'מורה', 'תלמיד', 'ציון', 'שיעורי בית']
+		en: [
+			"school",
+			"university",
+			"study",
+			"exam",
+			"course",
+			"learn",
+			"teacher",
+			"student",
+			"grade",
+			"homework",
+		],
+		he: [
+			"בית ספר",
+			"אוניברסיטה",
+			"לימודים",
+			"מבחן",
+			"קורס",
+			"ללמוד",
+			"מורה",
+			"תלמיד",
+			"ציון",
+			"שיעורי בית",
+		],
 	},
 	technology: {
-		en: ['computer', 'phone', 'app', 'software', 'internet', 'code', 'programming', 'data', 'ai', 'machine'],
-		he: ['מחשב', 'טלפון', 'אפליקציה', 'תוכנה', 'אינטרנט', 'קוד', 'תכנות', 'נתונים', 'בינה מלאכותית']
-	}
+		en: [
+			"computer",
+			"phone",
+			"app",
+			"software",
+			"internet",
+			"code",
+			"programming",
+			"data",
+			"ai",
+			"machine",
+		],
+		he: [
+			"מחשב",
+			"טלפון",
+			"אפליקציה",
+			"תוכנה",
+			"אינטרנט",
+			"קוד",
+			"תכנות",
+			"נתונים",
+			"בינה מלאכותית",
+		],
+	},
 } as const;
 
 export type ContextType = keyof typeof CONTEXT_KEYWORDS;
@@ -1119,27 +1524,19 @@ export function mockExtractConcepts(text: string): string[] {
 	const normalizedText = text.toLowerCase();
 
 	// Tokenize text (handle both Hebrew and English)
-	const words = text.split(/[\s,.!?;:'"()\[\]{}]+/).filter(w => w.length > 2);
+	const words = text.split(/[\s,.!?;:'"()\[\]{}]+/).filter((w) => w.length > 2);
 
 	// Extract English concepts (capitalized words, not stopwords)
 	for (const word of words) {
 		const lowerWord = word.toLowerCase();
-		if (
-			/^[A-Z]/.test(word) &&
-			!ENGLISH_STOPWORDS.has(lowerWord) &&
-			word.length > 2
-		) {
+		if (/^[A-Z]/.test(word) && !ENGLISH_STOPWORDS.has(lowerWord) && word.length > 2) {
 			concepts.push(lowerWord);
 		}
 	}
 
 	// Extract Hebrew concepts (Hebrew letters, not stopwords)
 	for (const word of words) {
-		if (
-			/[\u0590-\u05FF]/.test(word) &&
-			!HEBREW_STOPWORDS.has(word) &&
-			word.length > 2
-		) {
+		if (/[\u0590-\u05FF]/.test(word) && !HEBREW_STOPWORDS.has(word) && word.length > 2) {
 			concepts.push(word);
 		}
 	}
@@ -1166,9 +1563,12 @@ export function mockExtractConcepts(text: string): string[] {
  */
 export function calculateSimilarity(text1: string, text2: string): number {
 	const tokenize = (text: string): Set<string> => {
-		const words = text.toLowerCase().split(/[\s,.!?;:'"()\[\]{}]+/).filter(w => w.length > 2);
+		const words = text
+			.toLowerCase()
+			.split(/[\s,.!?;:'"()\[\]{}]+/)
+			.filter((w) => w.length > 2);
 		// Filter out stopwords for both languages
-		return new Set(words.filter(w => !ENGLISH_STOPWORDS.has(w) && !HEBREW_STOPWORDS.has(w)));
+		return new Set(words.filter((w) => !ENGLISH_STOPWORDS.has(w) && !HEBREW_STOPWORDS.has(w)));
 	};
 
 	const set1 = tokenize(text1);
@@ -1176,7 +1576,7 @@ export function calculateSimilarity(text1: string, text2: string): number {
 
 	if (set1.size === 0 || set2.size === 0) return 0;
 
-	const intersection = new Set([...set1].filter(x => set2.has(x)));
+	const intersection = new Set([...set1].filter((x) => set2.has(x)));
 	const union = new Set([...set1, ...set2]);
 
 	return intersection.size / union.size;
@@ -1187,7 +1587,7 @@ export function calculateSimilarity(text1: string, text2: string): number {
  * Bilingual support for Hebrew and English
  */
 export function mockContextClassifier(text: string): {
-	category: ContextType | 'general';
+	category: ContextType | "general";
 	confidence: number;
 	matched_keywords: string[];
 } {
@@ -1207,7 +1607,7 @@ export function mockContextClassifier(text: string): {
 	}
 
 	// Find best match
-	let bestDomain = 'general';
+	let bestDomain = "general";
 	let bestScore = 0;
 	let matchedKeywords: string[] = [];
 
@@ -1220,12 +1620,12 @@ export function mockContextClassifier(text: string): {
 	}
 
 	// Calculate confidence based on match count
-	const confidence = bestScore === 0 ? 0.3 : Math.min(0.95, 0.5 + (bestScore * 0.1));
+	const confidence = bestScore === 0 ? 0.3 : Math.min(0.95, 0.5 + bestScore * 0.1);
 
 	return {
-		category: bestDomain as ContextType | 'general',
+		category: bestDomain as ContextType | "general",
 		confidence,
-		matched_keywords: matchedKeywords
+		matched_keywords: matchedKeywords,
 	};
 }
 
@@ -1236,24 +1636,24 @@ export function createTestMetadata(options?: {
 	user_id?: string;
 	conversation_id?: string;
 	turn_id?: string;
-	tier?: 'hot' | 'warm' | 'cold' | 'archive';
-	status?: 'active' | 'archived' | 'deleted';
+	tier?: "hot" | "warm" | "cold" | "archive";
+	status?: "active" | "archived" | "deleted";
 	source?: string;
 }): Record<string, unknown> {
 	const now = new Date().toISOString();
 	return {
-		user_id: options?.user_id ?? 'test_user',
+		user_id: options?.user_id ?? "test_user",
 		conversation_id: options?.conversation_id ?? `conv_${Date.now()}`,
 		turn_id: options?.turn_id ?? `turn_${Date.now()}`,
-		tier: options?.tier ?? 'warm',
-		status: options?.status ?? 'active',
-		source: options?.source ?? 'test',
+		tier: options?.tier ?? "warm",
+		status: options?.status ?? "active",
+		source: options?.source ?? "test",
 		created_at: now,
 		updated_at: now,
 		wilson_score: 0.5,
 		use_count: 0,
 		success_count: 0,
-		outcome_history: '[]'
+		outcome_history: "[]",
 	};
 }
 
@@ -1273,37 +1673,39 @@ export function verifyDocIdFormat(docId: string): {
 
 	// Check if not empty
 	if (!docId || docId.length === 0) {
-		errors.push('Document ID cannot be empty');
+		errors.push("Document ID cannot be empty");
 	}
 
 	// Check length constraints
 	if (docId.length > 255) {
-		errors.push('Document ID exceeds maximum length (255)');
+		errors.push("Document ID exceeds maximum length (255)");
 	}
 
 	// Check for valid characters (alphanumeric, underscore, hyphen)
 	if (!/^[a-zA-Z0-9_-]+$/.test(docId)) {
-		errors.push('Document ID contains invalid characters (only alphanumeric, underscore, hyphen allowed)');
+		errors.push(
+			"Document ID contains invalid characters (only alphanumeric, underscore, hyphen allowed)"
+		);
 	}
 
 	// Detect format type
-	let format = 'unknown';
+	let format = "unknown";
 	if (/^[0-9a-f]{24}$/.test(docId)) {
-		format = 'mongodb_objectid';
+		format = "mongodb_objectid";
 	} else if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(docId)) {
-		format = 'uuid';
+		format = "uuid";
 	} else if (/^mem_[a-zA-Z0-9_-]+$/.test(docId)) {
-		format = 'memory_id';
+		format = "memory_id";
 	} else if (/^frag_[a-zA-Z0-9_-]+$/.test(docId)) {
-		format = 'fragment_id';
+		format = "fragment_id";
 	} else if (/^[a-zA-Z]+_[0-9]+_[a-zA-Z0-9]+$/.test(docId)) {
-		format = 'composite_id';
+		format = "composite_id";
 	}
 
 	return {
 		valid: errors.length === 0,
 		format,
-		errors
+		errors,
 	};
 }
 
@@ -1328,9 +1730,9 @@ export function verifyEmbeddingDimension(
 	}
 
 	// Check for NaN or Infinity
-	const hasInvalidValues = embedding.some(v => !Number.isFinite(v));
+	const hasInvalidValues = embedding.some((v) => !Number.isFinite(v));
 	if (hasInvalidValues) {
-		errors.push('Embedding contains NaN or Infinity values');
+		errors.push("Embedding contains NaN or Infinity values");
 	}
 
 	// Check normalization (magnitude should be ~1.0)
@@ -1346,7 +1748,7 @@ export function verifyEmbeddingDimension(
 		actual_dim: embedding.length,
 		expected_dim: expectedDim,
 		is_normalized: isNormalized,
-		errors
+		errors,
 	};
 }
 
@@ -1365,8 +1767,8 @@ export function verifyMetadataPersistence(
 	const originalKeys = new Set(Object.keys(originalMetadata));
 	const retrievedKeys = new Set(Object.keys(retrievedMetadata));
 
-	const missing_fields = [...originalKeys].filter(k => !retrievedKeys.has(k));
-	const extra_fields = [...retrievedKeys].filter(k => !originalKeys.has(k));
+	const missing_fields = [...originalKeys].filter((k) => !retrievedKeys.has(k));
+	const extra_fields = [...retrievedKeys].filter((k) => !originalKeys.has(k));
 	const mismatched_values: Array<{ field: string; original: unknown; retrieved: unknown }> = [];
 
 	// Check common fields for value matches
@@ -1378,7 +1780,7 @@ export function verifyMetadataPersistence(
 				mismatched_values.push({
 					field: key,
 					original: originalMetadata[key],
-					retrieved: retrievedMetadata[key]
+					retrieved: retrievedMetadata[key],
 				});
 			}
 		}
@@ -1388,7 +1790,7 @@ export function verifyMetadataPersistence(
 		valid: missing_fields.length === 0 && mismatched_values.length === 0,
 		missing_fields,
 		extra_fields,
-		mismatched_values
+		mismatched_values,
 	};
 }
 
@@ -1411,7 +1813,7 @@ export function verifyKgStructure(kg: {
 	const edges = kg.edges ?? [];
 
 	// Create node ID set
-	const nodeIds = new Set(nodes.map(n => n.id));
+	const nodeIds = new Set(nodes.map((n) => n.id));
 
 	// Find orphan nodes (no edges)
 	const connectedNodes = new Set<string>();
@@ -1419,7 +1821,7 @@ export function verifyKgStructure(kg: {
 		connectedNodes.add(edge.source);
 		connectedNodes.add(edge.target);
 	}
-	const orphan_nodes = nodes.filter(n => !connectedNodes.has(n.id)).map(n => n.id);
+	const orphan_nodes = nodes.filter((n) => !connectedNodes.has(n.id)).map((n) => n.id);
 
 	// Find invalid edges (reference non-existent nodes)
 	const invalid_edges: Array<{ edge: { source: string; target: string }; reason: string }> = [];
@@ -1427,13 +1829,13 @@ export function verifyKgStructure(kg: {
 		if (!nodeIds.has(edge.source)) {
 			invalid_edges.push({
 				edge: { source: edge.source, target: edge.target },
-				reason: `Source node '${edge.source}' does not exist`
+				reason: `Source node '${edge.source}' does not exist`,
 			});
 		}
 		if (!nodeIds.has(edge.target)) {
 			invalid_edges.push({
 				edge: { source: edge.source, target: edge.target },
-				reason: `Target node '${edge.target}' does not exist`
+				reason: `Target node '${edge.target}' does not exist`,
 			});
 		}
 	}
@@ -1460,7 +1862,7 @@ export function verifyKgStructure(kg: {
 		edge_count: edges.length,
 		orphan_nodes,
 		invalid_edges,
-		errors
+		errors,
 	};
 }
 
@@ -1516,25 +1918,25 @@ export class BenchmarkReporter {
 		const failed = this.results.length - passed;
 
 		const lines: string[] = [
-			'============================= test session starts =============================',
+			"============================= test session starts =============================",
 			`platform: node ${process.version}`,
 			`test framework: vitest`,
 			`timestamp: ${new Date().toISOString()}`,
 			`rootdir: ${process.cwd()}`,
-			'',
+			"",
 			`collecting ... collected ${this.results.length} items`,
-			'',
+			"",
 		];
 
 		// Test results
 		this.results.forEach((result, idx) => {
 			const pct = Math.round(((idx + 1) / this.results.length) * 100);
-			const status = result.passed ? 'PASSED' : 'FAILED';
+			const status = result.passed ? "PASSED" : "FAILED";
 			const metrics = result.metrics
 				? ` [${Object.entries(result.metrics)
-						.map(([k, v]) => `${k}=${typeof v === 'number' ? v.toFixed(3) : v}`)
-						.join(', ')}]`
-				: '';
+						.map(([k, v]) => `${k}=${typeof v === "number" ? v.toFixed(3) : v}`)
+						.join(", ")}]`
+				: "";
 			lines.push(
 				`${this.suiteName}::${result.name} ${status} (${result.duration}ms)${metrics} [${pct.toString().padStart(3)}%]`
 			);
@@ -1543,15 +1945,15 @@ export class BenchmarkReporter {
 			}
 		});
 
-		lines.push('');
-		lines.push('============================== benchmark summary ==============================');
+		lines.push("");
+		lines.push("============================== benchmark summary ==============================");
 
 		// Detailed metrics summary
 		const metricsMap = new Map<string, number[]>();
 		this.results.forEach((r) => {
 			if (r.metrics) {
 				Object.entries(r.metrics).forEach(([k, v]) => {
-					if (typeof v === 'number') {
+					if (typeof v === "number") {
 						if (!metricsMap.has(k)) metricsMap.set(k, []);
 						metricsMap.get(k)!.push(v);
 					}
@@ -1560,8 +1962,8 @@ export class BenchmarkReporter {
 		});
 
 		if (metricsMap.size > 0) {
-			lines.push('');
-			lines.push('Metrics Summary:');
+			lines.push("");
+			lines.push("Metrics Summary:");
 			metricsMap.forEach((values, key) => {
 				const avg = values.reduce((a, b) => a + b, 0) / values.length;
 				const min = Math.min(...values);
@@ -1570,25 +1972,25 @@ export class BenchmarkReporter {
 			});
 		}
 
-		lines.push('');
-		lines.push('============================== test results ===================================');
+		lines.push("");
+		lines.push("============================== test results ===================================");
 		lines.push(`${passed} passed, ${failed} failed in ${totalDuration}s`);
-		lines.push('===============================================================================');
+		lines.push("===============================================================================");
 
-		return lines.join('\n');
+		return lines.join("\n");
 	}
 
 	saveReport(filename: string, resultsDir?: string): void {
 		// Dynamic import for fs to work in test environment
-		const fs = require('fs');
-		const path = require('path');
+		const fs = require("fs");
+		const path = require("path");
 
-		const dir = resultsDir ?? path.join(__dirname, 'benchmarks', 'results');
+		const dir = resultsDir ?? path.join(__dirname, "benchmarks", "results");
 		if (!fs.existsSync(dir)) {
 			fs.mkdirSync(dir, { recursive: true });
 		}
 		const filepath = path.join(dir, filename);
-		fs.writeFileSync(filepath, this.generateReport(), 'utf-8');
+		fs.writeFileSync(filepath, this.generateReport(), "utf-8");
 		console.log(`\n📊 Benchmark results saved to: ${filepath}`);
 	}
 
@@ -1648,7 +2050,7 @@ export const mockUtils = {
 	EMBEDDING_DIM,
 	DEFAULT_SEED,
 	ENGLISH_STOPWORDS,
-	HEBREW_STOPWORDS
+	HEBREW_STOPWORDS,
 };
 
 export default mockUtils;

@@ -2,6 +2,7 @@
 	import { base } from "$app/paths";
 	import { afterNavigate, goto } from "$app/navigation";
 	import { useSettingsStore } from "$lib/stores/settings";
+	import { canPopSettingsStack, popSettingsStack } from "$lib/stores/settingsStack";
 	import CarbonCheckmark from "~icons/carbon/checkmark";
 
 	import Modal from "$lib/components/Modal.svelte";
@@ -14,6 +15,17 @@
 
 	let previousPage: string = $state(base || "/");
 
+	function handleClose() {
+		if (canPopSettingsStack()) {
+			const next = popSettingsStack();
+			if (next) {
+				goto(next);
+				return;
+			}
+		}
+		goto(previousPage);
+	}
+
 	afterNavigate(({ from }) => {
 		if (from?.url && !from.url.pathname.includes("settings")) {
 			previousPage = from.url.toString() || previousPage || base || "/";
@@ -24,7 +36,7 @@
 </script>
 
 <Modal
-	onclose={() => goto(previousPage)}
+	onclose={handleClose}
 	disableFly={true}
 	width="border dark:border-gray-700 h-[95dvh] w-[90dvw] pb-0 overflow-hidden rounded-2xl bg-white shadow-2xl outline-none dark:bg-gray-800 dark:text-gray-200 sm:h-[95dvh] xl:w-[1200px] xl:h-[85dvh] 2xl:h-[75dvh]"
 >

@@ -15,7 +15,7 @@
  * Output: Generates benchmark results to benchmarks/results/dictachat_vs_vector_db.txt
  */
 
-import { describe, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, afterAll } from "vitest";
 import {
 	MockEmbeddingService,
 	MockCollection,
@@ -24,13 +24,19 @@ import {
 	calculateSimilarity,
 	calculateWilsonScore,
 	BenchmarkReporter,
-} from '../mock-utilities';
+} from "../mock-utilities";
 
 // Global reporter for this test file
-const reporter = new BenchmarkReporter('test_dictachat_vs_vector_db');
+const reporter = new BenchmarkReporter("test_dictachat_vs_vector_db");
 
 // Helper to record test metrics
-function recordTest(name: string, passed: boolean, duration: number, metrics?: Record<string, number | string>, error?: string): void {
+function recordTest(
+	name: string,
+	passed: boolean,
+	duration: number,
+	metrics?: Record<string, number | string>,
+	error?: string
+): void {
 	reporter.recordTest({ name, passed, duration, metrics, error });
 }
 
@@ -48,11 +54,14 @@ class PureVectorDB {
 		this.items.push({ id, content, embedding });
 	}
 
-	async search(query: string, limit: number): Promise<Array<{ id: string; content: string; score: number }>> {
+	async search(
+		query: string,
+		limit: number
+	): Promise<Array<{ id: string; content: string; score: number }>> {
 		const queryEmbedding = await this.embeddingService.embed(query);
 
 		// Pure cosine similarity - no additional ranking
-		const scored = this.items.map(item => ({
+		const scored = this.items.map((item) => ({
 			id: item.id,
 			content: item.content,
 			score: this.cosineSimilarity(queryEmbedding, item.embedding),
@@ -110,7 +119,11 @@ class DictaChatMemory {
 		}
 	}
 
-	async search(query: string, limit: number, context?: string): Promise<Array<{ id: string; content: string; score: number; boosted: boolean }>> {
+	async search(
+		query: string,
+		limit: number,
+		context?: string
+	): Promise<Array<{ id: string; content: string; score: number; boosted: boolean }>> {
 		// Get base vector results
 		const baseResults = await this.collection.search(query, limit * 2);
 
@@ -120,12 +133,12 @@ class DictaChatMemory {
 		for (const entity of queryEntities) {
 			const related = this.knowledgeGraph.get(entity);
 			if (related) {
-				related.forEach(r => relatedEntities.add(r));
+				related.forEach((r) => relatedEntities.add(r));
 			}
 		}
 
 		// Apply learning weights and KG boost
-		const enhanced = baseResults.map(result => {
+		const enhanced = baseResults.map((result) => {
 			let score = result.score;
 			let boosted = false;
 
@@ -167,18 +180,18 @@ class DictaChatMemory {
 
 	private extractEntities(text: string): string[] {
 		const words = text.split(/\s+/);
-		return words.filter(w => /^[A-Z]/.test(w) || /[\u0590-\u05FF]/.test(w));
+		return words.filter((w) => /^[A-Z]/.test(w) || /[\u0590-\u05FF]/.test(w));
 	}
 }
 
-describe('DictaChat vs Vector DB Comparison', () => {
+describe("DictaChat vs Vector DB Comparison", () => {
 	let harness: TestHarness;
 	let embeddingService: MockEmbeddingService;
 	let vectorDB: PureVectorDB;
 	let dictaChat: DictaChatMemory;
 
 	beforeEach(() => {
-		harness = new TestHarness('DictaChatVsVectorDB');
+		harness = new TestHarness("DictaChatVsVectorDB");
 		embeddingService = new MockEmbeddingService(42);
 		vectorDB = new PureVectorDB(embeddingService);
 		dictaChat = new DictaChatMemory(embeddingService);
@@ -189,11 +202,11 @@ describe('DictaChat vs Vector DB Comparison', () => {
 	});
 
 	afterAll(() => {
-		reporter.saveReport('dictachat_vs_vector_db.txt');
+		reporter.saveReport("dictachat_vs_vector_db.txt");
 	});
 
-	describe('Semantic Search Quality', () => {
-		it('test_basic_search_comparison', async () => {
+	describe("Semantic Search Quality", () => {
+		it("test_basic_search_comparison", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -201,11 +214,11 @@ describe('DictaChat vs Vector DB Comparison', () => {
 			try {
 				// Add same data to both systems
 				const testData = [
-					{ id: 'd1', content: 'User birthday is March 15th' },
-					{ id: 'd2', content: 'User works at TechCorp as engineer' },
-					{ id: 'd3', content: 'User likes morning coffee' },
-					{ id: 'd4', content: 'User lives in San Francisco' },
-					{ id: 'd5', content: 'User has a dog named Max' },
+					{ id: "d1", content: "User birthday is March 15th" },
+					{ id: "d2", content: "User works at TechCorp as engineer" },
+					{ id: "d3", content: "User likes morning coffee" },
+					{ id: "d4", content: "User lives in San Francisco" },
+					{ id: "d5", content: "User has a dog named Max" },
 				];
 
 				for (const item of testData) {
@@ -215,9 +228,9 @@ describe('DictaChat vs Vector DB Comparison', () => {
 
 				// Run same queries on both
 				const queries = [
-					{ query: 'when is birthday', expected: 'd1' },
-					{ query: 'where does user work', expected: 'd2' },
-					{ query: 'user pet animal', expected: 'd5' },
+					{ query: "when is birthday", expected: "d1" },
+					{ query: "where does user work", expected: "d2" },
+					{ query: "user pet animal", expected: "d5" },
 				];
 
 				let vectorCorrect = 0;
@@ -245,13 +258,13 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_basic_search_comparison', passed, Date.now() - start, metrics);
+				recordTest("test_basic_search_comparison", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Knowledge Graph Advantage', () => {
-		it('test_relationship_traversal', async () => {
+	describe("Knowledge Graph Advantage", () => {
+		it("test_relationship_traversal", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -259,11 +272,11 @@ describe('DictaChat vs Vector DB Comparison', () => {
 			try {
 				// Data with relationships
 				const relationshipData = [
-					{ id: 'r1', content: 'John works at TechCorp' },
-					{ id: 'r2', content: 'TechCorp is in San Francisco' },
-					{ id: 'r3', content: 'John lives in Oakland' },
-					{ id: 'r4', content: 'Sarah also works at TechCorp' },
-					{ id: 'r5', content: 'TechCorp builds AI products' },
+					{ id: "r1", content: "John works at TechCorp" },
+					{ id: "r2", content: "TechCorp is in San Francisco" },
+					{ id: "r3", content: "John lives in Oakland" },
+					{ id: "r4", content: "Sarah also works at TechCorp" },
+					{ id: "r5", content: "TechCorp builds AI products" },
 				];
 
 				for (const item of relationshipData) {
@@ -273,23 +286,23 @@ describe('DictaChat vs Vector DB Comparison', () => {
 
 				// Query that benefits from relationship traversal
 				// "What does John's company do?" requires linking John -> TechCorp -> AI products
-				const query = 'What does John company build';
+				const query = "What does John company build";
 
 				const vectorResults = await vectorDB.search(query, 3);
 				const dictaResults = await dictaChat.search(query, 3);
 
 				// Check if AI products is found
-				const vectorFoundAI = vectorResults.some(r => r.content.includes('AI'));
-				const dictaFoundAI = dictaResults.some(r => r.content.includes('AI'));
+				const vectorFoundAI = vectorResults.some((r) => r.content.includes("AI"));
+				const dictaFoundAI = dictaResults.some((r) => r.content.includes("AI"));
 
 				// Count KG-boosted results
-				const boostedCount = dictaResults.filter(r => r.boosted).length;
+				const boostedCount = dictaResults.filter((r) => r.boosted).length;
 
 				metrics = {
 					vector_found_ai: vectorFoundAI ? 1 : 0,
 					dictachat_found_ai: dictaFoundAI ? 1 : 0,
 					dictachat_boosted_results: boostedCount,
-					kg_advantage: (dictaFoundAI && !vectorFoundAI) ? 1 : 0,
+					kg_advantage: dictaFoundAI && !vectorFoundAI ? 1 : 0,
 				};
 
 				// DictaChat should leverage KG for better results
@@ -298,11 +311,11 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_relationship_traversal', passed, Date.now() - start, metrics);
+				recordTest("test_relationship_traversal", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_hebrew_relationship_traversal', async () => {
+		it("test_hebrew_relationship_traversal", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -310,10 +323,10 @@ describe('DictaChat vs Vector DB Comparison', () => {
 			try {
 				// Hebrew relationship data
 				const hebrewData = [
-					{ id: 'hr1', content: 'יוסי עובד בגוגל' },
-					{ id: 'hr2', content: 'גוגל נמצאת בקליפורניה' },
-					{ id: 'hr3', content: 'יוסי גר בתל אביב' },
-					{ id: 'hr4', content: 'גוגל מפתחת בינה מלאכותית' },
+					{ id: "hr1", content: "יוסי עובד בגוגל" },
+					{ id: "hr2", content: "גוגל נמצאת בקליפורניה" },
+					{ id: "hr3", content: "יוסי גר בתל אביב" },
+					{ id: "hr4", content: "גוגל מפתחת בינה מלאכותית" },
 				];
 
 				for (const item of hebrewData) {
@@ -321,7 +334,7 @@ describe('DictaChat vs Vector DB Comparison', () => {
 					await dictaChat.add(item.id, item.content);
 				}
 
-				const query = 'מה החברה של יוסי מפתחת';
+				const query = "מה החברה של יוסי מפתחת";
 
 				const vectorResults = await vectorDB.search(query, 3);
 				const dictaResults = await dictaChat.search(query, 3);
@@ -329,7 +342,7 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				metrics = {
 					hebrew_vector_results: vectorResults.length,
 					hebrew_dictachat_results: dictaResults.length,
-					hebrew_boosted: dictaResults.filter(r => r.boosted).length,
+					hebrew_boosted: dictaResults.filter((r) => r.boosted).length,
 				};
 
 				expect(dictaResults.length).toBeGreaterThan(0);
@@ -337,13 +350,13 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_hebrew_relationship_traversal', passed, Date.now() - start, metrics);
+				recordTest("test_hebrew_relationship_traversal", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Learning Advantage', () => {
-		it('test_feedback_learning', async () => {
+	describe("Learning Advantage", () => {
+		it("test_feedback_learning", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -351,9 +364,9 @@ describe('DictaChat vs Vector DB Comparison', () => {
 			try {
 				// Add data
 				const learningData = [
-					{ id: 'l1', content: 'User prefers email communication' },
-					{ id: 'l2', content: 'User likes phone calls' },
-					{ id: 'l3', content: 'User responds to Slack messages' },
+					{ id: "l1", content: "User prefers email communication" },
+					{ id: "l2", content: "User likes phone calls" },
+					{ id: "l3", content: "User responds to Slack messages" },
 				];
 
 				for (const item of learningData) {
@@ -362,12 +375,12 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				}
 
 				// Initial search
-				const query = 'how to contact user';
+				const query = "how to contact user";
 				const initialDictaResults = await dictaChat.search(query, 3);
 
 				// Simulate user feedback - email was correct
-				dictaChat.recordFeedback('l1', true);
-				dictaChat.recordFeedback('l2', false);
+				dictaChat.recordFeedback("l1", true);
+				dictaChat.recordFeedback("l2", false);
 
 				// Search again after learning
 				const learnedDictaResults = await dictaChat.search(query, 3);
@@ -376,8 +389,8 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				const vectorResults = await vectorDB.search(query, 3);
 
 				// Check if email moved up after positive feedback
-				const initialEmailRank = initialDictaResults.findIndex(r => r.id === 'l1');
-				const learnedEmailRank = learnedDictaResults.findIndex(r => r.id === 'l1');
+				const initialEmailRank = initialDictaResults.findIndex((r) => r.id === "l1");
+				const learnedEmailRank = learnedDictaResults.findIndex((r) => r.id === "l1");
 
 				metrics = {
 					initial_email_rank: initialEmailRank + 1,
@@ -393,32 +406,32 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_feedback_learning', passed, Date.now() - start, metrics);
+				recordTest("test_feedback_learning", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_cumulative_learning', async () => {
+		it("test_cumulative_learning", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
 
 			try {
 				// Add items
-				await dictaChat.add('cl1', 'Restaurant A is good');
-				await dictaChat.add('cl2', 'Restaurant B is okay');
-				await dictaChat.add('cl3', 'Restaurant C is excellent');
+				await dictaChat.add("cl1", "Restaurant A is good");
+				await dictaChat.add("cl2", "Restaurant B is okay");
+				await dictaChat.add("cl3", "Restaurant C is excellent");
 
 				// Simulate multiple feedback cycles
 				for (let i = 0; i < 5; i++) {
-					dictaChat.recordFeedback('cl3', true); // Always prefer C
-					dictaChat.recordFeedback('cl1', false);
+					dictaChat.recordFeedback("cl3", true); // Always prefer C
+					dictaChat.recordFeedback("cl1", false);
 				}
 
-				const results = await dictaChat.search('restaurant recommendation', 3);
+				const results = await dictaChat.search("restaurant recommendation", 3);
 
 				// Restaurant C should be boosted significantly
-				const cRank = results.findIndex(r => r.id === 'cl3');
-				const cResult = results.find(r => r.id === 'cl3');
+				const cRank = results.findIndex((r) => r.id === "cl3");
+				const cResult = results.find((r) => r.id === "cl3");
 
 				metrics = {
 					restaurant_c_rank: cRank + 1,
@@ -431,13 +444,13 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_cumulative_learning', passed, Date.now() - start, metrics);
+				recordTest("test_cumulative_learning", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Context-Aware Retrieval', () => {
-		it('test_contextual_search', async () => {
+	describe("Context-Aware Retrieval", () => {
+		it("test_contextual_search", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -445,9 +458,9 @@ describe('DictaChat vs Vector DB Comparison', () => {
 			try {
 				// Add context-dependent data
 				const contextData = [
-					{ id: 'cx1', content: 'User prefers tea in the morning' },
-					{ id: 'cx2', content: 'User drinks coffee at work' },
-					{ id: 'cx3', content: 'User has water during exercise' },
+					{ id: "cx1", content: "User prefers tea in the morning" },
+					{ id: "cx2", content: "User drinks coffee at work" },
+					{ id: "cx3", content: "User has water during exercise" },
 				];
 
 				for (const item of contextData) {
@@ -456,22 +469,24 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				}
 
 				// Query with context
-				const query = 'what does user drink';
+				const query = "what does user drink";
 
 				// Pure vector search (no context)
 				const vectorResults = await vectorDB.search(query, 3);
 
 				// DictaChat with work context
-				const dictaWorkResults = await dictaChat.search(query, 3, 'work');
+				const dictaWorkResults = await dictaChat.search(query, 3, "work");
 
 				// DictaChat with morning context
-				const dictaMorningResults = await dictaChat.search(query, 3, 'morning');
+				const dictaMorningResults = await dictaChat.search(query, 3, "morning");
 
 				// Check context relevance
-				const workTopResult = dictaWorkResults[0]?.content.includes('work') ||
-									  dictaWorkResults[0]?.content.includes('coffee');
-				const morningTopResult = dictaMorningResults[0]?.content.includes('morning') ||
-										 dictaMorningResults[0]?.content.includes('tea');
+				const workTopResult =
+					dictaWorkResults[0]?.content.includes("work") ||
+					dictaWorkResults[0]?.content.includes("coffee");
+				const morningTopResult =
+					dictaMorningResults[0]?.content.includes("morning") ||
+					dictaMorningResults[0]?.content.includes("tea");
 
 				metrics = {
 					vector_results: vectorResults.length,
@@ -485,13 +500,13 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_contextual_search', passed, Date.now() - start, metrics);
+				recordTest("test_contextual_search", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Bilingual Performance', () => {
-		it('test_bilingual_comparison', async () => {
+	describe("Bilingual Performance", () => {
+		it("test_bilingual_comparison", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -499,10 +514,10 @@ describe('DictaChat vs Vector DB Comparison', () => {
 			try {
 				// Bilingual data
 				const bilingualData = [
-					{ id: 'bi1', content: 'User birthday is in March' },
-					{ id: 'bi2', content: 'יום ההולדת של המשתמש במרץ' },
-					{ id: 'bi3', content: 'User works in technology' },
-					{ id: 'bi4', content: 'המשתמש עובד בטכנולוגיה' },
+					{ id: "bi1", content: "User birthday is in March" },
+					{ id: "bi2", content: "יום ההולדת של המשתמש במרץ" },
+					{ id: "bi3", content: "User works in technology" },
+					{ id: "bi4", content: "המשתמש עובד בטכנולוגיה" },
 				];
 
 				for (const item of bilingualData) {
@@ -511,20 +526,20 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				}
 
 				// English query
-				const enQuery = 'when is birthday';
+				const enQuery = "when is birthday";
 				const vectorEnResults = await vectorDB.search(enQuery, 2);
 				const dictaEnResults = await dictaChat.search(enQuery, 2);
 
 				// Hebrew query
-				const heQuery = 'מתי יום ההולדת';
+				const heQuery = "מתי יום ההולדת";
 				const vectorHeResults = await vectorDB.search(heQuery, 2);
 				const dictaHeResults = await dictaChat.search(heQuery, 2);
 
 				// Check cross-language retrieval
-				const vectorEnFoundHe = vectorEnResults.some(r => r.content.includes('מרץ'));
-				const dictaEnFoundHe = dictaEnResults.some(r => r.content.includes('מרץ'));
-				const vectorHeFoundEn = vectorHeResults.some(r => r.content.includes('March'));
-				const dictaHeFoundEn = dictaHeResults.some(r => r.content.includes('March'));
+				const vectorEnFoundHe = vectorEnResults.some((r) => r.content.includes("מרץ"));
+				const dictaEnFoundHe = dictaEnResults.some((r) => r.content.includes("מרץ"));
+				const vectorHeFoundEn = vectorHeResults.some((r) => r.content.includes("March"));
+				const dictaHeFoundEn = dictaHeResults.some((r) => r.content.includes("March"));
 
 				metrics = {
 					vector_en_results: vectorEnResults.length,
@@ -541,13 +556,13 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_bilingual_comparison', passed, Date.now() - start, metrics);
+				recordTest("test_bilingual_comparison", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Performance Metrics', () => {
-		it('test_latency_comparison', async () => {
+	describe("Performance Metrics", () => {
+		it("test_latency_comparison", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -595,13 +610,13 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_latency_comparison', passed, Date.now() - start, metrics);
+				recordTest("test_latency_comparison", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Summary Test', () => {
-		it('test_dictachat_vs_vector_db', async () => {
+	describe("Summary Test", () => {
+		it("test_dictachat_vs_vector_db", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -610,13 +625,13 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				// Comprehensive comparison
 				const testData = [
 					// English
-					{ id: 'cmp1', content: 'John works at Google' },
-					{ id: 'cmp2', content: 'Google is a tech company' },
-					{ id: 'cmp3', content: 'John likes programming' },
+					{ id: "cmp1", content: "John works at Google" },
+					{ id: "cmp2", content: "Google is a tech company" },
+					{ id: "cmp3", content: "John likes programming" },
 					// Hebrew
-					{ id: 'cmp4', content: 'יוסי עובד בגוגל' },
-					{ id: 'cmp5', content: 'גוגל היא חברת טכנולוגיה' },
-					{ id: 'cmp6', content: 'יוסי אוהב לתכנת' },
+					{ id: "cmp4", content: "יוסי עובד בגוגל" },
+					{ id: "cmp5", content: "גוגל היא חברת טכנולוגיה" },
+					{ id: "cmp6", content: "יוסי אוהב לתכנת" },
 				];
 
 				for (const item of testData) {
@@ -625,15 +640,15 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				}
 
 				// Train DictaChat with feedback
-				dictaChat.recordFeedback('cmp1', true);
-				dictaChat.recordFeedback('cmp4', true);
+				dictaChat.recordFeedback("cmp1", true);
+				dictaChat.recordFeedback("cmp4", true);
 
 				// Run comparative queries
 				const queries = [
-					'What company does John work at',
-					'איפה יוסי עובד',
-					'What does Google do',
-					'מה גוגל עושה',
+					"What company does John work at",
+					"איפה יוסי עובד",
+					"What does Google do",
+					"מה גוגל עושה",
 				];
 
 				let vectorTotalScore = 0;
@@ -646,7 +661,7 @@ describe('DictaChat vs Vector DB Comparison', () => {
 					// Score based on relevance (top result = 3, second = 2, third = 1)
 					vectorTotalScore += vectorResults.length > 0 ? 3 : 0;
 					dictaTotalScore += dictaResults.length > 0 ? 3 : 0;
-					dictaTotalScore += dictaResults.filter(r => r.boosted).length; // Bonus for boosted
+					dictaTotalScore += dictaResults.filter((r) => r.boosted).length; // Bonus for boosted
 				}
 
 				const dictaAdvantage = dictaTotalScore - vectorTotalScore;
@@ -670,7 +685,7 @@ describe('DictaChat vs Vector DB Comparison', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_dictachat_vs_vector_db', passed, Date.now() - start, metrics);
+				recordTest("test_dictachat_vs_vector_db", passed, Date.now() - start, metrics);
 			}
 		});
 	});

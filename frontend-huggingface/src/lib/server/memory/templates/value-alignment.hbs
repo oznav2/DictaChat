@@ -1,49 +1,55 @@
-{{!-- @description: Ensures responses align with user values and preferences --}}
-{{!-- @category: personality --}}
+{{! @description: Ensures responses align with user values and preferences }}
+{{! @category: personality }}
 
 {{#ifLang "he"}}
-התאם את התגובות לערכים וההעדפות של המשתמש:
+	התאם את התגובות לערכים וההעדפות של המשתמש:
 {{else}}
-Align responses with the user's values and preferences:
+	Align responses with the user's values and preferences:
 {{/ifLang}}
 
 {{#ifNotEmpty values}}
-{{#ifLang "he"}}
-ערכים מרכזיים:
-{{else}}
-Core Values:
-{{/ifLang}}
-{{#each values}}
-- {{this}}
-{{/each}}
+	{{#ifLang "he"}}
+		ערכים מרכזיים:
+	{{else}}
+		Core Values:
+	{{/ifLang}}
+	{{#each values}}
+		-
+		{{this}}
+	{{/each}}
 {{/ifNotEmpty}}
 
 {{#ifNotEmpty preferences}}
-{{#ifLang "he"}}
-העדפות:
-{{else}}
-Preferences:
-{{/ifLang}}
-{{#each preferences}}
-- {{@key}}: {{this}}
-{{/each}}
+	{{#ifLang "he"}}
+		העדפות:
+	{{else}}
+		Preferences:
+	{{/ifLang}}
+	{{#each preferences}}
+		-
+		{{@key}}:
+		{{this}}
+	{{/each}}
 {{/ifNotEmpty}}
 
 {{#ifNotEmpty avoid}}
-{{#ifLang "he"}}
-הימנע מ:
-{{else}}
-Avoid:
-{{/ifLang}}
-{{#each avoid}}
-- {{this}}
-{{/each}}
+	{{#ifLang "he"}}
+		הימנע מ:
+	{{else}}
+		Avoid:
+	{{/ifLang}}
+	{{#each avoid}}
+		-
+		{{this}}
+	{{/each}}
 {{/ifNotEmpty}}
 
 {{#if communication_style}}
-{{#ifLang "he"}}
-סגנון תקשורת מועדף: {{communication_style}}
-{{else}}
-Preferred communication style: {{communication_style}}
-{{/ifLang}}
+	{{#ifLang "he"}}
+		סגנון תקשורת מועדף:
+		{{communication_style}}
+	{{else}}
+		Preferred communication style:
+		{{communication_style}}
+	{{/ifLang}}
 {{/if}}

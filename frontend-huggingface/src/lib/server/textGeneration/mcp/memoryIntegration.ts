@@ -28,6 +28,7 @@ import type {
 	SearchResult,
 	Outcome,
 } from "$lib/server/memory/types";
+import type { SourceAttribution } from "$lib/server/memory/services/SourceDescriptionService";
 
 // ============================================
 // TYPES
@@ -126,12 +127,7 @@ const DEFAULT_TOOL_GATING: ToolGatingConfig = {
 		"docling_convert",
 	],
 	// Block unless explicitly requested by user or high-confidence memory match
-	lowConfidence: [
-		"code_execution",
-		"file_write",
-		"database_query",
-		"system_command",
-	],
+	lowConfidence: ["code_execution", "file_write", "database_query", "system_command"],
 };
 
 // ============================================
@@ -154,10 +150,7 @@ function estimateContextLimit(query: string): number {
 	}
 
 	// How-to / medium complexity
-	if (
-		/\b(how|explain|why|מדוע|איך|הסבר)\b/i.test(lowerQuery) ||
-		lowerQuery.length > 100
-	) {
+	if (/\b(how|explain|why|מדוע|איך|הסבר)\b/i.test(lowerQuery) || lowerQuery.length > 100) {
 		return 12;
 	}
 
@@ -535,6 +528,12 @@ export async function storeWorkingMemory(params: {
 	assistantResponse: string;
 	toolsUsed: string[];
 	memoriesUsed: string[];
+	personalityId?: string | null;
+	personalityName?: string | null;
+	language?: "he" | "en" | "mixed";
+	/** Source attribution from tool execution (Phase 9.9) */
+	sourceAttribution?: SourceAttribution | null;
+	conversationTitle?: string | null;
 }): Promise<void> {
 	const flags = getMemoryFeatureFlags();
 	if (!flags.systemEnabled) {
@@ -569,7 +568,27 @@ export async function storeWorkingMemory(params: {
 				memories_used: params.memoriesUsed,
 				stored_at: new Date().toISOString(),
 			},
+			personalityId: params.personalityId,
+			personalityName: params.personalityName,
+			language: params.language,
+			// Phase 9.9: Source attribution
+			source: params.sourceAttribution
+				? {
+						type: "tool" as const,
+						tool_name: params.sourceAttribution.toolName,
+						url: params.sourceAttribution.url,
+						description: params.sourceAttribution.description?.en ?? null,
+						description_he: params.sourceAttribution.description?.he ?? null,
+						conversation_id: params.conversationId,
+						conversation_title: params.conversationTitle ?? null,
+						collected_at: params.sourceAttribution.collectedAt,
+					}
+				: undefined,
 		});
+
+		// Increment message count for auto-promotion (Roampal pattern)
+		// This triggers promotion every 20 messages
+		await facade.incrementMessageCount(params.userId);
 
 		logger.debug(
 			{

@@ -63,8 +63,8 @@ async function prepareFiles(
 	const imageFiles = files.filter((file) => file.mime.startsWith("image/"));
 
 	// Separate Docling-processable files from regular text files
-	const doclingFiles = files.filter((file) =>
-		DOCLING_MIME_TYPES.includes(file.mime.toLowerCase()) && file.path
+	const doclingFiles = files.filter(
+		(file) => DOCLING_MIME_TYPES.includes(file.mime.toLowerCase()) && file.path
 	);
 
 	const textFiles = files.filter((file) => {
@@ -96,8 +96,9 @@ async function prepareFiles(
 
 	// Add Docling file references (path only, content processed by Docling)
 	if (doclingFiles.length > 0) {
-		const doclingParts = doclingFiles.map((file) =>
-			`<attached_file name="${file.name}" type="${file.mime}" path="${file.path}">\nזהו קובץ מצורף. השתמש בכלי docling_convert עם הנתיב: ${file.path}\nThis is an attached file. Use docling_convert tool with path: ${file.path}\n</attached_file>`
+		const doclingParts = doclingFiles.map(
+			(file) =>
+				`<attached_file name="${file.name}" type="${file.mime}" path="${file.path}">\nזהו קובץ מצורף. השתמש בכלי docling_convert עם הנתיב: ${file.path}\nThis is an attached file. Use docling_convert tool with path: ${file.path}\n</attached_file>`
 		);
 		textContent = doclingParts.join("\n\n");
 	}
@@ -106,8 +107,9 @@ async function prepareFiles(
 	if (imageFiles.length > 0) {
 		const imagePaths = imageFiles
 			.filter((file) => file.path)
-			.map((file) =>
-				`<attached_image name="${file.name}" type="${file.mime}" path="${file.path}">\nלזיהוי טקסט (OCR) השתמש ב-docling_ocr עם הנתיב: ${file.path}\nFor OCR use docling_ocr with path: ${file.path}\n</attached_image>`
+			.map(
+				(file) =>
+					`<attached_image name="${file.name}" type="${file.mime}" path="${file.path}">\nלזיהוי טקסט (OCR) השתמש ב-docling_ocr עם הנתיב: ${file.path}\nFor OCR use docling_ocr with path: ${file.path}\n</attached_image>`
 			);
 		if (imagePaths.length > 0) {
 			textContent = textContent + (textContent ? "\n\n" : "") + imagePaths.join("\n\n");

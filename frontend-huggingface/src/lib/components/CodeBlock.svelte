@@ -64,7 +64,7 @@
 
 		// Look for common filename patterns in comments
 		// e.g. # filename: script.py, // File: index.js, <!-- main.html -->
-		const filenameRegex = /(?:filename|file):\s*([a-zA-Z0-9_\-\.]+)/i;
+		const filenameRegex = /(?:filename|file):\s*([a-zA-Z0-9_.-]+)/i;
 
 		for (const line of firstFewLines) {
 			const match = line.match(filenameRegex);

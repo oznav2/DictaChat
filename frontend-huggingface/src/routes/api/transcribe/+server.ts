@@ -2,6 +2,7 @@ import { error, json } from "@sveltejs/kit";
 import { config } from "$lib/server/config";
 import { getApiToken } from "$lib/server/apiToken";
 import { logger } from "$lib/server/logger";
+import type { RequestHandler } from "./$types";
 
 const MAX_AUDIO_SIZE = 25 * 1024 * 1024; // 25MB
 const TRANSCRIPTION_TIMEOUT = 60000; // 60 seconds
@@ -16,7 +17,7 @@ const ALLOWED_CONTENT_TYPES = [
 	"audio/x-wav",
 ];
 
-export async function POST({ request, locals }) {
+export const POST: RequestHandler = async ({ request, locals }) => {
 	const transcriptionModel = config.get("TRANSCRIPTION_MODEL");
 
 	if (!transcriptionModel) {
@@ -103,4 +104,4 @@ export async function POST({ request, locals }) {
 		logger.error(err, "Transcription error");
 		throw error(500, "Failed to transcribe audio");
 	}
-}
+};

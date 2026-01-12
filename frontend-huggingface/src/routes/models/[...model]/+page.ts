@@ -1,6 +1,7 @@
 import { base } from "$app/paths";
+import type { PageLoad } from "./$types";
 
-export async function load({ params, parent, fetch }) {
+export const load: PageLoad = async ({ params, parent, fetch }) => {
 	await fetch(`${base}/api/v2/models/${params.model}/subscribe`, {
 		method: "POST",
 	});
@@ -11,4 +12,4 @@ export async function load({ params, parent, fetch }) {
 			activeModel: params.model,
 		})),
 	};
-}
+};

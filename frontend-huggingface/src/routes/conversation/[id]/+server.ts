@@ -6,6 +6,7 @@ import type { Message } from "$lib/types/Message";
 import { error } from "@sveltejs/kit";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 import {
 	MessageUpdateStatus,
 	MessageUpdateType,
@@ -25,18 +26,15 @@ import type { TextGenerationContext } from "$lib/server/textGeneration/types";
 import { logger } from "$lib/server/logger.js";
 import { AbortRegistry } from "$lib/server/abortRegistry";
 import { MetricsServer } from "$lib/server/metrics";
+import type { RequestHandler } from "./$types";
 
-export async function POST({ request, locals, params, getClientAddress }) {
+export const POST: RequestHandler = async ({ request, locals, params, getClientAddress }) => {
 	const id = z.string().parse(params.id);
 	const convId = new ObjectId(id);
 	const promptedAt = new Date();
 
-	const userId = locals.user?._id ?? locals.sessionId;
-
-	// check user
-	if (!userId) {
-		error(401, "Unauthorized");
-	}
+	// Single-user system: use fixed admin user ID
+	const userId = ADMIN_USER_ID;
 
 	// check if the user has access to the conversation
 	const convBeforeCheck = await collections.conversations.findOne({
@@ -185,8 +183,8 @@ export async function POST({ request, locals, params, getClientAddress }) {
 	const inputFiles = await Promise.all(
 		form
 			.getAll("files")
-			.filter((entry): entry is File => entry instanceof File && entry.size > 0)
-			.map(async (file) => {
+			.filter((entry: FormDataEntryValue): entry is File => entry instanceof File && entry.size > 0)
+			.map(async (file: File) => {
 				const [type, ...name] = file.name.split(";");
 
 				return {
@@ -543,12 +541,30 @@ export async function POST({ request, locals, params, getClientAddress }) {
 				// Add billing organization to locals for the endpoint to use
 				locals.billingOrganization = userSettings?.billingOrganization;
 
+				const maxTokensOverrideRaw = userSettings?.maxTokensOverrides?.[model.id];
+				const truncateOverrideRaw = userSettings?.truncateOverrides?.[model.id];
+				const maxTokensOverride =
+					typeof maxTokensOverrideRaw === "number" && maxTokensOverrideRaw > 0
+						? maxTokensOverrideRaw
+						: undefined;
+				const truncateOverride =
+					typeof truncateOverrideRaw === "number" && truncateOverrideRaw > 0
+						? truncateOverrideRaw
+						: undefined;
+				const generateSettings =
+					maxTokensOverride || truncateOverride
+						? {
+								...(maxTokensOverride ? { max_tokens: maxTokensOverride } : {}),
+								...(truncateOverride ? { truncate: truncateOverride } : {}),
+							}
+						: undefined;
+
 				const ctx: TextGenerationContext = {
 					model,
 					endpoint: await model.getEndpoint(),
 					conv,
 					messages: messagesForPrompt,
-					assistant: undefined,
+					assistant: generateSettings ? { generateSettings } : undefined,
 					promptedAt,
 					ip: getClientAddress(),
 					username: locals.user?.username,
@@ -652,9 +668,9 @@ export async function POST({ request, locals, params, getClientAddress }) {
 			"Content-Type": "application/jsonl",
 		},
 	});
-}
+};
 
-export async function DELETE({ locals, params }) {
+export const DELETE: RequestHandler = async ({ locals, params }) => {
 	const convId = new ObjectId(params.id);
 
 	const conv = await collections.conversations.findOne({
@@ -669,9 +685,9 @@ export async function DELETE({ locals, params }) {
 	await collections.conversations.deleteOne({ _id: conv._id });
 
 	return new Response();
-}
+};
 
-export async function PATCH({ request, locals, params }) {
+export const PATCH: RequestHandler = async ({ request, locals, params }) => {
 	const values = z
 		.object({
 			title: z.string().trim().min(1).max(100).optional(),
@@ -708,4 +724,4 @@ export async function PATCH({ request, locals, params }) {
 	);
 
 	return new Response();
-}
+};

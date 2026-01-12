@@ -200,10 +200,7 @@ describe("TestQueryPreprocessing", () => {
 		const testName = "limit_entities_to_10";
 		try {
 			// Create text with many potential entities
-			const manyWords = Array.from(
-				{ length: 20 },
-				(_, i) => `Entity${i}`
-			).join(" ");
+			const manyWords = Array.from({ length: 20 }, (_, i) => `Entity${i}`).join(" ");
 			const entities = service.extractEntities(manyWords);
 
 			expect(entities.length).toBeLessThanOrEqual(10);
@@ -279,10 +276,31 @@ describe("TestTierScoreCalculation", () => {
 						concept_id: "python",
 						tier_success_rates: {
 							working: { wilson_score: 0.3, uses: 5, worked: 1, failed: 3, partial: 1, unknown: 0 },
-							history: { wilson_score: 0.8, uses: 10, worked: 8, failed: 2, partial: 0, unknown: 0 },
-							patterns: { wilson_score: 0.4, uses: 3, worked: 1, failed: 1, partial: 1, unknown: 0 },
+							history: {
+								wilson_score: 0.8,
+								uses: 10,
+								worked: 8,
+								failed: 2,
+								partial: 0,
+								unknown: 0,
+							},
+							patterns: {
+								wilson_score: 0.4,
+								uses: 3,
+								worked: 1,
+								failed: 1,
+								partial: 1,
+								unknown: 0,
+							},
 							books: { wilson_score: 0.6, uses: 4, worked: 2, failed: 1, partial: 1, unknown: 0 },
-							memory_bank: { wilson_score: 0.2, uses: 2, worked: 0, failed: 1, partial: 1, unknown: 0 },
+							memory_bank: {
+								wilson_score: 0.2,
+								uses: 2,
+								worked: 0,
+								failed: 1,
+								partial: 1,
+								unknown: 0,
+							},
 						},
 					},
 				]),
@@ -314,10 +332,31 @@ describe("TestTierScoreCalculation", () => {
 						concept_id: "python",
 						tier_success_rates: {
 							working: { wilson_score: 0.5, uses: 5, worked: 2, failed: 2, partial: 1, unknown: 0 },
-							history: { wilson_score: 0.7, uses: 10, worked: 7, failed: 3, partial: 0, unknown: 0 },
-							patterns: { wilson_score: 0.3, uses: 3, worked: 1, failed: 2, partial: 0, unknown: 0 },
+							history: {
+								wilson_score: 0.7,
+								uses: 10,
+								worked: 7,
+								failed: 3,
+								partial: 0,
+								unknown: 0,
+							},
+							patterns: {
+								wilson_score: 0.3,
+								uses: 3,
+								worked: 1,
+								failed: 2,
+								partial: 0,
+								unknown: 0,
+							},
 							books: { wilson_score: 0.4, uses: 2, worked: 1, failed: 1, partial: 0, unknown: 0 },
-							memory_bank: { wilson_score: 0.2, uses: 1, worked: 0, failed: 1, partial: 0, unknown: 0 },
+							memory_bank: {
+								wilson_score: 0.2,
+								uses: 1,
+								worked: 0,
+								failed: 1,
+								partial: 0,
+								unknown: 0,
+							},
 						},
 					},
 					{
@@ -326,9 +365,23 @@ describe("TestTierScoreCalculation", () => {
 						tier_success_rates: {
 							working: { wilson_score: 0.6, uses: 4, worked: 3, failed: 1, partial: 0, unknown: 0 },
 							history: { wilson_score: 0.8, uses: 8, worked: 7, failed: 1, partial: 0, unknown: 0 },
-							patterns: { wilson_score: 0.5, uses: 2, worked: 1, failed: 1, partial: 0, unknown: 0 },
+							patterns: {
+								wilson_score: 0.5,
+								uses: 2,
+								worked: 1,
+								failed: 1,
+								partial: 0,
+								unknown: 0,
+							},
 							books: { wilson_score: 0.3, uses: 1, worked: 0, failed: 1, partial: 0, unknown: 0 },
-							memory_bank: { wilson_score: 0.1, uses: 1, worked: 0, failed: 1, partial: 0, unknown: 0 },
+							memory_bank: {
+								wilson_score: 0.1,
+								uses: 1,
+								worked: 0,
+								failed: 1,
+								partial: 0,
+								unknown: 0,
+							},
 						},
 					},
 				]),
@@ -429,10 +482,31 @@ describe("TestQueryRouting", () => {
 						concept_id: "test",
 						tier_success_rates: {
 							working: { wilson_score: 0.1, uses: 1, worked: 0, failed: 0, partial: 1, unknown: 0 },
-							history: { wilson_score: 0.15, uses: 1, worked: 0, failed: 0, partial: 1, unknown: 0 },
-							patterns: { wilson_score: 0.1, uses: 1, worked: 0, failed: 1, partial: 0, unknown: 0 },
+							history: {
+								wilson_score: 0.15,
+								uses: 1,
+								worked: 0,
+								failed: 0,
+								partial: 1,
+								unknown: 0,
+							},
+							patterns: {
+								wilson_score: 0.1,
+								uses: 1,
+								worked: 0,
+								failed: 1,
+								partial: 0,
+								unknown: 0,
+							},
 							books: { wilson_score: 0.1, uses: 0, worked: 0, failed: 0, partial: 0, unknown: 0 },
-							memory_bank: { wilson_score: 0.1, uses: 0, worked: 0, failed: 0, partial: 0, unknown: 0 },
+							memory_bank: {
+								wilson_score: 0.1,
+								uses: 0,
+								worked: 0,
+								failed: 0,
+								partial: 0,
+								unknown: 0,
+							},
 						},
 					},
 				]),
@@ -460,10 +534,31 @@ describe("TestQueryRouting", () => {
 						concept_id: "python",
 						tier_success_rates: {
 							working: { wilson_score: 0.5, uses: 5, worked: 2, failed: 2, partial: 1, unknown: 0 },
-							history: { wilson_score: 0.75, uses: 10, worked: 8, failed: 2, partial: 0, unknown: 0 },
-							patterns: { wilson_score: 0.35, uses: 4, worked: 2, failed: 2, partial: 0, unknown: 0 },
+							history: {
+								wilson_score: 0.75,
+								uses: 10,
+								worked: 8,
+								failed: 2,
+								partial: 0,
+								unknown: 0,
+							},
+							patterns: {
+								wilson_score: 0.35,
+								uses: 4,
+								worked: 2,
+								failed: 2,
+								partial: 0,
+								unknown: 0,
+							},
 							books: { wilson_score: 0.55, uses: 4, worked: 3, failed: 1, partial: 0, unknown: 0 },
-							memory_bank: { wilson_score: 0.2, uses: 2, worked: 0, failed: 2, partial: 0, unknown: 0 },
+							memory_bank: {
+								wilson_score: 0.2,
+								uses: 2,
+								worked: 0,
+								failed: 2,
+								partial: 0,
+								unknown: 0,
+							},
 						},
 					},
 				]),
@@ -494,10 +589,31 @@ describe("TestQueryRouting", () => {
 						concept_id: "python",
 						tier_success_rates: {
 							working: { wilson_score: 0.3, uses: 5, worked: 1, failed: 3, partial: 1, unknown: 0 },
-							history: { wilson_score: 0.95, uses: 50, worked: 48, failed: 2, partial: 0, unknown: 0 },
-							patterns: { wilson_score: 0.2, uses: 3, worked: 0, failed: 2, partial: 1, unknown: 0 },
+							history: {
+								wilson_score: 0.95,
+								uses: 50,
+								worked: 48,
+								failed: 2,
+								partial: 0,
+								unknown: 0,
+							},
+							patterns: {
+								wilson_score: 0.2,
+								uses: 3,
+								worked: 0,
+								failed: 2,
+								partial: 1,
+								unknown: 0,
+							},
 							books: { wilson_score: 0.15, uses: 2, worked: 0, failed: 1, partial: 1, unknown: 0 },
-							memory_bank: { wilson_score: 0.1, uses: 1, worked: 0, failed: 1, partial: 0, unknown: 0 },
+							memory_bank: {
+								wilson_score: 0.1,
+								uses: 1,
+								worked: 0,
+								failed: 1,
+								partial: 0,
+								unknown: 0,
+							},
 						},
 					},
 				]),
@@ -609,7 +725,15 @@ describe("TestRoutingStatsUpdate", () => {
 				concept_id: "python",
 				tier_success_rates: {
 					working: { wilson_score: 0.5, uses: 5, worked: 2, failed: 2, partial: 1, unknown: 0 },
-					history: { wilson_score: 0.7, uses: 10, worked: 7, failed: 3, partial: 0, unknown: 0, last_used_at: null },
+					history: {
+						wilson_score: 0.7,
+						uses: 10,
+						worked: 7,
+						failed: 3,
+						partial: 0,
+						unknown: 0,
+						last_used_at: null,
+					},
 					patterns: { wilson_score: 0.3, uses: 3, worked: 1, failed: 2, partial: 0, unknown: 0 },
 					books: { wilson_score: 0.4, uses: 2, worked: 1, failed: 1, partial: 0, unknown: 0 },
 					memory_bank: { wilson_score: 0.2, uses: 1, worked: 0, failed: 1, partial: 0, unknown: 0 },
@@ -762,10 +886,9 @@ describe("TestContextTypeDetection", () => {
 	it("should use recent messages for context", () => {
 		const testName = "use_recent_messages";
 		try {
-			const context = service.detectContextType(
-				"How do I fix it?",
-				["I'm having an error with docker"]
-			);
+			const context = service.detectContextType("How do I fix it?", [
+				"I'm having an error with docker",
+			]);
 			// Should detect docker from recent messages
 			expect(context).toBe("docker");
 
@@ -798,11 +921,13 @@ describe("TestContextInsights", () => {
 				toArray: vi.fn().mockResolvedValue([]),
 			});
 			mockActionEffectiveness.find.mockReturnValue({
+				toArray: vi.fn().mockResolvedValue([]),
 				sort: vi.fn(() => ({
 					toArray: vi.fn().mockResolvedValue([]),
 				})),
 			});
 			mockKgEdges.find.mockReturnValue({
+				toArray: vi.fn().mockResolvedValue([]),
 				sort: vi.fn(() => ({
 					limit: vi.fn(() => ({
 						toArray: vi.fn().mockResolvedValue([]),

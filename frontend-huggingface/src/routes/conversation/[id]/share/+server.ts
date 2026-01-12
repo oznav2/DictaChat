@@ -5,8 +5,9 @@ import { hashConv } from "$lib/utils/hashConv";
 import { error } from "@sveltejs/kit";
 import { ObjectId } from "mongodb";
 import { nanoid } from "nanoid";
+import type { RequestHandler } from "./$types";
 
-export async function POST({ params, locals }) {
+export const POST: RequestHandler = async ({ params, locals }) => {
 	const conversation = await collections.conversations.findOne({
 		_id: new ObjectId(params.id),
 		...authCondition(locals),
@@ -66,4 +67,4 @@ export async function POST({ params, locals }) {
 		}),
 		{ headers: { "Content-Type": "application/json" } }
 	);
-}
+};

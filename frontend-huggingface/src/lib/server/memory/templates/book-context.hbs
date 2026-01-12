@@ -1,39 +1,45 @@
-{{!-- @description: Formats book chunk context for retrieval augmentation --}}
-{{!-- @category: retrieval --}}
+{{! @description: Formats book chunk context for retrieval augmentation }}
+{{! @category: retrieval }}
 
 {{#ifLang "he"}}
-מקורות מספרים/מסמכים:
+	מקורות מספרים/מסמכים:
 {{else}}
-Book/Document Sources:
+	Book/Document Sources:
 {{/ifLang}}
 
 {{#each chunks}}
----
-{{#ifLang "he"}}
-מקור: {{default this.title "לא ידוע"}}{{#if this.author}} מאת {{this.author}}{{/if}}
-{{#if this.chapter}}פרק: {{this.chapter}}{{/if}}
-{{#if this.page}}עמוד: {{this.page}}{{/if}}
-{{else}}
-Source: {{default this.title "Unknown"}}{{#if this.author}} by {{this.author}}{{/if}}
-{{#if this.chapter}}Chapter: {{this.chapter}}{{/if}}
-{{#if this.page}}Page: {{this.page}}{{/if}}
-{{/ifLang}}
+	---
+	{{#ifLang "he"}}
+		מקור:
+		{{default this.title "לא ידוע"}}{{#if this.author}} מאת {{this.author}}{{/if}}
+		{{#if this.chapter}}פרק: {{this.chapter}}{{/if}}
+		{{#if this.page}}עמוד: {{this.page}}{{/if}}
+	{{else}}
+		Source:
+		{{default this.title "Unknown"}}{{#if this.author}} by {{this.author}}{{/if}}
+		{{#if this.chapter}}Chapter: {{this.chapter}}{{/if}}
+		{{#if this.page}}Page: {{this.page}}{{/if}}
+	{{/ifLang}}
 
-{{this.content}}
+	{{this.content}}
 
-{{#if this.relevance_score}}
-{{#ifLang "he"}}
-[רלוונטיות: {{percent this.relevance_score}}]
-{{else}}
-[Relevance: {{percent this.relevance_score}}]
-{{/ifLang}}
-{{/if}}
+	{{#if this.relevance_score}}
+		{{#ifLang "he"}}
+			[רלוונטיות:
+			{{percent this.relevance_score}}]
+		{{else}}
+			[Relevance:
+			{{percent this.relevance_score}}]
+		{{/ifLang}}
+	{{/if}}
 {{/each}}
 
 {{#if total_chunks}}
-{{#ifLang "he"}}
-סה"כ קטעים שנמצאו: {{total_chunks}}
-{{else}}
-Total chunks found: {{total_chunks}}
-{{/ifLang}}
+	{{#ifLang "he"}}
+		סה"כ קטעים שנמצאו:
+		{{total_chunks}}
+	{{else}}
+		Total chunks found:
+		{{total_chunks}}
+	{{/ifLang}}
 {{/if}}

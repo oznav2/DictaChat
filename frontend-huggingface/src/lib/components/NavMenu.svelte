@@ -15,7 +15,7 @@
 	import IconMoon from "$lib/components/icons/IconMoon.svelte";
 	import { switchTheme, subscribeToTheme } from "$lib/switchTheme";
 	import { isAborted } from "$lib/stores/isAborted";
-	import { onDestroy } from "svelte";
+	import { onDestroy, onMount } from "svelte";
 
 	import NavConversationItem from "./NavConversationItem.svelte";
 	import type { LayoutData } from "../../routes/$types";
@@ -31,7 +31,7 @@
 	import { enabledServersCount } from "$lib/stores/mcpServers";
 	import MCPServerManager from "./mcp/MCPServerManager.svelte";
 	import { memoryUi } from "$lib/stores/memoryUi";
-	
+
 	const publicConfig = usePublicConfig();
 	const client = useAPIClient();
 
@@ -56,6 +56,7 @@
 	}: Props = $props();
 
 	let hasMore = $state(true);
+	let userPollInterval: ReturnType<typeof setInterval> | null = null;
 
 	function handleNewChatClick(e: MouseEvent) {
 		isAborted.set(true);
@@ -215,8 +216,27 @@
 		window.addEventListener("keydown", handleMemoryKeydown);
 	}
 
+	async function pollUser() {
+		try {
+			const nextUser = await client.user.get().then(handleResponse);
+			user = nextUser;
+		} catch {
+			// ignore
+		}
+	}
+
+	onMount(() => {
+		if (!browser) return;
+		pollUser();
+		userPollInterval = setInterval(pollUser, 5000);
+	});
+
 	onDestroy(() => {
 		unsubscribeTheme?.();
+		if (userPollInterval) {
+			clearInterval(userPollInterval);
+			userPollInterval = null;
+		}
 		if (!browser) return;
 
 		window.removeEventListener("pointermove", handlePointerMove);
@@ -315,65 +335,85 @@
 
 		<!-- Memory Section - Available to all users -->
 		<div class="mt-1 border-t border-gray-100 pt-1 dark:border-gray-700">
-				<button
-					onclick={() => {
-						if (!requireAuthUser()) {
-							memoryUi.openPersonality();
-						}
-					}}
-					class="flex h-9 w-full flex-none items-center gap-1.5 rounded-lg pl-2.5 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-					title="Ctrl+Shift+P"
-				>
-					<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-					</svg>
-					אישיות וזהות
-				</button>
-				<button
-					onclick={() => {
-						if (!requireAuthUser()) {
-							memoryUi.openBooksProcessor();
-						}
-					}}
-					class="flex h-9 w-full flex-none items-center gap-1.5 rounded-lg pl-2.5 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-					title="Upload and process documents"
-				>
-					<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-					</svg>
-					ספרים ומסמכים
-				</button>
-				<button
-					onclick={() => {
-						if (!requireAuthUser()) {
-							memoryUi.openMemoryBank();
-						}
-					}}
-					class="flex h-9 w-full flex-none items-center gap-1.5 rounded-lg pl-2.5 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-					title="Manage saved memories"
-				>
-					<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-					</svg>
-					בנק זיכרון
-				</button>
-				<button
-					onclick={() => {
-						if (!requireAuthUser()) {
-							memoryUi.toggleRightDock();
-						}
-					}}
-					class="flex h-9 w-full flex-none items-center gap-1.5 rounded-lg pl-2.5 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
-					title="Ctrl+Shift+M"
-				>
-					<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-					</svg>
-					זיכרון ומידע
-					{#if isRightDockOpen}
-						<span class="ml-auto size-2 rounded-full bg-blue-500"></span>
-					{/if}
-				</button>
+			<button
+				onclick={() => {
+					if (!requireAuthUser()) {
+						memoryUi.openPersonality();
+					}
+				}}
+				class="flex h-9 w-full flex-none items-center gap-1.5 rounded-lg pl-2.5 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+				title="Ctrl+Shift+P"
+			>
+				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+					/>
+				</svg>
+				אישיות וזהות
+			</button>
+			<button
+				onclick={() => {
+					if (!requireAuthUser()) {
+						memoryUi.openBooksProcessor();
+					}
+				}}
+				class="flex h-9 w-full flex-none items-center gap-1.5 rounded-lg pl-2.5 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+				title="Upload and process documents"
+			>
+				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+					/>
+				</svg>
+				ספרים ומסמכים
+			</button>
+			<button
+				onclick={() => {
+					if (!requireAuthUser()) {
+						memoryUi.openMemoryBank();
+					}
+				}}
+				class="flex h-9 w-full flex-none items-center gap-1.5 rounded-lg pl-2.5 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+				title="Manage saved memories"
+			>
+				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+					/>
+				</svg>
+				בנק זיכרון
+			</button>
+			<button
+				onclick={() => {
+					if (!requireAuthUser()) {
+						memoryUi.toggleRightDock();
+					}
+				}}
+				class="flex h-9 w-full flex-none items-center gap-1.5 rounded-lg pl-2.5 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+				title="Ctrl+Shift+M"
+			>
+				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+					/>
+				</svg>
+				זיכרון ומידע
+				{#if isRightDockOpen}
+					<span class="ml-auto size-2 rounded-full bg-blue-500"></span>
+				{/if}
+			</button>
 		</div>
 
 		<span class="flex gap-1">

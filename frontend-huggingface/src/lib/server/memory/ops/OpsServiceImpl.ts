@@ -10,50 +10,47 @@
  */
 
 import { logger } from "$lib/server/logger";
+import type { Db, WithId } from "mongodb";
 import type { MemoryMongoStore } from "../stores/MemoryMongoStore";
 import type { QdrantAdapter } from "../adapters/QdrantAdapter";
 import type { DictaEmbeddingClient } from "../embedding/DictaEmbeddingClient";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
 import type { PromotionService, PromotionStats } from "../learning/PromotionService";
-import type { ReindexService, ReindexParams, ReindexResult } from "./ReindexService";
+import type { ReindexService, ReindexResult } from "./ReindexService";
 import type {
 	ConsistencyService,
 	ConsistencyCheckParams,
 	ConsistencyCheckResult,
 } from "./ConsistencyService";
-import type { MemoryTier } from "../types";
+import type { MemoryTier, MemoryStatus, StatsSnapshot } from "../types";
+import { MEMORY_COLLECTIONS } from "../stores/schemas";
 
 /**
  * Export backup parameters
  */
 export interface ExportBackupParams {
 	userId: string;
-	includeTiers?: MemoryTier[];
+	includeTiers?: MemoryTier[] | "all";
+	includeArchived?: boolean;
 	includeOutcomes?: boolean;
+	includeActionOutcomes?: boolean;
 	includeKg?: boolean;
+	includeRoutingKg?: boolean;
+	includeActionKg?: boolean;
+	includeVersions?: boolean;
+	includePersonalityMappings?: boolean;
+	includeReindexCheckpoints?: boolean;
+	includeConsistencyLogs?: boolean;
 }
 
 /**
  * Export backup result
  */
 export interface ExportBackupResult {
-	success: boolean;
-	data: {
-		version: string;
-		exportedAt: string;
-		userId: string;
-		memories: unknown[];
-		outcomes?: unknown[];
-		kgNodes?: unknown[];
-		kgEdges?: unknown[];
-	};
-	stats: {
-		memoriesCount: number;
-		outcomesCount: number;
-		kgNodesCount: number;
-		kgEdgesCount: number;
-	};
+	exportedAt: string;
+	size_bytes: number;
+	payload: BackupPayload;
 }
 
 /**
@@ -61,7 +58,7 @@ export interface ExportBackupResult {
  */
 export interface ImportBackupParams {
 	userId: string;
-	data: ExportBackupResult["data"];
+	payload: BackupPayload;
 	dryRun?: boolean;
 	mergeStrategy?: "replace" | "merge" | "skip_existing";
 }
@@ -75,25 +72,19 @@ export interface ImportBackupResult {
 	stats: {
 		memoriesImported: number;
 		memoriesSkipped: number;
+		versionsImported: number;
 		outcomesImported: number;
+		actionOutcomesImported: number;
 		kgNodesImported: number;
 		kgEdgesImported: number;
+		routingConceptsImported: number;
+		routingStatsImported: number;
+		actionEffectivenessImported: number;
+		personalityMappingsImported: number;
+		reindexCheckpointsImported: number;
+		consistencyLogsImported: number;
 	};
 	errors: string[];
-}
-
-/**
- * Memory system stats
- */
-export interface MemoryStats {
-	timestamp: Date;
-	byTier: Record<MemoryTier, { count: number; avgScore: number }>;
-	totalActive: number;
-	totalArchived: number;
-	qdrantHealth: { healthy: boolean; pointCount?: number };
-	lastPromotion?: Date;
-	lastConsistencyCheck?: Date;
-	lastReindex?: Date;
 }
 
 export interface OpsServiceImplConfig {
@@ -103,10 +94,21 @@ export interface OpsServiceImplConfig {
 	promotionService: PromotionService;
 	reindexService: ReindexService;
 	consistencyService: ConsistencyService;
+	db: Db;
 	config?: MemoryConfig;
 }
 
-const BACKUP_VERSION = "1.0.0";
+export interface BackupPayload {
+	version: string;
+	exportedAt: string;
+	userId: string;
+	collections: Record<string, unknown[]>;
+	meta: {
+		format: "bricksllm_backup";
+	};
+}
+
+const BACKUP_VERSION = "2.0.0";
 
 export class OpsServiceImpl {
 	private mongo: MemoryMongoStore;
@@ -115,6 +117,7 @@ export class OpsServiceImpl {
 	private promotion: PromotionService;
 	private reindex: ReindexService;
 	private consistency: ConsistencyService;
+	private db: Db;
 	private config: MemoryConfig;
 
 	constructor(params: OpsServiceImplConfig) {
@@ -124,7 +127,32 @@ export class OpsServiceImpl {
 		this.promotion = params.promotionService;
 		this.reindex = params.reindexService;
 		this.consistency = params.consistencyService;
+		this.db = params.db;
 		this.config = params.config ?? defaultMemoryConfig;
+	}
+
+	private stripMongoIds<T extends Record<string, unknown>>(
+		doc: WithId<T>
+	): Record<string, unknown> {
+		const { _id, ...rest } = doc as unknown as { _id?: unknown } & Record<string, unknown>;
+		return rest;
+	}
+
+	private reviveDates(value: unknown): unknown {
+		if (Array.isArray(value)) return value.map((v) => this.reviveDates(v));
+		if (!value || typeof value !== "object") return value;
+		const obj = value as Record<string, unknown>;
+		for (const [k, v] of Object.entries(obj)) {
+			if (typeof v === "string" && (k.endsWith("_at") || k.endsWith("At"))) {
+				const ms = Date.parse(v);
+				if (Number.isFinite(ms)) {
+					obj[k] = new Date(ms);
+					continue;
+				}
+			}
+			obj[k] = this.reviveDates(v);
+		}
+		return obj;
 	}
 
 	/**
@@ -138,9 +166,16 @@ export class OpsServiceImpl {
 	/**
 	 * Trigger reindex from Mongo
 	 */
-	async reindexFromMongo(params: ReindexParams = {}): Promise<ReindexResult> {
-		logger.info({ params }, "OpsService: Reindex triggered");
-		return this.reindex.rebuild(params);
+	async reindexFromMongo(
+		params: { userId?: string; tier?: MemoryTier; since?: string } = {}
+	): Promise<ReindexResult> {
+		const since = params.since ? new Date(params.since) : undefined;
+		logger.info({ ...params, since }, "OpsService: Reindex triggered");
+		return this.reindex.rebuild({
+			userId: params.userId,
+			tier: params.tier,
+			since,
+		});
 	}
 
 	/**
@@ -169,87 +204,168 @@ export class OpsServiceImpl {
 	 * Export user's memory data as backup
 	 */
 	async exportBackup(params: ExportBackupParams): Promise<ExportBackupResult> {
-		const { userId, includeTiers, includeOutcomes = true, includeKg = true } = params;
+		const {
+			userId,
+			includeTiers = "all",
+			includeArchived = true,
+			includeOutcomes = true,
+			includeActionOutcomes = true,
+			includeKg = true,
+			includeRoutingKg = true,
+			includeActionKg = true,
+			includeVersions = true,
+			includePersonalityMappings = true,
+			includeReindexCheckpoints = true,
+			includeConsistencyLogs = true,
+		} = params;
 
-		logger.info({ userId, includeTiers, includeOutcomes, includeKg }, "OpsService: Exporting backup");
-
-		try {
-			// Export memories
-			const memories = await this.mongo.query({
+		logger.info(
+			{
 				userId,
-				status: "active",
-				limit: 100000, // High limit for export
-			});
+				includeTiers,
+				includeArchived,
+				includeOutcomes,
+				includeActionOutcomes,
+				includeKg,
+				includeRoutingKg,
+				includeActionKg,
+				includeVersions,
+				includePersonalityMappings,
+			},
+			"OpsService: Exporting backup"
+		);
 
-			// Filter by tiers if specified
-			const filteredMemories = includeTiers
-				? memories.filter((m) => includeTiers.includes(m.tier as MemoryTier))
-				: memories;
+		const exportedAt = new Date().toISOString();
+		const collections: Record<string, unknown[]> = {};
 
-			// Export outcomes
-			let outcomes: unknown[] = [];
-			if (includeOutcomes) {
-				outcomes = await this.mongo.getOutcomesForUser(userId);
-			}
+		const {
+			items,
+			versions,
+			outcomes,
+			actionOutcomes,
+			kgNodes,
+			kgEdges,
+			personalityMappings,
+			reindexCheckpoints,
+			consistencyLogs,
+		} = this.mongo.getCollections();
 
-			// Export KG (simplified - just get nodes and edges for user)
-			let kgNodes: unknown[] = [];
-			let kgEdges: unknown[] = [];
-			if (includeKg) {
-				const kg = await this.mongo.getKgForUser(userId);
-				kgNodes = kg.nodes;
-				kgEdges = kg.edges;
-			}
+		const tierFilter = includeTiers === "all" ? undefined : { $in: includeTiers as MemoryTier[] };
+		const statusFilter = includeArchived
+			? ({ $in: ["active", "archived", "deleted"] as const } as const)
+			: ("active" as const);
 
-			const result: ExportBackupResult = {
-				success: true,
-				data: {
-					version: BACKUP_VERSION,
-					exportedAt: new Date().toISOString(),
-					userId,
-					memories: filteredMemories,
-					outcomes: includeOutcomes ? outcomes : undefined,
-					kgNodes: includeKg ? kgNodes : undefined,
-					kgEdges: includeKg ? kgEdges : undefined,
-				},
-				stats: {
-					memoriesCount: filteredMemories.length,
-					outcomesCount: outcomes.length,
-					kgNodesCount: kgNodes.length,
-					kgEdgesCount: kgEdges.length,
-				},
-			};
+		const itemDocs = await items
+			.find({
+				user_id: userId,
+				...(tierFilter ? { tier: tierFilter } : {}),
+				status: statusFilter,
+			})
+			.toArray();
+		collections[MEMORY_COLLECTIONS.ITEMS] = itemDocs.map((d) => this.stripMongoIds(d));
 
-			logger.info({ userId, stats: result.stats }, "OpsService: Backup exported");
-			return result;
-		} catch (err) {
-			logger.error({ err, userId }, "OpsService: Backup export failed");
-			return {
-				success: false,
-				data: {
-					version: BACKUP_VERSION,
-					exportedAt: new Date().toISOString(),
-					userId,
-					memories: [],
-				},
-				stats: {
-					memoriesCount: 0,
-					outcomesCount: 0,
-					kgNodesCount: 0,
-					kgEdgesCount: 0,
-				},
-			};
+		if (includeVersions) {
+			const versionDocs = await versions.find({ user_id: userId }).toArray();
+			collections[MEMORY_COLLECTIONS.VERSIONS] = versionDocs.map((d) => this.stripMongoIds(d));
 		}
+
+		if (includeOutcomes) {
+			const outcomeDocs = await outcomes.find({ user_id: userId }).toArray();
+			collections[MEMORY_COLLECTIONS.OUTCOMES] = outcomeDocs.map((d) => this.stripMongoIds(d));
+		}
+
+		if (includeOutcomes) {
+			const knownSolutions = await this.db
+				.collection(MEMORY_COLLECTIONS.KNOWN_SOLUTIONS)
+				.find({ user_id: userId })
+				.toArray();
+			collections[MEMORY_COLLECTIONS.KNOWN_SOLUTIONS] = knownSolutions.map((d) =>
+				this.stripMongoIds(d as any)
+			);
+		}
+
+		if (includeActionOutcomes) {
+			const actionOutcomeDocs = await actionOutcomes.find({ user_id: userId }).toArray();
+			collections[MEMORY_COLLECTIONS.ACTION_OUTCOMES] = actionOutcomeDocs.map((d) =>
+				this.stripMongoIds(d)
+			);
+		}
+
+		if (includeKg) {
+			const kgNodeDocs = await kgNodes.find({ user_id: userId }).toArray();
+			const kgEdgeDocs = await kgEdges.find({ user_id: userId }).toArray();
+			collections[MEMORY_COLLECTIONS.KG_NODES] = kgNodeDocs.map((d) => this.stripMongoIds(d));
+			collections[MEMORY_COLLECTIONS.KG_EDGES] = kgEdgeDocs.map((d) => this.stripMongoIds(d));
+		}
+
+		if (includeRoutingKg) {
+			const routingConcepts = await this.db
+				.collection("kg_routing_concepts")
+				.find({ user_id: userId })
+				.toArray();
+			const routingStats = await this.db
+				.collection("kg_routing_stats")
+				.find({ user_id: userId })
+				.toArray();
+			collections["kg_routing_concepts"] = routingConcepts.map((d) => this.stripMongoIds(d as any));
+			collections["kg_routing_stats"] = routingStats.map((d) => this.stripMongoIds(d as any));
+		}
+
+		if (includeActionKg) {
+			const actionEff = await this.db
+				.collection("kg_action_effectiveness")
+				.find({ user_id: userId })
+				.toArray();
+			collections["kg_action_effectiveness"] = actionEff.map((d) => this.stripMongoIds(d as any));
+
+			const rollups = await this.db
+				.collection("kg_context_action_effectiveness")
+				.find({ user_id: userId })
+				.toArray();
+			collections["kg_context_action_effectiveness"] = rollups.map((d) =>
+				this.stripMongoIds(d as any)
+			);
+		}
+
+		if (includePersonalityMappings) {
+			const mappingDocs = await personalityMappings.find({ user_id: userId }).toArray();
+			collections[MEMORY_COLLECTIONS.PERSONALITY_MAPPINGS] = mappingDocs.map((d) =>
+				this.stripMongoIds(d)
+			);
+		}
+
+		if (includeReindexCheckpoints) {
+			const checkpointDocs = await reindexCheckpoints.find({ user_id: userId }).toArray();
+			collections[MEMORY_COLLECTIONS.REINDEX_CHECKPOINTS] = checkpointDocs.map((d) =>
+				this.stripMongoIds(d)
+			);
+		}
+
+		if (includeConsistencyLogs) {
+			const logDocs = await consistencyLogs.find({ user_id: userId }).toArray();
+			collections[MEMORY_COLLECTIONS.CONSISTENCY_LOGS] = logDocs.map((d) => this.stripMongoIds(d));
+		}
+
+		const payload: BackupPayload = {
+			version: BACKUP_VERSION,
+			exportedAt,
+			userId,
+			collections,
+			meta: { format: "bricksllm_backup" },
+		};
+
+		const size_bytes = Buffer.byteLength(JSON.stringify(payload), "utf8");
+		return { exportedAt, size_bytes, payload };
 	}
 
 	/**
 	 * Import backup data
 	 */
 	async importBackup(params: ImportBackupParams): Promise<ImportBackupResult> {
-		const { userId, data, dryRun = false, mergeStrategy = "merge" } = params;
+		const { userId, payload, dryRun = false, mergeStrategy = "merge" } = params;
 
 		logger.info(
-			{ userId, dryRun, mergeStrategy, version: data.version },
+			{ userId, dryRun, mergeStrategy, version: payload.version },
 			"OpsService: Importing backup"
 		);
 
@@ -259,129 +375,352 @@ export class OpsServiceImpl {
 			stats: {
 				memoriesImported: 0,
 				memoriesSkipped: 0,
+				versionsImported: 0,
 				outcomesImported: 0,
+				actionOutcomesImported: 0,
 				kgNodesImported: 0,
 				kgEdgesImported: 0,
+				routingConceptsImported: 0,
+				routingStatsImported: 0,
+				actionEffectivenessImported: 0,
+				personalityMappingsImported: 0,
+				reindexCheckpointsImported: 0,
+				consistencyLogsImported: 0,
 			},
 			errors: [],
 		};
 
 		try {
-			// Validate version
-			if (!data.version || !data.version.startsWith("1.")) {
-				result.errors.push(`Unsupported backup version: ${data.version}`);
+			if (!payload?.meta || payload.meta.format !== "bricksllm_backup") {
+				result.errors.push("Invalid backup payload format");
 				result.success = false;
 				return result;
 			}
 
-			// Import memories
-			for (const memory of data.memories as Array<{
-				memory_id: string;
-				content: string;
-				tier: string;
-				tags?: string[];
-			}>) {
+			if (!payload.version || !payload.version.startsWith("2.")) {
+				result.errors.push(`Unsupported backup version: ${payload.version}`);
+				result.success = false;
+				return result;
+			}
+
+			const collections = payload.collections ?? {};
+			const {
+				items,
+				versions,
+				outcomes,
+				actionOutcomes,
+				kgNodes,
+				kgEdges,
+				personalityMappings,
+				reindexCheckpoints,
+				consistencyLogs,
+			} = this.mongo.getCollections();
+
+			const clearUserData = async (name: string) => {
+				if (dryRun) return;
 				try {
-					// Check if exists
-					const existing = await this.mongo.getById(memory.memory_id, userId);
-
-					if (existing && mergeStrategy === "skip_existing") {
-						result.stats.memoriesSkipped++;
-						continue;
-					}
-
-					if (!dryRun) {
-						if (existing && mergeStrategy === "replace") {
-							// Archive existing and create new
-							await this.mongo.archive(memory.memory_id, userId);
-						}
-
-						// Generate embedding
-						const embeddingResult = await this.embedding.embed(memory.content);
-						if (!embeddingResult.success || !embeddingResult.embedding) {
-							result.errors.push(`Failed to embed memory ${memory.memory_id}`);
-							continue;
-						}
-
-						// Store in Mongo
-						await this.mongo.store({
-							memoryId: memory.memory_id,
-							userId,
-							content: memory.content,
-							tier: memory.tier as MemoryTier,
-							tags: memory.tags,
-							status: "active",
-						});
-
-						// Index in Qdrant
-						await this.qdrant.upsert({
-							id: memory.memory_id,
-							vector: embeddingResult.embedding,
-							payload: {
-								user_id: userId,
-								tier: memory.tier,
-								status: "active",
-								content: memory.content,
-								tags: memory.tags || [],
-							},
-						});
-					}
-
-					result.stats.memoriesImported++;
+					if (name === MEMORY_COLLECTIONS.ITEMS) await items.deleteMany({ user_id: userId });
+					else if (name === MEMORY_COLLECTIONS.VERSIONS)
+						await versions.deleteMany({ user_id: userId });
+					else if (name === MEMORY_COLLECTIONS.OUTCOMES)
+						await outcomes.deleteMany({ user_id: userId });
+					else if (name === MEMORY_COLLECTIONS.KNOWN_SOLUTIONS)
+						await this.db
+							.collection(MEMORY_COLLECTIONS.KNOWN_SOLUTIONS)
+							.deleteMany({ user_id: userId });
+					else if (name === MEMORY_COLLECTIONS.ACTION_OUTCOMES)
+						await actionOutcomes.deleteMany({ user_id: userId });
+					else if (name === MEMORY_COLLECTIONS.KG_NODES)
+						await kgNodes.deleteMany({ user_id: userId });
+					else if (name === MEMORY_COLLECTIONS.KG_EDGES)
+						await kgEdges.deleteMany({ user_id: userId });
+					else if (name === MEMORY_COLLECTIONS.PERSONALITY_MAPPINGS)
+						await personalityMappings.deleteMany({ user_id: userId });
+					else if (name === MEMORY_COLLECTIONS.REINDEX_CHECKPOINTS)
+						await reindexCheckpoints.deleteMany({ user_id: userId });
+					else if (name === MEMORY_COLLECTIONS.CONSISTENCY_LOGS)
+						await consistencyLogs.deleteMany({ user_id: userId });
+					else if (name === "kg_routing_concepts")
+						await this.db.collection("kg_routing_concepts").deleteMany({ user_id: userId });
+					else if (name === "kg_routing_stats")
+						await this.db.collection("kg_routing_stats").deleteMany({ user_id: userId });
+					else if (name === "kg_action_effectiveness")
+						await this.db.collection("kg_action_effectiveness").deleteMany({ user_id: userId });
+					else if (name === "kg_context_action_effectiveness")
+						await this.db
+							.collection("kg_context_action_effectiveness")
+							.deleteMany({ user_id: userId });
 				} catch (err) {
 					result.errors.push(
-						`Failed to import memory ${memory.memory_id}: ${err instanceof Error ? err.message : String(err)}`
+						`Failed to clear ${name}: ${err instanceof Error ? err.message : String(err)}`
 					);
 				}
-			}
+			};
 
-			// Import outcomes (if present)
-			if (data.outcomes && Array.isArray(data.outcomes)) {
-				for (const outcome of data.outcomes) {
-					if (!dryRun) {
-						try {
-							await this.mongo.importOutcome(outcome as Record<string, unknown>);
-							result.stats.outcomesImported++;
-						} catch (err) {
-							result.errors.push(`Failed to import outcome: ${err instanceof Error ? err.message : String(err)}`);
-						}
-					} else {
-						result.stats.outcomesImported++;
-					}
+			if (mergeStrategy === "replace") {
+				for (const name of Object.keys(collections)) {
+					await clearUserData(name);
 				}
 			}
 
-			// Import KG nodes
-			if (data.kgNodes && Array.isArray(data.kgNodes)) {
-				for (const node of data.kgNodes) {
-					if (!dryRun) {
-						try {
-							await this.mongo.importKgNode(node as Record<string, unknown>);
-							result.stats.kgNodesImported++;
-						} catch (err) {
-							result.errors.push(`Failed to import KG node: ${err instanceof Error ? err.message : String(err)}`);
-						}
-					} else {
-						result.stats.kgNodesImported++;
-					}
+			const rawItems = Array.isArray(collections[MEMORY_COLLECTIONS.ITEMS])
+				? (collections[MEMORY_COLLECTIONS.ITEMS] as Array<Record<string, unknown>>)
+				: [];
+
+			const itemsToEmbed: Array<{
+				id: string;
+				text: string;
+				tier: MemoryTier;
+				status: MemoryStatus;
+				doc: Record<string, unknown>;
+			}> = [];
+
+			for (const raw of rawItems) {
+				const revived = this.reviveDates({ ...raw }) as Record<string, unknown>;
+				const memoryId = String(revived.memory_id ?? "");
+				const text = String(revived.text ?? "");
+				const tier = String(revived.tier ?? "working") as MemoryTier;
+				const rawStatus = String(revived.status ?? "active");
+				const status: MemoryStatus =
+					rawStatus === "archived" || rawStatus === "deleted" ? rawStatus : "active";
+
+				if (!memoryId || !text) {
+					result.errors.push("Skipped invalid memory item missing memory_id/text");
+					continue;
 				}
+
+				const existing = await items.findOne({ user_id: userId, memory_id: memoryId });
+				if (existing && mergeStrategy === "skip_existing") {
+					result.stats.memoriesSkipped++;
+					continue;
+				}
+
+				if (!dryRun) {
+					await items.updateOne(
+						{ user_id: userId, memory_id: memoryId },
+						{
+							$set: {
+								...revived,
+								user_id: userId,
+							},
+							$setOnInsert: { created_at: new Date() },
+						},
+						{ upsert: true }
+					);
+				}
+
+				itemsToEmbed.push({ id: memoryId, text, tier, status, doc: revived });
+				result.stats.memoriesImported++;
 			}
 
-			// Import KG edges
-			if (data.kgEdges && Array.isArray(data.kgEdges)) {
-				for (const edge of data.kgEdges) {
+			if (!dryRun && itemsToEmbed.length > 0) {
+				const batch = await this.embedding.embedBatch(itemsToEmbed.map((m) => m.text));
+				const vectorsByIndex = new Map<number, number[]>();
+				for (let i = 0; i < itemsToEmbed.length; i++) {
+					const r = batch.results.find((res) => res.text === itemsToEmbed[i].text);
+					if (r?.vector?.length) vectorsByIndex.set(i, r.vector);
+				}
+
+				const points = itemsToEmbed
+					.map((m, idx) => {
+						const vector = vectorsByIndex.get(idx);
+						if (!vector) return null;
+						const stats = (m.doc.stats as Record<string, unknown> | undefined) ?? {};
+						const uses = Number(stats.uses ?? 0);
+						const score = Number(stats.wilson_score ?? 0.5);
+						const createdAt =
+							m.doc.created_at instanceof Date ? m.doc.created_at.getTime() : Date.now();
+
+						return {
+							id: m.id,
+							vector,
+							payload: {
+								user_id: userId,
+								tier: m.tier,
+								status: m.status,
+								content: m.text,
+								tags: Array.isArray(m.doc.tags) ? (m.doc.tags as string[]) : [],
+								entities: Array.isArray(m.doc.entities) ? (m.doc.entities as string[]) : [],
+								composite_score: score,
+								always_inject: Boolean(m.doc.always_inject),
+								timestamp: createdAt,
+								uses,
+							},
+						};
+					})
+					.filter((p): p is NonNullable<typeof p> => p !== null);
+
+				await this.qdrant.upsertBatch(points);
+			}
+
+			const upsertMany = async (
+				name: string,
+				docs: Array<Record<string, unknown>>,
+				key: (d: Record<string, unknown>) => Record<string, unknown>,
+				collection: { updateOne: Function }
+			) => {
+				for (const raw of docs) {
+					const revived = this.reviveDates({ ...raw }) as Record<string, unknown>;
 					if (!dryRun) {
-						try {
-							await this.mongo.importKgEdge(edge as Record<string, unknown>);
-							result.stats.kgEdgesImported++;
-						} catch (err) {
-							result.errors.push(`Failed to import KG edge: ${err instanceof Error ? err.message : String(err)}`);
-						}
-					} else {
-						result.stats.kgEdgesImported++;
+						await (collection.updateOne as any)(
+							{ ...key(revived), user_id: userId },
+							{ $set: { ...revived, user_id: userId } },
+							{ upsert: true }
+						);
 					}
 				}
+			};
+
+			const rawVersions = Array.isArray(collections[MEMORY_COLLECTIONS.VERSIONS])
+				? (collections[MEMORY_COLLECTIONS.VERSIONS] as Array<Record<string, unknown>>)
+				: [];
+			await upsertMany(
+				MEMORY_COLLECTIONS.VERSIONS,
+				rawVersions,
+				(d) => ({ version_id: d.version_id }),
+				versions as any
+			);
+			result.stats.versionsImported = rawVersions.length;
+
+			const rawOutcomes = Array.isArray(collections[MEMORY_COLLECTIONS.OUTCOMES])
+				? (collections[MEMORY_COLLECTIONS.OUTCOMES] as Array<Record<string, unknown>>)
+				: [];
+			await upsertMany(
+				MEMORY_COLLECTIONS.OUTCOMES,
+				rawOutcomes,
+				(d) => ({ outcome_id: d.outcome_id }),
+				outcomes as any
+			);
+			result.stats.outcomesImported = rawOutcomes.length;
+
+			const rawKnownSolutions = Array.isArray(collections[MEMORY_COLLECTIONS.KNOWN_SOLUTIONS])
+				? (collections[MEMORY_COLLECTIONS.KNOWN_SOLUTIONS] as Array<Record<string, unknown>>)
+				: [];
+			if (rawKnownSolutions.length > 0) {
+				await upsertMany(
+					MEMORY_COLLECTIONS.KNOWN_SOLUTIONS,
+					rawKnownSolutions,
+					(d) => ({ problem_hash: d.problem_hash }),
+					this.db.collection(MEMORY_COLLECTIONS.KNOWN_SOLUTIONS) as any
+				);
 			}
+
+			const rawActionOutcomes = Array.isArray(collections[MEMORY_COLLECTIONS.ACTION_OUTCOMES])
+				? (collections[MEMORY_COLLECTIONS.ACTION_OUTCOMES] as Array<Record<string, unknown>>)
+				: [];
+			await upsertMany(
+				MEMORY_COLLECTIONS.ACTION_OUTCOMES,
+				rawActionOutcomes,
+				(d) => ({ action_id: d.action_id }),
+				actionOutcomes as any
+			);
+			result.stats.actionOutcomesImported = rawActionOutcomes.length;
+
+			const rawKgNodes = Array.isArray(collections[MEMORY_COLLECTIONS.KG_NODES])
+				? (collections[MEMORY_COLLECTIONS.KG_NODES] as Array<Record<string, unknown>>)
+				: [];
+			await upsertMany(
+				MEMORY_COLLECTIONS.KG_NODES,
+				rawKgNodes,
+				(d) => ({ node_id: d.node_id }),
+				kgNodes as any
+			);
+			result.stats.kgNodesImported = rawKgNodes.length;
+
+			const rawKgEdges = Array.isArray(collections[MEMORY_COLLECTIONS.KG_EDGES])
+				? (collections[MEMORY_COLLECTIONS.KG_EDGES] as Array<Record<string, unknown>>)
+				: [];
+			await upsertMany(
+				MEMORY_COLLECTIONS.KG_EDGES,
+				rawKgEdges,
+				(d) => ({ edge_id: d.edge_id }),
+				kgEdges as any
+			);
+			result.stats.kgEdgesImported = rawKgEdges.length;
+
+			const rawRoutingConcepts = Array.isArray(collections["kg_routing_concepts"])
+				? (collections["kg_routing_concepts"] as Array<Record<string, unknown>>)
+				: [];
+			if (rawRoutingConcepts.length > 0) {
+				await upsertMany(
+					"kg_routing_concepts",
+					rawRoutingConcepts,
+					(d) => ({ concept_id: d.concept_id }),
+					this.db.collection("kg_routing_concepts") as any
+				);
+			}
+			result.stats.routingConceptsImported = rawRoutingConcepts.length;
+
+			const rawRoutingStats = Array.isArray(collections["kg_routing_stats"])
+				? (collections["kg_routing_stats"] as Array<Record<string, unknown>>)
+				: [];
+			if (rawRoutingStats.length > 0) {
+				await upsertMany(
+					"kg_routing_stats",
+					rawRoutingStats,
+					(d) => ({ concept_id: d.concept_id }),
+					this.db.collection("kg_routing_stats") as any
+				);
+			}
+			result.stats.routingStatsImported = rawRoutingStats.length;
+
+			const rawActionEff = Array.isArray(collections["kg_action_effectiveness"])
+				? (collections["kg_action_effectiveness"] as Array<Record<string, unknown>>)
+				: [];
+			if (rawActionEff.length > 0) {
+				await upsertMany(
+					"kg_action_effectiveness",
+					rawActionEff,
+					(d) => ({ context_type: d.context_type, action: d.action }),
+					this.db.collection("kg_action_effectiveness") as any
+				);
+			}
+			result.stats.actionEffectivenessImported = rawActionEff.length;
+
+			const rawActionRollups = Array.isArray(collections["kg_context_action_effectiveness"])
+				? (collections["kg_context_action_effectiveness"] as Array<Record<string, unknown>>)
+				: [];
+			if (rawActionRollups.length > 0) {
+				await upsertMany(
+					"kg_context_action_effectiveness",
+					rawActionRollups,
+					(d) => ({ context_type: d.context_type, action: d.action, tier_key: d.tier_key }),
+					this.db.collection("kg_context_action_effectiveness") as any
+				);
+			}
+
+			const rawMappings = Array.isArray(collections[MEMORY_COLLECTIONS.PERSONALITY_MAPPINGS])
+				? (collections[MEMORY_COLLECTIONS.PERSONALITY_MAPPINGS] as Array<Record<string, unknown>>)
+				: [];
+			await upsertMany(
+				MEMORY_COLLECTIONS.PERSONALITY_MAPPINGS,
+				rawMappings,
+				(d) => ({ mapping_id: d.mapping_id }),
+				personalityMappings as any
+			);
+			result.stats.personalityMappingsImported = rawMappings.length;
+
+			const rawCheckpoints = Array.isArray(collections[MEMORY_COLLECTIONS.REINDEX_CHECKPOINTS])
+				? (collections[MEMORY_COLLECTIONS.REINDEX_CHECKPOINTS] as Array<Record<string, unknown>>)
+				: [];
+			await upsertMany(
+				MEMORY_COLLECTIONS.REINDEX_CHECKPOINTS,
+				rawCheckpoints,
+				(d) => ({ checkpoint_id: d.checkpoint_id }),
+				reindexCheckpoints as any
+			);
+			result.stats.reindexCheckpointsImported = rawCheckpoints.length;
+
+			const rawLogs = Array.isArray(collections[MEMORY_COLLECTIONS.CONSISTENCY_LOGS])
+				? (collections[MEMORY_COLLECTIONS.CONSISTENCY_LOGS] as Array<Record<string, unknown>>)
+				: [];
+			await upsertMany(
+				MEMORY_COLLECTIONS.CONSISTENCY_LOGS,
+				rawLogs,
+				(d) => ({ log_id: d.log_id }),
+				consistencyLogs as any
+			);
+			result.stats.consistencyLogsImported = rawLogs.length;
 
 			logger.info({ userId, stats: result.stats, dryRun }, "OpsService: Backup import completed");
 			return result;
@@ -394,72 +733,102 @@ export class OpsServiceImpl {
 	}
 
 	/**
-	 * Get memory system stats
+	 * Get memory system stats snapshot
 	 */
-	async getStats(userId?: string): Promise<MemoryStats> {
-		const stats: MemoryStats = {
-			timestamp: new Date(),
-			byTier: {
-				working: { count: 0, avgScore: 0 },
-				history: { count: 0, avgScore: 0 },
-				patterns: { count: 0, avgScore: 0 },
-				books: { count: 0, avgScore: 0 },
-				memory_bank: { count: 0, avgScore: 0 },
-			},
-			totalActive: 0,
-			totalArchived: 0,
-			qdrantHealth: { healthy: false },
-			lastPromotion: this.promotion.getLastRunAt() ?? undefined,
-			lastConsistencyCheck: this.consistency.getLastCheckAt() ?? undefined,
-		};
+	async getStats(userId: string): Promise<StatsSnapshot> {
+		const tiers: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+		const { items } = this.mongo.getCollections();
+		const derivedWindowMs = 5 * 60 * 1000;
 
-		try {
-			// Get counts by tier
-			const tiers: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+		const aggregates = await items
+			.aggregate<{
+				_id: string;
+				active_count: number;
+				archived_count: number;
+				deleted_count: number;
+				uses_total: number;
+				worked_total: number;
+				failed_total: number;
+			}>([
+				{ $match: { user_id: userId } },
+				{
+					$group: {
+						_id: "$tier",
+						active_count: { $sum: { $cond: [{ $eq: ["$status", "active"] }, 1, 0] } },
+						archived_count: { $sum: { $cond: [{ $eq: ["$status", "archived"] }, 1, 0] } },
+						deleted_count: { $sum: { $cond: [{ $eq: ["$status", "deleted"] }, 1, 0] } },
+						uses_total: { $sum: { $ifNull: ["$stats.uses", 0] } },
+						worked_total: { $sum: { $ifNull: ["$stats.worked_count", 0] } },
+						failed_total: { $sum: { $ifNull: ["$stats.failed_count", 0] } },
+					},
+				},
+			])
+			.toArray();
 
-			for (const tier of tiers) {
-				const items = await this.mongo.query({
-					userId: userId ?? "",
+		const tierMap = new Map(aggregates.map((a) => [String(a._id), a]));
+		const tiersRecord = Object.fromEntries(
+			tiers.map((tier) => {
+				const agg = tierMap.get(tier);
+				const worked = agg?.worked_total ?? 0;
+				const failed = agg?.failed_total ?? 0;
+				const denom = worked + failed;
+				return [
 					tier,
-					status: "active",
-					limit: 10000,
-				});
+					{
+						active_count: agg?.active_count ?? 0,
+						archived_count: agg?.archived_count ?? 0,
+						deleted_count: agg?.deleted_count ?? 0,
+						uses_total: agg?.uses_total ?? 0,
+						success_rate: denom > 0 ? worked / denom : 0.5,
+					},
+				];
+			})
+		) as StatsSnapshot["tiers"];
 
-				stats.byTier[tier].count = items.length;
-				stats.totalActive += items.length;
+		const actionDocs = await this.db
+			.collection("kg_action_effectiveness")
+			.find({ user_id: userId })
+			.sort({ wilson_score: -1 })
+			.limit(50)
+			.toArray();
 
-				if (items.length > 0) {
-					const totalScore = items.reduce((sum, i) => sum + (i.wilson_score ?? 0.5), 0);
-					stats.byTier[tier].avgScore = totalScore / items.length;
-				}
-			}
+		const action_effectiveness: StatsSnapshot["action_effectiveness"] = actionDocs.map(
+			(doc: any) => ({
+				context_type: String(doc.context_type ?? "general"),
+				action_type: String(doc.action ?? doc.action_key ?? "unknown"),
+				success_rate: Number(doc.success_rate ?? doc.wilson_score) || 0.5,
+				total_uses: Number(doc.uses ?? doc.total_uses) || 0,
+				examples: Array.isArray(doc.examples)
+					? doc.examples.slice(0, 10).map((ex: any) => ({
+							timestamp: String(ex.timestamp ?? new Date().toISOString()),
+							outcome: String(ex.outcome ?? "unknown"),
+							doc_id: ex.memory_ids?.[0] ?? null,
+						}))
+					: [],
+			})
+		);
 
-			// Get archived count
-			const archivedItems = await this.mongo.query({
-				userId: userId ?? "",
-				status: "archived",
-				limit: 10000,
-			});
-			stats.totalArchived = archivedItems.length;
+		const cacheMetrics = this.embedding.getCacheMetrics(derivedWindowMs);
+		const promotionStats = this.promotion.getLastCycleStats();
+		const promotionDenom = promotionStats
+			? promotionStats.promoted + promotionStats.archived + promotionStats.deleted
+			: 0;
+		const promotionRate = promotionDenom > 0 && promotionStats ? promotionStats.promoted / promotionDenom : null;
+		const demotionRate =
+			promotionDenom > 0 && promotionStats
+				? (promotionStats.archived + promotionStats.deleted) / promotionDenom
+				: null;
 
-			// Check Qdrant health
-			const qdrantHealth = await this.qdrant.healthCheck();
-			stats.qdrantHealth = {
-				healthy: qdrantHealth.healthy,
-				pointCount: qdrantHealth.pointCount,
-			};
-
-			// Get reindex progress if running
-			const reindexProgress = this.reindex.getProgress();
-			if (reindexProgress?.status === "completed") {
-				stats.lastReindex = reindexProgress.updatedAt;
-			}
-
-			return stats;
-		} catch (err) {
-			logger.error({ err }, "OpsService: Failed to get stats");
-			return stats;
-		}
+		return {
+			user_id: userId,
+			as_of: new Date().toISOString(),
+			cache_hit_rate: cacheMetrics.hit_rate,
+			promotion_rate: promotionRate,
+			demotion_rate: demotionRate,
+			derived_window_ms: derivedWindowMs,
+			tiers: tiersRecord,
+			action_effectiveness,
+		};
 	}
 }
 

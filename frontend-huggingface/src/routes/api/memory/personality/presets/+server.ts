@@ -1,11 +1,11 @@
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
-import { PersonalityLoader } from "$lib/server/memory/personality";
+import { getPersonalityLoader } from "$lib/server/memory/personality";
 
 // GET /api/memory/personality/presets - Get available presets
 export const GET: RequestHandler = async () => {
 	try {
-		const loader = PersonalityLoader.getInstance();
+		const loader = getPersonalityLoader();
 		const presets = loader.getPresets();
 
 		return json({

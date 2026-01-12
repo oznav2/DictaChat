@@ -147,7 +147,9 @@
 				dir="rtl"
 			>
 				<!-- Header -->
-				<div class="flex items-center justify-between border-b border-gray-200 px-3 py-2 dark:border-gray-700">
+				<div
+					class="flex items-center justify-between border-b border-gray-200 px-3 py-2 dark:border-gray-700"
+				>
 					<h2 class="text-sm font-medium text-gray-800 dark:text-gray-100">זיכרון ומידע</h2>
 					<button
 						type="button"
@@ -156,7 +158,12 @@
 						aria-label="סגור"
 					>
 						<svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M6 18L18 6M6 6l12 12"
+							/>
 						</svg>
 					</button>
 				</div>
@@ -175,7 +182,12 @@
 							]}
 						>
 							<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={tab.icon} />
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d={tab.icon}
+								/>
 							</svg>
 							{tab.label}
 						</button>
@@ -226,7 +238,9 @@
 			</button>
 
 			<!-- Header with Active Concepts -->
-			<div class="flex items-center justify-between border-b border-gray-200 px-3 py-2 dark:border-gray-700">
+			<div
+				class="flex items-center justify-between border-b border-gray-200 px-3 py-2 dark:border-gray-700"
+			>
 				<h2 class="text-sm font-medium text-gray-800 dark:text-gray-100">זיכרון ומידע</h2>
 				<button
 					type="button"
@@ -236,7 +250,12 @@
 					aria-label="סגור"
 				>
 					<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18L18 6M6 6l12 12"
+						/>
 					</svg>
 				</button>
 			</div>

@@ -35,6 +35,7 @@ export interface MemoryEnvConfig {
 	// Qdrant
 	qdrantHost: string;
 	qdrantPort: number;
+	qdrantHttps: boolean;
 	qdrantCollection: string;
 	qdrantVectorSize: number;
 
@@ -117,6 +118,7 @@ export function getMemoryEnvConfig(): MemoryEnvConfig {
 		// Qdrant
 		qdrantHost: parseString(env.QDRANT_HOST, "qdrant"),
 		qdrantPort: parseNumber(env.QDRANT_PORT, 6333),
+		qdrantHttps: parseBoolean(env.QDRANT_HTTPS, false),
 		qdrantCollection: parseString(env.QDRANT_COLLECTION, "memories_v1"),
 		qdrantVectorSize: parseNumber(env.QDRANT_VECTOR_SIZE, 768),
 
@@ -160,9 +162,7 @@ export function validateFeatureFlags(flags: MemoryFeatureFlags): string[] {
 
 	// Dangerous combination: autonomy without confirmation
 	if (flags.enableAutonomy && !flags.requireConfirmation) {
-		errors.push(
-			"DANGEROUS: MEMORY_ENABLE_AUTONOMY=true requires MEMORY_REQUIRE_CONFIRMATION=true"
-		);
+		errors.push("DANGEROUS: MEMORY_ENABLE_AUTONOMY=true requires MEMORY_REQUIRE_CONFIRMATION=true");
 	}
 
 	// If system is disabled, other flags don't matter but warn if they're set

@@ -10,6 +10,8 @@ import { v4 } from "uuid";
 import { authCondition } from "$lib/server/auth";
 import { usageLimits } from "$lib/server/usageLimits";
 import { MetricsServer } from "$lib/server/metrics";
+import { getPersonalityLoader } from "$lib/server/memory/personality/PersonalityLoader";
+import { getPersonalityColor } from "$lib/server/memory/personality/personalityColors";
 
 export const POST: RequestHandler = async ({ locals, request }) => {
 	const body = await request.text();
@@ -83,6 +85,20 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		messages[0].content = values.preprompt;
 	}
 
+	// Get user's active personality for badge display
+	let personalityId = "default";
+	let personalityBadge: { name: string; color: string } | undefined;
+
+	if (locals.user?._id) {
+		const loader = getPersonalityLoader();
+		const personality = await loader.getPersonality(locals.user._id);
+		personalityId = personality.name;
+		personalityBadge = {
+			name: personality.name.charAt(0).toUpperCase() + personality.name.slice(1),
+			color: getPersonalityColor(personality.name),
+		};
+	}
+
 	const res = await collections.conversations.insertOne({
 		_id: new ObjectId(),
 		// Always store sanitized titles
@@ -94,6 +110,8 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		createdAt: new Date(),
 		updatedAt: new Date(),
 		userAgent: request.headers.get("User-Agent") ?? undefined,
+		personalityId,
+		...(personalityBadge ? { personalityBadge } : {}),
 		...(locals.user ? { userId: locals.user._id } : { sessionId: locals.sessionId }),
 		...(values.fromShare ? { meta: { fromShareId: values.fromShare } } : {}),
 	});

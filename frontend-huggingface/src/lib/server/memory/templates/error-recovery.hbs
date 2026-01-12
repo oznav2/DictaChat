@@ -1,83 +1,98 @@
-{{!-- @description: Graceful error messages with actionable guidance --}}
-{{!-- @category: error --}}
+{{! @description: Graceful error messages with actionable guidance }}
+{{! @category: error }}
 
 {{#ifLang "he"}}
-{{#eq error_type "memory_not_found"}}
-לא מצאתי מידע רלוונטי בזיכרון.
-{{#if suggestion}}הצעה: {{suggestion}}{{/if}}
+	{{#eq error_type "memory_not_found"}}
+		לא מצאתי מידע רלוונטי בזיכרון.
+		{{#if suggestion}}הצעה: {{suggestion}}{{/if}}
+	{{else}}
+		{{#eq error_type "search_failed"}}
+			החיפוש נכשל זמנית. אנסה שוב או נסה לנסח מחדש את השאלה.
+			{{#if fallback_available}}עובר לשיטת גיבוי...{{/if}}
+		{{else}}
+			{{#eq error_type "timeout"}}
+				הפעולה לקחה יותר מדי זמן. נסה שאילתה פשוטה יותר.
+			{{else}}
+				{{#eq error_type "rate_limit"}}
+					הגעת למגבלת הקצב. אנא המתן
+					{{default wait_seconds 60}}
+					שניות.
+				{{else}}
+					{{#eq error_type "invalid_input"}}
+						הקלט לא תקין:
+						{{error_message}}
+						{{#if valid_format}}פורמט נכון: {{valid_format}}{{/if}}
+					{{else}}
+						{{#eq error_type "service_unavailable"}}
+							השירות
+							{{service_name}}
+							אינו זמין כרגע.
+							{{#if alternative}}חלופה: {{alternative}}{{/if}}
+						{{else}}
+							אירעה שגיאה בלתי צפויה. פרטים:
+							{{default error_message "לא ידוע"}}
+						{{/eq}}
+					{{/eq}}
+				{{/eq}}
+			{{/eq}}
+		{{/eq}}
+	{{/eq}}
 {{else}}
-{{#eq error_type "search_failed"}}
-החיפוש נכשל זמנית. אנסה שוב או נסה לנסח מחדש את השאלה.
-{{#if fallback_available}}עובר לשיטת גיבוי...{{/if}}
-{{else}}
-{{#eq error_type "timeout"}}
-הפעולה לקחה יותר מדי זמן. נסה שאילתה פשוטה יותר.
-{{else}}
-{{#eq error_type "rate_limit"}}
-הגעת למגבלת הקצב. אנא המתן {{default wait_seconds 60}} שניות.
-{{else}}
-{{#eq error_type "invalid_input"}}
-הקלט לא תקין: {{error_message}}
-{{#if valid_format}}פורמט נכון: {{valid_format}}{{/if}}
-{{else}}
-{{#eq error_type "service_unavailable"}}
-השירות {{service_name}} אינו זמין כרגע.
-{{#if alternative}}חלופה: {{alternative}}{{/if}}
-{{else}}
-אירעה שגיאה בלתי צפויה. פרטים: {{default error_message "לא ידוע"}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
-{{else}}
-{{#eq error_type "memory_not_found"}}
-I couldn't find relevant information in memory.
-{{#if suggestion}}Suggestion: {{suggestion}}{{/if}}
-{{else}}
-{{#eq error_type "search_failed"}}
-Search temporarily failed. I'll try again or try rephrasing your question.
-{{#if fallback_available}}Switching to fallback method...{{/if}}
-{{else}}
-{{#eq error_type "timeout"}}
-The operation took too long. Try a simpler query.
-{{else}}
-{{#eq error_type "rate_limit"}}
-Rate limit reached. Please wait {{default wait_seconds 60}} seconds.
-{{else}}
-{{#eq error_type "invalid_input"}}
-Invalid input: {{error_message}}
-{{#if valid_format}}Valid format: {{valid_format}}{{/if}}
-{{else}}
-{{#eq error_type "service_unavailable"}}
-The {{service_name}} service is currently unavailable.
-{{#if alternative}}Alternative: {{alternative}}{{/if}}
-{{else}}
-An unexpected error occurred. Details: {{default error_message "unknown"}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
-{{/eq}}
+	{{#eq error_type "memory_not_found"}}
+		I couldn't find relevant information in memory.
+		{{#if suggestion}}Suggestion: {{suggestion}}{{/if}}
+	{{else}}
+		{{#eq error_type "search_failed"}}
+			Search temporarily failed. I'll try again or try rephrasing your question.
+			{{#if fallback_available}}Switching to fallback method...{{/if}}
+		{{else}}
+			{{#eq error_type "timeout"}}
+				The operation took too long. Try a simpler query.
+			{{else}}
+				{{#eq error_type "rate_limit"}}
+					Rate limit reached. Please wait
+					{{default wait_seconds 60}}
+					seconds.
+				{{else}}
+					{{#eq error_type "invalid_input"}}
+						Invalid input:
+						{{error_message}}
+						{{#if valid_format}}Valid format: {{valid_format}}{{/if}}
+					{{else}}
+						{{#eq error_type "service_unavailable"}}
+							The
+							{{service_name}}
+							service is currently unavailable.
+							{{#if alternative}}Alternative: {{alternative}}{{/if}}
+						{{else}}
+							An unexpected error occurred. Details:
+							{{default error_message "unknown"}}
+						{{/eq}}
+					{{/eq}}
+				{{/eq}}
+			{{/eq}}
+		{{/eq}}
+	{{/eq}}
 {{/ifLang}}
 
 {{#if recovery_steps}}
-{{#ifLang "he"}}
-צעדים לפתרון:
-{{else}}
-Recovery steps:
-{{/ifLang}}
-{{#each recovery_steps}}
-{{add @index 1}}. {{this}}
-{{/each}}
+	{{#ifLang "he"}}
+		צעדים לפתרון:
+	{{else}}
+		Recovery steps:
+	{{/ifLang}}
+	{{#each recovery_steps}}
+		{{add @index 1}}.
+		{{this}}
+	{{/each}}
 {{/if}}
 
 {{#if support_contact}}
-{{#ifLang "he"}}
-לתמיכה: {{support_contact}}
-{{else}}
-For support: {{support_contact}}
-{{/ifLang}}
+	{{#ifLang "he"}}
+		לתמיכה:
+		{{support_contact}}
+	{{else}}
+		For support:
+		{{support_contact}}
+	{{/ifLang}}
 {{/if}}

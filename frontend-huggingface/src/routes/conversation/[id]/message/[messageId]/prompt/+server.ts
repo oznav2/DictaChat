@@ -6,8 +6,9 @@ import { buildSubtree } from "$lib/utils/tree/buildSubtree";
 import { isMessageId } from "$lib/utils/tree/isMessageId";
 import { error } from "@sveltejs/kit";
 import { ObjectId } from "mongodb";
+import type { RequestHandler } from "./$types";
 
-export async function GET({ params, locals }) {
+export const GET: RequestHandler = async ({ params, locals }) => {
 	const conv =
 		params.id.length === 7
 			? await collections.sharedConversations.findOne({
@@ -63,4 +64,4 @@ export async function GET({ params, locals }) {
 			files: msg.files,
 		})),
 	});
-}
+};

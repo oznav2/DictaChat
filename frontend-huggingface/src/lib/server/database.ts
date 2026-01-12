@@ -16,13 +16,20 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import { logger } from "$lib/server/logger";
 import { building } from "$app/environment";
 import type { TokenCache } from "$lib/types/TokenCache";
+import type { Book } from "$lib/types/Book";
+import type { MemoryBankItem } from "$lib/types/MemoryBankItem";
+import type { UserPersonality } from "$lib/types/UserPersonality";
+import type { MemoryOutcome } from "$lib/types/MemoryOutcome";
+import type { MemoryGhost } from "$lib/types/MemoryGhost";
+import type { MemoryStats } from "$lib/types/MemoryStats";
+import type { IntegrationConfig } from "$lib/types/IntegrationConfig";
 import { onExit } from "./exitHandler";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { existsSync, mkdirSync } from "fs";
 import { findRepoRoot } from "./findRepoRoot";
 import type { ConfigKey } from "$lib/types/ConfigKey";
-import { config } from "$lib/server/config";
+import { config as serverConfig } from "$lib/server/config";
 
 export const CONVERSATION_STATS_COLLECTION = "conversations.stats";
 
@@ -34,10 +41,10 @@ export class Database {
 
 	private async init() {
 		const DB_FOLDER =
-			config.MONGO_STORAGE_PATH ||
+			serverConfig.MONGO_STORAGE_PATH ||
 			join(findRepoRoot(dirname(fileURLToPath(import.meta.url))), "db");
 
-		if (!config.MONGODB_URL) {
+		if (!serverConfig.MONGODB_URL) {
 			logger.warn("No MongoDB URL found, using in-memory server");
 
 			logger.info(`Using database path: ${DB_FOLDER}`);
@@ -49,7 +56,7 @@ export class Database {
 
 			this.mongoServer = await MongoMemoryServer.create({
 				instance: {
-					dbName: config.MONGODB_DB_NAME + (import.meta.env.MODE === "test" ? "-test" : ""),
+					dbName: serverConfig.MONGODB_DB_NAME + (import.meta.env.MODE === "test" ? "-test" : ""),
 					dbPath: DB_FOLDER,
 				},
 				binary: {
@@ -57,19 +64,21 @@ export class Database {
 				},
 			});
 			this.client = new MongoClient(this.mongoServer.getUri(), {
-				directConnection: config.MONGODB_DIRECT_CONNECTION === "true",
+				directConnection: serverConfig.MONGODB_DIRECT_CONNECTION === "true",
 			});
 		} else {
-			this.client = new MongoClient(config.MONGODB_URL, {
-				directConnection: config.MONGODB_DIRECT_CONNECTION === "true",
+			this.client = new MongoClient(serverConfig.MONGODB_URL, {
+				directConnection: serverConfig.MONGODB_DIRECT_CONNECTION === "true",
 			});
 		}
 
 		try {
-			logger.info("Connecting to database");
+			logger.info(`Connecting to database: ${serverConfig.MONGODB_URL?.split("@").pop()}`); // Log masked URL
 			await this.client.connect();
 			logger.info("Connected to database");
-			this.client.db(config.MONGODB_DB_NAME + (import.meta.env.MODE === "test" ? "-test" : ""));
+			this.client.db(
+				serverConfig.MONGODB_DB_NAME + (import.meta.env.MODE === "test" ? "-test" : "")
+			);
 			await this.initDatabase();
 		} catch (err) {
 			logger.error(err, "Connection error");
@@ -113,7 +122,7 @@ export class Database {
 		}
 
 		const db = this.client.db(
-			config.MONGODB_DB_NAME + (import.meta.env.MODE === "test" ? "-test" : "")
+			serverConfig.MONGODB_DB_NAME + (import.meta.env.MODE === "test" ? "-test" : "")
 		);
 
 		const conversations = db.collection<Conversation>("conversations");
@@ -133,6 +142,13 @@ export class Database {
 		const tokenCaches = db.collection<TokenCache>("tokens");
 		const tools = db.collection("tools");
 		const configCollection = db.collection<ConfigKey>("config");
+		const books = db.collection<Book>("books");
+		const memoryBank = db.collection<MemoryBankItem>("memoryBank");
+		const userPersonality = db.collection<UserPersonality>("userPersonality");
+		const memoryOutcomes = db.collection<MemoryOutcome>("memoryOutcomes");
+		const memoryGhosts = db.collection<MemoryGhost>("memoryGhosts");
+		const memoryStats = db.collection<MemoryStats>("memoryStats");
+		const integrations = db.collection<IntegrationConfig>("integrations");
 
 		return {
 			conversations,
@@ -152,6 +168,13 @@ export class Database {
 			tokenCaches,
 			tools,
 			config: configCollection,
+			books,
+			memoryBank,
+			userPersonality,
+			memoryOutcomes,
+			memoryGhosts,
+			memoryStats,
+			integrations,
 		};
 	}
 
@@ -175,6 +198,13 @@ export class Database {
 			semaphores,
 			tokenCaches,
 			config,
+			books,
+			memoryBank,
+			userPersonality,
+			memoryOutcomes,
+			memoryGhosts,
+			memoryStats,
+			integrations,
 		} = this.getCollections();
 
 		conversations
@@ -288,6 +318,58 @@ export class Database {
 			.catch((e) => logger.error(e));
 
 		config.createIndex({ key: 1 }, { unique: true }).catch((e) => logger.error(e));
+
+		// Books indexes
+		books.createIndex({ userId: 1, uploadTimestamp: -1 }).catch((e) => logger.error(e));
+		books.createIndex({ userId: 1, title: 1 }, { unique: true }).catch((e) => logger.error(e));
+		books.createIndex({ taskId: 1 }).catch((e) => logger.error(e));
+
+		// MemoryBank indexes
+		memoryBank.createIndex({ userId: 1, status: 1, createdAt: -1 }).catch((e) => logger.error(e));
+		memoryBank.createIndex({ userId: 1, tags: 1 }).catch((e) => logger.error(e));
+
+		// UserPersonality indexes
+		userPersonality.createIndex({ userId: 1 }, { unique: true }).catch((e) => logger.error(e));
+
+		// MemoryOutcomes indexes (for causal learning)
+		memoryOutcomes.createIndex({ userId: 1, timestamp: -1 }).catch((e) => logger.error(e));
+		memoryOutcomes.createIndex({ userId: 1, context: 1 }).catch((e) => logger.error(e));
+		memoryOutcomes.createIndex({ userId: 1, result: 1 }).catch((e) => logger.error(e));
+
+		// MemoryGhosts indexes (for soft delete)
+		memoryGhosts
+			.createIndex({ userId: 1, memoryId: 1 }, { unique: true })
+			.catch((e) => logger.error(e));
+		memoryGhosts
+			.createIndex({ expiresAt: 1 }, { expireAfterSeconds: 0 })
+			.catch((e) => logger.error(e));
+
+		// MemoryStats indexes (for Wilson score and promotion)
+		memoryStats
+			.createIndex({ userId: 1, memoryId: 1 }, { unique: true })
+			.catch((e) => logger.error(e));
+		memoryStats.createIndex({ userId: 1, tier: 1, lastAccessed: -1 }).catch((e) => logger.error(e));
+
+		// Document registry indexes (for <50ms URL lookup)
+		// Access the db through the client
+		const dbInstance = this.client!.db(
+			serverConfig.MONGODB_DB_NAME + (import.meta.env.MODE === "test" ? "-test" : "")
+		);
+		const documentRegistry = dbInstance.collection("document_registry");
+		documentRegistry
+			.createIndex({ urlHash: 1 }, { unique: true })
+			.catch((err) => logger.error(err));
+		documentRegistry.createIndex({ bookId: 1 }).catch((err) => logger.error(err));
+		documentRegistry.createIndex({ status: 1 }).catch((err) => logger.error(err));
+
+		// Books enhanced indexes for document library
+		books.createIndex({ urlHash: 1 }, { sparse: true }).catch((e) => logger.error(e));
+		books.createIndex({ sourceType: 1, uploadTimestamp: -1 }).catch((e) => logger.error(e));
+		books.createIndex({ language: 1 }).catch((e) => logger.error(e));
+
+		integrations
+			.createIndex({ userId: 1, integrationId: 1 }, { unique: true })
+			.catch((e) => logger.error(e));
 	}
 }
 

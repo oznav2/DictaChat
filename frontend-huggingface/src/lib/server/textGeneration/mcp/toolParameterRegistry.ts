@@ -75,11 +75,7 @@ const TOOL_SCHEMAS: ToolSchema[] = [
 	},
 	{
 		// perplexity_ask, perplexity_research, perplexity_reason expect "messages" (array)
-		patterns: [
-			/^perplexity[_-]ask$/i,
-			/^perplexity[_-]research$/i,
-			/^perplexity[_-]reason$/i,
-		],
+		patterns: [/^perplexity[_-]ask$/i, /^perplexity[_-]research$/i, /^perplexity[_-]reason$/i],
 		parameters: [
 			{
 				name: "messages",

@@ -1,7 +1,8 @@
 import { base } from "$app/paths";
 import { redirect } from "@sveltejs/kit";
+import type { PageLoad } from "./$types";
 
-export async function load({ parent, params }) {
+export const load: PageLoad = async ({ parent, params }) => {
 	const data = await parent();
 
 	const model = data.models.find((m: { id: string }) => m.id === params.model);
@@ -11,4 +12,4 @@ export async function load({ parent, params }) {
 	}
 
 	return data;
-}
+};

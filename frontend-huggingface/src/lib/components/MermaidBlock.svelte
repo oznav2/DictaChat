@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { browser } from "$app/environment";
-	import { nanoid } from "nanoid";
 	import CopyToClipBoardBtn from "./CopyToClipBoardBtn.svelte";
 
 	interface Props {
@@ -12,7 +11,8 @@
 	let container: HTMLElement | undefined = $state();
 	let error: string | null = $state(null);
 	let renderedSvg = $state("");
-	let mermaid = $state<any>(null);
+	type MermaidApi = typeof import("mermaid").default;
+	let mermaid = $state<MermaidApi | null>(null);
 
 	// Initialize mermaid with appropriate theme
 	// We'll let the user/system preference drive the theme if possible,
@@ -21,8 +21,8 @@
 		if (browser) {
 			try {
 				const mermaidModule = await import("mermaid");
-				const m = mermaidModule.default || mermaidModule;
-				
+				const m = (mermaidModule.default ?? mermaidModule) as unknown as MermaidApi;
+
 				const isDark = document.documentElement.classList.contains("dark");
 				m.initialize({
 					startOnLoad: false,
@@ -76,19 +76,23 @@
 				} catch (fixError) {
 					console.error("Auto-fix failed:", fixError);
 					// If auto-fix fails, we show the error message instead of the broken diagram
-					error = "Failed to render diagram (syntax error): " + (fixError instanceof Error ? fixError.message : String(fixError));
+					error =
+						"Failed to render diagram (syntax error): " +
+						(fixError instanceof Error ? fixError.message : String(fixError));
 					return;
 				}
 			}
 
 			// Add timeout
 			const renderPromise = mermaid.render(id, validCode);
-			const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Render timeout")), 5000));
-			
+			const timeoutPromise = new Promise((_, reject) =>
+				setTimeout(() => reject(new Error("Render timeout")), 5000)
+			);
+
 			// Parse first to check validity if possible, but render handles it
-			const result = await Promise.race([renderPromise, timeoutPromise]) as { svg: string };
+			const result = (await Promise.race([renderPromise, timeoutPromise])) as { svg: string };
 			const { svg } = result;
-			
+
 			renderedSvg = svg;
 		} catch (e) {
 			console.error("Mermaid rendering failed:", e);
@@ -117,40 +121,62 @@
 		// 7. (...)
 		// 8. {...}
 		// 9. |...| (Arrow labels)
-		
-		const pattern = /("[^"]*")|([^\s\[\(\)\{\}]+)(\s*)\{\{(.*?)\}\}|([^\s\[\(\)\{\}]+)(\s*)\[\[(.*?)\]\]|([^\s\[\(\)\{\}]+)(\s*)\(\((.*?)\)\)|([^\s\[\(\)\{\}]+)(\s*)>\](.*?)\]|([^\s\[\(\)\{\}]+)(\s*)\[(.*?)\]|([^\s\[\(\)\{\}]+)(\s*)\((.*?)\)|([^\s\[\(\)\{\}]+)(\s*)\{(.*?)\}|(\|)([^|]+)(\|)/gs;
 
-		return code.replace(pattern, (match, str, 
-			hexId, hexSp, hexContent,
-			subId, subSp, subContent,
-			dcId, dcSp, dcContent,
-			asId, asSp, asContent,
-			sqId, sqSp, sqContent,
-			rdId, rdSp, rdContent,
-			cuId, cuSp, cuContent,
-			pipeOpen, pipeContent, pipeClose
-		) => {
-			if (str) return str;
+		const pattern =
+			/("[^"]*")|([^\s\x5B(){}]+)(\s*)\{\{(.*?)\}\}|([^\s\x5B(){}]+)(\s*)\[\[(.*?)\]\]|([^\s\x5B(){}]+)(\s*)\(\((.*?)\)\)|([^\s\x5B(){}]+)(\s*)>\](.*?)\]|([^\s\x5B(){}]+)(\s*)\[(.*?)\]|([^\s\x5B(){}]+)(\s*)\((.*?)\)|([^\s\x5B(){}]+)(\s*)\{(.*?)\}|(\|)([^|]+)(\|)/gs;
 
-			if (pipeContent !== undefined) {
-				return `${pipeOpen}${sanitize(pipeContent)}${pipeClose}`;
+		return code.replace(
+			pattern,
+			(
+				match,
+				str,
+				hexId,
+				hexSp,
+				hexContent,
+				subId,
+				subSp,
+				subContent,
+				dcId,
+				dcSp,
+				dcContent,
+				asId,
+				asSp,
+				asContent,
+				sqId,
+				sqSp,
+				sqContent,
+				rdId,
+				rdSp,
+				rdContent,
+				cuId,
+				cuSp,
+				cuContent,
+				pipeOpen,
+				pipeContent,
+				pipeClose
+			) => {
+				if (str) return str;
+
+				if (pipeContent !== undefined) {
+					return `${pipeOpen}${sanitize(pipeContent)}${pipeClose}`;
+				}
+
+				const process = (id: string, sp: string, content: string, open: string, close: string) => {
+					if (id.match(/^(linkStyle|classDef|style|click)$/i)) return match;
+					return `${id}${sp}${open}${sanitize(content)}${close}`;
+				};
+
+				if (hexId) return process(hexId, hexSp, hexContent, "{{", "}}");
+				if (subId) return process(subId, subSp, subContent, "[[", "]]");
+				if (dcId) return process(dcId, dcSp, dcContent, "((", "))");
+				if (asId) return process(asId, asSp, asContent, ">]", "]");
+				if (sqId) return process(sqId, sqSp, sqContent, "[", "]");
+				if (rdId) return process(rdId, rdSp, rdContent, "(", ")");
+				if (cuId) return process(cuId, cuSp, cuContent, "{", "}");
+
+				return match;
 			}
-
-			const process = (id: string, sp: string, content: string, open: string, close: string) => {
-				if (id.match(/^(linkStyle|classDef|style|click)$/i)) return match;
-				return `${id}${sp}${open}${sanitize(content)}${close}`;
-			};
-
-			if (hexId) return process(hexId, hexSp, hexContent, '{{', '}}');
-			if (subId) return process(subId, subSp, subContent, '[[', ']]');
-			if (dcId) return process(dcId, dcSp, dcContent, '((', '))');
-			if (asId) return process(asId, asSp, asContent, '>]', ']');
-			if (sqId) return process(sqId, sqSp, sqContent, '[', ']');
-			if (rdId) return process(rdId, rdSp, rdContent, '(', ')');
-			if (cuId) return process(cuId, cuSp, cuContent, '{', '}');
-
-			return match;
-		});
+		);
 	}
 </script>
 

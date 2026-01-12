@@ -17,7 +17,7 @@
  * Output: Generates benchmark results to benchmarks/results/learning_speed.txt
  */
 
-import { describe, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, afterAll } from "vitest";
 import {
 	MockEmbeddingService,
 	MockTimeManager,
@@ -27,26 +27,32 @@ import {
 	calculateWilsonScore,
 	BenchmarkReporter,
 	MATURITY_LEVELS,
-} from '../mock-utilities';
+} from "../mock-utilities";
 
 // Global reporter for this test file
-const reporter = new BenchmarkReporter('test_learning_speed');
+const reporter = new BenchmarkReporter("test_learning_speed");
 
 // Helper to record test metrics
-function recordTest(name: string, passed: boolean, duration: number, metrics?: Record<string, number | string>, error?: string): void {
+function recordTest(
+	name: string,
+	passed: boolean,
+	duration: number,
+	metrics?: Record<string, number | string>,
+	error?: string
+): void {
 	reporter.recordTest({ name, passed, duration, metrics, error });
 }
 
-describe('Learning Speed', () => {
+describe("Learning Speed", () => {
 	let harness: TestHarness;
 	let embeddingService: MockEmbeddingService;
 	let timeManager: MockTimeManager;
 	let collection: MockCollection;
 
 	beforeEach(() => {
-		harness = new TestHarness('LearningSpeed');
+		harness = new TestHarness("LearningSpeed");
 		embeddingService = new MockEmbeddingService(42);
-		timeManager = new MockTimeManager(new Date('2026-01-01T00:00:00Z'));
+		timeManager = new MockTimeManager(new Date("2026-01-01T00:00:00Z"));
 		collection = new MockCollection(embeddingService);
 	});
 
@@ -55,11 +61,11 @@ describe('Learning Speed', () => {
 	});
 
 	afterAll(() => {
-		reporter.saveReport('learning_speed.txt');
+		reporter.saveReport("learning_speed.txt");
 	});
 
-	describe('Cold Start Baseline', () => {
-		it('test_cold_start_baseline', async () => {
+	describe("Cold Start Baseline", () => {
+		it("test_cold_start_baseline", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -69,15 +75,15 @@ describe('Learning Speed', () => {
 				expect(collection.count()).toBe(0);
 
 				// First interaction - should work despite no prior data
-				const results = await collection.search('user preferences', 5);
+				const results = await collection.search("user preferences", 5);
 
 				// Cold start should return empty results gracefully
 				expect(results.length).toBe(0);
 
 				// Add first memory
 				await collection.add({
-					id: 'first_memory',
-					content: 'User prefers dark mode interface',
+					id: "first_memory",
+					content: "User prefers dark mode interface",
 					metadata: {
 						...createTestMetadata(),
 						...MATURITY_LEVELS.cold_start,
@@ -86,7 +92,7 @@ describe('Learning Speed', () => {
 				});
 
 				// Should now find the memory
-				const afterFirst = await collection.search('dark mode', 5);
+				const afterFirst = await collection.search("dark mode", 5);
 
 				metrics = {
 					cold_start_results: results.length,
@@ -99,13 +105,13 @@ describe('Learning Speed', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_cold_start_baseline', passed, Date.now() - start, metrics);
+				recordTest("test_cold_start_baseline", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Learning Curve', () => {
-		it('test_learning_curve', async () => {
+	describe("Learning Curve", () => {
+		it("test_learning_curve", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -153,13 +159,13 @@ describe('Learning Speed', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_learning_curve', passed, Date.now() - start, metrics);
+				recordTest("test_learning_curve", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Adaptation Speed', () => {
-		it('test_adaptation_speed', async () => {
+	describe("Adaptation Speed", () => {
+		it("test_adaptation_speed", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -167,8 +173,8 @@ describe('Learning Speed', () => {
 			try {
 				// Store initial preference
 				await collection.add({
-					id: 'old_pref',
-					content: 'User prefers morning meetings',
+					id: "old_pref",
+					content: "User prefers morning meetings",
 					metadata: {
 						...createTestMetadata(),
 						wilson_score: 0.8,
@@ -181,31 +187,31 @@ describe('Learning Speed', () => {
 				timeManager.advanceDays(7);
 
 				await collection.add({
-					id: 'new_pref',
-					content: 'User now prefers afternoon meetings instead of morning',
+					id: "new_pref",
+					content: "User now prefers afternoon meetings instead of morning",
 					metadata: {
 						...createTestMetadata(),
 						wilson_score: 0.6,
 						use_count: 5,
 						is_current: true,
-						supersedes: 'old_pref',
+						supersedes: "old_pref",
 					},
 				});
 
 				// Search should find both for context
-				const results = await collection.search('meeting time preference', 2);
+				const results = await collection.search("meeting time preference", 2);
 
-				const foundOld = results.some(r => r.document.id === 'old_pref');
-				const foundNew = results.some(r => r.document.id === 'new_pref');
+				const foundOld = results.some((r) => r.document.id === "old_pref");
+				const foundNew = results.some((r) => r.document.id === "new_pref");
 
 				// Simulate quick adaptation with positive feedback
 				const adaptationSteps = 3;
 				for (let i = 0; i < adaptationSteps; i++) {
-					const doc = collection.get('new_pref');
+					const doc = collection.get("new_pref");
 					if (doc) {
 						const useCount = (doc.metadata.use_count as number) + 1;
 						const successCount = useCount; // 100% success on new pref
-						collection.updateMetadata('new_pref', {
+						collection.updateMetadata("new_pref", {
 							wilson_score: calculateWilsonScore(successCount, useCount),
 							use_count: useCount,
 							success_count: successCount,
@@ -213,7 +219,7 @@ describe('Learning Speed', () => {
 					}
 				}
 
-				const finalDoc = collection.get('new_pref');
+				const finalDoc = collection.get("new_pref");
 
 				metrics = {
 					found_old_preference: foundOld ? 1 : 0,
@@ -227,13 +233,13 @@ describe('Learning Speed', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_adaptation_speed', passed, Date.now() - start, metrics);
+				recordTest("test_adaptation_speed", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Knowledge Retention', () => {
-		it('test_knowledge_retention', async () => {
+	describe("Knowledge Retention", () => {
+		it("test_knowledge_retention", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -241,10 +247,10 @@ describe('Learning Speed', () => {
 			try {
 				// Store facts at different times
 				const facts = [
-					{ id: 'fact_old', content: 'User birthday is March 15', daysAgo: 365 },
-					{ id: 'fact_mid', content: 'User works at Google', daysAgo: 180 },
-					{ id: 'fact_recent', content: 'User started learning piano', daysAgo: 30 },
-					{ id: 'fact_new', content: 'User favorite movie is Inception', daysAgo: 7 },
+					{ id: "fact_old", content: "User birthday is March 15", daysAgo: 365 },
+					{ id: "fact_mid", content: "User works at Google", daysAgo: 180 },
+					{ id: "fact_recent", content: "User started learning piano", daysAgo: 30 },
+					{ id: "fact_new", content: "User favorite movie is Inception", daysAgo: 7 },
 				];
 
 				for (const fact of facts) {
@@ -267,11 +273,11 @@ describe('Learning Speed', () => {
 				}
 
 				// Test search across time
-				const birthdayResults = await collection.search('birthday', 2);
-				const workResults = await collection.search('work job company', 2);
+				const birthdayResults = await collection.search("birthday", 2);
+				const workResults = await collection.search("work job company", 2);
 
-				const birthdayFound = birthdayResults.some(r => r.document.id === 'fact_old');
-				const workFound = workResults.some(r => r.document.id === 'fact_mid');
+				const birthdayFound = birthdayResults.some((r) => r.document.id === "fact_old");
+				const workFound = workResults.some((r) => r.document.id === "fact_mid");
 
 				metrics = {
 					total_facts: facts.length,
@@ -286,13 +292,13 @@ describe('Learning Speed', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_knowledge_retention', passed, Date.now() - start, metrics);
+				recordTest("test_knowledge_retention", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Pattern Recognition', () => {
-		it('test_pattern_recognition', async () => {
+	describe("Pattern Recognition", () => {
+		it("test_pattern_recognition", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -300,11 +306,11 @@ describe('Learning Speed', () => {
 			try {
 				// Store multiple instances of a pattern
 				const coffeePattern = [
-					{ id: 'coffee_1', content: 'User ordered coffee at 9am Monday' },
-					{ id: 'coffee_2', content: 'User had coffee at 9:15am Tuesday' },
-					{ id: 'coffee_3', content: 'User got coffee around 9am Wednesday' },
-					{ id: 'coffee_4', content: 'User coffee break at 9am Thursday' },
-					{ id: 'coffee_5', content: 'User morning coffee at 9am Friday' },
+					{ id: "coffee_1", content: "User ordered coffee at 9am Monday" },
+					{ id: "coffee_2", content: "User had coffee at 9:15am Tuesday" },
+					{ id: "coffee_3", content: "User got coffee around 9am Wednesday" },
+					{ id: "coffee_4", content: "User coffee break at 9am Thursday" },
+					{ id: "coffee_5", content: "User morning coffee at 9am Friday" },
 				];
 
 				for (const c of coffeePattern) {
@@ -313,24 +319,24 @@ describe('Learning Speed', () => {
 						content: c.content,
 						metadata: {
 							...createTestMetadata(),
-							pattern: 'morning_coffee',
-							time: '9am',
+							pattern: "morning_coffee",
+							time: "9am",
 						},
 					});
 				}
 
 				// Add some noise
 				await collection.add({
-					id: 'tea_1',
-					content: 'User had afternoon tea at 3pm',
+					id: "tea_1",
+					content: "User had afternoon tea at 3pm",
 					metadata: createTestMetadata(),
 				});
 
 				// Search for pattern
-				const patternResults = await collection.search('morning coffee routine', 5);
+				const patternResults = await collection.search("morning coffee routine", 5);
 
-				const coffeeResults = patternResults.filter(r =>
-					r.document.id.startsWith('coffee_')
+				const coffeeResults = patternResults.filter((r) =>
+					r.document.id.startsWith("coffee_")
 				).length;
 
 				metrics = {
@@ -345,13 +351,13 @@ describe('Learning Speed', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_pattern_recognition', passed, Date.now() - start, metrics);
+				recordTest("test_pattern_recognition", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Context Specialization', () => {
-		it('test_context_specialization', async () => {
+	describe("Context Specialization", () => {
+		it("test_context_specialization", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -359,15 +365,15 @@ describe('Learning Speed', () => {
 			try {
 				// Store context-specific knowledge
 				const workContext = [
-					{ id: 'work_1', content: 'User uses Slack for team communication', ctx: 'work' },
-					{ id: 'work_2', content: 'User prefers VS Code for coding', ctx: 'work' },
-					{ id: 'work_3', content: 'User attends standup at 10am daily', ctx: 'work' },
+					{ id: "work_1", content: "User uses Slack for team communication", ctx: "work" },
+					{ id: "work_2", content: "User prefers VS Code for coding", ctx: "work" },
+					{ id: "work_3", content: "User attends standup at 10am daily", ctx: "work" },
 				];
 
 				const personalContext = [
-					{ id: 'personal_1', content: 'User uses WhatsApp for family chats', ctx: 'personal' },
-					{ id: 'personal_2', content: 'User plays guitar as hobby', ctx: 'personal' },
-					{ id: 'personal_3', content: 'User jogs every morning at 6am', ctx: 'personal' },
+					{ id: "personal_1", content: "User uses WhatsApp for family chats", ctx: "personal" },
+					{ id: "personal_2", content: "User plays guitar as hobby", ctx: "personal" },
+					{ id: "personal_3", content: "User jogs every morning at 6am", ctx: "personal" },
 				];
 
 				for (const w of workContext) {
@@ -387,14 +393,14 @@ describe('Learning Speed', () => {
 				}
 
 				// Search with work context
-				const workResults = await collection.search('communication tool', 3);
-				const personalResults = await collection.search('morning routine exercise', 3);
+				const workResults = await collection.search("communication tool", 3);
+				const personalResults = await collection.search("morning routine exercise", 3);
 
-				const workContextMatches = workResults.filter(r =>
-					r.document.metadata.context === 'work'
+				const workContextMatches = workResults.filter(
+					(r) => r.document.metadata.context === "work"
 				).length;
-				const personalContextMatches = personalResults.filter(r =>
-					r.document.metadata.context === 'personal'
+				const personalContextMatches = personalResults.filter(
+					(r) => r.document.metadata.context === "personal"
 				).length;
 
 				metrics = {
@@ -409,26 +415,26 @@ describe('Learning Speed', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_context_specialization', passed, Date.now() - start, metrics);
+				recordTest("test_context_specialization", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Learning Efficiency', () => {
-		it('test_learning_efficiency', async () => {
+	describe("Learning Efficiency", () => {
+		it("test_learning_efficiency", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
 
 			try {
 				// Measure how quickly confidence builds
-				const memId = 'efficiency_test';
+				const memId = "efficiency_test";
 				let useCount = 0;
 				let successCount = 0;
 
 				await collection.add({
 					id: memId,
-					content: 'User prefers TypeScript for all projects',
+					content: "User prefers TypeScript for all projects",
 					metadata: {
 						...createTestMetadata(),
 						wilson_score: 0.5,
@@ -475,13 +481,13 @@ describe('Learning Speed', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_learning_efficiency', passed, Date.now() - start, metrics);
+				recordTest("test_learning_efficiency", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Bilingual Learning', () => {
-		it('test_hebrew_learning_speed', async () => {
+	describe("Bilingual Learning", () => {
+		it("test_hebrew_learning_speed", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -489,9 +495,9 @@ describe('Learning Speed', () => {
 			try {
 				// Hebrew learning scenarios
 				const hebrewLearning = [
-					{ id: 'he_learn_1', content: 'המשתמש למד שהוא אוהב קפה בבוקר', score: 0.6 },
-					{ id: 'he_learn_2', content: 'המשתמש מעדיף לעבוד מהבית', score: 0.7 },
-					{ id: 'he_learn_3', content: 'המשתמש אוהב לקרוא ספרים בעברית', score: 0.8 },
+					{ id: "he_learn_1", content: "המשתמש למד שהוא אוהב קפה בבוקר", score: 0.6 },
+					{ id: "he_learn_2", content: "המשתמש מעדיף לעבוד מהבית", score: 0.7 },
+					{ id: "he_learn_3", content: "המשתמש אוהב לקרוא ספרים בעברית", score: 0.8 },
 				];
 
 				for (const h of hebrewLearning) {
@@ -501,20 +507,19 @@ describe('Learning Speed', () => {
 						metadata: {
 							...createTestMetadata(),
 							wilson_score: h.score,
-							language: 'hebrew',
+							language: "hebrew",
 						},
 					});
 				}
 
 				// Search in Hebrew
-				const results = await collection.search('מה המשתמש אוהב?', 3);
+				const results = await collection.search("מה המשתמש אוהב?", 3);
 
-				const hebrewFound = results.filter(r =>
-					r.document.metadata.language === 'hebrew'
-				).length;
+				const hebrewFound = results.filter((r) => r.document.metadata.language === "hebrew").length;
 
 				// Calculate average learning score
-				const avgScore = hebrewLearning.reduce((sum, h) => sum + h.score, 0) / hebrewLearning.length;
+				const avgScore =
+					hebrewLearning.reduce((sum, h) => sum + h.score, 0) / hebrewLearning.length;
 
 				metrics = {
 					hebrew_items: hebrewLearning.length,
@@ -527,13 +532,13 @@ describe('Learning Speed', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_hebrew_learning_speed', passed, Date.now() - start, metrics);
+				recordTest("test_hebrew_learning_speed", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Summary Test', () => {
-		it('test_learning_speed', async () => {
+	describe("Summary Test", () => {
+		it("test_learning_speed", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -544,7 +549,7 @@ describe('Learning Speed', () => {
 
 				// Simulate 30 learning interactions
 				for (let i = 0; i < 30; i++) {
-					const successRate = 0.5 + (i / 60); // Improving success rate
+					const successRate = 0.5 + i / 60; // Improving success rate
 					const successes = Math.floor((i + 1) * successRate);
 					const score = calculateWilsonScore(successes, i + 1);
 
@@ -571,7 +576,7 @@ describe('Learning Speed', () => {
 				const improvement = avgLastScore - avgFirstScore;
 
 				// Search test
-				const searchResults = await collection.search('user fact', 10);
+				const searchResults = await collection.search("user fact", 10);
 
 				metrics = {
 					total_learning_items: learningData.length,
@@ -588,7 +593,7 @@ describe('Learning Speed', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_learning_speed', passed, Date.now() - start, metrics);
+				recordTest("test_learning_speed", passed, Date.now() - start, metrics);
 			}
 		});
 	});

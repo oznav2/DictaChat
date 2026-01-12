@@ -15,7 +15,7 @@
  * Output: Generates benchmark results to benchmarks/results/outcome_learning_ab.txt
  */
 
-import { describe, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, afterAll } from "vitest";
 import {
 	MockEmbeddingService,
 	MockCollection,
@@ -23,27 +23,38 @@ import {
 	createTestMetadata,
 	calculateWilsonScore,
 	BenchmarkReporter,
-} from '../mock-utilities';
+} from "../mock-utilities";
 
 // Global reporter for this test file
-const reporter = new BenchmarkReporter('test_outcome_learning_ab');
+const reporter = new BenchmarkReporter("test_outcome_learning_ab");
 
 // Helper to record test metrics
-function recordTest(name: string, passed: boolean, duration: number, metrics?: Record<string, number | string>, error?: string): void {
+function recordTest(
+	name: string,
+	passed: boolean,
+	duration: number,
+	metrics?: Record<string, number | string>,
+	error?: string
+): void {
 	reporter.recordTest({ name, passed, duration, metrics, error });
 }
 
 // Outcome types
-type Outcome = 'positive' | 'negative' | 'neutral';
+type Outcome = "positive" | "negative" | "neutral";
 
 // Memory with outcome learning
 class LearningMemory {
 	private collection: MockCollection;
-	private outcomes: Map<string, { positive: number; negative: number; neutral: number }> = new Map();
+	private outcomes: Map<string, { positive: number; negative: number; neutral: number }> =
+		new Map();
 	private learningEnabled: boolean;
 	private learningRate: number;
 
-	constructor(embeddingService: MockEmbeddingService, learningEnabled: boolean = true, learningRate: number = 0.1) {
+	constructor(
+		embeddingService: MockEmbeddingService,
+		learningEnabled: boolean = true,
+		learningRate: number = 0.1
+	) {
 		this.collection = new MockCollection(embeddingService);
 		this.learningEnabled = learningEnabled;
 		this.learningRate = learningRate;
@@ -94,10 +105,21 @@ class LearningMemory {
 		return { score, confidence, samples: total };
 	}
 
-	async search(query: string, limit: number): Promise<Array<{ id: string; content: string; baseScore: number; adjustedScore: number; confidence: number }>> {
+	async search(
+		query: string,
+		limit: number
+	): Promise<
+		Array<{
+			id: string;
+			content: string;
+			baseScore: number;
+			adjustedScore: number;
+			confidence: number;
+		}>
+	> {
 		const results = await this.collection.search(query, limit * 2);
 
-		const scored = results.map(r => {
+		const scored = results.map((r) => {
 			const baseScore = r.score;
 			const confidence = this.getConfidence(r.document.id);
 
@@ -125,12 +147,12 @@ class LearningMemory {
 	}
 }
 
-describe('Outcome Learning A/B Tests', () => {
+describe("Outcome Learning A/B Tests", () => {
 	let harness: TestHarness;
 	let embeddingService: MockEmbeddingService;
 
 	beforeEach(() => {
-		harness = new TestHarness('OutcomeLearningAB');
+		harness = new TestHarness("OutcomeLearningAB");
 		embeddingService = new MockEmbeddingService(42);
 	});
 
@@ -139,11 +161,11 @@ describe('Outcome Learning A/B Tests', () => {
 	});
 
 	afterAll(() => {
-		reporter.saveReport('outcome_learning_ab.txt');
+		reporter.saveReport("outcome_learning_ab.txt");
 	});
 
-	describe('Learning vs No-Learning Comparison', () => {
-		it('test_ab_learning_effectiveness', async () => {
+	describe("Learning vs No-Learning Comparison", () => {
+		it("test_ab_learning_effectiveness", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -156,9 +178,9 @@ describe('Outcome Learning A/B Tests', () => {
 
 				// Same data for both groups
 				const testData = [
-					{ id: 'ab1', content: 'Restaurant recommendation: Italian place downtown' },
-					{ id: 'ab2', content: 'Restaurant recommendation: Chinese restaurant' },
-					{ id: 'ab3', content: 'Restaurant recommendation: Mexican food truck' },
+					{ id: "ab1", content: "Restaurant recommendation: Italian place downtown" },
+					{ id: "ab2", content: "Restaurant recommendation: Chinese restaurant" },
+					{ id: "ab3", content: "Restaurant recommendation: Mexican food truck" },
 				];
 
 				for (const item of testData) {
@@ -168,22 +190,22 @@ describe('Outcome Learning A/B Tests', () => {
 
 				// Simulate user feedback - Italian is preferred
 				for (let i = 0; i < 10; i++) {
-					groupA.recordOutcome('ab1', 'positive');
-					groupA.recordOutcome('ab2', 'negative');
-					groupA.recordOutcome('ab3', 'neutral');
+					groupA.recordOutcome("ab1", "positive");
+					groupA.recordOutcome("ab2", "negative");
+					groupA.recordOutcome("ab3", "neutral");
 				}
 
 				// Search in both groups
-				const query = 'restaurant recommendation';
+				const query = "restaurant recommendation";
 				const resultsA = await groupA.search(query, 3);
 				const resultsB = await groupB.search(query, 3);
 
 				// Check if learning group ranks Italian higher
-				const italianRankA = resultsA.findIndex(r => r.id === 'ab1');
-				const italianRankB = resultsB.findIndex(r => r.id === 'ab1');
+				const italianRankA = resultsA.findIndex((r) => r.id === "ab1");
+				const italianRankB = resultsB.findIndex((r) => r.id === "ab1");
 
 				// Get confidence for Italian in learning group
-				const italianConfidence = groupA.getConfidence('ab1');
+				const italianConfidence = groupA.getConfidence("ab1");
 
 				metrics = {
 					learning_group_italian_rank: italianRankA + 1,
@@ -200,13 +222,13 @@ describe('Outcome Learning A/B Tests', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_ab_learning_effectiveness', passed, Date.now() - start, metrics);
+				recordTest("test_ab_learning_effectiveness", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Feedback Impact Analysis', () => {
-		it('test_positive_negative_impact', async () => {
+	describe("Feedback Impact Analysis", () => {
+		it("test_positive_negative_impact", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -215,23 +237,23 @@ describe('Outcome Learning A/B Tests', () => {
 				const memory = new LearningMemory(embeddingService, true);
 
 				// Add items
-				await memory.add('pn1', 'Option A for the task');
-				await memory.add('pn2', 'Option B for the task');
-				await memory.add('pn3', 'Option C for the task');
+				await memory.add("pn1", "Option A for the task");
+				await memory.add("pn2", "Option B for the task");
+				await memory.add("pn3", "Option C for the task");
 
 				// Initial effectiveness
-				const initialA = memory.getEffectiveness('pn1');
-				const initialB = memory.getEffectiveness('pn2');
+				const initialA = memory.getEffectiveness("pn1");
+				const initialB = memory.getEffectiveness("pn2");
 
 				// Apply feedback
 				for (let i = 0; i < 20; i++) {
-					memory.recordOutcome('pn1', 'positive');
-					memory.recordOutcome('pn2', 'negative');
+					memory.recordOutcome("pn1", "positive");
+					memory.recordOutcome("pn2", "negative");
 				}
 
 				// Final effectiveness
-				const finalA = memory.getEffectiveness('pn1');
-				const finalB = memory.getEffectiveness('pn2');
+				const finalA = memory.getEffectiveness("pn1");
+				const finalB = memory.getEffectiveness("pn2");
 
 				metrics = {
 					initial_a_score: Math.round(initialA.score * 100),
@@ -249,11 +271,11 @@ describe('Outcome Learning A/B Tests', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_positive_negative_impact', passed, Date.now() - start, metrics);
+				recordTest("test_positive_negative_impact", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_hebrew_feedback_impact', async () => {
+		it("test_hebrew_feedback_impact", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -262,17 +284,17 @@ describe('Outcome Learning A/B Tests', () => {
 				const memory = new LearningMemory(embeddingService, true);
 
 				// Hebrew options
-				await memory.add('he_pn1', 'אפשרות א למשימה');
-				await memory.add('he_pn2', 'אפשרות ב למשימה');
+				await memory.add("he_pn1", "אפשרות א למשימה");
+				await memory.add("he_pn2", "אפשרות ב למשימה");
 
 				// Apply Hebrew-specific feedback
 				for (let i = 0; i < 15; i++) {
-					memory.recordOutcome('he_pn1', 'positive');
-					memory.recordOutcome('he_pn2', 'negative');
+					memory.recordOutcome("he_pn1", "positive");
+					memory.recordOutcome("he_pn2", "negative");
 				}
 
-				const heA = memory.getEffectiveness('he_pn1');
-				const heB = memory.getEffectiveness('he_pn2');
+				const heA = memory.getEffectiveness("he_pn1");
+				const heB = memory.getEffectiveness("he_pn2");
 
 				metrics = {
 					hebrew_a_score: Math.round(heA.score * 100),
@@ -286,13 +308,13 @@ describe('Outcome Learning A/B Tests', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_hebrew_feedback_impact', passed, Date.now() - start, metrics);
+				recordTest("test_hebrew_feedback_impact", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Learning Convergence', () => {
-		it('test_convergence_speed', async () => {
+	describe("Learning Convergence", () => {
+		it("test_convergence_speed", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -300,8 +322,8 @@ describe('Outcome Learning A/B Tests', () => {
 			try {
 				const memory = new LearningMemory(embeddingService, true);
 
-				await memory.add('conv1', 'The correct answer option');
-				await memory.add('conv2', 'An incorrect answer option');
+				await memory.add("conv1", "The correct answer option");
+				await memory.add("conv2", "An incorrect answer option");
 
 				// Track confidence over iterations
 				const confidenceHistory: number[] = [];
@@ -311,8 +333,8 @@ describe('Outcome Learning A/B Tests', () => {
 				const maxIterations = 50;
 
 				while (iterations < maxIterations) {
-					memory.recordOutcome('conv1', 'positive');
-					const conf = memory.getConfidence('conv1');
+					memory.recordOutcome("conv1", "positive");
+					const conf = memory.getConfidence("conv1");
 					confidenceHistory.push(conf);
 
 					if (conf >= targetConfidence) break;
@@ -335,30 +357,30 @@ describe('Outcome Learning A/B Tests', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_convergence_speed', passed, Date.now() - start, metrics);
+				recordTest("test_convergence_speed", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_learning_stability', async () => {
+		it("test_learning_stability", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
 
 			try {
 				const memory = new LearningMemory(embeddingService, true);
-				await memory.add('stab1', 'Test item for stability');
+				await memory.add("stab1", "Test item for stability");
 
 				// Build up confidence
 				for (let i = 0; i < 20; i++) {
-					memory.recordOutcome('stab1', 'positive');
+					memory.recordOutcome("stab1", "positive");
 				}
-				const highConfidence = memory.getConfidence('stab1');
+				const highConfidence = memory.getConfidence("stab1");
 
 				// Add some negative feedback
 				for (let i = 0; i < 5; i++) {
-					memory.recordOutcome('stab1', 'negative');
+					memory.recordOutcome("stab1", "negative");
 				}
-				const afterNegative = memory.getConfidence('stab1');
+				const afterNegative = memory.getConfidence("stab1");
 
 				// Confidence should decrease but not collapse
 				const stabilityRatio = afterNegative / highConfidence;
@@ -376,13 +398,13 @@ describe('Outcome Learning A/B Tests', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_learning_stability', passed, Date.now() - start, metrics);
+				recordTest("test_learning_stability", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Context-Specific Learning', () => {
-		it('test_context_isolation', async () => {
+	describe("Context-Specific Learning", () => {
+		it("test_context_isolation", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -391,28 +413,28 @@ describe('Outcome Learning A/B Tests', () => {
 				const memory = new LearningMemory(embeddingService, true);
 
 				// Items in different contexts
-				await memory.add('ctx_work1', 'Work-related answer A', { context: 'work' });
-				await memory.add('ctx_work2', 'Work-related answer B', { context: 'work' });
-				await memory.add('ctx_home1', 'Home-related answer A', { context: 'home' });
-				await memory.add('ctx_home2', 'Home-related answer B', { context: 'home' });
+				await memory.add("ctx_work1", "Work-related answer A", { context: "work" });
+				await memory.add("ctx_work2", "Work-related answer B", { context: "work" });
+				await memory.add("ctx_home1", "Home-related answer A", { context: "home" });
+				await memory.add("ctx_home2", "Home-related answer B", { context: "home" });
 
 				// Different feedback per context
 				// At work, answer A is better
 				for (let i = 0; i < 10; i++) {
-					memory.recordOutcome('ctx_work1', 'positive');
-					memory.recordOutcome('ctx_work2', 'negative');
+					memory.recordOutcome("ctx_work1", "positive");
+					memory.recordOutcome("ctx_work2", "negative");
 				}
 
 				// At home, answer B is better
 				for (let i = 0; i < 10; i++) {
-					memory.recordOutcome('ctx_home1', 'negative');
-					memory.recordOutcome('ctx_home2', 'positive');
+					memory.recordOutcome("ctx_home1", "negative");
+					memory.recordOutcome("ctx_home2", "positive");
 				}
 
-				const workA = memory.getEffectiveness('ctx_work1');
-				const workB = memory.getEffectiveness('ctx_work2');
-				const homeA = memory.getEffectiveness('ctx_home1');
-				const homeB = memory.getEffectiveness('ctx_home2');
+				const workA = memory.getEffectiveness("ctx_work1");
+				const workB = memory.getEffectiveness("ctx_work2");
+				const homeA = memory.getEffectiveness("ctx_home1");
+				const homeB = memory.getEffectiveness("ctx_home2");
 
 				metrics = {
 					work_a_score: Math.round(workA.score * 100),
@@ -421,7 +443,7 @@ describe('Outcome Learning A/B Tests', () => {
 					home_b_score: Math.round(homeB.score * 100),
 					work_prefers_a: workA.score > workB.score ? 1 : 0,
 					home_prefers_b: homeB.score > homeA.score ? 1 : 0,
-					context_isolation: (workA.score > workB.score && homeB.score > homeA.score) ? 1 : 0,
+					context_isolation: workA.score > workB.score && homeB.score > homeA.score ? 1 : 0,
 				};
 
 				expect(workA.score).toBeGreaterThan(workB.score);
@@ -430,13 +452,13 @@ describe('Outcome Learning A/B Tests', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_context_isolation', passed, Date.now() - start, metrics);
+				recordTest("test_context_isolation", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Wilson Score Confidence', () => {
-		it('test_wilson_score_calculation', async () => {
+	describe("Wilson Score Confidence", () => {
+		it("test_wilson_score_calculation", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -475,11 +497,11 @@ describe('Outcome Learning A/B Tests', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_wilson_score_calculation', passed, Date.now() - start, metrics);
+				recordTest("test_wilson_score_calculation", passed, Date.now() - start, metrics);
 			}
 		});
 
-		it('test_confidence_growth', async () => {
+		it("test_confidence_growth", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -518,13 +540,13 @@ describe('Outcome Learning A/B Tests', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_confidence_growth', passed, Date.now() - start, metrics);
+				recordTest("test_confidence_growth", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Bilingual Learning Comparison', () => {
-		it('test_bilingual_learning_parity', async () => {
+	describe("Bilingual Learning Comparison", () => {
+		it("test_bilingual_learning_parity", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -533,23 +555,23 @@ describe('Outcome Learning A/B Tests', () => {
 				const memory = new LearningMemory(embeddingService, true);
 
 				// Parallel English and Hebrew items
-				await memory.add('en_learn1', 'English answer option A');
-				await memory.add('en_learn2', 'English answer option B');
-				await memory.add('he_learn1', 'תשובה בעברית אופציה א');
-				await memory.add('he_learn2', 'תשובה בעברית אופציה ב');
+				await memory.add("en_learn1", "English answer option A");
+				await memory.add("en_learn2", "English answer option B");
+				await memory.add("he_learn1", "תשובה בעברית אופציה א");
+				await memory.add("he_learn2", "תשובה בעברית אופציה ב");
 
 				// Same feedback pattern for both languages
 				for (let i = 0; i < 15; i++) {
-					memory.recordOutcome('en_learn1', 'positive');
-					memory.recordOutcome('en_learn2', 'negative');
-					memory.recordOutcome('he_learn1', 'positive');
-					memory.recordOutcome('he_learn2', 'negative');
+					memory.recordOutcome("en_learn1", "positive");
+					memory.recordOutcome("en_learn2", "negative");
+					memory.recordOutcome("he_learn1", "positive");
+					memory.recordOutcome("he_learn2", "negative");
 				}
 
-				const enA = memory.getEffectiveness('en_learn1');
-				const enB = memory.getEffectiveness('en_learn2');
-				const heA = memory.getEffectiveness('he_learn1');
-				const heB = memory.getEffectiveness('he_learn2');
+				const enA = memory.getEffectiveness("en_learn1");
+				const enB = memory.getEffectiveness("en_learn2");
+				const heA = memory.getEffectiveness("he_learn1");
+				const heB = memory.getEffectiveness("he_learn2");
 
 				// Learning should be equivalent across languages
 				const enDiff = enA.score - enB.score;
@@ -571,13 +593,13 @@ describe('Outcome Learning A/B Tests', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_bilingual_learning_parity', passed, Date.now() - start, metrics);
+				recordTest("test_bilingual_learning_parity", passed, Date.now() - start, metrics);
 			}
 		});
 	});
 
-	describe('Summary Test', () => {
-		it('test_outcome_learning_ab', async () => {
+	describe("Summary Test", () => {
+		it("test_outcome_learning_ab", async () => {
 			const start = Date.now();
 			let passed = true;
 			let metrics: Record<string, number> = {};
@@ -589,11 +611,11 @@ describe('Outcome Learning A/B Tests', () => {
 
 				// Add items to both
 				const items = [
-					{ id: 'sum1', content: 'Best answer for query', quality: 'high' },
-					{ id: 'sum2', content: 'Medium answer for query', quality: 'medium' },
-					{ id: 'sum3', content: 'Poor answer for query', quality: 'low' },
-					{ id: 'sum4', content: 'תשובה מצוינת לשאילתה', quality: 'high' },
-					{ id: 'sum5', content: 'תשובה בינונית לשאילתה', quality: 'medium' },
+					{ id: "sum1", content: "Best answer for query", quality: "high" },
+					{ id: "sum2", content: "Medium answer for query", quality: "medium" },
+					{ id: "sum3", content: "Poor answer for query", quality: "low" },
+					{ id: "sum4", content: "תשובה מצוינת לשאילתה", quality: "high" },
+					{ id: "sum5", content: "תשובה בינונית לשאילתה", quality: "medium" },
 				];
 
 				for (const item of items) {
@@ -604,26 +626,28 @@ describe('Outcome Learning A/B Tests', () => {
 				// Simulate realistic feedback pattern
 				for (let i = 0; i < 20; i++) {
 					// High quality gets positive feedback
-					learningGroup.recordOutcome('sum1', 'positive');
-					learningGroup.recordOutcome('sum4', 'positive');
+					learningGroup.recordOutcome("sum1", "positive");
+					learningGroup.recordOutcome("sum4", "positive");
 					// Medium gets mixed
-					learningGroup.recordOutcome('sum2', i % 2 === 0 ? 'positive' : 'negative');
-					learningGroup.recordOutcome('sum5', i % 2 === 0 ? 'positive' : 'negative');
+					learningGroup.recordOutcome("sum2", i % 2 === 0 ? "positive" : "negative");
+					learningGroup.recordOutcome("sum5", i % 2 === 0 ? "positive" : "negative");
 					// Low gets negative
-					learningGroup.recordOutcome('sum3', 'negative');
+					learningGroup.recordOutcome("sum3", "negative");
 				}
 
 				// Compare search results
-				const learningResults = await learningGroup.search('answer query', 3);
-				const controlResults = await controlGroup.search('answer query', 3);
+				const learningResults = await learningGroup.search("answer query", 3);
+				const controlResults = await controlGroup.search("answer query", 3);
 
 				// Check if learning group ranks high quality first
-				const learningRankHigh = learningResults.findIndex(r => r.id === 'sum1' || r.id === 'sum4');
-				const controlRankHigh = controlResults.findIndex(r => r.id === 'sum1' || r.id === 'sum4');
+				const learningRankHigh = learningResults.findIndex(
+					(r) => r.id === "sum1" || r.id === "sum4"
+				);
+				const controlRankHigh = controlResults.findIndex((r) => r.id === "sum1" || r.id === "sum4");
 
 				// Get effectiveness scores
-				const highQualityEff = learningGroup.getEffectiveness('sum1');
-				const lowQualityEff = learningGroup.getEffectiveness('sum3');
+				const highQualityEff = learningGroup.getEffectiveness("sum1");
+				const lowQualityEff = learningGroup.getEffectiveness("sum3");
 
 				metrics = {
 					items_tested: items.length,
@@ -634,7 +658,10 @@ describe('Outcome Learning A/B Tests', () => {
 					high_quality_confidence: Math.round(highQualityEff.confidence * 100),
 					low_quality_confidence: Math.round(lowQualityEff.confidence * 100),
 					quality_differentiation: highQualityEff.score > lowQualityEff.score ? 1 : 0,
-					ab_test_success: (learningRankHigh <= controlRankHigh && highQualityEff.score > lowQualityEff.score) ? 1 : 0,
+					ab_test_success:
+						learningRankHigh <= controlRankHigh && highQualityEff.score > lowQualityEff.score
+							? 1
+							: 0,
 				};
 
 				// Learning should differentiate quality
@@ -643,7 +670,7 @@ describe('Outcome Learning A/B Tests', () => {
 				passed = false;
 				throw e;
 			} finally {
-				recordTest('test_outcome_learning_ab', passed, Date.now() - start, metrics);
+				recordTest("test_outcome_learning_ab", passed, Date.now() - start, metrics);
 			}
 		});
 	});

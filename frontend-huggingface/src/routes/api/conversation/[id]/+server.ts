@@ -2,8 +2,9 @@ import { collections } from "$lib/server/database";
 import { authCondition } from "$lib/server/auth";
 import { z } from "zod";
 import { ObjectId } from "mongodb";
+import type { RequestHandler } from "./$types";
 
-export async function GET({ locals, params }) {
+export const GET: RequestHandler = async ({ locals, params }) => {
 	const id = z.string().parse(params.id);
 	const convId = new ObjectId(id);
 
@@ -37,4 +38,4 @@ export async function GET({ locals, params }) {
 	} else {
 		return Response.json({ message: "Must have session cookie" }, { status: 401 });
 	}
-}
+};

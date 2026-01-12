@@ -1,8 +1,8 @@
 ============================= test session starts =============================
 platform: node v20.18.1
 test framework: vitest
-timestamp: 2026-01-08T00:58:56.303Z
-rootdir: /home/ilan/BricksLLM/frontend-huggingface/src/lib/server/memory/__tests__
+timestamp: 2026-01-11T16:08:10.571Z
+rootdir: /home/ilan/BricksLLM/frontend-huggingface
 
 collecting ... collected 0 items
 
@@ -10,5 +10,5 @@ collecting ... collected 0 items
 ============================== benchmark summary ==============================
 
 ============================== test results ===================================
-0 passed, 0 failed in 0.09s
+0 passed, 0 failed in 0.25s
 ===============================================================================

@@ -110,6 +110,11 @@ export interface VectorSchemaValidationConfig {
 	on_mismatch: "disable_vector_stage" | "throw";
 }
 
+export interface DedupConfig {
+	enabled: boolean;
+	similarity_threshold: number;
+}
+
 export interface MemoryConfig {
 	timeouts: MemoryTimeoutsConfig;
 	caps: MemoryCapsConfig;
@@ -128,6 +133,7 @@ export interface MemoryConfig {
 	books: BooksIngestionConfig;
 	qdrant: QdrantCollectionConfig;
 	vector_schema_validation: VectorSchemaValidationConfig;
+	dedup: DedupConfig;
 }
 
 export const defaultMemoryConfig: MemoryConfig = {
@@ -186,15 +192,41 @@ export const defaultMemoryConfig: MemoryConfig = {
 		scheduler_interval_ms: 30 * 60 * 1_000,
 	},
 	circuit_breakers: {
-		qdrant: { failure_threshold: 3, success_threshold: 2, open_duration_ms: 30_000, half_open_max_concurrency: 1 },
-		bm25: { failure_threshold: 3, success_threshold: 2, open_duration_ms: 30_000, half_open_max_concurrency: 1 },
-		reranker: { failure_threshold: 2, success_threshold: 2, open_duration_ms: 60_000, half_open_max_concurrency: 1 },
-		embeddings: { failure_threshold: 2, success_threshold: 2, open_duration_ms: 60_000, half_open_max_concurrency: 1 },
-		contextual_prefix: { failure_threshold: 2, success_threshold: 2, open_duration_ms: 60_000, half_open_max_concurrency: 1 },
+		qdrant: {
+			failure_threshold: 3,
+			success_threshold: 2,
+			open_duration_ms: 30_000,
+			half_open_max_concurrency: 1,
+		},
+		bm25: {
+			failure_threshold: 3,
+			success_threshold: 2,
+			open_duration_ms: 30_000,
+			half_open_max_concurrency: 1,
+		},
+		reranker: {
+			failure_threshold: 2,
+			success_threshold: 2,
+			open_duration_ms: 60_000,
+			half_open_max_concurrency: 1,
+		},
+		embeddings: {
+			failure_threshold: 2,
+			success_threshold: 2,
+			open_duration_ms: 60_000,
+			half_open_max_concurrency: 1,
+		},
+		contextual_prefix: {
+			failure_threshold: 2,
+			success_threshold: 2,
+			open_duration_ms: 60_000,
+			half_open_max_concurrency: 1,
+		},
 	},
 	cold_start: {
 		limit: 5,
-		query: "user name identity preferences goals what works how to help effectively learned mistakes to avoid proven approaches communication style agent mistakes agent needs to learn agent growth areas",
+		query:
+			"user name identity preferences goals what works how to help effectively learned mistakes to avoid proven approaches communication style agent mistakes agent needs to learn agent growth areas",
 		header: "═══ KNOWN CONTEXT ═══",
 		footer: "═══ END CONTEXT ═══",
 	},
@@ -253,5 +285,8 @@ export const defaultMemoryConfig: MemoryConfig = {
 		validate_every_ms: 5 * 60 * 1_000,
 		on_mismatch: "disable_vector_stage",
 	},
+	dedup: {
+		enabled: true,
+		similarity_threshold: 0.95,
+	},
 };
-

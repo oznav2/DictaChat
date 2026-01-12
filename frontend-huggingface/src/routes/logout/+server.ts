@@ -3,8 +3,9 @@ import { base } from "$app/paths";
 import { collections } from "$lib/server/database";
 import { redirect } from "@sveltejs/kit";
 import { config } from "$lib/server/config";
+import type { RequestHandler } from "./$types";
 
-export async function POST({ locals, cookies }) {
+export const POST: RequestHandler = async ({ locals, cookies }) => {
 	await collections.sessions.deleteOne({ sessionId: locals.sessionId });
 
 	cookies.delete(config.COOKIE_NAME, {
@@ -15,4 +16,4 @@ export async function POST({ locals, cookies }) {
 		httpOnly: true,
 	});
 	return redirect(302, `${base}/`);
-}
+};

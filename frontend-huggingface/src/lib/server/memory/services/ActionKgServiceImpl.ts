@@ -8,22 +8,26 @@
 import { logger } from "$lib/server/logger";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
-import type { ActionOutcome, ContextType, Outcome, StatsSnapshot } from "../types";
+import type { ActionOutcome, Outcome, StatsSnapshot } from "../types";
 import type { ActionKgService, GetActionEffectivenessParams } from "../UnifiedMemoryFacade";
 import type { KnowledgeGraphService } from "../kg/KnowledgeGraphService";
+import type { ContextType as KgContextType } from "../kg/types";
 
 export interface ActionKgServiceImplConfig {
 	kgService?: KnowledgeGraphService;
 	config?: MemoryConfig;
+	defaultUserId?: string;
 }
 
 export class ActionKgServiceImpl implements ActionKgService {
 	private kgService: KnowledgeGraphService | null;
 	private config: MemoryConfig;
+	private defaultUserId?: string;
 
 	constructor(params: ActionKgServiceImplConfig) {
 		this.kgService = params.kgService ?? null;
 		this.config = params.config ?? defaultMemoryConfig;
+		this.defaultUserId = params.defaultUserId;
 	}
 
 	/**
@@ -44,7 +48,7 @@ export class ActionKgServiceImpl implements ActionKgService {
 			this.kgService.startTurn(
 				conversationId,
 				turnId,
-				action.context_type as ContextType,
+				(action.context_type ?? "general") as KgContextType,
 				"" // Query not available from ActionOutcome
 			);
 
@@ -58,10 +62,7 @@ export class ActionKgServiceImpl implements ActionKgService {
 				undefined // tool name extracted from action_type if needed
 			);
 
-			// Apply the outcome - this updates effectiveness stats
-			// Note: We need userId which isn't in ActionOutcome - using doc_id as fallback
-			// In real usage, the caller should ensure proper user context
-			const userId = action.doc_id ?? "unknown";
+			const userId = this.defaultUserId ?? action.doc_id ?? "unknown";
 			await this.kgService.applyOutcomeToTurn(userId, conversationId, turnId, action.outcome);
 
 			logger.debug(
@@ -85,7 +86,7 @@ export class ActionKgServiceImpl implements ActionKgService {
 		}
 
 		try {
-			const contextType = (params.contextType as ContextType) ?? "general";
+			const contextType = (params.contextType ?? "general") as KgContextType;
 			const records = await this.kgService.getActionEffectiveness(params.userId, contextType);
 
 			// Transform KG records to StatsSnapshot format

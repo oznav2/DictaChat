@@ -83,7 +83,9 @@
 			<!-- Close button -->
 			<button
 				type="button"
-				class="absolute top-4 {isRTL ? 'left-4' : 'right-4'} rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+				class="absolute top-4 {isRTL
+					? 'left-4'
+					: 'right-4'} rounded-lg p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
 				onclick={() => submitFeedback("skip")}
 				title={isRTL ? "דלג" : "Skip"}
 			>
@@ -170,7 +172,9 @@
 					class="absolute inset-0 flex items-center justify-center rounded-2xl bg-white/80 dark:bg-gray-900/80"
 					transition:fade={{ duration: 150 }}
 				>
-					<div class="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+					<div
+						class="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"
+					></div>
 				</div>
 			{/if}
 		</div>

@@ -189,9 +189,7 @@
 			</div>
 		{:else if results.length === 0}
 			{#if searchQuery.trim()}
-				<div class="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-					לא נמצאו תוצאות
-				</div>
+				<div class="py-8 text-center text-sm text-gray-500 dark:text-gray-400">לא נמצאו תוצאות</div>
 			{:else}
 				<div class="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
 					הקלד לחיפוש בזיכרון
@@ -204,7 +202,8 @@
 						role="button"
 						tabindex="0"
 						onclick={() => toggleExpanded(result.memory_id)}
-						onkeydown={(e) => (e.key === "Enter" || e.key === " ") && toggleExpanded(result.memory_id)}
+						onkeydown={(e) =>
+							(e.key === "Enter" || e.key === " ") && toggleExpanded(result.memory_id)}
 						class="w-full cursor-pointer rounded-lg border border-gray-200 bg-white p-3 text-right transition-colors hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600"
 					>
 						<!-- Header Row -->
@@ -239,7 +238,9 @@
 
 						<!-- Expanded Actions -->
 						{#if expandedId === result.memory_id}
-							<div class="mt-3 flex items-center gap-2 border-t border-gray-100 pt-3 dark:border-gray-600">
+							<div
+								class="mt-3 flex items-center gap-2 border-t border-gray-100 pt-3 dark:border-gray-600"
+							>
 								{#if result.tags && result.tags.length > 0}
 									<div class="flex flex-wrap gap-1">
 										{#each result.tags as tag}

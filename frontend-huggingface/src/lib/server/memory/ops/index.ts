@@ -21,5 +21,4 @@ export type {
 	ExportBackupResult,
 	ImportBackupParams,
 	ImportBackupResult,
-	MemoryStats,
 } from "./OpsServiceImpl";

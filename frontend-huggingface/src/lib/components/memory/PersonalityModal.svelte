@@ -251,7 +251,9 @@ custom_instructions: "${data.custom_instructions}"
 
 			// Dispatch event for sidebar name update
 			if (browser) {
-				window.dispatchEvent(new CustomEvent("personalityUpdated", { detail: { name: data.identity.name } }));
+				window.dispatchEvent(
+					new CustomEvent("personalityUpdated", { detail: { name: data.identity.name } })
+				);
 			}
 
 			// Clear success after 2s
@@ -345,7 +347,9 @@ custom_instructions: "${data.custom_instructions}"
 
 		{#if isLoading}
 			<div class="flex items-center justify-center py-12">
-				<div class="size-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500"></div>
+				<div
+					class="size-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500"
+				></div>
 			</div>
 		{:else if activeMode === "quick"}
 			<!-- Quick Settings Mode -->
@@ -541,7 +545,9 @@ custom_instructions: "${data.custom_instructions}"
 
 		<!-- Help Panel -->
 		{#if showHelp}
-			<div class="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/30">
+			<div
+				class="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/30"
+			>
 				<h4 class="mb-2 text-sm font-medium text-blue-800 dark:text-blue-200">איך זה עובד?</h4>
 				<ul class="space-y-1 text-xs text-blue-700 dark:text-blue-300">
 					<li>• הגדרות האישיות משפיעות על אופן התגובות של העוזר</li>
@@ -554,7 +560,9 @@ custom_instructions: "${data.custom_instructions}"
 
 		<!-- Error Message -->
 		{#if errorMessage}
-			<div class="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/30 dark:text-red-300">
+			<div
+				class="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/30 dark:text-red-300"
+			>
 				{errorMessage}
 			</div>
 		{/if}

@@ -333,9 +333,7 @@ export class ContextualEmbeddingService {
 					const cachedPrefix = cachedValues[i];
 					if (cachedPrefix !== null) {
 						// Use cached value
-						const combined_text = cachedPrefix
-							? `${cachedPrefix}\n\n${chunks[i]}`
-							: chunks[i];
+						const combined_text = cachedPrefix ? `${cachedPrefix}\n\n${chunks[i]}` : chunks[i];
 						results[i] = {
 							original_text: chunks[i],
 							context_prefix: cachedPrefix,

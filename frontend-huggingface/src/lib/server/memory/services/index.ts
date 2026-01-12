@@ -18,3 +18,9 @@ export type { ContextServiceImplConfig } from "./ContextServiceImpl";
 
 export { ActionKgServiceImpl } from "./ActionKgServiceImpl";
 export type { ActionKgServiceImplConfig } from "./ActionKgServiceImpl";
+
+export { WilsonScoreService, getWilsonScoreService } from "./WilsonScoreService";
+export type { MemoryScoreData, RankedMemory } from "./WilsonScoreService";
+
+export { GhostRegistry, getGhostRegistry } from "./GhostRegistry";
+export type { GhostMemoryParams, GhostRecord } from "./GhostRegistry";

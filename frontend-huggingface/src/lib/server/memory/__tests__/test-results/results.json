@@ -1,1 +1,166 @@
-{"numTotalTestSuites":5,"numPassedTestSuites":5,"numFailedTestSuites":0,"numPendingTestSuites":0,"numTotalTests":14,"numPassedTests":14,"numFailedTests":0,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1767833958557,"success":true,"testResults":[{"assertionResults":[{"ancestorTitles":["TestSearchBehavior"],"fullName":"TestSearchBehavior should return array from search","status":"passed","title":"should return array from search","duration":19.34412999999995,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestSearchBehavior"],"fullName":"TestSearchBehavior should respect the limit parameter","status":"passed","title":"should respect the limit parameter","duration":1.063970999999981,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestSearchBehavior"],"fullName":"TestSearchBehavior should return results with expected structure","status":"passed","title":"should return results with expected structure","duration":1.7206059999999752,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestSearchBehavior"],"fullName":"TestSearchBehavior should handle empty query without crashing","status":"passed","title":"should handle empty query without crashing","duration":0.7965510000000222,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestSearchBehavior"],"fullName":"TestSearchBehavior should filter by collection when specified","status":"passed","title":"should filter by collection when specified","duration":1.6325840000000085,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestSearchBehavior"],"fullName":"TestSearchBehavior should return consistent ranking for same query","status":"passed","title":"should return consistent ranking for same query","duration":1.2609320000000253,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestWilsonScore"],"fullName":"TestWilsonScore should be calculable","status":"passed","title":"should be calculable","duration":0.8110260000000267,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestWilsonScore"],"fullName":"TestWilsonScore should return 0.5 for zero uses","status":"passed","title":"should return 0.5 for zero uses","duration":0.7113659999999982,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestWilsonScore"],"fullName":"TestWilsonScore should rank proven higher than perfect newcomer","status":"passed","title":"should rank proven higher than perfect newcomer","duration":1.4079759999999624,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestWilsonScore"],"fullName":"TestWilsonScore should always return between 0 and 1","status":"passed","title":"should always return between 0 and 1","duration":0.9358480000000213,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestMCPToolShapes"],"fullName":"TestMCPToolShapes should return expected shape from search","status":"passed","title":"should return expected shape from search","duration":0.8109870000000114,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestMCPToolShapes"],"fullName":"TestMCPToolShapes should return expected shape from cold start context","status":"passed","title":"should return expected shape from cold start context","duration":0.7470860000000243,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestMCPToolShapes"],"fullName":"TestMCPToolShapes should have expected parameters for store","status":"passed","title":"should have expected parameters for store","duration":0.7589399999999955,"failureMessages":[],"meta":{}},{"ancestorTitles":["TestCharacterizationQueries"],"fullName":"TestCharacterizationQueries should handle all characterization queries","status":"passed","title":"should handle all characterization queries","duration":1.9091220000000249,"failureMessages":[],"meta":{}}],"startTime":1767833958953,"endTime":1767833958987.9092,"status":"passed","message":"","name":"/home/ilan/BricksLLM/frontend-huggingface/src/lib/server/memory/__tests__/characterization/test_search_behavior.test.ts"}]}
+{
+	"numTotalTestSuites": 5,
+	"numPassedTestSuites": 5,
+	"numFailedTestSuites": 0,
+	"numPendingTestSuites": 0,
+	"numTotalTests": 14,
+	"numPassedTests": 14,
+	"numFailedTests": 0,
+	"numPendingTests": 0,
+	"numTodoTests": 0,
+	"snapshot": {
+		"added": 0,
+		"failure": false,
+		"filesAdded": 0,
+		"filesRemoved": 0,
+		"filesRemovedList": [],
+		"filesUnmatched": 0,
+		"filesUpdated": 0,
+		"matched": 0,
+		"total": 0,
+		"unchecked": 0,
+		"uncheckedKeysByFile": [],
+		"unmatched": 0,
+		"updated": 0,
+		"didUpdate": false
+	},
+	"startTime": 1767833958557,
+	"success": true,
+	"testResults": [
+		{
+			"assertionResults": [
+				{
+					"ancestorTitles": ["TestSearchBehavior"],
+					"fullName": "TestSearchBehavior should return array from search",
+					"status": "passed",
+					"title": "should return array from search",
+					"duration": 19.34412999999995,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestSearchBehavior"],
+					"fullName": "TestSearchBehavior should respect the limit parameter",
+					"status": "passed",
+					"title": "should respect the limit parameter",
+					"duration": 1.063970999999981,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestSearchBehavior"],
+					"fullName": "TestSearchBehavior should return results with expected structure",
+					"status": "passed",
+					"title": "should return results with expected structure",
+					"duration": 1.7206059999999752,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestSearchBehavior"],
+					"fullName": "TestSearchBehavior should handle empty query without crashing",
+					"status": "passed",
+					"title": "should handle empty query without crashing",
+					"duration": 0.7965510000000222,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestSearchBehavior"],
+					"fullName": "TestSearchBehavior should filter by collection when specified",
+					"status": "passed",
+					"title": "should filter by collection when specified",
+					"duration": 1.6325840000000085,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestSearchBehavior"],
+					"fullName": "TestSearchBehavior should return consistent ranking for same query",
+					"status": "passed",
+					"title": "should return consistent ranking for same query",
+					"duration": 1.2609320000000253,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestWilsonScore"],
+					"fullName": "TestWilsonScore should be calculable",
+					"status": "passed",
+					"title": "should be calculable",
+					"duration": 0.8110260000000267,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestWilsonScore"],
+					"fullName": "TestWilsonScore should return 0.5 for zero uses",
+					"status": "passed",
+					"title": "should return 0.5 for zero uses",
+					"duration": 0.7113659999999982,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestWilsonScore"],
+					"fullName": "TestWilsonScore should rank proven higher than perfect newcomer",
+					"status": "passed",
+					"title": "should rank proven higher than perfect newcomer",
+					"duration": 1.4079759999999624,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestWilsonScore"],
+					"fullName": "TestWilsonScore should always return between 0 and 1",
+					"status": "passed",
+					"title": "should always return between 0 and 1",
+					"duration": 0.9358480000000213,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestMCPToolShapes"],
+					"fullName": "TestMCPToolShapes should return expected shape from search",
+					"status": "passed",
+					"title": "should return expected shape from search",
+					"duration": 0.8109870000000114,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestMCPToolShapes"],
+					"fullName": "TestMCPToolShapes should return expected shape from cold start context",
+					"status": "passed",
+					"title": "should return expected shape from cold start context",
+					"duration": 0.7470860000000243,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestMCPToolShapes"],
+					"fullName": "TestMCPToolShapes should have expected parameters for store",
+					"status": "passed",
+					"title": "should have expected parameters for store",
+					"duration": 0.7589399999999955,
+					"failureMessages": [],
+					"meta": {}
+				},
+				{
+					"ancestorTitles": ["TestCharacterizationQueries"],
+					"fullName": "TestCharacterizationQueries should handle all characterization queries",
+					"status": "passed",
+					"title": "should handle all characterization queries",
+					"duration": 1.9091220000000249,
+					"failureMessages": [],
+					"meta": {}
+				}
+			],
+			"startTime": 1767833958953,
+			"endTime": 1767833958987.9092,
+			"status": "passed",
+			"message": "",
+			"name": "/home/ilan/BricksLLM/frontend-huggingface/src/lib/server/memory/__tests__/characterization/test_search_behavior.test.ts"
+		}
+	]
+}

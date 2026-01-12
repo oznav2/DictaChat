@@ -1,39 +1,45 @@
-{{!-- @description: Warns about past failures to prevent repeated mistakes --}}
-{{!-- @category: learning --}}
+{{! @description: Warns about past failures to prevent repeated mistakes }}
+{{! @category: learning }}
 
 {{#ifNotEmpty failures}}
-{{#ifLang "he"}}
-אזהרה: גישות דומות נכשלו בעבר:
-{{else}}
-Warning: Similar approaches have failed before:
-{{/ifLang}}
+	{{#ifLang "he"}}
+		אזהרה: גישות דומות נכשלו בעבר:
+	{{else}}
+		Warning: Similar approaches have failed before:
+	{{/ifLang}}
 
-{{#each failures}}
-{{#ifLang "he"}}
-- {{this.approach}}: {{this.reason}}
-  {{#if this.timestamp}}({{formatDate this.timestamp}}){{/if}}
-  {{#if this.suggestion}}הצעה: {{this.suggestion}}{{/if}}
-{{else}}
-- {{this.approach}}: {{this.reason}}
-  {{#if this.timestamp}}({{formatDate this.timestamp}}){{/if}}
-  {{#if this.suggestion}}Suggestion: {{this.suggestion}}{{/if}}
-{{/ifLang}}
-{{/each}}
+	{{#each failures}}
+		{{#ifLang "he"}}
+			-
+			{{this.approach}}:
+			{{this.reason}}
+			{{#if this.timestamp}}({{formatDate this.timestamp}}){{/if}}
+			{{#if this.suggestion}}הצעה: {{this.suggestion}}{{/if}}
+		{{else}}
+			-
+			{{this.approach}}:
+			{{this.reason}}
+			{{#if this.timestamp}}({{formatDate this.timestamp}}){{/if}}
+			{{#if this.suggestion}}Suggestion: {{this.suggestion}}{{/if}}
+		{{/ifLang}}
+	{{/each}}
 
-{{#ifLang "he"}}
-שקול גישה חלופית או התייחס לסיבות הכישלון הקודמות.
-{{else}}
-Consider an alternative approach or address the previous failure reasons.
-{{/ifLang}}
+	{{#ifLang "he"}}
+		שקול גישה חלופית או התייחס לסיבות הכישלון הקודמות.
+	{{else}}
+		Consider an alternative approach or address the previous failure reasons.
+	{{/ifLang}}
 {{/ifNotEmpty}}
 
 {{#if related_successes}}
-{{#ifLang "he"}}
-גישות שעבדו בהקשרים דומים:
-{{else}}
-Approaches that worked in similar contexts:
-{{/ifLang}}
-{{#each related_successes}}
-- {{this.approach}} ({{percent this.success_rate}})
-{{/each}}
+	{{#ifLang "he"}}
+		גישות שעבדו בהקשרים דומים:
+	{{else}}
+		Approaches that worked in similar contexts:
+	{{/ifLang}}
+	{{#each related_successes}}
+		-
+		{{this.approach}}
+		({{percent this.success_rate}})
+	{{/each}}
 {{/if}}

@@ -33,6 +33,12 @@ export interface Settings extends Timestamps {
 	 */
 	hidePromptExamples?: Record<string, boolean>;
 
+	/** Per-model override for OpenAI `max_tokens` (0 = use model default). */
+	maxTokensOverrides?: Record<string, number>;
+
+	/** Per-model override for HF-style `truncate` (0 = use model default). */
+	truncateOverrides?: Record<string, number>;
+
 	disableStream: boolean;
 	directPaste: boolean;
 
@@ -52,6 +58,8 @@ export const DEFAULT_SETTINGS = {
 	multimodalOverrides: {},
 	toolsOverrides: {},
 	hidePromptExamples: {},
+	maxTokensOverrides: {},
+	truncateOverrides: {},
 	disableStream: false,
 	directPaste: false,
 } satisfies SettingsEditable;
