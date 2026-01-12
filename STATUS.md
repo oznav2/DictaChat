@@ -8,6 +8,7 @@
 ## Standup (January 13, 2026)
 
 ### What I Did
+- **Fixed SRC_ROAMPAL visibility on GitHub**: The `SRC_ROAMPAL` folder was previously tracked as a "gitlink" (nested repository), which made its contents invisible on GitHub. Removed the nested `.git` directory and re-added the folder as a regular directory. Synchronized across all branches (`mem0`, `HF`, `main`).
 - **Fixed git push issue**: The user committed to the `mem0` branch but attempted to push to `origin HF`. Since they were on `mem0`, `git push origin HF` pushed the local `HF` branch (which was at an old commit) instead of the current work. Fixed by pushing `mem0` to `origin/HF` (`git push origin mem0:HF`).
 - **Fixed empty assistant responses**: `sequentialthinking` tool was causing empty responses when processing documents - Hebrew JSON parsing failed, leaving only `<think>` blocks with no actual answer. Excluded it from document processing since DictaLM-Thinking already has native thinking.
 - **Fixed MongoDB memory storage**: Store operations were silently failing with `"language override unsupported: mixed"`. Changed default language to `"none"` for bilingual content.
