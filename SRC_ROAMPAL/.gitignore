@@ -1,0 +1,159 @@
+# Environment files (keep .env.example only)
+.env
+.env.production
+.env.local
+.env.*.local
+.env.dev
+.env.prod
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# Data directories (contain user data & embeddings)
+data/chromadb/
+data/sessions/
+data/books/
+data/*.db
+data/*.db-journal
+*.db
+*.db-journal
+
+# Tauri backend bundled data (should NOT be committed - app uses AppData at runtime)
+ui-implementation/src-tauri/backend/data/
+ui-implementation/src-tauri/data/
+
+# Logs
+*.log
+loopsmith.log
+roampal.log
+server*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+dist/
+.vite/
+npm-debug.log*
+
+# Build artifacts
+*.egg-info/
+build/
+dist/
+
+# Tauri/Rust build artifacts
+ui-implementation/src-tauri/target/
+*.exe
+*.msi
+*.dmg
+*.app
+*.AppImage
+*.deb
+
+# Python minimal distribution
+python-minimal/
+ui-implementation/src-tauri/binaries/
+
+# Backup files
+*.backup*
+*.bak
+*.before_*
+
+# Windows artifacts
+nul
+NUL
+
+# Releases (binary distributions - DO NOT COMMIT)
+/releases/
+
+# Fix/debug scripts (temporary)
+fix_*.py
+*_fix.py
+mcp_conversation_boundary_fix.py
+
+# Patch files
+*.patch
+
+# Test artifacts (NOT benchmarks)
+**/test_api_debug_*/
+**/test_data_*/
+**/test_dedup/
+**/test_sql_debug/
+
+# Benchmark temp files only (keep test scripts & READMEs as evidence)
+benchmarks/locomo/
+benchmarks/longmemeval_data/
+benchmarks/.benchmarks/
+*cleanup.bat
+devnull
+
+# Benchmark runtime artifacts (generated when tests run)
+benchmarks/**/chromadb/
+benchmarks/**/*.sqlite3
+benchmarks/**/*.bin
+benchmarks/**/control_*/
+benchmarks/**/treatment_*/
+benchmarks/**/rag3_*/
+benchmarks/**/scenario_*/
+benchmarks/**/s*_*/
+benchmarks/**/__pycache__/
+benchmarks/.pytest_cache/
+
+# Benchmark data directories (test artifacts, regenerated each run)
+benchmarks/**/ab_test_data/
+benchmarks/**/comprehensive_benchmark_data/
+benchmarks/**/debug_test_data/
+benchmarks/**/dynamic_weight_test_data/
+benchmarks/**/learning_curve_data/
+benchmarks/**/roampal_vs_vectordb_data/
+benchmarks/**/test_data/
+benchmarks/**/test_data_*/
+benchmarks/**/token_efficiency_data/
+benchmarks/**/torture_test_data/
+
+# Benchmark working files (overwritten each run)
+benchmarks/**/statistical_results.json
+benchmarks/**/token_efficiency_results.json
+
+# NOTE: Versioned results live in benchmarks/comprehensive_test/results/ (committed)
+
+# Pickle files
+*.pickle
+
+# Temporary files
+temp_*.json
+verify_architecture.txt
+
+# Build scripts and configs (keep builds private)
+ui-implementation/build-dev.bat
+ui-implementation/build-prod.bat
+ui-implementation/src-tauri/tauri.conf.dev.json
+ui-implementation/src-tauri/tauri.conf.prod.json
+docs/BUILD_GUIDE.md
+
+# Local dev files (not for repo)
+.mcp.json
+release/
+test_data/
+test_docs/
+
+# Benchmark test data (generated)
+dev/benchmarks/comprehensive_test/ab_test_data/
+dev/benchmarks/comprehensive_test/test_data/
+*.sqlite3
+*.bin
