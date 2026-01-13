@@ -589,6 +589,38 @@ export async function* runMcpFlow({
 				signal: abortSignal,
 			});
 
+			// Check if memory system is degraded (circuit breaker open, timeouts, etc.)
+			// Emit degraded status immediately to prevent UI from appearing frozen
+			const memoryErrors = memoryResult.retrievalDebug?.errors ?? [];
+			const hasCircuitBreakerErrors = memoryErrors.some(
+				(e) =>
+					e.message?.toLowerCase().includes("circuit") ||
+					e.message?.toLowerCase().includes("breaker") ||
+					e.code === "CIRCUIT_OPEN"
+			);
+			const hasTimeoutErrors = memoryErrors.some(
+				(e) => e.message?.toLowerCase().includes("timeout") || e.code === "TIMEOUT"
+			);
+
+			if (hasCircuitBreakerErrors || hasTimeoutErrors || !memoryResult.isOperational) {
+				yield {
+					type: MessageUpdateType.Memory,
+					subtype: MessageMemoryUpdateType.Degraded,
+					reason: hasCircuitBreakerErrors
+						? "circuit_breaker_open"
+						: hasTimeoutErrors
+							? "timeout"
+							: "service_unavailable",
+					message: memoryErrors[0]?.message ?? "Memory system temporarily unavailable",
+				};
+				logger.debug("[mcp] Memory system degraded, continuing without full context", {
+					hasCircuitBreakerErrors,
+					hasTimeoutErrors,
+					isOperational: memoryResult.isOperational,
+					errors: memoryErrors,
+				});
+			}
+
 			// Store searchPositionMap for outcome tracking
 			searchPositionMap = memoryResult.searchPositionMap;
 

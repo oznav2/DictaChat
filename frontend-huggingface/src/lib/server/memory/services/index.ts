@@ -24,3 +24,14 @@ export type { MemoryScoreData, RankedMemory } from "./WilsonScoreService";
 
 export { GhostRegistry, getGhostRegistry } from "./GhostRegistry";
 export type { GhostMemoryParams, GhostRecord } from "./GhostRegistry";
+
+export {
+	DocumentRecognitionService,
+	createDocumentRecognitionService,
+	calculateDocumentHash,
+} from "./DocumentRecognitionService";
+export type {
+	DocumentRecognitionConfig,
+	DocumentRecognitionResult,
+	DocumentMemoryRetrievalResult,
+} from "./DocumentRecognitionService";

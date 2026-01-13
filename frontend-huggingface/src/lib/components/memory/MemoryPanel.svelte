@@ -274,8 +274,20 @@
 	<!-- Help Panel -->
 	{#if showHelp}
 		<div
-			class="rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-900/30"
+			class="relative rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-900/30"
 		>
+			<!-- Close Button -->
+			<button
+				type="button"
+				onclick={() => (showHelp = false)}
+				class="absolute left-2 top-2 rounded-full p-1 text-blue-600 hover:bg-blue-200 dark:text-blue-300 dark:hover:bg-blue-800"
+				aria-label="סגור עזרה"
+			>
+				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+				</svg>
+			</button>
+			
 			<h4 class="mb-2 text-sm font-medium text-blue-800 dark:text-blue-200">סוגי זיכרון</h4>
 			<div class="space-y-1.5">
 				{#each Object.entries(tierDescriptions) as [tier, info]}
@@ -288,7 +300,14 @@
 					</div>
 				{/each}
 			</div>
-			<div class="mt-3 flex justify-end">
+			<div class="mt-3 flex justify-end gap-2">
+				<button
+					type="button"
+					onclick={() => (showHelp = false)}
+					class="rounded-lg border border-blue-300 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-100 dark:border-blue-600 dark:text-blue-300 dark:hover:bg-blue-800"
+				>
+					סגור
+				</button>
 				<button
 					type="button"
 					onclick={openMemoryEducation}

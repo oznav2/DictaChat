@@ -199,6 +199,8 @@ export enum MessageMemoryUpdateType {
 	Found = "found",
 	Storing = "storing",
 	Outcome = "outcome",
+	Degraded = "degraded", // Circuit breaker open - memory system temporarily unavailable
+	DocumentIngesting = "document_ingesting", // Document upload progress
 }
 
 interface MessageMemoryUpdateBase<TSubtype extends MessageMemoryUpdateType> {
@@ -228,8 +230,26 @@ export interface MessageMemoryOutcomeUpdate
 	memoryIds?: string[];
 }
 
+export interface MessageMemoryDegradedUpdate
+	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.Degraded> {
+	reason: "circuit_breaker_open" | "service_unavailable" | "timeout";
+	message?: string;
+}
+
+export interface MessageMemoryDocumentIngestingUpdate
+	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.DocumentIngesting> {
+	documentName: string;
+	stage: "reading" | "extracting" | "chunking" | "embedding" | "storing" | "completed" | "recognized";
+	chunksProcessed?: number;
+	totalChunks?: number;
+	recognized?: boolean;
+	message?: string;
+}
+
 export type MessageMemoryUpdate =
 	| MessageMemorySearchingUpdate
 	| MessageMemoryFoundUpdate
 	| MessageMemoryStoringUpdate
-	| MessageMemoryOutcomeUpdate;
+	| MessageMemoryOutcomeUpdate
+	| MessageMemoryDegradedUpdate
+	| MessageMemoryDocumentIngestingUpdate;

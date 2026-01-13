@@ -403,6 +403,112 @@ export class ReindexService {
 			"ReindexService: Checkpoint saved"
 		);
 	}
+
+	/**
+	 * Reindex only memories marked as needing reindex (deferred embedding scenario)
+	 * This is a lightweight operation that only processes memories with needs_reindex=true
+	 */
+	async reindexDeferred(userId?: string): Promise<ReindexResult> {
+		const jobId = `reindex_deferred_${Date.now()}`;
+		const startTime = Date.now();
+
+		try {
+			logger.info({ jobId, userId }, "ReindexService: Starting deferred reindex");
+
+			// Get memories marked for reindex
+			const { items } = this.mongo.getCollections();
+			const filter: Record<string, unknown> = { needs_reindex: true };
+			if (userId) {
+				filter.user_id = userId;
+			}
+
+			const memoriesNeedingReindex = await items
+				.find(filter as any)
+				.limit(1000)
+				.toArray();
+
+			if (memoriesNeedingReindex.length === 0) {
+				logger.info({ jobId }, "ReindexService: No memories need reindexing");
+				return {
+					success: true,
+					jobId,
+					totalProcessed: 0,
+					totalFailed: 0,
+					durationMs: Date.now() - startTime,
+				};
+			}
+
+			logger.info(
+				{ jobId, count: memoriesNeedingReindex.length },
+				"ReindexService: Found memories needing reindex"
+			);
+
+			let processed = 0;
+			let failed = 0;
+
+			for (const memory of memoriesNeedingReindex) {
+				const memoryId = String(memory.memory_id);
+				const memoryUserId = String(memory.user_id);
+				const content = String(memory.text);
+
+				const success = await this.processItem({
+					memory_id: memoryId,
+					user_id: memoryUserId,
+					content,
+				});
+
+				if (success) {
+					// Clear the needs_reindex flag
+					await items.updateOne(
+						{ memory_id: memoryId },
+						{
+							$unset: { needs_reindex: "", reindex_reason: "", reindex_marked_at: "" },
+							$set: { last_reindexed_at: new Date() },
+						}
+					);
+					processed++;
+				} else {
+					failed++;
+				}
+			}
+
+			const durationMs = Date.now() - startTime;
+			logger.info(
+				{ jobId, processed, failed, durationMs },
+				"ReindexService: Deferred reindex completed"
+			);
+
+			return {
+				success: true,
+				jobId,
+				totalProcessed: processed,
+				totalFailed: failed,
+				durationMs,
+			};
+		} catch (err) {
+			logger.error({ err, jobId }, "ReindexService: Deferred reindex failed");
+			return {
+				success: false,
+				jobId,
+				totalProcessed: 0,
+				totalFailed: 0,
+				durationMs: Date.now() - startTime,
+				errorMessage: err instanceof Error ? err.message : String(err),
+			};
+		}
+	}
+
+	/**
+	 * Check if there are memories pending reindex
+	 */
+	async countPendingReindex(userId?: string): Promise<number> {
+		const { items } = this.mongo.getCollections();
+		const filter: Record<string, unknown> = { needs_reindex: true };
+		if (userId) {
+			filter.user_id = userId;
+		}
+		return items.countDocuments(filter as any);
+	}
 }
 
 /**

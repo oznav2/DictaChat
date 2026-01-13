@@ -16,9 +16,29 @@ import { createTraceEmitter, TraceEmitter } from "./services/traceEmitter";
 import { createDocumentRAGService, DocumentRAGService } from "./services/documentRAG";
 import { getMongoClient } from "./services/ragDatabase";
 import type { RetrievalResult, SupportedLanguage } from "./types/documentContext";
-import type { MessageTraceUpdate } from "$lib/types/MessageUpdate";
+import type { MessageTraceUpdate, MessageMemoryDocumentIngestingUpdate } from "$lib/types/MessageUpdate";
+import { MessageUpdateType, MessageMemoryUpdateType } from "$lib/types/MessageUpdate";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
 import { ADMIN_USER_ID } from "$lib/server/constants";
+import { DocumentRecognitionService } from "$lib/server/memory/services/DocumentRecognitionService";
+
+/**
+ * Create a document ingesting update for streaming to UI
+ */
+function createDocumentIngestingUpdate(params: {
+	documentName: string;
+	stage: MessageMemoryDocumentIngestingUpdate["stage"];
+	chunksProcessed?: number;
+	totalChunks?: number;
+	recognized?: boolean;
+	message?: string;
+}): MessageMemoryDocumentIngestingUpdate {
+	return {
+		type: MessageUpdateType.Memory,
+		subtype: MessageMemoryUpdateType.DocumentIngesting,
+		...params,
+	};
+}
 
 /**
  * Check if RAG is enabled via environment variable
@@ -74,11 +94,14 @@ const DOCUMENT_MIMES = [
  * Bridge RAG document chunks to Memory system
  * Stores ingested document chunks in the permanent memory system
  * This ensures documents uploaded via chat are also stored in memory for the Memory Panel
+ *
+ * ENHANCED: Now includes document_hash for cross-chat recognition
  */
 async function bridgeRAGToMemory(
 	ragService: DocumentRAGService,
 	conversationId: string,
-	docFile: { path: string; name: string; mime: string }
+	docFile: { path: string; name: string; mime: string },
+	documentHash?: string
 ): Promise<void> {
 	try {
 		// Get chunks from RAG store
@@ -106,14 +129,72 @@ async function bridgeRAGToMemory(
 					file_type: docFile.mime,
 					source: "rag_upload",
 					conversation_id: conversationId,
+					// CRITICAL: Include document_hash for cross-chat recognition
+					document_hash: documentHash || null,
 				},
 			});
 		}
 
-		console.log(`[RAG→Memory] Successfully bridged ${chunks.length} chunks`);
+		console.log(`[RAG→Memory] Successfully bridged ${chunks.length} chunks with document_hash`);
 	} catch (err) {
 		console.error("[RAG→Memory] Bridge failed:", err);
 		// Don't throw - memory storage is enhancement, not critical path
+	}
+}
+
+/**
+ * Check if document already exists in memory system (cross-chat recognition)
+ * This is the KEY function for recognizing previously processed documents
+ */
+async function checkDocumentInMemorySystem(
+	docFile: { path: string; name: string; mime: string }
+): Promise<{
+	recognized: boolean;
+	documentHash?: string;
+	existingBookId?: string;
+	existingTitle?: string;
+	chunkCount?: number;
+}> {
+	try {
+		// Read file and calculate hash
+		const fs = await import("fs/promises");
+		const fileContent = await fs.readFile(docFile.path);
+		const { createHash } = await import("crypto");
+
+		// For text-based files, hash the content; for binary, hash the file
+		const textMimes = ["text/plain", "text/markdown"];
+		let documentHash: string;
+
+		if (textMimes.some((m) => docFile.mime.startsWith(m))) {
+			// Hash text content
+			documentHash = createHash("sha256").update(fileContent.toString("utf-8")).digest("hex");
+		} else {
+			// For PDFs and other formats, we need to extract text first
+			// For now, use file hash as a quick check
+			documentHash = createHash("sha256").update(fileContent).digest("hex");
+		}
+
+		// Use DocumentRecognitionService to check if document exists
+		const recognitionService = new DocumentRecognitionService();
+		const recognition = await recognitionService.recognizeDocument(ADMIN_USER_ID, documentHash);
+
+		if (recognition.recognized && recognition.existingDocument) {
+			console.log(
+				`[RAG] Document recognized from previous session: ${recognition.existingDocument.title}`
+			);
+			return {
+				recognized: true,
+				documentHash,
+				existingBookId: recognition.existingDocument.bookId,
+				existingTitle: recognition.existingDocument.title,
+				chunkCount: recognition.existingDocument.chunkCount,
+			};
+		}
+
+		return { recognized: false, documentHash };
+	} catch (err) {
+		console.error("[RAG] Document recognition check failed:", err);
+		return { recognized: false };
 	}
 }
 
@@ -229,6 +310,29 @@ export async function tryRetrieveRAGContext(
 		if (!isIngested) {
 			const docFile = extractDocumentFile(messages);
 			if (docFile) {
+				// ENHANCED: Check if document already exists in memory system (cross-chat recognition)
+				const memoryCheck = await checkDocumentInMemorySystem(docFile);
+
+				if (memoryCheck.recognized && memoryCheck.existingBookId) {
+					console.log(`[RAG] Document recognized from previous chat: ${memoryCheck.existingTitle}`);
+					// Skip ingestion and use existing memories
+					traceEmitter.completeRun(runId);
+					return {
+						hasContext: true,
+						contextInjection: `<document_recognition>
+I have already processed this document ("${memoryCheck.existingTitle}") in a previous session.
+Retrieving ${memoryCheck.chunkCount || 0} stored memory chunks for this document.
+
+// Hebrew:
+כבר עיבדתי את המסמך הזה ("${memoryCheck.existingTitle}") בשיחה קודמת.
+מאחזר ${memoryCheck.chunkCount || 0} קטעי זיכרון שנשמרו עבור מסמך זה.
+</document_recognition>`,
+						language,
+						traceEmitter,
+						runId,
+					};
+				}
+
 				console.log("[RAG] Document not ingested, starting ingestion:", docFile.name);
 				try {
 					await ragService.ingestDocument({
@@ -243,7 +347,8 @@ export async function tryRetrieveRAGContext(
 					console.log("[RAG] Document ingested successfully");
 
 					// Bridge to memory system so documents appear in Memory Panel
-					await bridgeRAGToMemory(ragService, conversationId, docFile);
+					// ENHANCED: Now includes document_hash for cross-chat recognition
+					await bridgeRAGToMemory(ragService, conversationId, docFile, memoryCheck.documentHash);
 				} catch (ingestError) {
 					console.error("[RAG] Document ingestion failed:", ingestError);
 					traceEmitter.completeRun(runId);
@@ -353,10 +458,11 @@ Use the above document context to answer the user's question. Cite specific chun
 // ============================================
 
 /**
- * Streaming RAG result - either a trace update or the final result
+ * Streaming RAG result - either a trace update, memory update, or the final result
  */
 export type StreamingRAGItem =
 	| { type: "trace"; update: MessageTraceUpdate }
+	| { type: "memory"; update: MessageMemoryDocumentIngestingUpdate }
 	| { type: "done"; result: RAGContextResult };
 
 /**
@@ -411,17 +517,41 @@ export async function* streamRAGPipeline(
 		yield { type: "trace", update: runCreatedUpdate };
 	}
 
-	// Queue for trace events from background work
-	const eventQueue: MessageTraceUpdate[] = [];
+	// Queue for trace events and memory events from background work
+	const eventQueue: Array<
+		| { kind: "trace"; update: MessageTraceUpdate }
+		| { kind: "memory"; update: MessageMemoryDocumentIngestingUpdate }
+	> = [];
 	let workComplete = false;
 	let workResult: RAGContextResult | null = null;
 	let workError: Error | null = null;
+
+	// Helper to push document processing events
+	const pushDocumentEvent = (
+		documentName: string,
+		stage: MessageMemoryDocumentIngestingUpdate["stage"],
+		extra?: {
+			chunksProcessed?: number;
+			totalChunks?: number;
+			recognized?: boolean;
+			message?: string;
+		}
+	) => {
+		eventQueue.push({
+			kind: "memory",
+			update: createDocumentIngestingUpdate({
+				documentName,
+				stage,
+				...extra,
+			}),
+		});
+	};
 
 	// Subscribe to trace events - push to queue as they happen
 	const unsubscribe = traceEmitter.subscribe((event) => {
 		const update = traceEmitter.toMessageUpdate(event);
 		if (update) {
-			eventQueue.push(update);
+			eventQueue.push({ kind: "trace", update });
 		}
 	});
 
@@ -451,6 +581,47 @@ export async function* streamRAGPipeline(
 			if (!isIngested) {
 				const docFile = extractDocumentFile(messages);
 				if (docFile) {
+					// Emit reading stage immediately
+					pushDocumentEvent(docFile.name, "reading", {
+						message: `Reading ${docFile.name}...`,
+					});
+
+					// ENHANCED: Check if document already exists in memory system (cross-chat recognition)
+					const memoryCheck = await checkDocumentInMemorySystem(docFile);
+
+					if (memoryCheck.recognized && memoryCheck.existingBookId) {
+						console.log(
+							`[RAG] Document recognized from previous chat: ${memoryCheck.existingTitle}`
+						);
+						// Emit recognized event
+						pushDocumentEvent(docFile.name, "recognized", {
+							recognized: true,
+							totalChunks: memoryCheck.chunkCount ?? 0,
+							message: `Document recognized from previous session (${memoryCheck.chunkCount ?? 0} chunks)`,
+						});
+						// Skip ingestion and use existing memories
+						traceEmitter.completeRun(runId);
+						return {
+							hasContext: true,
+							contextInjection: `<document_recognition>
+I have already processed this document ("${memoryCheck.existingTitle}") in a previous session.
+Retrieving ${memoryCheck.chunkCount || 0} stored memory chunks for this document.
+
+// Hebrew:
+כבר עיבדתי את המסמך הזה ("${memoryCheck.existingTitle}") בשיחה קודמת.
+מאחזר ${memoryCheck.chunkCount || 0} קטעי זיכרון שנשמרו עבור מסמך זה.
+</document_recognition>`,
+							language,
+							traceEmitter,
+							runId,
+						} as RAGContextResult;
+					}
+
+					// Emit extracting stage
+					pushDocumentEvent(docFile.name, "extracting", {
+						message: `Extracting content from ${docFile.name}...`,
+					});
+
 					console.log("[RAG] Starting document ingestion:", docFile.name);
 					await ragService.ingestDocument({
 						runId,
@@ -463,8 +634,19 @@ export async function* streamRAGPipeline(
 					isIngested = true;
 					console.log("[RAG] Document ingested successfully");
 
+					// Emit storing stage
+					pushDocumentEvent(docFile.name, "storing", {
+						message: `Storing document in memory...`,
+					});
+
 					// Bridge to memory system so documents appear in Memory Panel
-					await bridgeRAGToMemory(ragService, conversationId, docFile);
+					// ENHANCED: Now includes document_hash for cross-chat recognition
+					await bridgeRAGToMemory(ragService, conversationId, docFile, memoryCheck.documentHash);
+
+					// Emit completed stage
+					pushDocumentEvent(docFile.name, "completed", {
+						message: `Document "${docFile.name}" processed successfully`,
+					});
 				} else {
 					// No document file found
 					traceEmitter.completeRun(runId);
@@ -527,12 +709,16 @@ export async function* streamRAGPipeline(
 			workComplete = true;
 		});
 
-	// Yield trace events as they come, while work is in progress
+	// Yield trace and memory events as they come, while work is in progress
 	while (!workComplete || eventQueue.length > 0) {
 		// Yield any queued events
 		while (eventQueue.length > 0) {
-			const update = eventQueue.shift()!;
-			yield { type: "trace", update };
+			const event = eventQueue.shift()!;
+			if (event.kind === "trace") {
+				yield { type: "trace", update: event.update };
+			} else {
+				yield { type: "memory", update: event.update };
+			}
 		}
 
 		// If work is not complete, wait a bit for more events

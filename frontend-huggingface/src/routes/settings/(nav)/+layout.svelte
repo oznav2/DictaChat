@@ -138,12 +138,18 @@
 					class="text-xl text-gray-900 hover:text-black dark:text-gray-200 dark:hover:text-white"
 				/>
 			</button>
+		{:else}
+			<!-- Invisible spacer to maintain layout when back button is hidden -->
+			<div class="w-8 md:hidden"></div>
 		{/if}
-		<h2 class=" left-0 right-0 mx-auto w-fit text-center text-xl font-bold md:hidden">Settings</h2>
+		<h2 class="left-0 right-0 mx-auto w-fit text-center text-xl font-bold md:hidden">Settings</h2>
 		<button
-			class="btn rounded-lg"
+			class="btn rounded-lg ml-auto z-50 relative"
+			type="button"
 			aria-label="Close settings"
-			onclick={() => {
+			onclick={(e) => {
+				e.preventDefault();
+				e.stopPropagation();
 				handleClose();
 			}}
 		>

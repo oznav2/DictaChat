@@ -15,7 +15,8 @@ export type MemoryUiEvents =
 	| "memoryui:assistantStreamFinished"
 	| "memoryui:memoryMetaUpdated"
 	| "memoryui:setBlockingScoring"
-	| "memoryui:clearBlockingScoring";
+	| "memoryui:clearBlockingScoring"
+	| "memoryui:documentProcessing";
 
 export interface MemoryUiState {
 	enabled: boolean;
@@ -62,9 +63,13 @@ export interface MemoryUiState {
 		selectedMemoryId: string | null;
 	};
 	processing: {
-		status: "idle" | "searching" | "found" | "storing" | "learning";
+		status: "idle" | "searching" | "found" | "storing" | "learning" | "degraded" | "ingesting";
 		foundCount: number;
 		lastQuery: string | null;
+		documentName: string | null;
+		documentStage: "reading" | "extracting" | "chunking" | "embedding" | "storing" | "completed" | "recognized" | null;
+		chunksProcessed: number;
+		totalChunks: number;
 	};
 }
 
@@ -129,6 +134,10 @@ const initialState: MemoryUiState = {
 		status: "idle",
 		foundCount: 0,
 		lastQuery: null,
+		documentName: null,
+		documentStage: null,
+		chunksProcessed: 0,
+		totalChunks: 0,
 	},
 };
 
@@ -438,6 +447,31 @@ function createMemoryUiStore() {
 				status: "idle",
 				foundCount: 0,
 				lastQuery: null,
+				documentName: null,
+				documentStage: null,
+				chunksProcessed: 0,
+				totalChunks: 0,
+			},
+		}));
+	}
+
+	function setDocumentProcessing(params: {
+		documentName: string;
+		stage: MemoryUiState["processing"]["documentStage"];
+		chunksProcessed?: number;
+		totalChunks?: number;
+		recognized?: boolean;
+	}) {
+		store.update((s) => ({
+			...s,
+			processing: {
+				...s.processing,
+				status: params.recognized ? "found" : "ingesting",
+				documentName: params.documentName,
+				documentStage: params.stage,
+				chunksProcessed: params.chunksProcessed ?? s.processing.chunksProcessed,
+				totalChunks: params.totalChunks ?? s.processing.totalChunks,
+				foundCount: params.recognized ? params.totalChunks ?? 0 : s.processing.foundCount,
 			},
 		}));
 	}
@@ -502,6 +536,19 @@ function createMemoryUiStore() {
 				},
 			],
 			["memoryui:clearBlockingScoring", () => clearBlockingScoring()],
+			[
+				"memoryui:documentProcessing",
+				(e) => {
+					const d = (e as CustomEvent).detail as {
+						documentName: string;
+						stage: MemoryUiState["processing"]["documentStage"];
+						chunksProcessed?: number;
+						totalChunks?: number;
+						recognized?: boolean;
+					};
+					if (d?.documentName && d?.stage) setDocumentProcessing(d);
+				},
+			],
 		];
 
 		for (const [name, handler] of handlers) {
@@ -545,6 +592,7 @@ function createMemoryUiStore() {
 		setProcessingFound,
 		setProcessingSearching,
 		resetProcessing,
+		setDocumentProcessing,
 		dispatch,
 		installEventListeners,
 		getState: () => get(store),

@@ -1126,4 +1126,145 @@ export class MemoryMongoStore {
 			consistencyLogs: this.consistencyLogs,
 		};
 	}
+
+	// ============================================
+	// Document Recognition (Cross-Chat Memory)
+	// ============================================
+
+	/**
+	 * Find memories by document hash (for cross-chat document recognition)
+	 * 
+	 * This enables the memory system to recognize previously processed documents
+	 * even when uploaded in a new chat session.
+	 * 
+	 * @param userId - User ID to scope the search
+	 * @param documentHash - SHA256 hash of the document content
+	 * @param options - Optional filters for tier and status
+	 * @returns Array of memory items matching the document hash
+	 */
+	async findByDocumentHash(
+		userId: string,
+		documentHash: string,
+		options?: {
+			tier?: MemoryTier;
+			status?: MemoryStatus[];
+			limit?: number;
+		}
+	): Promise<MemoryItem[]> {
+		const filter: Record<string, unknown> = {
+			user_id: userId,
+			"source.book.document_hash": documentHash,
+		};
+
+		if (options?.tier) {
+			filter.tier = options.tier;
+		}
+
+		if (options?.status?.length) {
+			filter.status = { $in: options.status };
+		} else {
+			filter.status = "active"; // Default to active only
+		}
+
+		const limit = options?.limit ?? 100;
+
+		const result = await this.withTimeout(
+			async () => {
+				const docs = await this.items
+					.find(filter)
+					.sort({ "source.book.chunk_index": 1 })
+					.limit(limit)
+					.maxTimeMS(this.config.timeouts.mongo_text_query_ms)
+					.toArray();
+
+				return docs.map((doc) => this.documentToMemoryItem(doc));
+			},
+			this.config.timeouts.mongo_text_query_ms,
+			"findByDocumentHash"
+		);
+
+		return result ?? [];
+	}
+
+	/**
+	 * Get document metadata by hash (book info without loading all chunks)
+	 * 
+	 * Returns summary info about a previously processed document.
+	 * 
+	 * @param userId - User ID to scope the search
+	 * @param documentHash - SHA256 hash of the document content
+	 * @returns Document metadata or null if not found
+	 */
+	async getDocumentByHash(
+		userId: string,
+		documentHash: string
+	): Promise<{
+		bookId: string;
+		title: string;
+		author: string | null;
+		chunkCount: number;
+		firstChunkPreview: string;
+		uploadTimestamp: string | null;
+	} | null> {
+		const result = await this.withTimeout(
+			async () => {
+				// Get first chunk to extract metadata
+				const firstChunk = await this.items.findOne({
+					user_id: userId,
+					"source.book.document_hash": documentHash,
+					status: "active",
+				});
+
+				if (!firstChunk?.source?.book) {
+					return null;
+				}
+
+				// Count total chunks
+				const chunkCount = await this.items.countDocuments({
+					user_id: userId,
+					"source.book.document_hash": documentHash,
+					status: "active",
+				});
+
+				return {
+					bookId: firstChunk.source.book.book_id,
+					title: firstChunk.source.book.title ?? "Unknown",
+					author: firstChunk.source.book.author ?? null,
+					chunkCount,
+					firstChunkPreview: firstChunk.text.slice(0, 200) + (firstChunk.text.length > 200 ? "..." : ""),
+					uploadTimestamp: firstChunk.source.book.upload_timestamp ?? null,
+				};
+			},
+			this.config.timeouts.mongo_text_query_ms,
+			"getDocumentByHash"
+		);
+
+		return result;
+	}
+
+	/**
+	 * Check if a document has been processed (exists in memory system)
+	 * 
+	 * Fast check to determine if document processing can be skipped.
+	 * 
+	 * @param userId - User ID to scope the search
+	 * @param documentHash - SHA256 hash of the document content
+	 * @returns true if document exists, false otherwise
+	 */
+	async documentExists(userId: string, documentHash: string): Promise<boolean> {
+		const result = await this.withTimeout(
+			async () => {
+				const count = await this.items.countDocuments({
+					user_id: userId,
+					"source.book.document_hash": documentHash,
+					status: "active",
+				});
+				return count > 0;
+			},
+			this.config.timeouts.mongo_text_query_ms,
+			"documentExists"
+		);
+
+		return result ?? false;
+	}
 }

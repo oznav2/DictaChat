@@ -431,6 +431,26 @@
 						});
 						// Clear status after a short delay
 						setTimeout(() => memoryUi.resetProcessing(), 2000);
+					} else if (update.subtype === MessageMemoryUpdateType.Degraded) {
+						// Memory system is temporarily unavailable (circuit breaker open)
+						// This prevents UI freezes by notifying the user immediately
+						memoryUi.setProcessingStatus("degraded");
+						// Don't block - continue without memory context
+						console.debug("Memory system degraded:", update.reason, update.message);
+						setTimeout(() => memoryUi.resetProcessing(), 3000);
+					} else if (update.subtype === MessageMemoryUpdateType.DocumentIngesting) {
+						// Document upload/processing progress
+						memoryUi.setDocumentProcessing({
+							documentName: update.documentName,
+							stage: update.stage,
+							chunksProcessed: update.chunksProcessed,
+							totalChunks: update.totalChunks,
+							recognized: update.recognized,
+						});
+						// If completed or recognized, reset after delay
+						if (update.stage === "completed" || update.stage === "recognized") {
+							setTimeout(() => memoryUi.resetProcessing(), 3000);
+						}
 					}
 				}
 			}

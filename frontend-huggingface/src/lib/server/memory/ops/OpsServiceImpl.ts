@@ -738,12 +738,16 @@ export class OpsServiceImpl {
 
 	/**
 	 * Get memory system stats snapshot
+	 * 
+	 * Note: Books are stored in a separate 'books' collection, so we need to
+	 * count them separately and merge into the stats.
 	 */
 	async getStats(userId: string): Promise<StatsSnapshot> {
 		const tiers: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
 		const { items } = this.mongo.getCollections();
 		const derivedWindowMs = 5 * 60 * 1000;
 
+		// Get stats from memory_items collection (for most tiers)
 		const aggregates = await items
 			.aggregate<{
 				_id: string;
@@ -769,6 +773,70 @@ export class OpsServiceImpl {
 			])
 			.toArray();
 
+		// Also count books from the dedicated books collection
+		// Books are stored separately from memory_items for document management
+		let booksActiveCount = 0;
+		let booksArchivedCount = 0;
+		let booksTotalChunks = 0;
+		try {
+			const booksCollection = this.db.collection("books");
+			const booksAgg = await booksCollection.aggregate<{
+				_id: string | null;
+				count: number;
+				totalChunks: number;
+			}>([
+				{ $match: { userId: userId } },
+				{
+					$group: {
+						_id: "$status",
+						count: { $sum: 1 },
+						totalChunks: { $sum: { $ifNull: ["$totalChunks", "$processing_stats.total_chunks", 0] } },
+					},
+				},
+			]).toArray();
+			
+			for (const agg of booksAgg) {
+				if (agg._id === "completed" || agg._id === "active" || !agg._id) {
+					booksActiveCount += agg.count;
+					booksTotalChunks += agg.totalChunks;
+				} else if (agg._id === "archived") {
+					booksArchivedCount += agg.count;
+				}
+			}
+		} catch (err) {
+			logger.warn({ err }, "Failed to get books stats from books collection");
+		}
+
+		// Also count items from the dedicated memoryBank collection
+		// Memory Bank items are stored separately from memory_items
+		let memoryBankActiveCount = 0;
+		let memoryBankArchivedCount = 0;
+		try {
+			const memoryBankCollection = this.db.collection("memoryBank");
+			const mbAgg = await memoryBankCollection.aggregate<{
+				_id: string | null;
+				count: number;
+			}>([
+				{ $match: { userId: userId } },
+				{
+					$group: {
+						_id: "$status",
+						count: { $sum: 1 },
+					},
+				},
+			]).toArray();
+			
+			for (const agg of mbAgg) {
+				if (agg._id === "active" || !agg._id) {
+					memoryBankActiveCount += agg.count;
+				} else if (agg._id === "archived") {
+					memoryBankArchivedCount += agg.count;
+				}
+			}
+		} catch (err) {
+			logger.warn({ err }, "Failed to get memory bank stats from memoryBank collection");
+		}
+
 		const tierMap = new Map(aggregates.map((a) => [String(a._id), a]));
 		const tiersRecord = Object.fromEntries(
 			tiers.map((tier) => {
@@ -776,6 +844,41 @@ export class OpsServiceImpl {
 				const worked = agg?.worked_total ?? 0;
 				const failed = agg?.failed_total ?? 0;
 				const denom = worked + failed;
+				
+				// For books tier, merge counts from both memory_items AND books collection
+				if (tier === "books") {
+					const memoryItemsActive = agg?.active_count ?? 0;
+					const memoryItemsArchived = agg?.archived_count ?? 0;
+					return [
+						tier,
+						{
+							// Books chunks in memory_items PLUS books count from books collection
+							active_count: memoryItemsActive + booksTotalChunks + booksActiveCount,
+							archived_count: memoryItemsArchived + booksArchivedCount,
+							deleted_count: agg?.deleted_count ?? 0,
+							uses_total: agg?.uses_total ?? 0,
+							success_rate: denom > 0 ? worked / denom : 0.5,
+						},
+					];
+				}
+				
+				// For memory_bank tier, merge counts from both memory_items AND memoryBank collection
+				if (tier === "memory_bank") {
+					const memoryItemsActive = agg?.active_count ?? 0;
+					const memoryItemsArchived = agg?.archived_count ?? 0;
+					return [
+						tier,
+						{
+							// Memory bank items in memory_items PLUS memoryBank collection
+							active_count: memoryItemsActive + memoryBankActiveCount,
+							archived_count: memoryItemsArchived + memoryBankArchivedCount,
+							deleted_count: agg?.deleted_count ?? 0,
+							uses_total: agg?.uses_total ?? 0,
+							success_rate: denom > 0 ? worked / denom : 0.5,
+						},
+					];
+				}
+				
 				return [
 					tier,
 					{

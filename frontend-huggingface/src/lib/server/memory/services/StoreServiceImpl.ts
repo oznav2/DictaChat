@@ -193,14 +193,28 @@ export class StoreServiceImpl implements StoreService {
 
 		// Step 6: Index in Qdrant (best-effort). Mongo is the source of truth.
 		if (!vector) {
+			// Check if circuit breaker is open to give better diagnostics
+			const isCircuitOpen = this.embedding.isCircuitOpen();
+			const cbStatus = (this.embedding as unknown as { getCircuitBreakerStatus?: () => unknown })?.getCircuitBreakerStatus?.();
+			
 			logger.error(
 				{
 					memoryId: mongoResult.memory_id,
 					tier: params.tier,
 					endpoint: (this.embedding as unknown as { endpoint?: string })?.endpoint,
+					isCircuitOpen,
+					circuitBreakerStatus: cbStatus,
 				},
-				"Embedding unavailable; stored to Mongo only (index deferred)"
+				"Embedding unavailable; stored to Mongo only (index deferred). Run reindex to recover."
 			);
+			
+			// Mark the memory as needing reindex in MongoDB
+			try {
+				await this.markForReindex(mongoResult.memory_id, params.userId);
+			} catch (markErr) {
+				logger.warn({ err: markErr, memoryId: mongoResult.memory_id }, "Failed to mark memory for reindex");
+			}
+			
 			return { memory_id: mongoResult.memory_id };
 		}
 
@@ -396,5 +410,24 @@ export class StoreServiceImpl implements StoreService {
 			{ userId, tier, archivedCount: toArchive.length },
 			"Capacity enforcement: archived low-value memories"
 		);
+	}
+
+	/**
+	 * Mark a memory as needing reindex (for deferred embedding scenarios)
+	 * Uses MongoDB to track memories that weren't indexed in Qdrant
+	 */
+	private async markForReindex(memoryId: string, userId: string): Promise<void> {
+		const { items } = this.mongo.getCollections();
+		await items.updateOne(
+			{ memory_id: memoryId, user_id: userId },
+			{
+				$set: {
+					needs_reindex: true,
+					reindex_reason: "embedding_unavailable",
+					reindex_marked_at: new Date(),
+				},
+			}
+		);
+		logger.debug({ memoryId, userId }, "Memory marked for reindex");
 	}
 }
