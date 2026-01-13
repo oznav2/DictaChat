@@ -268,6 +268,43 @@ export class QdrantAdapter {
 	}
 
 	/**
+	 * Delete the entire collection (DESTRUCTIVE - use with caution!)
+	 */
+	async deleteCollection(): Promise<boolean> {
+		try {
+			const result = await this.request<{ result: boolean }>(
+				"DELETE",
+				`/collections/${this.collectionName}`
+			);
+
+			if (result?.result) {
+				logger.info({ collection: this.collectionName }, "Deleted Qdrant collection");
+				return true;
+			}
+
+			return false;
+		} catch (err) {
+			logger.error({ err, collection: this.collectionName }, "Failed to delete Qdrant collection");
+			return false;
+		}
+	}
+
+	/**
+	 * Get collection info (point count, vector dims, etc.)
+	 */
+	async getCollectionInfo(): Promise<QdrantCollectionInfo | null> {
+		try {
+			const result = await this.request<{ result: QdrantCollectionInfo }>(
+				"GET",
+				`/collections/${this.collectionName}`
+			);
+			return result?.result ?? null;
+		} catch {
+			return null;
+		}
+	}
+
+	/**
 	 * Create collection with proper schema
 	 */
 	async createCollection(): Promise<boolean> {
