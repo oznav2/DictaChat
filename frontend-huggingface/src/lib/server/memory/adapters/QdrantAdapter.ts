@@ -464,29 +464,55 @@ export class QdrantAdapter {
 
 	/**
 	 * Delete points by filter (e.g., all points for a user)
+	 * 
+	 * Supports two filter formats:
+	 * 1. Simple object: { userId, tier, status }
+	 * 2. Qdrant-native filter: { must: [{ key, match: { value } }] }
+	 * 
+	 * v0.2.9 Parity: Used by clearBooksTier for "True Collection Nuke"
 	 */
 	async deleteByFilter(filter: {
 		userId?: string;
 		tier?: MemoryTier;
 		status?: MemoryStatus;
-	}): Promise<boolean> {
-		const must: Array<{ key: string; match: { value: string } }> = [];
+		must?: Array<{ key: string; match: { value: string } }>;
+	}): Promise<{ deleted: number; success: boolean }> {
+		let must: Array<{ key: string; match: { value: string } }> = [];
 
-		if (filter.userId) {
-			must.push({ key: "user_id", match: { value: filter.userId } });
-		}
-		if (filter.tier) {
-			must.push({ key: "tier", match: { value: filter.tier } });
-		}
-		if (filter.status) {
-			must.push({ key: "status", match: { value: filter.status } });
+		// Support native Qdrant filter format
+		if (filter.must) {
+			must = filter.must;
+		} else {
+			// Build from simple object format
+			if (filter.userId) {
+				must.push({ key: "user_id", match: { value: filter.userId } });
+			}
+			if (filter.tier) {
+				must.push({ key: "tier", match: { value: filter.tier } });
+			}
+			if (filter.status) {
+				must.push({ key: "status", match: { value: filter.status } });
+			}
 		}
 
 		if (must.length === 0) {
 			logger.warn("deleteByFilter called with empty filter, skipping");
-			return false;
+			return { deleted: 0, success: false };
 		}
 
+		// First count how many points will be deleted
+		const countBody = {
+			filter: { must },
+			exact: true,
+		};
+		const countResult = await this.request<{ result: { count: number } }>(
+			"POST",
+			`/collections/${this.collectionName}/points/count`,
+			countBody
+		);
+		const willDelete = countResult?.result?.count ?? 0;
+
+		// Now delete
 		const body = {
 			filter: { must },
 		};
@@ -497,7 +523,8 @@ export class QdrantAdapter {
 			body
 		);
 
-		return result?.result?.status === "completed" || result?.result?.status === "acknowledged";
+		const success = result?.result?.status === "completed" || result?.result?.status === "acknowledged";
+		return { deleted: willDelete, success };
 	}
 
 	/**

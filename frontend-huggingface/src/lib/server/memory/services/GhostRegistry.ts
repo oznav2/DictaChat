@@ -215,6 +215,50 @@ export class GhostRegistry {
 			return {};
 		}
 	}
+
+	/**
+	 * Clear all ghosted memories for a specific tier
+	 * v0.2.9 Parity: Used by "Clear Books" to remove all ghost records for books tier
+	 * 
+	 * @param userId - User identifier
+	 * @param tier - Tier to clear (e.g., "books")
+	 * @returns Number of ghost records cleared
+	 */
+	async clearByTier(userId: string, tier: string): Promise<number> {
+		try {
+			const result = await collections.memoryGhosts.deleteMany({
+				userId,
+				tier,
+			});
+
+			logger.info({ userId, tier, deleted: result.deletedCount }, "Ghost records cleared for tier");
+			return result.deletedCount;
+		} catch (err) {
+			logger.error({ err, userId, tier }, "Failed to clear ghost records for tier");
+			return 0;
+		}
+	}
+
+	/**
+	 * Clear all ghosted memories for a user
+	 * v0.2.9 Parity: Used by collection nuke to remove all ghost records
+	 * 
+	 * @param userId - User identifier
+	 * @returns Number of ghost records cleared
+	 */
+	async clearAll(userId: string): Promise<number> {
+		try {
+			const result = await collections.memoryGhosts.deleteMany({
+				userId,
+			});
+
+			logger.info({ userId, deleted: result.deletedCount }, "All ghost records cleared");
+			return result.deletedCount;
+		} catch (err) {
+			logger.error({ err, userId }, "Failed to clear all ghost records");
+			return 0;
+		}
+	}
 }
 
 /**

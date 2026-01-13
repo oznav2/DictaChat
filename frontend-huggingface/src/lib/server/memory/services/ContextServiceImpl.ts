@@ -144,4 +144,72 @@ export class ContextServiceImpl implements ContextService {
 			return emptyInsights;
 		}
 	}
+
+	/**
+	 * Extract entities from text and store them in the Content KG
+	 * Phase 3 Gap 7: Content KG Entity Extraction
+	 * 
+	 * RoamPal Parity:
+	 * - On memory storage, extracts entities from text
+	 * - Builds Content Graph with entity relationships
+	 * - Used for cold-start and organic recall
+	 */
+	async extractAndStoreEntities(params: {
+		userId: string;
+		memoryId: string;
+		text: string;
+		importance?: number;
+		confidence?: number;
+	}): Promise<{ entitiesExtracted: number; entitiesStored: number; entities: string[] }> {
+		const result = {
+			entitiesExtracted: 0,
+			entitiesStored: 0,
+			entities: [] as string[],
+		};
+
+		if (!this.kgService) {
+			return result;
+		}
+
+		try {
+			// Extract entities using KG service's heuristic extraction
+			const entities = this.kgService.extractEntities(params.text);
+			result.entitiesExtracted = entities.length;
+			result.entities = entities.map((e) => e.label);
+
+			if (entities.length === 0) {
+				return result;
+			}
+
+			// Store entities in Content KG with quality score
+			const importance = params.importance ?? 0.5;
+			const confidence = params.confidence ?? 0.5;
+
+			await this.kgService.updateContentKg(
+				params.userId,
+				params.memoryId,
+				entities,
+				importance,
+				confidence
+			);
+
+			result.entitiesStored = entities.length;
+
+			logger.debug(
+				{
+					userId: params.userId,
+					memoryId: params.memoryId,
+					entitiesExtracted: result.entitiesExtracted,
+					entitiesStored: result.entitiesStored,
+					entityLabels: result.entities.slice(0, 5), // Log first 5 for debugging
+				},
+				"Entities extracted and stored to Content KG"
+			);
+
+			return result;
+		} catch (err) {
+			logger.error({ err, userId: params.userId, memoryId: params.memoryId }, "Failed to extract and store entities");
+			return result;
+		}
+	}
 }

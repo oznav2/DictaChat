@@ -98,6 +98,31 @@ export interface ActionKgService {
 export interface ContextService {
 	getColdStartContext(params: GetColdStartContextParams): Promise<GetColdStartContextResult>;
 	getContextInsights(params: GetContextInsightsParams): Promise<ContextInsights>;
+	/**
+	 * Extract entities from text and store them in the Content KG
+	 * Phase 3 Gap 7: Content KG Entity Extraction
+	 */
+	extractAndStoreEntities?(params: ExtractAndStoreEntitiesParams): Promise<ExtractAndStoreEntitiesResult>;
+}
+
+/**
+ * Parameters for extracting and storing entities to Content KG
+ */
+export interface ExtractAndStoreEntitiesParams {
+	userId: string;
+	memoryId: string;
+	text: string;
+	importance?: number;
+	confidence?: number;
+}
+
+/**
+ * Result of entity extraction and storage
+ */
+export interface ExtractAndStoreEntitiesResult {
+	entitiesExtracted: number;
+	entitiesStored: number;
+	entities: string[];
 }
 
 export interface OpsService {
@@ -602,6 +627,21 @@ export class UnifiedMemoryFacade {
 
 	async getContextInsights(params: GetContextInsightsParams): Promise<ContextInsights> {
 		return this.services.context.getContextInsights(params);
+	}
+
+	/**
+	 * Extract entities from text and store them in the Content KG
+	 * Phase 3 Gap 7: Content KG Entity Extraction
+	 */
+	async extractAndStoreEntities(
+		params: ExtractAndStoreEntitiesParams
+	): Promise<ExtractAndStoreEntitiesResult> {
+		// Check if the context service supports entity extraction
+		if (this.services.context.extractAndStoreEntities) {
+			return this.services.context.extractAndStoreEntities(params);
+		}
+		// Return empty result if not supported
+		return { entitiesExtracted: 0, entitiesStored: 0, entities: [] };
 	}
 
 	async recordResponse(params: RecordResponseParams): Promise<void> {

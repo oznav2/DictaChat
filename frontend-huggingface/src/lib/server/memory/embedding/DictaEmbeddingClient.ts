@@ -9,6 +9,12 @@
  * - Redis cache with 7-day TTL
  * - Batch processing with configurable batch size
  * - Circuit breaker for fail-open behavior
+ *
+ * RoamPal v0.2.11 Fix #4 Note (Books Search):
+ * The RoamPal fix was for ChromaDB's embedding_function initialization issue
+ * where incorrect defaults caused dimension mismatches. This codebase uses
+ * Qdrant instead of ChromaDB, so the specific fix doesn't apply. However,
+ * we ensure dimension validation is enforced at lines 172 and 240.
  */
 
 import { createHash } from "crypto";

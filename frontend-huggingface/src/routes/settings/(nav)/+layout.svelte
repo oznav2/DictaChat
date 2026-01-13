@@ -11,6 +11,7 @@
 	import CarbonDownload from "~icons/carbon/download";
 	import CarbonTerminal from "~icons/carbon/terminal";
 	import CarbonPlug from "~icons/carbon/plug";
+	import CarbonDataBase from "~icons/carbon/data-base";
 	import LucideImage from "~icons/lucide/image";
 	import LucideHammer from "~icons/lucide/hammer";
 	import IconGear from "~icons/bi/gear-fill";
@@ -261,8 +262,20 @@
 			</button>
 			<button
 				type="button"
+				onclick={() => goto(`${base}/settings/data`)}
+				class="group sticky bottom-[72px] mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
+					.url.pathname === `${base}/settings/data`
+					? '!bg-gray-100 !text-gray-800 dark:!bg-gray-700 dark:!text-gray-200'
+					: 'bg-white dark:bg-gray-800'}"
+				aria-label="Data Management"
+			>
+				<CarbonDataBase class="mr-0.5 text-xxs" />
+				ניהול נתונים
+			</button>
+			<button
+				type="button"
 				onclick={() => goto(`${base}/settings/integrations`)}
-				class="group sticky bottom-20 mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
+				class="group sticky bottom-24 mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
 					.url.pathname === `${base}/settings/integrations`
 					? '!bg-gray-100 !text-gray-800 dark:!bg-gray-700 dark:!text-gray-200'
 					: 'bg-white dark:bg-gray-800'}"
@@ -274,7 +287,7 @@
 			<button
 				type="button"
 				onclick={() => goto(`${base}/settings/dev`)}
-				class="group sticky bottom-32 mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
+				class="group sticky bottom-36 mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
 					.url.pathname === `${base}/settings/dev`
 					? '!bg-gray-100 !text-gray-800 dark:!bg-gray-700 dark:!text-gray-200'
 					: 'bg-white dark:bg-gray-800'}"
