@@ -120,25 +120,83 @@ async function pollForTaskResult(
 }
 
 /**
+ * Sanitize extracted text by removing embedded binary/base64 data and artifacts
+ * This handles cases where PDFs have embedded images that get converted to raw binary
+ */
+export function sanitizeExtractedText(text: string): string {
+	if (!text) return "";
+
+	let sanitized = text;
+
+	// Remove inline base64 data URLs (images embedded in markdown/HTML)
+	// Pattern: data:image/xxx;base64,... or data:application/xxx;base64,...
+	sanitized = sanitized.replace(/data:[a-z]+\/[a-z0-9.+-]+;base64,[A-Za-z0-9+/=]+/gi, "[image]");
+
+	// Remove markdown image references with base64 data
+	// Pattern: ![alt](data:image/...)
+	sanitized = sanitized.replace(/!\[[^\]]*\]\(data:[^)]+\)/g, "[image]");
+
+	// Remove long sequences of base64-like characters (40+ chars of only base64 alphabet)
+	// These appear when binary data leaks into text extraction
+	// The pattern seen: mJ2dffny5fj4uMVicTqdfn5+QUFBNBqNz+dHRUWx2WwajYY5DBiGlUrlr7/...
+	sanitized = sanitized.replace(/[A-Za-z0-9+/]{40,}={0,2}/g, (match) => {
+		// Only remove if it looks like base64 (high ratio of uppercase, has +/)
+		const hasBase64Chars = /[+/]/.test(match);
+		const ratio = (match.match(/[A-Z]/g) || []).length / match.length;
+		if (hasBase64Chars || ratio > 0.3) {
+			return "[binary-data-removed]";
+		}
+		return match;
+	});
+
+	// Remove raw binary-looking sequences (non-printable mixed with printable)
+	// These are raw bytes that got decoded as text
+	sanitized = sanitized.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]{3,}/g, "");
+
+	// Remove sequences with excessive special characters (corrupted binary)
+	sanitized = sanitized.replace(/(?:[^\w\s\u0590-\u05FF.,;:!?'"()\[\]{}<>@#$%&*+=-]){10,}/g, "");
+
+	// Normalize whitespace (multiple spaces, tabs, newlines)
+	sanitized = sanitized.replace(/[ \t]+/g, " ");
+	sanitized = sanitized.replace(/\n{3,}/g, "\n\n");
+
+	// Remove lines that are mostly binary placeholders
+	sanitized = sanitized
+		.split("\n")
+		.filter((line) => {
+			const placeholderCount = (line.match(/\[(image|binary-data-removed)\]/g) || []).length;
+			const wordCount = line.split(/\s+/).filter((w) => w.length > 0).length;
+			// Keep line if it has meaningful content beyond just placeholders
+			return placeholderCount < 3 || wordCount - placeholderCount > 2;
+		})
+		.join("\n");
+
+	return sanitized.trim();
+}
+
+/**
  * Extract text from a document - helper to get text from document object
  */
 function extractTextFromDocument(doc: DoclingDocument): string {
+	let rawText = "";
+
 	// Try multiple possible fields where content might be
 	if (doc.md_content && doc.md_content.trim()) {
-		return doc.md_content;
+		rawText = doc.md_content;
+	} else if (doc.text && doc.text.trim()) {
+		rawText = doc.text;
+	} else {
+		// Check for content field (some docling versions use this)
+		const docAny = doc as Record<string, unknown>;
+		if (typeof docAny.content === "string" && docAny.content.trim()) {
+			rawText = docAny.content;
+		} else if (typeof docAny.markdown === "string" && docAny.markdown.trim()) {
+			rawText = docAny.markdown;
+		}
 	}
-	if (doc.text && doc.text.trim()) {
-		return doc.text;
-	}
-	// Check for content field (some docling versions use this)
-	const docAny = doc as Record<string, unknown>;
-	if (typeof docAny.content === "string" && docAny.content.trim()) {
-		return docAny.content;
-	}
-	if (typeof docAny.markdown === "string" && docAny.markdown.trim()) {
-		return docAny.markdown;
-	}
-	return "";
+
+	// Always sanitize extracted text to remove binary artifacts
+	return sanitizeExtractedText(rawText);
 }
 
 /**

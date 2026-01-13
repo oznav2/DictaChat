@@ -3,7 +3,10 @@ import type { RequestHandler } from "./$types";
 import { collections, Database } from "$lib/server/database";
 import { ObjectId } from "mongodb";
 import { ADMIN_USER_ID } from "$lib/server/constants";
-import { extractDocumentText } from "$lib/server/textGeneration/mcp/services/doclingClient";
+import {
+	extractDocumentText,
+	sanitizeExtractedText,
+} from "$lib/server/textGeneration/mcp/services/doclingClient";
 import { writeFile, mkdir, unlink } from "fs/promises";
 import { existsSync } from "fs";
 import { join } from "path";
@@ -253,9 +256,12 @@ async function processBookInBackground(
 				{ _id: new ObjectId(bookId) },
 				{ $set: { processingStage: "reading", processingMessage: "Reading file..." } }
 			);
-			// Direct text for plain files
-			extractedText = await file.text();
-			console.log(`[API] Plain text extracted: ${extractedText.length} chars`);
+			// Direct text for plain files, sanitize to remove any binary artifacts
+			const rawText = await file.text();
+			extractedText = sanitizeExtractedText(rawText);
+			console.log(
+				`[API] Plain text extracted: ${rawText.length} chars, after sanitization: ${extractedText.length} chars`
+			);
 		} else {
 			// Use Docling for PDF, DOCX, etc.
 			console.log(`[API] Processing ${extension} file with Docling...`);

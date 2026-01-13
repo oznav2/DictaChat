@@ -404,7 +404,7 @@ services:
       - RERANKING_PORT=5006
       - LOG_LEVEL=INFO
       - DEVICE=cuda
-      - MODEL_IDLE_TIMEOUT=0
+      - MODEL_IDLE_TIMEOUT=60
       - USE_FP16=true
       - EMBEDDING_MODEL_NAME=${EMBEDDINGS_MODEL_PATH:-/app/models/embeddings/bge-m3-f16.gguf}
       - RERANKER_MODEL_NAME=${RERANKER_MODEL_NAME:-/app/models/reranking/bge-reranker-v2-m3-q8_0.gguf}
