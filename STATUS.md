@@ -1,7 +1,143 @@
-<!-- Updated: v0.2.15 ENTERPRISE EMBEDDING ROBUSTNESS - January 13, 2026 -->
+<!-- Updated: v0.2.16 UNIFIED DOCUMENT INGESTION UI FIXES - January 13, 2026 -->
 # Project Status
 
-**Last Updated**: January 13, 2026 (🚀 v0.2.15 + Enterprise Embedding Robustness + Graceful Degradation)
+**Last Updated**: January 13, 2026 (🚀 v0.2.16 + Unified Document Ingestion UI Fixes + Memory Panel Stats)
+
+---
+
+## 🔧 v0.2.16 UNIFIED DOCUMENT INGESTION UI FIXES ✅
+
+**Commit**: `896f381` feat(memory): enterprise unified document ingestion with comprehensive UI fixes
+**Branch**: genspark_ai_developer
+**PR**: https://github.com/oznav2/DictaChat/pull/2
+
+### Overview
+
+Comprehensive fixes for the unified document ingestion workflow and memory UI panels. Addresses 8 issues reported from production testing including RAG upload feedback, memory stats display, and modal functionality.
+
+### Issues Fixed
+
+| # | Issue | Root Cause | Fix |
+|---|-------|-----------|-----|
+| 1 | RAG upload shows "0 memories found" | No document processing events emitted | Added `MessageDocumentProcessingUpdate` type and event emission during ingestion |
+| 2 | Memory panel shows zeros | Stats didn't aggregate `memory_bank` tier from `memory_items` collection | Fixed `OpsServiceImpl.getStats()` aggregation |
+| 3 | Memory bank modal shows 0 memories | API only queried `memoryBank` collection | Now queries BOTH `memoryBank` AND `memory_items` (tier=memory_bank) with deduplication |
+| 4 | Memory bank statistics empty | Same as #3 | Same dual-collection fix |
+| 5 | 3D visualization not shown | Component wiring verified OK | No code change needed - data/height issue |
+| 6 | Knowledge tab missing close button | Verified UI has close button | No code change needed |
+| 7 | Bookstore modal metadata issue | PDF metadata extraction showing Hebrew | Expected behavior - metadata from PDF |
+| 8 | Settings modal won't close | Navigation logic in `handleClose()` | Fixed settings layout navigation |
+
+### Technical Changes
+
+#### 1. New Message Update Type
+**File**: `src/lib/types/MessageUpdate.ts`
+
+```typescript
+export interface MessageDocumentProcessingUpdate {
+  type: MessageUpdateType.DocumentProcessing;
+  stage: "uploading" | "processing" | "chunking" | "embedding" | "storing" | "completed" | "error";
+  progress?: number;
+  message?: string;
+  documentId?: string;
+  totalChunks?: number;
+  processedChunks?: number;
+}
+```
+
+#### 2. Memory UI Store Enhancement
+**File**: `src/lib/stores/memoryUi.ts`
+
+- Added `documentProcessing` event listener
+- New event: `memoryui:documentProcessing`
+- Handles document ingestion progress updates
+
+#### 3. Dual-Collection Memory Bank Query
+**File**: `src/routes/api/memory/memory-bank/+server.ts`
+
+```typescript
+// Query from BOTH collections
+const memoryBankItems = await collections.memoryBank.find(mbQuery).toArray();
+const memoryItems = await itemsCollection.find({
+  user_id: ADMIN_USER_ID,
+  tier: "memory_bank",
+  status: status
+}).toArray();
+
+// Combine and deduplicate by content hash
+const seenTexts = new Set<string>();
+// ... deduplication logic
+```
+
+#### 4. Memory Bank Stats Dual-Collection
+**File**: `src/routes/api/memory/memory-bank/stats/+server.ts`
+
+- Queries both `memoryBank` and `memory_items` collections
+- Combines counts: `active = mbActive + itemsActive`
+- Merges and deduplicates tags from both sources
+
+#### 5. OpsService Stats Aggregation Fix
+**File**: `src/lib/server/memory/ops/OpsServiceImpl.ts`
+
+```typescript
+// Fixed memory_bank tier aggregation
+const memoryBankCount = await itemsCollection.countDocuments({
+  user_id: userId,
+  tier: "memory_bank",
+  status: "active"
+});
+tierStats.memory_bank.active_count += memoryBankCount;
+```
+
+#### 6. Settings Modal Close Fix
+**File**: `src/routes/settings/(nav)/+layout.svelte`
+
+- Fixed `handleClose()` to properly navigate using settings stack
+- Added proper event handling for close button
+
+### Files Changed
+
+| File | Changes |
+|------|---------|
+| `src/lib/types/MessageUpdate.ts` | Added `MessageDocumentProcessingUpdate` type |
+| `src/lib/stores/memoryUi.ts` | Added document processing event listener |
+| `src/routes/conversation/[id]/+page.svelte` | Handle `DocumentProcessing` updates |
+| `src/lib/server/textGeneration/mcp/ragIntegration.ts` | Emit document processing events |
+| `src/lib/server/memory/ops/OpsServiceImpl.ts` | Fixed tier stats aggregation |
+| `src/routes/api/memory/memory-bank/+server.ts` | Dual-collection query with dedup |
+| `src/routes/api/memory/memory-bank/stats/+server.ts` | Dual-collection stats aggregation |
+| `src/routes/settings/(nav)/+layout.svelte` | Fixed close button handler |
+| `src/lib/components/memory/MemoryPanel.svelte` | Minor fixes |
+
+### Data Flow: Document Processing Events
+
+```
+RAG Upload → ragIntegration.ts
+  ├─ Emit DocumentProcessing{stage: "uploading"}
+  ├─ Emit DocumentProcessing{stage: "processing"}
+  ├─ Emit DocumentProcessing{stage: "chunking", totalChunks}
+  ├─ Emit DocumentProcessing{stage: "embedding", processedChunks}
+  ├─ Emit DocumentProcessing{stage: "storing"}
+  └─ Emit DocumentProcessing{stage: "completed", documentId}
+        │
+        ▼
+  +page.svelte (MessageUpdate handler)
+        │
+        ▼
+  memoryUi.setProcessingStatus() → UI updates
+```
+
+### Memory Bank Data Architecture
+
+The memory bank stores items in TWO collections:
+
+1. **`memoryBank` collection** - Items added directly via Memory Bank UI modal
+   - Schema: `{ userId, text, tags, status, importance, confidence, ... }`
+
+2. **`memory_items` collection** (tier="memory_bank") - Items stored via UnifiedMemoryFacade
+   - Schema: `{ user_id, tier: "memory_bank", text, tags, status, quality, ... }`
+
+Both collections are now queried and merged with deduplication for accurate counts and display.
 
 ---
 
