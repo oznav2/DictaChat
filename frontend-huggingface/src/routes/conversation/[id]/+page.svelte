@@ -35,6 +35,7 @@
 	import SubscribeModal from "$lib/components/SubscribeModal.svelte";
 	import { loading } from "$lib/stores/loading.js";
 	import { requireAuthUser } from "$lib/utils/auth.js";
+	import { dispatchMemoryEvent } from "$lib/stores/memoryEvents";
 
 	let { data = $bindable() } = $props();
 
@@ -417,6 +418,17 @@
 						memoryUi.setProcessingStatus("storing");
 					} else if (update.subtype === MessageMemoryUpdateType.Outcome) {
 						memoryUi.setProcessingStatus("learning");
+						// Dispatch memoryUpdated event to trigger UI refresh in memory panels
+						// This is the Phase 1 P0 fix for Gap 4 (Memory Update Events)
+						dispatchMemoryEvent({
+							type: "memory_updated",
+							userId: "admin",
+							detail: {
+								source: "response_outcome",
+								memoryIds: update.memoryIds ?? [],
+								conversationId: page.params.id,
+							},
+						});
 						// Clear status after a short delay
 						setTimeout(() => memoryUi.resetProcessing(), 2000);
 					}

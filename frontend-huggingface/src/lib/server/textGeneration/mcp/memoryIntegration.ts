@@ -27,6 +27,8 @@ import type {
 	MemoryTier,
 	SearchResult,
 	Outcome,
+	ContextInsights,
+	ContextType,
 } from "$lib/server/memory/types";
 import type { SourceAttribution } from "$lib/server/memory/services/SourceDescriptionService";
 
@@ -557,7 +559,7 @@ export async function storeWorkingMemory(params: {
 			tags.push("memory_assisted");
 		}
 
-		await facade.store({
+		const storeResult = await facade.store({
 			userId: params.userId,
 			tier: "working",
 			text,
@@ -585,6 +587,38 @@ export async function storeWorkingMemory(params: {
 					}
 				: undefined,
 		});
+
+		// ============================================
+		// CONTENT KG ENTITY EXTRACTION (Phase 3 P2 - Gap 7)
+		// Extract entities from the stored memory and add to Content Graph
+		// ============================================
+		if (storeResult.memory_id) {
+			try {
+				const entityResult = await facade.extractAndStoreEntities({
+					userId: params.userId,
+					memoryId: storeResult.memory_id,
+					text,
+					importance: 0.5, // Default importance for working memory
+					confidence: 0.6, // Reasonable confidence for exchange content
+				});
+
+				if (entityResult.entitiesStored > 0) {
+					logger.debug(
+						{
+							userId: params.userId,
+							memoryId: storeResult.memory_id,
+							entitiesExtracted: entityResult.entitiesExtracted,
+							entitiesStored: entityResult.entitiesStored,
+							entities: entityResult.entities.slice(0, 5),
+						},
+						"Entities extracted and stored to Content KG"
+					);
+				}
+			} catch (entityErr) {
+				// Entity extraction should never block - fail silently
+				logger.debug({ err: entityErr }, "Entity extraction failed, continuing");
+			}
+		}
 
 		// Increment message count for auto-promotion (Roampal pattern)
 		// This triggers promotion every 20 messages
@@ -628,4 +662,1396 @@ export function extractExplicitToolRequest(query: string): string | null {
 	}
 
 	return null;
+}
+
+// ============================================
+// COLD-START CONTEXT (Phase 1 P0 - Gap 1)
+// ============================================
+
+/**
+ * Cold-start context result
+ */
+export interface ColdStartContextResult {
+	/** Formatted cold-start context text */
+	coldStartContext: string | null;
+	/** Whether cold-start was applied */
+	applied: boolean;
+	/** Debug information */
+	debug: SearchDebug | null;
+	/** Timing in milliseconds */
+	timingMs: number;
+}
+
+/**
+ * Check if this is the first message in the conversation
+ * Used to determine if cold-start injection should be applied
+ *
+ * @param recentMessages - Recent messages in the conversation
+ * @returns true if this appears to be the first user message
+ */
+export function isFirstMessage(
+	recentMessages: Array<{ role: string; content: string }>
+): boolean {
+	// If no recent messages, this is definitely first
+	if (!recentMessages || recentMessages.length === 0) {
+		return true;
+	}
+
+	// Count user messages (excluding system messages)
+	const userMessages = recentMessages.filter((m) => m.role === "user");
+
+	// If only one user message, this is the first
+	return userMessages.length <= 1;
+}
+
+/**
+ * Get cold-start context for first message of a conversation
+ *
+ * RoamPal Parity (agent_chat.py lines 627-668):
+ * - On message #1 of every conversation, auto-injects user profile from Content KG
+ * - Uses getColdStartContext() which returns formatted context with doc_ids
+ * - Caches doc_ids for selective outcome scoring
+ *
+ * @param userId - User identifier
+ * @param options - Optional configuration
+ * @returns Cold-start context result
+ */
+export async function getColdStartContextForConversation(
+	userId: string,
+	options: {
+		recentMessages?: Array<{ role: string; content: string }>;
+		signal?: AbortSignal;
+	} = {}
+): Promise<ColdStartContextResult> {
+	const result: ColdStartContextResult = {
+		coldStartContext: null,
+		applied: false,
+		debug: null,
+		timingMs: 0,
+	};
+
+	// Check if memory system is enabled
+	const flags = getMemoryFeatureFlags();
+	if (!flags.systemEnabled) {
+		return result;
+	}
+
+	// Only apply cold-start on first message
+	if (!isFirstMessage(options.recentMessages ?? [])) {
+		return result;
+	}
+
+	// Check if memory system is operational
+	if (!isMemorySystemOperational()) {
+		return result;
+	}
+
+	const startTime = Date.now();
+	try {
+		const facade = UnifiedMemoryFacade.getInstance();
+
+		const coldStart = await facade.getColdStartContext({
+			userId,
+			limit: 5, // Get top 5 high-value memories
+			signal: options.signal,
+		});
+
+		if (coldStart.text) {
+			result.coldStartContext = coldStart.text;
+			result.applied = true;
+			result.debug = coldStart.debug;
+
+			logger.debug(
+				{
+					userId,
+					contextLength: coldStart.text.length,
+					hasDebug: !!coldStart.debug,
+				},
+				"Cold-start context loaded for first message"
+			);
+		}
+	} catch (err) {
+		// Cold-start should never block - fail silently
+		logger.warn({ err }, "Failed to get cold-start context");
+	}
+
+	result.timingMs = Date.now() - startTime;
+	return result;
+}
+
+// ============================================
+// CONTEXTUAL GUIDANCE (Phase 2 P1 - Gap 2)
+// ============================================
+
+/**
+ * Contextual guidance result
+ */
+export interface ContextualGuidanceResult {
+	/** Formatted guidance text to inject before LLM call */
+	guidanceText: string | null;
+	/** Whether any guidance was generated */
+	hasGuidance: boolean;
+	/** Context insights from KG */
+	insights: ContextInsights | null;
+	/** Timing in milliseconds */
+	timingMs: number;
+}
+
+/**
+ * Get contextual guidance from Knowledge Graphs
+ *
+ * RoamPal Parity (agent_chat.py lines 675-794):
+ * - BEFORE LLM sees user message, injects:
+ *   - 📋 Past Experience from Content KG
+ *   - ⚠️ Past Failures from failure_patterns
+ *   - 📊 Action Stats from Action-Effectiveness KG
+ *   - 💡 Search Recommendations from proactive insights
+ *
+ * @param userId - User identifier
+ * @param query - User's query
+ * @param options - Configuration options
+ * @returns Contextual guidance result
+ */
+export async function getContextualGuidance(
+	userId: string,
+	query: string,
+	options: {
+		conversationId?: string;
+		recentMessages?: Array<{ role: string; content: string }>;
+		signal?: AbortSignal;
+	} = {}
+): Promise<ContextualGuidanceResult> {
+	const result: ContextualGuidanceResult = {
+		guidanceText: null,
+		hasGuidance: false,
+		insights: null,
+		timingMs: 0,
+	};
+
+	const flags = getMemoryFeatureFlags();
+	if (!flags.systemEnabled) {
+		return result;
+	}
+
+	if (!isMemorySystemOperational()) {
+		return result;
+	}
+
+	const startTime = Date.now();
+	try {
+		const facade = UnifiedMemoryFacade.getInstance();
+
+		// Get context insights from KG
+		const insights = await facade.getContextInsights({
+			userId,
+			conversationId: options.conversationId ?? "",
+			contextType: "general" as ContextType,
+			recentMessages: options.recentMessages ?? [],
+			signal: options.signal,
+		});
+
+		result.insights = insights;
+
+		// Format insights into guidance text
+		const guidanceParts: string[] = [];
+
+		// Past experience from relevant patterns
+		if (insights.relevant_patterns && insights.relevant_patterns.length > 0) {
+			guidanceParts.push("📋 **Past Experience**:");
+			for (const pattern of insights.relevant_patterns.slice(0, 3)) {
+				const successInfo = pattern.success_rate
+					? ` (success rate: ${(pattern.success_rate * 100).toFixed(0)}%)`
+					: "";
+				guidanceParts.push(`  - ${pattern.content}${successInfo}`);
+			}
+		}
+
+		// Past failures to avoid
+		if (insights.past_outcomes && insights.past_outcomes.length > 0) {
+			guidanceParts.push("⚠️ **Past Failures to Avoid**:");
+			for (const failure of insights.past_outcomes.slice(0, 3)) {
+				const reason = failure.reason ? `: ${failure.reason}` : "";
+				guidanceParts.push(`  - ${failure.content}${reason}`);
+			}
+		}
+
+		// Proactive insights / recommendations
+		if (insights.proactive_insights && insights.proactive_insights.length > 0) {
+			guidanceParts.push("💡 **Recommendations**:");
+			for (const insight of insights.proactive_insights.slice(0, 3)) {
+				if (insight.concept) {
+					guidanceParts.push(`  - Consider "${insight.concept}" tier for this type of query`);
+				}
+			}
+		}
+
+		// You already know (to avoid repetition)
+		if (insights.you_already_know && insights.you_already_know.length > 0) {
+			guidanceParts.push("📝 **User Context (already known)**:");
+			for (const item of insights.you_already_know.slice(0, 3)) {
+				guidanceParts.push(`  - ${item.content}`);
+			}
+		}
+
+		// Directives
+		if (insights.directives && insights.directives.length > 0) {
+			guidanceParts.push("🎯 **Directives**:");
+			for (const directive of insights.directives.slice(0, 3)) {
+				guidanceParts.push(`  - ${directive}`);
+			}
+		}
+
+		if (guidanceParts.length > 0) {
+			result.guidanceText = guidanceParts.join("\n");
+			result.hasGuidance = true;
+
+			logger.debug(
+				{
+					userId,
+					guidanceLength: result.guidanceText.length,
+					patternsCount: insights.relevant_patterns?.length ?? 0,
+					failuresCount: insights.past_outcomes?.length ?? 0,
+				},
+				"Contextual guidance generated"
+			);
+		}
+	} catch (err) {
+		// Contextual guidance should never block - fail silently
+		logger.warn({ err }, "Failed to get contextual guidance");
+	}
+
+	result.timingMs = Date.now() - startTime;
+	return result;
+}
+
+/**
+ * Format contextual guidance for injection into preprompt
+ */
+export function formatContextualGuidancePrompt(guidance: ContextualGuidanceResult): string | null {
+	if (!guidance.hasGuidance || !guidance.guidanceText) {
+		return null;
+	}
+
+	return `**CONTEXTUAL GUIDANCE FROM MEMORY SYSTEM**
+The following insights are derived from past interactions and should inform your response:
+
+${guidance.guidanceText}
+
+Use this guidance to provide a more relevant and informed response.`;
+}
+
+// ============================================
+// ACTION KG RECORDING (Phase 2 P1 - Gap 6)
+// ============================================
+
+/**
+ * Parameters for recording a tool action outcome
+ */
+export interface RecordToolActionParams {
+	userId: string;
+	conversationId: string;
+	messageId?: string;
+	toolName: string;
+	success: boolean;
+	latencyMs?: number;
+	errorType?: string;
+	errorMessage?: string;
+	contextType?: ContextType;
+}
+
+/**
+ * Record tool action outcome to Action KG
+ *
+ * RoamPal Parity (agent_chat.py lines 1276-1290):
+ * - After outcome detection, scores cached actions
+ * - record_action_outcome() updates Action-Effectiveness KG
+ * - Stats surface in contextual guidance
+ *
+ * @param params - Tool action parameters
+ */
+export async function recordToolActionOutcome(params: RecordToolActionParams): Promise<void> {
+	const flags = getMemoryFeatureFlags();
+	if (!flags.systemEnabled || !flags.outcomeEnabled) {
+		return;
+	}
+
+	try {
+		const facade = UnifiedMemoryFacade.getInstance();
+
+		await facade.recordActionOutcome({
+			action_id: `${params.conversationId}_${params.messageId ?? Date.now()}_${params.toolName}`,
+			action_type: params.toolName,
+			context_type: params.contextType ?? "general",
+			outcome: params.success ? "worked" : "failed",
+			conversation_id: params.conversationId,
+			message_id: params.messageId ?? null,
+			answer_attempt_id: null,
+			tier: null,
+			doc_id: null,
+			memory_id: null,
+			action_params: null,
+			tool_status: params.success ? "ok" : "error",
+			latency_ms: params.latencyMs ?? null,
+			error_type: params.errorType ?? null,
+			error_message: params.errorMessage ?? null,
+			timestamp: new Date().toISOString(),
+		});
+
+		logger.debug(
+			{
+				userId: params.userId,
+				conversationId: params.conversationId,
+				toolName: params.toolName,
+				success: params.success,
+				latencyMs: params.latencyMs,
+			},
+			"Recorded tool action outcome to Action KG"
+		);
+	} catch (err) {
+		// Action recording should never block or throw
+		logger.warn({ err, toolName: params.toolName }, "Failed to record tool action outcome");
+	}
+}
+
+/**
+ * Record multiple tool action outcomes in batch
+ *
+ * @param userId - User identifier
+ * @param conversationId - Conversation identifier
+ * @param messageId - Message identifier
+ * @param tools - Array of tool execution results
+ */
+export async function recordToolActionsInBatch(
+	userId: string,
+	conversationId: string,
+	messageId: string | undefined,
+	tools: Array<{ name: string; success: boolean; latencyMs?: number }>
+): Promise<void> {
+	// Record each tool action - errors are caught individually
+	await Promise.all(
+		tools.map((tool) =>
+			recordToolActionOutcome({
+				userId,
+				conversationId,
+				messageId,
+				toolName: tool.name,
+				success: tool.success,
+				latencyMs: tool.latencyMs,
+			})
+		)
+	);
+}
+
+// ============================================
+// MEMORY ATTRIBUTION (Phase 3 P2 - Gap 9)
+// Causal Scoring via LLM-generated memory marks
+// v0.2.12 Enhancements: Selective & Causal Scoring
+// ============================================
+
+/**
+ * Memory attribution result from parsing LLM response
+ * 
+ * RoamPal Parity (agent_chat.py lines 180-220):
+ * - LLM adds hidden annotation: <!-- MEM: 1👍 2👎 3➖ -->
+ * - parse_memory_marks() extracts and strips annotation
+ * - Upvote/downvote arrays drive selective scoring
+ */
+export interface MemoryAttribution {
+	/** Memory positions that were helpful (👍) */
+	upvoted: number[];
+	/** Memory positions that were unhelpful or wrong (👎) */
+	downvoted: number[];
+	/** Memory positions that were not used (➖) */
+	neutral: number[];
+	/** Raw annotation string */
+	raw: string;
+}
+
+/**
+ * v0.2.12 Surfaced Memories - for selective scoring (Fix #5)
+ * Tracks which memories were actually surfaced to the main LLM
+ */
+export interface SurfacedMemories {
+	/** Position to memory_id mapping {1: "mem_abc123", 2: "mem_def456"} */
+	position_map: Record<number, string>;
+	/** Position to content preview mapping {1: "User prefers dark mode...", 2: "User lives in..."} */
+	content_map: Record<number, string>;
+}
+
+/**
+ * v0.2.12 Outcome Detection Result
+ * Matches RoamPal OutcomeDetector.analyze() return type
+ */
+export interface OutcomeDetectionResult {
+	/** Overall outcome: worked | failed | partial | unknown */
+	outcome: "worked" | "failed" | "partial" | "unknown";
+	/** Confidence 0.0-1.0 */
+	confidence: number;
+	/** Detected indicators like ["explicit_thanks", "follow_up_question"] */
+	indicators: string[];
+	/** Human-readable reasoning */
+	reasoning: string;
+	/** v0.2.12 Fix #5: Inferred positions that were actually USED in response */
+	used_positions: number[];
+	/** v0.2.12 Fix #7: Positions to upvote (from causal attribution) */
+	upvote: number[];
+	/** v0.2.12 Fix #7: Positions to downvote (from causal attribution) */
+	downvote: number[];
+}
+
+/**
+ * v0.2.12 Scoring Matrix for Causal Attribution
+ * Combines detected outcome with LLM's memory marks
+ * 
+ * Matrix (outcome vs mark):
+ * | Mark/Outcome | YES (worked) | KINDA (partial) | NO (failed) |
+ * |--------------|--------------|-----------------|-------------|
+ * | 👍 (helpful) | upvote       | slight_up       | neutral     |
+ * | 👎 (unhelpful)| neutral     | slight_down     | downvote    |
+ * | ➖ (no_impact)| neutral     | neutral         | neutral     |
+ */
+export type ScoringAction = "upvote" | "slight_up" | "neutral" | "slight_down" | "downvote";
+
+export interface ScoringMatrixEntry {
+	/** Final scoring action */
+	action: ScoringAction;
+	/** Score delta to apply */
+	delta: number;
+}
+
+/**
+ * v0.2.12 Scoring matrix implementation
+ * Key insight: A positive exchange can still downvote bad memories if LLM marked them 👎
+ */
+export const SCORING_MATRIX: Record<string, Record<string, ScoringMatrixEntry>> = {
+	// outcome -> mark -> action
+	worked: {
+		upvoted: { action: "upvote", delta: 0.2 },
+		downvoted: { action: "neutral", delta: 0.0 },  // Don't punish on success
+		neutral: { action: "neutral", delta: 0.0 },
+	},
+	partial: {
+		upvoted: { action: "slight_up", delta: 0.1 },
+		downvoted: { action: "slight_down", delta: -0.1 },
+		neutral: { action: "neutral", delta: 0.0 },
+	},
+	failed: {
+		upvoted: { action: "neutral", delta: 0.0 },   // Don't reward on failure
+		downvoted: { action: "downvote", delta: -0.3 },
+		neutral: { action: "neutral", delta: 0.0 },
+	},
+	unknown: {
+		upvoted: { action: "slight_up", delta: 0.05 },
+		downvoted: { action: "slight_down", delta: -0.05 },
+		neutral: { action: "neutral", delta: 0.0 },
+	},
+};
+
+/**
+ * Get scoring action from matrix based on outcome and mark
+ */
+export function getScoringAction(
+	outcome: "worked" | "failed" | "partial" | "unknown",
+	mark: "upvoted" | "downvoted" | "neutral"
+): ScoringMatrixEntry {
+	return SCORING_MATRIX[outcome]?.[mark] ?? { action: "neutral", delta: 0.0 };
+}
+
+/**
+ * Result of parsing memory marks from LLM response
+ */
+export interface ParseMemoryMarksResult {
+	/** Response with memory attribution comment stripped */
+	cleanedResponse: string;
+	/** Parsed attribution or null if not found */
+	attribution: MemoryAttribution | null;
+}
+
+/**
+ * Memory attribution instruction to inject into system prompt
+ * 
+ * When memories are injected, we ask the LLM to mark which ones were helpful
+ * using a hidden comment at the end of the response.
+ */
+export const MEMORY_ATTRIBUTION_INSTRUCTION = `
+IMPORTANT: When using information from the memory context above, at the END of your response,
+add a hidden attribution comment in this exact format on its own line:
+<!-- MEM: 1👍 2👎 3➖ -->
+
+Where numbers correspond to memory positions from the context:
+- 👍 = memory was helpful and used in your response
+- 👎 = memory was unhelpful, irrelevant, or wrong
+- ➖ = memory was not used in your response
+
+Example: If memories 1 and 3 helped, memory 2 was wrong, and 4-5 weren't used:
+<!-- MEM: 1👍 3👍 2👎 4➖ 5➖ -->
+
+This helps improve memory quality for future conversations. Include ALL memory positions.
+`;
+
+/**
+ * Hebrew version of the attribution instruction
+ */
+export const MEMORY_ATTRIBUTION_INSTRUCTION_HE = `
+חשוב: כאשר אתה משתמש במידע מהקשר הזיכרון לעיל, בסוף התשובה שלך,
+הוסף הערת ייחוס מוסתרת בפורמט הזה בדיוק בשורה נפרדת:
+<!-- MEM: 1👍 2👎 3➖ -->
+
+כאשר המספרים מתאימים למיקומי הזיכרונות מההקשר:
+- 👍 = הזיכרון היה שימושי ונעשה בו שימוש בתשובתך
+- 👎 = הזיכרון היה לא רלוונטי או שגוי
+- ➖ = לא נעשה שימוש בזיכרון בתשובתך
+
+דוגמה: אם זיכרונות 1 ו-3 עזרו, זיכרון 2 היה שגוי, ו-4-5 לא נעשה בהם שימוש:
+<!-- MEM: 1👍 3👍 2👎 4➖ 5➖ -->
+
+זה עוזר לשפר את איכות הזיכרון לשיחות עתידיות. כלול את כל מיקומי הזיכרון.
+`;
+
+/**
+ * Parse memory marks from LLM response
+ * 
+ * Extracts the attribution comment and returns both the cleaned response
+ * and the parsed attribution data.
+ * 
+ * @param response - Raw LLM response that may contain attribution comment
+ * @returns Cleaned response and parsed attribution
+ */
+export function parseMemoryMarks(response: string): ParseMemoryMarksResult {
+	// Pattern matches: <!-- MEM: 1👍 2👎 3➖ -->
+	// Also handles variations like <!-- MEM:1👍2👎 --> and whitespace
+	const pattern = /<!--\s*MEM:\s*(.+?)\s*-->/i;
+	const match = response.match(pattern);
+
+	if (!match) {
+		return { cleanedResponse: response, attribution: null };
+	}
+
+	// Remove the attribution comment from response
+	const cleanedResponse = response.replace(pattern, "").trim();
+	const markString = match[1];
+
+	const upvoted: number[] = [];
+	const downvoted: number[] = [];
+	const neutral: number[] = [];
+
+	// Parse marks: "1👍 2👎 3➖" or "1👍2👎3➖"
+	// Match number followed by emoji
+	const markPattern = /(\d+)\s*(👍|👎|➖|:\+1:|:-1:|:neutral_face:)/g;
+	let markMatch;
+
+	while ((markMatch = markPattern.exec(markString)) !== null) {
+		const position = parseInt(markMatch[1], 10);
+		const mark = markMatch[2];
+
+		if (isNaN(position)) continue;
+
+		switch (mark) {
+			case "👍":
+			case ":+1:":
+				upvoted.push(position);
+				break;
+			case "👎":
+			case ":-1:":
+				downvoted.push(position);
+				break;
+			case "➖":
+			case ":neutral_face:":
+				neutral.push(position);
+				break;
+		}
+	}
+
+	// If no marks were successfully parsed, return null attribution
+	if (upvoted.length === 0 && downvoted.length === 0 && neutral.length === 0) {
+		return { cleanedResponse, attribution: null };
+	}
+
+	return {
+		cleanedResponse,
+		attribution: {
+			upvoted,
+			downvoted,
+			neutral,
+			raw: markString,
+		},
+	};
+}
+
+/**
+ * Get memory ID by position from search position map
+ * 
+ * @param searchPositionMap - Map of memory IDs to positions
+ * @param position - 1-indexed position (as used in LLM attribution)
+ * @returns Memory ID or null if not found
+ */
+export function getMemoryIdByPosition(
+	searchPositionMap: SearchPositionMap,
+	position: number
+): string | null {
+	// Position in attribution is 1-indexed, position in map is 0-indexed
+	const targetPosition = position - 1;
+
+	for (const [memoryId, entry] of Object.entries(searchPositionMap)) {
+		if (entry.position === targetPosition) {
+			return memoryId;
+		}
+	}
+
+	return null;
+}
+
+/**
+ * Record selective outcomes based on memory attribution
+ * 
+ * v0.2.12 Enhanced: Uses scoring matrix to combine outcome detection with LLM marks
+ * 
+ * Uses the attribution from the LLM response to record positive/negative
+ * outcomes for specific memories, rather than all-or-nothing scoring.
+ * 
+ * @param params - Selective outcome parameters
+ */
+export async function recordSelectiveOutcomes(params: {
+	userId: string;
+	conversationId: string;
+	searchPositionMap: SearchPositionMap;
+	attribution: MemoryAttribution;
+	/** v0.2.12: Optional outcome detection result for scoring matrix */
+	detectedOutcome?: "worked" | "failed" | "partial" | "unknown";
+}): Promise<{ recorded: number; errors: number; scoringDetails: Array<{ position: number; memoryId: string; action: ScoringAction; delta: number }> }> {
+	const flags = getMemoryFeatureFlags();
+	if (!flags.systemEnabled || !flags.outcomeEnabled) {
+		return { recorded: 0, errors: 0, scoringDetails: [] };
+	}
+
+	let recorded = 0;
+	let errors = 0;
+	const scoringDetails: Array<{ position: number; memoryId: string; action: ScoringAction; delta: number }> = [];
+	const outcome = params.detectedOutcome ?? "unknown";
+
+	try {
+		const facade = UnifiedMemoryFacade.getInstance();
+
+		// v0.2.12: Apply scoring matrix for upvoted memories
+		for (const position of params.attribution.upvoted) {
+			const memoryId = getMemoryIdByPosition(params.searchPositionMap, position);
+			if (memoryId) {
+				const { action, delta } = getScoringAction(outcome, "upvoted");
+				scoringDetails.push({ position, memoryId, action, delta });
+				
+				// Only record if action suggests score change
+				if (action === "upvote" || action === "slight_up") {
+					try {
+						await facade.recordOutcome({
+							userId: params.userId,
+							outcome: action === "upvote" ? "worked" : "partial",
+							relatedMemoryIds: [memoryId],
+						});
+						recorded++;
+						logger.debug(
+							{ memoryId, position, action, delta, detectedOutcome: outcome },
+							"Recorded selective outcome (upvoted)"
+						);
+					} catch (err) {
+						errors++;
+						logger.warn({ err, memoryId, position }, "Failed to record positive outcome");
+					}
+				}
+			}
+		}
+
+		// v0.2.12: Apply scoring matrix for downvoted memories
+		for (const position of params.attribution.downvoted) {
+			const memoryId = getMemoryIdByPosition(params.searchPositionMap, position);
+			if (memoryId) {
+				const { action, delta } = getScoringAction(outcome, "downvoted");
+				scoringDetails.push({ position, memoryId, action, delta });
+				
+				// Only record if action suggests score change
+				if (action === "downvote" || action === "slight_down") {
+					try {
+						await facade.recordOutcome({
+							userId: params.userId,
+							outcome: action === "downvote" ? "failed" : "partial",
+							relatedMemoryIds: [memoryId],
+						});
+						recorded++;
+						logger.debug(
+							{ memoryId, position, action, delta, detectedOutcome: outcome },
+							"Recorded selective outcome (downvoted)"
+						);
+					} catch (err) {
+						errors++;
+						logger.warn({ err, memoryId, position }, "Failed to record negative outcome");
+					}
+				}
+			}
+		}
+
+		// Neutral memories (➖) are intentionally not recorded
+		// v0.2.12: Log them for transparency but don't score
+		for (const position of params.attribution.neutral) {
+			const memoryId = getMemoryIdByPosition(params.searchPositionMap, position);
+			if (memoryId) {
+				const { action, delta } = getScoringAction(outcome, "neutral");
+				scoringDetails.push({ position, memoryId, action, delta });
+			}
+		}
+
+		logger.info(
+			{
+				userId: params.userId,
+				conversationId: params.conversationId,
+				detectedOutcome: outcome,
+				upvotedCount: params.attribution.upvoted.length,
+				downvotedCount: params.attribution.downvoted.length,
+				neutralCount: params.attribution.neutral.length,
+				recorded,
+				errors,
+				scoringActions: scoringDetails.map(d => d.action),
+			},
+			"v0.2.12 Recorded selective memory outcomes with scoring matrix"
+		);
+	} catch (err) {
+		logger.error({ err }, "Failed to record selective outcomes");
+	}
+
+	return { recorded, errors, scoringDetails };
+}
+
+/**
+ * Process LLM response with memory attribution
+ * 
+ * This is the main entry point for memory attribution. It:
+ * 1. Parses memory marks from the response
+ * 2. Records selective outcomes if attribution is found
+ * 3. Returns the cleaned response (attribution comment stripped)
+ * 
+ * @param params - Processing parameters
+ * @returns Cleaned response and whether attribution was found
+ */
+export async function processResponseWithAttribution(params: {
+	userId: string;
+	conversationId: string;
+	response: string;
+	searchPositionMap: SearchPositionMap;
+}): Promise<{ cleanedResponse: string; attributionFound: boolean; attribution: MemoryAttribution | null }> {
+	const { cleanedResponse, attribution } = parseMemoryMarks(params.response);
+
+	if (attribution && Object.keys(params.searchPositionMap).length > 0) {
+		// Record selective outcomes in background (don't block)
+		recordSelectiveOutcomes({
+			userId: params.userId,
+			conversationId: params.conversationId,
+			searchPositionMap: params.searchPositionMap,
+			attribution,
+		}).catch((err) => {
+			logger.warn({ err }, "Background selective outcome recording failed");
+		});
+	}
+
+	return {
+		cleanedResponse,
+		attributionFound: attribution !== null,
+		attribution,
+	};
+}
+
+/**
+ * Get the appropriate attribution instruction based on language
+ * 
+ * @param language - Language code ('he' | 'en' | 'mixed')
+ * @returns Attribution instruction string
+ */
+export function getAttributionInstruction(language?: "he" | "en" | "mixed"): string {
+	if (language === "he") {
+		return MEMORY_ATTRIBUTION_INSTRUCTION_HE;
+	}
+	return MEMORY_ATTRIBUTION_INSTRUCTION;
+}
+
+// ============================================
+// v0.2.12 ENHANCEMENTS - SELECTIVE & CAUSAL SCORING
+// ============================================
+
+/**
+ * v0.2.12 Fix #5: Build surfaced memories structure for selective scoring
+ * 
+ * Creates position_map and content_map from search results to track
+ * which memories were actually surfaced to the main LLM.
+ * 
+ * @param searchPositionMap - The search position map from memory retrieval
+ * @param memoryContents - Optional map of memory_id to content previews
+ * @returns SurfacedMemories structure for outcome detection
+ */
+export function buildSurfacedMemories(
+	searchPositionMap: SearchPositionMap,
+	memoryContents?: Record<string, string>
+): SurfacedMemories {
+	const position_map: Record<number, string> = {};
+	const content_map: Record<number, string> = {};
+
+	for (const [memoryId, entry] of Object.entries(searchPositionMap)) {
+		// Position in UI is 1-indexed
+		const uiPosition = entry.position + 1;
+		position_map[uiPosition] = memoryId;
+		
+		// Content preview if available
+		if (memoryContents?.[memoryId]) {
+			content_map[uiPosition] = memoryContents[memoryId].slice(0, 100);
+		}
+	}
+
+	return { position_map, content_map };
+}
+
+/**
+ * v0.2.12 Fix #5: Infer which memories were actually USED in the response
+ * 
+ * When LLM doesn't provide explicit attribution marks, we fall back to
+ * inference by checking if memory content appears referenced in the response.
+ * 
+ * This is the TypeScript equivalent of OutcomeDetector's used_positions inference.
+ * 
+ * @param response - The LLM's response text
+ * @param surfacedMemories - The surfaced memories with content
+ * @returns Array of positions that appear to have been used
+ */
+export function inferUsedPositions(
+	response: string,
+	surfacedMemories: SurfacedMemories
+): number[] {
+	const usedPositions: number[] = [];
+	const responseLower = response.toLowerCase();
+
+	for (const [posStr, content] of Object.entries(surfacedMemories.content_map)) {
+		const position = parseInt(posStr, 10);
+		if (isNaN(position)) continue;
+
+		// Check if any significant words from the memory appear in response
+		// Use keyword matching - extract 3+ letter words
+		const keywords = content
+			.toLowerCase()
+			.split(/\s+/)
+			.filter(w => w.length >= 4)  // Skip short words
+			.slice(0, 10);  // Limit to first 10 keywords
+		
+		// If 2+ keywords match, consider it "used"
+		let matchCount = 0;
+		for (const keyword of keywords) {
+			if (responseLower.includes(keyword)) {
+				matchCount++;
+			}
+		}
+		
+		if (matchCount >= 2 || (keywords.length <= 3 && matchCount >= 1)) {
+			usedPositions.push(position);
+		}
+	}
+
+	return usedPositions;
+}
+
+/**
+ * v0.2.12: Simple outcome detection based on response characteristics
+ * 
+ * This is a simplified version of OutcomeDetector.analyze() for TypeScript.
+ * For full LLM-based outcome detection, use the Python backend.
+ * 
+ * Detects indicators like:
+ * - explicit_thanks
+ * - follow_up_question  
+ * - correction_needed
+ * - error_message
+ * 
+ * @param userMessage - The user's follow-up message (if any)
+ * @param assistantResponse - The assistant's response
+ * @returns Basic outcome detection result
+ */
+export function detectBasicOutcome(
+	userMessage: string | null,
+	assistantResponse: string
+): Pick<OutcomeDetectionResult, "outcome" | "confidence" | "indicators" | "reasoning"> {
+	const indicators: string[] = [];
+	let outcome: "worked" | "failed" | "partial" | "unknown" = "unknown";
+	let confidence = 0.3;
+	let reasoning = "No clear indicators";
+
+	// Check assistant response for error patterns
+	const responseLower = assistantResponse.toLowerCase();
+	if (
+		responseLower.includes("i'm sorry") ||
+		responseLower.includes("i cannot") ||
+		responseLower.includes("error:") ||
+		responseLower.includes("failed to")
+	) {
+		indicators.push("error_message");
+		outcome = "failed";
+		confidence = 0.6;
+		reasoning = "Response contains error or apology";
+	}
+
+	// Check user's follow-up message for positive/negative signals
+	if (userMessage) {
+		const userLower = userMessage.toLowerCase();
+		
+		// Positive signals
+		if (
+			userLower.includes("thank") ||
+			userLower.includes("thanks") ||
+			userLower.includes("perfect") ||
+			userLower.includes("great") ||
+			userLower.includes("exactly") ||
+			userLower.includes("תודה") ||  // Hebrew: thank you
+			userLower.includes("מעולה")   // Hebrew: excellent
+		) {
+			indicators.push("explicit_thanks");
+			outcome = "worked";
+			confidence = 0.8;
+			reasoning = "User expressed gratitude or satisfaction";
+		}
+		
+		// Negative signals
+		if (
+			userLower.includes("wrong") ||
+			userLower.includes("incorrect") ||
+			userLower.includes("no, ") ||
+			userLower.includes("that's not") ||
+			userLower.includes("actually") ||
+			userLower.includes("לא נכון")  // Hebrew: not correct
+		) {
+			indicators.push("correction_needed");
+			outcome = "failed";
+			confidence = 0.7;
+			reasoning = "User indicated response was wrong";
+		}
+		
+		// Follow-up question (neutral - could indicate partial success)
+		if (
+			userLower.includes("?") ||
+			userLower.includes("what about") ||
+			userLower.includes("can you also") ||
+			userLower.includes("how about")
+		) {
+			indicators.push("follow_up_question");
+			if (outcome === "unknown") {
+				outcome = "partial";
+				confidence = 0.5;
+				reasoning = "User asked follow-up question";
+			}
+		}
+	}
+
+	// If response is substantial and no negative indicators, lean positive
+	if (outcome === "unknown" && assistantResponse.length > 200 && indicators.length === 0) {
+		outcome = "partial";
+		confidence = 0.4;
+		reasoning = "Substantial response with no clear signals";
+	}
+
+	return { outcome, confidence, indicators, reasoning };
+}
+
+/**
+ * v0.2.12: Process response with full outcome detection and attribution
+ * 
+ * Enhanced version that combines:
+ * - LLM attribution marks (Fix #7)
+ * - Inferred usage (Fix #5)
+ * - Scoring matrix application
+ * - Fallback to all-scoring (Fix #4)
+ * 
+ * @param params - Enhanced processing parameters
+ * @returns Full processing result with outcome detection
+ */
+export async function processResponseWithFullAttribution(params: {
+	userId: string;
+	conversationId: string;
+	response: string;
+	searchPositionMap: SearchPositionMap;
+	/** v0.2.12: Content map for inference fallback */
+	memoryContents?: Record<string, string>;
+	/** v0.2.12: User's follow-up message for outcome detection */
+	userFollowUp?: string | null;
+}): Promise<{
+	cleanedResponse: string;
+	attributionFound: boolean;
+	attribution: MemoryAttribution | null;
+	outcomeDetection: Pick<OutcomeDetectionResult, "outcome" | "confidence" | "indicators" | "reasoning">;
+	usedPositions: number[];
+	scoringApplied: "attribution" | "inference" | "all" | "none";
+}> {
+	// Step 1: Parse LLM attribution marks
+	const { cleanedResponse, attribution } = parseMemoryMarks(params.response);
+	
+	// Step 2: Detect outcome
+	const outcomeDetection = detectBasicOutcome(params.userFollowUp ?? null, cleanedResponse);
+	
+	// Step 3: Determine used positions and scoring strategy
+	let usedPositions: number[] = [];
+	let scoringApplied: "attribution" | "inference" | "all" | "none" = "none";
+	
+	const memoryCount = Object.keys(params.searchPositionMap).length;
+	
+	if (memoryCount === 0) {
+		// No memories to score
+		scoringApplied = "none";
+	} else if (attribution) {
+		// v0.2.12 Fix #7: Use LLM attribution marks with scoring matrix
+		usedPositions = [...attribution.upvoted, ...attribution.downvoted];
+		scoringApplied = "attribution";
+		
+		// Record with scoring matrix
+		recordSelectiveOutcomes({
+			userId: params.userId,
+			conversationId: params.conversationId,
+			searchPositionMap: params.searchPositionMap,
+			attribution,
+			detectedOutcome: outcomeDetection.outcome,
+		}).catch((err) => {
+			logger.warn({ err }, "Background selective outcome recording failed");
+		});
+	} else if (params.memoryContents && Object.keys(params.memoryContents).length > 0) {
+		// v0.2.12 Fix #5: Fallback to inference
+		const surfacedMemories = buildSurfacedMemories(params.searchPositionMap, params.memoryContents);
+		usedPositions = inferUsedPositions(cleanedResponse, surfacedMemories);
+		scoringApplied = usedPositions.length > 0 ? "inference" : "all";
+		
+		if (usedPositions.length > 0) {
+			// Score only inferred used memories
+			const inferredAttribution: MemoryAttribution = {
+				upvoted: outcomeDetection.outcome === "worked" ? usedPositions : [],
+				downvoted: outcomeDetection.outcome === "failed" ? usedPositions : [],
+				neutral: [],
+				raw: `inferred:${usedPositions.join(",")}`,
+			};
+			
+			recordSelectiveOutcomes({
+				userId: params.userId,
+				conversationId: params.conversationId,
+				searchPositionMap: params.searchPositionMap,
+				attribution: inferredAttribution,
+				detectedOutcome: outcomeDetection.outcome,
+			}).catch((err) => {
+				logger.warn({ err }, "Background inferred outcome recording failed");
+			});
+		} else {
+			// Fix #4 fallback: Score all memories with detected outcome
+			const allPositions = Object.values(params.searchPositionMap)
+				.map(entry => entry.position + 1);
+			
+			const allAttribution: MemoryAttribution = {
+				upvoted: outcomeDetection.outcome === "worked" ? allPositions : [],
+				downvoted: outcomeDetection.outcome === "failed" ? allPositions : [],
+				neutral: outcomeDetection.outcome === "unknown" || outcomeDetection.outcome === "partial" ? allPositions : [],
+				raw: `fallback_all:${allPositions.join(",")}`,
+			};
+			
+			if (outcomeDetection.outcome !== "unknown") {
+				recordSelectiveOutcomes({
+					userId: params.userId,
+					conversationId: params.conversationId,
+					searchPositionMap: params.searchPositionMap,
+					attribution: allAttribution,
+					detectedOutcome: outcomeDetection.outcome,
+				}).catch((err) => {
+					logger.warn({ err }, "Background all-memory outcome recording failed");
+				});
+			}
+		}
+	} else {
+		// No content map - can't infer, use Fix #4 fallback
+		scoringApplied = "all";
+		const allPositions = Object.values(params.searchPositionMap)
+			.map(entry => entry.position + 1);
+		usedPositions = allPositions;
+		
+		// Record all with detected outcome if not unknown
+		if (outcomeDetection.outcome !== "unknown") {
+			const flags = getMemoryFeatureFlags();
+			if (flags.systemEnabled && flags.outcomeEnabled) {
+				try {
+					const facade = UnifiedMemoryFacade.getInstance();
+					await facade.recordOutcome({
+						userId: params.userId,
+						outcome: outcomeDetection.outcome,
+						relatedMemoryIds: Object.keys(params.searchPositionMap),
+					});
+				} catch (err) {
+					logger.warn({ err }, "Failed to record all-memory outcome");
+				}
+			}
+		}
+	}
+	
+	logger.debug(
+		{
+			userId: params.userId,
+			conversationId: params.conversationId,
+			memoryCount,
+			attributionFound: !!attribution,
+			outcomeDetected: outcomeDetection.outcome,
+			confidence: outcomeDetection.confidence,
+			usedPositions,
+			scoringApplied,
+		},
+		"v0.2.12 Full attribution processing complete"
+	);
+
+	return {
+		cleanedResponse,
+		attributionFound: attribution !== null,
+		attribution,
+		outcomeDetection,
+		usedPositions,
+		scoringApplied,
+	};
+}
+
+/**
+ * v0.2.12: Get doc_ids from cold-start context for outcome scoring
+ * 
+ * RoamPal Parity (unified_memory_system.py get_cold_start_context):
+ * Returns (formatted_context, doc_ids, raw_context) for outcome scoring.
+ * doc_ids derived via: doc_ids = [r.get("id") for r in all_context if r.get("id")]
+ * 
+ * @param searchPositionMap - The search position map from memory retrieval
+ * @returns Array of memory IDs (doc_ids) for outcome scoring
+ */
+export function extractDocIdsForScoring(searchPositionMap: SearchPositionMap): string[] {
+	return Object.keys(searchPositionMap);
+}
+
+// ============================================
+// v0.2.10 ENHANCEMENTS - MEMORY BANK PHILOSOPHY
+// Three-layer purpose: User Context, System Mastery, Agent Growth
+// ============================================
+
+/**
+ * Memory Bank Philosophy - Three-layer purpose and selectivity guidance
+ * 
+ * RoamPal v0.2.10: Prevents LLM from spamming create_memory with every fact.
+ * Instead, guides LLM to store only strategic knowledge that enables
+ * continuity and learning across sessions.
+ */
+export const MEMORY_BANK_PHILOSOPHY = `
+**MEMORY BANK PHILOSOPHY - Three Layers**
+
+When storing to memory_bank with add_to_memory_bank, classify under these THREE layers:
+
+1. **User Context** (tag: user_context)
+   - Identity: Name, background, career role, language preference
+   - Preferences: Preferred tools, styles, communication preferences
+   - Goals: Current projects, objectives, deadlines, priorities
+   
+2. **System Mastery** (tag: system_mastery)
+   - Tool strategies: What search patterns/tools work for this user
+   - Effective workflows: Proven approaches for this user
+   - Navigation patterns: How this user finds what they need
+   
+3. **Agent Growth** (tag: agent_growth)
+   - Mistakes learned: What to avoid, lessons from failures
+   - Relationship dynamics: Trust patterns, collaboration style
+   - Progress tracking: Goal checkpoints, iterations, milestones
+
+**BE SELECTIVE - CRITICAL:**
+✅ Store: What enables continuity/learning across sessions
+❌ DON'T store: Every conversation fact (automatic working memory handles this)
+❌ DON'T store: Session-specific transient details
+❌ DON'T store: Redundant duplicates of existing memories
+
+**Good memory examples:**
+- "User prefers dark mode and uses VS Code for Python development" ✅
+- "User is senior backend engineer at TechCorp, confirmed" ✅
+- "User had success with chunking approach for API timeouts (3 times)" ✅
+
+**Bad memory examples (don't store these):**
+- "User asked about weather today" ❌ (too transient)
+- "User said hello" ❌ (session noise)
+- "User's name is Alex" when already stored ❌ (duplicate)
+`;
+
+/**
+ * Hebrew version of Memory Bank Philosophy
+ */
+export const MEMORY_BANK_PHILOSOPHY_HE = `
+**פילוסופיית בנק הזיכרון - שלוש שכבות**
+
+כאשר שומרים לבנק הזיכרון עם add_to_memory_bank, סווג תחת שלוש שכבות:
+
+1. **הקשר משתמש** (תג: user_context)
+   - זהות: שם, רקע, תפקיד מקצועי, העדפת שפה
+   - העדפות: כלים מועדפים, סגנונות, העדפות תקשורת
+   - מטרות: פרויקטים נוכחיים, יעדים, לוחות זמנים
+   
+2. **שליטה במערכת** (תג: system_mastery)
+   - אסטרטגיות כלים: אילו דפוסי חיפוש/כלים עובדים למשתמש
+   - זרימות עבודה יעילות: גישות מוכחות למשתמש זה
+   
+3. **צמיחת הסוכן** (תג: agent_growth)
+   - טעויות שנלמדו: מה להימנע, לקחים מכישלונות
+   - מעקב התקדמות: נקודות ביקורת, איטרציות
+
+**היה סלקטיבי - קריטי:**
+✅ שמור: מה שמאפשר המשכיות/למידה בין שיחות
+❌ אל תשמור: כל עובדה בשיחה (זיכרון עבודה אוטומטי מטפל)
+❌ אל תשמור: פרטים חולפים של הפגישה
+❌ אל תשמור: כפילויות מיותרות
+`;
+
+// ============================================
+// v0.2.10 ENHANCEMENTS - TOOL GUIDANCE INJECTION
+// Action-Level Causal Learning with prompt injection
+// ============================================
+
+/**
+ * Tool guidance result from action effectiveness analysis
+ */
+export interface ToolGuidanceResult {
+	/** Formatted guidance text to inject */
+	guidanceText: string | null;
+	/** Whether any guidance was generated */
+	hasGuidance: boolean;
+	/** Tools to prefer (Wilson score > 0.7) */
+	preferredTools: string[];
+	/** Tools to avoid (Wilson score < 0.4) */
+	avoidTools: string[];
+	/** Timing in milliseconds */
+	timingMs: number;
+}
+
+/**
+ * Get tool guidance based on action effectiveness from Action KG
+ * 
+ * RoamPal v0.2.10: After learning from 3+ uses, system automatically injects warnings:
+ * 
+ * ═══ CONTEXTUAL GUIDANCE (Context: memory_test) ═══
+ * 🎯 Tool Guidance (learned from past outcomes):
+ *   ✓ search_memory() → 87% success (42 uses)
+ *   ✗ create_memory() → only 5% success (19 uses) - AVOID
+ * 
+ * @param userId - User identifier
+ * @param contextType - Detected context type (docker, debugging, coding_help, etc.)
+ * @param availableTools - List of available tool names in current session
+ * @returns Tool guidance result
+ */
+export async function getToolGuidance(
+	userId: string,
+	contextType: string,
+	availableTools: string[] = []
+): Promise<ToolGuidanceResult> {
+	const result: ToolGuidanceResult = {
+		guidanceText: null,
+		hasGuidance: false,
+		preferredTools: [],
+		avoidTools: [],
+		timingMs: 0,
+	};
+
+	const flags = getMemoryFeatureFlags();
+	if (!flags.systemEnabled) {
+		return result;
+	}
+
+	const startTime = Date.now();
+
+	try {
+		const facade = UnifiedMemoryFacade.getInstance();
+		const actionStats = await facade.getActionEffectiveness({
+			userId,
+			contextType,
+		});
+
+		if (actionStats.length === 0) {
+			result.timingMs = Date.now() - startTime;
+			return result;
+		}
+
+		// Filter to only relevant tools (with 3+ uses for statistical significance)
+		const relevantStats = actionStats.filter(stat => stat.total_uses >= 3);
+
+		if (relevantStats.length === 0) {
+			result.timingMs = Date.now() - startTime;
+			return result;
+		}
+
+		// Build guidance text
+		const lines: string[] = [
+			`═══ TOOL GUIDANCE (Context: ${contextType}) ═══`,
+			"",
+			"🎯 Tool Effectiveness (learned from past outcomes):",
+		];
+
+		for (const stat of relevantStats.slice(0, 6)) { // Limit to top 6
+			const successRate = stat.success_rate;
+			let emoji: string;
+			let warning = "";
+
+			if (successRate > 0.7) {
+				emoji = "✓";
+				result.preferredTools.push(stat.action_type);
+			} else if (successRate < 0.4) {
+				emoji = "✗";
+				warning = " - AVOID";
+				result.avoidTools.push(stat.action_type);
+			} else {
+				emoji = "○";
+			}
+
+			lines.push(`  ${emoji} ${stat.action_type}() → ${(successRate * 100).toFixed(0)}% success (${stat.total_uses} uses)${warning}`);
+		}
+
+		// Add warning if tools to avoid exist
+		if (result.avoidTools.length > 0) {
+			lines.push("");
+			lines.push(`⚠️ Based on past failures, avoid: ${result.avoidTools.join(", ")}`);
+		}
+
+		result.guidanceText = lines.join("\n");
+		result.hasGuidance = true;
+
+		logger.debug(
+			{
+				userId,
+				contextType,
+				preferredTools: result.preferredTools,
+				avoidTools: result.avoidTools,
+				statsCount: relevantStats.length,
+			},
+			"Tool guidance generated"
+		);
+	} catch (err) {
+		// Tool guidance should never block - fail silently
+		logger.warn({ err }, "Failed to get tool guidance");
+	}
+
+	result.timingMs = Date.now() - startTime;
+	return result;
+}
+
+/**
+ * Get the appropriate Memory Bank Philosophy instruction based on language
+ * 
+ * @param language - Language code ('he' | 'en' | 'mixed')
+ * @returns Memory Bank Philosophy string
+ */
+export function getMemoryBankPhilosophy(language?: "he" | "en" | "mixed"): string {
+	if (language === "he") {
+		return MEMORY_BANK_PHILOSOPHY_HE;
+	}
+	return MEMORY_BANK_PHILOSOPHY;
+}
+
+/**
+ * Check if add_to_memory_bank tool is available in the current tool set
+ * 
+ * @param tools - Array of tool definitions
+ * @returns true if add_to_memory_bank is available
+ */
+export function hasMemoryBankTool(tools: Array<{ function: { name: string } }>): boolean {
+	return tools.some(t => 
+		t.function.name === "add_to_memory_bank" || 
+		t.function.name === "create_memory" ||
+		t.function.name === "store_memory"
+	);
 }

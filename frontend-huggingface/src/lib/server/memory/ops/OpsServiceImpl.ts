@@ -96,6 +96,8 @@ export interface OpsServiceImplConfig {
 	consistencyService: ConsistencyService;
 	db: Db;
 	config?: MemoryConfig;
+	/** Optional BM25 adapter for cache invalidation (v0.2.9 parity) */
+	bm25Adapter?: { invalidateUserCache: (userId: string) => void };
 }
 
 export interface BackupPayload {
@@ -119,6 +121,7 @@ export class OpsServiceImpl {
 	private consistency: ConsistencyService;
 	private db: Db;
 	private config: MemoryConfig;
+	private bm25?: { invalidateUserCache: (userId: string) => void };
 
 	constructor(params: OpsServiceImplConfig) {
 		this.mongo = params.mongoStore;
@@ -129,6 +132,7 @@ export class OpsServiceImpl {
 		this.consistency = params.consistencyService;
 		this.db = params.db;
 		this.config = params.config ?? defaultMemoryConfig;
+		this.bm25 = params.bm25Adapter;
 	}
 
 	private stripMongoIds<T extends Record<string, unknown>>(
@@ -829,6 +833,159 @@ export class OpsServiceImpl {
 			tiers: tiersRecord,
 			action_effectiveness,
 		};
+	}
+
+	/**
+	 * Clear all books for a user (v0.2.9 "Clear Books" functionality)
+	 * 
+	 * This is the "nuke" operation that:
+	 * 1. Deletes all books from MongoDB
+	 * 2. Deletes all books vectors from Qdrant
+	 * 3. Clears ghost registry for books tier
+	 * 4. Clears Action KG entries for books
+	 * 
+	 * RoamPal Parity: delete_collection() + create_collection() rebuilt HNSW
+	 * DictaChat: Uses filter deletion (Qdrant supports this efficiently)
+	 * 
+	 * @param userId - User identifier
+	 * @returns Clear result with counts
+	 */
+	async clearBooksTier(userId: string): Promise<{
+		success: boolean;
+		mongoDeleted: number;
+		qdrantDeleted: number;
+		ghostsCleared: number;
+		actionKgCleared: number;
+		errors: string[];
+	}> {
+		const result = {
+			success: true,
+			mongoDeleted: 0,
+			qdrantDeleted: 0,
+			ghostsCleared: 0,
+			actionKgCleared: 0,
+			errors: [] as string[],
+		};
+
+		logger.info({ userId }, "OpsService: Clearing books tier (nuke)");
+		const startTime = Date.now();
+
+		// Step 1: Get book memory IDs before deletion (for Action KG cleanup)
+		const { items } = this.mongo.getCollections();
+		let bookMemoryIds: string[] = [];
+		try {
+			const bookDocs = await items
+				.find({ user_id: userId, tier: "books" })
+				.project({ memory_id: 1 })
+				.toArray();
+			bookMemoryIds = bookDocs.map((d) => d.memory_id);
+		} catch (err) {
+			result.errors.push(`Failed to get book IDs: ${err instanceof Error ? err.message : String(err)}`);
+		}
+
+		// Step 2: Delete all books from MongoDB
+		try {
+			const mongoResult = await items.deleteMany({
+				user_id: userId,
+				tier: "books",
+			});
+			result.mongoDeleted = mongoResult.deletedCount;
+			logger.debug({ userId, deleted: result.mongoDeleted }, "Books deleted from MongoDB");
+		} catch (err) {
+			result.success = false;
+			result.errors.push(`MongoDB deletion failed: ${err instanceof Error ? err.message : String(err)}`);
+		}
+
+		// Step 3: Delete all books vectors from Qdrant
+		try {
+			const qdrantResult = await this.qdrant.deleteByFilter({
+				userId,
+				tier: "books",
+			});
+			result.qdrantDeleted = qdrantResult.deleted;
+			if (!qdrantResult.success) {
+				result.errors.push("Qdrant deletion may have failed");
+			}
+			logger.debug({ userId, deleted: result.qdrantDeleted }, "Books deleted from Qdrant");
+		} catch (err) {
+			result.success = false;
+			result.errors.push(`Qdrant deletion failed: ${err instanceof Error ? err.message : String(err)}`);
+		}
+
+		// Step 4: Clear ghost registry for books tier
+		try {
+			const { getGhostRegistry } = await import("../services/GhostRegistry");
+			const ghostRegistry = getGhostRegistry();
+			result.ghostsCleared = await ghostRegistry.clearByTier(userId, "books");
+			logger.debug({ userId, cleared: result.ghostsCleared }, "Book ghosts cleared");
+		} catch (err) {
+			result.errors.push(`Ghost registry clear failed: ${err instanceof Error ? err.message : String(err)}`);
+		}
+
+		// Step 5: Clear Action KG entries for deleted books (v0.2.9 requirement)
+		if (bookMemoryIds.length > 0) {
+			try {
+				const actionOutcomes = this.db.collection("memory_action_outcomes");
+				const actionResult = await actionOutcomes.deleteMany({
+					user_id: userId,
+					memory_id: { $in: bookMemoryIds },
+				});
+				result.actionKgCleared = actionResult.deletedCount;
+				logger.debug({ userId, cleared: result.actionKgCleared }, "Book action outcomes cleared");
+			} catch (err) {
+				result.errors.push(`Action KG clear failed: ${err instanceof Error ? err.message : String(err)}`);
+			}
+		}
+
+		// Step 6: Invalidate BM25 cache (v0.2.9 parity - MCP Stale Cache fix)
+		try {
+			if (this.bm25) {
+				this.bm25.invalidateUserCache(userId);
+				logger.debug({ userId }, "BM25 cache invalidated");
+			}
+		} catch (err) {
+			result.errors.push(`BM25 cache invalidation failed: ${err instanceof Error ? err.message : String(err)}`);
+		}
+
+		const latencyMs = Date.now() - startTime;
+		logger.info(
+			{
+				userId,
+				...result,
+				latencyMs,
+			},
+			"OpsService: Books tier cleared"
+		);
+
+		return result;
+	}
+
+	/**
+	 * Clean up Action KG entries for specific doc_ids (v0.2.9 book deletion cleanup)
+	 * 
+	 * @param userId - User identifier
+	 * @param docIds - Document/memory IDs to clean up
+	 * @returns Number of entries deleted
+	 */
+	async cleanupActionKgForDocIds(userId: string, docIds: string[]): Promise<number> {
+		if (docIds.length === 0) return 0;
+
+		try {
+			const actionOutcomes = this.db.collection("memory_action_outcomes");
+			const result = await actionOutcomes.deleteMany({
+				user_id: userId,
+				$or: [
+					{ memory_id: { $in: docIds } },
+					{ doc_id: { $in: docIds } },
+				],
+			});
+			
+			logger.debug({ userId, docIds: docIds.length, deleted: result.deletedCount }, "Action KG entries cleaned up");
+			return result.deletedCount;
+		} catch (err) {
+			logger.error({ err, userId }, "Failed to cleanup Action KG entries");
+			return 0;
+		}
 	}
 }
 

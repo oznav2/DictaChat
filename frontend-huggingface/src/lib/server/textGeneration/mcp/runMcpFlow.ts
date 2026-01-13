@@ -51,8 +51,23 @@ import {
 	recordResponseOutcome,
 	storeWorkingMemory,
 	extractExplicitToolRequest,
+	getColdStartContextForConversation,
+	isFirstMessage,
+	getContextualGuidance,
+	formatContextualGuidancePrompt,
+	recordToolActionsInBatch,
+	// Phase 3 Gap 9: Memory Attribution
+	getAttributionInstruction,
+	processResponseWithAttribution,
+	// v0.2.10 Enhancements: Memory Bank Philosophy + Tool Guidance
+	getMemoryBankPhilosophy,
+	hasMemoryBankTool,
+	getToolGuidance,
 	type MemoryContextResult,
 	type SearchPositionMap,
+	type ColdStartContextResult,
+	type ContextualGuidanceResult,
+	type ToolGuidanceResult,
 } from "./memoryIntegration";
 import type { MemoryMetaV1, MemoryTier } from "$lib/types/MemoryMeta";
 
@@ -543,6 +558,30 @@ export async function* runMcpFlow({
 				content: typeof m.content === "string" ? m.content : JSON.stringify(m.content),
 			}));
 
+			// ============================================
+			// COLD-START INJECTION (Phase 1 P0 - Gap 1)
+			// RoamPal Parity: On first message, inject user profile from Content KG
+			// ============================================
+			let coldStartResult: ColdStartContextResult | null = null;
+			if (isFirstMessage(recentMessages)) {
+				try {
+					coldStartResult = await getColdStartContextForConversation(userId, {
+						recentMessages,
+						signal: abortSignal,
+					});
+
+					if (coldStartResult.applied && coldStartResult.coldStartContext) {
+						logger.debug("[mcp] Cold-start context injected for first message", {
+							contextLength: coldStartResult.coldStartContext.length,
+							timingMs: coldStartResult.timingMs,
+						});
+					}
+				} catch (err) {
+					// Cold-start must never block streaming
+					logger.warn("[mcp] Cold-start injection failed, continuing", { error: String(err) });
+				}
+			}
+
 			memoryResult = await prefetchMemoryContext(userId, userQuery, {
 				conversationId,
 				recentMessages,
@@ -678,6 +717,146 @@ export async function* runMcpFlow({
 			const memorySections = formatMemoryPromptSections(memoryResult);
 			for (const section of memorySections) {
 				prepromptPieces.push(section);
+			}
+
+			// ============================================
+			// MEMORY ATTRIBUTION INSTRUCTION (Phase 3 P2 - Gap 9)
+			// Inject instruction for LLM to mark which memories were helpful
+			// Only if we have memories to attribute
+			// ============================================
+			const hasMemoriesToAttribute = Object.keys(searchPositionMap).length > 0;
+			if (hasMemoriesToAttribute) {
+				const queryLanguage = detectQueryLanguage(userQuery);
+				const attributionInstruction = getAttributionInstruction(
+					queryLanguage === "he" ? "he" : "en"
+				);
+				prepromptPieces.push(attributionInstruction);
+				logger.debug("[mcp] Memory attribution instruction injected", {
+					memoryCount: Object.keys(searchPositionMap).length,
+					language: queryLanguage,
+				});
+			}
+
+			// ============================================
+			// CONTEXTUAL GUIDANCE (Phase 2 P1 - Gap 2)
+			// RoamPal Parity: Inject past experience, failures, action stats before LLM
+			// ============================================
+			let contextualGuidance: ContextualGuidanceResult | null = null;
+			try {
+				contextualGuidance = await getContextualGuidance(userId, userQuery, {
+					conversationId,
+					recentMessages,
+					signal: abortSignal,
+				});
+
+				if (contextualGuidance.hasGuidance) {
+					const guidancePrompt = formatContextualGuidancePrompt(contextualGuidance);
+					if (guidancePrompt) {
+						prepromptPieces.push(guidancePrompt);
+					}
+
+					// Emit trace step for contextual guidance
+					const guidanceStepId = `${TRACE_STEPS.MEMORY_SEARCH.id}-guidance-${Date.now()}`;
+					yield {
+						type: MessageUpdateType.Trace,
+						subtype: MessageTraceUpdateType.StepCreated,
+						runId: memoryTraceRunId,
+						step: {
+							id: guidanceStepId,
+							parentId: null,
+							label: {
+								he: "נטען הקשר מידע (ניסיון קודם)",
+								en: "Contextual guidance loaded (past experience)",
+							},
+							status: "done",
+							timestamp: Date.now(),
+						},
+					};
+
+					logger.debug("[mcp] Contextual guidance injected", {
+						hasPatterns: (contextualGuidance.insights?.relevant_patterns?.length ?? 0) > 0,
+						hasFailures: (contextualGuidance.insights?.past_outcomes?.length ?? 0) > 0,
+						timingMs: contextualGuidance.timingMs,
+					});
+				}
+			} catch (err) {
+				// Contextual guidance must never block - fail silently
+				logger.debug("[mcp] Contextual guidance failed, continuing", { error: String(err) });
+			}
+
+			// ============================================
+			// v0.2.10 TOOL GUIDANCE INJECTION (Action-Level Causal Learning)
+			// RoamPal Parity: Injects tool effectiveness warnings from Action KG
+			// Format: ✓ search_memory() → 87% success (42 uses)
+			//         ✗ create_memory() → 5% success - AVOID
+			// ============================================
+			let toolGuidanceResult: ToolGuidanceResult | null = null;
+			try {
+				// Detect context type from query (docker, debugging, coding_help, etc.)
+				const queryLower = userQuery.toLowerCase();
+				let contextType = "general";
+				if (queryLower.includes("docker") || queryLower.includes("container")) {
+					contextType = "docker";
+				} else if (queryLower.includes("debug") || queryLower.includes("error") || queryLower.includes("bug")) {
+					contextType = "debugging";
+				} else if (queryLower.includes("code") || queryLower.includes("implement") || queryLower.includes("function")) {
+					contextType = "coding_help";
+				} else if (queryLower.includes("memory") || queryLower.includes("remember") || queryLower.includes("זכור")) {
+					contextType = "memory_test";
+				}
+
+				// Get tool guidance from Action KG
+				const availableToolNames = toolsToUse.map((t) => t.function.name);
+				toolGuidanceResult = await getToolGuidance(userId, contextType, availableToolNames);
+
+				if (toolGuidanceResult.hasGuidance && toolGuidanceResult.guidanceText) {
+					prepromptPieces.push(toolGuidanceResult.guidanceText);
+
+					// Emit trace step for tool guidance
+					const toolGuidanceStepId = `${TRACE_STEPS.MEMORY_SEARCH.id}-tool-guidance-${Date.now()}`;
+					yield {
+						type: MessageUpdateType.Trace,
+						subtype: MessageTraceUpdateType.StepCreated,
+						runId: memoryTraceRunId,
+						step: {
+							id: toolGuidanceStepId,
+							parentId: null,
+							label: {
+								he: "נטענה הדרכת כלים (למידה סיבתית)",
+								en: "Tool guidance loaded (causal learning)",
+							},
+							status: "done",
+							timestamp: Date.now(),
+						},
+					};
+
+					logger.debug("[mcp] v0.2.10 Tool guidance injected", {
+						contextType,
+						preferredTools: toolGuidanceResult.preferredTools,
+						avoidTools: toolGuidanceResult.avoidTools,
+						timingMs: toolGuidanceResult.timingMs,
+					});
+				}
+			} catch (err) {
+				// Tool guidance must never block - fail silently
+				logger.debug("[mcp] Tool guidance failed, continuing", { error: String(err) });
+			}
+
+			// ============================================
+			// v0.2.10 MEMORY BANK PHILOSOPHY INJECTION
+			// RoamPal Parity: Prevents LLM from spamming memory_bank with every fact
+			// Three-layer selectivity: User Context, System Mastery, Agent Growth
+			// ============================================
+			if (hasMemoryBankTool(toolsToUse)) {
+				const queryLanguage = detectQueryLanguage(userQuery);
+				const memoryBankPhilosophy = getMemoryBankPhilosophy(
+					queryLanguage === "he" ? "he" : "en"
+				);
+				prepromptPieces.push(memoryBankPhilosophy);
+				logger.debug("[mcp] v0.2.10 Memory Bank Philosophy injected", {
+					language: queryLanguage,
+					hasMemoryBankTool: true,
+				});
 			}
 
 			// Emit run completed
@@ -1577,6 +1756,24 @@ Even if the document content is in Hebrew or another language, your response mus
 							});
 						}
 
+						// ============================================
+						// ACTION KG RECORDING (Phase 2 P1 - Gap 6)
+						// Record tool outcomes to Action-Effectiveness KG
+						// ============================================
+						if (executedToolsTracker.length > 0) {
+							// Record in background - don't block the response
+							recordToolActionsInBatch(
+								userId,
+								conversationId,
+								undefined, // messageId not available during streaming
+								executedToolsTracker
+							).catch((err) => {
+								logger.debug("[mcp] Failed to record tool actions to Action KG", {
+									error: String(err),
+								});
+							});
+						}
+
 						// VERBOSE DEBUGGING: Log the exact context being sent to the model for the follow-up
 						logger.debug("[mcp] context prepared for follow-up generation", {
 							loop: loop + 1,
@@ -1653,6 +1850,36 @@ Even if the document content is in Hebrew or another language, your response mus
 				lastAssistantContent = cleanedContent;
 			}
 
+			// ============================================
+			// MEMORY ATTRIBUTION PROCESSING (Phase 3 P2 - Gap 9)
+			// Parse memory marks from response and strip attribution comment
+			// ============================================
+			let attributionFound = false;
+			if (Object.keys(searchPositionMap).length > 0) {
+				try {
+					const attributionResult = await processResponseWithAttribution({
+						userId,
+						conversationId,
+						response: lastAssistantContent,
+						searchPositionMap,
+					});
+					
+					if (attributionResult.attributionFound) {
+						// Use cleaned response (attribution comment stripped)
+						lastAssistantContent = attributionResult.cleanedResponse;
+						attributionFound = true;
+						logger.debug("[mcp] Memory attribution processed", {
+							upvoted: attributionResult.attribution?.upvoted?.length ?? 0,
+							downvoted: attributionResult.attribution?.downvoted?.length ?? 0,
+							neutral: attributionResult.attribution?.neutral?.length ?? 0,
+						});
+					}
+				} catch (attrErr) {
+					// Attribution processing must never block
+					logger.debug("[mcp] Memory attribution processing failed", { error: String(attrErr) });
+				}
+			}
+
 			if (!streamedContent && lastAssistantContent.trim().length > 0) {
 				yield { type: MessageUpdateType.Stream, token: lastAssistantContent };
 			}
@@ -1663,32 +1890,36 @@ Even if the document content is in Hebrew or another language, your response mus
 				memoryMeta,
 			};
 			console.info(
-				{ length: lastAssistantContent.length, loop },
+				{ length: lastAssistantContent.length, loop, attributionFound },
 				"[mcp] final answer emitted (no tool_calls)"
 			);
 
 			// ============================================
 			// MEMORY SYSTEM: Outcome Tracking (Point D from rompal_implementation_plan.md)
 			// Record outcome after response completion for learning
+			// Note: If attribution was found, selective scoring was already done in processResponseWithAttribution
 			// ============================================
 			try {
 				// Record response outcome for memory learning (async, non-blocking)
-				recordResponseOutcome({
-					userId,
-					conversationId,
-					searchPositionMap,
-					toolsUsed: executedToolsTracker,
-					success: true,
-					hasError: false,
-				}).catch((err) => {
-					logger.debug("[mcp] Failed to record response outcome", { error: String(err) });
-				});
+				// Skip if attribution was already processed (selective scoring done)
+				if (!attributionFound) {
+					recordResponseOutcome({
+						userId,
+						conversationId,
+						searchPositionMap,
+						toolsUsed: executedToolsTracker,
+						success: true,
+						hasError: false,
+					}).catch((err) => {
+						logger.debug("[mcp] Failed to record response outcome", { error: String(err) });
+					});
+				}
 
 				// Emit Memory Outcome event for learning feedback
 				yield {
 					type: MessageUpdateType.Memory,
 					subtype: MessageMemoryUpdateType.Outcome,
-					outcome: "positive",
+					outcome: attributionFound ? "positive" : "positive", // Could differentiate based on attribution
 					memoryIds: Object.keys(searchPositionMap),
 				};
 

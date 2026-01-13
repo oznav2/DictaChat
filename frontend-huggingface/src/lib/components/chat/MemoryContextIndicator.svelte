@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { slide, fade } from "svelte/transition";
-	import { cubicOut } from "svelte/easing";
+	import { slide, fade, scale } from "svelte/transition";
+	import { cubicOut, backOut } from "svelte/easing";
 	import { memoryUi } from "$lib/stores/memoryUi";
 	import {
 		getTierIcon,
@@ -116,7 +116,8 @@
 	<div
 		class="memory-context-indicator mt-3 space-y-2"
 		dir={isRTL ? "rtl" : "ltr"}
-		transition:fade={{ duration: 200 }}
+		in:fade={{ duration: 300 }}
+		out:fade={{ duration: 150 }}
 	>
 		<!-- Known Context Badge -->
 		{#if hasKnownContext}
@@ -316,9 +317,12 @@
 		{#if feedbackSubmitted}
 			<div
 				class="feedback-success flex items-center gap-2 rounded-lg border border-green-200 bg-green-50/80 px-3 py-2 dark:border-green-800/30 dark:bg-green-900/20"
-				transition:fade={{ duration: 200 }}
+				in:scale={{ duration: 300, start: 0.9, easing: backOut }}
+				out:fade={{ duration: 150, easing: cubicOut }}
 			>
-				<CarbonCheckmarkOutline class="h-4 w-4 text-green-600 dark:text-green-400" />
+				<div class="success-icon">
+					<CarbonCheckmarkOutline class="h-4 w-4 text-green-600 dark:text-green-400" />
+				</div>
 				<span class="text-xs text-green-700 dark:text-green-300">
 					{isRTL ? "תודה על המשוב!" : "Thanks for your feedback!"}
 				</span>
@@ -326,3 +330,116 @@
 		{/if}
 	</div>
 {/if}
+
+<style>
+	/* Section entrance animations */
+	.known-context-section,
+	.citations-section,
+	.feedback-section {
+		animation: sectionEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	@keyframes sectionEnter {
+		from {
+			opacity: 0;
+			transform: translateY(4px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	/* Button hover lift effect */
+	.known-context-section button,
+	.citations-section button {
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.known-context-section button:hover,
+	.citations-section button:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	}
+
+	:global(.dark) .known-context-section button:hover,
+	:global(.dark) .citations-section button:hover {
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	}
+
+	.known-context-section button:active,
+	.citations-section button:active {
+		transform: translateY(0);
+	}
+
+	/* Success feedback animation */
+	.feedback-success {
+		animation: feedbackPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+
+	@keyframes feedbackPop {
+		0% {
+			opacity: 0;
+			transform: scale(0.9);
+		}
+		70% {
+			transform: scale(1.02);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	.success-icon {
+		animation: iconPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+	}
+
+	@keyframes iconPop {
+		0% {
+			transform: scale(0);
+		}
+		70% {
+			transform: scale(1.2);
+		}
+		100% {
+			transform: scale(1);
+		}
+	}
+
+	/* Feedback button hover states */
+	.feedback-section button {
+		transition: transform 0.15s ease, background-color 0.2s ease;
+	}
+
+	.feedback-section button:hover {
+		transform: scale(1.1);
+	}
+
+	.feedback-section button:active {
+		transform: scale(0.95);
+	}
+
+	/* Mobile touch feedback */
+	@media (hover: none) {
+		.known-context-section button:active,
+		.citations-section button:active {
+			transform: scale(0.98);
+		}
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.known-context-section,
+		.citations-section,
+		.feedback-section,
+		.feedback-success,
+		.success-icon,
+		.known-context-section button,
+		.citations-section button,
+		.feedback-section button {
+			animation: none !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+</style>
