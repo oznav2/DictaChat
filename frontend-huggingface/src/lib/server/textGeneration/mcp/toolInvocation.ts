@@ -35,6 +35,8 @@ import { UnifiedMemoryFacade } from "$lib/server/memory";
 import { ADMIN_USER_ID } from "$lib/server/constants";
 // Phase 2 (+16): Tool Result Ingestion
 import { ingestToolResult } from "$lib/server/memory/services/ToolResultIngestionService";
+// Phase 19: Action Outcomes Tracking
+import type { Outcome, ToolRunStatus, ActionType, ContextType } from "$lib/server/memory/types";
 
 // ============================================
 // DOCLING TOOL TRACE INTEGRATION
@@ -308,6 +310,129 @@ function createDoclingTraceRunCompleted(runId: string): MessageTraceUpdate {
 		runId,
 		timestamp: Date.now(),
 	};
+}
+
+// ============================================
+// Phase 19: ACTION OUTCOMES TRACKING
+// ============================================
+
+/**
+ * Map tool execution status to action outcome
+ * Phase 19.2.3: Classify outcome: success, error, timeout, empty
+ */
+function classifyToolOutcome(result: { error?: string; output?: string }): {
+	outcome: Outcome;
+	toolStatus: ToolRunStatus;
+} {
+	if (result.error) {
+		const errorLower = result.error.toLowerCase();
+		if (errorLower.includes("timeout") || errorLower.includes("timed out")) {
+			return { outcome: "failed", toolStatus: "timeout" };
+		}
+		return { outcome: "failed", toolStatus: "error" };
+	}
+	
+	if (!result.output || result.output.trim().length === 0) {
+		// Empty result - partial success (tool ran but nothing found)
+		return { outcome: "partial", toolStatus: "ok" };
+	}
+	
+	// Check for error-like content in output
+	const outputLower = result.output.toLowerCase();
+	if (
+		outputLower.includes("error:") ||
+		outputLower.includes("failed to") ||
+		outputLower.includes("exception")
+	) {
+		return { outcome: "partial", toolStatus: "error" };
+	}
+	
+	return { outcome: "worked", toolStatus: "ok" };
+}
+
+/**
+ * Map tool name to ActionType for consistent tracking
+ */
+function toolNameToActionType(toolName: string): ActionType {
+	const nameLower = toolName.toLowerCase();
+	
+	// Memory tools
+	if (nameLower.includes("search_memory") || nameLower.includes("memory_search")) {
+		return "search_memory";
+	}
+	if (nameLower.includes("add_to_memory") || nameLower.includes("memory_bank")) {
+		return "add_to_memory_bank";
+	}
+	if (nameLower.includes("context_insights") || nameLower.includes("get_context")) {
+		return "get_context_insights";
+	}
+	if (nameLower.includes("update_memory")) {
+		return "update_memory";
+	}
+	if (nameLower.includes("archive_memory")) {
+		return "archive_memory";
+	}
+	if (nameLower.includes("delete_memory")) {
+		return "delete_memory";
+	}
+	
+	// Return tool name as ActionType (extensible string type)
+	return toolName as ActionType;
+}
+
+/**
+ * Fire-and-forget action outcome recording
+ * Phase 19.2: Record tool execution outcomes for learning
+ * 
+ * This helps the system learn:
+ * - Which tools work best for which types of queries
+ * - Which tools have high error rates
+ * - Latency patterns for optimization
+ */
+async function recordToolActionOutcome(params: {
+	toolName: string;
+	result: { error?: string; output?: string };
+	conversationId?: string;
+	userId?: string;
+	latencyMs?: number;
+	contextType?: ContextType;
+}): Promise<void> {
+	try {
+		const facade = UnifiedMemoryFacade.getInstance();
+		const { outcome, toolStatus } = classifyToolOutcome(params.result);
+		
+		await facade.recordActionOutcome({
+			action_id: randomUUID(),
+			action_type: toolNameToActionType(params.toolName),
+			context_type: params.contextType ?? "general",
+			outcome,
+			tool_status: toolStatus,
+			conversation_id: params.conversationId ?? null,
+			message_id: null,
+			answer_attempt_id: null,
+			tier: null,
+			doc_id: null,
+			memory_id: null,
+			action_params: null,
+			latency_ms: params.latencyMs ?? null,
+			error_type: params.result.error ? "tool_error" : null,
+			error_message: params.result.error?.slice(0, 500) ?? null,
+			timestamp: new Date().toISOString(),
+		});
+		
+		logger.debug(
+			{
+				toolName: params.toolName,
+				outcome,
+				toolStatus,
+				latencyMs: params.latencyMs,
+			},
+			"[Phase 19] Recorded tool action outcome"
+		);
+	} catch (err) {
+		// Fire-and-forget: don't let outcome recording failures affect tool execution
+		logger.warn({ err, toolName: params.toolName }, "[Phase 19] Failed to record action outcome");
+	}
 }
 
 export type Primitive = string | number | boolean;
@@ -728,6 +853,9 @@ export async function* executeToolCalls({
 		error?: string;
 		uuid: string;
 		paramsClean: Record<string, Primitive>;
+		// Phase 19: Track tool execution latency for outcome learning
+		latencyMs?: number;
+		params?: Record<string, unknown>;
 	};
 
 	const prepared = calls.map((call) => {
@@ -977,6 +1105,8 @@ export async function* executeToolCalls({
 					}
 				}
 
+				// Phase 19: Track execution timing
+				const toolStartTime = Date.now();
 				const toolResponse: McpToolTextResponse = await callMcpTool(
 					serverCfg,
 					mappingEntry.tool,
@@ -987,9 +1117,10 @@ export async function* executeToolCalls({
 						timeoutMs: toolTimeoutMs,
 					}
 				);
+				const toolLatencyMs = Date.now() - toolStartTime;
 				const { annotated } = processToolOutput(toolResponse.text ?? "");
 				logger.debug(
-					{ server: mappingEntry.server, tool: mappingEntry.tool },
+					{ server: mappingEntry.server, tool: mappingEntry.tool, latencyMs: toolLatencyMs },
 					"[mcp] tool call completed"
 				);
 				q.push({
@@ -999,6 +1130,8 @@ export async function* executeToolCalls({
 					blocks: toolResponse.content,
 					uuid: p.uuid,
 					paramsClean: p.paramsClean,
+					latencyMs: toolLatencyMs,
+					params: p.argsObj,
 				});
 			} catch (err) {
 				const message = err instanceof Error ? err.message : String(err);
@@ -1256,6 +1389,18 @@ export async function* executeToolCalls({
 				},
 			});
 		}
+
+		// ============================================
+		// PHASE 19: RECORD ACTION OUTCOME FOR LEARNING
+		// Track tool execution success/failure for future optimization
+		// Fire-and-forget: NEVER blocks user response path
+		// ============================================
+		recordToolActionOutcome({
+			toolName,
+			result: { error: r.error, output: r.output },
+			conversationId,
+			latencyMs: r.latencyMs,
+		}).catch(() => {}); // Silently ignore failures
 
 		// ============================================
 		// EMIT TRACE STEP COMPLETION FOR REAL TOOL CALLS
