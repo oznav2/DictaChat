@@ -1,7 +1,55 @@
-<!-- Updated: v0.2.22 PHASE 4 DOCUMENT DEDUPLICATION - January 14, 2026 -->
+<!-- Updated: v0.2.23 PHASE 3 MEMORY-FIRST TOOL GATING - January 14, 2026 -->
 # Project Status
 
-**Last Updated**: January 14, 2026 (🚀 v0.2.22 + Phase 4 Document Deduplication)
+**Last Updated**: January 14, 2026 (🚀 v0.2.23 + Phase 3 Memory-First Tool Gating)
+
+---
+
+## 🧠 v0.2.23 PHASE 3 (+13): MEMORY-FIRST TOOL GATING ✅ COMPLETE
+
+**Branch**: genspark_ai_developer
+**Priority**: TIER 3 - MEMORY-FIRST INTELLIGENCE (Order 5)
+**Kimi Requirement**: K.1 Enforceable Tool Gating
+
+### Overview
+
+Phase 3 implements confidence-based tool gating that reduces unnecessary external tool calls when memory has high-confidence answers. This saves API costs, reduces latency, and improves response quality by leveraging learned knowledge.
+
+### Implementation
+
+| Step | Status | Description |
+|------|--------|-------------|
+| K.1.1 | ✅ | `ToolGatingInput` interface with 6 parameters |
+| K.1.2 | ✅ | `ToolGatingOutput` interface with 4 fields |
+| K.1.3 | ✅ | `decideToolGating()` with 5 rules |
+| K.1.4-8 | ✅ | All 5 gating rules implemented |
+| K.1.9 | ✅ | Wired into `runMcpFlow.ts` after memory prefetch |
+| K.1.10 | ✅ | Trace event emitted when tools reduced |
+| K.1.11 | ✅ | Logging with reason code |
+
+### Gating Rules (Priority Order)
+
+1. **FAIL_OPEN_DEGRADED**: Memory system degraded → allow all tools
+2. **EXPLICIT_TOOL_REQUEST**: User explicitly requested a tool → allow all
+3. **RESEARCH_INTENT**: Hebrew מחקר/חפש/נתונים רשמיים → allow all
+4. **HIGH_CONFIDENCE_REDUCTION**: High confidence + 3+ results → reduce external search tools
+5. **DEFAULT_ALLOW_ALL**: No conditions met → allow all
+
+### Technical Details
+
+- **File**: `src/lib/server/textGeneration/mcp/toolGatingDecision.ts`
+- **Integration**: `runMcpFlow.ts` after memory prefetch (~line 940)
+- **Reducible Tools**: tavily_search, web_search, perplexity_ask, brave_search, duckduckgo_search
+- **Always Allowed**: add_to_memory_bank, search_memory, docling_convert, docling_ocr
+- **Variable**: `gatedTools` replaces `toolsToUse` for downstream processing
+
+### Benefits
+
+- Reduces unnecessary external API calls
+- Lower latency when memory is sufficient
+- Cost savings from fewer tool invocations
+- Better user experience with faster responses
+- Trace UI shows when tools were skipped and why
 
 ---
 

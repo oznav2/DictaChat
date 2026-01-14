@@ -69,6 +69,11 @@ import {
 	type ContextualGuidanceResult,
 	type ToolGuidanceResult,
 } from "./memoryIntegration";
+// Phase 3 (+13): Memory-First Tool Gating (Kimi K.1)
+import {
+	decideToolGating,
+	type ToolGatingOutput,
+} from "./toolGatingDecision";
 import type { MemoryMetaV1, MemoryTier } from "$lib/types/MemoryMeta";
 
 /**
@@ -932,21 +937,80 @@ export async function* runMcpFlow({
 			});
 		}
 
-		if (toolsToUse.length > 0 && !useNativeTools) {
+		// ============================================
+		// PHASE 3 (+13): Memory-First Tool Gating (Kimi K.1)
+		// Apply confidence-based tool filtering AFTER memory prefetch
+		// ============================================
+		let toolGatingResult: ToolGatingOutput | null = null;
+		let gatedTools = toolsToUse; // Default to all tools
+
+		if (toolsToUse.length > 0) {
+			// Detect Hebrew intent for gating decision
+			const hebrewIntent = detectHebrewIntent(userQuery);
+			
+			// Extract explicit tool request from user query
+			const explicitToolRequest = extractExplicitToolRequest(userQuery);
+			
+			// Determine if memory system is degraded
+			const memoryDegraded = memoryResult ? !memoryResult.isOperational : true;
+			
+			// Apply tool gating decision
+			toolGatingResult = decideToolGating({
+				retrievalConfidence: memoryResult?.retrievalConfidence ?? "low",
+				memoryResultCount: Object.keys(searchPositionMap).length,
+				explicitToolRequest,
+				detectedHebrewIntent: hebrewIntent,
+				memoryDegraded,
+				availableTools: toolsToUse,
+			});
+
+			gatedTools = toolGatingResult.allowedTools;
+
+			// K.1.10: Emit trace event when tools are reduced
+			if (toolGatingResult.reducedCount > 0) {
+				const gatingStepId = `tool_gating_${Date.now()}`;
+				yield {
+					type: MessageUpdateType.Trace,
+					subtype: MessageTraceUpdateType.StepCreated,
+					runId: memoryTraceRunId,
+					step: {
+						id: gatingStepId,
+						parentId: null,
+						label: toolGatingResult.traceExplanation,
+						status: "done",
+						timestamp: Date.now(),
+					},
+				};
+
+				logger.info(
+					{
+						reasonCode: toolGatingResult.reasonCode,
+						reducedCount: toolGatingResult.reducedCount,
+						originalCount: toolsToUse.length,
+						remainingCount: gatedTools.length,
+						confidence: memoryResult?.retrievalConfidence ?? "unknown",
+						memoryResults: Object.keys(searchPositionMap).length,
+					},
+					"[mcp] Tool gating applied - reduced external tools"
+				);
+			}
+		}
+
+		if (gatedTools.length > 0 && !useNativeTools) {
 			// Detect Hebrew intent (research vs search) to guide tool selection
 			const hebrewIntent = detectHebrewIntent(userQuery);
 			let intentHint = "";
 
 			if (hebrewIntent === "research") {
 				// Check for research tool (perplexity)
-				if (toolsToUse.some((t) => t.function.name.includes("perplexity"))) {
+				if (gatedTools.some((t) => t.function.name.includes("perplexity"))) {
 					intentHint =
 						"User explicitly requested a DEEP RESEARCH task (מחקר). You MUST use the 'perplexity_ask' (or equivalent) tool for comprehensive analysis.";
 				}
 			} else if (hebrewIntent === "search") {
 				// Check for search tool (tavily or generic search)
 				if (
-					toolsToUse.some(
+					gatedTools.some(
 						(t) => t.function.name.includes("tavily") || t.function.name.includes("search")
 					)
 				) {
@@ -956,7 +1020,8 @@ export async function* runMcpFlow({
 			}
 
 			// Use the shared prompt builder that enforces reasoning and correct format
-			const toolPrompt = buildToolPreprompt(toolsToUse, intentHint);
+			// Phase 3: Use gatedTools (after memory-based filtering) instead of toolsToUse
+			const toolPrompt = buildToolPreprompt(gatedTools, intentHint);
 			prepromptPieces.push(toolPrompt);
 
 			// DataGov Israel guidance when DataGov tools are present
@@ -972,7 +1037,7 @@ export async function* runMcpFlow({
 				"fetch_data",
 				"get_resource_metadata_offline",
 			]);
-			const hasDataGov = toolsToUse.some((t) => datagovToolNames.has(t.function.name));
+			const hasDataGov = gatedTools.some((t) => datagovToolNames.has(t.function.name));
 			if (hasDataGov) {
 				const datagovGuidance = `**DataGov Israel (data.gov.il) - PRIORITY TOOL**
 
@@ -1104,7 +1169,8 @@ Even if the document content is in Hebrew or another language, your response mus
 			max_tokens: typeof maxTokens === "number" ? maxTokens : undefined,
 			// Native tools API - only enable if MCP_USE_NATIVE_TOOLS=true
 			// With few tools (2-3), native API may work better than XML injection
-			...(useNativeTools ? { tools: toolsToUse, tool_choice: "auto" as const } : {}),
+			// Phase 3: Use gatedTools (after memory-based filtering)
+			...(useNativeTools ? { tools: gatedTools, tool_choice: "auto" as const } : {}),
 		};
 
 		// Debug: Log message sizes to diagnose token explosion
@@ -1119,7 +1185,7 @@ Even if the document content is in Hebrew or another language, your response mus
 		console.debug(
 			{
 				messageCount: messagesOpenAI.length,
-				toolCount: toolsToUse.length,
+				toolCount: gatedTools.length,
 				maxTokens,
 				repetitionPenalty,
 				useNativeTools,
