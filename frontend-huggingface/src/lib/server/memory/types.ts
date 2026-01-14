@@ -1,6 +1,47 @@
 export type Outcome = "worked" | "failed" | "partial" | "unknown";
 
-export type MemoryTier = "working" | "history" | "patterns" | "books" | "memory_bank";
+/**
+ * Memory tier types:
+ * - working: Short-term working memory (TTL: 24h)
+ * - history: Medium-term conversation history (TTL: 7d)
+ * - patterns: Learned patterns and preferences (TTL: 30d)
+ * - books: Document and book chunks (permanent)
+ * - memory_bank: Long-term permanent storage
+ * - datagov_schema: Israeli government data schemas (Phase 25)
+ * - datagov_expansion: Hebrew/English term expansions (Phase 25)
+ */
+export type MemoryTier = 
+	| "working" 
+	| "history" 
+	| "patterns" 
+	| "books" 
+	| "memory_bank"
+	| "datagov_schema"
+	| "datagov_expansion";
+
+/**
+ * Tier constants for consistent usage across memory services
+ */
+export const MEMORY_TIER_GROUPS = {
+	/** Core tiers for normal user memories (subject to TTL and promotion) */
+	CORE: ["working", "history", "patterns", "books", "memory_bank"] as const,
+	/** DataGov tiers - static, pre-loaded government data (Phase 25) */
+	DATAGOV: ["datagov_schema", "datagov_expansion"] as const,
+	/** All searchable tiers */
+	ALL_SEARCHABLE: [
+		"working",
+		"history",
+		"patterns",
+		"books",
+		"memory_bank",
+		"datagov_schema",
+		"datagov_expansion",
+	] as const,
+	/** Tiers eligible for Wilson scoring and outcome tracking */
+	LEARNABLE: ["working", "history", "patterns", "memory_bank"] as const,
+	/** Tiers subject to TTL cleanup */
+	CLEANABLE: ["working", "history", "patterns"] as const,
+};
 
 export type MemoryStatus = "active" | "archived" | "deleted";
 

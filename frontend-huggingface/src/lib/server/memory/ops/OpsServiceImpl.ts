@@ -743,7 +743,16 @@ export class OpsServiceImpl {
 	 * count them separately and merge into the stats.
 	 */
 	async getStats(userId: string): Promise<StatsSnapshot> {
-		const tiers: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+		// Include DataGov tiers (Phase 25) in stats - they are static/pre-loaded
+		const tiers: MemoryTier[] = [
+			"working",
+			"history",
+			"patterns",
+			"books",
+			"memory_bank",
+			"datagov_schema",
+			"datagov_expansion",
+		];
 		const { items } = this.mongo.getCollections();
 		const derivedWindowMs = 5 * 60 * 1000;
 

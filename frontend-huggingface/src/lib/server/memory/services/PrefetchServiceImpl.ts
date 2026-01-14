@@ -11,6 +11,7 @@ import { logger } from "$lib/server/logger";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
 import type { SearchDebug, RetrievalConfidence, MemoryTier } from "../types";
+import { MEMORY_TIER_GROUPS } from "../types";
 import type { SearchService as HybridSearchService } from "../search/SearchService";
 import type { QdrantAdapter } from "../adapters/QdrantAdapter";
 import type {
@@ -62,7 +63,7 @@ export class PrefetchServiceImpl implements PrefetchService {
 		const searchResponse = await this.hybridSearch.search({
 			userId: params.userId,
 			query: params.query,
-			tiers: this.determineTierPlan(params.hasDocuments),
+			tiers: this.determineTierPlan(params.hasDocuments, params.includeDataGov),
 			limit,
 			enableRerank: true,
 		});
@@ -152,8 +153,9 @@ export class PrefetchServiceImpl implements PrefetchService {
 
 	/**
 	 * Determine which tiers to search based on context
+	 * Phase 25: Now supports DataGov tiers when includeDataGov is true
 	 */
-	private determineTierPlan(hasDocuments: boolean): MemoryTier[] {
+	private determineTierPlan(hasDocuments: boolean, includeDataGov?: boolean): MemoryTier[] {
 		// Always include working (cross-conversation) and memory_bank (permanent)
 		const tiers: MemoryTier[] = ["working", "memory_bank"];
 
@@ -167,6 +169,12 @@ export class PrefetchServiceImpl implements PrefetchService {
 
 		// History is lower priority but included for completeness
 		tiers.push("history");
+
+		// Phase 25: Include DataGov tiers when query suggests government data interest
+		// Set by detectDataGovIntent() in the orchestration layer
+		if (includeDataGov) {
+			tiers.push(...MEMORY_TIER_GROUPS.DATAGOV);
+		}
 
 		return tiers;
 	}

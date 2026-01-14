@@ -208,6 +208,8 @@ export interface PrefetchContextParams {
 	hasDocuments: boolean;
 	limit?: number;
 	signal?: AbortSignal;
+	/** Include DataGov tiers in search (Phase 25) - set by detectDataGovIntent() */
+	includeDataGov?: boolean;
 }
 
 export interface PrefetchContextResult {

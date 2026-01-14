@@ -1485,15 +1485,30 @@ TIER 8 - POLISH:
   - [ ] 25.10.6: Add to Docker Compose environment
   - [ ] 25.10.7: Document env vars in AGENTS.md
 
-### Task 25.11: Update Memory Search for DataGov Tiers
-- **File**: `src/lib/server/memory/search/SearchService.ts`
+### Task 25.11: Update Memory Search for DataGov Tiers ✅ COMPLETED (2026-01-14)
+- **Files**:
+  - `src/lib/server/memory/types.ts` - Extended MemoryTier type
+  - `src/lib/server/memory/kg/KnowledgeGraphService.ts` - Updated ALL_TIERS
+  - `src/lib/server/memory/ops/OpsServiceImpl.ts` - Updated stats tiers
+  - `src/lib/server/memory/services/PrefetchServiceImpl.ts` - Added DataGov support
+  - `src/lib/server/memory/UnifiedMemoryFacade.ts` - Added includeDataGov param
+  - `src/lib/server/memory/index.ts` - Exported MEMORY_TIER_GROUPS
 - **Subtasks**:
-  - [ ] 25.11.1: Add "datagov_schema" to valid tier list
-  - [ ] 25.11.2: Add "datagov_expansion" to valid tier list
-  - [ ] 25.11.3: Include DataGov tiers in default search
-  - [ ] 25.11.4: Apply category filter from search params
-  - [ ] 25.11.5: Boost DataGov results for DataGov intent queries
-  - [ ] 25.11.6: Write tests for tier filtering
+  - [x] 25.11.1: Add "datagov_schema" to valid tier list (MemoryTier type extended)
+  - [x] 25.11.2: Add "datagov_expansion" to valid tier list (MemoryTier type extended)
+  - [x] 25.11.3: Include DataGov tiers in default search (via includeDataGov param)
+  - [ ] 25.11.4: Apply category filter from search params (deferred - Phase 25.8 UI)
+  - [ ] 25.11.5: Boost DataGov results for DataGov intent queries (deferred - orchestration layer)
+  - [ ] 25.11.6: Write tests for tier filtering (deferred)
+- **Implementation Notes (2026-01-14)**:
+  - Created `MEMORY_TIER_GROUPS` constant with CORE, DATAGOV, ALL_SEARCHABLE, LEARNABLE, CLEANABLE groups
+  - Extended MemoryTier union type to include "datagov_schema" | "datagov_expansion"
+  - Updated KnowledgeGraphService.ALL_TIERS and added CORE_TIERS for routing logic
+  - Updated OpsServiceImpl.getStats() to include DataGov tiers in statistics
+  - Added `includeDataGov?: boolean` to PrefetchContextParams
+  - PrefetchServiceImpl.determineTierPlan() now includes DataGov tiers when includeDataGov=true
+  - Exported MEMORY_TIER_GROUPS from memory/index.ts for use across the codebase
+  - **Risk mitigation**: DataGov tiers are excluded from CLEANABLE and LEARNABLE groups to prevent TTL/scoring interference
 
 ### Task 25.12: Create Expansions JSON Export Script
 - **File**: `datagov/export_expansions.py`

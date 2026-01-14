@@ -67,9 +67,23 @@ function defaultTierStats(): TierStats {
 }
 
 /**
- * All memory tiers
+ * All memory tiers (including DataGov tiers from Phase 25)
+ * Note: DataGov tiers are static/pre-loaded and don't follow normal TTL rules
  */
-const ALL_TIERS: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+const ALL_TIERS: MemoryTier[] = [
+	"working",
+	"history",
+	"patterns",
+	"books",
+	"memory_bank",
+	"datagov_schema",
+	"datagov_expansion",
+];
+
+/**
+ * Core memory tiers (excludes DataGov - for routing and promotion logic)
+ */
+const CORE_TIERS: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
 
 /**
  * Max examples to keep per action (bounded growth)
