@@ -271,12 +271,18 @@ TIER 8 - POLISH:
 - This is the correct transition approach - ensures all data visible during migration
 - After migration completes, can simplify to facade-only queries
 
-### Task 1.4: Update User Migration
+### Task 1.4: Update User Migration ✅
 - **File**: `src/routes/login/callback/updateUser.ts`
 - **Subtasks**:
-  - [ ] 1.4.1: Add migration call for `memory_items` tier=memory_bank
-  - [ ] 1.4.2: Ensure both collections are migrated on user update
-  - [ ] 1.4.3: Add logging for migration status
+  - [x] 1.4.1: Add migration call for `memory_items` (user_id field)
+  - [x] 1.4.2: Ensure both collections are migrated on user update
+  - [x] 1.4.3: Add logging for migration status
+
+**Implementation Notes (2026-01-14)**:
+- Added migration for `memory_items` collection alongside `memoryBank`
+- Uses `user_id` field (snake_case) matching unified schema
+- Non-blocking: Errors logged but don't fail login flow
+- Logs count of migrated items for debugging
 
 ---
 
