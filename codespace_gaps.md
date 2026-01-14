@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-This document identifies critical gaps in the BricksLLM memory system that prevent it from achieving enterprise-grade, production-ready status. The primary issues are:
+This document identifies critical gaps in the dictachat memory system that prevent it from achieving enterprise-grade, production-ready status. The primary issues are:
 
 1. **Dual Collection Pattern** - Two separate collections (`memoryBank` and `memory_items`) are not synchronized
 2. **Tool Results Not Ingested** - Search/research tool outputs are lost after conversation

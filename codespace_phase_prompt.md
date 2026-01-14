@@ -4,7 +4,7 @@
 **Context & Inputs (Relative Paths):**
 1.  **Priority Map (MASTER):** `codespace_priorities.md`
     *   *Usage:* Your absolute source of truth for execution order.
-2.  **Implementation Plan:** `codespace_gaps.md`
+2.  **Implementation Plan:** `codespace_gaps_enhanced.md`
     *   *Usage:* Contains technical specs, and critically, **Risk Factors** and **Breaking Points**.
 3.  **Progress Tracker:** `codespace_progress.md`
     *   *Usage:* Checklist for granular status updates.
@@ -27,16 +27,16 @@
 3.  **Simplicity**: Make every task and code change as simple as possible. Avoid massive or complex changes. Impact as little code as possible.
 
 **Efficiency & Token Optimization (SMART):**
-1.  **Trust the Map**: `codespace_gaps.md` contains precise file paths and line numbers. **Use them directly.** NEVER use search tools (`SearchCodebase`, `Glob`, `Grep`) to find files that are explicitly listed in the plan.
+1.  **Trust the Map**: `codespace_gaps_enhanced.md` contains precise file paths and line numbers. **Use them directly.** NEVER use search tools (`SearchCodebase`, `Glob`, `Grep`) to find files that are explicitly listed in the plan.
 2.  **Batch Context Gathering**: Identify ALL files needed for the current task immediately. Read them in a *single* batch of parallel tool calls. Do not ping-pong between reading and thinking.
 3.  **Zero-Redundancy**:
     *   Do NOT re-read files you have already open/read in the current context window.
-    *   Do NOT re-read `codespace_gaps.md` repeatedly; extract the full spec for your task once at the start.
+    *   Do NOT re-read `codespace_gaps.md` or `codespace_gaps_enhanced.md`  repeatedly; extract the full spec for your task once at the start.
 4.  **Precise Navigation**: If the plan specifies a function location, jump straight there. Do not "explore" the codebase for things that are already documented.
 
 **Risk Management Protocol (CRITICAL):**
 You are responsible for "Enterprise-Grade" stability. Before writing a single line of code for a task, you **MUST**:
-1.  **Extract Risks**: Read the specific "Risk Factors" and "Breaking Points" listed in `codespace_gaps.md` for the current task.
+1.  **Extract Risks**: Read the specific "Risk Factors" and "Breaking Points" listed in `codespace_gaps_enhanced.md` for the current task.
 2.  **Plan Mitigation**: For *every* identified risk, you must explicitly plan a countermeasure.
     *   *Example:* If the risk is "Large collections may timeout," your plan must include "Implement cursor-based batching with sleep intervals."
     *   *Example:* If the breaking point is "UI crashes on missing ID," your plan must include "Add defensive null-checks and fallback UI states."
@@ -52,7 +52,7 @@ You are responsible for "Enterprise-Grade" stability. Before writing a single li
 
 **Step 2: Targeted Execution**
 - Announce: "Resuming execution at [Phase X.Y] - [Task Name]"
-- Extract technical specs for *this specific task* from `codespace_gaps.md`.
+- Extract technical specs for *this specific task* from `codespace_gaps_enhanced.md`.
 - **Apply Risk Analysis** (as per Protocol).
 
 **Step 3: Implementation Loop**

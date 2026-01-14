@@ -1,9 +1,9 @@
-# BricksLLM Memory System - Enterprise Gap Analysis & Implementation Plan (Enhanced)
+# dictachat Memory System - Enterprise Gap Analysis & Implementation Plan (Enhanced)
 
 **Version:** 1.1 (Enterprise Enhanced)
 **Date:** January 14, 2026
 **Status:** Strategic Execution
-**Reference:** `codespace_gaps.md` + `codespace_gemini.md`
+**Reference:** `codespace_progress.md` + `codespace_priorities.md`
 
 ---
 
@@ -81,7 +81,7 @@ For EVERY phase implementation, verify:
 
 ## Executive Summary
 
-This document identifies critical gaps in the BricksLLM memory system that prevent it from achieving enterprise-grade, production-ready status. The primary issues are:
+This document identifies critical gaps in the dictachat memory system that prevent it from achieving enterprise-grade, production-ready status. The primary issues are:
 
 1. **Dual Collection Pattern** - Two separate collections (`memoryBank` and `memory_items`) are not synchronized
 2. **Tool Results Not Ingested** - Search/research tool outputs are lost after conversation
