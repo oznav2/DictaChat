@@ -1,7 +1,65 @@
-<!-- Updated: v0.2.25 PHASE 5 FIX 0 MEMORIES FOUND - January 14, 2026 -->
+<!-- Updated: v0.2.26 PHASE 7+8 LEARNING TIER - January 14, 2026 -->
 # Project Status
 
-**Last Updated**: January 14, 2026 (🚀 v0.2.25 + Phase 5 Fix 0 Memories Found)
+**Last Updated**: January 14, 2026 (🧠 v0.2.26 + Phase 7+8 Learning Tier Complete)
+
+---
+
+## 🧠 v0.2.26 PHASE 7+8: LEARNING TIER (Attribution + Outcome Detection) ✅ COMPLETE
+
+**Branch**: genspark_ai_developer
+**Priority**: TIER 4 - LEARNING (Orders 8-9)
+
+### Overview
+
+Phase 7 (Memory Attribution) was verified as already implemented. Phase 8 (Outcome Detection from User Follow-up) was implemented to detect user feedback in follow-up messages and record outcomes for surfaced memories.
+
+### Phase 7: Memory Attribution ✅ VERIFIED
+
+Already implemented in `memoryIntegration.ts`:
+- `parseMemoryMarks()` extracts `<!-- MEM: 1👍 2👎 -->` comments from LLM output
+- `SCORING_MATRIX` combines outcome detection with LLM marks
+- `processResponseWithAttribution()` wired in `runMcpFlow.ts`
+- Attribution instruction injected when memories are surfaced
+- Bilingual support (English + Hebrew instructions)
+
+### Phase 8: Outcome Detection ✅ IMPLEMENTED
+
+| Step | Status | Description |
+|------|--------|-------------|
+| 8.1 | ✅ | OutcomeDetector class with 52 signal patterns (EN+HE) |
+| 8.2 | ✅ | Integration in runMcpFlow.ts at turn start |
+| 8.3 | ✅ | SurfacedMemoryTracker with MongoDB + TTL |
+
+### Outcome Detection Flow
+
+1. **Turn Start**: Check for surfaced memories from previous turn
+2. **Analyze**: User message analyzed for feedback signals
+3. **Record**: If confidence >= 0.5, record outcome for surfaced memories
+4. **Clear**: Clear tracker to prevent double-scoring
+5. **Turn End**: Store current turn's surfaced memories
+
+### Signal Patterns
+
+| Category | English | Hebrew | Total |
+|----------|---------|--------|-------|
+| Positive | 22 | 15 | 37 |
+| Negative | 18 | 11 | 29 |
+| Partial | 12 | 7 | 19 |
+
+### Technical Details
+
+- **New File**: `SurfacedMemoryTracker.ts` - MongoDB-backed tracking with TTL
+- **Modified**: `runMcpFlow.ts` - Integration at turn start and end
+- **Fire-and-forget**: All outcome recording is non-blocking
+- **TTL**: Surfaced memories auto-expire after 1 hour
+
+### Benefits
+
+- Implicit feedback captured from natural conversation
+- Hebrew support for bilingual users
+- No user action required - automatic learning
+- Non-blocking ensures no response latency impact
 
 ---
 
