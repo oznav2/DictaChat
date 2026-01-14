@@ -27,6 +27,11 @@ export type {
 	BookListItem,
 	ConsistencyCheckParams as FacadeConsistencyCheckParams,
 	SearchService as FacadeSearchService,
+	// Phase 1: Consolidate Memory Collections types
+	GetByIdParams,
+	UpdateParams,
+	DeleteParams,
+	MemoryItemResult,
 } from "./UnifiedMemoryFacade";
 export { defaultMemoryConfig } from "./memory_config";
 export type { MemoryConfig } from "./memory_config";

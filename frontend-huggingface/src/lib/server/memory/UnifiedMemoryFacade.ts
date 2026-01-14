@@ -78,9 +78,63 @@ export interface PrefetchService {
 	prefetchContext(params: PrefetchContextParams): Promise<PrefetchContextResult>;
 }
 
+/**
+ * Parameters for getting a memory by ID
+ * Phase 1: Consolidate Memory Collections
+ */
+export interface GetByIdParams {
+	userId: string;
+	memoryId: string;
+}
+
+/**
+ * Parameters for updating a memory
+ * Phase 1: Consolidate Memory Collections
+ */
+export interface UpdateParams {
+	userId: string;
+	memoryId: string;
+	text?: string;
+	tags?: string[];
+	status?: "active" | "archived";
+	archivedReason?: string;
+}
+
+/**
+ * Parameters for deleting a memory
+ * Phase 1: Consolidate Memory Collections
+ */
+export interface DeleteParams {
+	userId: string;
+	memoryId: string;
+}
+
+/**
+ * Memory item returned by getById
+ * Phase 1: Consolidate Memory Collections
+ */
+export interface MemoryItemResult {
+	memory_id: string;
+	text: string;
+	tags: string[];
+	status: string;
+	tier: MemoryTier;
+	score: number;
+	created_at: Date;
+	updated_at: Date;
+	archived_at?: Date;
+	archived_reason?: string;
+}
+
 export interface StoreService {
 	store(params: StoreParams): Promise<StoreResult>;
 	removeBook(params: RemoveBookParams): Promise<void>;
+	/** Get a memory by ID - Phase 1 */
+	getById?(params: GetByIdParams): Promise<MemoryItemResult | null>;
+	/** Update a memory - Phase 1 */
+	update?(params: UpdateParams): Promise<MemoryItemResult | null>;
+	/** Delete a memory - Phase 1 */
+	delete?(params: DeleteParams): Promise<boolean>;
 }
 
 export interface OutcomeService {
@@ -605,6 +659,42 @@ export class UnifiedMemoryFacade {
 
 	async store(params: StoreParams): Promise<StoreResult> {
 		return this.services.store.store(params);
+	}
+
+	/**
+	 * Get a memory by ID
+	 * Phase 1: Consolidate Memory Collections
+	 */
+	async getById(params: GetByIdParams): Promise<MemoryItemResult | null> {
+		if (this.services.store.getById) {
+			return this.services.store.getById(params);
+		}
+		logger.warn("getById not implemented on store service");
+		return null;
+	}
+
+	/**
+	 * Update a memory
+	 * Phase 1: Consolidate Memory Collections
+	 */
+	async update(params: UpdateParams): Promise<MemoryItemResult | null> {
+		if (this.services.store.update) {
+			return this.services.store.update(params);
+		}
+		logger.warn("update not implemented on store service");
+		return null;
+	}
+
+	/**
+	 * Delete a memory (hard delete)
+	 * Phase 1: Consolidate Memory Collections
+	 */
+	async deleteMemory(params: DeleteParams): Promise<boolean> {
+		if (this.services.store.delete) {
+			return this.services.store.delete(params);
+		}
+		logger.warn("delete not implemented on store service");
+		return false;
 	}
 
 	async recordOutcome(params: RecordOutcomeParams): Promise<void> {

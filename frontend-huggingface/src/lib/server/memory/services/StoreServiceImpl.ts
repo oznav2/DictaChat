@@ -18,6 +18,10 @@ import type {
 	StoreResult,
 	RemoveBookParams,
 	MemorySourceAttribution,
+	GetByIdParams,
+	UpdateParams,
+	DeleteParams,
+	MemoryItemResult,
 } from "../UnifiedMemoryFacade";
 
 /**
@@ -333,6 +337,88 @@ export class StoreServiceImpl implements StoreService {
 			{ bookId, deletedChunks: memoryIds.length, cleanedEntities: allEntities.size },
 			"Book completely removed (all traces deleted)"
 		);
+	}
+
+	/**
+	 * Get a memory by ID
+	 * Phase 1: Consolidate Memory Collections
+	 */
+	async getById(params: GetByIdParams): Promise<MemoryItemResult | null> {
+		const { userId, memoryId } = params;
+		
+		const item = await this.mongo.getById(memoryId, userId);
+		if (!item) {
+			return null;
+		}
+
+		return {
+			memory_id: item.memory_id,
+			text: item.text,
+			tags: item.tags,
+			status: item.status,
+			tier: item.tier,
+			score: item.stats?.wilson_score ?? 0.5,
+			created_at: item.created_at,
+			updated_at: item.updated_at,
+			archived_at: item.archived_at ?? undefined,
+			archived_reason: undefined, // Not stored in current schema
+		};
+	}
+
+	/**
+	 * Update a memory
+	 * Phase 1: Consolidate Memory Collections
+	 */
+	async update(params: UpdateParams): Promise<MemoryItemResult | null> {
+		const { userId, memoryId, text, tags, status, archivedReason } = params;
+
+		const result = await this.mongo.update({
+			userId,
+			memoryId,
+			text,
+			tags,
+			status: status as MemoryStatus,
+			changeReason: archivedReason,
+		});
+
+		if (!result) {
+			return null;
+		}
+
+		return {
+			memory_id: result.memory_id,
+			text: result.text,
+			tags: result.tags,
+			status: result.status,
+			tier: result.tier,
+			score: result.stats?.wilson_score ?? 0.5,
+			created_at: result.created_at,
+			updated_at: result.updated_at,
+			archived_at: result.archived_at ?? undefined,
+			archived_reason: archivedReason,
+		};
+	}
+
+	/**
+	 * Delete a memory (hard delete)
+	 * Phase 1: Consolidate Memory Collections
+	 */
+	async delete(params: DeleteParams): Promise<boolean> {
+		const { userId, memoryId } = params;
+
+		// Delete from MongoDB
+		const deleted = await this.mongo.delete(memoryId, userId);
+
+		if (deleted) {
+			// Also delete from Qdrant
+			try {
+				await this.qdrant.delete([memoryId]);
+			} catch (err) {
+				logger.error({ err, memoryId }, "Failed to delete from Qdrant (MongoDB deletion succeeded)");
+			}
+		}
+
+		return deleted;
 	}
 
 	/**
