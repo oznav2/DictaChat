@@ -44,6 +44,94 @@ npm run build
   - SvelteKit routes: use `error(status, message)` for HTTP errors.
   - Server utilities: throw typed errors or return explicit `{ ok: false, ... }` results when failure is expected.
 
+## Clean TypeScript & Design Guidelines (Adapted)
+
+- Use English for code identifiers and developer-facing documentation.
+- User-facing strings may be Hebrew/RTL; keep them centralized and consistent.
+- Always declare types for function parameters and return values (especially across module boundaries).
+- Prefer explicit types for exported values and cross-module data contracts.
+- Use inference for local variables only when the type is obvious and stable.
+- Prefer complete words over abbreviations (exceptions: API, URL, id, err, ctx, req/res in route handlers).
+- Avoid magic numbers; define named constants when a number affects behavior.
+- Prefer one primary export per file; avoid “export bags” that mix unrelated concerns.
+
+### Function Rules
+
+- Keep functions small and single-purpose.
+- Use guard clauses and early returns to reduce nesting.
+- Prefer RO-RO for complex signatures:
+  - Pass a single params object.
+  - Return a result object when multiple values are needed.
+- Use higher-order functions (`map`, `filter`, `reduce`) when they improve clarity, not when they obscure control flow.
+- Use default parameter values when a default is stable and intentional.
+- Avoid blank lines inside short functions; if used, keep them rare and purposeful.
+
+### Data Rules
+
+- Prefer immutability by default:
+  - Use `readonly` where appropriate.
+  - Use `as const` for literals that must not widen.
+- Encapsulate related primitives into composite types when it improves correctness and readability.
+- Prefer validating untrusted inputs at boundaries (routes/actions). Avoid scattering validation deep inside business logic.
+
+### Service/Class Rules (Server-Side and Shared Logic)
+
+- Prefer small, purpose-built services over “god objects”.
+- Prefer composition over inheritance.
+- Define interfaces/contracts when it improves testability and dependency isolation.
+- When a public class/method is non-trivial, add minimal JSDoc describing intent and invariants.
+
+### Exceptions & Errors
+
+- Throw for unexpected failures (invariants, dependency failures where the caller cannot recover).
+- Catch exceptions only to add context, transform into a stable error/result shape, or apply an expected fallback.
+
+### Testing Conventions
+
+- Follow Arrange–Act–Assert for unit tests.
+- Use clear variable names (`inputX`, `mockX`, `actualX`, `expectedX`).
+- Add unit tests for each new public function/service method where behavior is non-trivial.
+- Prefer integration tests for cross-boundary flows (Mongo/Qdrant/tool ingestion/memory search).
+
+## Code Style & Formatting (Repository Overrides)
+
+- Follow the repo’s ESLint + Prettier configuration, not Standard.js.
+- Do not manually enforce 2-space indentation, quote style, or “no semicolons”; let Prettier format the code.
+- Use guard clauses and early returns to reduce nesting.
+- Prefer descriptive names with auxiliary verbs (`isLoading`, `hasError`, `shouldRetry`).
+- Prefer modularization over duplication: extract helpers when logic repeats.
+- Do not do “style refactors” as part of plan phases; keep diffs minimal.
+
+## JavaScript / Node.js Rules (Applies to Server-Side TS/JS Here)
+
+- Node version must remain compatible with `node >= 18` (see `frontend-huggingface/package.json`).
+- Always use strict equality (`===`) and explicit boolean checks.
+- Always handle errors from async boundaries:
+  - `try/catch` around awaited operations that can fail (network, DB, filesystem).
+  - If returning errors (instead of throwing), use stable result shapes.
+- Handle edge cases at function start; keep the “happy path” last when it improves readability.
+- Never leak secrets in logs. Redact or omit:
+  - Authorization headers, cookies, API keys, tokens, signed URLs.
+  - Raw tool outputs when they can contain sensitive data.
+
+## Frontend Framework Scope (What Applies vs Not)
+
+- This repo’s UI is SvelteKit (Svelte 5), not React/Next.js.
+- Do not introduce React/Next-specific patterns into `frontend-huggingface/`.
+- If a future phase explicitly adds a React/Next subsystem, place it in a dedicated workspace and add a separate rule section for it.
+
+## Rules Provided But Not Applicable To This Repo’s Codespace Plan
+
+These rules were provided but must not be followed for implementing `codespace_gaps_enhanced.md` in this repository:
+
+- Next.js App Router, React Server Components, `"use client"`, Server Actions.
+- Zustand, Shadcn UI, Radix UI.
+- Stylus and `*.module.styl` CSS Modules workflow.
+- Jest + React Testing Library (this repo uses Vitest + Playwright for browser tests).
+- NestJS framework module/controller/service conventions and MikroORM patterns.
+- `class-validator` DTO validation patterns (use Zod or existing boundary validation patterns here).
+- “kebab-case for file names everywhere” and “one export per file everywhere” (follow existing repo naming/exports).
+
 ## Import Order (Repository Standard)
 
 Use this order with blank lines between groups:
@@ -173,4 +261,3 @@ Reference: [vite.config.ts](file:///home/ilan/BricksLLM/frontend-huggingface/vit
 - Error handling is explicit and safe (no secret leakage).
 - SSR works (no browser-only code executed on the server).
 - User-visible UI changes are accessible and responsive.
-
