@@ -197,6 +197,12 @@ export class SearchService {
 			timings.rerank_ms = Date.now() - rerankStart;
 		}
 
+		// Step 4.5: Phase 22.2 - Apply Wilson blending for memory_bank tier
+		// This gives established memory_bank items (uses >= 3) a boost based on their Wilson score
+		const wilsonBlendStart = Date.now();
+		candidates = this.applyWilsonBlend(candidates);
+		timings.wilson_blend_ms = Date.now() - wilsonBlendStart;
+
 		// Step 5: Apply final scoring and sort
 		candidates.sort((a, b) => b.finalScore - a.finalScore);
 
@@ -414,8 +420,34 @@ export class SearchService {
 					candidate.ceRank = data.results.findIndex((r) => r.index === result.index) + 1;
 
 					// Blend original RRF score with CE score
-					candidate.finalScore =
+					let finalScore =
 						candidate.rrfScore * ceWeights.original_weight + result.score * ceWeights.ce_weight;
+
+					// Phase 22.8: Apply quality boost for memory_bank items with Wilson
+					// Only applies to established items (uses >= 3) with cold-start protection
+					if (
+						candidate.tier === "memory_bank" &&
+						(candidate.uses ?? 0) >= SearchService.WILSON_COLD_START_USES
+					) {
+						const wilsonScore = candidate.wilsonScore ?? 0.5;
+						// Quality boost: multiply by (1 + wilson * 0.2) for high-quality items
+						// This gives items with wilson=1.0 a 20% boost, wilson=0.5 a 10% boost
+						const qualityBoost = 1 + wilsonScore * SearchService.WILSON_BLEND_WEIGHTS.wilson;
+						finalScore *= qualityBoost;
+
+						logger.debug(
+							{
+								memoryId: candidate.memoryId,
+								wilsonScore,
+								qualityBoost,
+								preBoostScore: candidate.rrfScore * ceWeights.original_weight + result.score * ceWeights.ce_weight,
+								postBoostScore: finalScore,
+							},
+							"[Phase 22.8] Applied CE + Wilson quality boost"
+						);
+					}
+
+					candidate.finalScore = finalScore;
 				}
 			}
 
@@ -441,6 +473,88 @@ export class SearchService {
 			this.recordRerankerFailure();
 			return candidates;
 		}
+	}
+
+	// ============================================
+	// Phase 22.2: Wilson Scoring for memory_bank
+	// ============================================
+
+	/**
+	 * Cold-start protection threshold for Wilson blending
+	 * Items with fewer uses than this will not have Wilson applied
+	 */
+	private static readonly WILSON_COLD_START_USES = 3;
+
+	/**
+	 * Wilson blend weights for memory_bank tier
+	 * Phase 22.2: 80% quality/RRF + 20% Wilson for established items
+	 */
+	private static readonly WILSON_BLEND_WEIGHTS = {
+		quality: 0.8,
+		wilson: 0.2,
+	};
+
+	/**
+	 * Apply Wilson score blending for memory_bank tier items
+	 * 
+	 * Phase 22.2: For memory_bank items with uses >= 3, blend Wilson score
+	 * into the final score. This gives established, high-quality items a boost.
+	 * 
+	 * Formula: finalScore = 0.8 * originalScore + 0.2 * wilsonScore
+	 * Cold-start protection: items with uses < 3 keep original score
+	 */
+	private applyWilsonBlend(candidates: CandidateResult[]): CandidateResult[] {
+		let blendedCount = 0;
+
+		for (const candidate of candidates) {
+			// Only apply to memory_bank tier
+			if (candidate.tier !== "memory_bank") {
+				continue;
+			}
+
+			// Cold-start protection: require minimum uses
+			const uses = candidate.uses ?? 0;
+			if (uses < SearchService.WILSON_COLD_START_USES) {
+				logger.debug(
+					{ memoryId: candidate.memoryId, uses },
+					"[Phase 22.2] Skipping Wilson blend (cold-start protection)"
+				);
+				continue;
+			}
+
+			// Get Wilson score (default to 0.5 if not available)
+			const wilsonScore = candidate.wilsonScore ?? 0.5;
+			const originalScore = candidate.finalScore;
+
+			// Phase 22.2: Apply 80/20 blend
+			const blendedScore =
+				SearchService.WILSON_BLEND_WEIGHTS.quality * originalScore +
+				SearchService.WILSON_BLEND_WEIGHTS.wilson * wilsonScore;
+
+			candidate.finalScore = blendedScore;
+			blendedCount++;
+
+			logger.debug(
+				{
+					memoryId: candidate.memoryId,
+					tier: candidate.tier,
+					uses,
+					wilsonScore,
+					originalScore,
+					blendedScore,
+				},
+				"[Phase 22.2] Applied Wilson blend to memory_bank item"
+			);
+		}
+
+		if (blendedCount > 0) {
+			logger.info(
+				{ blendedCount, totalCandidates: candidates.length },
+				"[Phase 22.2] Wilson blend applied to memory_bank items"
+			);
+		}
+
+		return candidates;
 	}
 
 	/**

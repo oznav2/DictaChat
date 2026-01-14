@@ -1956,7 +1956,14 @@ Even if the document content is in Hebrew or another language, your response mus
 				};
 
 				// Store working memory from exchange (async, non-blocking)
-				if (lastAssistantContent.trim().length > 50) {
+				// Phase 22.7: Skip storage if either user query or assistant response is empty/whitespace
+				const userQueryTrimmed = userQuery?.trim() ?? "";
+				const assistantResponseTrimmed = lastAssistantContent?.trim() ?? "";
+				const shouldStoreExchange = 
+					userQueryTrimmed.length > 10 && // User query must be substantial
+					assistantResponseTrimmed.length > 50; // Response must be substantial
+
+				if (shouldStoreExchange) {
 					// Emit Memory Storing event for real-time UI feedback
 					yield {
 						type: MessageUpdateType.Memory,
@@ -1976,6 +1983,15 @@ Even if the document content is in Hebrew or another language, your response mus
 					}).catch((err) => {
 						logger.debug("[mcp] Failed to store working memory", { error: String(err) });
 					});
+				} else if (userQueryTrimmed.length > 0 || assistantResponseTrimmed.length > 0) {
+					// Phase 22.7: Log when skipping due to empty content
+					logger.debug(
+						{ 
+							userQueryLength: userQueryTrimmed.length, 
+							responseLength: assistantResponseTrimmed.length 
+						},
+						"[Phase 22.7] Skipping empty exchange storage"
+					);
 				}
 			} catch (memErr) {
 				// Memory tracking must never block or throw

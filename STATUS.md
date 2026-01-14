@@ -1,7 +1,7 @@
-<!-- Updated: v0.2.19 PHASE 23 OUTCOME SAFEGUARDS - January 14, 2026 -->
+<!-- Updated: v0.2.20 PHASE 22 NATURAL SELECTION - January 14, 2026 -->
 # Project Status
 
-**Last Updated**: January 14, 2026 (🚀 v0.2.19 + Phase 23 Outcome Safeguards)
+**Last Updated**: January 14, 2026 (🚀 v0.2.20 + Phase 22 Natural Selection Enhancements)
 
 ---
 
@@ -171,6 +171,96 @@ await collection.updateOne(
 | Invalid outcome types | Early validation with logging prevents bad data |
 
 ---
+
+## 🧬 v0.2.20 PHASE 22: NATURAL SELECTION ENHANCEMENTS ✅
+
+**Branch**: genspark_ai_developer
+**Priority**: TIER 1 - SAFEGUARDS (Second after Phase 23)
+
+### Overview
+
+Phase 22 implements natural selection enhancements to improve memory quality through Wilson-based ranking, stricter promotion rules, and data hygiene filters.
+
+### Eight Enhancements Implemented
+
+| Task | Description | File | Status |
+|------|-------------|------|--------|
+| 22.1 | Remove Archive-on-Update | `MemoryMongoStore.ts` | ✅ Already Clean |
+| 22.2 | Wilson Scoring for memory_bank | `SearchService.ts` | ✅ Implemented |
+| 22.3 | Unknown Outcome = 0.25 | Phase 23 | ✅ Done in Phase 23 |
+| 22.4 | Stricter History→Patterns Promotion | `PromotionService.ts` | ✅ Implemented |
+| 22.5 | Initialize uses/success_count | `MemoryMongoStore.ts` | ✅ Already Done |
+| 22.6 | Filter Empty Memories from Context | `PrefetchServiceImpl.ts` | ✅ Implemented |
+| 22.7 | Skip Empty Exchange Storage | `runMcpFlow.ts` | ✅ Implemented |
+| 22.8 | CE Reranking with Wilson Blend | `SearchService.ts` | ✅ Implemented |
+
+### Technical Implementation Details
+
+#### 22.2 & 22.8: Wilson Blending in Search
+
+**Constants Added**:
+```typescript
+const WILSON_BLEND_WEIGHTS = { quality: 0.8, wilson: 0.2 };
+const WILSON_COLD_START_USES = 3;  // No Wilson blend below this
+```
+
+**Implementation**:
+- `applyWilsonBlend()` method applies Wilson boost to memory_bank tier items
+- Cold-start protection: memories with `uses < 3` skip Wilson blending
+- 80/20 blend: `finalScore = score * 0.8 + wilsonScore * 0.2`
+- Applied both after RRF fusion and after cross-encoder reranking
+
+#### 22.4: Stricter Promotion Rules
+
+**Working → History**:
+- Resets `success_count = 0` (probation period)
+- Resets `uses = 0` 
+- Sets `promoted_to_history_at` timestamp
+
+**History → Patterns**:
+- Requires `success_count >= 5` (MIN_SUCCESS_COUNT_FOR_PATTERNS)
+- Ensures sufficient usage during history probation
+
+#### 22.6: Empty Memory Filtering
+
+**Helper Added**:
+```typescript
+private isEmptyContent(content: string | undefined): boolean {
+  return !content || content.trim().length === 0;
+}
+```
+
+**Filter Applied**: Before formatting context injection, filters out:
+- Null/undefined content
+- Whitespace-only content
+- Limited to `MAX_CONTEXT_MEMORIES = 3` per category
+
+#### 22.7: Skip Empty Exchanges
+
+**Guard Added**:
+```typescript
+const shouldStoreExchange = 
+  userQuery && userQuery.trim().length > 10 &&
+  lastAssistantContent && lastAssistantContent.trim().length > 50;
+```
+
+**Result**: Empty or trivial exchanges are not stored as working memories.
+
+### Files Changed
+
+| File | Changes |
+|------|---------|
+| `src/lib/server/memory/search/SearchService.ts` | Wilson blend methods, constants, cold-start protection |
+| `src/lib/server/memory/learning/PromotionService.ts` | Promotion counter reset, MIN_SUCCESS_COUNT check |
+| `src/lib/server/memory/services/PrefetchServiceImpl.ts` | Empty content filtering |
+| `src/lib/server/textGeneration/mcp/runMcpFlow.ts` | Empty exchange validation |
+
+### Stability Improvements
+
+- **Data Quality**: Empty/trivial exchanges no longer pollute working memory
+- **Ranking Quality**: Wilson scores now influence memory_bank ranking
+- **Learning Integrity**: Stricter promotion prevents premature pattern elevation
+- **Context Quality**: Empty memories filtered from prompt injection
 
 ---
 

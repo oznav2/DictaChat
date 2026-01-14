@@ -192,7 +192,22 @@ export class PrefetchServiceImpl implements PrefetchService {
 	}
 
 	/**
+	 * Phase 22.6: Check if content is empty or whitespace-only
+	 */
+	private isEmptyContent(content: string | null | undefined): boolean {
+		if (!content) return true;
+		return content.trim().length === 0;
+	}
+
+	/**
+	 * Phase 22.6: Maximum memories to display in context (matches RoamPal)
+	 */
+	private static readonly MAX_CONTEXT_MEMORIES = 3;
+
+	/**
 	 * Format context for prompt injection
+	 * 
+	 * Phase 22.6: Filters empty memories and limits to 3 items
 	 */
 	private formatContextInjection(
 		alwaysInject: AlwaysInjectMemory[],
@@ -206,14 +221,25 @@ export class PrefetchServiceImpl implements PrefetchService {
 	): string {
 		const sections: string[] = [];
 
+		// Phase 22.6: Filter out empty memories from always-inject
+		const filteredAlwaysInject = alwaysInject.filter((m) => !this.isEmptyContent(m.content));
+		const filteredOutAlwaysInject = alwaysInject.length - filteredAlwaysInject.length;
+
+		if (filteredOutAlwaysInject > 0) {
+			logger.debug(
+				{ filtered: filteredOutAlwaysInject, total: alwaysInject.length },
+				"[Phase 22.6] Filtered empty always-inject memories"
+			);
+		}
+
 		// Section 1: Identity/Core (always-inject)
-		if (alwaysInject.length > 0) {
-			const identityItems = alwaysInject
+		if (filteredAlwaysInject.length > 0) {
+			const identityItems = filteredAlwaysInject
 				.filter((m) => m.tags.includes("identity"))
 				.map((m) => `• ${m.content}`)
 				.join("\n");
 
-			const preferenceItems = alwaysInject
+			const preferenceItems = filteredAlwaysInject
 				.filter((m) => !m.tags.includes("identity"))
 				.map((m) => `• ${m.content}`)
 				.join("\n");
@@ -226,9 +252,27 @@ export class PrefetchServiceImpl implements PrefetchService {
 			}
 		}
 
+		// Phase 22.6: Filter out empty memories from search results and limit to 3
+		const filteredSearchResults = searchResults
+			.filter((r) => !this.isEmptyContent(r.content))
+			.slice(0, PrefetchServiceImpl.MAX_CONTEXT_MEMORIES);
+
+		const filteredOutSearch = searchResults.length - filteredSearchResults.length;
+		if (filteredOutSearch > 0) {
+			logger.debug(
+				{ 
+					filtered: filteredOutSearch, 
+					total: searchResults.length,
+					kept: filteredSearchResults.length,
+					maxAllowed: PrefetchServiceImpl.MAX_CONTEXT_MEMORIES
+				},
+				"[Phase 22.6] Filtered/limited search result memories"
+			);
+		}
+
 		// Section 2: Retrieved Context (numbered for positional reference)
-		if (searchResults.length > 0) {
-			const retrievedItems = searchResults
+		if (filteredSearchResults.length > 0) {
+			const retrievedItems = filteredSearchResults
 				.map((r) => `[${r.position}] [${r.tier}:${r.memoryId}] ${r.content}`)
 				.join("\n");
 
