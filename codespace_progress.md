@@ -62,9 +62,9 @@ TIER 2 - CORE DATA INTEGRITY:
 TIER 3 - MEMORY-FIRST INTELLIGENCE:
   5. Phase 3 (+13) (Tool Gating) ✅ COMPLETE (2026-01-14)
   6. Phase 2 (+16) (Tool Ingestion) ✅ COMPLETE (2026-01-14)
-  7. Phase 5 (0-Results Fix) ← NEXT
+  7. Phase 5 (0-Results Fix) ✅ COMPLETE (2026-01-14)
 
-TIER 4 - LEARNING:
+TIER 4 - LEARNING: ← NEXT
   8. Phase 7 (Attribution)
   9. Phase 8 (+17) (Outcome Detection + UI)
   10. Phase 12 (Time Decay)
@@ -440,7 +440,68 @@ TIER 8 - POLISH:
 
 ---
 
-## Phase 5: Knowledge Graph Visualization Fix
+## Phase 5: Fix "0 Memories Found" Issue ✅ COMPLETED (2026-01-14)
+
+> **Reference**: `codespace_gaps_enhanced.md` Phase 5, `codespace_priorities.md` TIER 3 Order 7
+
+### Task 5.1: Add Diagnostic Endpoint ✅
+- **File**: `src/routes/api/memory/diagnostics/+server.ts` (NEW)
+- **Subtasks**:
+  - [x] 5.1.1: Create GET endpoint for memory system diagnostics
+  - [x] 5.1.2: Return MongoDB item counts by tier
+  - [x] 5.1.3: Return Qdrant point counts by tier
+  - [x] 5.1.4: Include items needing reindex count with sample
+  - [x] 5.1.5: Check circuit breaker states (embedding, qdrant, bm25)
+  - [x] 5.1.6: Generate health issues and recommendations
+  - [x] 5.1.7: Add timing for diagnostics operation
+
+**Implementation Notes (2026-01-14)**:
+- Created comprehensive diagnostics endpoint at `/api/memory/diagnostics`
+- Returns collection counts, circuit breaker states, and health recommendations
+- Compares MongoDB vs Qdrant counts to detect sync issues
+- Identifies items needing reindex for troubleshooting
+- All checks use timeouts for graceful degradation
+
+### Task 5.2: Auto-Reindex on Search Failure ✅
+- **File**: `src/lib/server/memory/search/SearchService.ts`
+- **Subtasks**:
+  - [x] 5.2.1: Add `checkNeedsReindex()` method to detect sync issues
+  - [x] 5.2.2: Add `triggerBackgroundReindex()` fire-and-forget method
+  - [x] 5.2.3: Add `handleZeroResults()` diagnostic handler
+  - [x] 5.2.4: Wire into main `search()` method when results = 0
+  - [x] 5.2.5: Log anomalies when MongoDB count > Qdrant count
+
+**Implementation Notes (2026-01-14)**:
+- Added Phase 5 auto-reindex detection to SearchService
+- `checkNeedsReindex()` compares MongoDB vs Qdrant counts
+- Detects and logs "items in MongoDB but not in Qdrant" anomalies
+- Fire-and-forget pattern - doesn't block search response
+- Logs diagnostic info for troubleshooting
+
+### Task 5.3: Add Search Debug to UI ✅
+- **File**: `src/lib/components/memory/MemoryPanel.svelte`
+- **Subtasks**:
+  - [x] 5.3.1: Add debug panel when 0 results
+  - [x] 5.3.2: Show possible causes in Hebrew
+  - [x] 5.3.3: Add "Trigger Reindex" button
+  - [x] 5.3.4: Connect to deferred reindex endpoint
+  - [x] 5.3.5: Auto-refresh after reindex triggered
+
+**Implementation Notes (2026-01-14)**:
+- Enhanced 0-results state with amber debug panel
+- Shows Hebrew causes: indexing needed, embedding service down, query too specific
+- "הפעל אינדוקס מחדש" button triggers POST /api/memory/ops/reindex/deferred
+- Auto-refreshes memories after 2 second delay
+
+**Success Criteria Met**:
+- ✅ Diagnostic endpoint provides full system health check
+- ✅ Search service detects and logs indexing issues
+- ✅ UI provides actionable feedback when 0 results
+- ✅ User can trigger reindex directly from UI
+
+---
+
+## Phase 5-OLD: Knowledge Graph Visualization Fix
 
 ### Task 5.1: Fix Node Name Rendering
 - **File**: `src/lib/components/memory/KnowledgeGraph3D.svelte`

@@ -153,6 +153,35 @@
 		loadStats();
 	}
 
+	/**
+	 * Phase 5: Trigger reindex when user clicks button in 0-results state
+	 */
+	async function triggerReindex() {
+		try {
+			isLoading = true;
+			const response = await fetch(`${base}/api/memory/ops/reindex/deferred`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+			});
+			
+			if (!response.ok) {
+				console.error("Reindex trigger failed:", response.status);
+				return;
+			}
+			
+			const result = await response.json();
+			console.log("Reindex triggered:", result);
+			
+			// Wait a moment then refresh
+			await new Promise((resolve) => setTimeout(resolve, 2000));
+			await refresh();
+		} catch (err) {
+			console.error("Failed to trigger reindex:", err);
+		} finally {
+			isLoading = false;
+		}
+	}
+
 	onMount(() => {
 		refresh();
 		memoryUi.openMemoryEducationIfNeeded();
@@ -328,8 +357,38 @@
 				></div>
 			</div>
 		{:else if memories.length === 0}
-			<div class="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-				אין זיכרונות להצגה
+			<!-- Phase 5: Enhanced 0-results feedback with diagnostics -->
+			<div class="py-4 text-center">
+				<div class="mb-3 text-sm text-gray-500 dark:text-gray-400">
+					אין זיכרונות להצגה
+				</div>
+				<!-- Debug panel for 0 results -->
+				<div class="mx-auto max-w-xs rounded-lg border border-amber-200 bg-amber-50 p-3 text-right dark:border-amber-800 dark:bg-amber-900/30">
+					<p class="mb-2 text-xs font-medium text-amber-800 dark:text-amber-200">
+						סיבות אפשריות:
+					</p>
+					<ul class="mb-3 space-y-1 text-xs text-amber-700 dark:text-amber-300">
+						<li class="flex items-start gap-1">
+							<span class="mt-1">•</span>
+							<span>פריטים ממתינים לאינדוקס</span>
+						</li>
+						<li class="flex items-start gap-1">
+							<span class="mt-1">•</span>
+							<span>שירות האמבדינג לא זמין</span>
+						</li>
+						<li class="flex items-start gap-1">
+							<span class="mt-1">•</span>
+							<span>שאילתת החיפוש ספציפית מדי</span>
+						</li>
+					</ul>
+					<button
+						type="button"
+						onclick={triggerReindex}
+						class="w-full rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-700 dark:bg-amber-700 dark:hover:bg-amber-600"
+					>
+						הפעל אינדוקס מחדש
+					</button>
+				</div>
 			</div>
 		{:else}
 			<VirtualList
