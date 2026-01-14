@@ -76,6 +76,17 @@ import {
 } from "./toolGatingDecision";
 import type { MemoryMetaV1, MemoryTier } from "$lib/types/MemoryMeta";
 
+// Phase 8: Outcome Detection from User Follow-up
+import {
+	OutcomeDetector,
+	storeSurfacedMemories,
+	getSurfacedMemories,
+	clearSurfacedMemories,
+	type ConversationMessage,
+} from "$lib/server/memory/learning";
+import { getMemoryFeatureFlags } from "$lib/server/memory/featureFlags";
+import { UnifiedMemoryFacade } from "$lib/server/memory/UnifiedMemoryFacade";
+
 /**
  * Clean string to ensure valid UTF-8 and remove invalid characters
  */
@@ -523,6 +534,75 @@ export async function* runMcpFlow({
 		let memoryMeta: MemoryMetaV1 | undefined;
 		let searchPositionMap: SearchPositionMap = {};
 		const explicitToolRequest = extractExplicitToolRequest(userQuery);
+
+		// ============================================
+		// PHASE 8: OUTCOME DETECTION FROM USER FOLLOW-UP
+		// Analyze user message at start of each turn to detect feedback
+		// on memories surfaced in previous turn
+		// ============================================
+		try {
+			const memoryFlags = getMemoryFeatureFlags();
+			if (memoryFlags.systemEnabled && memoryFlags.outcomeEnabled) {
+				// Check for surfaced memories from previous turn
+				const previousSurfaced = await getSurfacedMemories(conversationId);
+				
+				if (previousSurfaced && Object.keys(previousSurfaced.position_map).length > 0) {
+					// Build conversation messages for outcome detector
+					const outcomeMessages: ConversationMessage[] = [];
+					
+					// Add the assistant's previous response (if we have it)
+					if (previousSurfaced.response_preview) {
+						outcomeMessages.push({
+							role: "assistant",
+							content: previousSurfaced.response_preview,
+						});
+					}
+					
+					// Add current user message (the follow-up)
+					outcomeMessages.push({
+						role: "user",
+						content: userQuery,
+					});
+					
+					// Analyze for outcome signals
+					const detector = new OutcomeDetector();
+					const detection = detector.analyze(outcomeMessages);
+					
+					if (detection.outcome !== "unknown" && detection.confidence >= 0.5) {
+						// Record outcomes for surfaced memories
+						logger.info(
+							{
+								conversationId,
+								outcome: detection.outcome,
+								confidence: detection.confidence,
+								signals: detection.signals,
+								memoryCount: Object.keys(previousSurfaced.position_map).length,
+							},
+							"[mcp] Phase 8: Detected outcome from user follow-up"
+						);
+						
+						// Record outcomes for each surfaced memory
+						const facade = UnifiedMemoryFacade.getInstance();
+						const memoryIds = Object.keys(previousSurfaced.position_map);
+						
+						// Fire-and-forget outcome recording
+						facade.recordOutcome({
+							userId,
+							outcome: detection.outcome,
+							relatedMemoryIds: memoryIds,
+						}).catch((err) => {
+							logger.debug({ err, conversationId }, "[mcp] Phase 8: Failed to record detected outcome");
+						});
+						
+						// Clear surfaced memories after recording to prevent double-scoring
+						clearSurfacedMemories(conversationId).catch(() => {});
+					}
+				}
+			}
+		} catch (outcomeErr) {
+			// Outcome detection must never block - fail silently
+			logger.debug({ err: outcomeErr, conversationId }, "[mcp] Phase 8: Outcome detection failed, continuing");
+		}
 
 		// Generate a unique run ID for memory trace events
 		const memoryTraceRunId = `mem-${randomUUID().slice(0, 8)}`;
@@ -2020,6 +2100,21 @@ Even if the document content is in Hebrew or another language, your response mus
 					outcome: attributionFound ? "positive" : "positive", // Could differentiate based on attribution
 					memoryIds: Object.keys(searchPositionMap),
 				};
+
+				// ============================================
+				// PHASE 8: STORE SURFACED MEMORIES FOR NEXT TURN
+				// Store which memories were surfaced so we can detect feedback
+				// in the user's next message
+				// ============================================
+				if (Object.keys(searchPositionMap).length > 0) {
+					// Fire-and-forget: Store surfaced memories for outcome detection
+					storeSurfacedMemories({
+						conversationId,
+						userId,
+						positionMap: searchPositionMap,
+						responsePreview: lastAssistantContent?.slice(0, 500),
+					}).catch(() => {});
+				}
 
 				// Store working memory from exchange (async, non-blocking)
 				// Phase 22.7: Skip storage if either user query or assistant response is empty/whitespace

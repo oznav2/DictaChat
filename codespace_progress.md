@@ -64,10 +64,10 @@ TIER 3 - MEMORY-FIRST INTELLIGENCE:
   6. Phase 2 (+16) (Tool Ingestion) ✅ COMPLETE (2026-01-14)
   7. Phase 5 (0-Results Fix) ✅ COMPLETE (2026-01-14)
 
-TIER 4 - LEARNING: ← NEXT
-  8. Phase 7 (Attribution)
-  9. Phase 8 (+17) (Outcome Detection + UI)
-  10. Phase 12 (Time Decay)
+TIER 4 - LEARNING:
+  8. Phase 7 (Attribution) ✅ COMPLETE (2026-01-14) - Already implemented
+  9. Phase 8 (+17) (Outcome Detection + UI) ✅ COMPLETE (2026-01-14)
+  10. Phase 12 (Time Decay) ← NEXT
 
 TIER 5 - SEARCH QUALITY:
   11. Phase 15 (RRF Fusion)
@@ -550,65 +550,87 @@ TIER 8 - POLISH:
 
 ---
 
-## Phase 7: Memory Attribution in Responses
+## Phase 7: Memory Attribution in Responses ✅ COMPLETED (2026-01-14)
 
-### Task 7.1: Implement Attribution Parsing
-- **File**: `src/lib/server/textGeneration/mcp/runMcpFlow.ts`
-- **Subtasks**:
-  - [ ] 7.1.1: Parse `<!-- MEM: 1👍 2👎 -->` comments from LLM output
-  - [ ] 7.1.2: Extract memory IDs and feedback signals
-  - [ ] 7.1.3: Create `parseAttributions(response)` function
-  - [ ] 7.1.4: Write unit tests for parsing
+> **Status**: Already implemented in previous work. See STATUS.md "Gap 9: Memory Attribution (Causal Scoring)"
 
-### Task 7.2: Record Attribution Outcomes
+### Task 7.1: Implement Attribution Parsing ✅
+- **File**: `src/lib/server/textGeneration/mcp/memoryIntegration.ts`
 - **Subtasks**:
-  - [ ] 7.2.1: Call `recordOutcome()` for each attributed memory
-  - [ ] 7.2.2: Map 👍 to "worked", 👎 to "failed"
-  - [ ] 7.2.3: Handle partial attribution
-  - [ ] 7.2.4: Add logging for attribution recording
+  - [x] 7.1.1: Parse `<!-- MEM: 1👍 2👎 -->` comments from LLM output
+  - [x] 7.1.2: Extract memory IDs and feedback signals
+  - [x] 7.1.3: Create `parseMemoryMarks(response)` function (lines 1220-1278)
+  - [ ] 7.1.4: Write unit tests for parsing (deferred)
 
-### Task 7.3: Add Attribution Instruction to Prompt
-- **File**: `src/lib/server/textGeneration/mcp/toolPrompt.ts`
+### Task 7.2: Record Attribution Outcomes ✅
 - **Subtasks**:
-  - [ ] 7.3.1: Add attribution instruction to system prompt
-  - [ ] 7.3.2: Explain format: `<!-- MEM: id👍 id👎 -->`
-  - [ ] 7.3.3: Make instruction conditional on memory injection
-  - [ ] 7.3.4: Test with various LLM responses
+  - [x] 7.2.1: Call `recordSelectiveOutcomes()` for each attributed memory (lines 1313-1420)
+  - [x] 7.2.2: Map 👍 to "worked", 👎 to "failed" via SCORING_MATRIX (lines 1126-1148)
+  - [x] 7.2.3: Handle partial attribution via scoring matrix
+  - [x] 7.2.4: Add logging for attribution recording
+
+### Task 7.3: Add Attribution Instruction to Prompt ✅
+- **File**: `src/lib/server/textGeneration/mcp/memoryIntegration.ts`
+- **Subtasks**:
+  - [x] 7.3.1: Add attribution instruction to system prompt (MEMORY_ATTRIBUTION_INSTRUCTION lines 1176-1190)
+  - [x] 7.3.2: Explain format: `<!-- MEM: id👍 id👎 -->`
+  - [x] 7.3.3: Make instruction conditional on memory injection (runMcpFlow.ts lines 764-775)
+  - [ ] 7.3.4: Test with various LLM responses (deferred)
+
+**Implementation Notes (Pre-existing)**:
+- `parseMemoryMarks()` in memoryIntegration.ts extracts and strips attribution comments
+- `SCORING_MATRIX` combines outcome detection with LLM marks for causal scoring
+- `processResponseWithAttribution()` is the main entry point called from runMcpFlow.ts
+- Attribution instruction injected conditionally when `hasMemoriesToAttribute`
+- Bilingual support: `MEMORY_ATTRIBUTION_INSTRUCTION_HE` for Hebrew
 
 ---
 
-## Phase 8: Outcome Detection from User Follow-up
+## Phase 8: Outcome Detection from User Follow-up ✅ COMPLETED (2026-01-14)
 
-### Task 8.1: Implement Follow-up Analyzer
-- **File**: `src/lib/server/memory/learning/OutcomeDetectionService.ts`
+> **Implementation**: `OutcomeDetector.ts` (pre-existing) + `SurfacedMemoryTracker.ts` (new) + `runMcpFlow.ts` integration
+
+### Task 8.1: Implement Follow-up Analyzer ✅
+- **File**: `src/lib/server/memory/learning/OutcomeDetector.ts` (pre-existing)
 - **Subtasks**:
-  - [ ] 8.1.1: Create service class with dependency injection
-  - [ ] 8.1.2: Define outcome detection patterns (positive/negative signals)
-  - [ ] 8.1.3: Implement `analyzeFollowUp(userMessage, context)` method
-  - [ ] 8.1.4: Detect positive signals: "thanks", "perfect", "that worked"
-  - [ ] 8.1.5: Detect negative signals: "that's wrong", "not what I meant", "try again"
-  - [ ] 8.1.6: Detect partial signals: "almost", "close but", "also"
-  - [ ] 8.1.7: Add Hebrew signal detection (תודה, מעולה, לא נכון, etc.)
-  - [ ] 8.1.8: Return confidence score with detected outcome
-  - [ ] 8.1.9: Add logging for detection decisions
-  - [ ] 8.1.10: Write unit tests for each signal type
+  - [x] 8.1.1: Create service class with dependency injection (`OutcomeDetector` class exists)
+  - [x] 8.1.2: Define outcome detection patterns (positive/negative signals)
+  - [x] 8.1.3: Implement `analyze(messages)` method (lines 159-215)
+  - [x] 8.1.4: Detect positive signals: "thanks", "perfect", "that worked" (POSITIVE_SIGNALS)
+  - [x] 8.1.5: Detect negative signals: "that's wrong", "not what I meant", "try again" (NEGATIVE_SIGNALS)
+  - [x] 8.1.6: Detect partial signals: "almost", "close but", "also" (PARTIAL_SIGNALS)
+  - [x] 8.1.7: Add Hebrew signal detection (תודה, מעולה, לא נכון, etc.) - already implemented
+  - [x] 8.1.8: Return confidence score with detected outcome (`OutcomeDetectionResult`)
+  - [x] 8.1.9: Add logging for detection decisions (via `signals` array)
+  - [ ] 8.1.10: Write unit tests for each signal type (deferred)
 
-### Task 8.2: Integrate with runMcpFlow.ts
+### Task 8.2: Integrate with runMcpFlow.ts ✅
 - **File**: `src/lib/server/textGeneration/mcp/runMcpFlow.ts`
 - **Subtasks**:
-  - [ ] 8.2.1: Import `OutcomeDetectionService`
-  - [ ] 8.2.2: Analyze user message at start of each turn
-  - [ ] 8.2.3: Retrieve memories surfaced in previous turn
-  - [ ] 8.2.4: Record outcomes for surfaced memories based on detection
-  - [ ] 8.2.5: Add feature flag for outcome detection
-  - [ ] 8.2.6: Write integration tests
+  - [x] 8.2.1: Import `OutcomeDetector` from learning module
+  - [x] 8.2.2: Analyze user message at start of each turn (Phase 8 block ~line 543)
+  - [x] 8.2.3: Retrieve memories surfaced in previous turn via `getSurfacedMemories()`
+  - [x] 8.2.4: Record outcomes for surfaced memories based on detection
+  - [x] 8.2.5: Uses existing feature flag `outcomeEnabled` from `getMemoryFeatureFlags()`
+  - [ ] 8.2.6: Write integration tests (deferred)
 
-### Task 8.3: Store Surfaced Memory Context
+### Task 8.3: Store Surfaced Memory Context ✅
+- **File**: `src/lib/server/memory/learning/SurfacedMemoryTracker.ts` (NEW)
 - **Subtasks**:
-  - [ ] 8.3.1: Track which memories were surfaced in each turn
-  - [ ] 8.3.2: Store in conversation context for follow-up analysis
-  - [ ] 8.3.3: Clear after outcome recorded or timeout
-  - [ ] 8.3.4: Add TTL for surfaced memory tracking
+  - [x] 8.3.1: Track which memories were surfaced in each turn via `storeSurfacedMemories()`
+  - [x] 8.3.2: Store in MongoDB `surfaced_memories` collection with conversation_id
+  - [x] 8.3.3: Clear after outcome recorded via `clearSurfacedMemories()`
+  - [x] 8.3.4: Add TTL for surfaced memory tracking (1 hour auto-expiry via MongoDB TTL index)
+
+**Implementation Notes (2026-01-14)**:
+- Pre-existing `OutcomeDetector.ts` has comprehensive signal patterns (22 positive, 18 negative, 12 partial)
+- New `SurfacedMemoryTracker.ts` provides MongoDB-backed storage with TTL
+- Integration in `runMcpFlow.ts`:
+  1. At TURN START: Check for previous surfaced memories, analyze user message for feedback
+  2. If outcome detected (confidence >= 0.5): Record outcome for surfaced memories, clear tracker
+  3. At TURN END: Store current turn's surfaced memories for next turn analysis
+- Fire-and-forget pattern ensures no blocking of response generation
+- Respects feature flags: `systemEnabled` and `outcomeEnabled`
 
 ---
 
