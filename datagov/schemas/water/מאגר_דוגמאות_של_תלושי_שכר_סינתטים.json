@@ -1,0 +1,52 @@
+{
+  "dataset_id": "68ef7cee-df11-4f98-bd1d-e9b12ade4822",
+  "title": "מאגר דוגמאות של תלושי שכר סינתטים",
+  "organization": "מידע סינתטי ממשלתי",
+  "tags": [
+    "משכורת",
+    "תלוש שכר"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "משכורת",
+    "סינתטי",
+    "דוגמאות",
+    "שכר",
+    "סינתטים",
+    "תלוש",
+    "ממשלתי",
+    "תלושי"
+  ],
+  "resources": [
+    {
+      "resource_id": "19f6329b-2e7d-4da0-8a23-225599591b35",
+      "title": "סוג תלוש שכר ראשון - חבילה 1 -  קבצי PDF ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e64cec8b-39d9-4237-80d5-6221926a4b44",
+      "title": "סוג תלוש שכר ראשון - חבילה 2 - קבצי PDF",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e30455a2-9296-4257-8fed-b2bb2f51366f",
+      "title": "סוג תלוש שכר ראשון - חבילה 3 - קבצי PDF",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

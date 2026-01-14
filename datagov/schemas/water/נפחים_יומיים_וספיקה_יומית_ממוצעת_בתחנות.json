@@ -1,0 +1,204 @@
+{
+  "dataset_id": "e81d14bd-a81d-4de4-b1de-d7a0541ace02",
+  "title": "נפחים יומיים וספיקה יומית ממוצעת בתחנות",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "discharge",
+    "volume",
+    "water",
+    "הידרומטריה",
+    "מים",
+    "נפח",
+    "ספיקה",
+    "רשות המים",
+    "תחנה הידרומטרית"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "יומית",
+    "תחנה",
+    "מטר",
+    "רשות",
+    "הממשלתית",
+    "מים",
+    "נפח",
+    "volume",
+    "הידרולוגית",
+    "הידרומטריה",
+    "water",
+    "וספיקה",
+    "discharge",
+    "שניה",
+    "הידרומטרית",
+    "יומי",
+    "למים",
+    "נפחים",
+    "בתחנות",
+    "ספיקה",
+    "באנגלית",
+    "תאריך",
+    "הרשות",
+    "שנה",
+    "יומיים",
+    "ולביוב",
+    "קוב",
+    "ממוצעת",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "bb596622-12f3-43bb-8730-cf7d5fb734e2",
+      "title": "נפחים_יומיים_וספיקה_ממוצעת_בתחנות_עד 1960",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי תחנה הידרומטרית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם תחנה הידרומטרית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם תחנה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "נפח יומי (מ''ק)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ספיקה יומית ממוצעת (מ''ק/שניה)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנה הידרולוגית",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 58003
+    },
+    {
+      "resource_id": "0cffea1d-3213-4345-9dcc-0bd97820f3b7",
+      "title": "נפחים_יומיים_וספיקה_ממוצעת_בתחנות_1960 עד 1980",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי תחנה הידרומטרית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם תחנה הידרומטרית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם תחנה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "נפח יומי (מטר קוב)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ספיקה יומית ממוצעת (מטר קוב/שניה)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנה הידרולוגית",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 317285
+    },
+    {
+      "resource_id": "b2247803-ab8b-4103-a456-2508add0fe08",
+      "title": "נפחים_יומיים_וספיקה_ממוצעת_בתחנות_1980 עד 1990",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי תחנה הידרומטרית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם תחנה הידרומטרית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם תחנה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "נפח יומי (מ''ק)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ספיקה יומית ממוצעת (מ''ק/שניה)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנה הידרולוגית",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 259240
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

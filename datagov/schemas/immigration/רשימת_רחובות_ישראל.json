@@ -1,0 +1,79 @@
+{
+  "dataset_id": "d2581732-eca4-4988-b986-df8e791a1d60",
+  "title": "רשימת רחובות ישראל",
+  "organization": "רשות האוכלוסין וההגירה",
+  "tags": [
+    "אוכלוסיה",
+    "רחובות ישראל"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "ישראל",
+    "אוכלוסיה",
+    "ישוב",
+    "רשות",
+    "סמל",
+    "וההגירה",
+    "רחובות",
+    "האוכלוסין",
+    "רחוב"
+  ],
+  "resources": [
+    {
+      "resource_id": "9ad3862c-8391-4b2f-84a4-2d4c68625f4b",
+      "title": "רשימת רחובות בישראל - מתעדכן",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל_ישוב",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_ישוב",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סמל_רחוב",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "שם_רחוב",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 62961
+    },
+    {
+      "resource_id": "d04feead-6431-427f-81bc-d6a24151c1fb",
+      "title": "רשימת רחובות ישראל - מתעדכן",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "4bc8ec43-08dd-4dc3-a6ab-bd52e137fb8c",
+      "title": "רשימת רחובות ישראל",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

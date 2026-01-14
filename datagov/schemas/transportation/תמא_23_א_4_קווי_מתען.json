@@ -1,0 +1,105 @@
+{
+  "dataset_id": "dfd705c9-5c9c-4439-a947-b05717830616",
+  "title": "תמ\"א 23_א_4 - קווי מתע\"ן",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "מטרופולין תל אביב",
+    "ממג",
+    "מתען",
+    "קווים",
+    "תמא 23 א 4"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "קווי",
+    "ממג",
+    "תמא",
+    "objectid",
+    "gis",
+    "אביב",
+    "מתע",
+    "בדרכים",
+    "מטרופולין",
+    "קווים",
+    "והבטיחות",
+    "משרד",
+    "length",
+    "מתען",
+    "חצב",
+    "shape",
+    "dir",
+    "line",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "9451dc6f-da70-47f0-a576-334c25e1a4c5",
+      "title": "TMA_23A4_LINES_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "83b44dbc-785a-49e3-b49c-bfe169a35a26",
+      "title": "TMA_23A4_LINES_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "556cb2f9-5b71-4041-a460-922bf05b91b1",
+      "title": "TMA_23A4_LINES_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "LENGTH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DIR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LINE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 44
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

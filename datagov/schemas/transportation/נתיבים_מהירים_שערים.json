@@ -1,0 +1,139 @@
+{
+  "dataset_id": "00dfc38e-f58d-440a-97ba-e2b0876215c1",
+  "title": "נתיבים מהירים - שערים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "ממג",
+    "נתיב מהיר",
+    "שערים"
+  ],
+  "categories": [
+    "transportation",
+    "finance",
+    "geography"
+  ],
+  "keywords": [
+    "ממג",
+    "gis",
+    "remarks",
+    "נתיב",
+    "distance",
+    "נתיבים",
+    "בדרכים",
+    "שערים",
+    "gatename",
+    "והבטיחות",
+    "משרד",
+    "gatecode",
+    "lengt",
+    "חצב",
+    "entrance",
+    "yearmonth",
+    "shape",
+    "oid",
+    "מהירים",
+    "exit",
+    "location",
+    "length",
+    "מהיר",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "824932e4-ce36-403d-9e77-44e2bd51b500",
+      "title": "FAST_LANE_GATE_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e3b2a3dd-76c3-42d9-a3aa-59eed0e3824c",
+      "title": "FAST_LANE_GATE_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "54707a2b-6e5c-41b5-8f5b-81c7d1c94f4d",
+      "title": "FAST_LANE_GATE_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "GATECODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "GATENAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LOCATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DISTANCE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DISTANCE2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ENTRANCE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "EXIT",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "REMARKS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 28
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "dataset_id": "2874fdfc-d8a7-4c37-8f54-bd5734c9af85",
+  "title": "נתוני כלי טיס ישראליים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משרד התחבורה",
+    "תחבורה",
+    "תעופה אזרחית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תחבורה",
+    "sidori",
+    "התחבורה",
+    "shm",
+    "בדרכים",
+    "shnt",
+    "והבטיחות",
+    "כלי",
+    "expr",
+    "אזרחית",
+    "mspr",
+    "משרד",
+    "flight",
+    "iitzor",
+    "mtos",
+    "dgm",
+    "טיס",
+    "weight",
+    "itzrn",
+    "תעופה",
+    "ישראליים"
+  ],
+  "resources": [
+    {
+      "resource_id": "bc00ed41-75d0-4d0f-9eca-3cd0a2c332cc",
+      "title": "מאגר נתוני כלי טיס ישראליים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Expr1",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "SHM_DGM_MTOS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHM_ITZRN_MTOS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MSPR_SIDORI_MTOS",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "SHNT_IITZOR_MTOS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FLIGHT_WEIGHT_KG",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 547
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

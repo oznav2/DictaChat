@@ -1,0 +1,76 @@
+{
+  "dataset_id": "06dcb954-d26b-4faf-8bfe-dd1e4cc3636a",
+  "title": "מרכזי חונכות ללימודי מדעים",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "מדע"
+  ],
+  "categories": [
+    "welfare",
+    "technology"
+  ],
+  "keywords": [
+    "חונכות",
+    "מדע",
+    "החדשנות",
+    "מוסד",
+    "האחראי",
+    "מרכזי",
+    "טלפון",
+    "משרד",
+    "ללימודי",
+    "דואר",
+    "המדע",
+    "אלקטרוני",
+    "תפקיד",
+    "מדעים",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "ac596ca9-43d3-4321-a6a7-2f0f66560921",
+      "title": "מרכזי פר\"ח לחונכות מדעים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מוסד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם האחראי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תפקיד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 16
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": true,
+    "has_date": false
+  }
+}

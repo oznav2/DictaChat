@@ -1,0 +1,125 @@
+{
+  "dataset_id": "c746650e-b4ba-479f-b71c-7b6662b16b85",
+  "title": "רכבת כבדה - תכנית אסטרטגית - תחנות",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2040",
+    "GIS",
+    "חצב",
+    "ממג",
+    "רכבת",
+    "רכבת כבדה",
+    "תחנות",
+    "תכנית אסטרטגית"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "רכבת",
+    "ממג",
+    "objectid",
+    "תכנית",
+    "בדרכים",
+    "משרד",
+    "stat",
+    "code",
+    "off",
+    "year",
+    "והבטיחות",
+    "אסטרטגית",
+    "gis",
+    "חצב",
+    "כבדה",
+    "תחנות",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c63c380a-0828-4a74-9091-127da3cf623d",
+      "title": "RAIL_STRAT_STATION_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1f388c24-863a-4675-ace1-24cb931389da",
+      "title": "RAIL_STRAT_STATION_KML",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "f527e357-4847-4565-9dc4-b55f21d6c3b6",
+      "title": "RAIL_STRAT_STATION_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "STAT_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "STAT_CODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ON_0700",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OFF_0700",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ON_1700",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OFF_1700",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "YEAR",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 60
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

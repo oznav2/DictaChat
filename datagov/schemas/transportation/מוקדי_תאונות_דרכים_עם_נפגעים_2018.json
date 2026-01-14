@@ -1,0 +1,40 @@
+{
+  "dataset_id": "b6a25259-a004-4870-924f-29f50aee9813",
+  "title": "מוקדי תאונות דרכים עם נפגעים 2018",
+  "organization": "הלשכה המרכזית לסטטיסטיקה",
+  "tags": [
+    "תאונות דרכים",
+    "תאונות דרכים עם נפגים",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "מוקדי",
+    "תחבורה",
+    "נפגעים",
+    "הלשכה",
+    "המרכזית",
+    "לסטטיסטיקה",
+    "תאונות",
+    "נפגים",
+    "דרכים"
+  ],
+  "resources": [
+    {
+      "resource_id": "0fd6107d-bd2d-4c36-b1fc-7a2daabdee86",
+      "title": "מוקדי תאונות דרכים עם נפגעים 2018",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

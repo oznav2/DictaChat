@@ -1,0 +1,119 @@
+{
+  "dataset_id": "f10f7f97-7a1a-4516-9549-3f7025af5768",
+  "title": "קווי מטרו",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "METRO",
+    "הסעת המונים",
+    "מטרו",
+    "מטרופולין תל אביב",
+    "ממג",
+    "קווים"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "קווי",
+    "הסעת",
+    "ממג",
+    "objectid",
+    "gis",
+    "metro",
+    "אביב",
+    "מטרו",
+    "בדרכים",
+    "מטרופולין",
+    "קווים",
+    "והבטיחות",
+    "leng",
+    "המונים",
+    "משרד",
+    "lengt",
+    "yearmonth",
+    "shape",
+    "oid",
+    "descrption",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "ed60769d-a772-4894-860a-db289f21e612",
+      "title": "METRO_LINE_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "82b85a1b-0e8e-455a-8575-89e3eb8452d0",
+      "title": "METRO_LINE_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "438c4cc5-a3aa-4db1-b203-525c52535259",
+      "title": "METRO_LINE_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "DESCRPTION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Leng",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 4
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

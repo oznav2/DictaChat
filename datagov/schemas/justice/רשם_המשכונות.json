@@ -1,0 +1,94 @@
+{
+  "dataset_id": "3111ae54-790a-4d02-9750-d51e1134b405",
+  "title": "רשם המשכונות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משכונות",
+    "משרד המשפטים",
+    "רשם החברות"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "סטטוס",
+    "סיבת",
+    "רישום",
+    "משכון",
+    "רשם",
+    "משרד",
+    "מזהה",
+    "משכונות",
+    "תאריך",
+    "הנכס",
+    "החברות",
+    "הסרת",
+    "המשכונות",
+    "המשפטים",
+    "נכס"
+  ],
+  "resources": [
+    {
+      "resource_id": "e7266a9c-fed6-40e4-a28e-8cddc9f44842",
+      "title": "תצוגת משכונות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מזהה משכון",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "תאריך רישום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סטטוס רישום",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך סיבת סטטוס",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך סטטוס",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך רישום נכס",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך הסרת הנכס",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 8073625
+    },
+    {
+      "resource_id": "5779affe-3204-45c8-b31c-690a4f80b66e",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "dataset_id": "8a9e4f2e-4dbb-428a-8e70-3f76cdcb18c1",
+  "title": "מרכזי מידע לקבלת קהל - הרשות לזכויות ניצולי השואה",
+  "organization": "הרשות לזכויות ניצולי השואה",
+  "tags": [
+    "זכויות ניצולי שואה",
+    "לשכות",
+    "ניצולי שואה",
+    "קבלת קהל"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "קבלת",
+    "ניצולי",
+    "time",
+    "לשכות",
+    "fax",
+    "לזכויות",
+    "answer",
+    "activity",
+    "זכויות",
+    "areas",
+    "השואה",
+    "שואה",
+    "more",
+    "קהל",
+    "accessibility",
+    "הרשות",
+    "days",
+    "מרכזי",
+    "branch",
+    "telephone",
+    "לקבלת",
+    "address",
+    "service",
+    "info"
+  ],
+  "resources": [
+    {
+      "resource_id": "1c7024a4-f24f-4ab0-a012-0477aac27925",
+      "title": "מרכזי מידע ושירות - הרשות לזכויות ניצולי השואה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Branch name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Service areas",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Telephone Answer",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Activity days",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Activity time",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Accessibility",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "More info",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 24
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

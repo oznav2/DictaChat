@@ -1,0 +1,88 @@
+{
+  "dataset_id": "82595665-709c-4bb7-b542-1e13ec543784",
+  "title": "תמונה חינוכית גיוס והתנדבות ברשויות תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "רשויות_מקומיות",
+    "תמונה_חינוכית"
+  ],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "רשויות",
+    "התנדבות",
+    "גיוס",
+    "ברשויות",
+    "חינוך",
+    "גברים",
+    "נשים",
+    "משרד",
+    "החינוך",
+    "רשות",
+    "סמל",
+    "והתנדבות",
+    "תמונה",
+    "חינוכית",
+    "תשע",
+    "מקומיות"
+  ],
+  "resources": [
+    {
+      "resource_id": "98610232-8233-4319-b9d8-550064149e26",
+      "title": "תמונה חינוכית גיוס והתנדבות ברשויות תשע\"ו",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שנת גיוס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גיוס גברים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גיוס נשים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "התנדבות גברים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "התנדבות נשים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 0
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

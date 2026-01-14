@@ -1,0 +1,97 @@
+{
+  "dataset_id": "df3b0e8d-b76a-4186-a6e1-df8eada5ef27",
+  "title": "אשכול כלכלי חברתי של מועצות מקומיות ויישובים לשנת 2019",
+  "organization": "מערך הדיגיטל הלאומי",
+  "tags": [
+    "אשכול",
+    "אשכולות",
+    "חברתי כלכלי",
+    "יישוב",
+    "יישובים",
+    "מועצה",
+    "מועצה אזור",
+    "מועצות אזוריות",
+    "סוציו אקונומי"
+  ],
+  "categories": [
+    "municipal"
+  ],
+  "keywords": [
+    "אשכול",
+    "ויישובים",
+    "סוציו",
+    "name",
+    "symbol",
+    "אקונומי",
+    "הדיגיטל",
+    "regional",
+    "מקומיות",
+    "locality",
+    "הלאומי",
+    "אשכולות",
+    "אזור",
+    "מועצה",
+    "eshkol",
+    "יישובים",
+    "חברתי",
+    "אזוריות",
+    "מועצות",
+    "hebrew",
+    "יישוב",
+    "מערך",
+    "council",
+    "כלכלי"
+  ],
+  "resources": [
+    {
+      "resource_id": "7c860e04-9f8d-41c2-9f24-6249958d2081",
+      "title": "אשכול חברתי כלכלי של יישובים ומועצות 2019",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "HEBREW NAME OF REGIONAL COUNCIL",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "NAME OF REGIONAL COUNCIL",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "ESHKOL 2019",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LOCALITY SYMBOL",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "HEBREW NAME OF LOCALITY",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NAME OF LOCALITY",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 995
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

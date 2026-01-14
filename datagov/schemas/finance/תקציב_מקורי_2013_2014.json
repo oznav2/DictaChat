@@ -1,0 +1,41 @@
+{
+  "dataset_id": "52c90d61-5957-4818-b8d3-67fbe6d5ef8e",
+  "title": "תקציב מקורי 2013-2014",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אוצר וכלכלה",
+    "משרד האוצר",
+    "תקציב 2013",
+    "תקציב 2014",
+    "תקציב המדינה"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "תקציב",
+    "וכלכלה",
+    "משרד",
+    "המדינה",
+    "מקורי",
+    "אוצר",
+    "האוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "c722f073-8a71-4e5a-b2d1-f9a8870a17ba",
+      "title": "תקציב מקורי 2013-2014",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

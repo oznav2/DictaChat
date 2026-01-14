@@ -1,0 +1,158 @@
+{
+  "dataset_id": "62c54ef6-49f1-4b5f-bd1e-1e88a5955acd",
+  "title": "serologiclabs",
+  "organization": "משרד הבריאות",
+  "tags": [],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "phone",
+    "comments",
+    "code",
+    "משרד",
+    "availability",
+    "hospital",
+    "city",
+    "הבריאות",
+    "serologiclabs"
+  ],
+  "resources": [
+    {
+      "resource_id": "b3c89abc-8e86-4abd-a4f3-a33ebee9fc07",
+      "title": "מעבדות המבצעות בדיקות סרולוגיות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "city_code",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "comments",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "availability",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "hospital",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 32
+    },
+    {
+      "resource_id": "9c094734-119d-47db-a022-02d9fdf5f892",
+      "title": "מעבדות המבצעות בדיקות סרולוגיות (רוסית)",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "city_code",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "comments",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "availability",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "hospital",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 32
+    },
+    {
+      "resource_id": "46d04335-06c4-4932-af81-76a88f47832d",
+      "title": "מעבדות המבצעות בדיקות סרולוגיות (אנגלית)",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "city_code",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "comments",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "availability",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "hospital",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 32
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "dataset_id": "cdf9e0fa-dd46-48fc-9ab1-29fe35c52b70",
+  "title": "תצלום אויר 2015 2 מטר - גליון מצפה שלם",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "שלם",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "מצפה",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "a746785c-1881-433e-bc0b-f930885f9620",
+      "title": "תצלום אויר 2015 2 מטר - גליון מצפה שלם",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

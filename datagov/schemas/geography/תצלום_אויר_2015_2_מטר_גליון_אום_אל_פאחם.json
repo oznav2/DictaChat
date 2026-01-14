@@ -1,0 +1,36 @@
+{
+  "dataset_id": "e2c3494e-d11b-4d2d-a516-647ff4d03fe6",
+  "title": "תצלום אויר 2015 2 מטר - גליון אום אל פאחם",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "פאחם",
+    "המרכז",
+    "למיפוי",
+    "מטר",
+    "ישראל",
+    "אום",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "0e94d275-6f9b-4d0e-a370-640a78fa3066",
+      "title": "תצלום אויר 2015 2 מטר - גליון אום אל פאחם",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

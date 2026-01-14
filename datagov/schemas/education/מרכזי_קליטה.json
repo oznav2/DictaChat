@@ -1,0 +1,82 @@
+{
+  "dataset_id": "0bd72580-dee5-4a46-924c-9deff3447b41",
+  "title": "מרכזי קליטה",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "ארצות מוצא",
+    "חינוך",
+    "עולים חדשים",
+    "קהילה"
+  ],
+  "categories": [
+    "education",
+    "water",
+    "immigration"
+  ],
+  "keywords": [
+    "objectid",
+    "nam",
+    "מרכזי",
+    "חינוך",
+    "location",
+    "מוצא",
+    "ארצות",
+    "אדומים",
+    "עיריית",
+    "עולים",
+    "layer",
+    "emergency",
+    "קליטה",
+    "חדשים",
+    "מעלה",
+    "street",
+    "קהילה"
+  ],
+  "resources": [
+    {
+      "resource_id": "f03cb415-7df9-4ecd-a4f6-23de70623400",
+      "title": "מרכז קליטה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "LAYER",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STREET_NAM",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Emergency_",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Location",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 7
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

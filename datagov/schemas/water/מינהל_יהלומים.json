@@ -1,0 +1,65 @@
+{
+  "dataset_id": "1a1e70b4-4ae9-4cf2-ade7-e1bdac1b343b",
+  "title": "מינהל יהלומים",
+  "organization": "משרד הכלכלה והתעשייה",
+  "tags": [
+    "יהלומנים",
+    "כלכלה"
+  ],
+  "categories": [
+    "water",
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "יהלומנים",
+    "יהלומים",
+    "status",
+    "מינהל",
+    "license",
+    "משרד",
+    "type",
+    "הכלכלה",
+    "diamond",
+    "והתעשייה",
+    "dealer",
+    "כלכלה"
+  ],
+  "resources": [
+    {
+      "resource_id": "7a0727d5-17cf-4457-a5e2-ff6e07234347",
+      "title": "רשימת יהלומנים וסטטוס הרישיון",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "diamond_dealer_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "license_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 7464
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "dataset_id": "27e224de-d029-4765-9d74-62f871f2b4bb",
+  "title": "דרגות והיתרי רישיון נהיגה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משרד התחבורה",
+    "נהיגה",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "minimalagedriving",
+    "תחבורה",
+    "prerank",
+    "automaticgreenroad",
+    "tab",
+    "eyestests",
+    "characternumber",
+    "minimalagelicense",
+    "בדרכים",
+    "shortname",
+    "והבטיחות",
+    "confidentialregistration",
+    "rank",
+    "licensetype",
+    "רישיון",
+    "משרד",
+    "minimalagetest",
+    "type",
+    "rankseniority",
+    "criminalrecord",
+    "medicalstatment",
+    "moredocuments",
+    "minimalagetheory",
+    "licenseterms",
+    "minimallessons",
+    "נהיגה",
+    "והיתרי",
+    "התחבורה",
+    "דרגות"
+  ],
+  "resources": [
+    {
+      "resource_id": "c680ada6-9af1-47ab-9acf-d6585df6ad47",
+      "title": "מאגר דרגות והיתרי רישיון נהיגה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Rank",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LicenseType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ShortName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "CharacterNumber",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "MinimalAgeTheory",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MinimalAgeDriving",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MinimalAgeTest",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MinimalAgeLicense",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MinimalLessons",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MoreDocuments",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LicenseTerms",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PreRank",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "RankSeniority",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "EyesTests",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MedicalStatment",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TAB",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AutomaticGreenRoad",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ConfidentialRegistration",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "CriminalRecord",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 27
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

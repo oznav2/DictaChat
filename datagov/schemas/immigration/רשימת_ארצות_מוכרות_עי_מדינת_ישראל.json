@@ -1,0 +1,106 @@
+{
+  "dataset_id": "7c27e23b-86f1-44ee-9d9b-4f8880ca0973",
+  "title": "רשימת ארצות מוכרות ע\"י מדינת ישראל",
+  "organization": "רשות האוכלוסין וההגירה",
+  "tags": [
+    "אוכלוסיה",
+    "ארצות",
+    "ארצות מוכרות",
+    "מדינות"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "באנגלית",
+    "ישראל",
+    "אוכלוסיה",
+    "ארצות",
+    "טבלה",
+    "רשות",
+    "סמל",
+    "מדינות",
+    "ארץ",
+    "וההגירה",
+    "מדינת",
+    "האוכלוסין",
+    "מוכרות"
+  ],
+  "resources": [
+    {
+      "resource_id": "148ccf20-a2ce-458c-8ef3-f7e92e2184eb",
+      "title": "רשימת ארצות מוכרות ע\"י מדינת ישראל - מתעדכן",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "c84082e9-7d45-4853-9a95-e7eaad7f66d5",
+      "title": "רשימת ארצות מוכרות ע\"י מדינת ישראל - מתעדכן",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל_ארץ",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_ארץ",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ארץ_באנגלית",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 262
+    },
+    {
+      "resource_id": "65cc0bc5-0b4a-4c13-a510-796cd62c64d7",
+      "title": "רשימת ארצות מוכרות ע\"י מדינת ישראל",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "טבלה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סמל_ארץ",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_ארץ",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ארץ_באנגלית",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 254
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

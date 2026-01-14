@@ -1,0 +1,102 @@
+{
+  "dataset_id": "73ef7f39-c5b4-4fe1-9803-e51b8c8121c0",
+  "title": "פרויקטים לביצוע תשתיות ביוב עירוניות, אזוריות ומט\"שים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "ביוב",
+    "רשות המים",
+    "תשתיות"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "תיאור",
+    "שים",
+    "עירוניות",
+    "רשות",
+    "ביוב",
+    "ומט",
+    "הממשלתית",
+    "לביצוע",
+    "קצר",
+    "תשתיות",
+    "שיפוט",
+    "עלות",
+    "מועצה",
+    "תאגיד",
+    "מתכנן",
+    "למים",
+    "הפרויקט",
+    "יזם",
+    "אזוריות",
+    "תאריך",
+    "סטטוס",
+    "הרשות",
+    "ולביוב",
+    "המים",
+    "פרויקטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "8f0e5d1c-d167-4592-aa2f-d8047936d783",
+      "title": "ריכוז ועדות שיפוט 2022",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מס'",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יזם תאגיד/מועצה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם \nהפרויקט",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תיאור קצר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך \nשיפוט",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "מתכנן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עלות (₪)",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "סטטוס",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 64
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

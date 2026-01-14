@@ -1,0 +1,108 @@
+{
+  "dataset_id": "1b885bab-5486-4a12-8bd8-c0c262ea482e",
+  "title": "מסגרות לטיפול בהתמכרויות",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "finance",
+    "welfare"
+  ],
+  "keywords": [
+    "misgeret",
+    "בהתמכרויות",
+    "לטיפול",
+    "telephone",
+    "משרד",
+    "adress",
+    "type",
+    "manager",
+    "district",
+    "city",
+    "population",
+    "מסגרות",
+    "semel",
+    "הרווחה",
+    "owner",
+    "החברתי",
+    "והביטחון"
+  ],
+  "resources": [
+    {
+      "resource_id": "cb68a64a-a0d5-4f08-a2a5-75ce95d880a6",
+      "title": "מסגרות לטיפול בהתמכרויות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "misgeret",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "semel",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "owner",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "population",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 335
+    },
+    {
+      "resource_id": "fa2303d1-56ed-4eae-aa79-3b9334efb33e",
+      "title": "הסבר מבנה הנתונים בקובץ מסגרות לטיפול בהתמכרויות ",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

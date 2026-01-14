@@ -1,0 +1,122 @@
+{
+  "dataset_id": "e74cc3c7-79af-47af-9754-74d6533be493",
+  "title": "בדיקת ישימות למתע\"ן בנפת אשקלון 2050",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "דרכים בין עירוניות",
+    "הסעת המונים",
+    "חצב",
+    "תחבורה ציבורית",
+    "תכנית אב",
+    "תנועה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "name",
+    "הסעת",
+    "status",
+    "תחבורה",
+    "בנפת",
+    "עירוניות",
+    "דרכים",
+    "company",
+    "בדרכים",
+    "והבטיחות",
+    "אשקלון",
+    "המונים",
+    "בדיקת",
+    "תנועה",
+    "משרד",
+    "lengt",
+    "למתע",
+    "חצב",
+    "line",
+    "ציבורית",
+    "shape",
+    "yearmonth",
+    "oid",
+    "בין",
+    "תכנית",
+    "length",
+    "ישימות",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "4bb9c324-d9de-48e9-b17b-37ca5f7810fd",
+      "title": "MATAAN_ASHKELON_APP_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "fc178f7f-2485-470a-9c01-58f719560d44",
+      "title": "MATAAN_ASHKELON_APP_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d2c09ef5-2f8c-4c16-9be3-2a94d75e4d08",
+      "title": "MATAAN_ASHKELON_APP_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "LINE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "COMPANY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 5
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

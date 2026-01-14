@@ -1,0 +1,291 @@
+{
+  "dataset_id": "770967cf-e9df-4464-ac55-ff2253204c79",
+  "title": "אמינות קווים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אוטובוסים",
+    "משרד התחבורה",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "bakara",
+    "תחבורה",
+    "one",
+    "analysis",
+    "stationversion",
+    "makat",
+    "next",
+    "time",
+    "prop",
+    "quantile",
+    "alternative",
+    "used",
+    "אמינות",
+    "בדרכים",
+    "cityname",
+    "travel",
+    "lines",
+    "speed",
+    "month",
+    "dif",
+    "קווים",
+    "והבטיחות",
+    "rishui",
+    "אוטובוסים",
+    "slope",
+    "number",
+    "direction",
+    "cluster",
+    "late",
+    "clustername",
+    "rank",
+    "stopcode",
+    "משרד",
+    "mean",
+    "stop",
+    "week",
+    "stopname",
+    "unique",
+    "departure",
+    "ציבורית",
+    "stopsequence",
+    "percentage",
+    "kav",
+    "trips",
+    "routeshortname",
+    "tikufim",
+    "day",
+    "color",
+    "bitzua",
+    "year",
+    "average",
+    "for",
+    "dist",
+    "median",
+    "line",
+    "clusterid",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "6032ad57-3667-401e-9561-11f7e3b88581",
+      "title": "קובץ אמינות קווים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "month_year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "CityName",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "ClusterId",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ClusterName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "day_time",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "unique_line",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "StationVersion",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "RouteShortName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Direction",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Alternative",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "makat_kav",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "StopSequence",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "StopCode",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "StopName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "prop_in_time",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "number_of_trips_used_for_analysis",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "dist_to_next_stop",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "average_time_travel_to_next_stop",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "median_time_travel_to_next_stop",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "quantile_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "quantile_25",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "quantile_75",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "quantile_100",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "speed_to_next_stop",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "average_speed",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sd_dif",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sd_mean",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sd_dif_mean",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sd_dif_prop",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "color_stop",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "slope",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "rank",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "number_of_unique_lines_in_cluster",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "tikufim_in_one_week",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "e_bitzua_percentage",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "bakara_late_departure_percentage",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "number_of_rishui_trips_in_one_week",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 2151619
+    },
+    {
+      "resource_id": "12922796-aace-4f48-9759-f2cf7aeb4bd8",
+      "title": "אמינות קווים – הבהרות",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

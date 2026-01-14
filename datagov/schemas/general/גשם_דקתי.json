@@ -1,0 +1,119 @@
+{
+  "dataset_id": "2f46af1f-9b38-4268-a358-9e69d48bd072",
+  "title": "גשם דקתי",
+  "organization": "השירות המטאורולוגי",
+  "tags": [
+    "אקלים",
+    "גשם",
+    "תחנות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "station",
+    "min",
+    "rain",
+    "דקתי",
+    "השירות",
+    "calibrated",
+    "date",
+    "גשם",
+    "המטאורולוגי",
+    "תחנות",
+    "time",
+    "אקלים"
+  ],
+  "resources": [
+    {
+      "resource_id": "9fe6501d-48bd-4c8b-90bd-4cece99e8907",
+      "title": "רשימת תחנות גשם דקתי ונוסחת היצרן של מד הגשם לתיקון הערכים",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "4bf14a6e-a767-41f6-8d66-7d40e17b2e6d",
+      "title": "Haifa_Port_29012009_13062011",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Station",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Time",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Rain (mm/1min)",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Calibrated Rain (mm/1min)",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 6565
+    },
+    {
+      "resource_id": "642f3b1b-6b5b-495c-afee-39c482c1f791",
+      "title": "Merhavia_02032009_14042017",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Station",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Time",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Rain (mm/1min)",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Calibrated Rain (mm/1min)",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 118957
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "dataset_id": "065122d7-f0f8-43a6-9cab-4ef6c4b6b790",
+  "title": "מלאי תכנוני למגורים",
+  "organization": "רשות מקרקעי ישראל",
+  "tags": [
+    "דיור",
+    "רשות מקרקעי ישראל"
+  ],
+  "categories": [
+    "housing"
+  ],
+  "keywords": [
+    "מקרקעי",
+    "רשות",
+    "לאישור",
+    "פוטנציאל",
+    "תנאי",
+    "דיור",
+    "למגורים",
+    "שלב",
+    "מפתח",
+    "להפקדה",
+    "קישור",
+    "תכנוני",
+    "מנהל",
+    "פרסום",
+    "מלאי",
+    "לפוליגון",
+    "קיום",
+    "תוכנית",
+    "לאתר",
+    "תכנון",
+    "סמל",
+    "יזם",
+    "תאריך",
+    "ברשומות",
+    "ישראל",
+    "תכנית",
+    "יישוב",
+    "לשיווק",
+    "יחד"
+  ],
+  "resources": [
+    {
+      "resource_id": "99aad98f-2b54-4eea-834d-650b56389bf3",
+      "title": "מלאי תכנוני",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מפתח לפוליגון תכנית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מספר תוכנית",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "שם תוכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שלב תכנוני",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "יזם תכנון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סמל יישוב",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "יישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "תאריך קיום תנאי סף",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך פרסום להפקדה ברשומות",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך פרסום לאישור ברשומות",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "קישור לאתר רשות מקרקעי ישראל",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "קישור לאתר מנהל תכנון",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "יחד פוטנציאל לשיווק",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1112
+    },
+    {
+      "resource_id": "433ea7ac-3cdd-4a2f-b011-1793064a842b",
+      "title": "שכבה גיאוגרפית GIS",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "54983800-0668-45aa-993b-264d3fa0cfe8",
+      "title": "מונחון הסבר",
+      "format": "DOCX",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

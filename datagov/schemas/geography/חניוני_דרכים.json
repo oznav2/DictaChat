@@ -1,0 +1,124 @@
+{
+  "dataset_id": "0fd467b9-63fd-4842-a0f4-c8947693be18",
+  "title": "חניוני דרכים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "המרכז למיפוי ישראל"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ver",
+    "חניוני",
+    "המרכז",
+    "ord",
+    "uniq",
+    "למיפוי",
+    "דרכים",
+    "latin",
+    "fcode",
+    "setl",
+    "data",
+    "code",
+    "type",
+    "usg",
+    "ישראל",
+    "year",
+    "prdct",
+    "group"
+  ],
+  "resources": [
+    {
+      "resource_id": "29a0b37e-65d6-4860-9d01-2d8bcc60682a",
+      "title": "שכבת חניוני דרכים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "UNIQ_ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "FCODE_TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SETL_CODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "SETL_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LATIN_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "USG_GROUP",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "USG_CODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "E_ORD",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "N_ORD",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DATA_YEAR",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PRDCT_VER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 166
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

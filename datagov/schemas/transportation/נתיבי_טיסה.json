@@ -1,0 +1,92 @@
+{
+  "dataset_id": "360fb8b4-ea71-4485-b80b-c5b996d25cae",
+  "title": "נתיבי טיסה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "CVFR",
+    "GIS",
+    "חצב",
+    "ממג",
+    "נתיבי טיסה",
+    "תעופה אזרחית"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "shape",
+    "area",
+    "cvfr",
+    "ממג",
+    "oid",
+    "אזרחית",
+    "בדרכים",
+    "משרד",
+    "נתיבי",
+    "leng",
+    "והבטיחות",
+    "gis",
+    "חצב",
+    "טיסה",
+    "length",
+    "תעופה",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "e5436712-2829-4079-982f-576195277766",
+      "title": "CVFR_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "675eb378-b9fe-4f1c-8329-1341d85d78ea",
+      "title": "CVFR_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "3811ad6d-ee91-4d18-87b4-c2f672f03a6a",
+      "title": "CVFR_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Shape_Leng",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

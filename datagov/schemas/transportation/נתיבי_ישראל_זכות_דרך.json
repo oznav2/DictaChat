@@ -1,0 +1,95 @@
+{
+  "dataset_id": "b5b76cd1-ba4a-4384-aa96-97241dbe37ee",
+  "title": "נתיבי ישראל - זכות דרך",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "דרך",
+    "זכות דרך",
+    "ממג",
+    "נתיבי ישראל"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "shape",
+    "דרך",
+    "area",
+    "ממג",
+    "oid",
+    "status",
+    "ישראל",
+    "בדרכים",
+    "משרד",
+    "נתיבי",
+    "והבטיחות",
+    "gis",
+    "זכות",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "86f8aa5a-975b-4937-9c41-d8e12630e3b7",
+      "title": "nti_zhut_dereh_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "85650759-b573-4ce2-ba6c-057dc17522f2",
+      "title": "NTI_ZHUT_DEREH_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "25a1c308-353a-4fda-800b-4ae13e82d61a",
+      "title": "NTI_ZHUT_DEREH_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 7438
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

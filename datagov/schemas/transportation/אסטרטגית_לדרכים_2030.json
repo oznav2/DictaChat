@@ -1,0 +1,121 @@
+{
+  "dataset_id": "b7893079-7781-4e49-a8ef-df45ea1d2a1e",
+  "title": "אסטרטגית לדרכים 2030",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "makat",
+    "אסטרטגית",
+    "לדרכים",
+    "בדרכים",
+    "level",
+    "והבטיחות",
+    "roadnumber",
+    "numlane",
+    "toll",
+    "new",
+    "משרד",
+    "ptl",
+    "district",
+    "fid",
+    "totl",
+    "shape",
+    "oid",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "8d312537-7009-494d-b247-acd19cddfa95",
+      "title": "ROAD_STRAT_2030_zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "be806da4-2cf4-4d3b-b7bb-c981128c948c",
+      "title": "ROAD_STRAT_2030_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "f6f88fa4-877a-41f1-b27a-52559672ab72",
+      "title": "ROAD_STRAT_2030_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "FID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ROADNUMBER",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "DISTRICT",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "LEVEL_30",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TOTL_30",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NUMLANE_30",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PTL_30",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TOLL_30",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MAKAT_NEW",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 2292
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

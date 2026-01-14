@@ -1,0 +1,37 @@
+{
+  "dataset_id": "1f15294c-bd73-47bc-b068-be5ae5c308ac",
+  "title": "List of Licencees",
+  "organization": "רשות ניירות ערך",
+  "tags": [
+    "אוצר וכלכלה"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "ערך",
+    "וכלכלה",
+    "ניירות",
+    "רשות",
+    "licencees",
+    "אוצר",
+    "list"
+  ],
+  "resources": [
+    {
+      "resource_id": "cdcb57e4-67b2-4bf4-ae16-781f37c69ff7",
+      "title": "List of Licencees ",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

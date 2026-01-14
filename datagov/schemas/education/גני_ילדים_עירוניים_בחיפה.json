@@ -1,0 +1,47 @@
+{
+  "dataset_id": "c1ce86ca-c904-4e57-98c5-0ca14e6c2d2c",
+  "title": "גני ילדים עירוניים בחיפה",
+  "organization": "עיריית חיפה",
+  "tags": [
+    "אוכלוסיה",
+    "חינוך ותרבות"
+  ],
+  "categories": [
+    "education",
+    "welfare",
+    "culture"
+  ],
+  "keywords": [
+    "עירוניים",
+    "אוכלוסיה",
+    "חינוך",
+    "עיריית",
+    "בחיפה",
+    "חיפה",
+    "ותרבות",
+    "גני",
+    "ילדים"
+  ],
+  "resources": [
+    {
+      "resource_id": "e0d2197e-fe2e-4a3e-be34-359c0c540367",
+      "title": "גני ילדים עירוניים בחיפה",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 0
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

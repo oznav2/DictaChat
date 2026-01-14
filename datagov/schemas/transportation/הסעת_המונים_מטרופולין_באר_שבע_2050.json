@@ -1,0 +1,115 @@
+{
+  "dataset_id": "51d55e38-f192-4af3-9b77-f65108c6e1fd",
+  "title": "הסעת המונים מטרופולין באר שבע - 2050",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "באר שבע",
+    "דרכים בין עירוניות",
+    "הסעת המונים",
+    "חצב",
+    "תחבורה ציבורית",
+    "תכנית אב",
+    "תנועה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "name",
+    "הסעת",
+    "status",
+    "תחבורה",
+    "start",
+    "עירוניות",
+    "שבע",
+    "destnation",
+    "דרכים",
+    "comp",
+    "בדרכים",
+    "מטרופולין",
+    "והבטיחות",
+    "המונים",
+    "תנועה",
+    "משרד",
+    "חצב",
+    "ציבורית",
+    "shape",
+    "באר",
+    "oid",
+    "בין",
+    "תכנית",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "f243a1c4-40cd-45e5-b9da-ff39e4412401",
+      "title": "MATAAN_BRSHVA_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "ff279e10-04b3-4704-bfa1-f6259324cecd",
+      "title": "MATAAN_BRSHVA_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "cbceb2be-59fa-48bd-859c-cacbd18ad4a9",
+      "title": "MATAAN_BRSHVA_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "COMP",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DESTNATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "START_",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 5
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

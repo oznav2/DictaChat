@@ -1,0 +1,212 @@
+{
+  "dataset_id": "207f3773-11ba-49c8-a529-8ba2968fa631",
+  "title": "רשימות המועמדים לכנסת - ועדת הבחירות המרכזית לכנסת",
+  "organization": "ועדת הבחירות המרכזית לכנסת",
+  "tags": [],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "מפלגת",
+    "הערות",
+    "אישיות",
+    "ועדת",
+    "לכנסת",
+    "פרטי",
+    "כנסת",
+    "מיקום",
+    "המרכזית",
+    "הוגשה",
+    "הרשימה",
+    "ברשימה",
+    "משפחה",
+    "הבחירות",
+    "רשימות",
+    "המועמדים",
+    "מטעם",
+    "אותיות"
+  ],
+  "resources": [
+    {
+      "resource_id": "9162e35c-8834-422c-9202-ed42faf4a9f9",
+      "title": "רשימות המועמדים לכנסת ה-19",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מס' כנסת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם הרשימה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "אותיות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מיקום ברשימה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "רשימת המועמדים הוגשה מטעם מפלגת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רשימת המועמדים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הערות אישיות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1635
+    },
+    {
+      "resource_id": "7099b732-303e-4431-bbed-0e47e937b5e8",
+      "title": "רשימות המועמדים לכנסת ה-20",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מס' כנסת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם הרשימה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "אותיות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מיקום ברשימה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "רשימת המועמדים הוגשה מטעם מפלגת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רשימת המועמדים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הערות אישיות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1307
+    },
+    {
+      "resource_id": "597e0059-099e-4200-9131-b3ba645bc685",
+      "title": "רשימות המועמדים לכנסת ה-21",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מס' כנסת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם הרשימה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "אותיות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מיקום ברשימה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "רשימת המועמדים הוגשה מטעם מפלגת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רשימת המועמדים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הערות אישיות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1626
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

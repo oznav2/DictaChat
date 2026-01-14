@@ -1,0 +1,79 @@
+{
+  "dataset_id": "f0d5be16-e306-44b8-be2b-49f942c7c7a4",
+  "title": "מוזאונים - רשימת מומחי שימור",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "מומחי שימור מוזיאונים"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "כתובת",
+    "התרבות",
+    "טלפון",
+    "נייד",
+    "מומחי",
+    "תחומי",
+    "מוזיאונים",
+    "התמחות",
+    "משרד",
+    "מוזאונים",
+    "שימור",
+    "המשמר",
+    "דואל",
+    "והספורט"
+  ],
+  "resources": [
+    {
+      "resource_id": "7087562b-3cc7-4628-b516-91b876d7ac7e",
+      "title": "רשימת מומחי שימור ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המשמר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תחומי התמחות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "נייד",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואל",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 40
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

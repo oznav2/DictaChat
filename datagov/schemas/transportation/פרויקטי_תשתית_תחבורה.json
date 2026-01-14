@@ -1,0 +1,241 @@
+{
+  "dataset_id": "a5621e34-aaff-41da-a7b6-fe4cd96a0310",
+  "title": "פרויקטי תשתית תחבורה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2019",
+    "GIS",
+    "חומש",
+    "חצב",
+    "ממג",
+    "פרויקטים",
+    "תכנית עבודה",
+    "תשתיות"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "תחבורה",
+    "orig",
+    "subtyp",
+    "update",
+    "פרויקטי",
+    "gis",
+    "qrt",
+    "עבודה",
+    "geo",
+    "typ",
+    "comp",
+    "חומש",
+    "nam",
+    "בדרכים",
+    "end",
+    "תשתיות",
+    "cost",
+    "leng",
+    "והבטיחות",
+    "stg",
+    "lst",
+    "prj",
+    "משרד",
+    "exec",
+    "nxt",
+    "fid",
+    "tat",
+    "חצב",
+    "תשתית",
+    "main",
+    "shape",
+    "road",
+    "תכנית",
+    "year",
+    "pnim",
+    "התחבורה",
+    "פרויקטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "724412fd-c5f2-444c-9c33-95652b9d03e5",
+      "title": "WORKPLAN2019Q2_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "dd7c9f97-c22a-4103-958c-f256b024c624",
+      "title": "WPLAN2019Q2.kmz",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "c7921041-21de-4027-83a0-d14135bbe81f",
+      "title": "WPLAN2019Q2.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Main_ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Shape_Leng",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Main_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "PRJ_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "PRJ_ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "PRJ_TYP",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PRJ_SUBTYP",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "COMP_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TAT_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ORIG_YEAR",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "WP_YEAR",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PRJ_COST",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "TAT_COST",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "EXEC_QRT",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "PRJ_END",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TAT_STG",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MS_UPDATE",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "LST_MS_NAM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LST_MS_QRT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LST_MS_TYP",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "NXT_MS_NAM",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "NXT_MS_QRT",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "NXT_MS_TYP",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "GEO_ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "COMP_ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Shape_Le_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ROAD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CR_PNIM",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 448
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

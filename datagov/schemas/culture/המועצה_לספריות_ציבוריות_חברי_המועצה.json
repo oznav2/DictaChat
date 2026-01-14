@@ -1,0 +1,56 @@
+{
+  "dataset_id": "d2d009e9-fdb6-4212-a302-1f496d3d96a9",
+  "title": "המועצה לספריות ציבוריות - חברי המועצה",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "ספריות ציבוריות חברי מועצה"
+  ],
+  "categories": [
+    "culture",
+    "municipal"
+  ],
+  "keywords": [
+    "התרבות",
+    "ציבוריות",
+    "משרד",
+    "לספריות",
+    "המועצה",
+    "ספריות",
+    "והספורט",
+    "תפקיד",
+    "מועצה",
+    "חברי"
+  ],
+  "resources": [
+    {
+      "resource_id": "f95f4729-31e4-4206-ba8f-90dff42ab956",
+      "title": "המועצה לספריות ציבוריות - חברי המועצה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "תפקיד",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 24
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

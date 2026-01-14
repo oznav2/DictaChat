@@ -1,0 +1,126 @@
+{
+  "dataset_id": "13506819-d7b7-4176-8cea-fd6b969429ab",
+  "title": "גני ילדים",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "גני ילדים",
+    "גנים",
+    "גננות",
+    "הגיל הרך",
+    "חינוך",
+    "לימודים"
+  ],
+  "categories": [
+    "education",
+    "water",
+    "welfare"
+  ],
+  "keywords": [
+    "name",
+    "strt",
+    "objectid",
+    "הגיל",
+    "phone",
+    "zerem",
+    "מעלה",
+    "ילדים",
+    "חינוך",
+    "bldg",
+    "גנים",
+    "לימודים",
+    "namberchildren",
+    "הרך",
+    "אדומים",
+    "code",
+    "num",
+    "גני",
+    "neighborhood",
+    "חובה",
+    "עיריית",
+    "טרום",
+    "גננות",
+    "shemaganenet"
+  ],
+  "resources": [
+    {
+      "resource_id": "a9d88815-83b1-47f5-86c9-0a5227566950",
+      "title": "רשימת גני ילדים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "BLDG_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "BLDG_CODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "STRT_CODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "BLDG_NUM",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "STRT_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "PHONE_NUM",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "ZEREM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "neighborhood",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shemaganenet",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "namberchildren",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "חובה__טרום_חובה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 71
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

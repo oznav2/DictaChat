@@ -1,0 +1,138 @@
+{
+  "dataset_id": "2082d3d7-6e24-432e-8db1-3792c3116e7b",
+  "title": "מרפאות בריאות הנפש - משרד הבריאות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות",
+    "בריאות הנפש",
+    "בריאות ורווחה",
+    "מוסדות רפואיים",
+    "מרפאות בריאות נפש",
+    "משרד הבריאות"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "רפואיים",
+    "city",
+    "נפש",
+    "מרפאות",
+    "follow",
+    "intervention",
+    "הבריאות",
+    "street",
+    "בריאות",
+    "ownership",
+    "code",
+    "משרד",
+    "type",
+    "individual",
+    "מוסדות",
+    "ורווחה",
+    "specialization",
+    "clinic",
+    "wait",
+    "hmo",
+    "audience",
+    "intake",
+    "therapy",
+    "הנפש",
+    "group"
+  ],
+  "resources": [
+    {
+      "resource_id": "f7a7b061-db5b-4e19-b1bf-2d7525af52ca",
+      "title": "מרפאות בריאות הנפש - משרד הבריאות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "HMO",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HMO_code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "clinic_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "ownership",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "audience",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "intake_wait",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "follow_up_wait",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "individual_therapy_wait",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "group_therapy_wait",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "intervention_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "specialization",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 866
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

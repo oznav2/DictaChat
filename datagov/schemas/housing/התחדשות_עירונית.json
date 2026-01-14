@@ -1,0 +1,140 @@
+{
+  "dataset_id": "0bfc2b7f-5ed6-426a-84de-1a6552a5c35f",
+  "title": "התחדשות עירונית",
+  "organization": "משרד הבינוי והשיכון",
+  "tags": [
+    "התחדשות ערונית",
+    "משרד הבינוי והשיכון",
+    "מתחם"
+  ],
+  "categories": [
+    "housing"
+  ],
+  "keywords": [
+    "status",
+    "yachadtosafti",
+    "sachheterim",
+    "והשיכון",
+    "yachadmutza",
+    "shemmitcham",
+    "עירונית",
+    "yeshuv",
+    "kishurlamapa",
+    "maslul",
+    "ערונית",
+    "bebitzua",
+    "משרד",
+    "mispartochnit",
+    "semelyeshuv",
+    "kishurlatar",
+    "התחדשות",
+    "taarichhachraza",
+    "yachadkayam",
+    "shnatmatantokef",
+    "הבינוי",
+    "מתחם",
+    "misparmitham"
+  ],
+  "resources": [
+    {
+      "resource_id": "f65a0daf-f737-49c5-9424-d378d52104f5",
+      "title": "מתחמי התחדשות עירונית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "MisparMitham",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Yeshuv",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SemelYeshuv",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ShemMitcham",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YachadKayam",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YachadTosafti",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YachadMutza",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TaarichHachraza",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MisparTochnit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "KishurLatar",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "SachHeterim",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "KishurLaMapa",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Maslul",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ShnatMatanTokef",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Bebitzua",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Status",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 841
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "dataset_id": "4fbf562b-fa46-4e94-8422-a19f456963f7",
+  "title": "מאגר בקשות לימודים שאושרו על ידי ועדת ההשתלמות המשרדית במשרד המשפטים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "לימודים",
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "education",
+    "water",
+    "justice",
+    "religion"
+  ],
+  "keywords": [
+    "החלטה",
+    "מסעיף",
+    "מפגשים",
+    "ידי",
+    "וועדה",
+    "לימודים",
+    "בקשות",
+    "ימי",
+    "שבועיים",
+    "משרד",
+    "מתאריך",
+    "מארגן",
+    "המשרדית",
+    "ההשתלמות",
+    "שאושרו",
+    "תאריך",
+    "המשפטים",
+    "סטטוס",
+    "במשרד",
+    "מוסד",
+    "ועדת",
+    "החל",
+    "היעדרות",
+    "הבקשה"
+  ],
+  "resources": [
+    {
+      "resource_id": "b32e442a-02b1-448e-aa2e-3f087de40682",
+      "title": "בקשות לימודים החל מ2012 + סטטוס בקשה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנת וועדה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מוסד מארגן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם ההשתלמות",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סטטוס הבקשה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "מספר מפגשים - מסעיף החלטה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מתאריך - מסעיף החלטה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עד תאריך - מסעיף החלטה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מספר ימי היעדרות שבועיים מסעיף החל",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 12565
+    },
+    {
+      "resource_id": "202abac2-71df-4f02-88ef-d2e27118b871",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

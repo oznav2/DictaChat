@@ -1,0 +1,106 @@
+{
+  "dataset_id": "a25e63f2-4f22-4eff-a696-e7c6d20c9e27",
+  "title": "מאגר תרכיבים וטרינריים רשומים",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [
+    "בעלי חיים",
+    "וטרינרים",
+    "חיסונים"
+  ],
+  "categories": [
+    "water",
+    "agriculture"
+  ],
+  "keywords": [
+    "name",
+    "authorization",
+    "active",
+    "החקלאות",
+    "חיים",
+    "number",
+    "וטרינרים",
+    "holder",
+    "וטרינריים",
+    "בעלי",
+    "משרד",
+    "type",
+    "distributer",
+    "רשומים",
+    "חיסונים",
+    "תרכיבים",
+    "vaccine",
+    "importer",
+    "ובטחון",
+    "המזון",
+    "manufacturer",
+    "animal",
+    "ingredients"
+  ],
+  "resources": [
+    {
+      "resource_id": "016246f4-e7ba-4e1b-b993-dadbbd96da32",
+      "title": "מאגר תרכיבים וטרינריים רשומים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Animal_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Active_ingredients",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Authorization_holder",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Manufacturer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Importer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Distributer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Vaccine_number",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 222
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

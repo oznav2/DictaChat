@@ -1,0 +1,298 @@
+{
+  "dataset_id": "31176aa8-1609-4b42-911b-2b0f38ba4dd3",
+  "title": "נתונים תקופתיים - תכנית דירה בהנחה",
+  "organization": "משרד הבינוי והשיכון",
+  "tags": [
+    "בינוי",
+    "דיור",
+    "דירה בהנחה",
+    "מחיר למשתכן",
+    "שיכון"
+  ],
+  "categories": [
+    "housing"
+  ],
+  "keywords": [
+    "מחיר",
+    "winnersseriesb",
+    "marketingmethod",
+    "דירה",
+    "lotteryhousingunits",
+    "marketingmethoddesc",
+    "eligibility",
+    "דיור",
+    "projectstatus",
+    "והשיכון",
+    "lotterystatusvalue",
+    "lotterytype",
+    "תקופתיים",
+    "winnershasrydiur",
+    "centralizationtype",
+    "continlotteryid",
+    "winnersseriesc",
+    "lotteryexecutiondate",
+    "subscribers",
+    "parentlotteryid",
+    "בהנחה",
+    "constructionpermitname",
+    "subscribersdisabled",
+    "lotterysignuphousingunits",
+    "marketingrep",
+    "lotterynativehousingunits",
+    "למשתכן",
+    "winnersbneymakom",
+    "lotterysignupnativehousingunits",
+    "lotteryid",
+    "משרד",
+    "winnersseriesa",
+    "priceformeter",
+    "שיכון",
+    "winnersmeshaprydiur",
+    "lamascode",
+    "subscribersbenymakom",
+    "lamasname",
+    "neighborhood",
+    "בינוי",
+    "projectid",
+    "תכנית",
+    "subscribersmeshaprydiur",
+    "winners",
+    "subscribersseriesa",
+    "subscribersseriesc",
+    "providername",
+    "projectname",
+    "הבינוי",
+    "subscribersseriesb",
+    "lotteryendsignupdate"
+  ],
+  "resources": [
+    {
+      "resource_id": "7c8255d0-49ef-49db-8904-4cf917586031",
+      "title": "מעקב אחר הגרלות דירה בהנחה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "WinnersMeshapryDiur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WinnersHasryDiur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WinnersSeriesC",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "WinnersSeriesB",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "WinnersSeriesA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "WinnersBneyMakom",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Winners",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SubscribersMeshapryDiur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SubscribersSeriesC",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SubscribersSeriesB",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SubscribersSeriesA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SubscribersDisabled",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SubscribersBenyMakom",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Subscribers",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LotteryNativeHousingUnits",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LotteryHousingUnits",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LotterySignupNativeHousingUnits",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LotterySignupHousingUnits",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PriceForMeter",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "ConstructionPermitName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ProjectStatus",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "ProviderName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ProjectName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ProjectId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Neighborhood",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LamasName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LamasCode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "LotteryExecutionDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "LotteryEndSignupDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "LotteryStatusValue",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Eligibility",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MarketingRep",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MarketingMethodDesc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MarketingMethod",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CentralizationType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ContinLotteryId",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ParentLotteryId",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LotteryType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LotteryId",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 2352
+    },
+    {
+      "resource_id": "ea93b3c9-15e2-4b74-a632-097ee53737e4",
+      "title": "דירות למכירה ללא הגרלה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 0
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

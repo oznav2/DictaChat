@@ -1,0 +1,102 @@
+{
+  "dataset_id": "7d475608-8609-407e-b535-72a72e24b375",
+  "title": "קבלני כוח אדם בעלי היתר להעסקת עגורנאי צריח",
+  "organization": "משרד העבודה",
+  "tags": [
+    "משרד העבודה",
+    "עגורנאי צריח",
+    "רישוי"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "רישוי",
+    "status",
+    "העבודה",
+    "identitynumber",
+    "להעסקת",
+    "corporationname",
+    "בעלי",
+    "משרד",
+    "licensenumber",
+    "אדם",
+    "town",
+    "corporationowner",
+    "עגורנאי",
+    "היתר",
+    "קבלני",
+    "corporationceo",
+    "validuntil",
+    "address",
+    "כוח",
+    "צריח"
+  ],
+  "resources": [
+    {
+      "resource_id": "74cfb7ef-202a-409b-be08-33fb499b77de",
+      "title": "קבלני כוח אדם בעלי היתר להעסקת עגורנאי צריח",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "identitynumber",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "corporationname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "licensenumber",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "corporationowner",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "corporationceo",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "town",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "validuntil",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 111
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

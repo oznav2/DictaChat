@@ -1,0 +1,95 @@
+{
+  "dataset_id": "3d71fe33-b239-4ed9-b6ef-950c8fcc54bc",
+  "title": "כלי סיוע של משרד הכלכלה והתעשייה",
+  "organization": "משרד הכלכלה והתעשייה",
+  "tags": [
+    "כלי סיוע",
+    "כלכלה"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "audience",
+    "lastdate",
+    "משרד",
+    "aidtool",
+    "desc",
+    "unit",
+    "סיוע",
+    "הכלכלה",
+    "כלי",
+    "והתעשייה",
+    "geographic",
+    "url",
+    "corona",
+    "כלכלה"
+  ],
+  "resources": [
+    {
+      "resource_id": "5c38981d-15be-4721-9ffd-041010f4a16b",
+      "title": "רשימת כלי הסיוע",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "unit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "aidtool",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "hm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "audience",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "geographic",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "corona",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lastdate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 24
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

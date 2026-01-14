@@ -1,0 +1,116 @@
+{
+  "dataset_id": "bddf37d6-5300-4179-bc0b-f2577fbc3a30",
+  "title": "רשימת אתרי בנייה פעילים",
+  "organization": "משרד העבודה",
+  "tags": [
+    "אתרי בנייה פעילים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "warrents",
+    "העבודה",
+    "אתרי",
+    "city",
+    "types",
+    "בנייה",
+    "cranes",
+    "has",
+    "work",
+    "משרד",
+    "safety",
+    "executor",
+    "foreman",
+    "site",
+    "sanctions",
+    "build",
+    "פעילים",
+    "sum"
+  ],
+  "resources": [
+    {
+      "resource_id": "b072e36c-a53b-49e1-be08-4a608fcf4638",
+      "title": "אתרי בנייה פעילים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "work_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "site_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "executor_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "executor_id",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "foreman_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "has_cranes",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "city_name",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "build_types",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "safety_warrents",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "sanctions",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sanctions_sum",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 11027
+    },
+    {
+      "resource_id": "8855b04c-3e4e-4427-a930-4bace7003103",
+      "title": "מבנה נתונים - אתרי בנייה פעילים",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

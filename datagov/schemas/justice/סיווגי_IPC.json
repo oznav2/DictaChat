@@ -1,0 +1,78 @@
+{
+  "dataset_id": "8b7545bc-01cb-460d-a2e4-b948787eb773",
+  "title": "סיווגי IPC",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "סיווגי IPC"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "תיאור",
+    "סיווגי",
+    "ipc",
+    "משרד",
+    "סיווג",
+    "גרסה",
+    "קבוצת",
+    "הסיווג",
+    "תאריך",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "78c52e4e-8e49-4531-b2f2-edc766cbbd64",
+      "title": "סיווגי IPC",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סיווג",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "תיאור הסיווג",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סיווג אב",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "קבוצת סיווג",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "תאריך גרסה",
+          "type": "numeric",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 79039
+    },
+    {
+      "resource_id": "506571cb-c6fc-482b-9f80-a8934bd71a27",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

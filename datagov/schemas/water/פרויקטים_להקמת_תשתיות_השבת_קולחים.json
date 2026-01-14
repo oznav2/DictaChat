@@ -1,0 +1,103 @@
+{
+  "dataset_id": "315d3329-87ec-4640-9453-16e180be8736",
+  "title": "פרויקטים להקמת תשתיות השבת קולחים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "השבת קולחין",
+    "פיתוח הנדסי",
+    "קולחין",
+    "רשות המים"
+  ],
+  "categories": [
+    "water",
+    "technology"
+  ],
+  "keywords": [
+    "תיאור",
+    "רשות",
+    "להקמת",
+    "הממשלתית",
+    "קצר",
+    "פיתוח",
+    "תשתיות",
+    "עדכני",
+    "שיפוט",
+    "עלות",
+    "השבת",
+    "מתכנן",
+    "הנדסי",
+    "למים",
+    "הפרויקט",
+    "יזם",
+    "קולחים",
+    "תאריך",
+    "סטטוס",
+    "הרשות",
+    "קולחין",
+    "ולביוב",
+    "המים",
+    "פרויקטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "1e66388e-415a-4acc-bf5d-bac426e3c74d",
+      "title": "שיפוט מפעלי השבת קולחים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מס'",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יזם",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם \nהפרויקט",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תיאור קצר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך \nשיפוט",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "מתכנן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עלות (₪)",
+          "type": "numeric",
+          "semantic": "price"
+        },
+        {
+          "name": "סטטוס עדכני",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 26
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

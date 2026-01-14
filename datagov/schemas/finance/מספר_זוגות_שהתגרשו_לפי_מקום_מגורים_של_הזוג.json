@@ -1,0 +1,67 @@
+{
+  "dataset_id": "287f7e34-7675-49a9-90bd-7c6a8b55698e",
+  "title": "מספר זוגות שהתגרשו לפי מקום מגורים של הזוג",
+  "organization": "בתי הדין הרבניים",
+  "tags": [
+    "אוכלוסיה",
+    "בתי הדין הרבניים",
+    "גירושין",
+    "דת"
+  ],
+  "categories": [
+    "finance",
+    "religion"
+  ],
+  "keywords": [
+    "הרבניים",
+    "שהתגרשו",
+    "גירושין",
+    "בני",
+    "אוכלוסיה",
+    "בתי",
+    "מגורים",
+    "מקום",
+    "הזוג",
+    "תיקים",
+    "אחרון",
+    "זוגות",
+    "הדין"
+  ],
+  "resources": [
+    {
+      "resource_id": "524aaf1e-7e4f-423b-9e0a-d40bbbacd2bc",
+      "title": "מספר זוגות שהתגרשו לפי מקום מגורים של הזוג",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מקום מגורים אחרון של בני הזוג",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סך תיקים לפי מקום מגורים אחרון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנת גירושין",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1067
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

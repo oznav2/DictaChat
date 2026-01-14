@@ -1,0 +1,47 @@
+{
+  "dataset_id": "dce4a3a0-43af-4b81-a555-b3738bf74a4a",
+  "title": "מפלס מי תהום היסטורי",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "level",
+    "water",
+    "אקוויפר",
+    "מים",
+    "מפלס",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "היסטורי",
+    "הרשות",
+    "ולביוב",
+    "אקוויפר",
+    "רשות",
+    "תהום",
+    "מפלס",
+    "level",
+    "הממשלתית",
+    "המים",
+    "מים",
+    "למים",
+    "water"
+  ],
+  "resources": [
+    {
+      "resource_id": "3615b503-5aa2-4f3b-b56e-88ba12e8394a",
+      "title": "מפלס מי תהום היסטורי (1933)",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

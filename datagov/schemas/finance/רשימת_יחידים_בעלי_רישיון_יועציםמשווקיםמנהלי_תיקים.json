@@ -1,0 +1,48 @@
+{
+  "dataset_id": "ce04179f-4e64-4732-8fe4-4f74f0b55f7a",
+  "title": "רשימת יחידים בעלי רישיון יועצים/משווקים/מנהלי תיקים",
+  "organization": "רשות ניירות ערך",
+  "tags": [
+    "אוצר וכלכלה",
+    "יועצי השקעות",
+    "מנהלי תיקים",
+    "רשות ניירות הערך"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "ערך",
+    "מנהלי",
+    "וכלכלה",
+    "ניירות",
+    "הערך",
+    "השקעות",
+    "יועצים",
+    "בעלי",
+    "רשות",
+    "תיקים",
+    "אוצר",
+    "יועצי",
+    "משווקים",
+    "יחידים",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "0c7b3fc2-ea27-461e-9aed-4bd6a587df57",
+      "title": "רשימת יחידים בעלי רישיון יועצים/משווקים/מנהלי תיקים",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

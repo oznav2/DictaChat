@@ -1,0 +1,84 @@
+{
+  "dataset_id": "cb277b43-ca25-4c5d-82cd-81d29c826dac",
+  "title": "מגמות בבטיחות בדרכים 2005-2011",
+  "organization": "הרשות הלאומית לבטיחות בדרכים",
+  "tags": [
+    "אוכלוסיה",
+    "בטיחות",
+    "בטיחות בדרכים",
+    "משרד התחבורה",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "הרשות",
+    "בטיחות",
+    "תחבורה",
+    "אוכלוסיה",
+    "בדרכים",
+    "משרד",
+    "הרוגים",
+    "מגמות",
+    "הלאומית",
+    "לבטיחות",
+    "שיעור",
+    "רגל",
+    "בבטיחות",
+    "התחבורה",
+    "הולכי"
+  ],
+  "resources": [
+    {
+      "resource_id": "519d46d5-7d82-4b6b-b838-1e9e427541ca",
+      "title": "מגמות בבטיחות בדרכים 2005-2011 - נתונים כלליים",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שיעור הולכי רגל הרוגים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 76
+    },
+    {
+      "resource_id": "efdbe5c5-2b66-4cdc-bc1c-2890ef920abc",
+      "title": "מגמות בבטיחות בדרכים 2005-2011 - תאונות דרכים",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "f775fe62-7dc1-4dcb-95d7-d939a439733f",
+      "title": "מגמות בבטיחות בדרכים 2005-2011 - נפגעי תאונות דרכים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "2011",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 5
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

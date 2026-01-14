@@ -1,0 +1,233 @@
+{
+  "dataset_id": "7ac4505d-dfd8-4ebf-90e5-eefdefd292de",
+  "title": "תאונות דרכים לפי רשות מוניציפלית",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "gis",
+    "חצב",
+    "ממג",
+    "רשות מוניציפלית",
+    "תאונות דרכים"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "sligh",
+    "dead",
+    "ממג",
+    "objectid",
+    "רשות",
+    "vehicle",
+    "areasqkm",
+    "city",
+    "gis",
+    "municipal",
+    "pedestrinj",
+    "דרכים",
+    "מוניציפלית",
+    "בדרכים",
+    "munitype",
+    "והבטיחות",
+    "inj",
+    "municode",
+    "injtotal",
+    "totdrivers",
+    "truck",
+    "משרד",
+    "private",
+    "district",
+    "acc",
+    "bicycle",
+    "חצב",
+    "תאונות",
+    "yearmonth",
+    "shape",
+    "area",
+    "sever",
+    "oid",
+    "citycode",
+    "index",
+    "sumacciden",
+    "motorcycle",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "42097396-d215-44eb-b979-509f29873865",
+      "title": "ACCIDENTS_MUNICIPAL_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a6de3377-32f1-4e48-8151-ff5ea8fb76d9",
+      "title": "ACCIDENTS_MUNICIPAL_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "b17b1634-c001-4d37-96c6-a661b2ecd98c",
+      "title": "ACCIDENTS_MUNICIPAL_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "MUNICIPAL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AreaSQKM",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "CITYCODE",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "MUNITYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DISTRICT",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "SUMACCIDEN",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "DEAD",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SEVER_INJ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SLIGH_INJ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PEDESTRINJ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "INJ0_19",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "INJ20_64",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "INJ65_",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "INJTOTAL",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "TOTDRIVERS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MOTORCYCLE",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TRUCK",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "BICYCLE",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PRIVATE",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "VEHICLE",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ACC_INDEX",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "MUNICODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1174
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

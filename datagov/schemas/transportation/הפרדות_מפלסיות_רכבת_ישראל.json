@@ -1,0 +1,151 @@
+{
+  "dataset_id": "0e501591-d30a-48bd-8dd0-598b1a30300a",
+  "title": "הפרדות מפלסיות רכבת ישראל",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "משרד התחבורה",
+    "רכבת ישראל"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "status",
+    "trainover",
+    "gis",
+    "trafcode",
+    "hektometer",
+    "railname",
+    "הפרדות",
+    "רכבת",
+    "בדרכים",
+    "והבטיחות",
+    "maintenanc",
+    "traftype",
+    "משרד",
+    "חצב",
+    "num",
+    "yearmonth",
+    "road",
+    "oid",
+    "ישראל",
+    "מפלסיות",
+    "descrption",
+    "location",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "ca6e95c5-fac7-4f73-81c7-b45b605fae30",
+      "title": "LEVELSEPARATION_SHP.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "58612e24-148a-443a-932a-e4d695396535",
+      "title": "LEVELSEPARATION.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "NUM",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "RAILNAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "ROAD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HEKTOMETER",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LOCATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DESCRPTION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TRAINOVER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "MAINTENANC",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TRAFCODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "TRAFTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 618
+    },
+    {
+      "resource_id": "bf9c971c-f821-469a-9b0d-4ce1631d6c2d",
+      "title": "LEVELSEPARATION.kmz",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "dataset_id": "0fbb9a39-4969-4732-bf5b-b60d17cde82c",
+  "title": "מרחבי השירות של רשות מקרקעי ישראל",
+  "organization": "רשות מקרקעי ישראל",
+  "tags": [],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "county",
+    "מקרקעי",
+    "השירות",
+    "ישראל",
+    "settlement",
+    "מרחבי",
+    "רשות"
+  ],
+  "resources": [
+    {
+      "resource_id": "fd84b0cb-8f7a-4321-ae00-a6c8daa79707",
+      "title": "מרחבי שירות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "county",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "settlement",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1366
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

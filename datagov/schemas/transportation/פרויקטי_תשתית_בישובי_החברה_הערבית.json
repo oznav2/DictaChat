@@ -1,0 +1,126 @@
+{
+  "dataset_id": "4ddd54fc-3d67-409b-966d-04bc6e9e0b1e",
+  "title": "פרויקטי תשתית בישובי החברה הערבית",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "דרכים",
+    "החברה הערבית",
+    "חצב",
+    "מאגר פרויקטים",
+    "עירוני",
+    "תכנון כללי",
+    "תכנית אב"
+  ],
+  "categories": [
+    "transportation",
+    "water"
+  ],
+  "keywords": [
+    "בישובי",
+    "פרויקטי",
+    "city",
+    "כללי",
+    "דרכים",
+    "עירוני",
+    "בדרכים",
+    "החברה",
+    "והבטיחות",
+    "rank",
+    "prj",
+    "תכנון",
+    "משרד",
+    "desing",
+    "score",
+    "הערבית",
+    "חצב",
+    "תשתית",
+    "shape",
+    "oid",
+    "תכנית",
+    "length",
+    "width",
+    "התחבורה",
+    "פרויקטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "bf440708-ea63-4a5e-a326-2b90fbdea41c",
+      "title": "MIUTIM_PRJ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "f954d3b8-7c77-4bfb-8c92-0cd1dad8eb16",
+      "title": "MIUTIM_PRJ_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "c6973571-70b3-4e07-abd7-f590a8bea275",
+      "title": "MIUTIM_PRJ.CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "DESING_22",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "PRJ_ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "CITY_RANK",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "SCORE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LENGTH_M",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "WIDTH_M",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 429
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

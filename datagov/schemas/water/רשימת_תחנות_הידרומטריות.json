@@ -1,0 +1,123 @@
+{
+  "dataset_id": "096db5d2-dc8b-40c8-9fe7-2b839a435d92",
+  "title": "רשימת תחנות הידרומטריות",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "water",
+    "הידרומטריה",
+    "מים",
+    "רשות המים",
+    "תחנה הידרומטרית"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "עברית",
+    "תחנה",
+    "רשות",
+    "שטח",
+    "הידרומטריות",
+    "הממשלתית",
+    "מים",
+    "נחל",
+    "הידרומטריה",
+    "water",
+    "משותף",
+    "הידרומטרית",
+    "רוחב",
+    "למים",
+    "היקוות",
+    "תחנות",
+    "תאריך",
+    "הקמה",
+    "אנגלית",
+    "הרשות",
+    "תחום",
+    "סטטוס",
+    "התנקזות",
+    "ראשי",
+    "ולביוב",
+    "המים",
+    "נוכחי",
+    "קבוצה"
+  ],
+  "resources": [
+    {
+      "resource_id": "a0522b41-00ad-4367-a00a-2d97b050ec1d",
+      "title": "רשימת תחנות הידרומטריות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי תחנה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם עברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם אנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך הקמה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שטח היקוות (קמ''ר)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שטח משותף",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נ.צ. X (רוחב)",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "נ.צ. Y (רוחב)",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "מספר קבוצה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תחום התנקזות של נחל ראשי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטטוס תחנה נוכחי",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 458
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

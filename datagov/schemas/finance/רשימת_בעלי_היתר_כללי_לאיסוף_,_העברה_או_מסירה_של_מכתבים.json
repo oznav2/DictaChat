@@ -1,0 +1,151 @@
+{
+  "dataset_id": "205a626d-e6d7-46a0-aac2-331f9b235b03",
+  "title": "רשימת בעלי היתר כללי לאיסוף , העברה או מסירה של מכתבים",
+  "organization": "משרד התקשורת",
+  "tags": [
+    "בעלי היתרים",
+    "משרד התקשורת",
+    "שירותי דואר"
+  ],
+  "categories": [
+    "finance",
+    "communications"
+  ],
+  "keywords": [
+    "כתובת",
+    "כללי",
+    "בעל",
+    "דואר",
+    "לאיסוף",
+    "טלפון",
+    "פקס",
+    "שירותי",
+    "העברה",
+    "התקשורת",
+    "תוקף",
+    "מסירה",
+    "מכתבים",
+    "נייד",
+    "בעלי",
+    "משרד",
+    "היתרים",
+    "היתר",
+    "מייל",
+    "נוסף"
+  ],
+  "resources": [
+    {
+      "resource_id": "03eb376c-6130-40de-8753-6935714d11fd",
+      "title": "רשימת בעלי היתר כללי לאיסוף, העברה או מסירה של מכתבים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם בעל היתר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "נייד",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מייל",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "מייל נוסף",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תוקף היתר עד ליום",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 50
+    },
+    {
+      "resource_id": "d6add630-6731-4534-9383-cb780fb0c268",
+      "title": "רשימת בעלי היתר כללי לאיסוף, העברה או מסירה של מכתבים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם בעל היתר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "נייד",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מייל",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "מייל נוסף",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תוקף היתר עד ליום",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 50
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": true,
+    "has_date": true
+  }
+}

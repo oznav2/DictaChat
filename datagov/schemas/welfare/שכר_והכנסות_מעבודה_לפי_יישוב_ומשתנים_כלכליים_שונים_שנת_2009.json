@@ -1,0 +1,55 @@
+{
+  "dataset_id": "e6c47add-58dc-4001-b30f-1e1d1e4e401c",
+  "title": "שכר והכנסות מעבודה לפי יישוב ומשתנים כלכליים שונים - שנת 2009",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "אוכלוסיה",
+    "אוצר וכלכלה",
+    "הכנסות",
+    "יישוב",
+    "שכר"
+  ],
+  "categories": [
+    "welfare",
+    "economy"
+  ],
+  "keywords": [
+    "וכלכלה",
+    "הכנסות",
+    "לאומי",
+    "שכר",
+    "אוכלוסיה",
+    "והכנסות",
+    "מעבודה",
+    "שונים",
+    "לביטוח",
+    "אוצר",
+    "יישוב",
+    "המוסד",
+    "כלכליים",
+    "ומשתנים"
+  ],
+  "resources": [
+    {
+      "resource_id": "720be687-2ecd-4844-8f3a-34c2107a51f2",
+      "title": "סקרים תקופתיים - ממוצעי שכר והכנסה לפי יישוב ולפי משתנים כלכליים שונים, 2009",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "de00587d-0b9d-4ccc-a153-355ef6de659b",
+      "title": "סקרים תקופתיים - ממוצעי שכר והכנסה לפי יישוב ולפי משתנים כלכליים שונים, 2009",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

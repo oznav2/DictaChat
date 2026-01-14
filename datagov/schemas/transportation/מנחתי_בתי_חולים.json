@@ -1,0 +1,94 @@
+{
+  "dataset_id": "0bc1e0f0-a0ca-4ac6-8bcf-f339211b6441",
+  "title": "מנחתי בתי חולים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "gis",
+    "בתי חולים",
+    "חצב",
+    "מנחתים"
+  ],
+  "categories": [
+    "transportation",
+    "health",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "shape",
+    "area",
+    "oid",
+    "בתי",
+    "מנחתים",
+    "בדרכים",
+    "משרד",
+    "חולים",
+    "והבטיחות",
+    "gis",
+    "חצב",
+    "length",
+    "התחבורה",
+    "מנחתי"
+  ],
+  "resources": [
+    {
+      "resource_id": "23d521c1-6886-4a65-8313-3e707e3bcffd",
+      "title": "HELIPAD_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "bd14ad49-ecee-4b97-9360-1d4372b5991c",
+      "title": "HELIPAD_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d848ff09-3b60-4db9-a932-740e3ec73389",
+      "title": "HELIPAD_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "AREA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 20
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

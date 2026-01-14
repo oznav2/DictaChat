@@ -1,0 +1,132 @@
+{
+  "dataset_id": "e97d6972-b183-4c74-b27c-92c17d193cfc",
+  "title": "חוצה ישראל - זכות דרך",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "דרך",
+    "זכות",
+    "חוצה ישראל",
+    "כביש",
+    "ממג"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "דרך",
+    "ממג",
+    "objectid",
+    "status",
+    "gis",
+    "remarks",
+    "התחבורה",
+    "section",
+    "בדרכים",
+    "leng",
+    "כביש",
+    "והבטיחות",
+    "זכות",
+    "חוצה",
+    "משרד",
+    "shape",
+    "area",
+    "notes",
+    "ישראל",
+    "length",
+    "pirsum"
+  ],
+  "resources": [
+    {
+      "resource_id": "7ceaf395-6c91-4791-abbb-0d05aa71b56f",
+      "title": "HOZE_ZHUT_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "f53901ec-b9f3-42e3-8eea-b9f93c321b12",
+      "title": "HOZE_ZHUT_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "fa247fb4-e9e9-4b12-860d-326b93e860c2",
+      "title": "HOZE_ZHUT_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ET_ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "SECTION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Pirsum",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "Remarks2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Leng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 137
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "dataset_id": "3bf88891-4cb3-4288-81ef-bad6a9f8d625",
+  "title": "נתיבים מהירים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "דרכים",
+    "ממג",
+    "נתיב מהיר",
+    "תשתית העדפה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "ממג",
+    "status",
+    "העדפה",
+    "gis",
+    "נתיב",
+    "דרכים",
+    "נתיבים",
+    "בדרכים",
+    "segment",
+    "והבטיחות",
+    "tot",
+    "משרד",
+    "type",
+    "lengt",
+    "תשתית",
+    "yearmonth",
+    "shape",
+    "road",
+    "oid",
+    "origin",
+    "מהירים",
+    "nataz",
+    "length",
+    "מהיר",
+    "plan",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "88839de5-2d74-4447-8a64-bbf8fbc7acff",
+      "title": "fast_lanes_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "06150d14-5c99-49f5-bbf1-10b5c00a0de1",
+      "title": "FAST_LANES_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "3d816e5a-3018-4d67-a1cc-2781fcdbe0a5",
+      "title": "FAST_LANES_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ROAD",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ORIGIN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SEGMENT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NATAZ_TYPE",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "TOT_LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PLAN_TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 13
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

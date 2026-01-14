@@ -1,0 +1,123 @@
+{
+  "dataset_id": "5c8651bc-5288-4d46-a3f5-2ebfbe5c9615",
+  "title": "מרכזי יעוץ למשפחות של נפגעי נפש",
+  "organization": "משרד הבריאות",
+  "tags": [],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "adjustment",
+    "city",
+    "נפש",
+    "institute",
+    "נפגעי",
+    "הבריאות",
+    "street",
+    "families",
+    "למשפחות",
+    "code",
+    "משרד",
+    "type",
+    "יעוץ",
+    "מרכזי",
+    "address",
+    "center",
+    "full",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "cef1c51a-452f-484d-8834-6bd77f696ad8",
+      "title": "מרכזי יעוץ למשפחות של נפגעי נפש",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "institute_code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "institute_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "city_code",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "street_code",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "full_address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "phone2",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "families_center_type",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "families_center_type_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "adjustment",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "adjustment_name",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 45
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

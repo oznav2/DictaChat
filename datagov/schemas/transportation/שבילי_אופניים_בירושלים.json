@@ -1,0 +1,102 @@
+{
+  "dataset_id": "599ab172-b57a-4054-b734-da6ddd662ffd",
+  "title": "שבילי אופניים בירושלים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "אופניים",
+    "ירושלים",
+    "ממג",
+    "שביל"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "yearmonth",
+    "shape",
+    "ממג",
+    "objectid",
+    "status",
+    "בדרכים",
+    "שביל",
+    "משרד",
+    "ירושלים",
+    "year",
+    "אופניים",
+    "בירושלים",
+    "שבילי",
+    "gis",
+    "והבטיחות",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "e40b1fdb-59f5-4c16-8bcb-8fcc73f913e9",
+      "title": "BICYCLE_JER_2019_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1330a63e-19a3-44b7-9d56-ed6db505dc3c",
+      "title": "BICYCLE_JER_2019_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "6b58e84b-1e34-46e1-b6cc-90068ddc0162",
+      "title": "BICYCLE_JER_2019_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "YEAR",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 60
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

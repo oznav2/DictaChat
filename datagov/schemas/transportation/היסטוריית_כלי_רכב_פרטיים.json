@@ -1,0 +1,135 @@
+{
+  "dataset_id": "273c5e33-25ab-4980-8522-a2f7ba0bb62d",
+  "title": "היסטוריית כלי רכב פרטיים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "kilometer",
+    "ind",
+    "rishon",
+    "mispar",
+    "aharon",
+    "בדרכים",
+    "רכב",
+    "gapam",
+    "והבטיחות",
+    "כלי",
+    "test",
+    "mkoriut",
+    "zeva",
+    "zmig",
+    "baalut",
+    "mivne",
+    "היסטוריית",
+    "shnui",
+    "משרד",
+    "shinui",
+    "rechev",
+    "rishum",
+    "פרטיים",
+    "manoa",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "56063a99-8a3e-4ff4-912e-5966c0279bad",
+      "title": "היסטוריית כלי רכב פרטיים (1)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mispar_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "kilometer_test_aharon",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shinui_mivne_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "gapam_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shnui_zeva_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shinui_zmig_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "rishum_rishon_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mkoriut_nm",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2247523
+    },
+    {
+      "resource_id": "bb2355dc-9ec7-4f06-9c3f-3344672171da",
+      "title": "היסטוריית כלי רכב פרטיים (2)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "baalut_dt",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "baalut",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 4753596
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

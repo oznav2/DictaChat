@@ -1,0 +1,55 @@
+{
+  "dataset_id": "55837ba1-74c1-43b0-b112-9751f07ff85e",
+  "title": "שכר והכנסות מעבודה לפי יישוב ומשתנים כלכליים שונים - שנת 2013",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "אוכלוסיה",
+    "אוצר וכלכלה",
+    "הכנסות",
+    "יישוב",
+    "שכר"
+  ],
+  "categories": [
+    "welfare",
+    "economy"
+  ],
+  "keywords": [
+    "וכלכלה",
+    "הכנסות",
+    "לאומי",
+    "שכר",
+    "אוכלוסיה",
+    "והכנסות",
+    "מעבודה",
+    "שונים",
+    "לביטוח",
+    "אוצר",
+    "יישוב",
+    "המוסד",
+    "כלכליים",
+    "ומשתנים"
+  ],
+  "resources": [
+    {
+      "resource_id": "6ec0892a-6aa0-466f-a38a-c68fba69b965",
+      "title": "סקרים תקופתיים - שכר והכנסות מעבודה לפי יישוב ומשתנים כלכליים שונים 2013",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "58153dbf-f489-4442-89f8-7ec848712401",
+      "title": "סקרים תקופתיים - שכר והכנסות מעבודה לפי יישוב ומשתנים כלכליים שונים 2013",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

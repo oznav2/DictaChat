@@ -1,0 +1,133 @@
+{
+  "dataset_id": "edb5f516-28b1-439e-828a-43ec3a3cc82f",
+  "title": "יחידות הסיוע",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "מחוז",
+    "יחידות",
+    "מהות",
+    "תיקי",
+    "משרד",
+    "סהכ",
+    "רגילים",
+    "הסיוע",
+    "ללא",
+    "תיקים",
+    "שנפתחו",
+    "הרווחה",
+    "החברתי",
+    "והביטחון"
+  ],
+  "resources": [
+    {
+      "resource_id": "5192821d-0de7-4c72-9929-5413f0b9fd08",
+      "title": "תיקים שנפתחו בשנת 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סהכ תיקים שנפתחו",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר תיקים רגילים ללא מהות",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך תיקי מהות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 6
+    },
+    {
+      "resource_id": "4f382c80-02b3-4a6f-b746-4bca368642f0",
+      "title": "תיקים שנפתחו בשנת 2022",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סהכ תיקים שנפתחו",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר תיקים רגילים ללא מהות",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך תיקי מהות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 6
+    },
+    {
+      "resource_id": "ffbb4b26-837a-4bf0-a439-15c7d20e13d2",
+      "title": "תיקים שנפתחו בשנת 2021 ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סהכ תיקים שנפתחו",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר תיקים רגילים ללא מהות",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך תיקי מהות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 6
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

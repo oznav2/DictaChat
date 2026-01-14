@@ -1,0 +1,169 @@
+{
+  "dataset_id": "fae447eb-6f24-45ed-ac48-b890e11daf13",
+  "title": "שירות המבחן למבוגרים",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "סוג",
+    "חיפה",
+    "נושא",
+    "והמרכז",
+    "ארצי",
+    "ירושלים",
+    "למבוגרים",
+    "והביטחון",
+    "אפיון",
+    "עבירה",
+    "משרד",
+    "סהכ",
+    "קליטה",
+    "שירות",
+    "והדרום",
+    "החברתי",
+    "והצפון",
+    "הפניה",
+    "הרווחה",
+    "המבחן"
+  ],
+  "resources": [
+    {
+      "resource_id": "b6869d0d-c08d-4ef8-a9ec-6e511c2369d7",
+      "title": " מבחן מבוגרים הפניות לפי אפיון עבירה 2021",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "אפיון עבירה(קליטה שנת 2021)",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "בש והדרום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חיפה והצפון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ירושלים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תא והמרכז",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סהכ",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 14
+    },
+    {
+      "resource_id": "f14cbfd7-9122-47c1-ad57-4036ac129d85",
+      "title": "מבחן מבוגרים הפניות לפי סוג הפניה 2021",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג הפניה (קליטה שנת 2021)",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "בש והדרום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חיפה והצפון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ירושלים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תא והמרכז",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סהכ",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 9
+    },
+    {
+      "resource_id": "2897caf2-8462-4865-ade0-c350005ec122",
+      "title": "צווי שלצ ועבודות התנדבות 2021",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "נושא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "בש והדרום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חיפה והצפון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ירושלים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תא והמרכז",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סהכ ארצי",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 6
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

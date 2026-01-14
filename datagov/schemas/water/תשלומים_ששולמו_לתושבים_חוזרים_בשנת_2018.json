@@ -1,0 +1,77 @@
+{
+  "dataset_id": "01ae1a6c-5f78-4aaf-8ae2-45c866f158c3",
+  "title": "תשלומים ששולמו לתושבים חוזרים בשנת 2018",
+  "organization": "משרד העלייה והקליטה",
+  "tags": [
+    "אוכלוסייה",
+    "סיוע כספי",
+    "עלייה",
+    "קליטה",
+    "תושבים חוזרים"
+  ],
+  "categories": [
+    "water",
+    "demographics",
+    "immigration"
+  ],
+  "keywords": [
+    "עלייה",
+    "תשלומים",
+    "סכום",
+    "חוזרים",
+    "כספי",
+    "משרד",
+    "והקליטה",
+    "עולים",
+    "קליטה",
+    "סיוע",
+    "לתושבים",
+    "יעוד",
+    "ששולמו",
+    "תושבים",
+    "אוכלוסייה",
+    "העלייה"
+  ],
+  "resources": [
+    {
+      "resource_id": "db9f1595-c5e5-442f-8686-c180b19d6f01",
+      "title": "tashlumim_hozrim_2018.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "יעוד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר תשלומים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר עולים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "סכום",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 35
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

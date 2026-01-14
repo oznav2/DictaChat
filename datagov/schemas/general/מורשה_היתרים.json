@@ -1,0 +1,63 @@
+{
+  "dataset_id": "b1da4cff-7532-4644-a463-fce8a549b7a0",
+  "title": "מורשה היתרים",
+  "organization": "משרד העבודה",
+  "tags": [
+    "מורשה היתרים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "familyname",
+    "regnumber",
+    "העבודה",
+    "משרד",
+    "מורשה",
+    "regdate",
+    "firstname",
+    "היתרים"
+  ],
+  "resources": [
+    {
+      "resource_id": "799142ee-3d03-4450-a7f7-0c75098aa97b",
+      "title": "מורשה היתרים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "regnumber",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "regdate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "firstname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "familyname",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 20
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

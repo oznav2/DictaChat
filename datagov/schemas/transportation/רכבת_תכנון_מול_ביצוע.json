@@ -1,0 +1,111 @@
+{
+  "dataset_id": "63b7bf0b-69eb-4a73-9b98-b9fd2b8a4b5b",
+  "title": "רכבת תכנון מול ביצוע",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משרד התחבורה",
+    "רכבת",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תחבורה",
+    "trip",
+    "train",
+    "only",
+    "רכבת",
+    "בדרכים",
+    "shana",
+    "first",
+    "והבטיחות",
+    "rishui",
+    "מול",
+    "station",
+    "all",
+    "תכנון",
+    "משרד",
+    "ציבורית",
+    "bitzua",
+    "ביצוע",
+    "last",
+    "hodesh",
+    "ahuz",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "6cf35ec2-c0eb-4ef0-a904-f093dab0abfd",
+      "title": "רכבת תכנון מול ביצוע",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "shana",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hodesh",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "train_trip_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "first_train_station_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "last_train_station_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "rishui_all",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "rishui_only",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "bitzua_only",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ahuz_bitzua",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 146558
+    },
+    {
+      "resource_id": "9bf5f8d5-3b2e-4852-9055-bf2408cfd2dd",
+      "title": "מבנה הנתונים במאגר",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

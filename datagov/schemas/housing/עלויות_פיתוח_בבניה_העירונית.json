@@ -1,0 +1,154 @@
+{
+  "dataset_id": "81f981ad-bba3-4d99-ada4-a7a1c2a38eb0",
+  "title": "עלויות פיתוח בבניה העירונית",
+  "organization": "משרד הבינוי והשיכון",
+  "tags": [
+    "בניה עירונית",
+    "עלויות פיתוח"
+  ],
+  "categories": [
+    "housing",
+    "technology"
+  ],
+  "keywords": [
+    "tenderdevpay",
+    "mashbashname",
+    "mahozcode",
+    "atarname",
+    "בבניה",
+    "statusdescription",
+    "livingunits",
+    "projectstatus",
+    "והשיכון",
+    "mashbashcode",
+    "עירונית",
+    "oldbynewcost",
+    "פיתוח",
+    "atarcode",
+    "עלויות",
+    "mosdotdevpay",
+    "משרד",
+    "tenderindexdate",
+    "lamascode",
+    "lamasname",
+    "projectid",
+    "העירונית",
+    "בניה",
+    "developpay",
+    "mahozname",
+    "projectname",
+    "הבינוי"
+  ],
+  "resources": [
+    {
+      "resource_id": "bf164a03-55c7-4bea-8740-66ce60a51a2c",
+      "title": "עלויות פיתוח בבניה העירונית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ProjectID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ProjectName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "MahozCode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "MahozName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "MashbashCode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "MashbashName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LamasCode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "LamasName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "AtarCode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "AtarName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LivingUnits",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ProjectStatus",
+          "type": "numeric",
+          "semantic": "status"
+        },
+        {
+          "name": "StatusDescription",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "TenderIndexDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "DevelopPay",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "OldByNewCost",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MosdotDevPay",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TenderDevPay",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1750
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

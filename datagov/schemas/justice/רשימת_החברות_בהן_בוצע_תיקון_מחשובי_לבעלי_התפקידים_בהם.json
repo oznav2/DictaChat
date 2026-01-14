@@ -1,0 +1,68 @@
+{
+  "dataset_id": "f160dc8a-0526-45f5-bda0-737c20e20816",
+  "title": "רשימת החברות בהן בוצע תיקון מחשובי לבעלי התפקידים בהם",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משפטים",
+    "רשם החברות"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "לבעלי",
+    "התפקידים",
+    "תיקון",
+    "מהות",
+    "רשם",
+    "משרד",
+    "סוג",
+    "השינוי",
+    "גורם",
+    "מחשובי",
+    "בהם",
+    "משפטים",
+    "המשפטים",
+    "החברות",
+    "בוצע",
+    "חברה",
+    "בהן"
+  ],
+  "resources": [
+    {
+      "resource_id": "4013dda7-be38-4ab8-8822-5afe733b429b",
+      "title": "רשימת החברות בהם בוצע תיקון מחשובי לבעלי התפקידים בהם",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר חברה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סוג גורם",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מהות השינוי",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 471848
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

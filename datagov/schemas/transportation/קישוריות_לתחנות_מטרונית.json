@@ -1,0 +1,108 @@
+{
+  "dataset_id": "ab11aa6b-f82f-4988-8b03-3dadc353d6da",
+  "title": "קישוריות לתחנות מטרונית",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "חצב",
+    "מטרונית",
+    "מידע פרויקטלי",
+    "עירוני",
+    "תחבורה קלה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תחבורה",
+    "לתחנות",
+    "destnation",
+    "עירוני",
+    "בדרכים",
+    "והבטיחות",
+    "route",
+    "משרד",
+    "קלה",
+    "פרויקטלי",
+    "length",
+    "lengt",
+    "חצב",
+    "shape",
+    "קישוריות",
+    "מטרונית",
+    "oid",
+    "origin",
+    "line",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c9269839-87f7-454d-9824-15b8290969a0",
+      "title": "KISHURIYUT_METRONIT.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "12bd6d28-be37-434d-9ef0-118ec82d0bcd",
+      "title": "KISHURIYUT_METRONIT_KMZ.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "8548cdbc-97ec-4a2a-ac97-82872e971acd",
+      "title": "KISHURIYUT_METRONIT.CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ORIGIN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DESTNATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LINE",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ROUTE_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "LENGT_KM",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 2
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

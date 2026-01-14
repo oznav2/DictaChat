@@ -1,0 +1,75 @@
+{
+  "dataset_id": "9c8b51df-1992-4026-8533-ae8af4a8d40d",
+  "title": "חנויות ומסעדות בנתב\"ג",
+  "organization": "רשות שדות התעופה",
+  "tags": [
+    "אוצר וכלכלה",
+    "חינוך ותרבות"
+  ],
+  "categories": [
+    "education",
+    "finance",
+    "welfare",
+    "culture",
+    "economy"
+  ],
+  "keywords": [
+    "ומסעדות",
+    "וכלכלה",
+    "שדות",
+    "חינוך",
+    "חנות",
+    "חנויות",
+    "רשות",
+    "בנתב",
+    "ללא",
+    "מיקום",
+    "אוצר",
+    "מכס",
+    "קטיגוריה",
+    "ותרבות",
+    "התעופה"
+  ],
+  "resources": [
+    {
+      "resource_id": "9cc1be06-79e0-4f9b-b7a6-ad9af1293cc0",
+      "title": "חנויות ומסעדות בנתב\"ג",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "קטיגוריה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חנות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חנות ללא מכס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מיקום",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 72
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

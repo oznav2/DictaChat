@@ -1,0 +1,201 @@
+{
+  "dataset_id": "b8fa0d40-5955-45a5-8c1c-d31a79c88b6b",
+  "title": "וועדת העזבונות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "וועדת העזבונות",
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "justice",
+    "religion"
+  ],
+  "keywords": [
+    "אישור",
+    "תיאור",
+    "הגשה",
+    "החלטה",
+    "לשנה",
+    "הסתיימה",
+    "פעילות",
+    "לתשלום",
+    "משתתפים",
+    "מבוקש",
+    "הוגשה",
+    "מיקום",
+    "ההקצבה",
+    "עלות",
+    "בקשות",
+    "וועדת",
+    "פרוייקט",
+    "שנתית",
+    "העזבונות",
+    "משרד",
+    "מזהה",
+    "נגישות",
+    "שנות",
+    "תאריך",
+    "ידנית",
+    "המשפטים",
+    "פיננסית",
+    "בדיקה",
+    "בקשה",
+    "ממשתתפים",
+    "האם",
+    "מוסד",
+    "סכום",
+    "למוסד",
+    "סטטוס",
+    "מחזור",
+    "הפרוייקט",
+    "מבקש",
+    "לאחר",
+    "מטרת",
+    "תמיכה",
+    "המוסד"
+  ],
+  "resources": [
+    {
+      "resource_id": "891ae797-bc4e-4222-ad91-eaeb8e765700",
+      "title": "בקשות לוועדת העזבונות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך הגשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שנת תמיכה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מחזור  הגשה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "האם הוגשה ידנית?",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "האם הסתיימה בדיקה  פיננסית?",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "האם רב שנתית?",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר שנות פרוייקט",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תיאור הפרוייקט",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מיקום הפרוייקט",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נגישות הפרוייקט",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סכום מבוקש ממשתתפים",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר משתתפים",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סכום מבוקש לשנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מזהה מוסד מבקש",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מוסד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תיאור פעילות המוסד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר בקשות למוסד לשנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עלות הפרוייקט",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "סטטוס החלטה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "סכום לתשלום לאחר אישור אפ~כ",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מטרת ההקצבה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך החלטה",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 8179
+    },
+    {
+      "resource_id": "2d2ca787-7d87-4f20-9802-75d18f7ab359",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "dataset_id": "67759a6a-4167-439b-af53-0eb792321264",
+  "title": "מכשירים אוטומטיים",
+  "organization": "בנק ישראל",
+  "tags": [
+    "אוטומטים",
+    "אוכלוסיה",
+    "בנק ישראל",
+    "מכשירים"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "מכשירים",
+    "name",
+    "אוכלוסיה",
+    "city",
+    "transactions",
+    "access",
+    "coordinate",
+    "extra",
+    "אוטומטים",
+    "אוטומטיים",
+    "transaction",
+    "sub",
+    "cheque",
+    "code",
+    "deposit",
+    "envelope",
+    "בנק",
+    "handicap",
+    "num",
+    "commission",
+    "withdrawal",
+    "ישראל",
+    "branch",
+    "forex",
+    "address",
+    "atm",
+    "additional",
+    "location",
+    "bank",
+    "cash"
+  ],
+  "resources": [
+    {
+      "resource_id": "b9d690de-0a9c-45ef-9ced-3e5957776b26",
+      "title": "מכשירים אוטומטיים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Bank_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Bank_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Branch_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Sub_Branch_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Atm_Num",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ATM_Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "ATM_Address_Extra",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Commission",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CASH_WITHDRAWAL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CASH_DEPOSIT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHEQUE_DEPOSIT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ENVELOPE_DEPOSIT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FOREX_TRANSACTION",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "ADDITIONAL_TRANSACTIONS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ATM_Location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Handicap_Access",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X_Coordinate",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Y_Coordinate",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 3025
+    },
+    {
+      "resource_id": "21fde05f-62e3-401b-81cf-5c385862026d",
+      "title": "מכשירים אוטומטיים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Bank_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Bank_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Branch_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Sub_Branch_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Atm_Num",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ATM_Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "ATM_Address_Extra",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Commission",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CASH_WITHDRAWAL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CASH_DEPOSIT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHEQUE_DEPOSIT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ENVELOPE_DEPOSIT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FOREX_TRANSACTION",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "ADDITIONAL_TRANSACTIONS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ATM_Location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Handicap_Access",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X_Coordinate",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Y_Coordinate",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 3025
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

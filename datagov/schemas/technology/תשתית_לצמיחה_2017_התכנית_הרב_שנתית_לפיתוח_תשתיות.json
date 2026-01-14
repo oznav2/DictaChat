@@ -1,0 +1,37 @@
+{
+  "dataset_id": "7654c75c-fac1-449c-8985-c7fe8b19b723",
+  "title": "תשתית לצמיחה 2017 - התכנית הרב שנתית לפיתוח תשתיות",
+  "organization": "משרד ראש הממשלה ",
+  "tags": [],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "הממשלה",
+    "שנתית",
+    "משרד",
+    "התכנית",
+    "לצמיחה",
+    "תשתיות",
+    "הרב",
+    "לפיתוח",
+    "תשתית",
+    "ראש"
+  ],
+  "resources": [
+    {
+      "resource_id": "9ce43aed-69fe-423f-aa18-95ffc4a410a7",
+      "title": "",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

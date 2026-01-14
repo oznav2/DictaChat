@@ -1,0 +1,71 @@
+{
+  "dataset_id": "5beb2241-cbca-4350-bdae-55d096373acf",
+  "title": "איתור מחוזות לפי ישובים",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [],
+  "categories": [
+    "agriculture"
+  ],
+  "keywords": [
+    "name",
+    "איתור",
+    "המזון",
+    "מחוזות",
+    "החקלאות",
+    "infolink",
+    "משרד",
+    "machoz",
+    "ישובים",
+    "semel",
+    "hebrew",
+    "english",
+    "ובטחון"
+  ],
+  "resources": [
+    {
+      "resource_id": "1bf27e56-364c-4b61-8b6b-efa9933da677",
+      "title": "machoz.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "SEMEL",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "HEBREW_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ENGLISH_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "MACHOZ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "InfoLink",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 1443
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "dataset_id": "7fb47ed4-f310-43b5-8052-3d6441455554",
+  "title": "בדיקת ישימות למתע\"ן במרחב נתניה 2050",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "דרכים בין עירוניות",
+    "הסעת המונים",
+    "חצב",
+    "תחבורה ציבורית",
+    "תנועה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "name",
+    "הסעת",
+    "start",
+    "תחבורה",
+    "status",
+    "עירוניות",
+    "destnation",
+    "דרכים",
+    "company",
+    "נתניה",
+    "בדרכים",
+    "במרחב",
+    "והבטיחות",
+    "המונים",
+    "בדיקת",
+    "תנועה",
+    "משרד",
+    "lengt",
+    "למתע",
+    "חצב",
+    "line",
+    "ציבורית",
+    "shape",
+    "oid",
+    "בין",
+    "length",
+    "ישימות",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "aaba4095-6ad5-4bec-aca5-717e485e24f6",
+      "title": "MATAAN_NTN_APP_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a805f8a5-7178-4eb1-a3e9-9a3cd843f267",
+      "title": "MATAAN_NTN_APP_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e380fd05-848c-43cc-a87d-af7bab4272a5",
+      "title": "MATAAN_NTN_APP_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "START_",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DESTNATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "COMPANY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LINE",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 4
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

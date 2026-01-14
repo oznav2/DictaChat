@@ -1,0 +1,165 @@
+{
+  "dataset_id": "3fc4d1ac-248f-4a3d-b93a-63d903883270",
+  "title": "הפקת מים בישראל",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "borehole",
+    "production",
+    "water",
+    "מים",
+    "מכון מים",
+    "נתוני הפקה",
+    "קידוח",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "borehole",
+    "ינואר",
+    "סוג",
+    "רשות",
+    "הממשלתית",
+    "ספטמבר",
+    "מים",
+    "צרכן",
+    "production",
+    "בעל",
+    "מרץ",
+    "קידוח",
+    "דצמבר",
+    "בישראל",
+    "נובמבר",
+    "water",
+    "מכון",
+    "יולי",
+    "למים",
+    "מתקן",
+    "מאי",
+    "המתקן",
+    "הרשות",
+    "אפריל",
+    "פברואר",
+    "שנה",
+    "הפקה",
+    "אוגוסט",
+    "ולביוב",
+    "הפקת",
+    "אוקטובר",
+    "המים",
+    "יוני"
+  ],
+  "resources": [
+    {
+      "resource_id": "dc69ead9-5510-407b-b16f-5293eaac8611",
+      "title": "הפקת מים משנת 2018",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר מתקן",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם מתקן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר צרכן בעל המתקן",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם צרכן בעל המתקן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג מים",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "ינואר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "פברואר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מרץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אפריל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מאי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יוני",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יולי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אוגוסט",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ספטמבר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אוקטובר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נובמבר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "דצמבר",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 16247
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

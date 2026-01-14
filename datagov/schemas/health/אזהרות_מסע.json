@@ -1,0 +1,100 @@
+{
+  "dataset_id": "b5fecfa2-2dac-4cdd-b961-5553f652f2d7",
+  "title": "אזהרות מסע",
+  "organization": "GOV",
+  "tags": [
+    "אזהרות מסע",
+    "חוץ",
+    "מטה לביטחון לאומי",
+    "מסע",
+    "מסעדות",
+    "משרד הבריאות",
+    "משרד החוץ",
+    "משרד התיירות",
+    "תיירות"
+  ],
+  "categories": [
+    "health",
+    "finance",
+    "welfare",
+    "tourism"
+  ],
+  "keywords": [
+    "מטה",
+    "התיירות",
+    "continent",
+    "תיירות",
+    "מסע",
+    "החוץ",
+    "logo",
+    "date",
+    "חוץ",
+    "הבריאות",
+    "מסעדות",
+    "לאומי",
+    "משרד",
+    "gov",
+    "country",
+    "לביטחון",
+    "אזהרות",
+    "details",
+    "recommendations"
+  ],
+  "resources": [
+    {
+      "resource_id": "2a01d234-b2b0-4d46-baa0-cec05c401e7d",
+      "title": "אזהרות מסע",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "continent",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "recommendations",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "details",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "logo",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "משרד",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 433
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

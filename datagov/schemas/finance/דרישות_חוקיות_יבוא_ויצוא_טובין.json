@@ -1,0 +1,495 @@
+{
+  "dataset_id": "15fd7d7f-da3a-461e-94dd-1dfbbec52a22",
+  "title": "דרישות חוקיות - יבוא ויצוא טובין",
+  "organization": "רשות המסים בישראל",
+  "tags": [
+    "אישור יבוא",
+    "אישור יצוא",
+    "דרישות חוקיות",
+    "דרישת חוקיות",
+    "ספר המכס",
+    "צו יבוא",
+    "צו יבוא חופשי",
+    "צו יצוא",
+    "צו יצוא חופשי",
+    "צו תעריף המכס",
+    "רשיון יבוא",
+    "רשיון יצוא",
+    "רשיונות ואישורים",
+    "תעריף המכס"
+  ],
+  "categories": [
+    "finance",
+    "justice",
+    "economy"
+  ],
+  "keywords": [
+    "אישור",
+    "חופשי",
+    "רשיונות",
+    "interconditionsrelationship",
+    "goodsdescription",
+    "fullgoodsdescription",
+    "רשות",
+    "regularitypublication",
+    "תעריף",
+    "יבוא",
+    "regularityrequirementid",
+    "maslulmeasurementunit",
+    "חוקיות",
+    "customsitemparent",
+    "regularitysource",
+    "confirmationtype",
+    "trnumber",
+    "customsitemcategoryid",
+    "measurementunitdescription",
+    "customsitemfullclassification",
+    "iscarnetincluded",
+    "ויצוא",
+    "רשיון",
+    "fullclassification",
+    "regularitypublicationid",
+    "טובין",
+    "customsbooktype",
+    "המסים",
+    "updatedate",
+    "authority",
+    "measurementunitid",
+    "regularityrequirement",
+    "confirmationtypeid",
+    "יצוא",
+    "המכס",
+    "enddate",
+    "דרישות",
+    "ואישורים",
+    "customsbooktypeid",
+    "דרישת",
+    "autonomyregularityregiontype",
+    "inceptioncode",
+    "ספר",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "a36db570-09f2-4521-8e3d-0290eb839c68",
+      "title": "דרישות חוקיות - צו יבוא חופשי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "RegularityPublicationID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityRequirementID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItemFullClassification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullGoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemCategoryID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "EndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "MeasurementUnitID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "MeasurementUnitDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MaslulMeasurementUnit",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CustomsBookTypeID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsBookType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityRequirement_CustomsItemFullClassification",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "InterConditionsRelationship",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItemParent_FullClassification",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AutonomyRegularityRegionType",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "RegularityPublication",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "InceptionCode",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "RegularitySource",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityRequirement_GoodsDescription",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityRequirement_Authority",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ConfirmationTypeID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ConfirmationType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "IsCarnetIncluded",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TrNumber",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "UpdateDate",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 28869
+    },
+    {
+      "resource_id": "9411b540-6791-40ce-93f7-4cb0068c264d",
+      "title": "דרישות חוקיות - צו יבוא אישי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "RegularityPublicationID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityPublication",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityRequirementID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItemFullClassification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemCategoryID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "FullGoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MaslulMeasurementUnit",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MeasurementUnitID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "MeasurementUnitDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "EndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "CustomsBookTypeID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsBookType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityRequirement_CustomsItemFullClassification",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "InterConditionsRelationship",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItemParent_FullClassification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AutonomyRegularityRegionType",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "InceptionCode",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "RegularitySource",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityRequirement_GoodsDescription",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityRequirement_Authority",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ConfirmationTypeID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ConfirmationType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "IsCarnetIncluded",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TrNumber",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "UpdateDate",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 11823
+    },
+    {
+      "resource_id": "dbf19712-e570-4264-805e-c891cf4c8d1d",
+      "title": "דרישות חוקיות - צו יצוא חופשי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "RegularityPublicationID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityRequirementID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItemFullClassification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullGoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemCategoryID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "EndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "MeasurementUnitID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "MeasurementUnitDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MaslulMeasurementUnit",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CustomsBookTypeID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsBookType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityRequirement_CustomsItemFullClassification",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "InterConditionsRelationship",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItemParent_FullClassification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AutonomyRegularityRegionType",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "RegularityPublication",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "InceptionCode",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "RegularitySource",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityRequirement_GoodsDescription",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RegularityRequirement_Authority",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ConfirmationTypeID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ConfirmationType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "IsCarnetIncluded",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TrNumber",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "UpdateDate",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 1671
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

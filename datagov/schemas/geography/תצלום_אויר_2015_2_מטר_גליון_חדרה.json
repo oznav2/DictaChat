@@ -1,0 +1,35 @@
+{
+  "dataset_id": "5f0c04ab-d1ad-4e06-a2c8-ba00900e9439",
+  "title": "תצלום אויר 2015 2 מטר - גליון חדרה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "חדרה",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "bac95f46-8945-416a-b115-307233326566",
+      "title": "תצלום אויר 2015 2 מטר - גליון חדרה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

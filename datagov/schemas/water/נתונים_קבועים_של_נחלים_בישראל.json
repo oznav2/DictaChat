@@ -1,0 +1,87 @@
+{
+  "dataset_id": "87514149-a73c-424d-89b4-80d3c9058f7a",
+  "title": "נתונים קבועים של נחלים בישראל",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "streams",
+    "water",
+    "מים",
+    "נחל",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "רשות",
+    "שטח",
+    "אגן",
+    "הממשלתית",
+    "מים",
+    "נחל",
+    "קבועים",
+    "אליו",
+    "המים",
+    "streams",
+    "water",
+    "נחלים",
+    "קמר",
+    "למים",
+    "היקוות",
+    "נשפך",
+    "הרשות",
+    "תחום",
+    "התנקזות",
+    "ראשי",
+    "ולביוב",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "b6b421ce-c8ad-4582-bdf2-765b5fb4fed5",
+      "title": "נתונים קבועים של נחלים בישראל",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי נחל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם נחל",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "נחל אליו הוא נשפך",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תחום התנקזות ראשי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שטח אגן היקוות (קמר)",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1288
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "dataset_id": "3f496dd8-bfa3-4805-9ace-b215ea6be867",
+  "title": "מצלמות אכיפה (א-3)",
+  "organization": "המשרד לביטחון הפנים",
+  "tags": [
+    "אכיפה",
+    "כבישים",
+    "מהירות",
+    "מצלמה",
+    "רמזור",
+    "תחבורה",
+    "תנועה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "אכיפה",
+    "מצלמות",
+    "תחבורה",
+    "כבישים",
+    "רמזור",
+    "המשרד",
+    "מהירות",
+    "הפנים",
+    "לביטחון",
+    "מצלמה",
+    "תנועה"
+  ],
+  "resources": [
+    {
+      "resource_id": "973e2ac6-44db-4e79-8172-7797e2b3d5d5",
+      "title": "רשימת עמדות מצלמות אכיפה",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "2364f64e-c00f-4e0a-b02c-6074371c33d1",
+      "title": "פריסת מצלמות אכיפה (א-3)",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

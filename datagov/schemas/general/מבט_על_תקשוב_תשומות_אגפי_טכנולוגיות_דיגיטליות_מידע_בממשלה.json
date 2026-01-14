@@ -1,0 +1,155 @@
+{
+  "dataset_id": "ef9f5f88-59bc-4080-b4b8-c4781cae6d42",
+  "title": "מבט על תקשוב - תשומות אגפי טכנולוגיות דיגיטליות מידע בממשלה",
+  "organization": "מערך הדיגיטל הלאומי",
+  "tags": [],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "טכנולוגיות",
+    "הדיגיטל",
+    "budget",
+    "הלאומי",
+    "source",
+    "cost",
+    "תקשוב",
+    "דיגיטליות",
+    "total",
+    "office",
+    "type",
+    "מבט",
+    "usage",
+    "opex",
+    "planned",
+    "workplan",
+    "year",
+    "capex",
+    "operational",
+    "actual",
+    "אגפי",
+    "תשומות",
+    "בממשלה",
+    "מערך"
+  ],
+  "resources": [
+    {
+      "resource_id": "f888f077-c85b-471c-b2de-794e446f8813",
+      "title": "היקף פעילות כספית אגפי טכנולוגיות דיגיטליות ומידע במשרדי הממשלה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Cost  ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Cost type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Source / Usage",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Capex planned",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Opex planned",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "total planned",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "Capex actual",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Opex actual",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Total actual",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "ID workplan",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Workplan",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Office",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 8112
+    },
+    {
+      "resource_id": "6a98ea6b-3731-4a93-b5b2-bb251fb6c859",
+      "title": "הערכת תקציב תפעולי משרדי ממשלה לפי שנים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Office",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Operational budget",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 240
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

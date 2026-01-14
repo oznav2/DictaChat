@@ -1,0 +1,114 @@
+{
+  "dataset_id": "cc8178f8-247a-4876-b009-11d8105296fc",
+  "title": "מוקדי תעסוקה - נוהל שותפים לדרך",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "משרד התחבורה",
+    "שותפים לדרך"
+  ],
+  "categories": [
+    "transportation",
+    "economy",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "city",
+    "gis",
+    "לדרך",
+    "בדרכים",
+    "והבטיחות",
+    "נוהל",
+    "משרד",
+    "שותפים",
+    "חצב",
+    "yearmonth",
+    "shape",
+    "area",
+    "מוקדי",
+    "oid",
+    "תעסוקה",
+    "employment",
+    "length",
+    "dunam",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "3ab3311f-b715-40fb-90eb-b7e82349abc5",
+      "title": "EMPLOYMENT_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "eb24b7e0-6386-41ce-ba12-8ec0bb79ade1",
+      "title": "EMPLOYMENT_kmz",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "24cfb983-b621-4f9c-a5f0-28c1da1218a5",
+      "title": "EMPLOYMENT_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "EMPLOYMENT",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "DUNAM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 120
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

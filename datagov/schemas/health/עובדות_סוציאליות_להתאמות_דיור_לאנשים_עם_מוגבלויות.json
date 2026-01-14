@@ -1,0 +1,102 @@
+{
+  "dataset_id": "b3248d2a-0b03-4e58-b035-79cc4f995460",
+  "title": "עובדות סוציאליות להתאמות דיור לאנשים עם מוגבלויות",
+  "organization": "משרד הבריאות",
+  "tags": [],
+  "categories": [
+    "health",
+    "housing"
+  ],
+  "keywords": [
+    "מוגבלויות",
+    "code",
+    "משרד",
+    "להתאמות",
+    "desription",
+    "city",
+    "district",
+    "email",
+    "הבריאות",
+    "social",
+    "worker",
+    "דיור",
+    "subdistrict",
+    "סוציאליות",
+    "bureau",
+    "עובדות",
+    "description",
+    "לאנשים"
+  ],
+  "resources": [
+    {
+      "resource_id": "59549db7-e1a4-40f2-9311-daaa75781529",
+      "title": "עובדות סוציאליות להתאמות בדיור עבור אנשים עם מוגבלויות",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "city_code",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "city_description",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "subdistrict_code",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "subdistrict_desription",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "district_code",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "district_description",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "bureau_code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "bureau_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "social_worker",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 1425
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

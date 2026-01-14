@@ -1,0 +1,108 @@
+{
+  "dataset_id": "9ad1c3b3-1b35-40d0-b653-7c7fa3116e28",
+  "title": "רשות תמרור בכבישים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "כבישים",
+    "ממג",
+    "רשות תמרור"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "תמרור",
+    "ממג",
+    "רשות",
+    "gis",
+    "trafcode",
+    "roadname",
+    "בדרכים",
+    "והבטיחות",
+    "roadnumber",
+    "משרד",
+    "חצב",
+    "yearmonth",
+    "shape",
+    "oid",
+    "בכבישים",
+    "כבישים",
+    "trafauth",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "71392987-2683-494a-acfd-0f23db8ce7da",
+      "title": "ROADAUTHORITY_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1c45012f-279a-46f7-8e3a-6ae921c2ea51",
+      "title": "ROADAUTHORITY_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a3cd6318-68fc-4e18-bd30-395acba5f001",
+      "title": "ROADAUTHORITY",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "TRAFCODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "TRAFAUTH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ROADNAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ROADNUMBER",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 4007
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

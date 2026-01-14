@@ -1,0 +1,35 @@
+{
+  "dataset_id": "dc0b20a2-9e2e-486f-a511-d4e3674ea4c5",
+  "title": "תצלום אויר 2015 2 מטר - גליון בקעות",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "בקעות",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "0d1f45b4-4f42-4efe-adc4-1968d5613ed5",
+      "title": "תצלום אויר 2015 2 מטר - גליון בקעות",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

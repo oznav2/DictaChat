@@ -1,0 +1,36 @@
+{
+  "dataset_id": "a88bc2e5-8641-4fcd-8a5a-b2f85f009df1",
+  "title": "תצלום אויר 2015 2 מטר - גליון מרום גולן",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "גולן",
+    "מטר",
+    "ישראל",
+    "מרום",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "48b2a492-feb1-4b3e-8529-dc907d02909c",
+      "title": "תצלום אויר 2015 2 מטר - גליון מרום גולן",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

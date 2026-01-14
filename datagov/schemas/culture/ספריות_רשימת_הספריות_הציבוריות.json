@@ -1,0 +1,68 @@
+{
+  "dataset_id": "42b3cbb4-df7d-4de8-854d-0ee74a320809",
+  "title": "ספריות - רשימת הספריות הציבוריות",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "ספריות ציבוריות"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "כתובת",
+    "התרבות",
+    "טלפון",
+    "אינטרנט",
+    "ציבוריות",
+    "משרד",
+    "הציבוריות",
+    "אתר",
+    "ספריות",
+    "הספרייה",
+    "והספורט",
+    "היישוב",
+    "הספריות"
+  ],
+  "resources": [
+    {
+      "resource_id": "daea8017-f845-49db-ac7b-7823bf9a4135",
+      "title": "רשימת הספריות הציבוריות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם היישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "כתובת הספרייה",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "אתר אינטרנט",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 222
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

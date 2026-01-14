@@ -1,0 +1,40 @@
+{
+  "dataset_id": "1294a43c-ac53-4e1f-ac88-9a544453fec4",
+  "title": "רשימת מנהלי קרנות נאמנות",
+  "organization": "רשות ניירות ערך",
+  "tags": [
+    "אוצר וכלכלה",
+    "מנהלי קרנות נאמנות"
+  ],
+  "categories": [
+    "finance",
+    "culture",
+    "economy"
+  ],
+  "keywords": [
+    "ערך",
+    "מנהלי",
+    "וכלכלה",
+    "ניירות",
+    "קרנות",
+    "נאמנות",
+    "רשות",
+    "אוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "10661c0b-552c-4b7e-abc9-03637a4cd676",
+      "title": "רשימת מנהלי קרנות נאמנות",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -53,13 +53,13 @@ __pycache__
 
 frontend-huggingface/CONFIG_MOVED.md
 frontend-huggingface/HOT_RELOAD.md
-datagov/schemas
-datagov/enterprise_schemas.json
+
+
 datagov/generate_enterprise_schemas.py
 datagov/proxy_finder.py
 datagov/enterprise_expansions.py
 datagov/ENHANCEMENT_PLAN.md
-datagov/resources_map.json
+
 datagov/resources_mapper.log
 datagov/split_schemas.py
 datagov/resources_mapper.py

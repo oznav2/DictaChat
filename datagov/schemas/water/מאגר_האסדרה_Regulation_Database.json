@@ -1,0 +1,120 @@
+{
+  "dataset_id": "a21568d8-97f4-4e1d-b326-62cca1a2c8d6",
+  "title": "מאגר האסדרה- Regulation Database",
+  "organization": "רשות האסדרה",
+  "tags": [
+    "אוצר וכלכלה",
+    "מאגר חוקים ותקנות",
+    "מידע על חקיקה",
+    "רגולציה"
+  ],
+  "categories": [
+    "water",
+    "justice",
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "וכלכלה",
+    "update",
+    "רשות",
+    "חוקים",
+    "date",
+    "האסדרה",
+    "database",
+    "רגולציה",
+    "office",
+    "type",
+    "knesset",
+    "אוצר",
+    "primary",
+    "regulation",
+    "tags",
+    "publication",
+    "legislation",
+    "authorizing",
+    "wikiurl",
+    "חקיקה",
+    "knesseturl",
+    "ותקנות",
+    "last",
+    "law"
+  ],
+  "resources": [
+    {
+      "resource_id": "929b4c60-ce43-4f5b-9960-f6146ba33eed",
+      "title": "מאגר האסדרה 30.06",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "is_regulation",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "office_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "legislation_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "legislation_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "primary_authorizing_legislation",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "publication_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "last_update",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "primary_law_knesset_id",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "wikiurl",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "knesseturl",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "tags",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 6576
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

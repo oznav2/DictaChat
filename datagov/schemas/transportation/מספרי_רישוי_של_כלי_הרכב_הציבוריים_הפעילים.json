@@ -1,0 +1,169 @@
+{
+  "dataset_id": "840827c2-7420-4687-9f2a-62aeb5602c11",
+  "title": "מספרי רישוי של כלי הרכב הציבוריים הפעילים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "תחבורה",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation",
+    "finance"
+  ],
+  "keywords": [
+    "רישוי",
+    "תחבורה",
+    "tzeva",
+    "sug",
+    "degem",
+    "הציבוריים",
+    "mispar",
+    "בדרכים",
+    "tokef",
+    "רכב",
+    "הפעילים",
+    "והבטיחות",
+    "כלי",
+    "shnat",
+    "nahag",
+    "bitul",
+    "kinuy",
+    "משרד",
+    "הרכב",
+    "מספרי",
+    "mishari",
+    "mekomot",
+    "ציבורית",
+    "rechev",
+    "yitzur",
+    "kolel",
+    "tozeret",
+    "mishkal",
+    "leyd",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "cf29862d-ca25-4691-84f6-1be60dcb4a1e",
+      "title": "קובץ מספרי רישוי של כלי הרכב הציבוריים הפעילים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "mishkal_kolel",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tzeva_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tzeva_rechev",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "kinuy_mishari",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "sug_rechev_EU_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_EU_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "bitul_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "bitul_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "bitul_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tokef_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mispar_mekomot",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mispar_mekomot_leyd_nahag",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 65310
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

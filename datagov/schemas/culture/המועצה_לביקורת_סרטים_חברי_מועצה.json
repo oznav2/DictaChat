@@ -1,0 +1,62 @@
+{
+  "dataset_id": "4614d50a-4aac-47cf-b10e-7df0a80cd633",
+  "title": "המועצה לביקורת סרטים - חברי מועצה",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "ביקורת סרטים חברי מועצה"
+  ],
+  "categories": [
+    "culture",
+    "municipal"
+  ],
+  "keywords": [
+    "טלפון",
+    "התרבות",
+    "סרטים",
+    "משרד",
+    "ביקורת",
+    "המועצה",
+    "לביקורת",
+    "והספורט",
+    "תפקיד",
+    "מועצה",
+    "חברי"
+  ],
+  "resources": [
+    {
+      "resource_id": "3d18f2f6-e58b-4ebb-9b41-e3140937b12b",
+      "title": "המועצה לביקורת סרטים - חברי מועצה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "תפקיד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 16
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

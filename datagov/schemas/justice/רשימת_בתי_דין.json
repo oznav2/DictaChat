@@ -1,0 +1,119 @@
+{
+  "dataset_id": "b09cc06d-02f7-49ce-a64d-f0d47de15ce1",
+  "title": "רשימת בתי דין",
+  "organization": "בתי הדין הרבניים",
+  "tags": [
+    "בתי דין",
+    "בתי הדין הרבניים",
+    "משפט"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "lat",
+    "court",
+    "govmaps",
+    "hours",
+    "הדין",
+    "fax",
+    "web",
+    "coordinates",
+    "reception",
+    "משפט",
+    "הרבניים",
+    "long",
+    "accessibility",
+    "דין",
+    "googlemaps",
+    "בתי",
+    "site",
+    "address",
+    "link",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "de9b13c6-1850-4714-9e21-390d48e4d582",
+      "title": "רשימת בתי דין",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "court_Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "court_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "court_address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "court_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "court_fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "court_email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "court_web_site_link",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "court_lat_googlemaps",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "court_long_googlemaps",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "court_govmaps_coordinates",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "accessibility",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "reception_hours",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 14
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

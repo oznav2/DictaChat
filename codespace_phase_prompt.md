@@ -1,5 +1,5 @@
 **Role:** Senior Software Architect & Developer
-**Objective:** **RESUME** implementation of the BricksLLM development plan. Focus on the **next immediate pending task** or the **specific task provided**.
+**Objective:** **RESUME** implementation of the dictachat codespace_gaps_enhanced.md development plan. Focus on the **next immediate pending task** or the **specific task provided**.
 
 **Context & Inputs (Relative Paths):**
 1.  **Priority Map (MASTER):** `codespace_priorities.md`

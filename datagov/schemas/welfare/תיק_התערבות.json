@@ -1,0 +1,537 @@
+{
+  "dataset_id": "993ed1f3-0a55-4c31-addc-f15f30ce9790",
+  "title": "תיק התערבות",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "התערבויות",
+    "משרד הרווחה"
+  ],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "זוהתה",
+    "תקופה",
+    "אחר",
+    "רשות",
+    "עולים",
+    "מאפיין",
+    "התערבויות",
+    "חושית",
+    "ידוע",
+    "ילדים",
+    "גיל",
+    "נזקקות",
+    "זוהה",
+    "תפקודיים",
+    "פניות",
+    "השירות",
+    "אלימות",
+    "המשפחות",
+    "חיים",
+    "סיכוניות",
+    "נקבה",
+    "ניצול",
+    "והביטחון",
+    "מיוחדים",
+    "גופנית",
+    "שרות",
+    "יהודי",
+    "מחוז",
+    "מוגבלות",
+    "משרד",
+    "התערבות",
+    "משפחות",
+    "סמל",
+    "מקבלי",
+    "מצבי",
+    "שירות",
+    "קוגנטיבית",
+    "החברתי",
+    "התנהגויות",
+    "ערבי",
+    "והזנחה",
+    "חסמים",
+    "וחברתיים",
+    "נפשית",
+    "שוליות",
+    "שעת",
+    "עבריינות",
+    "זכר",
+    "חברתית",
+    "מקבלות",
+    "אישיים",
+    "חדשים",
+    "תיק",
+    "הרווחה",
+    "חירום"
+  ],
+  "resources": [
+    {
+      "resource_id": "3b5313f3-af65-4c77-8a2a-4dacb1cd368e",
+      "title": "תיק התערבות - נתונים לשנת 2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תקופה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סמל רשות",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "שם רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מספר פניות",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר מקבלי שירות",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "סך כל המשפחות מקבלות השירות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מספר משפחות מקבלות שרות עם ילדים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "עולים חדשים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "זכר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נקבה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "0-17",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "18-25",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "26-64",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "65+",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל לא ידוע",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יהודי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ערבי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחר2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "לא ידוע3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מוגבלות גופנית, חושית, קוגנטיבית א",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מצבי חיים מיוחדים",
+          "type": "numeric",
+          "semantic": "status"
+        },
+        {
+          "name": "שעת חירום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "לא זוהה מאפיין",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "חסמים תפקודיים אישיים וחברתיים",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "התנהגויות סיכוניות, שוליות חברתית ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אלימות, ניצול והזנחה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "לא זוהתה נזקקות",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 258
+    },
+    {
+      "resource_id": "c64c313a-76fe-4c7e-9d51-a9ef804f057d",
+      "title": "תיק התערבות - נתונים לשנת 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תקופה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סמל רשות",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "שם רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מספר מקבלי שירות",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר פניות",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר משפחות מקבלות שרות",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר משפחות מקבלות שרות עם ילדים",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "עולים חדשים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "זכר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נקבה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "17",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "18025",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "26064",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "65+",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גיל לא ידוע",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יהודי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ערבי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחר2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "לא ידוע3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מוגבלות גופנית, חושית, נפשית..",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מצבי חיים מיוחדים",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "שעת חירום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "לא זוהה מאפיין",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חסמים תפקודיים אישיים וחברתיים",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "התנהגויות סיכוניות,  עבריינות..",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אלימות, ניצול והזנחה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "לא זוהתה נזקקות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 257
+    },
+    {
+      "resource_id": "3167c2d0-8542-4af7-9de4-784cc27f9a02",
+      "title": "תיקי התערבות - נתונים לשנת 2022",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תקופה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סמל רשות",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "שם רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מספר מקבלי שירות",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר פניות",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר משפחות מקבלות שרות",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר משפחות מקבלות שרות עם ילדים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "עולים חדשים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "זכר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נקבה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "0-17",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "18-25",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "26-64",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "65+",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל לא ידוע",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יהודי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ערבי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחר2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "לא ידוע3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מוגבלות גופנית, חושית, נפשית..",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מצבי חיים מיוחדים",
+          "type": "numeric",
+          "semantic": "status"
+        },
+        {
+          "name": "שעת חירום",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "לא זוהה מאפיין",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "חסמים תפקודיים אישיים וחברתיים",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "התנהגויות סיכוניות, עבריינות..",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אלימות, ניצול והזנחה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "לא זוהתה נזקקות",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 256
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

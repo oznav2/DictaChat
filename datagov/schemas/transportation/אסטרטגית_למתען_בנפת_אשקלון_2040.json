@@ -1,0 +1,142 @@
+{
+  "dataset_id": "27d8da81-16d0-4ac3-b856-f27dde377c92",
+  "title": "אסטרטגית למתע\"ן בנפת אשקלון 2040",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2040",
+    "gis",
+    "אשקלון",
+    "הסעת המונים",
+    "חצב",
+    "ממג",
+    "מתען",
+    "תחבורה ציבורית",
+    "תחצ"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "הסעת",
+    "ממג",
+    "status",
+    "תחבורה",
+    "start",
+    "בנפת",
+    "gis",
+    "destnation",
+    "תחצ",
+    "company",
+    "בדרכים",
+    "והבטיחות",
+    "אשקלון",
+    "המונים",
+    "infra",
+    "משרד",
+    "lengt",
+    "length",
+    "מתען",
+    "למתע",
+    "חצב",
+    "line",
+    "ציבורית",
+    "yearmonth",
+    "shape",
+    "oid",
+    "אסטרטגית",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "3b19be6d-bb7a-4012-8c62-82e400214d3c",
+      "title": "MATAAN_ASHKELON_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "405b031d-f36f-47ee-ac03-07417fe3d38e",
+      "title": "MATAAN_ASHKELON_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "06980e45-e0a9-4f12-912c-ea4ae8392f30",
+      "title": "MATAAN_ASHKELON_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "DESTNATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "START_",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LINE_INFRA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LINE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "COMPANY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 10
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

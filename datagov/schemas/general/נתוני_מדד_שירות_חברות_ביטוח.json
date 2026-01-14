@@ -1,0 +1,60 @@
+{
+  "dataset_id": "58242855-73d9-48fe-88b6-45e419dd0204",
+  "title": "נתוני מדד שירות – חברות ביטוח",
+  "organization": "רשות שוק ההון, ביטוח וחיסכון",
+  "tags": [
+    "ביטוח",
+    "זמני מענה",
+    "מדד שירות",
+    "נתונים",
+    "רשות שוק ההון",
+    "שביעות רצון"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "חברות",
+    "ביטוח",
+    "מדד",
+    "רצון",
+    "רשות",
+    "זמני",
+    "שוק",
+    "מענה",
+    "ההון",
+    "וחיסכון",
+    "שירות",
+    "שביעות"
+  ],
+  "resources": [
+    {
+      "resource_id": "0393bdf6-e36b-48c1-a74e-e1d3576933be",
+      "title": "קובץ ביאור",
+      "format": "DOCX",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1155b4a6-fff8-445d-93f7-8f25bce9e781",
+      "title": "נתוני מדד השירות - 2016",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "4c5f73c4-c6b3-4fc8-9259-271245944608",
+      "title": "נתוני מדד השירות - 2014",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

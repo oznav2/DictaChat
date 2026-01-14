@@ -1,0 +1,653 @@
+{
+  "dataset_id": "d4f9c425-d657-4852-bd58-0cceb96a5f6d",
+  "title": "מאגר התזונה הלאומי הישראלי",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "מזון",
+    "מתכון",
+    "ערכים תזונתיים",
+    "צמרת",
+    "קלוריות",
+    "תזונה"
+  ],
+  "categories": [
+    "health",
+    "water"
+  ],
+  "keywords": [
+    "protein",
+    "iodine",
+    "butyric",
+    "linolenic",
+    "ptiha",
+    "retention",
+    "unsaturated",
+    "מתכון",
+    "poly",
+    "idkun",
+    "folate",
+    "vitamin",
+    "ibud",
+    "tarich",
+    "משרד",
+    "manganese",
+    "food",
+    "arachidonic",
+    "fructose",
+    "pantothenic",
+    "edible",
+    "iron",
+    "צמרת",
+    "valine",
+    "visible",
+    "name",
+    "serine",
+    "fiber",
+    "carotene",
+    "mida",
+    "leucine",
+    "sugar",
+    "isoleucine",
+    "psolet",
+    "docosahexanoic",
+    "acids",
+    "הלאומי",
+    "sugars",
+    "total",
+    "ערכים",
+    "riboflavin",
+    "code",
+    "הישראלי",
+    "smlmida",
+    "eicosapentaenoic",
+    "threonine",
+    "zinc",
+    "lauric",
+    "תזונתיים",
+    "copper",
+    "english",
+    "sodium",
+    "capric",
+    "mono",
+    "trans",
+    "moisture",
+    "stearic",
+    "phenylalanine",
+    "energy",
+    "קלוריות",
+    "caprylic",
+    "shmmida",
+    "calcium",
+    "erucic",
+    "alcohol",
+    "mitzbsisi",
+    "caproic",
+    "shmmitzrach",
+    "histidine",
+    "dfe",
+    "מזון",
+    "thiamin",
+    "fatty",
+    "selenium",
+    "niacin",
+    "oleic",
+    "carbohydrates",
+    "ahuz",
+    "התזונה",
+    "tryptophan",
+    "linoleic",
+    "magnesium",
+    "gadoleic",
+    "lysine",
+    "alcohols",
+    "choline",
+    "תזונה",
+    "phosphorus",
+    "kamut",
+    "dietary",
+    "methionine",
+    "mmitzrach",
+    "הבריאות",
+    "cholesterol",
+    "myristic",
+    "parinaric",
+    "potassium",
+    "saturated",
+    "acid",
+    "smlmitzrach",
+    "nozlim",
+    "tyrosine",
+    "palmitoleic",
+    "biotin",
+    "arginine",
+    "cystine",
+    "docosapentaenoic",
+    "mishkal",
+    "makor",
+    "palmitic",
+    "fat"
+  ],
+  "resources": [
+    {
+      "resource_id": "c3cb0630-0650-46c1-a068-82d575c094b2",
+      "title": "רשימת המצרכים והמתכונים עם רכיבי התזונה ל 100 גרם.",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "smlmitzrach",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shmmitzrach",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "makor",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "edible",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "psolet",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ahuz_ibud_nozlim",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "protein",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "total_fat",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "carbohydrates",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "food_energy",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "alcohol",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "moisture",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "total_dietary_fiber",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "calcium",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "iron",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "magnesium",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "phosphorus",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "potassium",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sodium",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "zinc",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "copper",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "vitamin_a_iu",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "carotene",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "vitamin_e",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "vitamin_c",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "thiamin",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "riboflavin",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "niacin",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "vitamin_b6",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "folate",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "folate_dfe",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "vitamin_b12",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "cholesterol",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "saturated_fat",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "butyric",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "caproic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "caprylic",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "capric",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lauric",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "myristic",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "palmitic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "stearic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "oleic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "linoleic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "linolenic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "arachidonic",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "docosahexanoic",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "palmitoleic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "parinaric",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "gadoleic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "eicosapentaenoic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "erucic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "docosapentaenoic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mono_unsaturated_fat",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "poly_unsaturated_fat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "vitamin_d",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "total_sugars",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "trans_fatty_acids",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "vitamin_a_re",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "isoleucine",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "leucine",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "valine",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lysine",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "threonine",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "methionine",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "phenylalanine",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "tryptophan",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "histidine",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "tyrosine",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "arginine",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "cystine",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "serine",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "vitamin_k",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "pantothenic_acid",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "iodine",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "selenium",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sugar_alcohols",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "choline",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "biotin",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "manganese",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "fructose",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tarich_ptiha",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tarich_idkun",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "english_name",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 4624
+    },
+    {
+      "resource_id": "5c726506-5c1e-43a7-94f7-24845dbde9c3",
+      "title": "רשימת המתכונים עם הרכב מצרכי המתכון והכמויות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mmitzrach",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mitzbsisi",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mishkal",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "retention",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ahuz",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mida",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "kamut",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "is_visible",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 8324
+    },
+    {
+      "resource_id": "98fb46fe-e8de-4067-94d2-b0a8ea4269da",
+      "title": "טבלת יחידות מידה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "smlmida",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "shmmida",
+          "type": "text",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 108
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

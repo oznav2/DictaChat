@@ -1,0 +1,46 @@
+{
+  "dataset_id": "6b729165-dc9c-49b3-afc6-eceabd8fef70",
+  "title": "קובץ השכבה הארצית של האזורים הסטטיסטיים ממפקד 2008",
+  "organization": "הלשכה המרכזית לסטטיסטיקה",
+  "tags": [
+    "אוכלוסיה",
+    "אזורים סטטיסטיים",
+    "מפקד",
+    "מפקד 2008",
+    "שכבה"
+  ],
+  "categories": [
+    "demographics"
+  ],
+  "keywords": [
+    "שכבה",
+    "האזורים",
+    "אוכלוסיה",
+    "אזורים",
+    "מפקד",
+    "הלשכה",
+    "הסטטיסטיים",
+    "המרכזית",
+    "לסטטיסטיקה",
+    "ממפקד",
+    "השכבה",
+    "הארצית",
+    "סטטיסטיים"
+  ],
+  "resources": [
+    {
+      "resource_id": "3b88cb58-62cd-43ea-9156-7b81ead557b1",
+      "title": "קובץ השכבה הארצית של האזורים הסטטיסטיים ממפקד 2008",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

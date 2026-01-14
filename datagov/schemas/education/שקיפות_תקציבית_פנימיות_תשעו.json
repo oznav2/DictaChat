@@ -1,0 +1,41 @@
+{
+  "dataset_id": "8ee53f44-1e3f-4a35-b0da-ca428bbc3138",
+  "title": "שקיפות תקציבית פנימיות תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "מוסדות חינוך",
+    "תקציב"
+  ],
+  "categories": [
+    "education",
+    "finance"
+  ],
+  "keywords": [
+    "תקציב",
+    "חינוך",
+    "משרד",
+    "החינוך",
+    "פנימיות",
+    "מוסדות",
+    "שקיפות",
+    "תקציבית",
+    "תשע"
+  ],
+  "resources": [
+    {
+      "resource_id": "9090615a-3a95-4fa9-802e-f647157803a4",
+      "title": "שקיפות תקציבית פנימיות תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

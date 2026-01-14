@@ -1,0 +1,85 @@
+{
+  "dataset_id": "32d9a7b7-a47b-4592-a84d-fc84c1059ff4",
+  "title": "אירועי שפעת העופות",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [
+    "שפעת העופות"
+  ],
+  "categories": [
+    "agriculture"
+  ],
+  "keywords": [
+    "אירועי",
+    "המזון",
+    "subtype",
+    "החקלאות",
+    "settlement",
+    "משרד",
+    "העופות",
+    "שפעת",
+    "date",
+    "week",
+    "avianinfluenzaseason",
+    "age",
+    "anaf",
+    "apidyomologi",
+    "ובטחון"
+  ],
+  "resources": [
+    {
+      "resource_id": "a5dc0714-f945-4e52-a61e-1f7d727b7b4e",
+      "title": "אירועי שפעת העופות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Settlement",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Subtype",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Apidyomologi_week",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Anaf",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Age",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AvianInfluenzaSeason",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 113
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

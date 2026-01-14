@@ -1,0 +1,68 @@
+{
+  "dataset_id": "ebf0005b-f5fe-4c6c-ab6d-28778167d025",
+  "title": "מפלס ים המלח",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "dead sea",
+    "level",
+    "water",
+    "הידרומטריה",
+    "ים המלח",
+    "מים",
+    "מפלס",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "dead",
+    "הרשות",
+    "מדידה",
+    "רשות",
+    "level",
+    "מפלס",
+    "הממשלתית",
+    "למים",
+    "המים",
+    "מים",
+    "ולביוב",
+    "תאריך",
+    "המלח",
+    "הידרומטריה",
+    "sea",
+    "water"
+  ],
+  "resources": [
+    {
+      "resource_id": "823479b4-4771-43d8-9189-6a2a1dcaaf10",
+      "title": "מפלס ים המלח משנת 1976",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תאריך מדידה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מפלס",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 683
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "dataset_id": "b6947fed-c8fb-436a-9017-441c5c302551",
+  "title": "סקר ארצי של מהירויות נסיעה בישראל 2022",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אוטובוס",
+    "אופנועים",
+    "בין עירוני",
+    "חצב",
+    "מהירות",
+    "משאיות",
+    "עירוני",
+    "רכב פרטי",
+    "רלבד",
+    "תנועה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "רלבד",
+    "סקר",
+    "מהירות",
+    "אוטובוס",
+    "אופנועים",
+    "ארצי",
+    "עירוני",
+    "בדרכים",
+    "רכב",
+    "והבטיחות",
+    "משאיות",
+    "תנועה",
+    "משרד",
+    "חצב",
+    "נסיעה",
+    "בין",
+    "פרטי",
+    "מהירויות",
+    "בישראל",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c8c9fd01-54e3-4e0c-a8aa-3c903445b11c",
+      "title": "כל קבצי הסקר",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "91b289c0-011b-446f-b3ea-e228a1e86e61",
+      "title": "תקציר מנהלים - סקר מהירויות נסיעה ארצי 2022",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "c0a7dc08-5dd9-40a0-8ce1-42ed4aa24d33",
+      "title": "מטאדאטה לקבצי הסקר",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

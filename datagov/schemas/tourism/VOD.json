@@ -1,0 +1,279 @@
+{
+  "dataset_id": "5037436c-9639-42ad-8478-07b631a7de8a",
+  "title": "VOD",
+  "organization": "משרד התיירות",
+  "tags": [
+    "משרד התיירות",
+    "תיירות"
+  ],
+  "categories": [
+    "tourism"
+  ],
+  "keywords": [
+    "name",
+    "language",
+    "dvd",
+    "duration",
+    "התיירות",
+    "city",
+    "fulldescription",
+    "product",
+    "wmv",
+    "copyright",
+    "production",
+    "תיירות",
+    "vendor",
+    "file",
+    "shortdescription",
+    "vod",
+    "משרד",
+    "url",
+    "region",
+    "version",
+    "year",
+    "vendorid",
+    "link"
+  ],
+  "resources": [
+    {
+      "resource_id": "943cad88-1c69-455e-ab09-4f5808af1e60",
+      "title": "קובץ הסבר",
+      "format": "DOCX",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e07b1a46-e5cf-4ae5-84fe-45096a61023c",
+      "title": "VOD_GOISRAEL_English",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ShortDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "VendorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Vendor_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Product_Url",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Copyright",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Duration",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Language",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Link_to_DVD_file",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Link_to_WMV_file",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Production",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Production_Year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Version",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 48
+    },
+    {
+      "resource_id": "387ccb7a-8a37-4c56-870c-efe470981c96",
+      "title": "VOD_GOISRAEL_Heberw",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ShortDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "VendorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Vendor_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Product_Url",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Copyright",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Duration",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Language",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Link_to_DVD_file",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Link_to_WMV_file",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Production",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Production_Year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Version",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 48
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

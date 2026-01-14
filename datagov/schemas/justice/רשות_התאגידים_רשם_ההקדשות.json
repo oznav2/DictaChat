@@ -1,0 +1,183 @@
+{
+  "dataset_id": "a52c0585-8af8-42bd-8c5c-03c6550682ea",
+  "title": "רשות התאגידים - רשם ההקדשות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "הקדש",
+    "הקדש ציבורי",
+    "הקדשות",
+    "הקדשות ציבוריים",
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "לתאריך",
+    "רשם",
+    "מטבע",
+    "רשות",
+    "מטרות",
+    "תאור",
+    "סטטווס",
+    "גוש",
+    "רישום",
+    "ההקדשות",
+    "ציבוריים",
+    "הערה",
+    "התאגידים",
+    "במרשם",
+    "מימון",
+    "המקרקעין",
+    "נכון",
+    "הקדש",
+    "משרד",
+    "חלקה",
+    "תאריך",
+    "המשפטים",
+    "הקדשות",
+    "שיטת",
+    "סכום",
+    "ציבורי",
+    "תיק",
+    "הנכס"
+  ],
+  "resources": [
+    {
+      "resource_id": "f70898aa-9d47-47b2-b1bc-ec736b76bfe2",
+      "title": "רשם ההקדשות - מידע כללי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר תיק",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך רישום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שם הקדש",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מטרות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שיטת מימון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטטווס תיק",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3316
+    },
+    {
+      "resource_id": "fa63c259-c5f5-4ab1-a375-b75923074c57",
+      "title": "רשם ההקדשות - מקרקעין של הקדש ציבורי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר תיק",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם הקדש",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאור הנכס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גוש",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "חלקה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תת חלקה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הערה במרשם המקרקעין",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 2072
+    },
+    {
+      "resource_id": "1e4263cc-6fd5-4687-8b36-8db04877eff6",
+      "title": "רשם ההקדשות - יתרת הנכסים של הקדש ציבורי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר תיק",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם הקדש",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאור מטבע",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סכום",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "נכון לתאריך",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 3966
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

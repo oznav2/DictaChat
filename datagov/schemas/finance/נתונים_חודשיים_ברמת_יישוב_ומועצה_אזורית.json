@@ -1,0 +1,159 @@
+{
+  "dataset_id": "bc3332ae-79ab-42db-8eff-729815e31b95",
+  "title": "נתונים חודשיים ברמת יישוב ומועצה אזורית",
+  "organization": "שירות התעסוקה",
+  "tags": [
+    "אבטלה",
+    "אוכלוסיה",
+    "אוצר וכלכלה",
+    "אקדמאים",
+    "גברים",
+    "דורשי עבודה",
+    "הבטחת הכנסה",
+    "מועצות אזוריות",
+    "מחוז",
+    "נשים"
+  ],
+  "categories": [
+    "finance",
+    "economy",
+    "municipal"
+  ],
+  "keywords": [
+    "name",
+    "התעסוקה",
+    "symbol",
+    "וכלכלה",
+    "אוכלוסיה",
+    "גברים",
+    "חודשיים",
+    "city",
+    "אזורית",
+    "regional",
+    "עבודה",
+    "דורשי",
+    "הכנסה",
+    "men",
+    "job",
+    "ברמת",
+    "נשים",
+    "month",
+    "rate",
+    "cbs",
+    "jobseekers",
+    "from",
+    "unemployed",
+    "מחוז",
+    "total",
+    "estimated",
+    "non",
+    "academic",
+    "ומועצה",
+    "district",
+    "אוצר",
+    "reference",
+    "שירות",
+    "אקדמאים",
+    "אזוריות",
+    "הבטחת",
+    "placement",
+    "seekers",
+    "אבטלה",
+    "מועצות",
+    "יישוב",
+    "weman",
+    "council"
+  ],
+  "resources": [
+    {
+      "resource_id": "08f36575-d5f9-4c99-842c-e3516f34c31c",
+      "title": "מידע ברמת ישוב ומועצה אזורית - אפריל 2020",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Cbs district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "City symbol",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "City or Regional council",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Total jobseekers",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "Men",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Weman",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Academic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Non academic",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Hh",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Unemployed job seekers",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Placement from reference",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Estimated unemployed rate in city",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 28668
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

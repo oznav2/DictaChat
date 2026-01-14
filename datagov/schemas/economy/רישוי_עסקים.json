@@ -1,0 +1,174 @@
+{
+  "dataset_id": "39ffaf87-c67a-4eeb-91cc-edfc79b4dd8e",
+  "title": "רישוי עסקים",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "כלכלה עסקים ויזמות"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "אישור",
+    "רישוי",
+    "ויזמות",
+    "שבע",
+    "עסק",
+    "רחוב",
+    "טלפון",
+    "עסקים",
+    "תוקף",
+    "כלכלה",
+    "מהות",
+    "פקיעת",
+    "תאריך",
+    "דוא״ל",
+    "באר",
+    "העסק",
+    "בית",
+    "עיריית",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "7d4c61e2-2416-453e-8efb-bd02ec89db35",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "רישיון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם עסק",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך פקיעת רישיון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תוקף רישיון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מהות עסק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך אישור רישיון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מס' טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "רחוב העסק",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "בית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "דוא״ל",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2379
+    },
+    {
+      "resource_id": "06259dee-7208-4647-9b70-30a3048cfda2",
+      "title": "XLSX",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "רישיון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם עסק",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך פקיעת רישיון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תוקף רישיון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מהות עסק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך אישור רישיון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מס' טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "רחוב העסק",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "בית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "דוא״ל",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2379
+    },
+    {
+      "resource_id": "c84bafcf-6569-415e-9ac4-91b5d68c027f",
+      "title": "JSON",
+      "format": "JSON",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

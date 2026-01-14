@@ -1,0 +1,91 @@
+{
+  "dataset_id": "6a4c7e72-02b9-4975-a54b-721387b8612c",
+  "title": "מעונות יום",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "חינוך"
+  ],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "operator",
+    "name",
+    "באר",
+    "lon",
+    "חינוך",
+    "lat",
+    "מעונות",
+    "עיריית",
+    "address",
+    "שבע",
+    "יום",
+    "neighbor"
+  ],
+  "resources": [
+    {
+      "resource_id": "9b742f2e-6933-47a5-9cfc-329736582b03",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "8a9c6e64-fda8-499c-887c-4e7b3eb82332",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "neighbor",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "operator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 124
+    },
+    {
+      "resource_id": "c935bba6-3a4c-4856-a3ed-57f926d5dcb9",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

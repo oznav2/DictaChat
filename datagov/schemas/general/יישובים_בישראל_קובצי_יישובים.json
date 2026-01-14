@@ -1,0 +1,499 @@
+{
+  "dataset_id": "d9b1e04c-426f-4e32-ba40-a1ad9d8748a7",
+  "title": "יישובים בישראל - קובצי יישובים",
+  "organization": "הלשכה המרכזית לסטטיסטיקה",
+  "tags": [],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "ואחרים",
+    "אשכול",
+    "גובה",
+    "שיוך",
+    "השתייכות",
+    "קובצי",
+    "תעתיק",
+    "משטרה",
+    "ארעי",
+    "הלשכה",
+    "לסטטיסטיקה",
+    "שוטפת",
+    "ערבים",
+    "מונציפאלי",
+    "תחנת",
+    "מקומיות",
+    "זרים",
+    "מעמד",
+    "אזור",
+    "מטרופוליני",
+    "מזה",
+    "צורת",
+    "ארגונית",
+    "נפה",
+    "יישובים",
+    "מחוז",
+    "תכנון",
+    "סמל",
+    "המרכזית",
+    "באנגלית",
+    "הכל",
+    "יהודים",
+    "קואורדינטות",
+    "עודכון",
+    "רשויות",
+    "בתאריך",
+    "ייסוד",
+    "ועדת",
+    "טבעי",
+    "ממוצע",
+    "שנה",
+    "ישראלים",
+    "יישוב",
+    "אוכלוסייה",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "d47a54ff-87f0-44b3-b33a-f284c0c38e5a",
+      "title": " קובץ היישובים 2023",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם יישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "סמל יישוב",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "תעתיק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סמל מחוז",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "שם מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סמל נפה",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "שם נפה",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "אזור טבעי",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "סמל מעמד מונציפאלי",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מעמד מונציפאלי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שיוך מטרופוליני",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "דת יישוב",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "סך הכל אוכלוסייה 2023 - ארעי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סך הכל ישראלים 2023 - ארעי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יהודים ואחרים - ארעי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ערבים - ארעי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "זרים - ארעי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנת ייסוד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "צורת יישוב שוטפת - ארעי",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "השתייכות ארגונית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קואורדינטות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גובה ממוצע עודכון בתאריך 12/02/2025",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "ועדת תכנון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תחנת משטרה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "שם יישוב באנגלית",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "אשכול רשויות מקומיות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1484
+    },
+    {
+      "resource_id": "199b15db-3bcb-470e-ba03-73364737e352",
+      "title": " קובץ היישובים 2022",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם יישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "סמל יישוב",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "תעתיק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סמל מחוז",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "שם מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סמל נפה",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "שם נפה",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "אזור טבעי",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "סמל מעמד מונציפאלי",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מעמד מונציפאלי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שיוך מטרופוליני",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "דת יישוב",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "סך הכל אוכלוסייה 2022",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יהודים ואחרים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מזה: יהודים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ערבים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנת ייסוד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "צורת יישוב שוטפת",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "השתייכות ארגונית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קואורדינטות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גובה ממוצע",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ועדת תכנון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תחנת משטרה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "שם יישוב באנגלית",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "אשכול רשויות מקומיות",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1484
+    },
+    {
+      "resource_id": "95435941-d7e5-46c6-876a-761a74a5928d",
+      "title": "קובץ היישובים 2021",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם יישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "סמל יישוב",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "תעתיק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סמל מחוז",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "שם מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סמל נפה",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "שם נפה",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "אזור טבעי",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "סמל מעמד מונציפאלי",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מעמד מונציפאלי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שיוך מטרופוליני",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "דת יישוב",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "סך הכל אוכלוסייה 2021",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יהודים ואחרים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מזה: יהודים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ערבים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנת ייסוד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "צורת יישוב שוטפת",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "השתייכות ארגונית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קואורדינטות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גובה ממוצע",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ועדת תכנון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תחנת משטרה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "שם יישוב באנגלית",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "אשכול רשויות מקומיות",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1483
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

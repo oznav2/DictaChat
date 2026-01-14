@@ -1,0 +1,199 @@
+{
+  "dataset_id": "c2c97a50-79a2-4d35-9a97-29cf89bd03d5",
+  "title": "תקציב וביצוע 2012",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אוצר וכלכלה",
+    "ביצוע",
+    "תקציב"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "הוצאה",
+    "שיא",
+    "וכלכלה",
+    "מיועדת",
+    "סוג",
+    "פשח",
+    "הוצאות",
+    "פעילה",
+    "עבצ",
+    "הכנסה",
+    "תקציב",
+    "בהכנסה",
+    "סעיף",
+    "נטו",
+    "כמויות",
+    "הרשאה",
+    "האוצר",
+    "מזומן",
+    "להתחייב",
+    "תוכנית",
+    "תקנה",
+    "מאושר",
+    "משרד",
+    "מקורי",
+    "אוצר",
+    "קוד",
+    "תחום",
+    "ביצוע",
+    "שנה",
+    "וביצוע",
+    "מותנית"
+  ],
+  "resources": [
+    {
+      "resource_id": "5891c2ff-d5ff-4692-8ca5-e299b2ea5e7c",
+      "title": "תקציב וביצוע 2012",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "קוד סעיף",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם סעיף",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד תחום",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תחום",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד תוכנית",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תוכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד תקנה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תקנה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תקנה פעילה / פשח",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "סוג הוצאה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "תקציב מקורי - הוצאות נטו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מקורי - הוצאה מותנית בהכנסה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מקורי - הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מקורי - הרשאה להתחייב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מקורי - שיא כא",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מקורי - עבצ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מקורי - כמויות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מאושר - הוצאות נטו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מאושר - הוצאה מותנית בהכנסה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מאושר - הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מאושר - הרשאה להתחייב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מאושר - שיא כא",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מאושר - עבצ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב מאושר - כמויות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע - מזומן",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 12270
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

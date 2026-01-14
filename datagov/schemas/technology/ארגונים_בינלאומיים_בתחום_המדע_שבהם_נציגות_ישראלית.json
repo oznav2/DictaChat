@@ -1,0 +1,52 @@
+{
+  "dataset_id": "507e2de3-9d84-4971-93e0-106397a12a1b",
+  "title": "ארגונים בינלאומיים בתחום המדע שבהם נציגות ישראלית",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "מדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "מדע",
+    "החדשנות",
+    "משרד",
+    "הארגון",
+    "בינלאומיים",
+    "ישראלית",
+    "ארגונים",
+    "המדע",
+    "נציגות",
+    "שבהם",
+    "בתחום",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "5ac4b32b-f67b-46ff-a936-8916cc5292c2",
+      "title": "ארגונים בינלאומיים בתחום המדע ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הארגון",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 7
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

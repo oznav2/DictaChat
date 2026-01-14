@@ -1,0 +1,180 @@
+{
+  "dataset_id": "0a374a70-87e9-41d1-a710-d8a81dc61144",
+  "title": "עיצובים(מדגמים)",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "עיצובים"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "מדגמים",
+    "סוג",
+    "עיצוב",
+    "מדינת",
+    "איגוד",
+    "פרסום",
+    "מדגם",
+    "תוקף",
+    "עיצובים",
+    "משרד",
+    "דין",
+    "באנגלית",
+    "קוד",
+    "תאריך",
+    "המשפטים",
+    "אנגלית",
+    "בקשה",
+    "סטטוס",
+    "מבקש",
+    "קדימה",
+    "בעברית",
+    "נוכחי"
+  ],
+  "resources": [
+    {
+      "resource_id": "56e2bfbd-7c6b-461a-aee6-c9de4a10e498",
+      "title": "עיצובים(מדגמים).csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מבקש אנגלית 1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם מבקש אנגלית 2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם מבקש אנגלית 3",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם מבקש אנגלית 4",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם מדגם עיצוב באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם מדגם עיצוב בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך פרסום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סוג",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "1 דין קדימה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מדינת איגוד דין קדימה 1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מדינת איגוד דין קדימה 2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך דין קדימה 1",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מספר דין קדימה 1",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך דין קדימה 2",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מספר דין קדימה 2",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך בקשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך פג תוקף",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סטטוס נוכחי באנגלית",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "קוד מבקש 1",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד מבקש 2",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד מבקש 3",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד מבקש 4",
+          "type": "text",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 44992
+    },
+    {
+      "resource_id": "db8339ff-803a-4f15-a748-eece74036801",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

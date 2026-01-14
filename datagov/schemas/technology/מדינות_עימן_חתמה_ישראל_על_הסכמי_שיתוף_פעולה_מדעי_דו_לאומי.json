@@ -1,0 +1,62 @@
+{
+  "dataset_id": "e8543807-53df-43d5-b8d6-c6a17094fdc9",
+  "title": "מדינות עימן חתמה ישראל על הסכמי שיתוף פעולה מדעי דו-לאומי",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "מדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "מדע",
+    "החדשנות",
+    "לאומי",
+    "באנגלית",
+    "ישראל",
+    "חתמה",
+    "בעברית",
+    "משרד",
+    "שיתוף",
+    "המדינה",
+    "מדעי",
+    "מדינות",
+    "הסכמי",
+    "פעולה",
+    "המדע",
+    "עימן",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "e78841f7-aeb5-413a-a609-5842897f9b0a",
+      "title": "מדינות - הסכמי שיתוף פעולה מדעי דו-לאומי",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המדינה בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם המדינה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 17
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

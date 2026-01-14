@@ -1,0 +1,48 @@
+{
+  "dataset_id": "17716144-e89d-4d3b-a4cb-b8ccce1b10b1",
+  "title": "סקר חוויית המטופל מהטיפול בבתי חולים פסיכיאטריים 2015 - משרד הבריאות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות",
+    "בריאות ורווחה",
+    "בתי חולים פסיכיאטריים",
+    "חוויית המטופל",
+    "משרד הבריאות",
+    "סקרים"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "בבתי",
+    "פסיכיאטריים",
+    "סקר",
+    "מהטיפול",
+    "בתי",
+    "משרד",
+    "חוויית",
+    "חולים",
+    "ורווחה",
+    "הבריאות",
+    "סקרים",
+    "בריאות",
+    "המטופל"
+  ],
+  "resources": [
+    {
+      "resource_id": "98025cbe-c8b1-48de-a1df-49960924d555",
+      "title": "סקר חוויית המטופל מהטיפול בבתי חולים פסיכיאטריים 2015 - משרד הבריאות",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

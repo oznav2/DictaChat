@@ -1,0 +1,54 @@
+{
+  "dataset_id": "f311665d-8c2a-48dd-b70f-38437c5a650d",
+  "title": "רשימת מסגדים",
+  "organization": "משרד הפנים",
+  "tags": [
+    "mosque",
+    "מסגד",
+    "מסגדים"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "המסגד",
+    "משרד",
+    "הפנים",
+    "מסגד",
+    "מסגדים",
+    "mosque",
+    "היישוב"
+  ],
+  "resources": [
+    {
+      "resource_id": "42f1d4b0-ce70-4e60-898f-38dd91f83cc5",
+      "title": "רשימת מסגדים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם היישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם המסגד",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 252
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

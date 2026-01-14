@@ -1,0 +1,230 @@
+{
+  "dataset_id": "07c8a9d7-5564-4b2f-9142-13ab7a825781",
+  "title": "פנימיות חינוכיות במינהל לחינוך התיישבותי",
+  "organization": "המינהל לחינוך התיישבותי",
+  "tags": [
+    "משרד החינוך",
+    "פנימיות"
+  ],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "לחינוך",
+    "name",
+    "area",
+    "phone",
+    "website",
+    "חינוכיות",
+    "במינהל",
+    "משרד",
+    "החינוך",
+    "text",
+    "address",
+    "פנימיות",
+    "email",
+    "school",
+    "המינהל",
+    "number",
+    "התיישבותי",
+    "classes"
+  ],
+  "resources": [
+    {
+      "resource_id": "4771ed41-9a28-46fb-8ced-f0846cc88b19",
+      "title": "רשימת הפנימיות החינוכיות (עברית)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "school_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "school_number",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "classes_text",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "classes",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "area_text",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "website",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 212
+    },
+    {
+      "resource_id": "f9e02af5-a6aa-4d08-90c3-aa56ad2985f1",
+      "title": "רשימת הפנימיות החינוכיות (ערבית)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "school_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "school_number",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "classes",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "classes_text",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "area_text",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "website",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 212
+    },
+    {
+      "resource_id": "4309964b-8dc1-4d74-8331-30be74deaf10",
+      "title": "רשימת הפנימיות החינוכיות (אנגלית)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "school_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "school_number",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "classes_text",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "classes",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "area_text",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "website",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 212
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

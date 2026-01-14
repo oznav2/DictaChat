@@ -1,0 +1,127 @@
+{
+  "dataset_id": "7b0079cc-737e-4e7e-8ae4-b1e6c5c9bf47",
+  "title": "רשימת מסננות בקידוחים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "borehole",
+    "perforation",
+    "water",
+    "מים",
+    "קידוח",
+    "רשות המים"
+  ],
+  "categories": [
+    "finance",
+    "water"
+  ],
+  "keywords": [
+    "עומק",
+    "borehole",
+    "אופק",
+    "סוג",
+    "perforation",
+    "רשות",
+    "פתח",
+    "אקוויפר",
+    "תאור",
+    "האופק",
+    "הממשלתית",
+    "מים",
+    "בקידוחים",
+    "קוטר",
+    "קידוח",
+    "אזור",
+    "תכונות",
+    "water",
+    "האיזור",
+    "הידראולי",
+    "למים",
+    "פיזיות",
+    "מסננות",
+    "הרשות",
+    "פרפורציה",
+    "תצורה",
+    "בסיס",
+    "אינץ",
+    "ולביוב",
+    "מזין",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "82424fcd-eaf9-43a7-86a7-35a45c420f8a",
+      "title": "רשימת מסננות בקידוחים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם קידוח",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "עומק בסיס - מ'",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עומק גג - מ'",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "פתח פרפורציה - ממ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קוטר פרפורציה - אינץ'",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תאור סוג פרפורציה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "תכונות פיזיות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אקוויפר מזין",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תצורה של האיזור",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אופק אזור פרפורציה",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סוג הידראולי של האופק",
+          "type": "text",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 11603
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

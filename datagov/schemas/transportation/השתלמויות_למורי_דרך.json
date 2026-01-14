@@ -1,0 +1,235 @@
+{
+  "dataset_id": "0d51bcd2-aa52-4c7c-8e5f-96d0d193a1fb",
+  "title": "השתלמויות למורי דרך",
+  "organization": "משרד התיירות",
+  "tags": [
+    "מורי דרך",
+    "משרד התיירות",
+    "תיירות"
+  ],
+  "categories": [
+    "transportation",
+    "tourism"
+  ],
+  "keywords": [
+    "name",
+    "מורי",
+    "דרך",
+    "phone",
+    "language",
+    "התיירות",
+    "city",
+    "place",
+    "institution",
+    "remarks",
+    "תיירות",
+    "contact",
+    "date",
+    "character",
+    "למורי",
+    "range",
+    "number",
+    "price",
+    "instructor",
+    "משרד",
+    "region",
+    "השתלמויות",
+    "registration",
+    "address",
+    "school",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "5343c53e-f49b-4cd4-a9f6-1fd62379ab51",
+      "title": "השתלמויות מורי דרך 2020 - 2021",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "School",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Number",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Instructor",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "character",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Language",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Price",
+          "type": "numeric",
+          "semantic": "price"
+        },
+        {
+          "name": "Price_Range",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "Registration",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 506
+    },
+    {
+      "resource_id": "39722a8c-95db-496d-9723-0c547fbe2efe",
+      "title": "השתלמויות 2021-2022",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "School",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Number",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "Date",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "Instructor",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Place",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Language",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Price",
+          "type": "numeric",
+          "semantic": "price"
+        },
+        {
+          "name": "Price_Range",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "Registration",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 286
+    },
+    {
+      "resource_id": "6df4369b-54ee-4d17-b36a-0d57c4cab517",
+      "title": "מוסדות לימוד",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "institution",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "contact",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "remarks",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 11
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": true
+  }
+}

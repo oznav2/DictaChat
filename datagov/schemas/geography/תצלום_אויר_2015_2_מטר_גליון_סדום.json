@@ -1,0 +1,35 @@
+{
+  "dataset_id": "730c7e55-09e4-4ac4-8d23-e316516ed20f",
+  "title": "תצלום אויר 2015 2 מטר - גליון סדום",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "סדום",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "09b2c0f6-fe25-40b1-a1e8-cccfe9e3577a",
+      "title": "תצלום אויר 2015 2 מטר - גליון סדום",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

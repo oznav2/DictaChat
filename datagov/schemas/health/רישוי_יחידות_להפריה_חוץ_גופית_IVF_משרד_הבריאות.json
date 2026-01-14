@@ -1,0 +1,74 @@
+{
+  "dataset_id": "1ee91419-01fb-42c6-bad4-28b1a71f7d57",
+  "title": "רישוי יחידות להפריה חוץ גופית IVF - משרד הבריאות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות",
+    "בריאות ורווחה",
+    "משרד הבריאות"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "להפריה",
+    "רישוי",
+    "טלפון",
+    "יחידות",
+    "ivf",
+    "בית",
+    "ישוב",
+    "משרד",
+    "מנהל",
+    "החולים",
+    "ורווחה",
+    "חוץ",
+    "הבריאות",
+    "היחידה",
+    "גופית",
+    "בריאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "00bf4829-ddcd-4d7c-b1e3-b727e877d7e9",
+      "title": "יחידות להפריה חוץ גופית -IVF",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם בית החולים",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מנהל היחידה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 26
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

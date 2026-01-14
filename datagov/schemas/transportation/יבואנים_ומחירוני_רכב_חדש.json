@@ -1,0 +1,110 @@
+{
+  "dataset_id": "9db8e799-d2db-4136-bb9c-df255740c810",
+  "title": "יבואנים ומחירוני רכב חדש",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "economy"
+  ],
+  "keywords": [
+    "ומחירוני",
+    "תחבורה",
+    "yevuan",
+    "sug",
+    "degem",
+    "חדש",
+    "shem",
+    "בדרכים",
+    "mehir",
+    "רכב",
+    "והבטיחות",
+    "כלי",
+    "shnat",
+    "יבואנים",
+    "kinuy",
+    "משרד",
+    "mishari",
+    "semel",
+    "yitzur",
+    "tozeret",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "39f455bf-6db0-4926-859d-017f34eacbcb",
+      "title": "יבואנים ומחירוני רכב חדש",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "semel_yevuan",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "shem_yevuan",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "sug_degem",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "mehir",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kinuy_mishari",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 94955
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

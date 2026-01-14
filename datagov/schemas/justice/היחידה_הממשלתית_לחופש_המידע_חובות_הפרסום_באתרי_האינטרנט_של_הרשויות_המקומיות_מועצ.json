@@ -1,0 +1,67 @@
+{
+  "dataset_id": "1646b73d-9d0c-4816-9f8d-6005e9782e54",
+  "title": "היחידה הממשלתית לחופש המידע-חובות הפרסום באתרי האינטרנט של הרשויות המקומיות-מועצות מקומיות",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice",
+    "communications"
+  ],
+  "keywords": [
+    "המקומיות",
+    "סוג",
+    "משרד",
+    "הרשויות",
+    "הוראות",
+    "מיוחדות",
+    "החוקי",
+    "המקור",
+    "מועצות",
+    "הממשלתית",
+    "היחידה",
+    "לחופש",
+    "הפרסום",
+    "האינטרנט",
+    "המשפטים",
+    "באתרי",
+    "חובות",
+    "מקומיות"
+  ],
+  "resources": [
+    {
+      "resource_id": "de35de46-132b-407a-8d61-5feba0b9e503",
+      "title": "חובות הפרסום באתרי הרשויות המקומיות-מועצות מקומיות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג המידע",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "הוראות מיוחדות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "המקור החוקי",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 44
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

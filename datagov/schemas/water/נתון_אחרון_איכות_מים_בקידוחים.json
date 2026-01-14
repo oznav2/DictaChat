@@ -1,0 +1,120 @@
+{
+  "dataset_id": "2b2882aa-5258-4ef4-bcb2-9747dbb62890",
+  "title": "נתון אחרון - איכות מים בקידוחים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "borehole",
+    "water",
+    "water quality",
+    "איכות מים",
+    "מים",
+    "קידוח",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "פרמטר",
+    "ערך",
+    "borehole",
+    "סוג",
+    "רשות",
+    "איכות",
+    "הממשלתית",
+    "מים",
+    "אחרון",
+    "בקידוחים",
+    "ריכוז",
+    "נתון",
+    "קידוח",
+    "דיווח",
+    "שתייה",
+    "אחוז",
+    "דיגום",
+    "water",
+    "תקן",
+    "השתיה",
+    "למים",
+    "מתקן",
+    "שימוש",
+    "תאריך",
+    "הרשות",
+    "quality",
+    "ולביוב",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "61dd012f-0523-41b3-9c0e-ad4de7b3ce8c",
+      "title": "נתוני איכות מים בקידוחים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "תא דיווח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שימוש",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "פרמטר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג תקן מי שתייה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "ערך תקן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך דיגום אחרון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "ריכוז אחרון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחוז מתקן מי השתיה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 58868
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

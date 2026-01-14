@@ -1,0 +1,108 @@
+{
+  "dataset_id": "63651ff1-25fa-4fea-88e0-6ec3574d2201",
+  "title": "ממשקים אגף תכנון 2030",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2030",
+    "GIS",
+    "אגף תכנון",
+    "ממג",
+    "ממשקים"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "ממשקים",
+    "name",
+    "אגף",
+    "ממג",
+    "objectid",
+    "בדרכים",
+    "תכנון",
+    "משרד",
+    "type",
+    "והבטיחות",
+    "gis",
+    "intensity",
+    "transhour",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "8085908f-3ae6-4ec9-88ff-83862e56a01e",
+      "title": "mimshakim_2030_shp",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e8085391-c742-4585-b88e-9fb849545552",
+      "title": "MIMSHAKIM_2030_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "883a9b18-9384-479e-8793-b8d3c3e1fa7f",
+      "title": "MIMSHAKIM_2030_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "id",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "INTENSITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "is_2023",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "is_2030",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TRANSHOUR",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 51
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

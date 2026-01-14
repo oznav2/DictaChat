@@ -1,0 +1,111 @@
+{
+  "dataset_id": "b87ef422-0355-4490-9506-d502b71e9b10",
+  "title": "רשימת יבואני מזון בעלי תעודות רישום יבואן בתוקף",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "יבואני מזון",
+    "עסקי מזון",
+    "רישיון יבואן",
+    "שירות המזון הארצי"
+  ],
+  "categories": [
+    "health",
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "בתוקף",
+    "יבואני",
+    "תעודות",
+    "רישום",
+    "הבריאות",
+    "description",
+    "naut",
+    "בעלי",
+    "משרד",
+    "type",
+    "יבואן",
+    "שירות",
+    "regnum",
+    "מזון",
+    "importer",
+    "המזון",
+    "הארצי",
+    "address",
+    "trust",
+    "עסקי",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "31c36cee-80e1-482e-9661-7539c4b27c1b",
+      "title": "רשימת יבואני מזון ומשווקים מהאיזור בעלי תעודות רישום בתוקף",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Regnum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "importer_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "importer_type",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "importer_type_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "naut",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "naut_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "trust",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Trust_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tz",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2159
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

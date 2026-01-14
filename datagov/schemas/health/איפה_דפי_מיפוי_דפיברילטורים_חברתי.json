@@ -1,0 +1,171 @@
+{
+  "dataset_id": "5f1d5402-f149-4085-b0f5-bdbcccbf9a10",
+  "title": "איפה דפי - מיפוי דפיברילטורים חברתי",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "בריאות ורפואה"
+  ],
+  "categories": [
+    "health",
+    "geography"
+  ],
+  "keywords": [
+    "מיפוי",
+    "lat",
+    "שבע",
+    "locationopenallday",
+    "locationname",
+    "contactphone",
+    "lon",
+    "איפה",
+    "itm",
+    "locationcity",
+    "createdat",
+    "locationstreet",
+    "locationfloor",
+    "בריאות",
+    "locationdescription",
+    "חברתי",
+    "contactname",
+    "locationnumber",
+    "imageurl",
+    "באר",
+    "origin",
+    "עיריית",
+    "updatedat",
+    "ורפואה",
+    "דפי",
+    "indexcity",
+    "דפיברילטורים",
+    "locationopenhours"
+  ],
+  "resources": [
+    {
+      "resource_id": "3f60d2fa-ca4c-49b7-84b2-34ddf1cf9206",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "contactName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "contactPhone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "createdAt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "id",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "imageURL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "indexCity",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "locationCity",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "locationDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "locationFloor",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "locationName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "locationNumber",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "locationOpenAllDay",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "locationOpenHours",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "locationStreet",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "origin",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "itm-x",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "itm-y",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 8979
+    },
+    {
+      "resource_id": "59b568e0-7d0d-4163-8570-5b1096de4edb",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

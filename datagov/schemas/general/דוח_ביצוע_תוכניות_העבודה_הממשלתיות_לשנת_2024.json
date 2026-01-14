@@ -1,0 +1,214 @@
+{
+  "dataset_id": "43530ae8-95e5-48d3-8cc9-291055287151",
+  "title": "דוח ביצוע תוכניות העבודה הממשלתיות לשנת 2024",
+  "organization": "משרד ראש הממשלה ",
+  "tags": [
+    "אגף תכנון",
+    "אסטרטגיה",
+    "דיווח",
+    "חשיבה תוצאתית",
+    "יישום",
+    "מדדים",
+    "מדיניות",
+    "ממשלה",
+    "מעקב",
+    "תוכניות עבודה",
+    "תכנון"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "ערך",
+    "חשיבה",
+    "העבודה",
+    "רצוי",
+    "תוצאתית",
+    "היעד",
+    "עבודה",
+    "מדיניות",
+    "נוסח",
+    "דוח",
+    "ביאור",
+    "מעקב",
+    "הממשלה",
+    "דיווח",
+    "המשרד",
+    "יעד",
+    "אסטרטגיה",
+    "ראש",
+    "ממשלה",
+    "הממשלתיות",
+    "מדדים",
+    "אגף",
+    "מטרה",
+    "תכנון",
+    "משרד",
+    "מקור",
+    "יישום",
+    "בפועל",
+    "הנתונים",
+    "המשימה",
+    "המדד",
+    "מרכזי",
+    "ביצוע",
+    "מדד",
+    "ציבורי",
+    "בסיס",
+    "המטרה",
+    "הערות",
+    "תוכניות"
+  ],
+  "resources": [
+    {
+      "resource_id": "1a022f23-08f4-4ce8-92ca-7657aafcd3bf",
+      "title": "נתוני ביצוע מדדים מרכזיים 2024 - DataGov.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המשרד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מדד מרכזי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם המדד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ערך בסיס בשנת 2023",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ערך רצוי לשנת 2024",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ערך בפועל לשנת 2024",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מקור הנתונים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ביאור ציבורי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הערות משרד ראש הממשלה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 339
+    },
+    {
+      "resource_id": "c26cc8e5-7ba0-4670-97a7-36061ac773a6",
+      "title": "נתוני ביצוע תוכניות עבודה 2024 - DataGov.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המשרד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מטרה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נוסח המטרה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "יעד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נוסח היעד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם המשימה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם המדד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ערך בסיס בשנת 2023",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ערך רצוי לשנת 2024",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ערך בפועל לשנת 2024",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מקור הנתונים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ביאור ציבורי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הערות משרד ראש הממשלה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1326
+    },
+    {
+      "resource_id": "026761c5-d2cf-4396-868c-9e8e81539813",
+      "title": "דוח ביצוע תוכניות עבודה 2024.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

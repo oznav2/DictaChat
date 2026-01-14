@@ -1,0 +1,94 @@
+{
+  "dataset_id": "8f2becb2-b6d2-477f-a703-c7c8ab113b67",
+  "title": "ברזי כיבוי אש (הידרנטים)",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "ביטחון ותשתיות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "ביטחון",
+    "lon",
+    "באר",
+    "ברזי",
+    "lat",
+    "כיבוי",
+    "ותשתיות",
+    "עיריית",
+    "workpressu",
+    "שבע",
+    "last",
+    "הידרנטים",
+    "installdat",
+    "housenum",
+    "edite"
+  ],
+  "resources": [
+    {
+      "resource_id": "a09ff332-ce0d-41ce-9709-690ee64a289b",
+      "title": "SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d65a71c4-03d2-4e08-9e20-5ff461e76e4b",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0a3c2907-f093-4821-876c-6e8034eb53e4",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "HouseNum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "InstallDat",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "last_edite",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "WorkPressu",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 3162
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

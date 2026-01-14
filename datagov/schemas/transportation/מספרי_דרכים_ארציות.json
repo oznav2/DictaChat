@@ -1,0 +1,118 @@
+{
+  "dataset_id": "d8767745-df2c-4cd0-9972-9c410d5b7523",
+  "title": "מספרי דרכים ארציות",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "ארצי",
+    "בין עירוני",
+    "דרכים",
+    "דרכים בין עירוניות",
+    "חצב",
+    "מהירות",
+    "מפת רחובות ודרכים",
+    "תמרוררים"
+  ],
+  "categories": [
+    "transportation",
+    "finance"
+  ],
+  "keywords": [
+    "עירוניות",
+    "מהירות",
+    "תמרוררים",
+    "ארציות",
+    "דרכים",
+    "ארצי",
+    "עירוני",
+    "בדרכים",
+    "והבטיחות",
+    "roadclass",
+    "ודרכים",
+    "roadnumber",
+    "linktype",
+    "משרד",
+    "lengt",
+    "מספרי",
+    "חצב",
+    "רחובות",
+    "num",
+    "shape",
+    "oid",
+    "בין",
+    "change",
+    "מפת",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "7851c742-47fc-41ea-ae7d-b1eee0f0eac4",
+      "title": "ROADNUMBERS_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "3c719fbc-1dc1-4644-a598-fc6e1df609b7",
+      "title": "ROADNUMBERS_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0476bc99-21c2-4e26-b353-94a7782ea90b",
+      "title": "ROADNUMBERS_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ROADNUMBER",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "ROADCLASS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NUM_CHANGE",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LENGT_M",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LINKTYPE",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 3793
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

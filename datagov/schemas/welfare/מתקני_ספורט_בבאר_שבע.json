@@ -1,0 +1,167 @@
+{
+  "dataset_id": "d25f8679-13bc-4082-bf6e-6156e1d2df60",
+  "title": "מתקני ספורט בבאר-שבע",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "פנאי רווחה וספורט"
+  ],
+  "categories": [
+    "welfare",
+    "culture"
+  ],
+  "keywords": [
+    "name",
+    "רווחה",
+    "handicappe",
+    "seats",
+    "forschool",
+    "lat",
+    "condition",
+    "פנאי",
+    "שבע",
+    "fencing",
+    "associatio",
+    "וספורט",
+    "operator",
+    "lon",
+    "sporttype",
+    "housenumbe",
+    "בבאר",
+    "lighting",
+    "neighborho",
+    "activity",
+    "street",
+    "ספורט",
+    "type",
+    "באר",
+    "עיריית",
+    "owner",
+    "מתקני"
+  ],
+  "resources": [
+    {
+      "resource_id": "ef828426-99d7-44c3-8fc0-b7b4bfeec6cf",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "ac12e904-be38-4011-9306-bc4820eb7f41",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "HouseNumbe",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "neighborho",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Operator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Seats",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Activity",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "fencing",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lighting",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "handicappe",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "condition",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Owner",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ForSchool",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "associatio",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SportType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 167
+    },
+    {
+      "resource_id": "b3ac1ee6-e7de-4bc4-bfa5-07978a1eb1dc",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

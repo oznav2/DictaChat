@@ -1,0 +1,55 @@
+{
+  "dataset_id": "b3d77e8d-25c1-4837-9131-834cd23acba6",
+  "title": "קובץ אחוד ארצי של סקרי הרגלי נסיעה 2010-2019",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "סקר הרגלי נסיעה",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "ארצי",
+    "נסיעה",
+    "סקר",
+    "תחבורה",
+    "בדרכים",
+    "משרד",
+    "הרגלי",
+    "והבטיחות",
+    "סקרי",
+    "אחוד",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "86e3ea80-66f8-48f9-97bd-f58c20d7bfbd",
+      "title": "NTHS2019_version_1.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "64154387-9269-474a-a20d-7d273031ac95",
+      "title": "תקציר.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "6fbfb540-45fa-49db-b962-6ea87310cc83",
+      "title": "NTHS-meta_version_1.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

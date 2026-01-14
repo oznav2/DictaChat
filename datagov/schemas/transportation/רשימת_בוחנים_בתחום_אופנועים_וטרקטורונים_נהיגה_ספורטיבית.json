@@ -1,0 +1,87 @@
+{
+  "dataset_id": "e65db301-9956-4242-bf78-04de87ce45e4",
+  "title": "רשימת בוחנים בתחום אופנועים וטרקטורונים - נהיגה ספורטיבית",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "אופנוע",
+    "בוחני רכב",
+    "טרקטורון",
+    "נהיגה ספורטיבי"
+  ],
+  "categories": [
+    "transportation",
+    "culture"
+  ],
+  "keywords": [
+    "בוחנים",
+    "פקס",
+    "בוחני",
+    "התרבות",
+    "נייד",
+    "ספורטיבית",
+    "משרד",
+    "ספורטיבי",
+    "פרטי",
+    "נהיגה",
+    "וטרקטורונים",
+    "רכב",
+    "טרקטורון",
+    "אופנועים",
+    "משפחה",
+    "והספורט",
+    "בתחום",
+    "אופנוע"
+  ],
+  "resources": [
+    {
+      "resource_id": "fe6734f9-c120-4387-91f8-b42ba9aae68a",
+      "title": "most.DB.506-2.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מס':",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם משפחה:",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם פרטי:",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "טל':",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "נייד:",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 12
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

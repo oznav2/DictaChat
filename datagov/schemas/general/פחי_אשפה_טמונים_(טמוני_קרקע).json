@@ -1,0 +1,83 @@
+{
+  "dataset_id": "57a5938f-65cc-48a8-bcfb-8d383e646aaa",
+  "title": "פחי אשפה טמונים (טמוני קרקע)",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "ביטחון ותשתיות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "ביטחון",
+    "פחי",
+    "באר",
+    "lon",
+    "lat",
+    "ותשתיות",
+    "neighborho",
+    "עיריית",
+    "טמונים",
+    "טמוני",
+    "type",
+    "שבע",
+    "אשפה",
+    "קרקע"
+  ],
+  "resources": [
+    {
+      "resource_id": "5374cf3e-a826-477e-a7aa-1032d951ee28",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "53271cdd-4efb-4554-91b3-a3fa54fbc25f",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "neighborho",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 1239
+    },
+    {
+      "resource_id": "d7971292-80fc-4e96-b2d5-9689c01a1b9a",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

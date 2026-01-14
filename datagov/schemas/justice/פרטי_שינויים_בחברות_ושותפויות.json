@@ -1,0 +1,102 @@
+{
+  "dataset_id": "6397d78e-f00f-4657-a03a-3868f845d3c0",
+  "title": "פרטי שינויים בחברות ושותפויות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "חברות",
+    "משרד המשפטים",
+    "שינויים",
+    "שינויים בחברות",
+    "שינויים בתאגידים",
+    "תאגידים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "חברות",
+    "בתאגידים",
+    "בקשה",
+    "תאגידים",
+    "סטטוס",
+    "שינויים",
+    "פרטי",
+    "משרד",
+    "סוג",
+    "מזהה",
+    "בחברות",
+    "תאגיד",
+    "עדכון",
+    "קוד",
+    "ושותפויות",
+    "השיעבוד",
+    "תאריך",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "28780ab5-3ef1-44c7-8377-da82c0aa6781",
+      "title": "פרטי שינויים בתאגידים - רשם החברות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר תאגיד",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם תאגיד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג בקשה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "תאריך עדכון סטטוס",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מזהה השיעבוד",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד סוג בקשה",
+          "type": "numeric",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 611595
+    },
+    {
+      "resource_id": "9fb91b92-6ced-4981-8118-2c16ea338ac5",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1d50e3fc-7372-4621-8e84-0e4e6b341f34",
+      "title": "הוראות להצגה גרפית של מאגר",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

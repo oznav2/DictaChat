@@ -1,0 +1,68 @@
+{
+  "dataset_id": "c1fc468a-d90e-47d3-93f7-139caba8fd45",
+  "title": "חובות הפרסום באתרי משרדי הממשלה",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "הרשות",
+    "משרדי",
+    "הממשלה",
+    "החייב",
+    "משרד",
+    "סעיף",
+    "בחוק",
+    "החוקי",
+    "החייבת",
+    "המקור",
+    "בפרסום",
+    "הפרסום",
+    "באתרי",
+    "חובות",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "df12ff2e-67ea-4d03-9ae5-fc198daa591d",
+      "title": "חובות הפרסום באתרי משרדי הממשלה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "המידע החייב בפרסום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "המקור החוקי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סעיף בחוק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם הרשות (החייבת בפרסום)",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 361
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}
