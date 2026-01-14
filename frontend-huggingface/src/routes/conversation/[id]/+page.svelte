@@ -252,13 +252,21 @@
 				if ($disableStreamSetting) return;
 				if (buffer.length === 0) return;
 
+				// DEFENSIVE: Validate messageToWriteTo still exists (enterprise robustness)
+				if (!messageToWriteTo) {
+					console.error("[flushStreamBuffer] messageToWriteTo became null during streaming");
+					buffer = "";
+					return;
+				}
+
 				messageToWriteTo.content += buffer;
 				const len = buffer.length;
 				buffer = "";
 				bufferedStreamLen += len;
 				lastUpdateTime = currentTime;
 
-				const existingUpdates = messageToWriteTo.updates ?? [];
+				// DEFENSIVE: Ensure updates is an array
+				const existingUpdates = Array.isArray(messageToWriteTo.updates) ? messageToWriteTo.updates : [];
 				const lastUpdate = existingUpdates.at(-1);
 				const marker = {
 					type: MessageUpdateType.Stream as const,
@@ -267,10 +275,12 @@
 				};
 
 				if (lastUpdate?.type === MessageUpdateType.Stream && lastUpdate.token === "") {
+					// DEFENSIVE: Validate len is a number
+					const lastLen = typeof lastUpdate.len === 'number' && lastUpdate.len >= 0 ? lastUpdate.len : 0;
 					const merged = {
 						...lastUpdate,
 						token: "",
-						len: (lastUpdate.len ?? 0) + bufferedStreamLen,
+						len: lastLen + bufferedStreamLen,
 					};
 					messageToWriteTo.updates = [...existingUpdates.slice(0, -1), merged];
 				} else {
@@ -281,14 +291,25 @@
 
 			for await (const update of messageUpdatesIterator) {
 				if ($isAborted) {
+					// DEFENSIVE: Flush pending buffer before aborting to prevent data loss
+					if (buffer.length > 0 && messageToWriteTo) {
+						flushStreamBuffer(new Date());
+					}
 					messageUpdatesAbortController.abort();
 					return;
 				}
 
 				// Remove null characters added due to remote keylogging prevention
 				// See server code for more details
-				if (update.type === MessageUpdateType.Stream)
-					update.token = update.token.replaceAll("\0", "");
+				// DEFENSIVE: Type guard to prevent crash if token is undefined
+				if (update.type === MessageUpdateType.Stream) {
+					if (typeof update.token === 'string') {
+						update.token = update.token.replaceAll("\0", "");
+					} else {
+						console.warn("[stream] Received non-string token:", typeof update.token);
+						update.token = "";
+					}
+				}
 
 				const isKeepAlive =
 					update.type === MessageUpdateType.Status &&
@@ -331,7 +352,8 @@
 						messageToWriteTo.updates?.some((u) => u.type === MessageUpdateType.Tool) ?? false;
 
 					if (hadTools) {
-						const existing = messageToWriteTo.content;
+						// DEFENSIVE: Ensure existing is always a string to prevent .replace()/.endsWith() crashes
+						const existing = messageToWriteTo.content ?? "";
 						const finalText = update.text ?? "";
 						const trimmedExistingSuffix = existing.replace(/\s+$/, "");
 						const trimmedFinalPrefix = finalText.replace(/^\s+/, "");

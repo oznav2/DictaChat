@@ -151,7 +151,7 @@ export class DictaEmbeddingClient {
 		this.endpoint = params.endpoint;
 		this.batchSize = params.batchSize ?? 32;
 		this.timeoutMs = params.timeoutMs ?? 10000;
-		this.expectedDims = params.expectedDims ?? 768;
+		this.expectedDims = params.expectedDims ?? params.config?.qdrant?.expected_embedding_dims ?? 1024;
 		this.config = params.config ?? defaultMemoryConfig;
 		this.enableGracefulDegradation = params.enableGracefulDegradation ?? true;
 		this.unhealthyThresholdMs = params.unhealthyThresholdMs ?? 30000; // 30s default
@@ -852,7 +852,7 @@ export function createDictaEmbeddingClient(
 		endpoint: config?.endpoint ?? "http://dicta-retrieval:5005",
 		batchSize: config?.batchSize ?? 32,
 		timeoutMs: config?.timeoutMs ?? 10000,
-		expectedDims: config?.expectedDims ?? 768,
+		expectedDims: config?.expectedDims ?? config?.config?.qdrant?.expected_embedding_dims ?? 1024,
 		config: config?.config,
 		// Enterprise defaults: always enable graceful degradation
 		enableGracefulDegradation: config?.enableGracefulDegradation ?? true,

@@ -1,7 +1,96 @@
-<!-- Updated: v0.2.16 UNIFIED DOCUMENT INGESTION UI FIXES - January 13, 2026 -->
+<!-- Updated: v0.2.18 HEBREW STREAMING FIX - January 14, 2026 -->
 # Project Status
 
-**Last Updated**: January 13, 2026 (🚀 v0.2.16 + Unified Document Ingestion UI Fixes + Memory Panel Stats)
+**Last Updated**: January 14, 2026 (🚀 v0.2.18 + Hebrew Streaming Fix)
+
+---
+
+## 🔧 v0.2.18 HEBREW STREAMING FIX ✅
+
+**Branch**: genspark_ai_developer
+
+### Overview
+
+Fixed browser crash when streaming Hebrew text responses after PDF upload. The word bundling regex only supported Latin languages, causing Hebrew tokens to accumulate in buffer indefinitely until crash.
+
+### Root Cause
+
+The `streamMessageUpdatesToFullWords()` function in `messageUpdates.ts` had a regex that only matched Latin characters. Hebrew characters (U+0590-U+05FF) were not recognized as word boundaries, causing the buffer to grow without flushing.
+
+**Code comment explicitly stated the limitation:**
+```typescript
+// Only supports latin languages, ignores others  ← OLD
+```
+
+### Fix Applied
+
+1. **Added Hebrew to word bundling regex** (lines 162-163):
+   ```typescript
+   const endAlphanumeric = /[a-zA-Z0-9À-ž\u0590-\u05FF'`]+$/;
+   const beginnningAlphanumeric = /^[a-zA-Z0-9À-ž\u0590-\u05FF'`]+/;
+   ```
+
+2. **Fixed error handling in parseMessageUpdates** (lines 134-145):
+   - Now catches ALL errors, not just SyntaxError
+   - Logs errors with input preview for debugging
+   - Prevents silent failures
+
+### Files Changed
+
+| File | Changes |
+|------|---------|
+| `src/lib/utils/messageUpdates.ts` | Added Hebrew regex support, fixed error handling |
+
+### Verification
+
+After restart, Hebrew PDF responses should stream correctly without browser crash.
+
+---
+
+## 🔧 v0.2.17 EMBEDDING DIMENSION FIX ✅
+
+**Branch**: genspark_ai_developer
+
+### Overview
+
+Fixed critical embedding dimension mismatch that caused circuit breaker errors when uploading PDF files. The BGE-M3 model in dicta-retrieval produces 1024-dimensional vectors, but the system was configured for 768 dimensions.
+
+### Root Cause
+
+| Component | Was | Should Be |
+|-----------|-----|-----------|
+| dicta-retrieval (BGE-M3) | 1024 (actual) | - |
+| `.env` QDRANT_VECTOR_SIZE | 768 | 1024 |
+| Qdrant collection | 768 | 1024 |
+| DictaEmbeddingClient default | 768 | 1024 |
+
+### Error Symptoms
+
+```
+ERROR: Embedding dimension mismatch
+    expected: 768
+    got: 1024
+ERROR: Embedding unavailable; stored to Mongo only (index deferred)
+```
+
+### Fix Applied
+
+1. **`.env`**: Changed `QDRANT_VECTOR_SIZE=768` to `QDRANT_VECTOR_SIZE=1024`
+2. **`DictaEmbeddingClient.ts`**: Updated to read dimension from config and default to 1024
+3. **Qdrant collection**: Deleted `memories_v1` collection for recreation with 1024 dims
+
+### Files Changed
+
+| File | Changes |
+|------|---------|
+| `.env` | `QDRANT_VECTOR_SIZE=1024` |
+| `src/lib/server/memory/embedding/DictaEmbeddingClient.ts` | Read dims from config, default to 1024 |
+
+### Post-Fix Requirements
+
+- Restart frontend container to pick up new config
+- Qdrant collection will be auto-created with 1024 dimensions
+- Existing indexed memories need re-indexing via `/api/memory/ops/reindex/deferred`
 
 ---
 
