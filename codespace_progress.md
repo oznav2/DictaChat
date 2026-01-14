@@ -1452,17 +1452,27 @@ TIER 8 - POLISH:
   - [ ] 25.8.7: Add "DataGov" tier checkbox
   - [ ] 25.8.8: Write tests for filter UI
 
-### Task 25.9: Wire to Hebrew Intent Detection
+### Task 25.9: Wire to Hebrew Intent Detection ✅
 - **File**: `src/lib/server/textGeneration/mcp/toolFilter.ts`
 - **Subtasks**:
-  - [ ] 25.9.1: Define `DATAGOV_INTENT_PATTERNS` regex array
-  - [ ] 25.9.2: Add Hebrew patterns: "מאגרי מידע ממשלתי", "נתונים ציבוריים"
-  - [ ] 25.9.3: Add category-specific patterns: "מידע על תחבורה"
-  - [ ] 25.9.4: Implement `detectDataGovIntent()` function
-  - [ ] 25.9.5: Return `suggestMemoryFirst: true` for DataGov queries
-  - [ ] 25.9.6: Integrate with `filterToolsForQuery()` flow
-  - [ ] 25.9.7: Log DataGov intent detection
-  - [ ] 25.9.8: Write tests for Hebrew patterns
+  - [x] 25.9.1: Import `DATAGOV_INTENT_PATTERNS` from DataGovTypes.ts (already defined)
+  - [x] 25.9.2: Hebrew patterns include: "מאגרי מידע ממשלתי", "נתונים ציבוריים", etc.
+  - [x] 25.9.3: Category-specific patterns via CATEGORY_HEBREW_NAMES matching
+  - [x] 25.9.4: Implement `detectDataGovIntent()` function
+  - [x] 25.9.5: Return `suggestMemoryFirst: true` with confidence 0.85
+  - [x] 25.9.6: Integrate with `filterToolsByIntent()` - returns datagovIntent in result
+  - [x] 25.9.7: Logging via console.log when pattern matches
+  - [ ] 25.9.8: Write tests for Hebrew patterns (deferred)
+
+**Implementation Notes (2026-01-14)**:
+- Imported `DATAGOV_INTENT_PATTERNS`, `CATEGORY_HEBREW_NAMES`, `DataGovIntent` from datagov module
+- `detectDataGovIntent(query)` function checks all patterns and returns intent with:
+  - `detected: true`, `suggestMemoryFirst: true`, `confidence: 0.85`
+  - `category`: Specific category if matched (e.g., "transportation")
+  - `matchedPattern`: The regex pattern that matched
+- `filterToolsByIntent()` now returns `datagovIntent` as part of result object
+- Callers can use `datagovIntent.suggestMemoryFirst` to prioritize memory search
+- Pattern matching uses existing Hebrew patterns from DataGovTypes.ts
 
 ### Task 25.10: Add Environment Configuration
 - **File**: `.env` and `src/lib/server/memory/memory_config.ts`

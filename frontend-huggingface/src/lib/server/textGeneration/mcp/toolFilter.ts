@@ -5,6 +5,11 @@ import {
 	scorePerplexityTools,
 	type PerplexityTool,
 } from "../utils/hebrewIntentDetector";
+import {
+	DATAGOV_INTENT_PATTERNS,
+	CATEGORY_HEBREW_NAMES,
+	type DataGovIntent,
+} from "$lib/server/memory/datagov";
 
 /**
  * Maximum number of tools to send to the model.
@@ -413,7 +418,7 @@ export function filterToolsByIntent(
 	allTools: OpenAiTool[],
 	userQuery: string,
 	options?: ToolFilterOptions
-): { filtered: OpenAiTool[]; categories: string[] } {
+): { filtered: OpenAiTool[]; categories: string[]; datagovIntent?: DataGovIntent | null } {
 	const { hasDocuments = false } = options || {};
 
 	// CRITICAL: If documents are attached, ALWAYS include docling tools
@@ -510,6 +515,11 @@ export function filterToolsByIntent(
 		filtered = selectBestPerplexityTool(allTools, userQuery, filtered);
 	}
 
+	// Phase 25.9: Detect DataGov knowledge queries (memory-first hint)
+	// This checks if the query can be answered from pre-loaded DataGov knowledge
+	// instead of calling the DataGov API tools
+	const datagovIntent = detectDataGovIntent(userQuery);
+
 	// If we still have no tools after filtering, take the first MAX_TOOLS from research
 	if (filtered.length === 0) {
 		filtered = allTools
@@ -527,7 +537,7 @@ export function filterToolsByIntent(
 		filtered = filtered.slice(0, MAX_TOOLS);
 	}
 
-	const result = { filtered, categories: matchedCategories };
+	const result = { filtered, categories: matchedCategories, datagovIntent };
 
 	// Cache the result for future use
 	toolFilterCache.set(userQuery, filtered, matchedCategories);
@@ -552,6 +562,57 @@ export function clearToolFilterCache(): void {
  * Used for graceful error handling when tool is not found.
  * Returns null if tool pattern is unknown.
  */
+/**
+ * Phase 25.9: Detect DataGov knowledge queries
+ *
+ * Detects queries about Israeli government data that can be answered
+ * from pre-loaded DataGov knowledge (categories, schemas, expansions)
+ * rather than calling the DataGov API tools.
+ *
+ * Returns suggestMemoryFirst=true when the query is about:
+ * - Available datasets/categories ("אילו מאגרים יש?")
+ * - Government data overview ("מידע ממשלתי על תחבורה")
+ * - Data structure questions ("מה יש ב-data.gov?")
+ *
+ * @param query - User's query text
+ * @returns DataGovIntent or null if not a DataGov knowledge query
+ */
+export function detectDataGovIntent(query: string): DataGovIntent | null {
+	// Check against all DataGov intent patterns
+	for (const pattern of DATAGOV_INTENT_PATTERNS) {
+		const match = pattern.exec(query);
+		if (match) {
+			// Check for category-specific match
+			let category: string | undefined;
+			const categoryNames = Object.keys(CATEGORY_HEBREW_NAMES);
+			const hebrewNames = Object.values(CATEGORY_HEBREW_NAMES);
+
+			// Try to identify specific category from query
+			for (let i = 0; i < categoryNames.length; i++) {
+				const catRegex = new RegExp(hebrewNames[i], "i");
+				if (catRegex.test(query)) {
+					category = categoryNames[i];
+					break;
+				}
+			}
+
+			console.log(
+				`[tool-filter] DataGov intent detected: pattern="${pattern.source}", category=${category || "none"}`
+			);
+
+			return {
+				detected: true,
+				suggestMemoryFirst: true,
+				confidence: 0.85,
+				category,
+				matchedPattern: pattern.source,
+			};
+		}
+	}
+
+	return null;
+}
+
 export function identifyToolMcp(toolName: string): { mcpName: string; displayName: string } | null {
 	const name = toolName.toLowerCase();
 
