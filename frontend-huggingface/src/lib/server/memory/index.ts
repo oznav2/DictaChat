@@ -303,3 +303,21 @@ export type {
 	DataGovIntent,
 } from "./datagov";
 export { CATEGORY_HEBREW_NAMES, DATAGOV_INTENT_PATTERNS, DEFAULT_DATAGOV_CONFIG } from "./datagov";
+
+// Observability (Phase 21: Memory System Observability)
+export {
+	memoryLogger,
+	generateCorrelationId,
+	createRequestLogger,
+	memoryMetrics,
+} from "./observability";
+export type {
+	MemoryLogContext,
+	MemoryOperation,
+	LogLevel,
+	OperationCounter,
+	LatencyStats,
+	CircuitBreakerMetric,
+	QueueMetric,
+	MetricsSnapshot,
+} from "./observability";

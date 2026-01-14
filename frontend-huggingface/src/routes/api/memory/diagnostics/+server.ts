@@ -2,12 +2,16 @@
  * Memory System Diagnostics Endpoint
  *
  * Phase 5: Fix "0 Memories Found" Issue
+ * Phase 21: Memory System Observability (Task 21.4)
  *
  * Provides comprehensive diagnostics for debugging memory search issues:
  * - Collection counts (MongoDB items vs Qdrant points)
  * - Circuit breaker states for all components
  * - Items needing reindex
  * - Auto-reindex trigger capability
+ * - Deferred indexing queue size (Phase 21.4.5)
+ * - Embedding dimension config (Phase 21.4.6)
+ * - Operation metrics snapshot (Phase 21)
  *
  * Risk Mitigation:
  * - All checks use timeouts to prevent hanging
@@ -20,10 +24,11 @@ import type { RequestHandler } from "./$types";
 import { collections } from "$lib/server/database";
 import { logger } from "$lib/server/logger";
 import { ADMIN_USER_ID } from "$lib/server/constants";
-import { createDictaEmbeddingClient } from "$lib/server/memory";
+import { createDictaEmbeddingClient, memoryMetrics } from "$lib/server/memory";
 import { QdrantAdapter } from "$lib/server/memory/adapters/QdrantAdapter";
 import { env } from "$env/dynamic/private";
 import type { MemoryTier } from "$lib/server/memory/types";
+import type { MetricsSnapshot } from "$lib/server/memory/observability";
 
 // ============================================
 // Types
@@ -56,12 +61,27 @@ interface DiagnosticsResult {
 		bm25: { open: boolean };
 	};
 
+	// Phase 21: Deferred indexing queue (21.4.5)
+	deferred_indexing: {
+		queue_size: number;
+		processing: number;
+	};
+
+	// Phase 21: Embedding config (21.4.6)
+	embedding_config: {
+		dimension: number;
+		model: string;
+	};
+
 	// Health recommendations
 	health_issues: string[];
 	recommendations: string[];
 
 	// Timing
 	diagnostics_ms: number;
+
+	// Phase 21: Metrics snapshot (optional)
+	metrics?: MetricsSnapshot;
 }
 
 // ============================================
@@ -293,8 +313,9 @@ function analyzeHealth(
 // Route Handler
 // ============================================
 
-export const GET: RequestHandler = async () => {
+export const GET: RequestHandler = async ({ url }) => {
 	const startTime = Date.now();
+	const includeMetrics = url.searchParams.get("metrics") === "true";
 
 	try {
 		const userId = ADMIN_USER_ID;
@@ -319,6 +340,10 @@ export const GET: RequestHandler = async () => {
 		const { issues, recommendations } = analyzeHealth(mongoStats, qdrantStats, embeddingStatus);
 
 		const diagnosticsMs = Date.now() - startTime;
+
+		// Phase 21: Get embedding config from env
+		const embeddingDimension = parseInt(env.EMBEDDING_DIMENSION || "1024", 10);
+		const embeddingModel = env.EMBEDDING_MODEL || "dicta-il/dictalm2.0-instruct";
 
 		const result: DiagnosticsResult = {
 			success: true,
@@ -350,6 +375,18 @@ export const GET: RequestHandler = async () => {
 				},
 			},
 
+			// Phase 21: Deferred indexing queue (21.4.5)
+			deferred_indexing: {
+				queue_size: mongoStats.needsReindex, // Items awaiting reindex are effectively the queue
+				processing: 0, // Would need integration with actual reindex service
+			},
+
+			// Phase 21: Embedding config (21.4.6)
+			embedding_config: {
+				dimension: embeddingDimension,
+				model: embeddingModel,
+			},
+
 			// Health
 			health_issues: issues,
 			recommendations,
@@ -357,6 +394,11 @@ export const GET: RequestHandler = async () => {
 			// Timing
 			diagnostics_ms: diagnosticsMs,
 		};
+
+		// Phase 21: Include metrics snapshot if requested
+		if (includeMetrics) {
+			result.metrics = memoryMetrics.getSnapshot();
+		}
 
 		logger.info({ diagnosticsMs, issues: issues.length }, "[diagnostics] Memory system check complete");
 
