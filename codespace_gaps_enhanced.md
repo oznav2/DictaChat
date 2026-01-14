@@ -93,6 +93,462 @@ This document identifies critical gaps in the BricksLLM memory system that preve
 
 ---
 
+## 0.2 Executive Reality Check (GPT-5.2 Analysis)
+
+> **Source:** Strategic Enhancement Blueprint analysis dated 2026-01-14
+
+### What is Already Implemented (Important Reality Check)
+
+Based on `STATUS.md` and code inspection, several "plan gaps" are already addressed:
+
+| Capability | Status | Location |
+|------------|--------|----------|
+| Memory prefetch & injection | ✅ Active | `runMcpFlow.ts` L526-933 |
+| Cold-start injection | ✅ Active | `runMcpFlow.ts` via `getColdStartContextForConversation()` |
+| Contextual guidance | ✅ Active | `runMcpFlow.ts` L776-817 |
+| Tool guidance | ✅ Active | `runMcpFlow.ts` L825-875 |
+| Attribution instruction | ✅ Active | `runMcpFlow.ts` L759-769 |
+| Attribution parsing | ✅ Active | `runMcpFlow.ts` via `processResponseWithAttribution()` |
+| Document recognition endpoint | ✅ Exists | `src/routes/api/memory/books/recognize/+server.ts` |
+| Docling → memory bridge | ✅ Exists | `toolInvocation.ts` (but **without hash-based dedup**) |
+| Search timeout fallback | ✅ Exists | `SearchService.ts` graceful degradation |
+
+### Primary Strategic Gap Remaining
+
+The biggest remaining enterprise gap is **not "missing functions"** but **wiring + enforceability**:
+
+1. **Tool gating is not enforced at runtime** - Memory guidance exists but tools are still passed through
+2. **Tool result ingestion (non-docling)** - Not implemented as a robust async pipeline
+3. **Dedup not consistent** - Docling bridge uses timestamp IDs, not hash-based identity
+4. **"NEW FILE" proliferation** - Plan proposes many new files; prefer reusing existing services with feature flags
+
+### Phase Consolidation Required
+
+The plan contains duplicate phases that should be consolidated:
+
+| Duplicate Phases | Canonical Phase | Reason |
+|------------------|-----------------|--------|
+| Phase 3 + Phase 13 | **Phase 3** | Both address memory-first tool gating |
+| Phase 2 + Phase 16 | **Phase 2** | Both address tool result ingestion |
+| Phase 6 + Phase 20 | **Phase 6** | Both address KG label rendering |
+| Phase 8 + Phase 17 | **Phase 8** | Both address real-time UI updates |
+
+### Recommended Execution Order (Risk-Aware)
+
+Based on dependencies and risk analysis:
+
+```
+1. Phase 23 (Safeguards)     ← Prevents "learning on corrupt stats"
+2. Phase 22 (Natural Selection) ← Correct scoring semantics
+3. Phase 1 (Collection Consolidation) ← Single source of truth
+4. Phase 3/13 (Tool Gating)  ← Enforced memory-first
+5. Phase 2/16 (Tool Ingestion) ← Async + dedup pipeline
+6. Phase 4 (Document Dedup)  ← Hash-based docling identity
+7. Phase 5 (0-Results Fix)   ← Self-healing diagnostics
+8. Phase 19 (RRF Validation) ← Search correctness
+9. Phase 25 (DataGov)        ← After core reliability proven
+10. Phase 6/20, 7, 8/17      ← UI polish and observability
+```
+
+---
+
+## 0.3 Enforceable Tool Gating Decision Function (KIMI REQUIREMENT)
+
+> **MANDATORY:** Tool gating must be **enforced at runtime**, not just prompt-level guidance. A single decision function must control which tools are passed to the model.
+
+### Decision Function Specification
+
+**File:** `src/lib/server/textGeneration/mcp/toolGatingDecision.ts`
+
+```typescript
+/**
+ * Enforceable Tool Gating Decision Function
+ * 
+ * This function MUST be called in runMcpFlow.ts BEFORE the tool list
+ * is passed to the model. It is the single point of enforcement.
+ * 
+ * @returns Filtered tool list and trace explanation for debugging
+ */
+export interface ToolGatingInput {
+    /** Memory retrieval confidence: 'high' | 'medium' | 'low' */
+    retrievalConfidence: 'high' | 'medium' | 'low';
+    
+    /** Explicit tool request detected in user query (e.g., "search for", "חפש") */
+    explicitToolRequest: string | null;
+    
+    /** Hebrew intent classification from detectHebrewIntent() */
+    detectedHebrewIntent: 'research' | 'search' | 'general' | null;
+    
+    /** Memory system is in degraded state (circuit breaker open, etc.) */
+    memoryDegraded: boolean;
+    
+    /** Number of high-quality memory results found */
+    memoryResultCount: number;
+    
+    /** All available tools before filtering */
+    availableTools: Tool[];
+}
+
+export interface ToolGatingOutput {
+    /** Filtered list of allowed tools */
+    allowedTools: Tool[];
+    
+    /** Human-readable explanation for trace panel */
+    traceExplanation: string;
+    
+    /** Whether tools were reduced due to memory confidence */
+    toolsReduced: boolean;
+    
+    /** Reason code for logging/metrics */
+    reasonCode: 'high_confidence' | 'explicit_request' | 'degraded' | 'default';
+}
+
+export function decideToolGating(input: ToolGatingInput): ToolGatingOutput {
+    // RULE 1: Always allow tools if memory system is degraded (fail-open)
+    if (input.memoryDegraded) {
+        return {
+            allowedTools: input.availableTools,
+            traceExplanation: "Memory system degraded - all tools allowed",
+            toolsReduced: false,
+            reasonCode: 'degraded'
+        };
+    }
+    
+    // RULE 2: Always allow tools if explicit request detected
+    if (input.explicitToolRequest) {
+        return {
+            allowedTools: input.availableTools,
+            traceExplanation: `Explicit tool request: "${input.explicitToolRequest}"`,
+            toolsReduced: false,
+            reasonCode: 'explicit_request'
+        };
+    }
+    
+    // RULE 3: Hebrew "מחקר" (research) intent always gets tools
+    if (input.detectedHebrewIntent === 'research') {
+        return {
+            allowedTools: input.availableTools,
+            traceExplanation: "Hebrew research intent detected - tools allowed",
+            toolsReduced: false,
+            reasonCode: 'explicit_request'
+        };
+    }
+    
+    // RULE 4: High confidence + sufficient results = reduce tools
+    if (input.retrievalConfidence === 'high' && input.memoryResultCount >= 3) {
+        const reducedTools = input.availableTools.filter(t => 
+            // Keep only essential tools (time, memory management)
+            ['get_current_time', 'memory_bank'].includes(t.function.name)
+        );
+        return {
+            allowedTools: reducedTools,
+            traceExplanation: `High confidence (${input.memoryResultCount} results) - reduced to ${reducedTools.length} essential tools`,
+            toolsReduced: true,
+            reasonCode: 'high_confidence'
+        };
+    }
+    
+    // RULE 5: Default - allow all tools
+    return {
+        allowedTools: input.availableTools,
+        traceExplanation: "Default - all tools allowed",
+        toolsReduced: false,
+        reasonCode: 'default'
+    };
+}
+```
+
+### Wiring Point in runMcpFlow.ts
+
+**Location:** After memory prefetch, before tool prompt construction (~line 620)
+
+```typescript
+// 🔗 KIMI REQUIREMENT: Enforceable tool gating (not just prompt guidance)
+import { decideToolGating } from "./toolGatingDecision";
+
+// After memory prefetch completes:
+const gatingResult = decideToolGating({
+    retrievalConfidence: memoryResult?.confidence ?? 'low',
+    explicitToolRequest: extractExplicitToolRequest(userQuery),
+    detectedHebrewIntent: detectHebrewIntent(userQuery),
+    memoryDegraded: memoryCircuitBreaker.isOpen(),
+    memoryResultCount: memoryResult?.results?.length ?? 0,
+    availableTools: filteredTools,
+});
+
+// Replace tool list with gated list
+filteredTools = gatingResult.allowedTools;
+
+// Emit trace event for visibility
+if (gatingResult.toolsReduced) {
+    yield createTraceEvent("tool_gating", gatingResult.traceExplanation);
+}
+
+logger.info({ 
+    reason: gatingResult.reasonCode,
+    originalCount: availableTools.length,
+    allowedCount: gatingResult.allowedTools.length 
+}, "[mcp] Tool gating decision");
+```
+
+### Testing Requirements
+
+- [ ] **Unit Test:** `decideToolGating()` returns all tools when `memoryDegraded=true`
+- [ ] **Unit Test:** `decideToolGating()` returns all tools when `explicitToolRequest` is set
+- [ ] **Unit Test:** `decideToolGating()` reduces tools when `retrievalConfidence='high'` and `memoryResultCount>=3`
+- [ ] **Integration Test:** High-confidence memory query results in 0 external tool calls
+
+---
+
+## 0.4 Async Ingestion Protocol (KIMI REQUIREMENT)
+
+> **MANDATORY:** All memory ingestion MUST be asynchronous. Synchronous embedding upserts are **forbidden** on the user request path.
+
+### Store-Then-Embed Pattern
+
+All ingested memory types (tool results, DataGov, documents) MUST follow this pattern:
+
+```
+1. STORE immediately (MongoDB) with `needs_reindex: true`
+2. RETURN to user (non-blocking)
+3. EMBED asynchronously (background worker or deferred endpoint)
+4. UPSERT to Qdrant (after embedding completes)
+5. CLEAR `needs_reindex` flag
+```
+
+### Implementation Requirements
+
+#### 1. Store with Deferred Embedding Flag
+
+**File:** `src/lib/server/memory/stores/MemoryMongoStore.ts`
+
+```typescript
+async store(params: StoreParams): Promise<StoreResult> {
+    const item: MemoryItemDocument = {
+        ...params,
+        // KIMI REQUIREMENT: Mark for deferred embedding
+        needs_reindex: true,
+        embedding_status: 'pending',
+        created_at: new Date(),
+    };
+    
+    // Store immediately - do NOT wait for embedding
+    await this.items.insertOne(item);
+    
+    // Fire-and-forget: Queue embedding task
+    this.queueEmbeddingTask(item.memory_id).catch(err => 
+        logger.warn({ err, memoryId: item.memory_id }, "[store] Embedding queue failed")
+    );
+    
+    return { memoryId: item.memory_id, indexed: false };
+}
+```
+
+#### 2. Deferred Reindex Endpoint
+
+**Existing Endpoint:** `POST /api/memory/ops/reindex/deferred`
+
+This endpoint MUST be called periodically (cron or manual) to process items with `needs_reindex: true`.
+
+```typescript
+// Already exists - ensure it's wired to a scheduler or health check
+async function reindexDeferred(): Promise<ReindexResult> {
+    const pending = await this.items.find({ needs_reindex: true }).limit(100).toArray();
+    
+    for (const item of pending) {
+        try {
+            const embedding = await embeddingClient.embed(item.content);
+            await qdrantAdapter.upsert(item.memory_id, embedding);
+            await this.items.updateOne(
+                { memory_id: item.memory_id },
+                { $set: { needs_reindex: false, embedding_status: 'indexed' } }
+            );
+        } catch (err) {
+            await this.items.updateOne(
+                { memory_id: item.memory_id },
+                { $set: { embedding_status: 'failed', embedding_error: err.message } }
+            );
+        }
+    }
+}
+```
+
+#### 3. Forbidden Patterns
+
+❌ **NEVER DO THIS:**
+```typescript
+// FORBIDDEN: Synchronous embedding on user path
+const embedding = await embeddingClient.embed(content);  // BLOCKING
+await qdrantAdapter.upsert(memoryId, embedding);         // BLOCKING
+return { success: true };  // User waits for all of this
+```
+
+✅ **ALWAYS DO THIS:**
+```typescript
+// CORRECT: Store now, embed later
+await mongoStore.insertOne({ ...item, needs_reindex: true });
+queueEmbeddingTask(item.memory_id);  // Fire-and-forget
+return { success: true, indexed: false };  // User gets immediate response
+```
+
+### Per-Tier Ingestion Caps
+
+To prevent storage bloat, enforce caps per tier:
+
+| Tier | Max Items | Cleanup Policy |
+|------|-----------|----------------|
+| `working` | 1,000 per conversation | Delete oldest when exceeded |
+| `history` | 10,000 per user | Promote or archive low-score items |
+| `tool_results` | 500 per conversation | Delete on conversation close |
+| `datagov_schema` | 2,000 total | Static, no growth |
+| `datagov_expansion` | 50 total | Static, no growth |
+
+---
+
+## 0.5 Authoritative Outcome Semantics Mapping (KIMI REQUIREMENT)
+
+> **MANDATORY:** This is the single source of truth for outcome handling. `MemoryMongoStore.ts` MUST match this table exactly.
+
+### Outcome Type Definitions
+
+| Outcome Type | Description | When to Use |
+|--------------|-------------|-------------|
+| `worked` | Memory was helpful and led to correct answer | User confirms, thanks, or continues productively |
+| `partial` | Memory was somewhat helpful but incomplete | User needed clarification or additional info |
+| `unknown` | Cannot determine if memory helped | No clear signal from user follow-up |
+| `failed` | Memory was wrong or misleading | User corrects, complains, or re-asks |
+
+### Numeric Deltas (Authoritative)
+
+| Outcome | `uses` Δ | `success_count` Δ | `worked_count` Δ | `partial_count` Δ | `unknown_count` Δ | `failed_count` Δ |
+|---------|----------|-------------------|------------------|-------------------|-------------------|------------------|
+| `worked` | **+1** | **+1.0** | +1 | 0 | 0 | 0 |
+| `partial` | **+1** | **+0.5** | 0 | +1 | 0 | 0 |
+| `unknown` | **+1** | **+0.25** | 0 | 0 | +1 | 0 |
+| `failed` | **+1** | **+0.0** | 0 | 0 | 0 | +1 |
+
+### Wilson Score Contribution
+
+```typescript
+// Wilson score formula (95% confidence interval lower bound)
+function calculateWilsonScore(successCount: number, uses: number): number {
+    if (uses === 0) return 0.5;  // Cold-start default
+    
+    const p = successCount / uses;
+    const z = 1.96;  // 95% confidence
+    const n = uses;
+    
+    const numerator = p + (z * z) / (2 * n) - z * Math.sqrt((p * (1 - p) + (z * z) / (4 * n)) / n);
+    const denominator = 1 + (z * z) / n;
+    
+    return Math.max(0, Math.min(1, numerator / denominator));
+}
+```
+
+### Promotion/Expiry Effects
+
+| Outcome | Promotion Eligibility | Expiry Effect |
+|---------|----------------------|---------------|
+| `worked` | +1 toward threshold | Extends TTL by 7 days |
+| `partial` | +0.5 toward threshold | Extends TTL by 3 days |
+| `unknown` | No change | No TTL change |
+| `failed` | -1 (blocks if repeated) | Accelerates expiry by 7 days |
+
+### Promotion Thresholds
+
+| Transition | Required `wilson_score` | Required `uses` | Required `success_count` |
+|------------|------------------------|-----------------|-------------------------|
+| working → history | ≥ 0.70 | ≥ 2 | ≥ 1 |
+| history → patterns | ≥ 0.85 | ≥ 5 | ≥ 3 |
+
+### Implementation Verification
+
+**File:** `src/lib/server/memory/stores/MemoryMongoStore.ts`
+
+```typescript
+async recordOutcome(params: OutcomeParams): Promise<void> {
+    const { memoryId, outcome, userId } = params;
+    
+    // KIMI REQUIREMENT: Explicit outcome handling with exact deltas
+    let successDelta: number;
+    switch (outcome) {
+        case 'worked':
+            successDelta = 1.0;
+            break;
+        case 'partial':
+            successDelta = 0.5;
+            break;
+        case 'unknown':
+            successDelta = 0.25;
+            break;
+        case 'failed':
+            successDelta = 0.0;
+            break;
+        default:
+            // TypeScript exhaustiveness check - no default case!
+            const _exhaustive: never = outcome;
+            throw new Error(`Invalid outcome type: ${outcome}`);
+    }
+    
+    // Atomic update with Wilson recalculation
+    await this.items.findOneAndUpdate(
+        { memory_id: memoryId, user_id: userId },
+        [
+            {
+                $set: {
+                    "stats.uses": { $add: ["$stats.uses", 1] },
+                    "stats.success_count": { $add: ["$stats.success_count", successDelta] },
+                    [`stats.${outcome}_count`]: { $add: [`$stats.${outcome}_count`, 1] },
+                    "stats.last_used_at": new Date(),
+                }
+            },
+            // ... Wilson recalculation in same operation
+        ]
+    );
+}
+```
+
+---
+
+## 0.6 Performance & QA Baselines (KIMI REQUIREMENT)
+
+> **MANDATORY:** Establish baseline metrics BEFORE making changes. All performance claims must be verifiable.
+
+### Baseline Metrics to Capture
+
+Before implementing any phase, capture these metrics:
+
+| Metric | Target | Measurement Method |
+|--------|--------|-------------------|
+| Memory prefetch latency P50 | <30ms | `logger.info` with timing |
+| Memory prefetch latency P95 | <50ms | Histogram aggregation |
+| Search latency (vector) | <40ms | SearchService timing |
+| Search latency (BM25) | <20ms | SearchService timing |
+| Search latency (rerank) | <100ms | Reranker timing |
+| Ingestion throughput | >50 items/sec | Batch ingestion test |
+| Embedding QPS | >10 req/sec | DictaEmbeddingClient metrics |
+
+### Test Coverage Requirements
+
+| Component | Coverage Target | Test Type |
+|-----------|----------------|-----------|
+| New Service classes | >80% | Unit tests |
+| Migration scripts (Phase 1) | 100% critical paths | Integration tests |
+| Search Fusion (Phase 15) | 100% fusion logic | Integration tests |
+| Outcome recording (Phase 23) | 100% outcome types | Unit tests |
+| Tool gating (Phase 3) | 100% decision matrix | Unit tests |
+
+### QA Checkpoints
+
+Before merging any phase:
+
+- [ ] **Baseline captured:** Pre-change metrics recorded
+- [ ] **No regression:** P95 latency not degraded by >10%
+- [ ] **Coverage met:** New code has >80% test coverage
+- [ ] **Failure modes tested:** Tested with dependency down/timeout
+
+---
+
 ## Phase 1: Consolidate Memory Collections (HIGH PRIORITY)
 
 ### Enterprise Insight (Gemini)
@@ -173,6 +629,27 @@ logger.debug({ id, idType: ObjectId.isValid(id) ? 'objectId' : 'uuid' }, "[memor
 
 **Changes:**
 - Add migration for `memory_items` collection alongside `memoryBank`
+
+### Enterprise Evaluation (GPT-5.2)
+
+| Dimension | Assessment | Mitigation |
+|-----------|------------|------------|
+| **Scalability** | Batch migration sizing, rate-limited embedding calls | Use configurable batch size (default 50), implement backpressure |
+| **Security** | Migration tooling must be admin-only | Do not expose raw content in logs; redact PII |
+| **Performance** | Avoid long blocking HTTP requests | Run as background/admin job, not on user request path |
+| **Maintainability** | Minimize new code paths | Prefer using existing facade/store methods |
+| **Resilience** | Partial failure risk | "Create-then-delete" pattern; mark `migration_failed` / `needs_reindex` |
+| **Testing** | Unit: field mapping, ID conversion, idempotency | Integration: Mongo + Qdrant + deferred reindex flow |
+
+**Success Criteria:**
+- [ ] Single source of truth: only `memory_items` remains authoritative
+- [ ] Legacy read compatibility during migration; no UI regressions
+- [ ] All migrated items become searchable (embedding + Qdrant indexing)
+- [ ] Migration is idempotent and resumable
+
+**Dependencies:**
+- Phase 23 safeguards must be complete before altering scoring for migrated data
+- Embedding pipeline must be operational (circuit breaker behavior)
 
 ---
 
@@ -266,9 +743,36 @@ ingestionService.ingestToolResult({
 - If ingestion is synchronous, it slows tool execution
 - Must be fire-and-forget with error handling
 
+### Enterprise Evaluation (GPT-5.2)
+
+| Dimension | Assessment | Mitigation |
+|-----------|------------|------------|
+| **Scalability** | Ingestion queue pattern needed | Implement backpressure; bulk upserts for batching |
+| **Security** | Sanitize tool outputs (PII, secrets) | Store minimal needed; avoid persisting auth headers or raw HTML with credentials |
+| **Performance** | Don't upsert vectors synchronously | "Store now, embed later" pattern using `needs_reindex` flag |
+| **Maintainability** | Centralized ingestion service | Explicit tool allowlist; avoid per-tool special cases |
+| **Resilience** | Circuit breaker + deferred embedding | Queue failed embeddings for retry on circuit close |
+| **Testing** | Unit: per-tool extractor + summarizer | Integration: ingestion + retrieval + dedup + reindex |
+
+**Success Criteria:**
+- [ ] Successful tool outputs ingested into `memory_items` (tier="working") with source metadata
+- [ ] Dedup by content hash prevents repetitive storage
+- [ ] Ingestion NEVER blocks user response (async/fire-and-forget)
+- [ ] Large outputs summarized before storage (respecting `maxTokens` from tool intelligence)
+
+**Dependencies:**
+- Phase 21 logging standards for structured ingestion logs
+- Phase 18 graceful degradation patterns (ingestion tolerates downstream failures)
+
+**Status Notes:**
+- No `ToolResultIngestionService.ts` exists currently
+- Docling is the only "tool → memory" bridge today
+
 ---
 
 ## Phase 3: Memory-First Decision Logic (HIGH PRIORITY)
+
+> **📌 CONSOLIDATION NOTE:** This phase consolidates with Phase 13. Phase 13 items are merged here.
 
 ### Enterprise Insight (Gemini)
 > **Risk: Model Behavior.** The model may become "stubborn" or "stale" if it relies too heavily on memory.
@@ -386,6 +890,41 @@ if (toolsSkipped) {
 logger.info({ skippedTools, confidence, memoryHits }, "[mcp] Tool skip decision");
 ```
 
+### Enterprise Evaluation (GPT-5.2)
+
+| Dimension | Assessment | Mitigation |
+|-----------|------------|------------|
+| **Scalability** | Reduce tool usage costs and latency | Fewer external API calls at scale |
+| **Security** | Avoid tool calls that leak context externally | High-confidence memory prevents unnecessary data exposure |
+| **Performance** | Fewer tool calls = faster responses | Skip tools in <50ms decision |
+| **Maintainability** | Implement gating centrally | Single decision function with trace explanation |
+| **Resilience** | Fail-open if memory system degraded | Never block user; fall back to full tool list |
+| **Testing** | Unit: intent override detection, gating matrix | Integration: high-confidence = 0 tool calls |
+
+**Success Criteria:**
+- [ ] Memory confidence meaningfully reduces unnecessary tool calls
+- [ ] Explicit override patterns ("חפש", "מחקר", "search the web") always allow tools
+- [ ] Trace shows when tools were skipped due to sufficient memory
+- [ ] Tool skip rate trackable in metrics
+
+**Implementation Pattern - Tool Gating Decision Function:**
+```typescript
+function decideToolGating(params: {
+    retrievalConfidence: 'high' | 'medium' | 'low';
+    explicitToolRequest: string | null;
+    detectedHebrewIntent: 'research' | 'search' | 'general';
+    memoryDegraded: boolean;
+}): { allowedTools: Tool[]; traceExplanation: string } {
+    // Centralized decision logic
+    // Returns filtered tool list and explanation for trace
+}
+```
+
+**Status Notes:**
+- Memory is prefetched before tool prompt injection today
+- Tool gating is NOT enforced; tool list is still passed through
+- `shouldAllowTool()` exists but is never called
+
 ---
 
 ## Phase 4: Document Deduplication for Tool Calls (MEDIUM PRIORITY)
@@ -438,6 +977,25 @@ async function bridgeDoclingToMemory(
 **Risk Factors:**
 - Same document with different formatting may have different hash
 - Need to handle partial matches
+
+### Enterprise Evaluation (GPT-5.2)
+
+| Dimension | Assessment | Mitigation |
+|-----------|------------|------------|
+| **Scalability** | Prevents Qdrant growth and retrieval quality degradation | Dedup saves storage and improves search |
+| **Security** | Hashing is safe | Avoid logging full content; hash is sufficient for identity |
+| **Performance** | Avoids heavy ingestion work | Faster responses when document already exists |
+| **Testing** | Unit: hash creation, existence checks | Integration: docling run twice = single stored document |
+
+**Success Criteria:**
+- [ ] Docling bridge uses SHA-256 hash-based document identity
+- [ ] If document exists, skip re-storage and surface "already processed" guidance
+- [ ] `DocumentRecognitionService.documentExists()` is called before ingestion
+
+**Status Notes:**
+- `DocumentRecognitionService` and hashing utilities already exist
+- Docling bridge currently uses timestamp-based IDs
+- Must reuse existing recognition service; avoid parallel implementations
 
 ---
 
@@ -1143,6 +1701,35 @@ ctx.font = "bold 36px -apple-system, 'Segoe UI', 'Noto Sans Hebrew', sans-serif"
 - Reset `success_count` to 0 when promoting to History (probation).
 - Require `success_count >= 5` to promote to Patterns.
 
+### Enterprise Evaluation (GPT-5.2)
+
+| Dimension | Assessment | Mitigation |
+|-----------|------------|------------|
+| **Scalability** | Learning quality scales with data | Correct semantics prevent garbage accumulation |
+| **Security** | N/A | No external exposure |
+| **Performance** | Wilson calculation adds minimal overhead | ~1ms per outcome recording |
+| **Maintainability** | Must not break existing stats schema | Additive changes only |
+| **Resilience** | Score corruption = bad learning | Phase 23 safeguards must land first |
+| **Testing** | Unit: scoring deltas, wilson formula | Integration: ranking reflects outcomes |
+
+**Success Criteria:**
+- [ ] Correct update semantics (no archive-on-update)
+- [ ] Wilson impacts ranking/promotion meaningfully with cold-start protections
+- [ ] "unknown" outcome semantics align with evolutionary pressure (0.25 success)
+- [ ] Counter reset on promotion to history creates probation period
+
+**Dependencies:**
+- **MUST WAIT FOR Phase 23** to land first (safeguards prevent learning on corrupt stats)
+
+**Outcome Semantics Mapping Table (Authoritative):**
+
+| Outcome | `success_count` Delta | `uses` Increment | Wilson Impact | Promotion Effect |
+|---------|----------------------|------------------|---------------|------------------|
+| `worked` | +1.0 | +1 | Positive | Increases eligibility |
+| `partial` | +0.5 | +1 | Neutral | Weak positive |
+| `unknown` | +0.25 | +1 | Weak negative | Signals "not helpful" |
+| `failed` | +0.0 | +1 | Strong negative | Blocks promotion |
+
 ---
 
 ## Phase 23: RoamPal v0.2.8 Critical Bug Fixes (Safeguards)
@@ -1237,6 +1824,30 @@ const result = await this.items.findOneAndUpdate(
 
 **Note:** The MongoDB aggregation Wilson formula above is complex. continue with two-step update but add optimistic locking via `$set` with expected `uses` value.
 
+### Enterprise Evaluation (GPT-5.2)
+
+| Dimension | Assessment | Mitigation |
+|-----------|------------|------------|
+| **Scalability** | Bug fixes prevent data quality degradation at scale | Learning gets better, not worse, over time |
+| **Security** | N/A | No external exposure |
+| **Performance** | Atomic updates prevent race conditions | No performance penalty |
+| **Maintainability** | Explicit switch statements prevent drift | No default blocks in scoring |
+| **Resilience** | Atomicity prevents concurrent outcome races | MongoDB aggregation pipeline for single-op update |
+| **Testing** | Unit: 50 uses + 45 worked → Wilson ~0.87 | Integration: concurrent outcomes = consistent stats |
+
+**Success Criteria:**
+- [ ] Outcome types are explicit and validated (switch with no default)
+- [ ] Wilson score uses cumulative `stats.success_count` and `stats.uses` (NOT capped history)
+- [ ] Failed outcomes always increment uses (essential for learning)
+- [ ] Atomicity prevents concurrent outcome races
+
+**Code-Context Notes (from current implementation):**
+- In `MemoryMongoStore.ts`, outcome recording increments uses
+- Wilson calculation currently excludes `unknown_count` from total - verify this matches Phase 22 intent
+- Two-step update (update stats, then update wilson) can race - Phase 23.4 proposes atomic recalculation
+
+**THIS PHASE MUST BE IMPLEMENTED FIRST** - it establishes safeguards that prevent all subsequent phases from learning on corrupt statistics.
+
 ---
 
 ## Phase 24: DictaLM Response Integrity (CRITICAL)
@@ -1301,6 +1912,29 @@ export function repairXmlStream(text: string): string {
     return text;
 }
 ```
+
+### Enterprise Evaluation (GPT-5.2)
+
+| Dimension | Assessment | Mitigation |
+|-----------|------------|------------|
+| **Scalability** | Platform hardening improves reliability | Prevents silent failures at scale |
+| **Security** | Raw stream logging must be controlled | Sampling + redaction + prod-off by default |
+| **Performance** | Tag repair adds negligible overhead | <1ms per response |
+| **Maintainability** | Single repair function, not per-model hacks | xmlUtils.ts is the canonical repair location |
+| **Resilience** | Fail-open with best-effort recovery | Never lose user answer due to parsing |
+| **Testing** | Unit: malformed `<think>`, partial JSON, fenced JSON | Integration: simulated streaming anomalies |
+
+**Success Criteria:**
+- [ ] When model output malforms tags/JSON, system fails-open with best-effort recovery
+- [ ] Raw stream visibility exists for debugging without leaking secrets
+- [ ] `<think>` tag is auto-closed if missing before tool call
+- [ ] Markdown code blocks stripped from tool call JSON
+
+**IMPORTANT - Format Reconciliation:**
+The plan references `<tool_call>` XML tags, but the actual runtime format is JSON `"tool_calls": [...]`. Ensure fixes target the ACTUAL format:
+- Treat `<think>` as the main structural token (already used)
+- Treat `"tool_calls": [...]` JSON payload as canonical tool-call format
+- Harden parsing/recovery around actual runtime behavior
 
 ---
 
@@ -1810,6 +2444,39 @@ This phase MUST integrate with existing orchestration:
 | Memory Search | <100ms | Query DataGov schemas with embeddings |
 | KG Render | <2s | ~150 nodes (21 categories + 5 datasets each) |
 
+### Enterprise Evaluation (GPT-5.2)
+
+| Dimension | Assessment | Mitigation |
+|-----------|------------|------------|
+| **Scalability** | 1,190 schemas + expansions create large vector footprint | "Store now, embed later" pattern; use `needs_reindex` flag |
+| **Security** | Treat DataGov as public data | Sanitize content; avoid storing external URLs with tokens; admin-only ingestion control |
+| **Performance** | Must not slow startup beyond targets | Background/resumable ingestion; batch sizing; feature flag |
+| **Maintainability** | Avoid parallel schema that diverges from `memory_items` | Use same schema with `tier: "datagov_schema"` and `tier: "datagov_expansion"` |
+| **Resilience** | Crash-safe ingestion | Idempotent, incremental, and recoverable; hash/version per record |
+| **Testing** | Unit: parsers, schema normalization, idempotency | Integration: small subset fixture; Performance: time budgets |
+
+**Critical Requirements:**
+- [ ] Ingestion must be **idempotent** - safe to re-run
+- [ ] Ingestion must be **incremental** - supports updates
+- [ ] Ingestion must be **recoverable** - crash-safe with checkpoints
+- [ ] Ingestion must be **resumable** - can continue from failure point
+- [ ] Ingestion must be **feature-flagged** - `DATAGOV_PRELOAD_ENABLED=true`
+- [ ] Ingestion must be **observable** - logs and metrics for monitoring
+
+**Data Model Stability:**
+- Use existing `memory_items` collection with new tiers
+- Do NOT create parallel "datagov_memories" collection
+- Do NOT diverge from existing schema patterns
+
+**KG Node Limits:**
+- Bound KG node counts to prevent UI collapse
+- Use sampling/aggregation (5 datasets per category)
+- Hard cap ~150 nodes total
+
+**Dependencies:**
+- Phase 19 search correctness and Phase 23 scoring safety
+- Phase 21 logging/observability for monitoring ingestion
+
 ---
 
 ## Success Criteria (Definition of Done)
@@ -1877,10 +2544,303 @@ Before marking ANY phase as complete, verify:
 
 ---
 
-*Document Version: 3.4 (Enterprise Enhanced + Orchestration Wiring + DataGov Pre-Ingestion)*
+## APPENDIX B: Risk Assessment Matrix (GPT-5.2)
+
+| Risk | Impact | Likelihood | Phase(s) | Mitigation |
+|------|--------|------------|----------|------------|
+| Corrupt stats → bad learning decisions | **High** | Medium | 22, 23 | Land safeguards first; add unit tests + migration/backfill |
+| Tool gating blocks needed tools → user dissatisfaction | Medium | Medium | 3, 13 | Explicit override detection; fail-open on degraded memory |
+| Tool ingestion bloats storage/vectors | **High** | **High** | 2, 16, 25 | Dedup by hash; async embedding; caps per tier |
+| Docling duplicates degrade search | Medium | **High** | 4 | Hash-based doc ID; `DocumentRecognitionService.documentExists` |
+| Raw stream logging leaks data | **High** | Low | 24 | Redaction + sampling + prod-off by default |
+| DataGov pre-ingestion slows startup | **High** | Medium | 25 | Background/resumable ingestion; batch sizing; feature flag |
+| KG visualization collapses with DataGov nodes | Medium | Medium | 6, 20, 25 | Sampling/aggregation; hard node caps; progressive rendering |
+| Mongo/Qdrant partial failure causes drift | **High** | Medium | 1, 11, 23 | Create-then-delete; deferred reindex; targeted transactions |
+| Memory-first skips when stale data | Medium | Medium | 3, 13 | Time decay; explicit tool override patterns |
+| Wilson score calculated from capped history | **High** | Low | 23 | Use cumulative `stats.success_count` and `stats.uses` only |
+
+---
+
+## APPENDIX C: Implementation Checklist (Enterprise "Definition of Ready" → "Definition of Done")
+
+### Definition of Ready (Before Coding)
+
+- [ ] Reconcile `codespace_progress.md` with current code reality
+- [ ] Confirm which phase set is canonical when duplicates exist (3 vs 13, 2 vs 16, etc.)
+- [ ] Confirm operational SLO targets per phase (latency, timeouts, ingestion budgets)
+- [ ] Define test scope per phase (unit/integration/E2E) and required fixtures
+- [ ] Verify no parallel implementation planned when existing code suffices
+
+### Definition of Done (Per Phase)
+
+- [ ] Success criteria met and measurable (logs, counters, UI evidence)
+- [ ] Unit tests added for all new logic; integration tests for data-path changes
+- [ ] Failure modes exercised (dependency down, timeouts, degraded state)
+- [ ] Security review completed for persisted content and new endpoints
+- [ ] Orchestration integration verified (existing methods used, not bypassed)
+- [ ] Hebrew support verified (RTL, bilingual labels, Hebrew patterns)
+- [ ] Performance baseline maintained (no regressions in P95 latency)
+
+### Quality Assurance Guidelines
+
+**Unit Tests (Required):**
+- Outcome semantics: all outcomes update uses and scoring as intended (Phase 22/23)
+- Tool gating matrix: confidence × explicit request × Hebrew intent (Phase 3/13)
+- Dedup hashing and identity logic (Phase 4, 25)
+- Parsing recovery: malformed `<think>`, partial JSON tool call payload (Phase 24)
+
+**Integration Tests (Required):**
+- Mongo + Qdrant: Store → deferred embedding → reindex → searchable results
+- Duplicate document ingestion produces a single canonical document identity
+- Tool execution to memory ingestion: successful result persisted and retrievable
+
+**E2E Tests (High-Value):**
+- "Save memory → search memory → see it in UI" (trust path)
+- "Upload same document twice → no duplication → instant recognition message"
+- "High-confidence memory answer → no external tool calls unless explicitly requested"
+
+**Performance Validation:**
+- Memory prefetch latency distribution (target: <50ms P95)
+- Search latency with timeouts (vector, bm25, rerank)
+- Ingestion throughput (batch size, embedding QPS)
+
+---
+
+## APPENDIX D: Architectural Hardening Notes (GPT-5.2)
+
+### Data Model Stability
+- Avoid introducing new "parallel schemas" for DataGov and tool ingestion
+- Fit within `memory_items` using tier + metadata patterns
+- Use existing `MemoryItemDocument` interface
+
+### Idempotency Everywhere
+- Migration, ingestion, and dedup should be safe to retry
+- Use content hash, stable IDs, and upsert patterns
+- Never create duplicate records on re-run
+
+### Controlled Startup Behavior (Phase 25)
+- Pre-ingestion must be:
+  - Feature-flagged (`DATAGOV_PRELOAD_ENABLED=true`)
+  - Resumable (checkpoint progress)
+  - Observable (logs/metrics)
+  - Safe to disable without breaking core chat
+
+### Multi-Instance Readiness
+- Current architecture is single-instance
+- In-process locks are sufficient for KG and ingestion dedup
+- Future: distributed locking story (Redis) if multi-instance needed
+
+### Security Baseline
+- "Diagnostics" and "pre-ingestion control" endpoints must be admin-only
+- Sanitize stored tool outputs; avoid storing secrets or raw headers
+- Raw stream logging: sampled, redacted, disabled in production by default
+
+### Multi-Instance Considerations (KIMI REQUIREMENT)
+
+> **Current state:** Single-instance architecture. In-process locks are sufficient.
+> **Future state:** If multi-instance deployment is needed, implement Redis-based distributed locks.
+
+| Component | Current Lock | Future Lock |
+|-----------|--------------|-------------|
+| KG write buffer | In-process mutex | Redis SETNX |
+| Ingestion dedup | In-process Set | Redis Set with TTL |
+| Circuit breaker state | In-process | Redis counter |
+
+**Do NOT implement distributed locks prematurely.** Document the need and revisit when scaling.
+
+---
+
+## APPENDIX E: Raw Stream Debugging Protocol (KIMI REQUIREMENT)
+
+> **CRITICAL:** Raw LLM stream logging is dangerous in production. This protocol defines safe debugging practices.
+
+### Production Rules (MANDATORY)
+
+1. **NEVER enable raw stream logging in production by default**
+2. **ALWAYS use feature flag:** `DEBUG_RAW_STREAM=true` (default: false)
+3. **ALWAYS sample:** Log only 1% of streams in production debugging
+4. **ALWAYS redact:** Strip PII, API keys, auth headers before logging
+5. **ALWAYS correlate:** Include request ID for cross-referencing
+
+### Environment Configuration
+
+```bash
+# .env - Production defaults
+DEBUG_RAW_STREAM=false           # NEVER true in production
+DEBUG_RAW_STREAM_SAMPLE_RATE=0.01  # 1% sampling when enabled
+DEBUG_RAW_STREAM_REDACT=true     # Always redact sensitive data
+```
+
+### Implementation Pattern
+
+**File:** `src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+
+```typescript
+import { env } from "$env/dynamic/private";
+
+const DEBUG_RAW_STREAM = env.DEBUG_RAW_STREAM === 'true';
+const SAMPLE_RATE = parseFloat(env.DEBUG_RAW_STREAM_SAMPLE_RATE || '0.01');
+
+// Inside stream processing loop
+function logRawChunk(chunk: string, requestId: string): void {
+    if (!DEBUG_RAW_STREAM) return;
+    if (Math.random() > SAMPLE_RATE) return;  // Sampling
+    
+    // Redaction patterns
+    const redacted = chunk
+        .replace(/Bearer\s+[A-Za-z0-9\-._~+/]+=*/g, 'Bearer [REDACTED]')
+        .replace(/api[_-]?key[=:]\s*["']?[^"'\s]+["']?/gi, 'api_key=[REDACTED]')
+        .replace(/password[=:]\s*["']?[^"'\s]+["']?/gi, 'password=[REDACTED]');
+    
+    logger.trace({ 
+        requestId, 
+        chunkLength: chunk.length,
+        chunk: redacted.slice(0, 500)  // Truncate to 500 chars
+    }, "[raw_stream] Debug chunk");
+}
+```
+
+### Phase 24 Alignment: JSON Tool Calls (KIMI REQUIREMENT)
+
+> **CRITICAL FORMAT CLARIFICATION:** The actual runtime format uses JSON `"tool_calls": [...]`, NOT XML `<tool_call>` tags.
+
+**Correct Format (Runtime):**
+```json
+{
+    "tool_calls": [
+        {
+            "id": "call_123",
+            "type": "function",
+            "function": {
+                "name": "tavily_search",
+                "arguments": "{\"query\": \"latest news\"}"
+            }
+        }
+    ]
+}
+```
+
+**XML Format (`<think>`) - Still Used:**
+```xml
+<think>
+I need to search for the latest news about this topic.
+Let me use the Tavily search tool.
+</think>
+```
+
+**Parsing Priority:**
+1. Parse `<think>...</think>` wrapper (XML)
+2. Parse `"tool_calls": [...]` JSON payload (NOT XML tags)
+3. Repair unclosed `<think>` tags if streaming interrupted
+4. IGNORE any `<tool_call>` XML references in legacy code
+
+### Debugging Checklist
+
+When debugging stream issues:
+
+- [ ] Confirm `<think>` tags are properly opened and closed
+- [ ] Confirm `</think>` appears before any tool call JSON
+- [ ] Confirm tool calls are valid JSON (not XML)
+- [ ] Check for markdown code blocks wrapping JSON (must strip)
+- [ ] Verify request ID correlation in logs
+
+---
+
+## APPENDIX F: DataGov Pre-Ingestion Controls (KIMI REQUIREMENT)
+
+> **MANDATORY:** DataGov ingestion must be controlled, resumable, and non-blocking.
+
+### Feature Flag (Default OFF)
+
+```bash
+# .env
+DATAGOV_PRELOAD_ENABLED=false    # Default: OFF - must explicitly enable
+DATAGOV_PRELOAD_BACKGROUND=true  # Run in background, don't block startup
+DATAGOV_PRELOAD_BATCH_SIZE=50    # Items per batch
+DATAGOV_PRELOAD_RESUME=true      # Resume from last checkpoint on restart
+```
+
+### Startup Behavior
+
+```typescript
+// src/lib/server/memory/index.ts
+async function initializeMemorySystem(): Promise<void> {
+    // ... existing initialization ...
+    
+    if (env.DATAGOV_PRELOAD_ENABLED === 'true') {
+        if (env.DATAGOV_PRELOAD_BACKGROUND === 'true') {
+            // Non-blocking: Start in background
+            logger.info("[Memory] Starting DataGov pre-ingestion in background");
+            datagovService.ingestAll().catch(err => 
+                logger.error({ err }, "[Memory] DataGov background ingestion failed")
+            );
+        } else {
+            // Blocking: Wait for completion (use only in dev/test)
+            logger.info("[Memory] Starting DataGov pre-ingestion (blocking)");
+            await datagovService.ingestAll();
+        }
+    }
+}
+```
+
+### Resumable Ingestion
+
+**Checkpoint Storage:**
+```typescript
+interface IngestionCheckpoint {
+    last_category: string;
+    last_dataset_index: number;
+    last_expansion_domain: string;
+    completed_at: Date | null;
+    error_count: number;
+}
+
+// Store checkpoint in MongoDB
+const CHECKPOINT_COLLECTION = 'datagov_ingestion_checkpoint';
+```
+
+**Resume Logic:**
+```typescript
+async ingestAll(force = false): Promise<DataGovIngestionResult> {
+    const checkpoint = await this.loadCheckpoint();
+    
+    if (checkpoint?.completed_at && !force) {
+        logger.info("[DataGov] Already completed, skipping");
+        return { skipped: true };
+    }
+    
+    // Resume from checkpoint
+    const startCategory = checkpoint?.last_category || null;
+    const startIndex = checkpoint?.last_dataset_index || 0;
+    
+    // ... continue ingestion from checkpoint ...
+}
+```
+
+### KG Node Caps
+
+To prevent UI collapse with too many DataGov nodes:
+
+| Node Type | Max Count | Sampling Strategy |
+|-----------|-----------|-------------------|
+| Category nodes | 21 (all) | No sampling |
+| Dataset nodes per category | 5 | Top 5 by record count |
+| Total KG nodes | ~150 | Hard cap enforced |
+
+---
+
+*Document Version: 3.6 (Enterprise Enhanced + GPT-5.2 Analysis + Kimi Requirements)*
 *Last Updated: January 14, 2026*
 *RoamPal Reference Version: v0.2.9 + v0.2.8.1 Hotfix*
-*Total Implementation Tasks: 85 tasks, 480 subtasks*
+*Total Implementation Tasks: 87 tasks, 494 subtasks*
 *Orchestration Integration Points: 18 functions to wire*
 *DataGov Knowledge: 1,190 schemas, 22 domains, ~9,500 searchable terms*
+*Risk Assessment: 10 identified risks with mitigations*
+*Kimi Requirements: 12 enterprise controls integrated*
+*Last Updated: January 14, 2026*
+*RoamPal Reference Version: v0.2.9 + v0.2.8.1 Hotfix*
+*Total Implementation Tasks: 87 tasks, 494 subtasks*
+*Orchestration Integration Points: 18 functions to wire*
+*DataGov Knowledge: 1,190 schemas, 22 domains, ~9,500 searchable terms*
+*Risk Assessment: 10 identified risks with mitigations*
 

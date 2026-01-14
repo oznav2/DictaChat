@@ -1,8 +1,202 @@
+# Memory System Implementation Progress
+
+**Version:** 2.1 (GPT-5.2 + Kimi Enterprise Requirements)
+**Date:** January 14, 2026
+**Reference:** `codespace_gaps_enhanced.md` v3.6, `codespace_priorities.md` v2.1
 
 > **Enterprise-Grade Production Implementation**
 > 
 > All phases are HIGH PRIORITY and will be implemented end-to-end consecutively.
 > Each task is atomic and testable. No steps are omitted.
+> 
+> **Kimi Requirements:** 12 enterprise controls integrated (see Section 0.K below)
+
+---
+
+## 0. Executive Reality Check (GPT-5.2 Analysis)
+
+### What's Already Implemented (Important Reality Check)
+
+Several plan items are already active in the codebase:
+
+| Capability | Status | Location |
+|------------|--------|----------|
+| Memory prefetch & injection | ✅ Active | `runMcpFlow.ts` L526-933 |
+| Cold-start injection | ✅ Active | `runMcpFlow.ts` via `getColdStartContextForConversation()` |
+| Contextual guidance | ✅ Active | `runMcpFlow.ts` L776-817 |
+| Tool guidance | ✅ Active | `runMcpFlow.ts` L825-875 |
+| Attribution instruction | ✅ Active | `runMcpFlow.ts` L759-769 |
+| Document recognition endpoint | ✅ Exists | `src/routes/api/memory/books/recognize/+server.ts` |
+| Docling → memory bridge | ✅ Exists | `toolInvocation.ts` (but **without hash-based dedup**) |
+| Search timeout fallback | ✅ Exists | `SearchService.ts` graceful degradation |
+
+### Primary Strategic Gap
+
+The biggest remaining gap is **wiring + enforceability**, not missing functions:
+- Tool gating is **not enforced at runtime** (prompt-only guidance)
+- Tool result ingestion (non-docling) **not implemented**
+- Dedup **not consistent** (timestamp IDs, not hash-based)
+
+### Phase Consolidation Required
+
+> **WARNING:** Mark these as "CONSOLIDATED" - do NOT implement duplicate phases!
+
+| Duplicate Phases | Canonical Phase | Status |
+|------------------|-----------------|--------|
+| Phase 3 + Phase 13 | **Phase 3** (Tool Gating) | Phase 13 tasks → merge into Phase 3 |
+| Phase 2 + Phase 16 | **Phase 2** (Tool Ingestion) | Phase 16 tasks → merge into Phase 2 |
+| Phase 6 + Phase 20 | **Phase 6** (KG Labels) | Phase 20 tasks → merge into Phase 6 |
+| Phase 8 + Phase 17 | **Phase 8** (UI Updates) | Phase 17 tasks → merge into Phase 8 |
+
+### Risk-Aware Execution Order
+
+```
+TIER 1 - SAFEGUARDS (FIRST):
+  1. Phase 23 (v0.2.8 Bug Fixes) ← Prevents corrupt stats
+  2. Phase 22 (v0.2.9 Natural Selection)
+
+TIER 2 - CORE DATA INTEGRITY:
+  3. Phase 1 (Collection Consolidation)
+  4. Phase 4 (Document Deduplication)
+
+TIER 3 - MEMORY-FIRST INTELLIGENCE:
+  5. Phase 3 (+13) (Tool Gating)
+  6. Phase 2 (+16) (Tool Ingestion)
+  7. Phase 5 (0-Results Fix)
+
+TIER 4 - LEARNING:
+  8. Phase 7 (Attribution)
+  9. Phase 8 (+17) (Outcome Detection + UI)
+  10. Phase 12 (Time Decay)
+
+TIER 5 - SEARCH QUALITY:
+  11. Phase 15 (RRF Fusion)
+  12. Phase 19 (Action Outcomes)
+
+TIER 6 - PLATFORM HARDENING:
+  13. Phase 24 (Response Integrity)
+  14. Phase 14 (Circuit Breaker)
+
+TIER 7 - KNOWLEDGE EXPANSION:
+  15. Phase 25 (DataGov) ← After core stability
+
+TIER 8 - POLISH:
+  16. Phase 6 (+20) (KG Visualization)
+  17. Phase 21 (Observability)
+  18. Phases 9-11, 18 (Optimization)
+```
+
+---
+
+## 0.K Kimi Enterprise Requirements (NEW)
+
+> **MANDATORY:** These 12 enterprise controls must be implemented alongside the relevant phases.
+
+### K.1: Enforceable Tool Gating (Phase 3)
+
+- **File**: `src/lib/server/textGeneration/mcp/toolGatingDecision.ts`
+- **Subtasks**:
+  - [ ] K.1.1: Create `ToolGatingInput` interface with 6 parameters
+  - [ ] K.1.2: Create `ToolGatingOutput` interface with 4 fields
+  - [ ] K.1.3: Implement `decideToolGating()` function with 5 rules
+  - [ ] K.1.4: Rule 1: Fail-open when `memoryDegraded=true`
+  - [ ] K.1.5: Rule 2: Allow all tools when `explicitToolRequest` detected
+  - [ ] K.1.6: Rule 3: Allow all tools for Hebrew "מחקר" (research) intent
+  - [ ] K.1.7: Rule 4: Reduce tools when `retrievalConfidence='high'` + 3+ results
+  - [ ] K.1.8: Rule 5: Default allow all tools
+  - [ ] K.1.9: Wire into `runMcpFlow.ts` after memory prefetch (~line 620)
+  - [ ] K.1.10: Emit trace event when tools are reduced
+  - [ ] K.1.11: Add logging with reason code
+  - [ ] K.1.12: Write unit tests for all 5 rules
+
+### K.2: Async Ingestion Protocol (Phase 2, 25)
+
+- **File**: `src/lib/server/memory/stores/MemoryMongoStore.ts`
+- **Subtasks**:
+  - [ ] K.2.1: Add `needs_reindex: true` to all new items in `store()`
+  - [ ] K.2.2: Add `embedding_status: 'pending'` field
+  - [ ] K.2.3: Implement `queueEmbeddingTask()` fire-and-forget method
+  - [ ] K.2.4: Remove any synchronous `embeddingClient.embed()` on user path
+  - [ ] K.2.5: Verify deferred reindex endpoint processes `needs_reindex` items
+  - [ ] K.2.6: Add per-tier caps (working: 1000, history: 10000)
+  - [ ] K.2.7: Implement `enforcePerTierCap()` cleanup method
+  - [ ] K.2.8: Write tests verifying no blocking on user path
+
+### K.3: Authoritative Outcome Semantics (Phase 23)
+
+- **File**: `src/lib/server/memory/stores/MemoryMongoStore.ts`
+- **Subtasks**:
+  - [ ] K.3.1: Verify `worked` → +1.0 success_count, +1 uses
+  - [ ] K.3.2: Verify `partial` → +0.5 success_count, +1 uses
+  - [ ] K.3.3: Verify `unknown` → +0.25 success_count, +1 uses
+  - [ ] K.3.4: Verify `failed` → +0.0 success_count, +1 uses
+  - [ ] K.3.5: Remove any default case in outcome switch statement
+  - [ ] K.3.6: Add TypeScript exhaustiveness check (`never` type)
+  - [ ] K.3.7: Verify Wilson uses cumulative stats (not capped history)
+  - [ ] K.3.8: Write test: 50 uses + 45 worked → Wilson ~0.87
+
+### K.4: Performance Baselines (Before Any Phase)
+
+- **Subtasks**:
+  - [ ] K.4.1: Capture memory prefetch P50/P95 latency baseline
+  - [ ] K.4.2: Capture search latency (vector, BM25, rerank) baseline
+  - [ ] K.4.3: Capture ingestion throughput baseline
+  - [ ] K.4.4: Capture embedding QPS baseline
+  - [ ] K.4.5: Document baselines in `STATUS.md`
+  - [ ] K.4.6: Create comparison script for post-implementation
+
+### K.5: Raw Stream Debugging Protocol (Phase 24)
+
+- **File**: `src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+- **Subtasks**:
+  - [ ] K.5.1: Add `DEBUG_RAW_STREAM` env var (default: false)
+  - [ ] K.5.2: Add `DEBUG_RAW_STREAM_SAMPLE_RATE` (default: 0.01)
+  - [ ] K.5.3: Implement `logRawChunk()` with sampling
+  - [ ] K.5.4: Add redaction for Bearer tokens, API keys, passwords
+  - [ ] K.5.5: Add request ID correlation
+  - [ ] K.5.6: Truncate logged chunks to 500 chars
+  - [ ] K.5.7: Document that this must NEVER be enabled in production
+
+### K.6: Phase 24 Format Alignment
+
+- **File**: `src/lib/server/textGeneration/utils/xmlUtils.ts`
+- **Subtasks**:
+  - [ ] K.6.1: Confirm parsing targets JSON `"tool_calls": [...]` format
+  - [ ] K.6.2: Remove any `<tool_call>` XML parsing if present
+  - [ ] K.6.3: Keep `<think>` as only XML token
+  - [ ] K.6.4: Implement `repairXmlStream()` for unclosed `<think>` tags
+  - [ ] K.6.5: Strip markdown code blocks from tool call JSON
+  - [ ] K.6.6: Write tests for malformed streams
+
+### K.7: DataGov Controls (Phase 25)
+
+- **File**: `.env` and `src/lib/server/memory/datagov/DataGovIngestionService.ts`
+- **Subtasks**:
+  - [ ] K.7.1: Add `DATAGOV_PRELOAD_ENABLED=false` (default OFF)
+  - [ ] K.7.2: Add `DATAGOV_PRELOAD_BACKGROUND=true` (non-blocking)
+  - [ ] K.7.3: Implement checkpoint storage for resumable ingestion
+  - [ ] K.7.4: Implement `loadCheckpoint()` and `saveCheckpoint()`
+  - [ ] K.7.5: Add resume logic in `ingestAll()`
+  - [ ] K.7.6: Enforce KG node cap: 150 max
+  - [ ] K.7.7: Implement background ingestion (don't block startup)
+  - [ ] K.7.8: Write tests for resume from checkpoint
+
+### K.8: Multi-Instance Readiness (Documentation Only)
+
+- **Subtasks**:
+  - [ ] K.8.1: Document current single-instance architecture in AGENTS.md
+  - [ ] K.8.2: Document future need for Redis distributed locks
+  - [ ] K.8.3: Identify components needing distributed locks: KG, dedup, circuit breaker
+  - [ ] K.8.4: Do NOT implement distributed locks prematurely
+
+### K.9: Security Hardening
+
+- **Subtasks**:
+  - [ ] K.9.1: Verify all diagnostic endpoints are admin-only
+  - [ ] K.9.2: Verify pre-ingestion endpoints are admin-only
+  - [ ] K.9.3: Implement tool output sanitization before storage
+  - [ ] K.9.4: Never log secrets, raw headers, or API keys
+  - [ ] K.9.5: Add security review to Definition of Done
 
 ---
 
@@ -1013,34 +1207,58 @@
 
 ### Total Task Count by Phase
 
-| Phase | Description | Tasks | Subtasks |
-|-------|-------------|-------|----------|
-| 1 | Consolidate Memory Collections | 4 | 34 |
-| 2 | Tool Result Memory Ingestion | 3 | 20 |
-| 3 | Document Hash Deduplication | 3 | 17 |
-| 4 | Fix UI/Backend Memory Sync | 3 | 15 |
-| 5 | Knowledge Graph Visualization Fix | 3 | 14 |
-| 6 | Trace Panel Deduplication | 2 | 8 |
-| 7 | Memory Attribution in Responses | 3 | 12 |
-| 8 | Outcome Detection from User Follow-up | 3 | 17 |
-| 9 | Memory Prefetch Optimization | 3 | 17 |
-| 10 | Working Memory Lifecycle | 3 | 14 |
-| 11 | History Tier Management | 3 | 12 |
-| 12 | Wilson Score Time Decay | 3 | 12 |
-| 13 | Memory-First Decision Logic | 3 | 14 |
-| 14 | Embedding Circuit Breaker Improvements | 3 | 17 |
-| 15 | Search Service RRF Fusion Enhancement | 3 | 18 |
-| 16 | Qdrant Adapter Improvements | 3 | 16 |
-| 17 | MongoDB Store Improvements | 3 | 15 |
-| 18 | Prompt Template System | 3 | 18 |
-| 19 | Action Outcomes Tracking | 3 | 14 |
-| 20 | Known Solutions Cache | 3 | 15 |
-| 21 | Memory System Observability | 4 | 22 |
-| 22 | RoamPal v0.2.9 Natural Selection | 8 | 52 |
-| 23 | RoamPal v0.2.8 Bug Fixes | 4 | 30 |
-| 24 | DictaLM Response Integrity | 3 | 14 |
-| 25 | DataGov Knowledge Pre-Ingestion | 12 | 67 |
-| **TOTAL** | | **87** | **494** |
+| Phase | Description | Tasks | Subtasks | Status |
+|-------|-------------|-------|----------|--------|
+| K | **Kimi Enterprise Requirements** | 9 | 53 | **NEW - Cross-cutting** |
+| 1 | Consolidate Memory Collections | 4 | 34 | Pending |
+| 2 | Tool Result Memory Ingestion (+16) | 3 | 20 | Pending |
+| 3 | Document Hash Deduplication + Tool Gating | 3 | 17 | Pending |
+| 4 | Fix UI/Backend Memory Sync | 3 | 15 | Pending |
+| 5 | Knowledge Graph Visualization Fix (+20) | 3 | 14 | Pending |
+| 6 | Trace Panel Deduplication | 2 | 8 | Pending |
+| 7 | Memory Attribution in Responses | 3 | 12 | Pending |
+| 8 | Outcome Detection + UI Updates (+17) | 3 | 17 | Pending |
+| 9 | Memory Prefetch Optimization | 3 | 17 | Pending |
+| 10 | Working Memory Lifecycle | 3 | 14 | Pending |
+| 11 | History Tier Management | 3 | 12 | Pending |
+| 12 | Wilson Score Time Decay | 3 | 12 | Pending |
+| 13 | ~~Memory-First Decision Logic~~ | - | - | **CONSOLIDATED → Phase 3** |
+| 14 | Embedding Circuit Breaker Improvements | 3 | 17 | Pending |
+| 15 | Search Service RRF Fusion Enhancement | 3 | 18 | Pending |
+| 16 | ~~Qdrant Adapter Improvements~~ | - | - | **CONSOLIDATED → Phase 2** |
+| 17 | ~~MongoDB Store Improvements~~ | - | - | **CONSOLIDATED → Phase 8** |
+| 18 | Prompt Template System | 3 | 18 | Pending |
+| 19 | Action Outcomes Tracking | 3 | 14 | Pending |
+| 20 | ~~Known Solutions Cache~~ | - | - | **CONSOLIDATED → Phase 5** |
+| 21 | Memory System Observability | 4 | 22 | Pending |
+| 22 | RoamPal v0.2.9 Natural Selection | 8 | 52 | **Priority 2** |
+| 23 | RoamPal v0.2.8 Bug Fixes | 4 | 30 | **Priority 1 (FIRST)** |
+| 24 | DictaLM Response Integrity | 3 | 14 | Pending |
+| 25 | DataGov Knowledge Pre-Ingestion | 12 | 67 | Pending (Tier 7) |
+| **TOTAL (Canonical)** | | **82** | **480** | |
+
+### Kimi Requirements Summary
+
+| Kimi Task | Related Phase | Subtasks | Description |
+|-----------|---------------|----------|-------------|
+| K.1 | Phase 3 | 12 | Enforceable Tool Gating Decision Function |
+| K.2 | Phase 2, 25 | 8 | Async Ingestion Protocol |
+| K.3 | Phase 23 | 8 | Authoritative Outcome Semantics |
+| K.4 | Pre-work | 6 | Performance Baselines |
+| K.5 | Phase 24 | 7 | Raw Stream Debugging Protocol |
+| K.6 | Phase 24 | 6 | Phase 24 Format Alignment (JSON not XML) |
+| K.7 | Phase 25 | 8 | DataGov Controls |
+| K.8 | Documentation | 4 | Multi-Instance Readiness |
+| K.9 | All | 5 | Security Hardening |
+
+### Phase Consolidation Summary
+
+| Canonical Phase | Merged From | Effective Tasks |
+|-----------------|-------------|-----------------|
+| Phase 2 | Phase 2 + Phase 16 | Tool Ingestion + Qdrant Improvements |
+| Phase 3 | Phase 3 + Phase 13 | Document Dedup + Memory-First Gating |
+| Phase 5 | Phase 5 + Phase 20 | KG Visualization + Known Solutions |
+| Phase 8 | Phase 8 + Phase 17 | Outcome Detection + MongoDB Improvements + UI Updates |
 
 ---
 
@@ -1080,7 +1298,53 @@
 
 ---
 
+## Risk Assessment Summary
+
+| Risk | Impact | Likelihood | Mitigation |
+|------|--------|------------|------------|
+| Corrupt stats → bad learning | **High** | Medium | Phase 23 FIRST |
+| Tool gating blocks needed tools | Medium | Medium | Explicit override detection |
+| Tool ingestion bloats storage | **High** | **High** | Dedup by hash; async embedding |
+| DataGov slows startup | **High** | Medium | Background/resumable; feature flag |
+
+---
+
+## Definition of Ready (Per Phase)
+
+- [ ] Phase dependencies are complete
+- [ ] Test fixtures defined
+- [ ] Success criteria measurable
+- [ ] Orchestration integration points identified
+
+## Definition of Done (Per Phase)
+
+- [ ] Success criteria met with evidence
+- [ ] Unit tests passing (>80% coverage for new code)
+- [ ] Integration tests for data-path changes
+- [ ] Hebrew support verified
+- [ ] Orchestration functions wired (not just imported)
+- [ ] **Async ingestion pattern followed** (no sync embedding on user path) - KIMI
+- [ ] **Tool gating enforced at runtime** (not just prompt guidance) - KIMI
+- [ ] **Performance baselines compared** (no P95 regression >10%) - KIMI
+
+---
+
+## Pre-Implementation Checklist (KIMI REQUIREMENT)
+
+Before starting ANY phase implementation:
+
+- [ ] **K.4 Complete:** Performance baselines captured and documented
+- [ ] **Phase 23 Complete:** Safeguards in place (if implementing Phase 22+)
+- [ ] **Test fixtures defined:** Mock data, expected outcomes documented
+- [ ] **Security review scheduled:** For any phase adding endpoints or storage
+
+---
+
+*Document Version: 2.1 (GPT-5.2 + Kimi Enterprise Requirements)*
 *Updated: January 14, 2026*
 *Orchestration Integration Discovery: 18 functions need wiring*
+*Phase Consolidation: 4 duplicate pairs merged*
+*Kimi Enterprise Requirements: 9 task groups, 53 subtasks*
+*Canonical Phases: 21 (after consolidation) + Kimi cross-cutting*
 *DataGov Pre-Ingestion: 1,190 schemas, 22 domains, ~9,500 terms*
-*See `codespace_gaps_enhanced.md` Appendix A for full audit*
+*See `codespace_gaps_enhanced.md` v3.6 for full details*
