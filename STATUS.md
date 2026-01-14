@@ -1,7 +1,44 @@
-<!-- Updated: v0.2.21 PHASE 1 COLLECTION CONSOLIDATION - January 14, 2026 -->
+<!-- Updated: v0.2.22 PHASE 4 DOCUMENT DEDUPLICATION - January 14, 2026 -->
 # Project Status
 
-**Last Updated**: January 14, 2026 (🚀 v0.2.21 + Phase 1 Collection Consolidation)
+**Last Updated**: January 14, 2026 (🚀 v0.2.22 + Phase 4 Document Deduplication)
+
+---
+
+## 🔒 v0.2.22 PHASE 4: DOCUMENT DEDUPLICATION FOR TOOL CALLS ✅ COMPLETE
+
+**Branch**: genspark_ai_developer
+**Priority**: TIER 2 - CORE DATA INTEGRITY (Order 4)
+
+### Overview
+
+Phase 4 prevents storage bloat and search degradation by implementing SHA-256 hash-based deduplication for documents processed via tool calls (docling). When the same document is processed multiple times, the system now recognizes it and skips duplicate storage.
+
+### Implementation in `toolInvocation.ts`
+
+| Step | Status | Description |
+|------|--------|-------------|
+| 4.1.1 | ✅ | Calculate SHA-256 content hash before storage |
+| 4.1.2 | ✅ | Check document existence via `MemoryMongoStore.documentExists()` |
+| 4.1.3 | ✅ | Skip storage if duplicate detected (fail-open on check error) |
+| 4.1.4 | ✅ | Use hash-based documentId (`docling:${shortHash}`) |
+| 4.1.5 | ✅ | Persist `document_hash` in metadata for future queries |
+
+### Technical Details
+
+- **File**: `src/lib/server/textGeneration/mcp/toolInvocation.ts`
+- **Function**: `bridgeDoclingToMemory()`
+- **Hash**: SHA-256 on `output.trim()` for consistent identity
+- **Short Hash**: First 16 characters for documentId and logging
+- **Fail-Open**: If existence check fails, proceeds with storage (logs warning)
+- **Storage Path**: Hash flows through `StoreServiceImpl` → `source.book.document_hash`
+
+### Benefits
+
+- Prevents Qdrant growth from duplicate vectors
+- Improves retrieval quality by avoiding redundant data
+- Faster responses when document already processed
+- Cross-chat document recognition
 
 ---
 

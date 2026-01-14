@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomUUID, createHash } from "crypto";
 import { logger } from "../../logger";
 import { existsSync } from "fs";
 import { readdir } from "fs/promises";
@@ -88,6 +88,10 @@ async function resolveDoclingFilePath(
  * Bridge docling tool output to the memory system
  * This ensures documents processed via tool calls are stored in memory
  * for visibility in the Memory Panel and future retrieval
+ * 
+ * Phase 4: Now uses SHA-256 hash for document deduplication
+ * - Prevents duplicate storage when same document is processed multiple times
+ * - Uses hash-based documentId for consistent identification
  */
 async function bridgeDoclingToMemory(
 	conversationId: string,
@@ -101,18 +105,52 @@ async function bridgeDoclingToMemory(
 	}
 
 	try {
-		logger.info(
-			{ conversationId, toolName, outputLength: output.length },
-			"[mcp→memory] Bridging docling output to memory system"
-		);
-
 		const facade = UnifiedMemoryFacade.getInstance();
 		if (!facade.isInitialized()) {
 			logger.warn("[mcp→memory] Memory system not initialized, skipping bridge");
 			return;
 		}
 
-		const documentId = `docling:${conversationId}:${Date.now()}`;
+		// Phase 4.1.1: Calculate content hash for deduplication
+		const contentHash = createHash("sha256").update(output.trim()).digest("hex");
+		const shortHash = contentHash.slice(0, 16);
+
+		logger.info(
+			{ conversationId, toolName, outputLength: output.length, contentHash: shortHash },
+			"[mcp→memory] Bridging docling output to memory system"
+		);
+
+		// Phase 4.1.2: Check if document already exists via hash lookup
+		// Use MemoryMongoStore directly for document existence check
+		try {
+			const { Database } = await import("$lib/server/database");
+			const { MemoryMongoStore } = await import("$lib/server/memory/stores/MemoryMongoStore");
+			
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const mongoStore = new MemoryMongoStore({ client, dbName: "chat-ui" });
+			await mongoStore.initialize();
+
+			const exists = await mongoStore.documentExists(ADMIN_USER_ID, contentHash);
+			
+			if (exists) {
+				// Phase 4.1.3: Skip storage if duplicate
+				logger.info(
+					{ contentHash: shortHash, fileName, conversationId },
+					"[mcp→memory] Document already in memory, skipping duplicate storage"
+				);
+				return;
+			}
+		} catch (checkErr) {
+			// If existence check fails, proceed with storage (fail-open)
+			logger.warn(
+				{ err: checkErr, contentHash: shortHash },
+				"[mcp→memory] Document existence check failed, proceeding with storage"
+			);
+		}
+
+		// Phase 4.1.4: Use hash-based documentId instead of timestamp
+		const documentId = `docling:${shortHash}`;
 
 		// Chunk with overlap (same as books endpoint)
 		const chunkSize = 1000;
@@ -145,6 +183,8 @@ async function bridgeDoclingToMemory(
 					source: "docling_tool",
 					conversation_id: conversationId,
 					tool_name: toolName,
+					// Phase 4.1.5: Persist document_hash for deduplication queries
+					document_hash: contentHash,
 				},
 			});
 			logger.debug(

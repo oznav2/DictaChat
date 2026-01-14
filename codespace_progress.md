@@ -52,15 +52,15 @@ The biggest remaining gap is **wiring + enforceability**, not missing functions:
 
 ```
 TIER 1 - SAFEGUARDS (FIRST):
-  1. Phase 23 (v0.2.8 Bug Fixes) ← Prevents corrupt stats
-  2. Phase 22 (v0.2.9 Natural Selection)
+  1. Phase 23 (v0.2.8 Bug Fixes) ← Prevents corrupt stats ✅ COMPLETE
+  2. Phase 22 (v0.2.9 Natural Selection) ✅ COMPLETE
 
 TIER 2 - CORE DATA INTEGRITY:
-  3. Phase 1 (Collection Consolidation)
-  4. Phase 4 (Document Deduplication)
+  3. Phase 1 (Collection Consolidation) ✅ COMPLETE
+  4. Phase 4 (Document Deduplication) ✅ COMPLETE (2026-01-14)
 
 TIER 3 - MEMORY-FIRST INTELLIGENCE:
-  5. Phase 3 (+13) (Tool Gating)
+  5. Phase 3 (+13) (Tool Gating) ← NEXT
   6. Phase 2 (+16) (Tool Ingestion)
   7. Phase 5 (0-Results Fix)
 
@@ -321,9 +321,40 @@ TIER 8 - POLISH:
 
 ---
 
-## Phase 3: Document Hash Deduplication
+## Phase 4: Document Deduplication for Tool Calls ✅ COMPLETED (per codespace_priorities.md TIER 2)
 
-### Task 3.1: Implement Hash-Based Recognition
+> **Reference**: `codespace_gaps_enhanced.md` Phase 4, `codespace_priorities.md` TIER 2 Order 4
+
+### Task 4.1: Hash-Based Deduplication in bridgeDoclingToMemory ✅
+- **File**: `src/lib/server/textGeneration/mcp/toolInvocation.ts`
+- **Subtasks**:
+  - [x] 4.1.1: Calculate SHA-256 content hash before storage
+  - [x] 4.1.2: Check document existence via `MemoryMongoStore.documentExists()`
+  - [x] 4.1.3: Skip storage if duplicate document detected (fail-open on check error)
+  - [x] 4.1.4: Use hash-based documentId (`docling:${shortHash}`)
+  - [x] 4.1.5: Persist `document_hash` in metadata for future queries
+
+**Implementation Notes (2026-01-14)**:
+- SHA-256 hash calculated on `output.trim()` for consistent identity
+- Short hash (16 chars) used for documentId and logging
+- `documentExists()` checks `source.book.document_hash` in MongoDB
+- Fail-open: If existence check fails, proceeds with storage (logs warning)
+- Hash stored in metadata flows through `StoreServiceImpl` to `source.book.document_hash`
+- Prevents Qdrant growth and retrieval quality degradation from duplicate vectors
+
+**Success Criteria Met**:
+- ✅ Docling bridge uses SHA-256 hash-based document identity
+- ✅ If document exists, skips re-storage with "already processed" log
+- ✅ `documentExists()` is called before ingestion
+- ✅ `document_hash` persisted for later queries
+
+---
+
+## Phase 3 (progress.md): Document Hash Deduplication for Document Uploads
+
+> **Note**: This extends Phase 4 to cover document upload flow (distinct from tool call dedup above)
+
+### Task 3.1: Implement Hash-Based Recognition (Document Upload Path)
 - **File**: `src/lib/server/documents/UnifiedDocumentIngestionService.ts`
 - **Subtasks**:
   - [ ] 3.1.1: Add SHA-256 hash calculation for uploaded files
@@ -344,17 +375,18 @@ TIER 8 - POLISH:
   - [ ] 3.2.5: Add UI feedback for "Document already processed"
   - [ ] 3.2.6: Write integration tests
 
-### Task 3.3: Add Recognition Endpoint
+### Task 3.3: Recognition Endpoint ✅ EXISTS
 - **File**: `src/routes/api/memory/books/recognize/+server.ts`
+- **Status**: Already implemented (uses `DocumentRecognitionService`)
 - **Subtasks**:
-  - [ ] 3.3.1: Create POST endpoint accepting file hash
-  - [ ] 3.3.2: Return existing document metadata if found
-  - [ ] 3.3.3: Include chunk count and original filename
+  - [x] 3.3.1: POST endpoint accepting file hash
+  - [x] 3.3.2: Return existing document metadata if found
+  - [x] 3.3.3: Include chunk count and original filename
   - [ ] 3.3.4: Add rate limiting
 
 ---
 
-## Phase 4: Fix UI/Backend Memory Sync
+## Phase X: Fix UI/Backend Memory Sync (Renumbered from original Phase 4)
 
 ### Task 4.1: Fix Memory Search Response Format
 - **File**: `src/routes/api/memory/search/+server.ts`
