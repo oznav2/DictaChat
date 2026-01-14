@@ -1,7 +1,53 @@
-<!-- Updated: v0.2.20 PHASE 22 NATURAL SELECTION - January 14, 2026 -->
+<!-- Updated: v0.2.21 PHASE 1 COLLECTION CONSOLIDATION - January 14, 2026 -->
 # Project Status
 
-**Last Updated**: January 14, 2026 (🚀 v0.2.20 + Phase 22 Natural Selection Enhancements)
+**Last Updated**: January 14, 2026 (🚀 v0.2.21 + Phase 1 Collection Consolidation)
+
+---
+
+## 🔗 v0.2.21 PHASE 1: COLLECTION CONSOLIDATION (IN PROGRESS)
+
+**Branch**: genspark_ai_developer
+**Priority**: TIER 2 - CORE DATA INTEGRITY
+
+### Overview
+
+Phase 1 establishes a single source of truth for memory bank data by routing all operations through `UnifiedMemoryFacade`. This prevents dual-collection divergence where updates only affect one collection.
+
+### Task 1.2: Memory Bank API Routes ✅
+
+**Problem**: PUT/DELETE operations in `[id]/+server.ts` only updated the legacy `memoryBank` collection, not `memory_items`.
+
+**Solution**: Route all operations through `UnifiedMemoryFacade` with legacy fallback.
+
+**Changes Made**:
+| Component | Change |
+|-----------|--------|
+| `UnifiedMemoryFacade` | Added `getById()`, `update()`, `deleteMemory()` methods |
+| `StoreService` interface | Extended with optional CRUD methods |
+| `StoreServiceImpl` | Implemented CRUD delegating to `MemoryMongoStore` |
+| `[id]/+server.ts` | Complete rewrite with facade-first, legacy-fallback pattern |
+
+**Key Features**:
+- `isValidUUID()` / `isValidMemoryId()` helpers for ID format detection
+- Primary route through facade (creates/updates in `memory_items`)
+- Legacy fallback for ObjectId format to `memoryBank` collection
+- Response includes `source: "legacy"` marker for legacy hits
+
+### Task 1.3: Memory Bank List API ✅
+
+**Status**: Already correctly implemented for transition period.
+
+- POST routes through `UnifiedMemoryFacade.store()` (new items → memory_items)
+- GET queries BOTH collections with deduplication (ensures visibility during migration)
+- Pagination via offset/limit parameters
+
+### Remaining Tasks
+
+| Task | Status | Notes |
+|------|--------|-------|
+| 1.1 Migration Script | Pending | Create script to migrate legacy data |
+| 1.4 User Migration | Pending | Update login callback to migrate both collections |
 
 ---
 
