@@ -1,11 +1,11 @@
-<!-- Updated: v0.2.27 TIERS 4-6 COMPLETE - January 14, 2026 -->
+<!-- Updated: v0.2.28 TIER 7 + TIER 8 PARTIAL - January 14, 2026 -->
 # Project Status
 
-**Last Updated**: January 14, 2026 (🎉 v0.2.27 - TIERS 1-6 ALL COMPLETE!)
+**Last Updated**: January 14, 2026 (🎉 v0.2.28 - TIER 7 DataGov + TIER 8 KG/Trace COMPLETE!)
 
 ---
 
-## 🎉 MAJOR MILESTONE: TIERS 1-6 COMPLETE (January 14, 2026)
+## 🎉 MAJOR MILESTONE: TIERS 1-8 SUBSTANTIAL PROGRESS (January 14, 2026)
 
 All critical phases from the Memory System Implementation Plan are now verified complete:
 
@@ -17,8 +17,95 @@ All critical phases from the Memory System Implementation Plan are now verified 
 | 4 | LEARNING | 7, 8, 12 | ✅ COMPLETE |
 | 5 | SEARCH QUALITY | 15, 19 | ✅ COMPLETE |
 | 6 | PLATFORM HARDENING | 24, 14 | ✅ COMPLETE |
-| 7 | KNOWLEDGE EXPANSION | 25 | ⏳ Pending |
-| 8 | POLISH | 6, 21, 9-11, 18 | ⏳ Pending |
+| 7 | KNOWLEDGE EXPANSION | 25 | ✅ CORE COMPLETE |
+| 8 | POLISH | 6, 21, 9-11, 18 | 🔄 IN PROGRESS |
+
+### Session Commits (January 14, 2026 - Evening)
+
+| Commit | Phase | Description |
+|--------|-------|-------------|
+| `6673a68` | 25.7 | Integrate DataGov ingestion with startup |
+| `255f858` | 25.9 | Wire DataGov intent detection to tool filter |
+| `e2a0747` | 25.11 | Update memory search for DataGov tiers |
+| `4b9b237` | 6 | Fix KG 3D node label rendering (Hebrew font) |
+| `cd9c68b` | 6 | Add trace event deduplication |
+
+---
+
+## 📊 v0.2.28 PHASE 25: DATAGOV KNOWLEDGE PRE-INGESTION ✅ CORE COMPLETE
+
+**Branch**: genspark_ai_developer
+**Priority**: TIER 7 - KNOWLEDGE EXPANSION
+
+### Overview
+
+Phase 25 pre-loads Israeli government data knowledge (1,190+ schemas, 22 semantic domains, ~9,500 Hebrew↔English terms) at application startup so the assistant "knows" what DataGov datasets exist before being asked.
+
+### Completed Tasks
+
+| Task | Status | Description |
+|------|--------|-------------|
+| 25.1-25.6 | ✅ | DataGov ingestion service, types, category/schema/expansion ingestion, KG structure |
+| 25.7 | ✅ | Application startup integration (hooks.server.ts) |
+| 25.9 | ✅ | Hebrew intent detection (detectDataGovIntent in toolFilter.ts) |
+| 25.11 | ✅ | Memory search tier support (MEMORY_TIER_GROUPS) |
+| 25.8, 25.10, 25.12 | ⏸️ | Deferred (UI filter, env docs, export script) |
+
+### Technical Implementation
+
+**New Types Added:**
+- `MemoryTier` extended: `"datagov_schema"` | `"datagov_expansion"`
+- `MEMORY_TIER_GROUPS` constant: CORE, DATAGOV, ALL_SEARCHABLE, LEARNABLE, CLEANABLE
+
+**New Environment Variables:**
+- `DATAGOV_PRELOAD_ENABLED=true` - Enable pre-ingestion (default: false)
+- `DATAGOV_PRELOAD_BACKGROUND=true` - Non-blocking startup (default: true)
+
+**Key Files:**
+- `DataGovIngestionService.ts` - Singleton ingestion service
+- `DataGovTypes.ts` - Types, patterns, category mappings
+- `toolFilter.ts` - `detectDataGovIntent()` function
+- `PrefetchServiceImpl.ts` - `includeDataGov` param support
+
+### Risk Mitigations
+
+- ✅ Feature flag OFF by default (DATAGOV_PRELOAD_ENABLED)
+- ✅ Background ingestion doesn't block startup
+- ✅ Checkpoint recovery for crash-safe resumption
+- ✅ DataGov tiers excluded from CLEANABLE/LEARNABLE (no TTL/scoring interference)
+
+---
+
+## 🎨 v0.2.28 PHASE 6: KG VISUALIZATION + TRACE DEDUPLICATION ✅ COMPLETE
+
+**Branch**: genspark_ai_developer
+**Priority**: TIER 8 - POLISH
+
+### Phase 6.1: KG 3D Node Label Fix ✅
+
+**Problem**: Hebrew text not rendering in KnowledgeGraph3D component
+
+**Solution** (commit `4b9b237`):
+- Added Hebrew font support: `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Hebrew', 'Heebo', sans-serif`
+- Increased sprite scale: 24x6 → 32x8 for better visibility
+- Defensive fallback: `node.name?.trim() || node.id || "Unknown"`
+- Increased label truncation: 12 → 15 chars
+
+### Phase 6.2: Trace Event Deduplication ✅
+
+**Problem**: Duplicate trace events flooding UI
+
+**Solution** (commit `cd9c68b`):
+- Added sliding window deduplication (2 second window)
+- `getEventKey()` generates unique keys per event type/payload
+- `isDuplicateEvent()` checks and filters duplicates
+- `handleMessageTraceUpdate()` skips duplicates before processing
+- `MAX_DEDUP_ENTRIES=100` prevents memory leak
+
+**Risk Mitigations:**
+- ✅ Sliding window prevents duplicate UI glitches
+- ✅ Auto-cleanup prevents unbounded memory growth
+- ✅ Event keys include enough context for accurate dedup
 
 ### Today's Completed Phases
 
