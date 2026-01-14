@@ -390,13 +390,15 @@
 					ctx.roundRect(10, 30, canvas.width - 20, 70, 12);
 					ctx.fill();
 
-					// Label text
-					ctx.font = "bold 36px Arial, sans-serif";
+					// Label text - Use system fonts with Hebrew support (Phase 6.1)
+					ctx.font = "bold 36px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Hebrew', 'Heebo', sans-serif";
 					ctx.fillStyle = "#ffffff";
 					ctx.textAlign = "center";
 					ctx.textBaseline = "middle";
 
-					const label = node.name.length > 12 ? node.name.slice(0, 12) + "..." : node.name;
+					// Phase 6.3: Defensive fallback for empty/missing node names
+					const nodeName = node.name?.trim() || node.id || "Unknown";
+					const label = nodeName.length > 15 ? nodeName.slice(0, 15) + "…" : nodeName;
 					ctx.fillText(label, canvas.width / 2, canvas.height / 2);
 
 					// Success rate indicator
@@ -415,7 +417,8 @@
 						depthTest: false,
 					});
 					const sprite = new THREE.Sprite(spriteMaterial);
-					sprite.scale.set(24, 6, 1);
+					// Phase 6.2: Increased sprite scale for better visibility
+					sprite.scale.set(32, 8, 1);
 					sprite.position.set(0, nodeRadius + 8, 0);
 					group.add(sprite);
 				}
