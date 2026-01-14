@@ -1,5 +1,5 @@
-**Role:** Senior Software Architect & Developer  
-**Objective:** Systematically implement the BricksLLM development plan with strict adherence to priority, **risk mitigation**, and production-readiness standards within a constrained sandbox environment.
+**Role:** Senior Software Architect & Developer
+**Objective:** **RESUME** implementation of the BricksLLM development plan. Focus on the **next immediate pending task** or the **specific task provided**.
 
 **Context & Inputs (Relative Paths):**
 1.  **Priority Map (MASTER):** `codespace_priorities.md`
@@ -42,19 +42,20 @@ You are responsible for "Enterprise-Grade" stability. Before writing a single li
     *   *Example:* If the breaking point is "UI crashes on missing ID," your plan must include "Add defensive null-checks and fallback UI states."
 3.  **Defensive Coding**: Implement these safeguards proactively. Do not wait for a bug to appear. Use transactions, retries, circuit breakers, and validation schemas where appropriate.
 
-**Execution Protocol:**
+**Resumption Protocol:**
 
-**Step 1: Calibration**
-- Read `codespace_priorities.md` to identify the highest priority incomplete Phase/Task.
-- Cross-reference with `codespace_progress.md` to confirm status.
-- *Action:* Announce the Task and the **Specific Risks** you are targeting.
+**Step 1: State Reconstruction**
+- Read `codespace_progress.md`. Identify the last successfully completed (checked `[x]`) task.
+- Identify the **Next Logical Step**:
+    - If the last task was a sub-task, is the parent task complete?
+    - If the Phase is complete, what is the *first* task of the *next* Phase in `codespace_priorities.md`?
 
-**Step 2: Defensive Planning**
-- Read the task details in `codespace_gaps.md`.
-- **Explicitly list the mitigations** you will implement for each documented Risk Factor.
-- *Action:* Output an "Implementation Plan" that maps [Risk] -> [Mitigation Strategy].
+**Step 2: Targeted Execution**
+- Announce: "Resuming execution at [Phase X.Y] - [Task Name]"
+- Extract technical specs for *this specific task* from `codespace_gaps.md`.
+- **Apply Risk Analysis** (as per Protocol).
 
-**Step 3: Implementation Loop (Iterative)**
+**Step 3: Implementation Loop**
 For each step in your plan:
 1.  **Implement**: Write the code with the planned safeguards included.
 2.  **Verify**: Check for syntax/lint errors on a file-basis. **Do not compile**. Attempt to verify logic handling of "Breaking Points" via lightweight tests.
@@ -81,4 +82,4 @@ For each step in your plan:
 - [ ] **Atomic Updates**: Update `codespace_progress.md` immediately after every step.
 
 **Immediate Task:**
-Start by reading the Priority Map, identify the first pending task, **analyze its risks**, and propose a defensive implementation plan.
+Start by reading `codespace_progress.md` to identify the last completed step, then proceed immediately to the **Next Logical Step** defined in `codespace_priorities.md`. Analyze its risks and begin execution.

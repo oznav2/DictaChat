@@ -321,6 +321,51 @@ The ~1200-line `runMcpFlow.ts` is the "brain" managing "Reasoning First" flow:
 
 ---
 
+## Smart Orchestration Methods (CRITICAL)
+
+> **WARNING:** The codebase contains 30+ smart methods for intelligent tool orchestration. When implementing memory or tool features, you MUST integrate with these existing capabilities - do NOT create parallel implementations.
+
+### Orchestration Methods Inventory
+
+| Layer | File | Method/Feature | Purpose |
+|-------|------|----------------|---------|
+| **Selection** | `toolFilter.ts` | `detectHebrewIntent()` | Hebrew intent detection (3,972 terms) |
+| **Selection** | `toolFilter.ts` | `TOOL_PRIORITIES` | Best-in-class tool selection scoring |
+| **Selection** | `toolFilter.ts` | `TOOL_CATEGORIES` | Category-based tool filtering |
+| **Preparation** | `toolParameterRegistry.ts` | Parameter Normalization | Auto-fix model mistakes |
+| **Execution** | `toolInvocation.ts` | `getFallbackChain()` | Cascade fallback on failure |
+| **Execution** | `toolIntelligenceRegistry.ts` | Smart Timeouts | 5min research, 1min quick |
+| **Response** | `toolInvocation.ts` | `toGracefulError()` | Hebrew-friendly error messages |
+| **Response** | `toolIntelligenceRegistry.ts` | Capability Awareness | Model can describe tool capabilities |
+| **Integration** | `memoryIntegration.ts` | `shouldAllowTool()` | Memory confidence gates tool calls |
+| **Learning** | `memoryIntegration.ts` | `recordResponseOutcome()` | Tool outcomes feed Wilson scores |
+
+### Existing But UNUSED Functions (Must Wire)
+
+These functions are **implemented but never called** - they must be wired in:
+
+| Function | File | Status | Must Wire In |
+|----------|------|--------|--------------|
+| `shouldAllowTool()` | memoryIntegration.ts:194 | **IMPORTED but NOT CALLED** | runMcpFlow.ts |
+| `getContextualGuidance()` | memoryIntegration.ts:350 | **DEFINED but NOT CALLED** | runMcpFlow.ts prompt |
+| `getColdStartContextForConversation()` | memoryIntegration.ts:320 | **DEFINED but NOT CALLED** | First message |
+| `getAttributionInstruction()` | memoryIntegration.ts:450 | **IMPORTED but NOT INJECTED** | System prompt |
+| `processResponseWithAttribution()` | memoryIntegration.ts:480 | **IMPORTED but NOT CALLED** | Response parsing |
+| `getToolGuidance()` | memoryIntegration.ts:400 | **DEFINED but NOT CALLED** | Tool effectiveness stats |
+| `extractExplicitToolRequest()` | memoryIntegration.ts:280 | **DEFINED but NOT CALLED** | Detects "search for", "חפש" |
+
+### Integration Requirements
+
+When implementing memory or tool features:
+1. **USE** `detectHebrewIntent()` for Hebrew query routing
+2. **USE** `getToolIntelligence()` for tool metadata
+3. **USE** `toGracefulError()` for Hebrew error messages
+4. **CALL** `shouldAllowTool()` before tool execution (not just import)
+5. **INJECT** `getContextualGuidance()` output into prompts
+6. **WIRE** outcome recording to feed Wilson scores
+
+---
+
 ## Memory System Architecture
 
 **Dual-collection pattern** - Memory bank uses TWO collections:
@@ -402,6 +447,95 @@ describe("ServiceName", () => {
 - Perplexity, Tavily Search, YouTube Summarizer, DataGov
 
 **Tool Filtering**: `MCP_MAX_TOOLS=4` limits tools per turn for quantized models.
+
+---
+
+## DataGov Enterprise Intelligence (Israeli Government Data)
+
+The DataGov system provides comprehensive access to Israeli government data with 30+ smart methods for intelligent querying.
+
+### DataGov Knowledge Assets
+
+| File | Content | Records |
+|------|---------|---------|
+| `/datagov/schemas/_index.json` | All resources with category, format, record counts | 1,960 resources |
+| `/datagov/schemas/_category_index.json` | Categories → dataset_ids mapping | 21 categories |
+| `/datagov/schemas/_field_index.json` | Field availability (has_phone, has_address) | All resources |
+| `/datagov/enterprise_expansions.py` | Bidirectional Hebrew↔English terms | 22 domains, ~9,500 terms |
+| `/datagov/schemas/{category}/*.json` | Individual schema files | 1,190 files |
+
+### DataGov Categories (21 Total)
+
+| Category | Hebrew Name | Datasets |
+|----------|-------------|----------|
+| transportation | תחבורה | ~179 |
+| health | בריאות | ~54 |
+| finance | כספים | ~60 |
+| justice | משפט | ~73 |
+| education | חינוך | ~24 |
+| environment | סביבה | ~85 |
+| geography | גיאוגרפיה | ~116 |
+| water | מים | ~48 |
+| welfare | רווחה | ~41 |
+| culture | תרבות | ~32 |
+| technology | מדע וטכנולוגיה | ~28 |
+| *...and 10 more* | | |
+
+### Semantic Expansion Domains (22)
+
+Each domain provides bidirectional Hebrew↔English term mapping:
+
+```python
+# Example from enterprise_expansions.py
+TRANSPORTATION_EXPANSIONS = {
+    "vehicle": ["רכב", "כלי רכב", "רכבים", "מכונית"],
+    "רכב": ["vehicle", "car", "automobile"],
+    "bus": ["אוטובוס", "תחבורה ציבורית", "קו"],
+    # ~200+ terms per domain
+}
+```
+
+**Domains:** TRANSPORTATION, HEALTH, EDUCATION, FINANCE, JUSTICE, ENVIRONMENT, GEOGRAPHY, WATER, WELFARE, CULTURE, TECHNOLOGY, AGRICULTURE, IMMIGRATION, HOUSING, COMMUNICATIONS, TOURISM, RELIGION, MUNICIPAL, ECONOMY, DEMOGRAPHICS, BANKING, STATISTICS
+
+### DataGov Pre-Ingestion (Phase 25)
+
+**Goal:** All DataGov knowledge pre-loaded at application startup so the assistant "knows" what government data exists before being asked.
+
+**New Memory Tiers:**
+- `datagov_schema` - Dataset metadata (1,190 schemas)
+- `datagov_expansion` - Semantic term mappings (22 domains)
+
+**Environment Variables:**
+```bash
+DATAGOV_PRELOAD_ENABLED=true          # Enable pre-loading at startup
+DATAGOV_SCHEMAS_PATH=/datagov/schemas  # Path to schema files
+DATAGOV_KG_SAMPLE_SIZE=5              # Datasets per category in KG
+DATAGOV_BATCH_SIZE=50                 # Batch size for ingestion
+```
+
+### DataGov Intent Detection
+
+Queries matching these patterns should check memory FIRST before tool calls:
+
+```typescript
+// Hebrew patterns that indicate DataGov queries
+const DATAGOV_INTENT_PATTERNS = [
+    /מאגרי?\s*מידע\s*(ממשלתי|ציבורי)/i,    // government data
+    /נתונים\s+(ממשלתי|ציבורי)/i,           // public data
+    /אילו\s+מאגרים/i,                       // which datasets
+    /(מידע|נתונים)\s+על\s+(תחבורה|בריאות|חינוך)/i,  // data about X
+];
+```
+
+### DataGov Key Files
+
+| File | Purpose |
+|------|---------|
+| `datagov/server.py` | MCP server entry point |
+| `datagov/enterprise_expansions.py` | 22 semantic domains with ~9,500 terms |
+| `datagov/schemas/_index.json` | Master resource index |
+| `datagov/schemas/_category_index.json` | Category→datasets mapping |
+| `datagov/schemas/_field_index.json` | Field availability index |
 
 ---
 

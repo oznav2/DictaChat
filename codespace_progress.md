@@ -834,6 +834,181 @@
 
 ---
 
+## Phase 24: DictaLM Response Integrity
+
+### Task 24.1: Enable Raw Stream Logging
+- **File**: `src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+- **Subtasks**:
+  - [ ] 24.1.1: Add TRACE level logging for raw stream chunks
+  - [ ] 24.1.2: Log chunk content before parsing
+  - [ ] 24.1.3: Add correlation ID to stream logs
+  - [ ] 24.1.4: Implement log sampling for high-volume streams
+
+### Task 24.2: Harden System Prompt
+- **File**: `src/lib/server/textGeneration/utils/toolPrompt.ts`
+- **Subtasks**:
+  - [ ] 24.2.1: Add explicit `<think>` tag requirement
+  - [ ] 24.2.2: Add `</think>` closing tag requirement
+  - [ ] 24.2.3: Add "no markdown code blocks" constraint for tool_call
+  - [ ] 24.2.4: Test with various DictaLM outputs
+
+### Task 24.3: Robust Tag Recovery
+- **File**: `src/lib/server/textGeneration/utils/xmlUtils.ts`
+- **Subtasks**:
+  - [ ] 24.3.1: Implement `repairXmlStream()` function
+  - [ ] 24.3.2: Auto-close unclosed `<think>` tags
+  - [ ] 24.3.3: Strip markdown code blocks from tool calls
+  - [ ] 24.3.4: Handle nested/malformed XML gracefully
+  - [ ] 24.3.5: Write unit tests for repair logic
+
+---
+
+## Phase 25: DataGov Knowledge Pre-Ingestion (NEW)
+
+> **Strategic Goal:** Pre-load all Israeli government data knowledge (1,190 schemas, 22 semantic domains, ~9,500 terms) at application startup so the assistant "knows" what data exists before being asked.
+
+### Task 25.1: Create DataGov Ingestion Service
+- **File**: `src/lib/server/memory/datagov/DataGovIngestionService.ts`
+- **Subtasks**:
+  - [ ] 25.1.1: Create service class with dependency injection
+  - [ ] 25.1.2: Define `DataGovIngestionResult` interface
+  - [ ] 25.1.3: Implement `ingestAll(force)` main method
+  - [ ] 25.1.4: Add singleton pattern with `getInstance()`
+  - [ ] 25.1.5: Add `ingestionComplete` flag to prevent re-runs
+  - [ ] 25.1.6: Implement error aggregation in result object
+  - [ ] 25.1.7: Add progress logging with batch counts
+  - [ ] 25.1.8: Write unit tests for service initialization
+
+### Task 25.2: Define DataGov Memory Types
+- **File**: `src/lib/server/memory/types/DataGovTypes.ts`
+- **Subtasks**:
+  - [ ] 25.2.1: Define `DataGovMemoryItem` interface
+  - [ ] 25.2.2: Add `tier: "datagov_schema" | "datagov_expansion"` support
+  - [ ] 25.2.3: Define `source.type: "datagov"` structure
+  - [ ] 25.2.4: Define `schema_meta` with title_he, format, fields
+  - [ ] 25.2.5: Define `expansion_meta` with domain, terms_he, terms_en
+  - [ ] 25.2.6: Export CATEGORY_HEBREW_NAMES mapping
+  - [ ] 25.2.7: Write type validation tests
+
+### Task 25.3: Implement Category Ingestion
+- **File**: `src/lib/server/memory/datagov/DataGovIngestionService.ts`
+- **Subtasks**:
+  - [ ] 25.3.1: Implement `loadCategoryIndex()` from `_category_index.json`
+  - [ ] 25.3.2: Implement `ingestCategories()` method
+  - [ ] 25.3.3: Create `buildCategoryDescription()` bilingual content
+  - [ ] 25.3.4: Store with `tier: "datagov_schema"` and `tags: ["category"]`
+  - [ ] 25.3.5: Set `importance: 0.9` for category items
+  - [ ] 25.3.6: Increment `result.categories` counter
+  - [ ] 25.3.7: Write tests for category ingestion
+
+### Task 25.4: Implement Schema Ingestion (Batch)
+- **File**: `src/lib/server/memory/datagov/DataGovIngestionService.ts`
+- **Subtasks**:
+  - [ ] 25.4.1: Implement `loadResourceIndex()` from `_index.json`
+  - [ ] 25.4.2: Implement `ingestDatasetSchemas()` with BATCH_SIZE=50
+  - [ ] 25.4.3: Create `buildResourceDescription()` bilingual content
+  - [ ] 25.4.4: Map resource fields to `schema_meta` structure
+  - [ ] 25.4.5: Handle field availability (has_phone, has_address, has_date)
+  - [ ] 25.4.6: Store with `tier: "datagov_schema"` and category tag
+  - [ ] 25.4.7: Set `importance: 0.7` for dataset items
+  - [ ] 25.4.8: Add try-catch per item with error aggregation
+  - [ ] 25.4.9: Log progress every batch
+  - [ ] 25.4.10: Write tests for batch processing
+
+### Task 25.5: Implement Semantic Expansion Ingestion
+- **File**: `src/lib/server/memory/datagov/DataGovIngestionService.ts`
+- **Subtasks**:
+  - [ ] 25.5.1: Create JSON export from `enterprise_expansions.py`
+  - [ ] 25.5.2: Implement `loadSemanticExpansions()` loader
+  - [ ] 25.5.3: Implement `ingestSemanticExpansions()` method
+  - [ ] 25.5.4: Create `buildExpansionDescription()` content
+  - [ ] 25.5.5: Extract Hebrew terms with `extractHebrewTerms()`
+  - [ ] 25.5.6: Extract English terms with `extractEnglishTerms()`
+  - [ ] 25.5.7: Map domain to category with `domainToCategory()`
+  - [ ] 25.5.8: Store with `tier: "datagov_expansion"` and domain tag
+  - [ ] 25.5.9: Set `importance: 0.85` for expansion items
+  - [ ] 25.5.10: Write tests for 22 domains
+
+### Task 25.6: Create Knowledge Graph Structure
+- **File**: `src/lib/server/memory/datagov/DataGovIngestionService.ts`
+- **Subtasks**:
+  - [ ] 25.6.1: Implement `createKnowledgeGraphStructure()` method
+  - [ ] 25.6.2: Create "DataGov Israel" root node with metadata
+  - [ ] 25.6.3: Create 21 category nodes with Hebrew labels
+  - [ ] 25.6.4: Create HAS_CATEGORY edges (root → category)
+  - [ ] 25.6.5: Implement `groupByCategory()` for resources
+  - [ ] 25.6.6: Create sample dataset nodes (5 per category)
+  - [ ] 25.6.7: Create CONTAINS_DATASET edges (category → dataset)
+  - [ ] 25.6.8: Increment `result.kgNodes` and `result.kgEdges`
+  - [ ] 25.6.9: Write tests for KG structure creation
+
+### Task 25.7: Integrate with Application Startup
+- **File**: `src/lib/server/memory/index.ts`
+- **Subtasks**:
+  - [ ] 25.7.1: Import `DataGovIngestionService`
+  - [ ] 25.7.2: Check `DATAGOV_PRELOAD_ENABLED` env var
+  - [ ] 25.7.3: Call `datagovService.ingestAll()` in `initializeMemorySystem()`
+  - [ ] 25.7.4: Log ingestion result summary
+  - [ ] 25.7.5: Handle errors gracefully (continue without DataGov)
+  - [ ] 25.7.6: Add to ServiceFactory for DI
+  - [ ] 25.7.7: Write integration tests
+
+### Task 25.8: Add Memory Panel DataGov Filter
+- **File**: `src/lib/components/memory/MemoryPanel.svelte`
+- **Subtasks**:
+  - [ ] 25.8.1: Define `DATAGOV_CATEGORIES` array with Hebrew labels
+  - [ ] 25.8.2: Add `selectedCategories` state variable
+  - [ ] 25.8.3: Create category filter UI component
+  - [ ] 25.8.4: Implement `searchWithDataGovFilter()` function
+  - [ ] 25.8.5: Add `source.category` filter to search params
+  - [ ] 25.8.6: Display DataGov items with category badges
+  - [ ] 25.8.7: Add "DataGov" tier checkbox
+  - [ ] 25.8.8: Write tests for filter UI
+
+### Task 25.9: Wire to Hebrew Intent Detection
+- **File**: `src/lib/server/textGeneration/mcp/toolFilter.ts`
+- **Subtasks**:
+  - [ ] 25.9.1: Define `DATAGOV_INTENT_PATTERNS` regex array
+  - [ ] 25.9.2: Add Hebrew patterns: "מאגרי מידע ממשלתי", "נתונים ציבוריים"
+  - [ ] 25.9.3: Add category-specific patterns: "מידע על תחבורה"
+  - [ ] 25.9.4: Implement `detectDataGovIntent()` function
+  - [ ] 25.9.5: Return `suggestMemoryFirst: true` for DataGov queries
+  - [ ] 25.9.6: Integrate with `filterToolsForQuery()` flow
+  - [ ] 25.9.7: Log DataGov intent detection
+  - [ ] 25.9.8: Write tests for Hebrew patterns
+
+### Task 25.10: Add Environment Configuration
+- **File**: `.env` and `src/lib/server/memory/memory_config.ts`
+- **Subtasks**:
+  - [ ] 25.10.1: Add `DATAGOV_PRELOAD_ENABLED=true` env var
+  - [ ] 25.10.2: Add `DATAGOV_SCHEMAS_PATH=/datagov/schemas` env var
+  - [ ] 25.10.3: Add `DATAGOV_KG_SAMPLE_SIZE=5` env var
+  - [ ] 25.10.4: Add `DATAGOV_BATCH_SIZE=50` env var
+  - [ ] 25.10.5: Update memory_config.ts with DataGov section
+  - [ ] 25.10.6: Add to Docker Compose environment
+  - [ ] 25.10.7: Document env vars in AGENTS.md
+
+### Task 25.11: Update Memory Search for DataGov Tiers
+- **File**: `src/lib/server/memory/search/SearchService.ts`
+- **Subtasks**:
+  - [ ] 25.11.1: Add "datagov_schema" to valid tier list
+  - [ ] 25.11.2: Add "datagov_expansion" to valid tier list
+  - [ ] 25.11.3: Include DataGov tiers in default search
+  - [ ] 25.11.4: Apply category filter from search params
+  - [ ] 25.11.5: Boost DataGov results for DataGov intent queries
+  - [ ] 25.11.6: Write tests for tier filtering
+
+### Task 25.12: Create Expansions JSON Export Script
+- **File**: `datagov/export_expansions.py`
+- **Subtasks**:
+  - [ ] 25.12.1: Create Python script to export expansions to JSON
+  - [ ] 25.12.2: Combine all 22 domain dictionaries
+  - [ ] 25.12.3: Output to `enterprise_expansions.json`
+  - [ ] 25.12.4: Add to build process or run manually
+  - [ ] 25.12.5: Verify output format matches TypeScript loader
+
+---
+
 ## Implementation Summary
 
 ### Total Task Count by Phase
@@ -863,4 +1038,49 @@
 | 21 | Memory System Observability | 4 | 22 |
 | 22 | RoamPal v0.2.9 Natural Selection | 8 | 52 |
 | 23 | RoamPal v0.2.8 Bug Fixes | 4 | 30 |
-| **TOTAL** | | **72** | **413** |
+| 24 | DictaLM Response Integrity | 3 | 14 |
+| 25 | DataGov Knowledge Pre-Ingestion | 12 | 67 |
+| **TOTAL** | | **87** | **494** |
+
+---
+
+## 🔗 Orchestration Integration Tasks (NEW - January 14, 2026)
+
+> **CRITICAL DISCOVERY:** The codebase contains 30+ smart orchestration methods that the memory system is NOT using. These exist but are NEVER CALLED:
+
+### Orchestration Wiring Checklist (ADD to every Phase)
+
+| Phase | Function to Wire | File | Status |
+|-------|------------------|------|--------|
+| 2 | `getToolIntelligence()` | toolIntelligenceRegistry.ts | [ ] Pending |
+| 2 | `getToolLabel()` | toolInvocation.ts | [ ] Pending |
+| 3 | `shouldAllowTool()` | memoryIntegration.ts | [ ] **IMPORTED BUT NOT CALLED** |
+| 3 | `extractExplicitToolRequest()` | memoryIntegration.ts | [ ] Pending |
+| 3 | `detectHebrewIntent()` | hebrewIntentDetector.ts | [ ] Pending |
+| 12 | `recordToolActionsInBatch()` | memoryIntegration.ts | [ ] Pending |
+| 13 | `getContextualGuidance()` | memoryIntegration.ts | [ ] **DEFINED BUT NOT CALLED** |
+| 13 | `getToolGuidance()` | memoryIntegration.ts | [ ] **DEFINED BUT NOT CALLED** |
+| 14 | `isFirstMessage()` | memoryIntegration.ts | [ ] **DEFINED BUT NOT CALLED** |
+| 14 | `getColdStartContextForConversation()` | memoryIntegration.ts | [ ] **DEFINED BUT NOT CALLED** |
+| 15 | `getAttributionInstruction()` | memoryIntegration.ts | [ ] **IMPORTED BUT NOT INJECTED** |
+| 15 | `processResponseWithAttribution()` | memoryIntegration.ts | [ ] **IMPORTED BUT NOT CALLED** |
+| ALL | `toGracefulError()` patterns | toolInvocation.ts | [ ] Memory errors need Hebrew |
+
+### Reference: Smart Orchestration Methods Available
+
+| Layer | Feature | File | Description |
+|-------|---------|------|-------------|
+| Selection | Hebrew Intent Detection | hebrewIntentDetector.ts | 3,972 bidirectional terms |
+| Selection | Best-in-Class Selection | toolFilter.ts | `TOOL_PRIORITIES` scoring |
+| Preparation | Parameter Normalization | toolParameterRegistry.ts | Auto-fix model mistakes |
+| Execution | Cascade Fallback | toolIntelligenceRegistry.ts | Try alternatives before fail |
+| Execution | Smart Timeouts | toolIntelligenceRegistry.ts | 5min research, 1min quick |
+| Response | Graceful Hebrew Errors | toolInvocation.ts | Actionable guidance |
+| Response | Capability Awareness | toolIntelligenceRegistry.ts | Model can describe tools |
+
+---
+
+*Updated: January 14, 2026*
+*Orchestration Integration Discovery: 18 functions need wiring*
+*DataGov Pre-Ingestion: 1,190 schemas, 22 domains, ~9,500 terms*
+*See `codespace_gaps_enhanced.md` Appendix A for full audit*
