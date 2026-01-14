@@ -9,6 +9,76 @@ import type { TraceStep, RunState, StepStatus, RunSummary } from "$lib/types/Tra
 import { type MessageTraceUpdate, MessageTraceUpdateType } from "$lib/types/MessageUpdate";
 
 // ============================================
+// Event Deduplication (Phase 6)
+// ============================================
+
+/**
+ * Sliding window deduplication for trace events
+ * Prevents duplicate events from being processed within a time window
+ */
+const DEDUP_WINDOW_MS = 2000; // 2 second window
+const MAX_DEDUP_ENTRIES = 100; // Max entries to prevent memory leak
+
+interface DedupEntry {
+	timestamp: number;
+}
+
+const recentEvents = new Map<string, DedupEntry>();
+
+/**
+ * Generate a unique event key for deduplication
+ */
+function getEventKey(update: MessageTraceUpdate): string {
+	switch (update.subtype) {
+		case MessageTraceUpdateType.RunCreated:
+		case MessageTraceUpdateType.RunCompleted:
+			return `${update.subtype}:${update.runId}`;
+		case MessageTraceUpdateType.StepCreated:
+			return `${update.subtype}:${update.runId}:${update.step?.id}`;
+		case MessageTraceUpdateType.StepStatus:
+			return `${update.subtype}:${update.runId}:${update.stepId}:${update.status}`;
+		case MessageTraceUpdateType.StepDetail:
+			return `${update.subtype}:${update.runId}:${update.stepId}:${update.detail?.slice(0, 50)}`;
+		default:
+			return `unknown:${update.runId}:${Date.now()}`;
+	}
+}
+
+/**
+ * Check if event is a duplicate (within dedup window)
+ */
+function isDuplicateEvent(update: MessageTraceUpdate): boolean {
+	const key = getEventKey(update);
+	const now = Date.now();
+	
+	// Cleanup old entries
+	if (recentEvents.size > MAX_DEDUP_ENTRIES) {
+		const cutoff = now - DEDUP_WINDOW_MS;
+		for (const [k, entry] of recentEvents) {
+			if (entry.timestamp < cutoff) {
+				recentEvents.delete(k);
+			}
+		}
+	}
+	
+	const existing = recentEvents.get(key);
+	if (existing && (now - existing.timestamp) < DEDUP_WINDOW_MS) {
+		return true; // Duplicate within window
+	}
+	
+	// Record this event
+	recentEvents.set(key, { timestamp: now });
+	return false;
+}
+
+/**
+ * Clear deduplication cache (for testing)
+ */
+export function clearDedupCache(): void {
+	recentEvents.clear();
+}
+
+// ============================================
 // Main Store
 // ============================================
 
@@ -277,8 +347,14 @@ export function dispatchTraceEvent(event: {
 
 /**
  * Handle MessageTraceUpdate from SSE stream
+ * Phase 6: Added deduplication to prevent duplicate events from flooding UI
  */
 export function handleMessageTraceUpdate(update: MessageTraceUpdate): void {
+	// Phase 6: Skip duplicate events within dedup window
+	if (isDuplicateEvent(update)) {
+		return;
+	}
+	
 	switch (update.subtype) {
 		case MessageTraceUpdateType.RunCreated:
 			createRun(update.runId, "en");
