@@ -122,18 +122,18 @@ TIER 8 - POLISH:
   - [ ] K.2.7: Implement `enforcePerTierCap()` cleanup method
   - [ ] K.2.8: Write tests verifying no blocking on user path
 
-### K.3: Authoritative Outcome Semantics (Phase 23)
+### K.3: Authoritative Outcome Semantics (Phase 23) ✅ COMPLETED
 
 - **File**: `src/lib/server/memory/stores/MemoryMongoStore.ts`
 - **Subtasks**:
-  - [ ] K.3.1: Verify `worked` → +1.0 success_count, +1 uses
-  - [ ] K.3.2: Verify `partial` → +0.5 success_count, +1 uses
-  - [ ] K.3.3: Verify `unknown` → +0.25 success_count, +1 uses
-  - [ ] K.3.4: Verify `failed` → +0.0 success_count, +1 uses
-  - [ ] K.3.5: Remove any default case in outcome switch statement
-  - [ ] K.3.6: Add TypeScript exhaustiveness check (`never` type)
-  - [ ] K.3.7: Verify Wilson uses cumulative stats (not capped history)
-  - [ ] K.3.8: Write test: 50 uses + 45 worked → Wilson ~0.87
+  - [x] K.3.1: Verify `worked` → +1.0 success_count, +1 uses
+  - [x] K.3.2: Verify `partial` → +0.5 success_count, +1 uses
+  - [x] K.3.3: Verify `unknown` → +0.25 success_count, +1 uses
+  - [x] K.3.4: Verify `failed` → +0.0 success_count, +1 uses
+  - [x] K.3.5: Remove any default case in outcome switch statement
+  - [x] K.3.6: Add TypeScript exhaustiveness check (`never` type)
+  - [x] K.3.7: Verify Wilson uses cumulative stats (not capped history)
+  - [x] K.3.8: Write test: 50 uses + 45 worked → Wilson ~0.78-0.80 (lower CI bound)
 
 ### K.4: Performance Baselines (Before Any Phase)
 
@@ -971,60 +971,74 @@ TIER 8 - POLISH:
 
 ---
 
-## Phase 23: RoamPal v0.2.8 Critical Bug Fixes (Safeguards)
+## Phase 23: RoamPal v0.2.8 Critical Bug Fixes (Safeguards) ✅ COMPLETED
 
-### Task 23.1: Explicit Outcome Type Handling (v0.2.8.1 Hotfix)
+> **Completed:** January 14, 2026
+> **Risk Mitigation Verified:** All 24 unit tests passing
+> **Files Modified:** MemoryMongoStore.ts, schemas.ts, types.ts
+
+### Task 23.1: Explicit Outcome Type Handling (v0.2.8.1 Hotfix) ✅
 - **File**: `src/lib/server/memory/stores/MemoryMongoStore.ts`
 - **Subtasks**:
-  - [ ] 23.1.1: Define `ValidOutcome` type: `"worked" | "failed" | "partial" | "unknown"`
-  - [ ] 23.1.2: Create `validOutcomes` array for validation
-  - [ ] 23.1.3: Add validation check at start of `recordOutcome()`
-  - [ ] 23.1.4: Return false and log warning for invalid outcomes
-  - [ ] 23.1.5: Implement `getSuccessDelta()` with explicit switch statement
-  - [ ] 23.1.6: Implement `getScoreDelta()` with explicit switch statement
-  - [ ] 23.1.7: NO default case (TypeScript exhaustiveness checking)
-  - [ ] 23.1.8: Log processing with explicit outcome handling
-  - [ ] 23.1.9: Write test: invalid outcome returns false
-  - [ ] 23.1.10: Write test: unknown gets 0.25 success (not 0.5)
-  - [ ] 23.1.11: Write test: partial gets 0.5 success
-  - [ ] 23.1.12: Write test: switch has no default case
+  - [x] 23.1.1: Define `ValidOutcome` type: `"worked" | "failed" | "partial" | "unknown"`
+  - [x] 23.1.2: Create `VALID_OUTCOMES` array for validation
+  - [x] 23.1.3: Add validation check at start of `recordOutcome()` via `isValidOutcome()`
+  - [x] 23.1.4: Return false and log warning for invalid outcomes
+  - [x] 23.1.5: Implement `getSuccessDelta()` with explicit switch statement
+  - [x] 23.1.6: (Merged with 23.1.5) `OUTCOME_SUCCESS_VALUES` constant defined
+  - [x] 23.1.7: NO default case (TypeScript exhaustiveness checking with `never`)
+  - [x] 23.1.8: Log processing with explicit outcome handling (debug + info logs)
+  - [x] 23.1.9: Write test: invalid outcome returns false (via isValidOutcome tests)
+  - [x] 23.1.10: Write test: unknown gets 0.25 success (not 0.5)
+  - [x] 23.1.11: Write test: partial gets 0.5 success
+  - [x] 23.1.12: Write test: switch has no default case (TypeScript exhaustiveness)
 
-### Task 23.2: Wilson Score 10-Use Cap Fix
+### Task 23.2: Wilson Score 10-Use Cap Fix ✅
 - **File**: `src/lib/server/memory/stores/MemoryMongoStore.ts`
 - **Subtasks**:
-  - [ ] 23.2.1: Create `calculateWilsonFromStats()` private method
-  - [ ] 23.2.2: Use `success_count` field (NOT `outcome_history`)
-  - [ ] 23.2.3: Add backward compatibility for missing `success_count`
-  - [ ] 23.2.4: Fallback: calculate from `worked_count`, `partial_count`, `unknown_count`
-  - [ ] 23.2.5: Log warning when using fallback calculation
-  - [ ] 23.2.6: Create migration script for existing records
-  - [ ] 23.2.7: Write test: 50 uses, 45 worked → Wilson ~0.87
-  - [ ] 23.2.8: Write test: fallback calculation logs warning
-  - [ ] 23.2.9: Write test: migration backfills success_count
+  - [x] 23.2.1: Create `calculateWilsonFromStats()` function
+  - [x] 23.2.2: Use `success_count` field (NOT `outcome_history`)
+  - [x] 23.2.3: Add backward compatibility for missing `success_count`
+  - [x] 23.2.4: Fallback: calculate from `worked_count`, `partial_count`, `unknown_count`
+  - [x] 23.2.5: Log warning when using fallback calculation
+  - [ ] 23.2.6: Create migration script for existing records (DEFERRED - not critical for new records)
+  - [x] 23.2.7: Write test: 50 uses, 45 worked → Wilson ~0.78-0.80 (lower CI bound)
+  - [x] 23.2.8: Write test: fallback calculation behavior verified
+  - [ ] 23.2.9: Write test: migration backfills success_count (DEFERRED with 23.2.6)
 
-### Task 23.3: Failed Outcomes Must Increment Uses
+### Task 23.3: Failed Outcomes Must Increment Uses ✅
 - **File**: `src/lib/server/memory/stores/MemoryMongoStore.ts`
 - **Subtasks**:
-  - [ ] 23.3.1: Verify `$inc: { "stats.uses": 1 }` is outside conditionals
-  - [ ] 23.3.2: Ensure failed outcome increments uses
-  - [ ] 23.3.3: Ensure failed outcome increments `failed_count`
-  - [ ] 23.3.4: Ensure failed outcome adds 0 to `success_count`
-  - [ ] 23.3.5: Write test: failed increments uses by 1
-  - [ ] 23.3.6: Write test: failed increments failed_count by 1
-  - [ ] 23.3.7: Write test: failed adds 0 to success_count
-  - [ ] 23.3.8: Write test: 10 failures → Wilson ~0.0
+  - [x] 23.3.1: Verify `$inc: { "stats.uses": 1 }` via aggregation pipeline (always executes)
+  - [x] 23.3.2: Ensure failed outcome increments uses
+  - [x] 23.3.3: Ensure failed outcome increments `failed_count`
+  - [x] 23.3.4: Ensure failed outcome adds 0 to `success_count`
+  - [x] 23.3.5: Write test: failed increments uses by 1
+  - [x] 23.3.6: Write test: failed increments failed_count by 1
+  - [x] 23.3.7: Write test: failed adds 0 to success_count
+  - [x] 23.3.8: Write test: 10 failures → Wilson ~0.0
 
-### Task 23.4: Outcome Recording Atomicity
+### Task 23.4: Outcome Recording Atomicity ✅
 - **File**: `src/lib/server/memory/stores/MemoryMongoStore.ts`
 - **Subtasks**:
-  - [ ] 23.4.1: Review current two-step update pattern
-  - [ ] 23.4.2: Option A: Use MongoDB aggregation pipeline for atomic update
-  - [ ] 23.4.3: Option B: Add optimistic locking with expected `uses` value
-  - [ ] 23.4.4: Implement Wilson calculation within same operation
-  - [ ] 23.4.5: Handle concurrent update conflicts
-  - [ ] 23.4.6: Log atomicity decisions
-  - [ ] 23.4.7: Write test: concurrent outcomes don't corrupt Wilson
-  - [ ] 23.4.8: Write test: 10 parallel outcomes = uses=10
+  - [x] 23.4.1: Review current two-step update pattern
+  - [x] 23.4.2: Option A: Use MongoDB aggregation pipeline for atomic update ✅ CHOSEN
+  - [ ] 23.4.3: Option B: Add optimistic locking (not needed - using aggregation pipeline)
+  - [x] 23.4.4: Implement Wilson calculation within same operation
+  - [x] 23.4.5: Handle concurrent update conflicts (aggregation pipeline is atomic)
+  - [x] 23.4.6: Log atomicity decisions (debug logs added)
+  - [ ] 23.4.7: Write test: concurrent outcomes (DEFERRED - requires integration test)
+  - [ ] 23.4.8: Write test: 10 parallel outcomes = uses=10 (DEFERRED - requires integration test)
+
+### Implementation Log
+- **2026-01-14**: Phase 23 implemented
+  - Added `VALID_OUTCOMES` constant and `isValidOutcome()` function
+  - Added `OUTCOME_SUCCESS_VALUES` with authoritative semantics (worked=1.0, partial=0.5, unknown=0.25, failed=0.0)
+  - Added `getSuccessDelta()` with explicit switch and TypeScript exhaustiveness check
+  - Added `calculateWilsonFromStats()` with backward compatibility
+  - Refactored `recordOutcome()` to use MongoDB aggregation pipeline for atomic updates
+  - Added `success_count` field to stats schema (MemoryItemDocument, MemoryStats)
+  - Created comprehensive test suite: `phase23-outcome-safeguards.test.ts` (24 tests, all passing)
 
 ---
 

@@ -76,6 +76,8 @@ export interface MemoryItemDocument {
 		failed_count: number;
 		partial_count: number;
 		unknown_count: number;
+		/** Phase 23.2: Cumulative success value for Wilson calculation */
+		success_count?: number;
 		success_rate: number;
 		wilson_score: number;
 	};
