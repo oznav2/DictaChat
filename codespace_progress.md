@@ -64,13 +64,13 @@ TIER 3 - MEMORY-FIRST INTELLIGENCE:
   6. Phase 2 (+16) (Tool Ingestion) ✅ COMPLETE (2026-01-14)
   7. Phase 5 (0-Results Fix) ✅ COMPLETE (2026-01-14)
 
-TIER 4 - LEARNING:
+TIER 4 - LEARNING: ✅ COMPLETE
   8. Phase 7 (Attribution) ✅ COMPLETE (2026-01-14) - Already implemented
   9. Phase 8 (+17) (Outcome Detection + UI) ✅ COMPLETE (2026-01-14)
-  10. Phase 12 (Time Decay) ← NEXT
+  10. Phase 12 (Time Decay) ✅ COMPLETE (2026-01-14)
 
 TIER 5 - SEARCH QUALITY:
-  11. Phase 15 (RRF Fusion)
+  11. Phase 15 (RRF Fusion) ← NEXT
   12. Phase 19 (Action Outcomes)
 
 TIER 6 - PLATFORM HARDENING:
@@ -724,29 +724,41 @@ TIER 8 - POLISH:
 
 ---
 
-## Phase 12: Wilson Score Time Decay
+## Phase 12: Wilson Score Time Decay ✅ COMPLETED (2026-01-14)
 
-### Task 12.1: Implement Time Weight Calculation
+> **Status**: Pre-existing implementation verified and enhanced
+
+### Task 12.1: Implement Time Weight Calculation ✅
 - **File**: `src/lib/server/memory/services/OutcomeServiceImpl.ts`
 - **Subtasks**:
-  - [ ] 12.1.1: Create `calculateTimeWeight(lastUsed)` function
-  - [ ] 12.1.2: Implement decay formula: `1 / (1 + ageDays / 30)`
-  - [ ] 12.1.3: Handle null `lastUsed` (return 1.0)
-  - [ ] 12.1.4: Add logging for time weight
-  - [ ] 12.1.5: Write unit tests for decay curve
+  - [x] 12.1.1: Create `calculateTimeWeight(lastUsed)` function (lines 204-217)
+  - [x] 12.1.2: Implement decay formula: `1 / (1 + ageDays / 30)` (line 213)
+  - [x] 12.1.3: Handle null `lastUsed` (return 1.0) (lines 205-207)
+  - [x] 12.1.4: Add logging for time weight (via debug log in recordOutcome)
+  - [ ] 12.1.5: Write unit tests for decay curve (deferred)
 
-### Task 12.2: Apply Time Weight to Score Updates
+### Task 12.2: Apply Time Weight to Score Updates ✅
+- **File**: `src/lib/server/memory/stores/MemoryMongoStore.ts`
 - **Subtasks**:
-  - [ ] 12.2.1: Multiply score delta by time weight
-  - [ ] 12.2.2: Update `recordOutcome()` to use time weight
-  - [ ] 12.2.3: Log weighted vs unweighted delta
-  - [ ] 12.2.4: Write integration tests
+  - [x] 12.2.1: Multiply score delta by time weight (line 878: `scoreDelta = baseDelta * timeWeight`)
+  - [x] 12.2.2: Update `recordOutcome()` to use time weight (line 877: `params.timeWeight ?? 1.0`)
+  - [x] 12.2.3: Log weighted vs unweighted delta (lines 880-889 debug log)
+  - [ ] 12.2.4: Write integration tests (deferred)
 
-### Task 12.3: Add Time Decay to Promotion Criteria
+### Task 12.3: Add Time Decay to Promotion Criteria ✅
+- **File**: `src/lib/server/memory/learning/PromotionService.ts`
 - **Subtasks**:
-  - [ ] 12.3.1: Consider recency in promotion decisions
-  - [ ] 12.3.2: Prefer recently-used memories for promotion
-  - [ ] 12.3.3: Add `last_used_at` to promotion query
+  - [x] 12.3.1: Consider recency in promotion decisions via `calculateRecencyAdjustedThreshold()`
+  - [x] 12.3.2: Prefer recently-used memories for promotion (sort by `last_used_at`)
+  - [x] 12.3.3: Add `last_used_at` to promotion query (used in filter)
+
+**Implementation Notes (2026-01-14)**:
+- Task 12.1 & 12.2 were already implemented in OutcomeServiceImpl and MemoryMongoStore
+- Time weight formula: `1.0 / (1 + ageDays / 30)` - decays over a month
+- Task 12.3 added `calculateRecencyAdjustedThreshold()` to PromotionService:
+  - RECENCY_BOOST_DAYS = 7: Items used within 1 week get 10% threshold reduction (easier to promote)
+  - STALE_PENALTY_DAYS = 30: Items unused for 1 month get 10% threshold increase (harder to promote)
+  - Results sorted by last_used_at (most recent first) for deterministic ordering
 
 ---
 

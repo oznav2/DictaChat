@@ -72,6 +72,20 @@ const PROMOTION_RULES: PromotionRule[] = [
  */
 const MIN_SUCCESS_COUNT_FOR_PATTERNS = 5;
 
+/**
+ * Phase 12.3: Time decay configuration for promotion
+ * Recently used memories get priority in promotion decisions
+ * 
+ * RECENCY_BOOST_DAYS: Items used within this window get a boost
+ * RECENCY_BOOST_FACTOR: Multiplier for recent items (1.1 = 10% boost to score threshold)
+ * STALE_PENALTY_DAYS: Items not used for this long get a penalty
+ * STALE_PENALTY_FACTOR: Multiplier for stale items (0.9 = need 10% higher score to promote)
+ */
+const RECENCY_BOOST_DAYS = 7;  // Recently used (within 1 week)
+const RECENCY_BOOST_FACTOR = 0.9;  // Effectively lowers threshold by 10%
+const STALE_PENALTY_DAYS = 30;  // Not used in a month
+const STALE_PENALTY_FACTOR = 1.1;  // Effectively raises threshold by 10%
+
 const TTL_RULES: TtlRule[] = [
 	{
 		tier: "working",
@@ -232,9 +246,43 @@ export class PromotionService {
 	}
 
 	/**
+	 * Phase 12.3: Calculate recency-adjusted score threshold
+	 * 
+	 * Recently used memories get a lower threshold (easier to promote)
+	 * Stale memories get a higher threshold (harder to promote)
+	 * 
+	 * @param baseThreshold The original minScore threshold
+	 * @param lastUsedAt The last_used_at timestamp from stats
+	 * @returns Adjusted threshold
+	 */
+	private calculateRecencyAdjustedThreshold(baseThreshold: number, lastUsedAt: string | Date | null): number {
+		if (!lastUsedAt) {
+			return baseThreshold; // No last_used_at, use default
+		}
+
+		try {
+			const lastUsedDate = new Date(lastUsedAt);
+			const ageDays = (Date.now() - lastUsedDate.getTime()) / (1000 * 60 * 60 * 24);
+
+			if (ageDays <= RECENCY_BOOST_DAYS) {
+				// Recently used - lower the threshold (boost promotion)
+				return baseThreshold * RECENCY_BOOST_FACTOR;
+			} else if (ageDays >= STALE_PENALTY_DAYS) {
+				// Stale - raise the threshold (penalize promotion)
+				return baseThreshold * STALE_PENALTY_FACTOR;
+			}
+
+			return baseThreshold; // In between - use default
+		} catch {
+			return baseThreshold;
+		}
+	}
+
+	/**
 	 * Find memories eligible for promotion
 	 * 
 	 * Phase 22.4: For history → patterns promotion, also requires success_count >= 5
+	 * Phase 12.3: Considers recency in promotion decisions
 	 */
 	private async findPromotionCandidates(
 		tier: MemoryTier,
@@ -261,10 +309,19 @@ export class PromotionService {
 			limit: 100,
 		});
 
-		// Filter by score and uses
-		let filtered = memories.filter(
-			(m) => (m.stats?.wilson_score ?? 0) >= minScore && (m.stats?.uses ?? 0) >= minUses
-		);
+		// Phase 12.3: Filter by score with recency adjustment and uses
+		let filtered = memories.filter((m) => {
+			const uses = m.stats?.uses ?? 0;
+			if (uses < minUses) return false;
+
+			const wilsonScore = m.stats?.wilson_score ?? 0;
+			const lastUsedAt = m.stats?.last_used_at ?? null;
+
+			// Apply recency-adjusted threshold
+			const adjustedThreshold = this.calculateRecencyAdjustedThreshold(minScore, lastUsedAt);
+
+			return wilsonScore >= adjustedThreshold;
+		});
 
 		// Phase 22.4: Additional filter for history → patterns promotion
 		// Require success_count >= 5 to ensure memory has re-established value
@@ -286,6 +343,24 @@ export class PromotionService {
 				);
 			}
 		}
+
+		// Phase 12.3: Sort by recency (recently used items first)
+		filtered.sort((a, b) => {
+			const aLastUsed = a.stats?.last_used_at ? new Date(a.stats.last_used_at).getTime() : 0;
+			const bLastUsed = b.stats?.last_used_at ? new Date(b.stats.last_used_at).getTime() : 0;
+			return bLastUsed - aLastUsed; // Most recently used first
+		});
+
+		logger.debug(
+			{ 
+				tier, 
+				toTier, 
+				candidateCount: filtered.length,
+				recencyBoostDays: RECENCY_BOOST_DAYS,
+				stalePenaltyDays: STALE_PENALTY_DAYS
+			},
+			"[Phase 12.3] Found promotion candidates with recency consideration"
+		);
 
 		return filtered.map((m) => ({ memory_id: m.memory_id, user_id: m.user_id }));
 	}
