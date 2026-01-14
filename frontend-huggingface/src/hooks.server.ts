@@ -44,6 +44,7 @@ import {
 	createOpsServiceImpl,
 	PromotionService,
 } from "$lib/server/memory";
+import { getDataGovIngestionService } from "$lib/server/memory/datagov";
 import { ActionKgServiceImpl } from "$lib/server/memory/services/ActionKgServiceImpl";
 import { ContextServiceImpl } from "$lib/server/memory/services/ContextServiceImpl";
 
@@ -213,6 +214,58 @@ async function initializeMemoryFacadeOnce(): Promise<void> {
 
 		UnifiedMemoryFacade.setInstance(facade);
 		await facade.initialize();
+
+		// Phase 25.7: DataGov Knowledge Pre-Ingestion
+		// Runs once on first startup (if enabled via DATAGOV_PRELOAD_ENABLED=true)
+		const datagovPreloadEnabled = env.DATAGOV_PRELOAD_ENABLED === "true";
+		const datagovBackgroundIngestion = env.DATAGOV_PRELOAD_BACKGROUND !== "false"; // Default: true (non-blocking)
+
+		if (datagovPreloadEnabled) {
+			const datagovIngestion = async () => {
+				try {
+					const datagovService = getDataGovIngestionService(
+						db,
+						facade,
+						kgService,
+						embeddingClient,
+						{ backgroundIngestion: datagovBackgroundIngestion }
+					);
+					const result = await datagovService.ingestAll();
+					if (result.skipped) {
+						logger.info("[Memory] DataGov ingestion skipped (already complete)");
+					} else {
+						logger.info(
+							{
+								categories: result.categories,
+								datasets: result.datasets,
+								expansions: result.expansions,
+								kgNodes: result.kgNodes,
+								totalItems: result.totalItems,
+								durationMs: result.durationMs,
+								errors: result.errors.length,
+							},
+							"[Memory] DataGov knowledge pre-loaded"
+						);
+					}
+				} catch (err) {
+					logger.error({ err }, "[Memory] DataGov pre-load failed - continuing without");
+				}
+			};
+
+			if (datagovBackgroundIngestion) {
+				// Fire-and-forget: Don't block server startup
+				logger.info("[Memory] Starting DataGov ingestion in background...");
+				datagovIngestion().catch((err) => {
+					logger.error({ err }, "[Memory] Background DataGov ingestion failed");
+				});
+			} else {
+				// Blocking: Wait for ingestion to complete before proceeding
+				logger.info("[Memory] Starting DataGov ingestion (blocking)...");
+				await datagovIngestion();
+			}
+		} else {
+			logger.debug("[Memory] DataGov pre-ingestion disabled (DATAGOV_PRELOAD_ENABLED != true)");
+		}
 	})();
 
 	return memoryInitPromise;

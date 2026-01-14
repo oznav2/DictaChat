@@ -286,3 +286,18 @@ export type {
 	RankedList,
 	MemoryRetrievalServiceConfig,
 } from "./retrieval";
+
+// DataGov (Phase 25: Knowledge Pre-Ingestion)
+export { DataGovIngestionService, getDataGovIngestionService } from "./datagov";
+export type {
+	DataGovTier,
+	DataGovSourceMetadata,
+	DataGovSchemaMetadata,
+	DataGovExpansionMetadata,
+	DataGovMemoryItem,
+	DataGovIngestionResult,
+	DataGovIngestionCheckpoint,
+	DataGovConfig,
+	DataGovIntent,
+} from "./datagov";
+export { CATEGORY_HEBREW_NAMES, DATAGOV_INTENT_PATTERNS, DEFAULT_DATAGOV_CONFIG } from "./datagov";

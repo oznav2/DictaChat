@@ -77,8 +77,8 @@ TIER 6 - PLATFORM HARDENING: ✅ COMPLETE
   13. Phase 24 (Response Integrity) ✅ COMPLETE (2026-01-14) - Core complete
   14. Phase 14 (Circuit Breaker) ✅ COMPLETE (2026-01-14) - Pre-existing
 
-TIER 7 - KNOWLEDGE EXPANSION:
-  15. Phase 25 (DataGov) ← NEXT
+TIER 7 - KNOWLEDGE EXPANSION: (IN PROGRESS)
+  15. Phase 25 (DataGov) ← Task 25.7 COMPLETE (2026-01-14)
 
 TIER 8 - POLISH:
   16. Phase 6 (+20) (KG Visualization)
@@ -1419,16 +1419,26 @@ TIER 8 - POLISH:
 - Node cap enforcement (maxKgNodes=150) to prevent UI collapse
 - Uses `kg_nodes` and `kg_edges` MongoDB collections
 
-### Task 25.7: Integrate with Application Startup
-- **File**: `src/lib/server/memory/index.ts`
+### Task 25.7: Integrate with Application Startup ✅
+- **File**: `src/hooks.server.ts` (actual integration point)
 - **Subtasks**:
-  - [ ] 25.7.1: Import `DataGovIngestionService`
-  - [ ] 25.7.2: Check `DATAGOV_PRELOAD_ENABLED` env var
-  - [ ] 25.7.3: Call `datagovService.ingestAll()` in `initializeMemorySystem()`
-  - [ ] 25.7.4: Log ingestion result summary
-  - [ ] 25.7.5: Handle errors gracefully (continue without DataGov)
-  - [ ] 25.7.6: Add to ServiceFactory for DI
-  - [ ] 25.7.7: Write integration tests
+  - [x] 25.7.1: Import `getDataGovIngestionService` from datagov module
+  - [x] 25.7.2: Check `DATAGOV_PRELOAD_ENABLED` env var
+  - [x] 25.7.3: Call `datagovService.ingestAll()` in `initializeMemoryFacadeOnce()`
+  - [x] 25.7.4: Log ingestion result summary (categories, datasets, expansions, kgNodes, durationMs, errors)
+  - [x] 25.7.5: Handle errors gracefully (continue without DataGov via try-catch)
+  - [x] 25.7.6: Exported DataGov service from memory/index.ts for DI
+  - [ ] 25.7.7: Write integration tests (deferred)
+
+**Implementation Notes (2026-01-14)**:
+- Integrated in `hooks.server.ts` `initializeMemoryFacadeOnce()` (line ~215)
+- Environment variables:
+  - `DATAGOV_PRELOAD_ENABLED=true` - Enable DataGov pre-ingestion (default: false)
+  - `DATAGOV_PRELOAD_BACKGROUND=true` - Non-blocking startup (default: true)
+- Background ingestion uses fire-and-forget pattern to not block server startup
+- Blocking mode available via `DATAGOV_PRELOAD_BACKGROUND=false` for testing
+- Error handling: Logs error and continues without DataGov (fail-open pattern)
+- Exports added to `memory/index.ts`: `DataGovIngestionService`, `getDataGovIngestionService`, types, constants
 
 ### Task 25.8: Add Memory Panel DataGov Filter
 - **File**: `src/lib/components/memory/MemoryPanel.svelte`
