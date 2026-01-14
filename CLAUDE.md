@@ -303,3 +303,277 @@ please note that my frontend-ui supports hot-reload so dont instruct me to build
  i want you to take note that your sandboxed version is not the same after you modified the code in the sandbox. i have to pull to my local codebase the changes you have commited. i want you to remember i use sync-genspark.sh script that allows me to do sync of your pushed commits to my local codebase automatically.
  
  for this reason i ask you from now to make commit names with sequential number+description. this sync-genspark.sh script should be able to pull the changes you will in your sandbox after you have commited the changes to the genspark branch.
+
+---
+
+## 🧠 Memory System Deep Dive
+
+### Five Memory Tiers
+
+| Tier | Purpose | TTL | Promotion Criteria |
+|------|---------|-----|--------------------|
+| `working` | Current session context | 24h | → history (score≥0.7, uses≥2) |
+| `history` | Validated past conversations | 30d | → patterns (score≥0.9, uses≥3) |
+| `patterns` | Proven long-term knowledge | Permanent | - |
+| `books` | Document chunks (RAG) | Permanent | - |
+| `memory_bank` | User-curated facts | Permanent | - |
+
+**Dual-collection pattern**: Memory bank uses TWO collections:
+1. `memoryBank` - Items from Memory Bank UI modal
+2. `memory_items` (tier="memory_bank") - Items via UnifiedMemoryFacade
+
+### MongoDB Collections
+
+| Collection | Purpose |
+|------------|---------|
+| `memory_items` | All memory tiers (working, history, patterns, books, memory_bank) |
+| `memory_outcomes` | Outcome events per memory (success/failure tracking) |
+| `action_outcomes` | Tool effectiveness tracking per context type |
+| `known_solutions` | Cached high-score solutions for pattern matching |
+| `kg_nodes` | Knowledge graph entities |
+| `kg_edges` | Entity relationships |
+| `memoryBank` | Legacy memory bank items (UI modal) |
+
+### Key Memory Services (File Locations with Line Numbers)
+
+| Service | File | Key Functions |
+|---------|------|---------------|
+| **UnifiedMemoryFacade** | `memory/UnifiedMemoryFacade.ts` | `search()` L589, `store()` L606, `prefetchContext()` L585 |
+| **MemoryMongoStore** | `memory/stores/MemoryMongoStore.ts` | `store()` L370, `query()` L547, `recordOutcome()` L745 |
+| **QdrantAdapter** | `memory/adapters/QdrantAdapter.ts` | `search()` L570, `upsert()` L445 |
+| **DictaEmbeddingClient** | `memory/embedding/DictaEmbeddingClient.ts` | `embed()` L236, `getDiagnostics()` L763 |
+| **SearchService** | `memory/search/SearchService.ts` | `search()` L105, RRF fusion L303 |
+| **PromotionService** | `memory/learning/PromotionService.ts` | `runCycle()` L136, `promoteMemory()` L249 |
+| **KnowledgeGraphService** | `memory/kg/KnowledgeGraphService.ts` | `getTierPlan()` L174, `extractEntities()` L363 |
+
+### Memory Integration Points in runMcpFlow.ts
+
+| Integration Point | Lines | Function |
+|-------------------|-------|----------|
+| Memory Prefetch | 526-933 | `prefetchMemoryContext()` |
+| Cold-Start Injection | 566-583 | First message user profile |
+| Contextual Guidance | 776-817 | Past experience, failures |
+| Tool Guidance | 825-875 | Action effectiveness from KG |
+| Attribution Instruction | 759-769 | `<!-- MEM: 1👍 2👎 -->` |
+| Working Memory Storage | 1959-1978 | `storeWorkingMemory()` |
+| Outcome Recording | 1934-1957 | `recordResponseOutcome()` |
+
+### Wilson Score Calculation
+
+Used for memory ranking and promotion eligibility:
+```typescript
+// Location: stores/MemoryMongoStore.ts L130-141
+wilson_score = (p + z²/2n - z√(p(1-p)/n + z²/4n²)) / (1 + z²/n)
+// where p = successes/total, z = 1.96 (95% confidence)
+```
+
+### Circuit Breaker Configuration
+
+```typescript
+// Location: memory_config.ts L214-224
+embeddings: {
+  failure_threshold: 2,      // Open after 2 failures
+  success_threshold: 2,      // Close after 2 successes
+  open_duration_ms: 60000,   // 60s before retry
+}
+```
+
+### Key Memory Endpoints
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/memory/search` | POST | Search memories with pagination |
+| `/api/memory/ops/reindex/deferred` | POST | Reindex items that failed embedding |
+| `/api/memory/ops/circuit-breaker` | GET/POST | Check/reset embedding circuit breaker |
+| `/api/memory/books/recognize` | POST | Check document hash for deduplication |
+
+---
+
+## 💾 Hardware & Resource Constraints
+
+**Hardware**: RTX 3090 24GB VRAM + 64GB RAM + WSL2
+
+### VRAM Budget @ 32K Context
+
+| Component | VRAM |
+|-----------|------|
+| Model (Q4_K_M) | ~14.3GB |
+| KV Cache (q8_0) | ~6GB |
+| Overhead | ~1GB |
+| **Total** | ~21GB / 24GB (3GB headroom) |
+
+**Performance**: 35-45 tokens/sec @ 32K context
+
+### Critical `.env` Variables for Performance
+
+| Variable | Value | Purpose |
+|----------|-------|---------|
+| `CONTEXT_SIZE` | 32768 | 32K context for MCP tools |
+| `N_GPU_LAYERS` | 99 | Full GPU offload |
+| `FLASH_ATTN` | on | 30-40% speedup |
+| `KV_CACHE_TYPE` | q8_0 | Saves ~4GB VRAM |
+| `NUM_PREDICT` | 4096 | Max tokens per response |
+| `QDRANT_VECTOR_SIZE` | 1024 | BGE-M3 embedding dims |
+| `MEMORY_SYSTEM_ENABLED` | true | Enable memory system |
+| `MCP_MAX_TOOLS` | 4 | Limit tools per turn |
+
+---
+
+## 📝 Prompt System
+
+### Template Files (Handlebars `.hbs`)
+
+Location: `frontend-huggingface/src/lib/server/memory/templates/`
+
+| Template | Purpose |
+|----------|---------|
+| `personality-prompt.hbs` | User/assistant persona |
+| `memory-injection.hbs` | Memory context injection |
+| `book-context.hbs` | RAG document chunks |
+| `failure-prevention.hbs` | Past failure warnings |
+| `organic-recall.hbs` | Proactive memory suggestions |
+
+### Prompt Injection Order (runMcpFlow.ts)
+
+1. **Personality prompt** (Section 1)
+2. **Memory context** (Section 2)
+3. **Confidence hint** (HIGH/MEDIUM/LOW)
+4. **Attribution instruction** (`<!-- MEM: ... -->`)
+5. **Contextual guidance** (past experience, failures)
+6. **Tool guidance** (effectiveness stats)
+7. **Memory bank philosophy**
+8. **Tool prompt** (via `buildToolPreprompt()`)
+9. **Language instruction** (Hebrew/English)
+
+### Think Tag Handling
+
+```typescript
+// Model MUST output: <think>reasoning</think>final answer
+// xmlUtils.ts repairs unclosed tags before UI rendering
+// Smart skip: </think> with no tools → stream answer directly
+```
+
+---
+
+## 🔍 Debug Checklist
+
+### Memory Not Working?
+
+1. Check `MEMORY_SYSTEM_ENABLED=true` in `.env`
+2. Verify `dicta-retrieval` container healthy: `docker logs -f dicta-retrieval`
+3. Check circuit breaker: `GET /api/memory/ops/circuit-breaker`
+4. Look for dimension mismatch in logs (must be 1024)
+
+### Search Returns 0 Results?
+
+1. Check if items have `needs_reindex: true` in MongoDB
+2. Run `POST /api/memory/ops/reindex/deferred`
+3. Verify Qdrant collection exists with correct dimensions
+4. Check MongoDB full-text index `memory_text_search` exists
+
+### UI Not Showing Memory Status?
+
+1. Check `MessageMemoryUpdate` events in browser console
+2. Verify `memoryUi.ts` store is receiving updates
+3. Check `+page.svelte` event handlers
+
+### Tools Not Executing?
+
+1. Check `MCP_USE_NATIVE_TOOLS=false`
+2. Verify `mcp-sse-proxy` container running
+3. Check tool filtering in `toolFilter.ts`
+
+---
+
+## ⚠️ Known Breaking Points & Bottlenecks
+
+### Memory System
+
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| Embedding service down | Circuit breaker opens | Check `dicta-retrieval` logs |
+| Qdrant dimension mismatch | Wrong `QDRANT_VECTOR_SIZE` | Verify `=1024` in `.env` |
+| MongoDB full-text fails | Missing index | Check `memory_text_search` index |
+| Memories not searchable | Deferred reindex queue | Run reindex endpoint |
+
+### Inference
+
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| OOM on llama-server | VRAM exceeded | Reduce `CONTEXT_SIZE` or use `q4_0` KV cache |
+| Slow generation | GPU not fully utilized | Check `nvidia-smi`, ensure Flash Attention on |
+| Tool loop | Loop detector failed | Check `loopDetector.ts` (3x limit) |
+
+### Frontend-Backend Wiring
+
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| FinalAnswer missing memoryMeta | Citations won't display | Check `runMcpFlow.ts` L1915 |
+| Memory events not refreshing | `dispatchMemoryEvent()` not called | Check `+page.svelte` |
+| TracePanel not updating | Trace events not emitted | Check `MessageTraceUpdate` emissions |
+
+### Database
+
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| Redis timeout | Connection failed | Check `REDIS_URL` and container |
+| MongoDB language error | Wrong text index config | Use `language: "none"` for bilingual |
+| PostgreSQL volume corrupt | Password change | Delete volume and restart |
+
+---
+
+## 🗺️ RoamPal Parity Patterns
+
+### Key Patterns to Follow
+
+1. **5-tier memory** with promotion based on Wilson scores
+2. **Dual KG**: Routing KG (query→tier) + Content KG (entity relationships)
+3. **Action-Effectiveness KG**: Tool success rates per context type
+4. **Cold-start injection**: User profile on first message
+5. **Causal attribution**: LLM marks helpful memories `<!-- MEM: 1👍 2👎 -->`
+6. **Outcome detection**: Analyze user follow-up to score memories
+
+### RoamPal Files to Reference
+
+| Pattern | RoamPal File | Line Numbers |
+|---------|--------------|--------------|
+| Chat Processing | `agent_chat.py` | 58-650 |
+| Memory Search | `unified_memory_system.py` | 234-380 |
+| Promotion Logic | `promotion_service.py` | 55-177 |
+| Cold-Start | `agent_chat.py` | 627-668 |
+| Contextual Guidance | `agent_chat.py` | 675-794 |
+| Outcome Detection | `agent_chat.py` | 1146-1294 |
+
+---
+
+## 🐳 Docker Troubleshooting Commands
+
+```bash
+# Check all container status
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+# Follow logs for a specific container
+docker logs -f <container-name>
+
+# Check last 50 lines of logs
+docker logs --tail=50 <container-name>
+
+# Check container health
+docker inspect --format='{{.State.Health.Status}}' <container-name>
+
+# Restart a specific container
+docker restart <container-name>
+
+# Check GPU usage (for llama-server)
+nvidia-smi
+```
+
+### Common Log Patterns to Watch
+
+| Container | What to Look For |
+|-----------|------------------|
+| `bricksllm-llama` | "model loaded", "slot", OOM errors |
+| `dicta-retrieval` | "InvalidIntervalError", embedding dimension errors |
+| `frontend-UI` | TypeScript errors, API route errors |
+| `bricksllm-qdrant` | Collection creation, dimension mismatch |
+| `bricksllm-mongo` | Connection errors, index creation |
