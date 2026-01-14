@@ -35,3 +35,13 @@ export type {
 	DocumentRecognitionResult,
 	DocumentMemoryRetrievalResult,
 } from "./DocumentRecognitionService";
+
+// Phase 2 (+16): Tool Result Ingestion
+export {
+	ToolResultIngestionService,
+	ingestToolResult,
+} from "./ToolResultIngestionService";
+export type {
+	ToolResultIngestionParams,
+	IngestionResult,
+} from "./ToolResultIngestionService";

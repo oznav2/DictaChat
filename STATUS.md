@@ -1,7 +1,58 @@
-<!-- Updated: v0.2.23 PHASE 3 MEMORY-FIRST TOOL GATING - January 14, 2026 -->
+<!-- Updated: v0.2.24 PHASE 2 TOOL RESULT INGESTION - January 14, 2026 -->
 # Project Status
 
-**Last Updated**: January 14, 2026 (🚀 v0.2.23 + Phase 3 Memory-First Tool Gating)
+**Last Updated**: January 14, 2026 (🚀 v0.2.24 + Phase 2 Tool Result Ingestion)
+
+---
+
+## 📥 v0.2.24 PHASE 2 (+16): TOOL RESULT INGESTION ✅ COMPLETE
+
+**Branch**: genspark_ai_developer
+**Priority**: TIER 3 - MEMORY-FIRST INTELLIGENCE (Order 6)
+**Kimi Requirement**: K.2 Async Ingestion Protocol (partial)
+
+### Overview
+
+Phase 2 stores valuable tool outputs (search results, research findings, data queries) into memory for future retrieval. This prevents the system from re-researching the same topics multiple times.
+
+### Implementation
+
+| Step | Status | Description |
+|------|--------|-------------|
+| 2.1.1 | ✅ | ToolResultIngestionService with singleton pattern |
+| 2.1.2 | ✅ | ToolResultIngestionParams interface |
+| 2.1.3 | ✅ | shouldIngest() - tool eligibility check |
+| 2.1.6 | ✅ | ingestToolResult() - main async method |
+| 2.1.8 | ✅ | SHA-256 content hash deduplication |
+| 2.2.1 | ✅ | Wired into toolInvocation.ts |
+
+### Ingestible Tools
+
+- **Research**: perplexity-ask, perplexity-search, perplexity-research
+- **Search**: tavily-search, tavily-extract, brave_search, web_search
+- **Government Data**: datagov_query, datastore_search, package_search
+
+### Non-Ingestible Tools (Excluded)
+
+- **Docling**: Already has dedicated bridge (bridgeDoclingToMemory)
+- **Memory tools**: Would cause circular dependency
+- **Utilities**: echo, add, printEnv (no persistent value)
+- **File ops**: read_file, write_file (ephemeral)
+
+### Technical Details
+
+- **File**: `src/lib/server/memory/services/ToolResultIngestionService.ts`
+- **Integration**: `toolInvocation.ts` after successful tool execution
+- **Pattern**: Fire-and-forget (NEVER blocks user response)
+- **Tier**: Results stored in "working" tier
+- **Dedup**: SHA-256 hash of first 5000 chars
+
+### Benefits
+
+- Prevents re-researching same topics
+- Tool results available in future conversations
+- Reduces API costs for repeated queries
+- Builds knowledge base over time
 
 ---
 

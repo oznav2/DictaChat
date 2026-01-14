@@ -33,6 +33,8 @@ import {
 import type { Client } from "@modelcontextprotocol/sdk/client";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
 import { ADMIN_USER_ID } from "$lib/server/constants";
+// Phase 2 (+16): Tool Result Ingestion
+import { ingestToolResult } from "$lib/server/memory/services/ToolResultIngestionService";
 
 // ============================================
 // DOCLING TOOL TRACE INTEGRATION
@@ -1226,6 +1228,32 @@ export async function* executeToolCalls({
 			// Fire and forget - don't block tool execution
 			bridgeDoclingToMemory(conversationId, toolName, r.output).catch((err) => {
 				logger.warn({ err, toolName }, "[mcp] Memory bridge failed (non-blocking)");
+			});
+		}
+
+		// ============================================
+		// PHASE 2 (+16): INGEST ALL TOOL RESULTS TO MEMORY
+		// For non-docling tools (search, research, data queries),
+		// store results for future retrieval without re-researching
+		// Fire-and-forget: NEVER blocks user response path
+		// ============================================
+		if (!r.error && r.output && conversationId) {
+			// Extract query from tool arguments (varies by tool)
+			const toolQuery = (r.params as Record<string, unknown>)?.query as string
+				?? (r.params as Record<string, unknown>)?.prompt as string
+				?? (r.params as Record<string, unknown>)?.q as string
+				?? undefined;
+
+			// Fire and forget ingestion (service handles eligibility check)
+			ingestToolResult({
+				conversationId,
+				toolName,
+				query: toolQuery,
+				output: r.output,
+				metadata: {
+					tool_call_id: toolCallId,
+					params_preview: JSON.stringify(r.paramsClean ?? {}).slice(0, 200),
+				},
 			});
 		}
 

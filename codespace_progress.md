@@ -61,8 +61,8 @@ TIER 2 - CORE DATA INTEGRITY:
 
 TIER 3 - MEMORY-FIRST INTELLIGENCE:
   5. Phase 3 (+13) (Tool Gating) ✅ COMPLETE (2026-01-14)
-  6. Phase 2 (+16) (Tool Ingestion) ← NEXT
-  7. Phase 5 (0-Results Fix)
+  6. Phase 2 (+16) (Tool Ingestion) ✅ COMPLETE (2026-01-14)
+  7. Phase 5 (0-Results Fix) ← NEXT
 
 TIER 4 - LEARNING:
   8. Phase 7 (Attribution)
@@ -295,34 +295,48 @@ TIER 8 - POLISH:
 
 ---
 
-## Phase 2: Tool Result Memory Ingestion
+## Phase 2: Tool Result Memory Ingestion ✅ COMPLETED
 
-### Task 2.1: Create Tool Result Ingestion Service
+### Task 2.1: Create Tool Result Ingestion Service ✅
 - **File**: `src/lib/server/memory/services/ToolResultIngestionService.ts`
 - **Subtasks**:
-  - [ ] 2.1.1: Create service class with dependency injection
-  - [ ] 2.1.2: Define `ToolResultIngestionParams` interface
-  - [ ] 2.1.3: Implement `shouldIngest(toolName, result)` filter logic
-  - [ ] 2.1.4: Implement `extractMemorableContent(result)` parser
-  - [ ] 2.1.5: Add tool-specific extractors (web search, fetch, etc.)
-  - [ ] 2.1.6: Implement `ingestToolResult()` main method
-  - [ ] 2.1.7: Store results as `tier="working"` with tool metadata
-  - [ ] 2.1.8: Add deduplication by content hash
-  - [ ] 2.1.9: Implement quality filtering (skip empty/error results)
-  - [ ] 2.1.10: Add logging for ingestion decisions
-  - [ ] 2.1.11: Write unit tests for each extractor
+  - [x] 2.1.1: Create service class with singleton pattern
+  - [x] 2.1.2: Define `ToolResultIngestionParams` interface
+  - [x] 2.1.3: Implement `shouldIngest(toolName)` filter logic
+  - [x] 2.1.4: Quality filtering (min 100 chars, max 10000 chars)
+  - [x] 2.1.5: Tool category detection (research/search/government_data)
+  - [x] 2.1.6: Implement `ingestToolResult()` main method
+  - [x] 2.1.7: Store results as `tier="working"` with tool metadata
+  - [x] 2.1.8: Add deduplication by SHA-256 content hash
+  - [x] 2.1.9: Implement quality filtering (skip empty/error results)
+  - [x] 2.1.10: Add logging for ingestion decisions
+  - [ ] 2.1.11: Write unit tests for each extractor (deferred)
 
-### Task 2.2: Integrate with runMcpFlow.ts
-- **File**: `src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+**Implementation Notes (2026-01-14)**:
+- Created `ToolResultIngestionService.ts` with fire-and-forget pattern
+- INGESTIBLE_TOOLS: perplexity-*, tavily-*, datagov_*, brave_search, etc.
+- NON_INGESTIBLE_TOOLS: docling_* (separate bridge), memory tools, utilities
+- Content hash deduplication prevents duplicate storage
+- Title built from query or tool name for searchability
+- Exported convenience function `ingestToolResult()` for easy calling
+
+### Task 2.2: Integrate with toolInvocation.ts ✅
+- **File**: `src/lib/server/textGeneration/mcp/toolInvocation.ts`
 - **Subtasks**:
-  - [ ] 2.2.1: Import `ToolResultIngestionService`
-  - [ ] 2.2.2: Add ingestion call after successful tool execution
-  - [ ] 2.2.3: Pass conversation context to ingestion service
-  - [ ] 2.2.4: Handle ingestion errors gracefully (don't block flow)
-  - [ ] 2.2.5: Add feature flag for tool result ingestion
-  - [ ] 2.2.6: Write integration tests
+  - [x] 2.2.1: Import `ingestToolResult` from ToolResultIngestionService
+  - [x] 2.2.2: Add ingestion call after successful tool execution (~line 1235)
+  - [x] 2.2.3: Pass conversation context, tool query, and metadata
+  - [x] 2.2.4: Fire-and-forget pattern (service handles errors internally)
+  - [x] 2.2.5: Service checks eligibility via shouldIngest() - no feature flag needed
+  - [ ] 2.2.6: Write integration tests (deferred)
 
-### Task 2.3: Add Tool Result Search
+**Integration Notes (2026-01-14)**:
+- Ingestion wired after docling bridge, before trace completion
+- Extracts query from params.query, params.prompt, or params.q
+- Includes tool_call_id and params_preview in metadata
+- Completely non-blocking - service manages its own lifecycle
+
+### Task 2.3: Add Tool Result Search (DEFERRED)
 - **Subtasks**:
   - [ ] 2.3.1: Add `source.tool_name` filter to search queries
   - [ ] 2.3.2: Implement "What did the search find?" query support
