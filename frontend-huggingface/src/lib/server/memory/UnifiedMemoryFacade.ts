@@ -210,6 +210,8 @@ export interface PrefetchContextParams {
 	signal?: AbortSignal;
 	/** Include DataGov tiers in search (Phase 25) - set by detectDataGovIntent() */
 	includeDataGov?: boolean;
+	/** Phase 9.3: Token budget for context window management (default: 2000) */
+	tokenBudget?: number;
 }
 
 export interface PrefetchContextResult {
