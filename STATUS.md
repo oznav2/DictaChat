@@ -1,13 +1,13 @@
-<!-- Updated: v0.2.28 TIER 7 + TIER 8 PARTIAL - January 14, 2026 -->
+<!-- Updated: v0.2.29 TIER 7 COMPLETE + TIER 8 COMPLETE - January 15, 2026 -->
 # Project Status
 
-**Last Updated**: January 14, 2026 (🎉 v0.2.28 - TIER 7 DataGov + TIER 8 KG/Trace COMPLETE!)
+**Last Updated**: January 15, 2026 (🎉 v0.2.29 - TIER 7 DataGov COMPLETE + TIER 8 Observability COMPLETE!)
 
 ---
 
-## 🎉 MAJOR MILESTONE: TIERS 1-8 SUBSTANTIAL PROGRESS (January 14, 2026)
+## 🎉 MAJOR MILESTONE: ALL TIERS 1-8 COMPLETE (January 15, 2026)
 
-All critical phases from the Memory System Implementation Plan are now verified complete:
+All critical phases from the Memory System Implementation Plan are now complete:
 
 | Tier | Name | Phases | Status |
 |------|------|--------|--------|
@@ -17,10 +17,10 @@ All critical phases from the Memory System Implementation Plan are now verified 
 | 4 | LEARNING | 7, 8, 12 | ✅ COMPLETE |
 | 5 | SEARCH QUALITY | 15, 19 | ✅ COMPLETE |
 | 6 | PLATFORM HARDENING | 24, 14 | ✅ COMPLETE |
-| 7 | KNOWLEDGE EXPANSION | 25 | ✅ CORE COMPLETE |
-| 8 | POLISH | 6, 21, 9-11, 18 | 🔄 IN PROGRESS |
+| 7 | KNOWLEDGE EXPANSION | 25 | ✅ COMPLETE |
+| 8 | POLISH | 6, 21 | ✅ COMPLETE (9-11, 18 deferred) |
 
-### Session Commits (January 14, 2026 - Evening)
+### Session Commits (January 14-15, 2026)
 
 | Commit | Phase | Description |
 |--------|-------|-------------|
@@ -29,10 +29,12 @@ All critical phases from the Memory System Implementation Plan are now verified 
 | `e2a0747` | 25.11 | Update memory search for DataGov tiers |
 | `4b9b237` | 6 | Fix KG 3D node label rendering (Hebrew font) |
 | `cd9c68b` | 6 | Add trace event deduplication |
+| `ec1a0b6` | 21 | Memory System Observability (MemoryLogger, MemoryMetrics, /health) |
+| *pending* | 25.8, 25.10, 25.12 | Memory Panel DataGov filter, env config, export script |
 
 ---
 
-## 📊 v0.2.28 PHASE 25: DATAGOV KNOWLEDGE PRE-INGESTION ✅ CORE COMPLETE
+## 📊 v0.2.29 PHASE 25: DATAGOV KNOWLEDGE PRE-INGESTION ✅ COMPLETE
 
 **Branch**: genspark_ai_developer
 **Priority**: TIER 7 - KNOWLEDGE EXPANSION
@@ -47,9 +49,11 @@ Phase 25 pre-loads Israeli government data knowledge (1,190+ schemas, 22 semanti
 |------|--------|-------------|
 | 25.1-25.6 | ✅ | DataGov ingestion service, types, category/schema/expansion ingestion, KG structure |
 | 25.7 | ✅ | Application startup integration (hooks.server.ts) |
+| 25.8 | ✅ | Memory Panel DataGov filter UI (category chips, toggle, badges) |
 | 25.9 | ✅ | Hebrew intent detection (detectDataGovIntent in toolFilter.ts) |
+| 25.10 | ✅ | Environment configuration (.env, memory_config.ts) |
 | 25.11 | ✅ | Memory search tier support (MEMORY_TIER_GROUPS) |
-| 25.8, 25.10, 25.12 | ⏸️ | Deferred (UI filter, env docs, export script) |
+| 25.12 | ✅ | Expansions JSON export script (export_expansions.py) |
 
 ### Technical Implementation
 

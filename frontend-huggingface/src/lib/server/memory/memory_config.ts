@@ -115,6 +115,26 @@ export interface DedupConfig {
 	similarity_threshold: number;
 }
 
+/**
+ * Phase 25: DataGov Pre-Ingestion Configuration
+ */
+export interface DataGovConfig {
+	/** Enable DataGov knowledge pre-loading at startup */
+	enabled: boolean;
+	/** Run ingestion in background (non-blocking startup) */
+	background: boolean;
+	/** Path to schema files */
+	schemas_path: string;
+	/** Path to enterprise expansions JSON */
+	expansion_path: string;
+	/** Number of sample datasets per category in KG */
+	kg_sample_size: number;
+	/** Batch size for schema ingestion */
+	batch_size: number;
+	/** Maximum KG nodes to prevent UI collapse */
+	max_kg_nodes: number;
+}
+
 export interface MemoryConfig {
 	timeouts: MemoryTimeoutsConfig;
 	caps: MemoryCapsConfig;
@@ -134,6 +154,8 @@ export interface MemoryConfig {
 	qdrant: QdrantCollectionConfig;
 	vector_schema_validation: VectorSchemaValidationConfig;
 	dedup: DedupConfig;
+	/** Phase 25: DataGov pre-ingestion settings */
+	datagov: DataGovConfig;
 }
 
 export const defaultMemoryConfig: MemoryConfig = {
@@ -288,5 +310,15 @@ export const defaultMemoryConfig: MemoryConfig = {
 	dedup: {
 		enabled: true,
 		similarity_threshold: 0.95,
+	},
+	/** Phase 25: DataGov pre-ingestion defaults */
+	datagov: {
+		enabled: true,
+		background: true,
+		schemas_path: "/datagov/schemas",
+		expansion_path: "/datagov/enterprise_expansions.json",
+		kg_sample_size: 5,
+		batch_size: 50,
+		max_kg_nodes: 150,
 	},
 };
