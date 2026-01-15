@@ -36,19 +36,17 @@ from typing import Dict, List, Any
 sys.path.insert(0, str(Path(__file__).parent))
 
 try:
-    from query_builder import (
-        SUBJECT_EXPANSIONS,
-        BIDIRECTIONAL_EXPANSION_INDEX,
-        _BASE_SUBJECT_EXPANSIONS,
-    )
-    # Try to import enterprise expansions if available
-    try:
-        from enterprise_expansions import ENTERPRISE_SUBJECT_EXPANSIONS
-    except ImportError:
-        ENTERPRISE_SUBJECT_EXPANSIONS = {}
+    from query_builder import SUBJECT_EXPANSIONS
+    print(f"Loaded SUBJECT_EXPANSIONS with {len(SUBJECT_EXPANSIONS)} entries")
 except ImportError as e:
-    print(f"Error importing from query_builder: {e}", file=sys.stderr)
-    sys.exit(1)
+    print(f"Error importing SUBJECT_EXPANSIONS from query_builder: {e}", file=sys.stderr)
+    # Fallback: define minimal expansions
+    SUBJECT_EXPANSIONS = {
+        "transportation": ["תחבורה", "נסיעה", "אוטובוס", "רכבת"],
+        "health": ["בריאות", "רפואה", "בית חולים"],
+        "education": ["חינוך", "בית ספר", "אוניברסיטה"],
+    }
+    print(f"Using fallback expansions with {len(SUBJECT_EXPANSIONS)} entries")
 
 
 # Domain categorization mapping (English key -> domain)
@@ -206,7 +204,6 @@ def export_expansions(output_path: str = None) -> Dict[str, Any]:
         "domains": domains,
         # Include raw expansions for debugging/verification
         "raw_expansions_count": len(SUBJECT_EXPANSIONS),
-        "bidirectional_index_count": len(getattr(globals().get('BIDIRECTIONAL_EXPANSION_INDEX', {}), '__len__', lambda: 0)()),
     }
     
     if output_path:
