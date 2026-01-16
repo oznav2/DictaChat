@@ -77,7 +77,8 @@ describe("SearchServiceImpl", () => {
 		it("should create service with required dependencies", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockHybridSearch: MockHybridSearchService = {
 				search: vi.fn().mockResolvedValue({
@@ -86,7 +87,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -103,7 +104,8 @@ describe("SearchServiceImpl", () => {
 		it("should use default config when not provided", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockHybridSearch: MockHybridSearchService = {
 				search: vi.fn().mockResolvedValue({
@@ -112,7 +114,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -135,7 +137,8 @@ describe("SearchServiceImpl", () => {
 		it("should use custom config when provided", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const customConfig = {
 				caps: {
@@ -150,7 +153,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 				config: customConfig as any,
 			});
@@ -191,7 +194,8 @@ describe("SearchServiceImpl", () => {
 		it("should execute search with all tiers by default", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockHybridSearch: MockHybridSearchService = {
 				search: vi.fn().mockResolvedValue({
@@ -200,7 +204,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -225,7 +229,8 @@ describe("SearchServiceImpl", () => {
 		it("should search specific tiers when specified", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockHybridSearch: MockHybridSearchService = {
 				search: vi.fn().mockResolvedValue({
@@ -234,7 +239,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -262,7 +267,8 @@ describe("SearchServiceImpl", () => {
 		it("should return results from hybrid search", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockResults: MockSearchResult[] = [
 				{
@@ -288,7 +294,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -310,7 +316,8 @@ describe("SearchServiceImpl", () => {
 		it("should include debug information in response", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockHybridSearch: MockHybridSearchService = {
 				search: vi.fn().mockResolvedValue({
@@ -324,7 +331,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -356,7 +363,8 @@ describe("SearchServiceImpl", () => {
 		it('should detect recency mode from "last" keyword', async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const now = new Date();
 			const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
@@ -391,7 +399,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -414,7 +422,8 @@ describe("SearchServiceImpl", () => {
 		it('should detect recency mode from Hebrew keyword "לאחרונה"', async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const now = new Date();
 			const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -449,7 +458,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -471,7 +480,8 @@ describe("SearchServiceImpl", () => {
 		it("should use relevance mode by default", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockResults: MockSearchResult[] = [
 				{
@@ -497,7 +507,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -520,7 +530,8 @@ describe("SearchServiceImpl", () => {
 		it("should allow explicit sort mode override", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockResults: MockSearchResult[] = [
 				{
@@ -546,7 +557,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -576,7 +587,8 @@ describe("SearchServiceImpl", () => {
 		it("should track position map after search", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockResults: MockSearchResult[] = [
 				{
@@ -609,7 +621,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -638,7 +650,8 @@ describe("SearchServiceImpl", () => {
 		it("should track last search results", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockResults: MockSearchResult[] = [
 				{
@@ -664,7 +677,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -691,7 +704,8 @@ describe("SearchServiceImpl", () => {
 		it("should track last query normalized", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockHybridSearch: MockHybridSearchService = {
 				search: vi.fn().mockResolvedValue({
@@ -700,7 +714,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -724,7 +738,8 @@ describe("SearchServiceImpl", () => {
 		it("should clear turn tracking", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockResults: MockSearchResult[] = [
 				{
@@ -743,7 +758,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -776,7 +791,8 @@ describe("SearchServiceImpl", () => {
 		it("should update tracking on each search", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockHybridSearch: MockHybridSearchService = {
 				search: vi.fn(async (p: any) => {
@@ -796,7 +812,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -829,7 +845,8 @@ describe("SearchServiceImpl", () => {
 		it('should search all tiers when "all" specified', async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockHybridSearch: MockHybridSearchService = {
 				search: vi.fn().mockResolvedValue({
@@ -838,7 +855,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -863,7 +880,8 @@ describe("SearchServiceImpl", () => {
 		it("should search only books tier", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockHybridSearch: MockHybridSearchService = {
 				search: vi.fn().mockResolvedValue({
@@ -872,7 +890,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -897,7 +915,8 @@ describe("SearchServiceImpl", () => {
 		it("should search memory_bank tier", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockHybridSearch: MockHybridSearchService = {
 				search: vi.fn().mockResolvedValue({
@@ -906,7 +925,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -937,13 +956,14 @@ describe("SearchServiceImpl", () => {
 		it("should propagate hybrid search errors", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockHybridSearch: MockHybridSearchService = {
 				search: vi.fn().mockRejectedValue(new Error("Search service unavailable")),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 
@@ -970,7 +990,8 @@ describe("SearchServiceImpl", () => {
 		it("should handle empty results gracefully", async () => {
 			const startTime = Date.now();
 
-			const { SearchServiceImpl } = await import("../../services/SearchServiceImpl");
+			const { ServiceFactory } = await import("../../ServiceFactory");
+			ServiceFactory.resetForTests();
 
 			const mockHybridSearch: MockHybridSearchService = {
 				search: vi.fn().mockResolvedValue({
@@ -984,7 +1005,7 @@ describe("SearchServiceImpl", () => {
 				}),
 			};
 
-			const service = new SearchServiceImpl({
+			const service = ServiceFactory.getSearchService({
 				hybridSearch: mockHybridSearch as any,
 			});
 

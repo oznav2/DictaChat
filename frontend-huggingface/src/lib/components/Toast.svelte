@@ -11,9 +11,10 @@
 	}
 
 	let { message = "", type = "info" }: Props = $props();
-	
+
 	// Respect user's motion preferences
-	const prefersReducedMotion = browser && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const prefersReducedMotion =
+		browser && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 	// Type-based styling
 	const typeStyles = {
@@ -48,10 +49,10 @@
 
 <Portal>
 	<div
-		in:fly={{ 
-			y: prefersReducedMotion ? 0 : -20, 
-			duration: prefersReducedMotion ? 0 : 400, 
-			easing: backOut 
+		in:fly={{
+			y: prefersReducedMotion ? 0 : -20,
+			duration: prefersReducedMotion ? 0 : 400,
+			easing: backOut,
 		}}
 		out:fade={{ duration: prefersReducedMotion ? 0 : 200, easing: cubicOut }}
 		class="pointer-events-none fixed right-0 top-12 z-50 bg-gradient-to-bl {style.gradient} pb-36 pl-36 pr-2 pt-2 max-sm:text-sm md:top-0 md:pr-8 md:pt-5"

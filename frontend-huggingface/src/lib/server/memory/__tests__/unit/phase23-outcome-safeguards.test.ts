@@ -38,7 +38,7 @@ vi.mock("$lib/server/logger", () => ({
 describe("Phase 23.2: Wilson Score Calculation", () => {
 	/**
 	 * Wilson score should use cumulative success_count, not capped outcome_history.
-	 * 
+	 *
 	 * Bug: Memory with 50 uses, 45 worked incorrectly had Wilson ~0.8 (using 10-item history)
 	 * Fix: Should be ~0.87 (using cumulative success_count / uses)
 	 */
@@ -47,23 +47,23 @@ describe("Phase 23.2: Wilson Score Calculation", () => {
 		// For p=0.9, n=50, z=1.96
 		// Expected: ~0.78-0.80 range (lower bound)
 		// This is intentionally conservative - Wilson gives us the lower bound
-		
+
 		const uses = 50;
 		const workedCount = 45;
 		const successCount = workedCount * 1.0; // worked = 1.0 success
-		
+
 		const p = successCount / uses; // 0.9
 		const z = 1.96;
 		const n = uses;
-		
+
 		const numerator = p + (z * z) / (2 * n) - z * Math.sqrt((p * (1 - p) + (z * z) / (4 * n)) / n);
 		const denominator = 1 + (z * z) / n;
 		const wilsonScore = numerator / denominator;
-		
+
 		// Should be ~0.78-0.82 for 90% success rate with 50 samples (lower CI bound)
 		expect(wilsonScore).toBeGreaterThan(0.75);
 		expect(wilsonScore).toBeLessThan(0.85);
-		
+
 		// Key: Wilson score uses CUMULATIVE success_count, not capped 10-item history
 		// With capped history, score would be artificially lower or inconsistent
 		expect(wilsonScore).toBeCloseTo(0.786, 2); // Verify actual calculated value
@@ -72,15 +72,15 @@ describe("Phase 23.2: Wilson Score Calculation", () => {
 	it("should calculate Wilson ~0.0 for 10 failures with 0 worked", () => {
 		const uses = 10;
 		const successCount = 0; // All failures = 0 success
-		
+
 		const p = successCount / uses; // 0.0
 		const z = 1.96;
 		const n = uses;
-		
+
 		const numerator = p + (z * z) / (2 * n) - z * Math.sqrt((p * (1 - p) + (z * z) / (4 * n)) / n);
 		const denominator = 1 + (z * z) / n;
 		const wilsonScore = Math.max(0, numerator / denominator);
-		
+
 		// Should be close to 0 for 0% success rate
 		expect(wilsonScore).toBeLessThan(0.15);
 	});
@@ -88,10 +88,10 @@ describe("Phase 23.2: Wilson Score Calculation", () => {
 	it("should return 0.5 for zero uses (cold start)", () => {
 		const uses = 0;
 		const successCount = 0;
-		
+
 		// Cold start: return 0.5 as prior
 		const wilsonScore = uses === 0 ? 0.5 : successCount / uses;
-		
+
 		expect(wilsonScore).toBe(0.5);
 	});
 });
@@ -134,9 +134,9 @@ describe("Phase 23.1: Outcome Success Values", () => {
 
 describe("Phase 23.1: Outcome Type Validation", () => {
 	const VALID_OUTCOMES = ["worked", "failed", "partial", "unknown"] as const;
-	
+
 	function isValidOutcome(outcome: string): boolean {
-		return VALID_OUTCOMES.includes(outcome as typeof VALID_OUTCOMES[number]);
+		return VALID_OUTCOMES.includes(outcome as (typeof VALID_OUTCOMES)[number]);
 	}
 
 	it("should accept 'worked' as valid outcome", () => {
@@ -189,7 +189,10 @@ describe("Phase 23.2/23.3: Success Count Accumulation", () => {
 		failed: 0.0,
 	};
 
-	function simulateOutcome(stats: MockStats, outcome: keyof typeof OUTCOME_SUCCESS_VALUES): MockStats {
+	function simulateOutcome(
+		stats: MockStats,
+		outcome: keyof typeof OUTCOME_SUCCESS_VALUES
+	): MockStats {
 		const successDelta = OUTCOME_SUCCESS_VALUES[outcome];
 		return {
 			uses: stats.uses + 1, // Phase 23.3: ALWAYS increment uses
@@ -202,27 +205,48 @@ describe("Phase 23.2/23.3: Success Count Accumulation", () => {
 	}
 
 	it("should increment uses for 'worked' outcome", () => {
-		const initial: MockStats = { uses: 0, success_count: 0, worked_count: 0, partial_count: 0, unknown_count: 0, failed_count: 0 };
+		const initial: MockStats = {
+			uses: 0,
+			success_count: 0,
+			worked_count: 0,
+			partial_count: 0,
+			unknown_count: 0,
+			failed_count: 0,
+		};
 		const after = simulateOutcome(initial, "worked");
-		
+
 		expect(after.uses).toBe(1);
 		expect(after.success_count).toBe(1.0);
 		expect(after.worked_count).toBe(1);
 	});
 
 	it("should increment uses for 'partial' outcome", () => {
-		const initial: MockStats = { uses: 0, success_count: 0, worked_count: 0, partial_count: 0, unknown_count: 0, failed_count: 0 };
+		const initial: MockStats = {
+			uses: 0,
+			success_count: 0,
+			worked_count: 0,
+			partial_count: 0,
+			unknown_count: 0,
+			failed_count: 0,
+		};
 		const after = simulateOutcome(initial, "partial");
-		
+
 		expect(after.uses).toBe(1);
 		expect(after.success_count).toBe(0.5);
 		expect(after.partial_count).toBe(1);
 	});
 
 	it("should increment uses for 'unknown' outcome (Phase 23.3)", () => {
-		const initial: MockStats = { uses: 0, success_count: 0, worked_count: 0, partial_count: 0, unknown_count: 0, failed_count: 0 };
+		const initial: MockStats = {
+			uses: 0,
+			success_count: 0,
+			worked_count: 0,
+			partial_count: 0,
+			unknown_count: 0,
+			failed_count: 0,
+		};
 		const after = simulateOutcome(initial, "unknown");
-		
+
 		expect(after.uses).toBe(1); // Must increment!
 		expect(after.success_count).toBe(0.25);
 		expect(after.unknown_count).toBe(1);
@@ -231,59 +255,80 @@ describe("Phase 23.2/23.3: Success Count Accumulation", () => {
 	it("should increment uses for 'failed' outcome (Phase 23.3 critical fix)", () => {
 		// Bug: Failed outcomes were not incrementing uses
 		// Fix: ALWAYS increment uses, regardless of outcome
-		const initial: MockStats = { uses: 0, success_count: 0, worked_count: 0, partial_count: 0, unknown_count: 0, failed_count: 0 };
+		const initial: MockStats = {
+			uses: 0,
+			success_count: 0,
+			worked_count: 0,
+			partial_count: 0,
+			unknown_count: 0,
+			failed_count: 0,
+		};
 		const after = simulateOutcome(initial, "failed");
-		
+
 		expect(after.uses).toBe(1); // MUST increment!
 		expect(after.success_count).toBe(0.0); // No success
 		expect(after.failed_count).toBe(1);
 	});
 
 	it("should accumulate correct success_count after mixed outcomes", () => {
-		let stats: MockStats = { uses: 0, success_count: 0, worked_count: 0, partial_count: 0, unknown_count: 0, failed_count: 0 };
-		
+		let stats: MockStats = {
+			uses: 0,
+			success_count: 0,
+			worked_count: 0,
+			partial_count: 0,
+			unknown_count: 0,
+			failed_count: 0,
+		};
+
 		// Simulate: 3 worked, 2 partial, 2 unknown, 3 failed = 10 uses
-		stats = simulateOutcome(stats, "worked");   // +1.0
-		stats = simulateOutcome(stats, "worked");   // +1.0
-		stats = simulateOutcome(stats, "worked");   // +1.0
-		stats = simulateOutcome(stats, "partial");  // +0.5
-		stats = simulateOutcome(stats, "partial");  // +0.5
-		stats = simulateOutcome(stats, "unknown");  // +0.25
-		stats = simulateOutcome(stats, "unknown");  // +0.25
-		stats = simulateOutcome(stats, "failed");   // +0.0
-		stats = simulateOutcome(stats, "failed");   // +0.0
-		stats = simulateOutcome(stats, "failed");   // +0.0
-		
+		stats = simulateOutcome(stats, "worked"); // +1.0
+		stats = simulateOutcome(stats, "worked"); // +1.0
+		stats = simulateOutcome(stats, "worked"); // +1.0
+		stats = simulateOutcome(stats, "partial"); // +0.5
+		stats = simulateOutcome(stats, "partial"); // +0.5
+		stats = simulateOutcome(stats, "unknown"); // +0.25
+		stats = simulateOutcome(stats, "unknown"); // +0.25
+		stats = simulateOutcome(stats, "failed"); // +0.0
+		stats = simulateOutcome(stats, "failed"); // +0.0
+		stats = simulateOutcome(stats, "failed"); // +0.0
+
 		expect(stats.uses).toBe(10);
 		expect(stats.success_count).toBe(3 * 1.0 + 2 * 0.5 + 2 * 0.25 + 3 * 0.0);
 		expect(stats.success_count).toBe(4.5);
-		
+
 		// Wilson should reflect ~45% success rate
 		const wilsonSuccessRate = stats.success_count / stats.uses;
 		expect(wilsonSuccessRate).toBe(0.45);
 	});
 
 	it("should calculate correct Wilson for 10 failures (Phase 23.3)", () => {
-		let stats: MockStats = { uses: 0, success_count: 0, worked_count: 0, partial_count: 0, unknown_count: 0, failed_count: 0 };
-		
+		let stats: MockStats = {
+			uses: 0,
+			success_count: 0,
+			worked_count: 0,
+			partial_count: 0,
+			unknown_count: 0,
+			failed_count: 0,
+		};
+
 		// 10 failures
 		for (let i = 0; i < 10; i++) {
 			stats = simulateOutcome(stats, "failed");
 		}
-		
+
 		expect(stats.uses).toBe(10);
 		expect(stats.success_count).toBe(0);
 		expect(stats.failed_count).toBe(10);
-		
+
 		// Wilson should be ~0 for 0% success rate
 		const p = stats.success_count / stats.uses; // 0
 		const z = 1.96;
 		const n = stats.uses;
-		
+
 		const numerator = p + (z * z) / (2 * n) - z * Math.sqrt((p * (1 - p) + (z * z) / (4 * n)) / n);
 		const denominator = 1 + (z * z) / n;
 		const wilson = Math.max(0, numerator / denominator);
-		
+
 		expect(wilson).toBeLessThan(0.15);
 	});
 });

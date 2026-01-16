@@ -106,6 +106,18 @@ export function generateCorrelationId(): string {
 	return `mem_${timestamp}_${random}`;
 }
 
+type ChildableLogger = typeof pinoLogger & {
+	child?: (bindings: Record<string, unknown>) => typeof pinoLogger;
+};
+
+function createBaseLogger(): typeof pinoLogger {
+	const base = pinoLogger as unknown as ChildableLogger;
+	if (typeof base.child === "function") {
+		return base.child({ component: "memory" });
+	}
+	return pinoLogger;
+}
+
 // ============================================
 // Logger Implementation
 // ============================================
@@ -120,7 +132,7 @@ export function generateCorrelationId(): string {
  * ```
  */
 class MemoryLogger {
-	private baseLogger = pinoLogger.child({ component: "memory" });
+	private baseLogger = createBaseLogger();
 	private context: MemoryLogContext = {};
 
 	constructor(context?: MemoryLogContext) {

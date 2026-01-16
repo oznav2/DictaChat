@@ -1,7 +1,7 @@
 /**
  * Memory Bank Item API - Individual memory CRUD operations
  * Phase 1: Consolidate Memory Collections
- * 
+ *
  * This route now uses UnifiedMemoryFacade for all operations,
  * with backward compatibility for legacy ObjectId formats.
  */
@@ -13,6 +13,7 @@ import { ADMIN_USER_ID } from "$lib/server/constants";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
 import { MEMORY_COLLECTIONS } from "$lib/server/memory/stores/schemas";
 import { config } from "$lib/server/config";
+import { logger } from "$lib/server/logger";
 
 /**
  * Check if string is a valid UUID v4 format
@@ -41,7 +42,9 @@ function isValidMemoryId(id: string): { valid: boolean; type: "objectId" | "uuid
  * Try to find memory in legacy memoryBank collection by ObjectId
  * Phase 1.2.7: Add backward compatibility for legacy ObjectId lookups
  */
-async function findLegacyMemory(objectId: string): Promise<{ found: boolean; data?: Record<string, unknown> }> {
+async function findLegacyMemory(
+	objectId: string
+): Promise<{ found: boolean; data?: Record<string, unknown> }> {
 	try {
 		const doc = await collections.memoryBank.findOne({
 			_id: new ObjectId(objectId),
@@ -60,7 +63,9 @@ async function findLegacyMemory(objectId: string): Promise<{ found: boolean; dat
  * Try to find memory in memory_items collection by memory_id (UUID)
  * Also handles ObjectId-based lookup for transition period
  */
-async function findUnifiedMemory(memoryId: string): Promise<{ found: boolean; data?: Record<string, unknown> }> {
+async function findUnifiedMemory(
+	memoryId: string
+): Promise<{ found: boolean; data?: Record<string, unknown> }> {
 	try {
 		const database = await Database.getInstance();
 		const client = database.getClient();
@@ -172,6 +177,7 @@ export const PUT: RequestHandler = async ({ params, request }) => {
 		return error(400, "Invalid memory ID format");
 	}
 
+	logger.debug({ id, idType: idValidation.type }, "[memory-bank] Update request");
 	console.log(`[memory-bank] PUT request for ID: ${id} (type: ${idValidation.type})`);
 
 	try {
@@ -252,6 +258,7 @@ export const DELETE: RequestHandler = async ({ params }) => {
 		return error(400, "Invalid memory ID format");
 	}
 
+	logger.debug({ id, idType: idValidation.type }, "[memory-bank] Update request");
 	console.log(`[memory-bank] DELETE request for ID: ${id} (type: ${idValidation.type})`);
 
 	try {

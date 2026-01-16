@@ -21,7 +21,7 @@
 
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
-import { collections } from "$lib/server/database";
+import { Database } from "$lib/server/database";
 import { logger } from "$lib/server/logger";
 import { createDictaEmbeddingClient } from "$lib/server/memory";
 import { QdrantAdapter } from "$lib/server/memory/adapters/QdrantAdapter";
@@ -65,8 +65,10 @@ const HEALTH_TIMEOUT_MS = 3000;
 async function checkMongoDB(): Promise<ComponentHealth> {
 	const start = Date.now();
 	try {
-		// Simple ping via count (fast operation)
-		await collections.memoryItems.estimatedDocumentCount({ maxTimeMS: HEALTH_TIMEOUT_MS });
+		const db = await Database.getInstance();
+		const client = db.getClient();
+		const items = client.db().collection("memory_items");
+		await items.estimatedDocumentCount({ maxTimeMS: HEALTH_TIMEOUT_MS });
 		return {
 			name: "mongodb",
 			healthy: true,
@@ -107,7 +109,6 @@ async function checkQdrant(): Promise<ComponentHealth> {
 			message: isCircuitOpen ? "Circuit breaker open" : health.healthy ? "Connected" : "Unhealthy",
 			details: {
 				circuitOpen: isCircuitOpen,
-				version: health.version,
 			},
 		};
 	} catch (err) {
@@ -283,7 +284,15 @@ export const GET: RequestHandler = async ({ url }) => {
 			{
 				status: "unhealthy",
 				timestamp: new Date().toISOString(),
-				error: errorMessage,
+				components: [
+					{
+						name: "memory_system",
+						healthy: false,
+						latencyMs: Date.now() - startTime,
+						message: errorMessage,
+					},
+				],
+				summary: { total: 1, healthy: 0, unhealthy: 1 },
 				checkDurationMs: Date.now() - startTime,
 			} as HealthCheckResult,
 			{ status: 503 }

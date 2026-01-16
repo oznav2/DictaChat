@@ -231,7 +231,7 @@ export async function updateUser(params: {
 			const client = database.getClient();
 			const db = client.db(config.MONGODB_DB_NAME);
 			const memoryItemsCollection = db.collection(MEMORY_COLLECTIONS.ITEMS);
-			
+
 			const memoryItemsResult = await memoryItemsCollection.updateMany(
 				{ user_id: previousSessionId },
 				{ $set: { user_id: userIdStr } }

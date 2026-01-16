@@ -29,4 +29,3 @@ export const POST: RequestHandler = async ({ request }) => {
 		deleted: result.deletedCount,
 	});
 };
-

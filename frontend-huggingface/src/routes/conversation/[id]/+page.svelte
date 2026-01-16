@@ -22,7 +22,7 @@
 	import { fetchMessageUpdates } from "$lib/utils/messageUpdates";
 	import type { v4 } from "uuid";
 	import { useSettingsStore } from "$lib/stores/settings.js";
-	import { derived as deriveStore } from "svelte/store";
+	import { derived as deriveStore, get } from "svelte/store";
 	import { enabledServers } from "$lib/stores/mcpServers";
 	import { browser } from "$app/environment";
 	import {
@@ -266,7 +266,9 @@
 				lastUpdateTime = currentTime;
 
 				// DEFENSIVE: Ensure updates is an array
-				const existingUpdates = Array.isArray(messageToWriteTo.updates) ? messageToWriteTo.updates : [];
+				const existingUpdates = Array.isArray(messageToWriteTo.updates)
+					? messageToWriteTo.updates
+					: [];
 				const lastUpdate = existingUpdates.at(-1);
 				const marker = {
 					type: MessageUpdateType.Stream as const,
@@ -276,7 +278,8 @@
 
 				if (lastUpdate?.type === MessageUpdateType.Stream && lastUpdate.token === "") {
 					// DEFENSIVE: Validate len is a number
-					const lastLen = typeof lastUpdate.len === 'number' && lastUpdate.len >= 0 ? lastUpdate.len : 0;
+					const lastLen =
+						typeof lastUpdate.len === "number" && lastUpdate.len >= 0 ? lastUpdate.len : 0;
 					const merged = {
 						...lastUpdate,
 						token: "",
@@ -303,7 +306,7 @@
 				// See server code for more details
 				// DEFENSIVE: Type guard to prevent crash if token is undefined
 				if (update.type === MessageUpdateType.Stream) {
-					if (typeof update.token === 'string') {
+					if (typeof update.token === "string") {
 						update.token = update.token.replaceAll("\0", "");
 					} else {
 						console.warn("[stream] Received non-string token:", typeof update.token);
@@ -438,6 +441,31 @@
 						memoryUi.setProcessingFound(update.count);
 					} else if (update.subtype === MessageMemoryUpdateType.Storing) {
 						memoryUi.setProcessingStatus("storing");
+					} else if (update.subtype === MessageMemoryUpdateType.Stored) {
+						const state = get(memoryUi);
+						const existing = state.data.recentMemories ?? [];
+						memoryUi.setRecentMemories(
+							[
+								{
+									memory_id: update.memoryId,
+									tier: update.tier,
+									preview: update.preview,
+									created_at: update.createdAt ?? null,
+								},
+								...existing,
+							].slice(0, 100)
+						);
+						dispatchMemoryEvent({
+							type: "memory_updated",
+							userId: "admin",
+							detail: {
+								source: "memory_stored",
+								memoryId: update.memoryId,
+								tier: update.tier,
+								conversationId: page.params.id,
+							},
+						});
+						setTimeout(() => memoryUi.resetProcessing(), 1500);
 					} else if (update.subtype === MessageMemoryUpdateType.Outcome) {
 						memoryUi.setProcessingStatus("learning");
 						// Dispatch memoryUpdated event to trigger UI refresh in memory panels

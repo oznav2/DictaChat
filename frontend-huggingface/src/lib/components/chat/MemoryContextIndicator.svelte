@@ -353,7 +353,9 @@
 	/* Button hover lift effect */
 	.known-context-section button,
 	.citations-section button {
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
 	}
 
 	.known-context-section button:hover,
@@ -409,7 +411,9 @@
 
 	/* Feedback button hover states */
 	.feedback-section button {
-		transition: transform 0.15s ease, background-color 0.2s ease;
+		transition:
+			transform 0.15s ease,
+			background-color 0.2s ease;
 	}
 
 	.feedback-section button:hover {

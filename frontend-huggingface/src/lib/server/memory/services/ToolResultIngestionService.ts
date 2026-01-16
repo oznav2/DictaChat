@@ -19,7 +19,9 @@
 import { createHash } from "crypto";
 import { logger } from "$lib/server/logger";
 import { UnifiedMemoryFacade } from "../UnifiedMemoryFacade";
+import { getMemoryFeatureFlags } from "../featureFlags";
 import type { MemoryTier } from "../types";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 
 // ============================================
 // Tool Categories for Ingestion Eligibility
@@ -198,6 +200,15 @@ export class ToolResultIngestionService {
 	async ingestToolResult(params: ToolResultIngestionParams): Promise<IngestionResult> {
 		const { conversationId, toolName, query, output, metadata } = params;
 
+		const flags = getMemoryFeatureFlags();
+		if (!flags.toolResultIngestionEnabled) {
+			return {
+				attempted: false,
+				stored: false,
+				reason: "Tool result ingestion is disabled by feature flag",
+			};
+		}
+
 		// Validate tool eligibility
 		if (!this.shouldIngest(toolName)) {
 			return {
@@ -209,6 +220,10 @@ export class ToolResultIngestionService {
 
 		// Validate output quality
 		if (!output || output.trim().length < CONFIG.minOutputLength) {
+			logger.warn(
+				{ toolName, reason: "output_too_short" },
+				"[tool-ingest] Skipped - low quality output"
+			);
 			return {
 				attempted: false,
 				stored: false,
@@ -228,19 +243,27 @@ export class ToolResultIngestionService {
 		}
 
 		try {
+			const normalizedToolName = toolName.toLowerCase();
+			const toolCategory = this.getToolCategory(normalizedToolName);
+
 			// Calculate content hash for deduplication
-			const contentForHash = output.trim().slice(0, CONFIG.hashContentLength);
+			const sanitizedOutput = sanitizeToolOutput(output);
+			const contentForHash = sanitizedOutput.trim().slice(0, CONFIG.hashContentLength);
 			const contentHash = createHash("sha256").update(contentForHash).digest("hex");
 			const shortHash = contentHash.slice(0, CONFIG.shortHashLength);
 
 			// Check if content already exists via hash lookup
 			// This reuses the document hash pattern from Phase 4
-			const isDuplicate = await this.checkDuplicate(contentHash);
+			const isDuplicate = await this.checkDuplicate({
+				toolName: normalizedToolName,
+				shortHash,
+			});
 			if (isDuplicate) {
-				logger.debug(
-					{ toolName, contentHash: shortHash, conversationId },
-					"[toolIngestion] Duplicate content detected, skipping storage"
-				);
+				logger.debug("[toolIngestion] Duplicate content detected, skipping storage", {
+					toolName,
+					contentHash: shortHash,
+					conversationId,
+				});
 				return {
 					attempted: true,
 					stored: false,
@@ -249,7 +272,12 @@ export class ToolResultIngestionService {
 			}
 
 			// Prepare text for storage (truncate if needed)
-			const textToStore = output.trim().slice(0, CONFIG.maxOutputLength);
+			const textToStore = sanitizedOutput.trim().slice(0, CONFIG.maxOutputLength);
+
+			logger.info(
+				{ toolName, outputLength: sanitizedOutput.length, chunkCount: 1 },
+				"[tool-ingest] Storing tool result"
+			);
 
 			// Build title from query or tool name
 			const title = query
@@ -259,44 +287,35 @@ export class ToolResultIngestionService {
 			// Store in working tier with tool metadata
 			// Phase K.2: Uses needs_reindex pattern for async embedding
 			const result = await facade.store({
-				userId: "ADMIN_USER_ID", // Tool results are system-level
+				userId: ADMIN_USER_ID,
 				tier: "working" as MemoryTier,
 				text: textToStore,
-				metadata: {
-					// Tool identification
-					tool_name: toolName,
-					tool_query: query ?? null,
-					tool_category: this.getToolCategory(toolName),
-
-					// Deduplication
-					content_hash: contentHash,
-
-					// Context
-					conversation_id: conversationId,
-					source_type: "tool_result",
-					title,
-
-					// Additional metadata passed by caller
-					...metadata,
-				},
+				tags: buildToolTags({
+					toolName: normalizedToolName,
+					category: toolCategory,
+					shortHash,
+					conversationId,
+				}),
 				importance: 0.6, // Tool results are moderately important
 				confidence: 0.7, // High confidence in tool outputs
 				source: {
 					type: "tool",
-					toolName,
+					tool_name: toolName,
+					conversation_id: conversationId,
+					description: typeof metadata?.description === "string" ? metadata.description : title,
+					collected_at: new Date(),
 				},
 			});
 
-			logger.info(
-				{
-					toolName,
-					conversationId,
-					memoryId: result.memory_id,
-					contentHash: shortHash,
-					textLength: textToStore.length,
-				},
-				"[toolIngestion] Tool result ingested into memory"
-			);
+			logger.info("[toolIngestion] Tool result ingested into memory", {
+				toolName,
+				conversationId,
+				memoryId: result.memory_id,
+				contentHash: shortHash,
+				textLength: textToStore.length,
+			});
+
+			logger.info({ toolName, category: toolCategory }, "[tool-ingest] Stored result");
 
 			return {
 				attempted: true,
@@ -305,10 +324,11 @@ export class ToolResultIngestionService {
 			};
 		} catch (err) {
 			// Fire-and-forget: log error but don't throw
-			logger.error(
-				{ err, toolName, conversationId },
-				"[toolIngestion] Failed to ingest tool result (non-blocking)"
-			);
+			logger.error("[toolIngestion] Failed to ingest tool result (non-blocking)", {
+				err,
+				toolName,
+				conversationId,
+			});
 			return {
 				attempted: true,
 				stored: false,
@@ -323,22 +343,25 @@ export class ToolResultIngestionService {
 	 * @param contentHash - SHA-256 hash of content
 	 * @returns true if duplicate exists
 	 */
-	private async checkDuplicate(contentHash: string): Promise<boolean> {
+	private async checkDuplicate(params: { toolName: string; shortHash: string }): Promise<boolean> {
 		try {
-			const facade = UnifiedMemoryFacade.getInstance();
+			const { Database } = await import("$lib/server/database");
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const items = client.db("chat-ui").collection("memory_items");
 
-			// Search for existing content with same hash
-			// This is a lightweight check that doesn't load full content
-			const searchResult = await facade.search({
-				userId: "ADMIN_USER_ID",
-				query: `content_hash:${contentHash.slice(0, 16)}`,
-				limit: 1,
-				tiers: ["working"],
-			});
+			const existing = await items.findOne(
+				{
+					user_id: ADMIN_USER_ID,
+					tier: "working",
+					status: "active",
+					"source.tool_name": params.toolName,
+					tags: { $all: [`content_hash:${params.shortHash}`, `tool:${params.toolName}`] },
+				},
+				{ projection: { memory_id: 1 } }
+			);
 
-			// If we find any result with matching hash, it's a duplicate
-			// Note: This is a heuristic - full hash match would be more precise
-			return (searchResult.results?.length ?? 0) > 0;
+			return !!existing;
 		} catch {
 			// On error, assume not duplicate (fail-open)
 			return false;
@@ -351,12 +374,15 @@ export class ToolResultIngestionService {
 	 * @param toolName - Name of the tool
 	 * @returns Category string
 	 */
-	private getToolCategory(toolName: string): string {
+	private getToolCategory(
+		toolName: string
+	): "search" | "research" | "data" | "document" | "unknown" {
 		const normalized = toolName.toLowerCase();
 
+		if (normalized.includes("docling")) return "document";
 		if (normalized.includes("perplexity")) return "research";
 		if (normalized.includes("tavily")) return "search";
-		if (normalized.includes("datagov") || normalized.includes("datastore")) return "government_data";
+		if (normalized.includes("datagov") || normalized.includes("datastore")) return "data";
 		if (normalized.includes("brave") || normalized.includes("duckduckgo")) return "search";
 
 		return "unknown";
@@ -378,6 +404,71 @@ export function ingestToolResult(params: ToolResultIngestionParams): void {
 	ToolResultIngestionService.getInstance()
 		.ingestToolResult(params)
 		.catch((err) => {
-			logger.error({ err, toolName: params.toolName }, "[toolIngestion] Fire-and-forget ingestion failed");
+			logger.error("[toolIngestion] Fire-and-forget ingestion failed", {
+				err,
+				toolName: params.toolName,
+			});
 		});
+}
+
+function buildToolTags(params: {
+	toolName: string;
+	category: string;
+	shortHash: string;
+	conversationId: string;
+}): string[] {
+	const toolName = params.toolName.toLowerCase();
+	const category = params.category.toLowerCase();
+
+	return [
+		`tool:${toolName}`,
+		`tool_category:${category}`,
+		`content_hash:${params.shortHash}`,
+		`conversation:${params.conversationId}`,
+	];
+}
+
+export function sanitizeToolOutput(text: string): string {
+	let sanitized = text ?? "";
+
+	sanitized = sanitized.replace(
+		/data:[a-z]+[/][a-z0-9.+-]+;base64,[A-Za-z0-9+/=]+/gi,
+		"[binary-data-removed]"
+	);
+	sanitized = sanitized.replace(/!\[[^\]]*\]\(data:[^)]+\)/g, "[binary-data-removed]");
+
+	sanitized = sanitized.replace(
+		/\b(authorization)\s*:\s*bearer\s+[a-z0-9\-._~+/]+=*/gi,
+		"authorization: Bearer [REDACTED]"
+	);
+	sanitized = sanitized.replace(/\bBearer\s+[a-z0-9\-._~+/]+=*/gi, "Bearer [REDACTED]");
+	sanitized = sanitized.replace(/\b(x-api-key)\s*:\s*[^ \t\r\n]+/gi, "x-api-key: [REDACTED]");
+	sanitized = sanitized.replace(
+		/\b(api[_-]?key|access[_-]?token|refresh[_-]?token|token)\s*[:=]\s*["']?[^"'\s]+["']?/gi,
+		"$1=[REDACTED]"
+	);
+	sanitized = sanitized.replace(/\b(cookie|set-cookie)\s*:\s*[^\r\n]+/gi, "$1: [REDACTED]");
+	sanitized = sanitized.replace(
+		/([?&](?:token|access_token|refresh_token|api_key|key|sig|signature)=)[^&\s]+/gi,
+		"$1[REDACTED]"
+	);
+
+	sanitized = sanitized.replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, "[REDACTED_EMAIL]");
+	sanitized = sanitized.replace(/\+?[0-9][0-9()\s.-]{7,}[0-9]/g, (match) => {
+		const digitCount = match.replace(/\D/g, "").length;
+		return digitCount >= 9 ? "[REDACTED_PHONE]" : match;
+	});
+
+	sanitized = Array.from(sanitized)
+		.filter((ch) => {
+			const code = ch.charCodeAt(0);
+			if (code <= 8) return false;
+			if (code === 11 || code === 12) return false;
+			if (code >= 14 && code <= 31) return false;
+			if (code >= 127 && code <= 159) return false;
+			return true;
+		})
+		.join("");
+
+	return sanitized;
 }

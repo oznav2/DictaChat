@@ -52,6 +52,8 @@ export interface DocumentIngestionResult {
 	bookId?: string;
 	/** SHA256 hash of extracted text */
 	documentHash?: string;
+	/** SHA256 hash of raw file bytes */
+	fileHash?: string;
 	/** Number of chunks created */
 	chunkCount?: number;
 	/** Total tokens across all chunks */
@@ -192,6 +194,37 @@ export class UnifiedDocumentIngestionService {
 		try {
 			this.emitProgress("reading");
 
+			let fileHash: string | null = null;
+			let fileSizeBytes: number | null = null;
+			if (this.config.enableDedup) {
+				try {
+					const fs = await import("fs/promises");
+					const buf = await fs.readFile(params.filePath);
+					fileHash = UnifiedDocumentIngestionService.calculateHash(buf);
+					fileSizeBytes = buf.byteLength;
+
+					const existingByFileHash = await this.checkExistingBookByFileHash(
+						params.userId,
+						fileHash
+					);
+					if (existingByFileHash) {
+						this.emitProgress("recognized", `Found existing: ${existingByFileHash.title}`);
+						return {
+							success: true,
+							documentId: existingByFileHash.documentId,
+							bookId: existingByFileHash.bookId,
+							fileHash,
+							chunkCount: existingByFileHash.chunkCount,
+							recognizedFromPreviousChat: true,
+							stats: { ...stats, totalMs: Date.now() - startTime },
+						};
+					}
+				} catch {
+					fileHash = null;
+					fileSizeBytes = null;
+				}
+			}
+
 			// Step 1: Read and extract text
 			const extractionStart = Date.now();
 			const extractedText = await this.extractText(params.filePath, params.mimeType);
@@ -221,6 +254,7 @@ export class UnifiedDocumentIngestionService {
 						documentId: existingDoc.documentId,
 						bookId: existingDoc.bookId,
 						documentHash,
+						fileHash: fileHash ?? undefined,
 						chunkCount: existingDoc.chunkCount,
 						recognizedFromPreviousChat: true,
 						stats: { ...stats, totalMs: Date.now() - startTime },
@@ -250,6 +284,8 @@ export class UnifiedDocumentIngestionService {
 				chunks,
 				embeddings,
 				documentHash,
+				fileHash: fileHash ?? undefined,
+				fileSizeBytes: fileSizeBytes ?? undefined,
 				fileName: params.fileName,
 				title: params.title || params.fileName.replace(/\.[^/.]+$/, ""),
 				author: params.author,
@@ -265,6 +301,7 @@ export class UnifiedDocumentIngestionService {
 				documentId: storeResult.documentId,
 				bookId: storeResult.bookId,
 				documentHash,
+				fileHash: fileHash ?? undefined,
 				chunkCount: chunks.length,
 				totalTokens: chunks.reduce((sum, c) => sum + c.tokenCount, 0),
 				recognizedFromPreviousChat: false,
@@ -487,6 +524,8 @@ export class UnifiedDocumentIngestionService {
 		chunks: DocumentChunk[];
 		embeddings: (number[] | null)[];
 		documentHash: string;
+		fileHash?: string;
+		fileSizeBytes?: number;
 		fileName: string;
 		title: string;
 		author?: string;
@@ -508,15 +547,15 @@ export class UnifiedDocumentIngestionService {
 			author: params.author || "Unknown",
 			uploadTimestamp: new Date(),
 			status: "completed",
+			taskId: bookId,
 			processingStage: "completed",
 			processingMessage: "Processed via unified ingestion",
 			totalChunks: params.chunks.length,
 			chunksProcessed: params.chunks.length,
 			documentHash: params.documentHash,
+			fileHash: params.fileHash,
 			fileName: params.fileName,
-			fileSize: 0,
-			// Link to conversation if provided (for RAG context)
-			conversationId: params.conversationId || null,
+			fileSize: params.fileSizeBytes ?? 0,
 			source: params.conversationId ? "rag_upload" : "bookstore_upload",
 		});
 
@@ -538,6 +577,7 @@ export class UnifiedDocumentIngestionService {
 					upload_timestamp: new Date().toISOString(),
 					file_type: params.mimeType,
 					document_hash: params.documentHash,
+					file_hash: params.fileHash ?? null,
 					section_title: chunk.sectionTitle,
 					chunk_type: chunk.chunkType,
 					token_count: chunk.tokenCount,
@@ -558,12 +598,40 @@ export class UnifiedDocumentIngestionService {
 		return createHash("sha256").update(content).digest("hex");
 	}
 
+	private async checkExistingBookByFileHash(
+		userId: string,
+		fileHash: string
+	): Promise<{ documentId: string; bookId: string; title: string; chunkCount: number } | null> {
+		try {
+			const { collections } = await import("$lib/server/database");
+
+			const existing = await collections.books.findOne(
+				{ userId, fileHash, status: "completed" },
+				{ projection: { _id: 1, title: 1, totalChunks: 1 } }
+			);
+
+			if (!existing?._id) return null;
+			return {
+				documentId: `book:${existing._id.toString()}`,
+				bookId: existing._id.toString(),
+				title: existing.title ?? "Unknown",
+				chunkCount: existing.totalChunks ?? 0,
+			};
+		} catch {
+			return null;
+		}
+	}
+
 	/**
 	 * Calculate document hash from content (static utility)
 	 */
 	static calculateHash(content: string | Buffer): string {
 		return createHash("sha256").update(content).digest("hex");
 	}
+}
+
+export function calculateDocumentHash(content: string | Buffer): string {
+	return UnifiedDocumentIngestionService.calculateHash(content);
 }
 
 /**

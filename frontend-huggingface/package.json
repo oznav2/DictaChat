@@ -15,6 +15,7 @@
 		"updateLocalEnv": "vite-node --options.transformMode.ssr='/.*/' scripts/updateLocalEnv.ts",
 		"populate": "vite-node --options.transformMode.ssr='/.*/' scripts/populate.ts",
 		"config": "vite-node --options.transformMode.ssr='/.*/' scripts/config.ts",
+		"k4": "vite-node --options.transformMode.ssr='/.*/' scripts/k4Baseline.ts",
 		"prepare": "husky"
 	},
 	"devDependencies": {
@@ -81,6 +82,7 @@
 		"@types/jszip": "^3.4.0",
 		"3d-force-graph": "^1.79.0",
 		"autoprefixer": "^10.4.14",
+		"async-mutex": "^0.5.0",
 		"aws4": "^1.13.2",
 		"bits-ui": "^2.14.2",
 		"d3": "^7.9.0",

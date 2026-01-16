@@ -1,15 +1,15 @@
 /**
  * Phase 1.1: Migration Script - Consolidate memoryBank to memory_items
- * 
+ *
  * This script migrates all items from the legacy `memoryBank` collection
  * to the unified `memory_items` collection with tier="memory_bank".
- * 
+ *
  * Design principles:
  * - Create-then-delete pattern (never delete source until target verified)
  * - Batch processing with configurable batch size
  * - Idempotent and resumable
  * - Graceful handling of embedding/Qdrant failures
- * 
+ *
  * Risk Mitigations:
  * - Items marked needs_reindex=true if embedding fails
  * - Items marked migration_failed=true on error
@@ -17,6 +17,7 @@
  * - No source deletion until verification
  */
 
+import { createHash } from "crypto";
 import { v4 as uuidv4 } from "uuid";
 import { ObjectId, type Collection, type Db } from "mongodb";
 import { logger } from "$lib/server/logger";
@@ -112,7 +113,7 @@ async function checkAlreadyMigrated(
 		tier: "memory_bank",
 		text: { $regex: new RegExp(`^${escapeRegex(normalizedText)}$`, "i") },
 	});
-	
+
 	return existing ? (existing.memory_id as string) : null;
 }
 
@@ -158,9 +159,7 @@ function convertToMemoryItem(
 		entities: [],
 		always_inject: false,
 		source: {
-			type: "user", // Mark as user-created for legacy items
-			legacy: true, // Phase 1.1.5: Add source.legacy marker
-			legacy_id: legacy._id.toString(), // Track original ID
+			type: "user",
 			conversation_id: null,
 			message_id: null,
 			tool_name: legacy.source?.startsWith("http") ? "fetch" : (legacy.source ?? null),
@@ -169,11 +168,10 @@ function convertToMemoryItem(
 			chunk_id: null,
 		},
 		quality: {
+			importance: Number.isFinite(importance) ? importance : 0.5,
+			confidence: Number.isFinite(confidence) ? confidence : 0.5,
+			mentioned_count: 0,
 			quality_score: qualityScore,
-			relevance_score: null,
-			confidence_score: confidence ?? null,
-			completeness_score: null,
-			recency_score: null,
 		},
 		stats: {
 			uses: 0,
@@ -190,19 +188,20 @@ function convertToMemoryItem(
 		updated_at: updatedAt,
 		archived_at: legacy.status === "archived" ? (legacy.archivedAt ?? now) : null,
 		expires_at: null,
-		embedding: {
-			model: null,
-			dimensions: null,
-			indexed_at: null,
-			needs_reindex: true, // Will be reindexed by deferred process
-		},
+		needs_reindex: true,
+		reindex_reason: "legacy_migration",
+		reindex_marked_at: now,
+		embedding_status: "pending",
+		embedding_error: null,
+		last_reindexed_at: null,
+		embedding: null,
 		versioning: {
 			current_version: 1,
 			supersedes_memory_id: null,
 		},
 		personality: {
-			personality_id: null,
-			personality_name: null,
+			source_personality_id: null,
+			source_personality_name: null,
 		},
 		language: "none",
 		translation_ref_id: null,
@@ -225,11 +224,7 @@ async function migrateItem(
 	try {
 		// Check if already migrated (skip duplicates)
 		if (config.skipExisting) {
-			const existingId = await checkAlreadyMigrated(
-				itemsCollection,
-				legacy.userId,
-				legacy.text
-			);
+			const existingId = await checkAlreadyMigrated(itemsCollection, legacy.userId, legacy.text);
 			if (existingId) {
 				return {
 					legacyId: legacy._id.toString(),
@@ -248,27 +243,39 @@ async function migrateItem(
 			try {
 				const vector = await embeddingClient.embed(legacy.text);
 				if (vector) {
+					const vectorHash = createHash("sha256").update(JSON.stringify(vector)).digest("hex");
 					newDoc.embedding = {
 						model: "dicta-embeddings",
-						dimensions: vector.length,
-						indexed_at: new Date(),
-						needs_reindex: false,
+						dims: vector.length,
+						vector_hash: vectorHash,
+						last_indexed_at: new Date(),
 					};
+					newDoc.needs_reindex = false;
+					newDoc.embedding_status = "indexed";
+					newDoc.embedding_error = null;
+					newDoc.last_reindexed_at = new Date();
 					needsReindex = false;
 
 					// Optionally index in Qdrant
 					if (config.indexInQdrant && qdrantAdapter) {
-						await qdrantAdapter.upsert([{
-							id: memoryId,
-							vector,
-							payload: {
-								user_id: legacy.userId,
-								tier: "memory_bank",
-								status: legacy.status,
-								text: legacy.text,
-								memory_id: memoryId,
+						await qdrantAdapter.upsertBatch([
+							{
+								id: memoryId,
+								vector,
+								payload: {
+									user_id: legacy.userId,
+									tier: "memory_bank",
+									status: legacy.status,
+									tags: legacy.tags ?? [],
+									entities: [],
+									content: legacy.text,
+									timestamp: Date.now(),
+									composite_score: 0.5,
+									uses: 0,
+									always_inject: false,
+								},
 							},
-						}]);
+						]);
 					}
 				}
 			} catch (embErr) {
@@ -284,7 +291,8 @@ async function migrateItem(
 			await itemsCollection.insertOne({
 				...newDoc,
 				_id: new ObjectId(),
-				embedding: { ...newDoc.embedding, needs_reindex: needsReindex },
+				needs_reindex: needsReindex,
+				embedding_status: needsReindex ? "pending" : "indexed",
 			} as MemoryItemDocument);
 		}
 
@@ -296,10 +304,7 @@ async function migrateItem(
 		};
 	} catch (err) {
 		const errorMsg = err instanceof Error ? err.message : String(err);
-		logger.error(
-			{ err, legacyId: legacy._id.toString() },
-			"[migration] Failed to migrate item"
-		);
+		logger.error({ err, legacyId: legacy._id.toString() }, "[migration] Failed to migrate item");
 		return {
 			legacyId: legacy._id.toString(),
 			newMemoryId: memoryId,
@@ -312,9 +317,9 @@ async function migrateItem(
 
 /**
  * Main migration function
- * 
+ *
  * Phase 1.1.2: Implement migrateMemoryBankToUnified()
- * 
+ *
  * @param embeddingClient - Optional embedding client for generating vectors
  * @param qdrantAdapter - Optional Qdrant adapter for vector indexing
  * @param userConfig - Migration configuration options
@@ -326,7 +331,7 @@ export async function migrateMemoryBankToUnified(
 ): Promise<MigrationStats> {
 	const migrationConfig = { ...DEFAULT_CONFIG, ...userConfig };
 	const startTime = Date.now();
-	
+
 	const stats: MigrationStats = {
 		totalLegacyItems: 0,
 		migrated: 0,
@@ -358,7 +363,7 @@ export async function migrateMemoryBankToUnified(
 
 		// Count total items
 		stats.totalLegacyItems = await memoryBankCollection.countDocuments(query);
-		
+
 		if (stats.totalLegacyItems === 0) {
 			logger.info("[migration] No legacy items to migrate");
 			stats.durationMs = Date.now() - startTime;
@@ -375,7 +380,7 @@ export async function migrateMemoryBankToUnified(
 		const cursor = memoryBankCollection.find(query).batchSize(migrationConfig.batchSize);
 
 		while (await cursor.hasNext()) {
-			const legacy = await cursor.next() as LegacyMemoryBankItem | null;
+			const legacy = (await cursor.next()) as LegacyMemoryBankItem | null;
 			if (!legacy) continue;
 
 			const result = await migrateItem(
@@ -429,7 +434,6 @@ export async function migrateMemoryBankToUnified(
 		}
 
 		await cursor.close();
-
 	} catch (err) {
 		logger.error({ err }, "[migration] Migration failed");
 		throw err;
@@ -447,7 +451,7 @@ export async function migrateMemoryBankToUnified(
 			durationMs: stats.durationMs,
 			dryRun: migrationConfig.dryRun,
 		},
-		"[migration] memoryBank → memory_items complete"
+		"[migration] memoryBank→memory_items complete"
 	);
 
 	return stats;
@@ -505,7 +509,9 @@ export async function verifyMigration(userId?: string): Promise<{
 		query.userId = userId;
 	}
 
-	const legacyItems = await memoryBankCollection.find(query, { projection: { _id: 1, text: 1, userId: 1 } }).toArray();
+	const legacyItems = await memoryBankCollection
+		.find(query, { projection: { _id: 1, text: 1, userId: 1 } })
+		.toArray();
 	const missingIds: string[] = [];
 
 	for (const legacy of legacyItems) {

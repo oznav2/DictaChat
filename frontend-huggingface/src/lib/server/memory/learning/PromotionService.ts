@@ -54,10 +54,10 @@ export interface PromotionStats {
 
 /**
  * Phase 22.4: Stricter promotion rules
- * 
+ *
  * working → history: Score ≥ 0.7, Uses ≥ 2 (unchanged)
  * history → patterns: Score ≥ 0.9, Uses ≥ 3, AND success_count ≥ 5 (NEW)
- * 
+ *
  * The history tier acts as a "probation period" where counters reset.
  * Only items that re-establish high success in the history tier get promoted.
  */
@@ -75,16 +75,16 @@ const MIN_SUCCESS_COUNT_FOR_PATTERNS = 5;
 /**
  * Phase 12.3: Time decay configuration for promotion
  * Recently used memories get priority in promotion decisions
- * 
+ *
  * RECENCY_BOOST_DAYS: Items used within this window get a boost
  * RECENCY_BOOST_FACTOR: Multiplier for recent items (1.1 = 10% boost to score threshold)
  * STALE_PENALTY_DAYS: Items not used for this long get a penalty
  * STALE_PENALTY_FACTOR: Multiplier for stale items (0.9 = need 10% higher score to promote)
  */
-const RECENCY_BOOST_DAYS = 7;  // Recently used (within 1 week)
-const RECENCY_BOOST_FACTOR = 0.9;  // Effectively lowers threshold by 10%
-const STALE_PENALTY_DAYS = 30;  // Not used in a month
-const STALE_PENALTY_FACTOR = 1.1;  // Effectively raises threshold by 10%
+const RECENCY_BOOST_DAYS = 7; // Recently used (within 1 week)
+const RECENCY_BOOST_FACTOR = 0.9; // Effectively lowers threshold by 10%
+const STALE_PENALTY_DAYS = 30; // Not used in a month
+const STALE_PENALTY_FACTOR = 1.1; // Effectively raises threshold by 10%
 
 const TTL_RULES: TtlRule[] = [
 	{
@@ -225,8 +225,8 @@ export class PromotionService {
 				for (const candidate of candidates) {
 					try {
 						await this.promoteMemory(
-							candidate.memory_id, 
-							candidate.user_id, 
+							candidate.memory_id,
+							candidate.user_id,
 							rule.toTier,
 							rule.fromTier // Phase 22.4: Pass fromTier for counter reset
 						);
@@ -247,15 +247,18 @@ export class PromotionService {
 
 	/**
 	 * Phase 12.3: Calculate recency-adjusted score threshold
-	 * 
+	 *
 	 * Recently used memories get a lower threshold (easier to promote)
 	 * Stale memories get a higher threshold (harder to promote)
-	 * 
+	 *
 	 * @param baseThreshold The original minScore threshold
 	 * @param lastUsedAt The last_used_at timestamp from stats
 	 * @returns Adjusted threshold
 	 */
-	private calculateRecencyAdjustedThreshold(baseThreshold: number, lastUsedAt: string | Date | null): number {
+	private calculateRecencyAdjustedThreshold(
+		baseThreshold: number,
+		lastUsedAt: string | Date | null
+	): number {
 		if (!lastUsedAt) {
 			return baseThreshold; // No last_used_at, use default
 		}
@@ -280,7 +283,7 @@ export class PromotionService {
 
 	/**
 	 * Find memories eligible for promotion
-	 * 
+	 *
 	 * Phase 22.4: For history → patterns promotion, also requires success_count >= 5
 	 * Phase 12.3: Considers recency in promotion decisions
 	 */
@@ -328,16 +331,16 @@ export class PromotionService {
 		if (tier === "history" && toTier === "patterns") {
 			const beforeCount = filtered.length;
 			filtered = filtered.filter((m) => {
-				const successCount = (m.stats as Record<string, unknown>)?.success_count as number | undefined ?? 0;
+				const successCount = m.stats?.success_count ?? 0;
 				return successCount >= MIN_SUCCESS_COUNT_FOR_PATTERNS;
 			});
 
 			if (beforeCount > filtered.length) {
 				logger.debug(
-					{ 
-						beforeCount, 
-						afterCount: filtered.length, 
-						requiredSuccessCount: MIN_SUCCESS_COUNT_FOR_PATTERNS 
+					{
+						beforeCount,
+						afterCount: filtered.length,
+						requiredSuccessCount: MIN_SUCCESS_COUNT_FOR_PATTERNS,
 					},
 					"[Phase 22.4] Filtered history→patterns candidates by success_count"
 				);
@@ -352,12 +355,12 @@ export class PromotionService {
 		});
 
 		logger.debug(
-			{ 
-				tier, 
-				toTier, 
+			{
+				tier,
+				toTier,
 				candidateCount: filtered.length,
 				recencyBoostDays: RECENCY_BOOST_DAYS,
-				stalePenaltyDays: STALE_PENALTY_DAYS
+				stalePenaltyDays: STALE_PENALTY_DAYS,
 			},
 			"[Phase 12.3] Found promotion candidates with recency consideration"
 		);
@@ -367,13 +370,13 @@ export class PromotionService {
 
 	/**
 	 * Promote a memory to a new tier
-	 * 
+	 *
 	 * Phase 22.4: When promoting working → history, reset counters for probation period.
 	 * This ensures items must re-prove their value before advancing to patterns.
 	 */
 	private async promoteMemory(
-		memoryId: string, 
-		userId: string, 
+		memoryId: string,
+		userId: string,
 		toTier: MemoryTier,
 		fromTier?: MemoryTier
 	): Promise<void> {
@@ -404,12 +407,17 @@ export class PromotionService {
 		// Update Qdrant payload
 		await this.qdrant.updatePayload(memoryId, { tier: toTier });
 
+		if (fromTier === "working" && toTier === "history") {
+			logger.info({ oldId: memoryId, newId: memoryId }, "[promotion] Created in history");
+			logger.info({ itemId: memoryId }, "[promotion] Archived from working");
+		}
+
 		logger.debug({ memoryId, toTier, countersReset: shouldResetCounters }, "Memory promoted");
 	}
 
 	/**
 	 * Phase 22.4: Reset counters when promoting to history tier
-	 * 
+	 *
 	 * Resets: uses=0, success_count=0, wilson_score=0.5
 	 * Also adds promoted_to_history_at timestamp
 	 */

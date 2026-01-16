@@ -183,6 +183,23 @@ export class DocumentContextStore {
 		await this.chunks.insertMany(docs);
 	}
 
+	async updateChunkEmbeddings(
+		documentId: ObjectId,
+		embeddings: number[][],
+		baseChunkIndex = 0
+	): Promise<void> {
+		if (embeddings.length === 0) return;
+
+		const ops = embeddings.map((embedding, idx) => ({
+			updateOne: {
+				filter: { documentId, chunkIndex: baseChunkIndex + idx },
+				update: { $set: { embedding } },
+			},
+		}));
+
+		await this.chunks.bulkWrite(ops as any);
+	}
+
 	/**
 	 * Append additional chunks to existing document
 	 */

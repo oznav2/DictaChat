@@ -7,7 +7,7 @@
 	import { apiRequest } from "$lib/utils/apiClient";
 	import KnowledgeGraph3D from "./KnowledgeGraph3D.svelte";
 
-	type ConceptType = "routing" | "content" | "action";
+	type ConceptType = "routing" | "content" | "action" | "both";
 	type TimeFilter = "all" | "today" | "week" | "session";
 	type SortOption = "hybrid" | "recent" | "oldest";
 	type ViewMode = "list" | "graph" | "3d";
@@ -110,12 +110,18 @@
 			text: "text-orange-700 dark:text-orange-300",
 			border: "border-orange-300 dark:border-orange-700",
 		},
+		both: {
+			bg: "bg-purple-100 dark:bg-purple-900/30",
+			text: "text-purple-700 dark:text-purple-300",
+			border: "border-purple-300 dark:border-purple-700",
+		},
 	};
 
 	const typeLabels: Record<ConceptType, string> = {
 		routing: "ניתוב",
 		content: "תוכן",
 		action: "פעולה",
+		both: "גם וגם",
 	};
 
 	const timeFilterLabels: Record<TimeFilter, string> = {
@@ -333,18 +339,22 @@
 			});
 			const res = await fetch(`${base}/api/memory/kg/action-rollups?${params}`);
 			if (!res.ok) throw new Error(`Failed to load action rollups: ${res.status}`);
-			const data = (await res.json()) as any;
-			const rollups = Array.isArray(data?.rollups) ? data.rollups : [];
-			actionRollups = rollups.map((r: any) => ({
-				label: String(r.label ?? ""),
-				action: String(r.action ?? ""),
-				context_type: String(r.context_type ?? "general"),
-				tier_key: String(r.tier_key ?? "*"),
-				uses: Number(r.uses ?? 0),
-				success_rate: Number(r.success_rate ?? 0.5),
-				wilson_score: Number(r.wilson_score ?? 0.5),
-				last_used_at: typeof r.last_used_at === "string" ? r.last_used_at : null,
-			}));
+			const data = (await res.json()) as { rollups?: unknown };
+			const rollups = Array.isArray(data.rollups) ? data.rollups : [];
+			actionRollups = rollups.map((r) => {
+				const rr = r as Record<string, unknown>;
+				const lastUsedAt = rr.last_used_at;
+				return {
+					label: String(rr.label ?? ""),
+					action: String(rr.action ?? ""),
+					context_type: String(rr.context_type ?? "general"),
+					tier_key: String(rr.tier_key ?? "*"),
+					uses: Number(rr.uses ?? 0),
+					success_rate: Number(rr.success_rate ?? 0.5),
+					wilson_score: Number(rr.wilson_score ?? 0.5),
+					last_used_at: typeof lastUsedAt === "string" ? lastUsedAt : null,
+				};
+			});
 		} catch (err) {
 			console.error("Failed to load action rollups:", err);
 			actionRollups = [];
@@ -741,7 +751,9 @@
 			<div class="py-8 text-center text-sm text-gray-500 dark:text-gray-400">אין מושגים להצגה</div>
 		{:else}
 			<div class="flex flex-col gap-2">
-				<div class="rounded-lg border border-gray-200 bg-white p-2.5 dark:border-gray-600 dark:bg-gray-700">
+				<div
+					class="rounded-lg border border-gray-200 bg-white p-2.5 dark:border-gray-600 dark:bg-gray-700"
+				>
 					<div class="mb-2 flex items-center justify-between">
 						<div class="text-xs font-medium text-gray-700 dark:text-gray-200">
 							סיכום יעילות פעולות
@@ -764,7 +776,9 @@
 										<div class="truncate font-medium text-gray-800 dark:text-gray-100">
 											{r.action}
 											<span class="text-gray-500 dark:text-gray-400">
-												@{formatContextType(r.context_type)}{r.tier_key !== "*" ? ` → ${r.tier_key}` : ""}
+												@{formatContextType(r.context_type)}{r.tier_key !== "*"
+													? ` → ${r.tier_key}`
+													: ""}
 											</span>
 										</div>
 										<div class="text-[11px] text-gray-500 dark:text-gray-400">

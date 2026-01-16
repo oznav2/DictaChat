@@ -1,4 +1,11 @@
-export type MemoryTier = "working" | "history" | "patterns" | "books" | "memory_bank" | "datagov_schema" | "datagov_expansion";
+export type MemoryTier =
+	| "working"
+	| "history"
+	| "patterns"
+	| "books"
+	| "memory_bank"
+	| "datagov_schema"
+	| "datagov_expansion";
 
 /**
  * Phase 25: DataGov category definitions for UI filtering

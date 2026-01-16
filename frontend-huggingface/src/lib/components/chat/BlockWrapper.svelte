@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
-	import { browser } from "$app/environment";
 
 	interface Props {
 		icon: Snippet;
@@ -19,16 +18,15 @@
 		loading = false,
 		children,
 	}: Props = $props();
-	
-	// Respect user's motion preferences
-	const prefersReducedMotion = browser && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 </script>
 
 <div class="block-wrapper group flex gap-2 has-[+.prose]:mb-1.5 [.prose+&]:mt-3">
 	<!-- Left column: icon + connector line -->
 	<div class="flex w-[22px] flex-shrink-0 flex-col items-center">
 		<div
-			class="icon-container relative z-0 flex h-[22px] w-[22px] items-center justify-center rounded-md ring-1 transition-all duration-200 {iconBg} {iconRing} {loading ? 'loading-active' : ''}"
+			class="icon-container relative z-0 flex h-[22px] w-[22px] items-center justify-center rounded-md ring-1 transition-all duration-200 {iconBg} {iconRing} {loading
+				? 'loading-active'
+				: ''}"
 		>
 			{@render icon()}
 			{#if loading}
@@ -54,7 +52,9 @@
 			{/if}
 		</div>
 		{#if hasNext}
-			<div class="connector-line my-1 w-px flex-1 bg-gray-200 transition-colors duration-200 dark:bg-gray-700"></div>
+			<div
+				class="connector-line my-1 w-px flex-1 bg-gray-200 transition-colors duration-200 dark:bg-gray-700"
+			></div>
 		{/if}
 	</div>
 
@@ -105,7 +105,8 @@
 	}
 
 	@keyframes glowPulse {
-		0%, 100% {
+		0%,
+		100% {
 			opacity: 0.3;
 			transform: scale(0.8);
 		}
@@ -134,7 +135,9 @@
 
 	/* Icon hover effect */
 	.icon-container {
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
 	}
 
 	.block-wrapper:hover .icon-container:not(.loading-active) {

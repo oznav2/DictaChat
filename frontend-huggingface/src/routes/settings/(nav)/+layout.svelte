@@ -20,7 +20,12 @@
 	import { browser } from "$app/environment";
 	import { isDesktop } from "$lib/utils/isDesktop";
 	import { debounce } from "$lib/utils/debounce";
-	import { canPopSettingsStack, popSettingsStack, resetSettingsStack, syncSettingsStackTo } from "$lib/stores/settingsStack";
+	import {
+		canPopSettingsStack,
+		popSettingsStack,
+		resetSettingsStack,
+		syncSettingsStackTo,
+	} from "$lib/stores/settingsStack";
 
 	interface Props {
 		data: LayoutData;
@@ -98,14 +103,14 @@
 	const settings = useSettingsStore();
 
 	function handleClose() {
-		if (canPopSettingsStack()) {
-			const next = popSettingsStack();
-			if (next) {
-				goto(next);
-				return;
-			}
-		}
-		goto(previousPage);
+		// Simple navigation - go back to previous page or root
+		const target = previousPage || base || "/";
+		console.log("[Settings] Closing, navigating to:", target);
+		goto(target).catch((err) => {
+			console.error("[Settings] Navigation failed:", err);
+			// Fallback: force navigation via window.location
+			window.location.href = target;
+		});
 	}
 
 	// Local filter for model list (hyphen/space insensitive)
@@ -144,14 +149,10 @@
 		{/if}
 		<h2 class="left-0 right-0 mx-auto w-fit text-center text-xl font-bold md:hidden">Settings</h2>
 		<button
-			class="btn rounded-lg ml-auto z-50 relative"
+			class="btn relative z-50 ml-auto rounded-lg"
 			type="button"
 			aria-label="Close settings"
-			onclick={(e) => {
-				e.preventDefault();
-				e.stopPropagation();
-				handleClose();
-			}}
+			onclick={handleClose}
 		>
 			<CarbonClose
 				class="text-xl text-gray-900 hover:text-black dark:text-gray-200 dark:hover:text-white"

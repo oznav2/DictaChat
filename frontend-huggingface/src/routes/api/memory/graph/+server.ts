@@ -3,7 +3,10 @@ import type { RequestHandler } from "./$types";
 import { Database } from "$lib/server/database";
 import { config } from "$lib/server/config";
 import { ADMIN_USER_ID } from "$lib/server/constants";
-import { isEntityBlocklistedLabel, normalizeEntityLabel } from "$lib/server/memory/kg/entityHygiene";
+import {
+	isEntityBlocklistedLabel,
+	normalizeEntityLabel,
+} from "$lib/server/memory/kg/entityHygiene";
 
 interface GraphNode {
 	id: string;
@@ -29,9 +32,7 @@ type GraphMode = "routing" | "content" | "both";
 function formatBilingualLabel(labelRaw: string, aliasesRaw: unknown): string {
 	const label = normalizeEntityLabel(labelRaw);
 	const aliases = Array.isArray(aliasesRaw)
-		? aliasesRaw
-				.map((a) => normalizeEntityLabel(String(a)))
-				.filter((a) => a.length > 0)
+		? aliasesRaw.map((a) => normalizeEntityLabel(String(a))).filter((a) => a.length > 0)
 		: [];
 	const hasHebrew = /[\u0590-\u05FF]/.test(label);
 	const aliasHeb = aliases.find((a) => /[\u0590-\u05FF]/.test(a));
@@ -48,7 +49,8 @@ export const GET: RequestHandler = async ({ url }) => {
 	const edgesByKey = new Map<string, GraphEdge>();
 	const startedAt = Date.now();
 	const modeRaw = String(url.searchParams.get("mode") ?? "both");
-	const mode: GraphMode = modeRaw === "routing" || modeRaw === "content" || modeRaw === "both" ? modeRaw : "both";
+	const mode: GraphMode =
+		modeRaw === "routing" || modeRaw === "content" || modeRaw === "both" ? modeRaw : "both";
 
 	try {
 		const database = await Database.getInstance();
@@ -80,7 +82,9 @@ export const GET: RequestHandler = async ({ url }) => {
 				for (const concept of routingConcepts) {
 					const conceptId = String(concept.concept_id ?? concept.label ?? "").trim();
 					if (!conceptId) continue;
-					const label = normalizeEntityLabel(String(concept.label || concept.concept_id || "Unknown"));
+					const label = normalizeEntityLabel(
+						String(concept.label || concept.concept_id || "Unknown")
+					);
 					if (isEntityBlocklistedLabel(label)) continue;
 
 					const stats = statsByConcept.get(conceptId);
@@ -143,7 +147,10 @@ export const GET: RequestHandler = async ({ url }) => {
 					.toArray();
 
 				for (const node of contentNodes) {
-					const label = formatBilingualLabel(String(node.label || node.node_id || "Unknown"), node.aliases);
+					const label = formatBilingualLabel(
+						String(node.label || node.node_id || "Unknown"),
+						node.aliases
+					);
 					if (isEntityBlocklistedLabel(label)) continue;
 					nodes.push({
 						id: `content_${node.node_id || node.label}`,

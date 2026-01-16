@@ -175,7 +175,11 @@ export class KnowledgeGraphService {
 			{ user_id: 1, context_type: 1, action: 1, tier_key: 1 },
 			{ unique: true }
 		);
-		await this.contextActionEffectiveness.createIndex({ user_id: 1, context_type: 1, wilson_score: -1 });
+		await this.contextActionEffectiveness.createIndex({
+			user_id: 1,
+			context_type: 1,
+			wilson_score: -1,
+		});
 	}
 
 	// ============================================
@@ -332,7 +336,8 @@ export class KnowledgeGraphService {
 		});
 
 		try {
-			const conceptBulkWrite = (this.routingConcepts as unknown as { bulkWrite?: unknown }).bulkWrite;
+			const conceptBulkWrite = (this.routingConcepts as unknown as { bulkWrite?: unknown })
+				.bulkWrite;
 			if (conceptOps.length) {
 				if (typeof conceptBulkWrite === "function") {
 					await (this.routingConcepts as any).bulkWrite(conceptOps, { ordered: false });
@@ -407,7 +412,12 @@ export class KnowledgeGraphService {
 
 		for (const match of hebrewMatches) {
 			const clean = normalizeEntityLabel(match);
-			if (clean.length > 2 && !isCommonWord(clean) && !isEntityBlocklistedLabel(clean) && !seen.has(clean)) {
+			if (
+				clean.length > 2 &&
+				!isCommonWord(clean) &&
+				!isEntityBlocklistedLabel(clean) &&
+				!seen.has(clean)
+			) {
 				seen.add(match);
 				entities.push({
 					label: clean,

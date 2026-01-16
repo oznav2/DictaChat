@@ -151,10 +151,19 @@ export function sanitizeExtractedText(text: string): string {
 
 	// Remove raw binary-looking sequences (non-printable mixed with printable)
 	// These are raw bytes that got decoded as text
-	sanitized = sanitized.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]{3,}/g, "");
+	sanitized = Array.from(sanitized)
+		.filter((ch) => {
+			const code = ch.charCodeAt(0);
+			if (code <= 8) return false;
+			if (code === 11 || code === 12) return false;
+			if (code >= 14 && code <= 31) return false;
+			if (code >= 127 && code <= 159) return false;
+			return true;
+		})
+		.join("");
 
 	// Remove sequences with excessive special characters (corrupted binary)
-	sanitized = sanitized.replace(/(?:[^\w\s\u0590-\u05FF.,;:!?'"()\[\]{}<>@#$%&*+=-]){10,}/g, "");
+	sanitized = sanitized.replace(/(?:[^\w\s\u0590-\u05FF.,;:!?'"()[\]{}<>@#$%&*+=-]){10,}/g, "");
 
 	// Normalize whitespace (multiple spaces, tabs, newlines)
 	sanitized = sanitized.replace(/[ \t]+/g, " ");

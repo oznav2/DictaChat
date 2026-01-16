@@ -49,7 +49,17 @@ async function createReindexServiceInstance() {
 	});
 }
 
-export const GET: RequestHandler = async ({ url }) => {
+export const GET: RequestHandler = async ({ url, locals }) => {
+	if (!locals.isAdmin) {
+		return json(
+			{
+				success: false,
+				error: "Admin only",
+			},
+			{ status: 403 }
+		);
+	}
+
 	const tier = url.searchParams.get("tier") as MemoryTier | null;
 
 	try {
@@ -78,7 +88,17 @@ export const GET: RequestHandler = async ({ url }) => {
 	}
 };
 
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: RequestHandler = async ({ request, locals }) => {
+	if (!locals.isAdmin) {
+		return json(
+			{
+				success: false,
+				error: "Admin only",
+			},
+			{ status: 403 }
+		);
+	}
+
 	const body = await request.json().catch(() => ({}));
 	const tier = body.tier as MemoryTier | undefined;
 	const dryRun = body.dry_run === true;
@@ -104,12 +124,13 @@ export const POST: RequestHandler = async ({ request }) => {
 			message: dryRun
 				? `Dry run: Would sanitize ${result.totalCorrupted} corrupted memories.`
 				: `Sanitized ${result.totalSanitized} memories. ${result.totalCorrupted - result.totalSanitized} memories marked for reindex.`,
-			nextSteps: result.totalSanitized > 0
-				? [
-						"1. Run reindex to re-embed sanitized memories: POST /api/memory/ops/reindex/deferred",
-						"2. Check reindex progress: GET /api/memory/ops/reindex/deferred",
-					]
-				: [],
+			nextSteps:
+				result.totalSanitized > 0
+					? [
+							"1. Run reindex to re-embed sanitized memories: POST /api/memory/ops/reindex/deferred",
+							"2. Check reindex progress: GET /api/memory/ops/reindex/deferred",
+						]
+					: [],
 		});
 	} catch (err) {
 		return json(

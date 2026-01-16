@@ -10,7 +10,6 @@
 <script lang="ts">
 	import { base } from "$app/paths";
 	import { browser } from "$app/environment";
-	import { onMount, onDestroy } from "svelte";
 	import Modal from "$lib/components/Modal.svelte";
 	import CarbonClose from "~icons/carbon/close";
 	import CarbonDownload from "~icons/carbon/download";
@@ -26,7 +25,15 @@
 	let { isOpen = false, onClose }: Props = $props();
 
 	type ActiveTab = "export" | "delete";
-	type DeleteTarget = "memory_bank" | "working" | "history" | "patterns" | "books" | "sessions" | "knowledge-graph" | null;
+	type DeleteTarget =
+		| "memory_bank"
+		| "working"
+		| "history"
+		| "patterns"
+		| "books"
+		| "sessions"
+		| "knowledge-graph"
+		| null;
 
 	interface DataStats {
 		memory_bank: { count: number; active: number; archived: number };
@@ -107,14 +114,22 @@
 
 	function getLabelHebrew(collection: DeleteTarget): string {
 		switch (collection) {
-			case "memory_bank": return "בנק זיכרון";
-			case "working": return "זיכרון עובד";
-			case "history": return "היסטוריה";
-			case "patterns": return "דפוסים";
-			case "books": return "ספרים";
-			case "sessions": return "שיחות";
-			case "knowledge-graph": return "גרף ידע";
-			default: return collection ?? "";
+			case "memory_bank":
+				return "בנק זיכרון";
+			case "working":
+				return "זיכרון עובד";
+			case "history":
+				return "היסטוריה";
+			case "patterns":
+				return "דפוסים";
+			case "books":
+				return "ספרים";
+			case "sessions":
+				return "שיחות";
+			case "knowledge-graph":
+				return "גרף ידע";
+			default:
+				return collection ?? "";
 		}
 	}
 
@@ -128,32 +143,38 @@
 		if (!deleteTarget) return;
 		isDeleting = true;
 		deleteError = null;
-		
+
 		try {
 			const res = await fetch(`${base}/api/data/clear/${deleteTarget}`, {
 				method: "POST",
 			});
-			
+
 			if (!res.ok) {
 				const data = await res.json().catch(() => ({}));
 				throw new Error(data.error || data.detail || `Delete failed (${res.status})`);
 			}
-			
+
 			const result = await res.json();
-			
+
 			// Refresh stats
 			await fetchDataStats();
-			
+
 			// Notify memory panel to refresh
 			if (browser) {
-				window.dispatchEvent(new CustomEvent("memoryUpdated", {
-					detail: { source: "data_delete", target: deleteTarget, timestamp: new Date().toISOString() }
-				}));
+				window.dispatchEvent(
+					new CustomEvent("memoryUpdated", {
+						detail: {
+							source: "data_delete",
+							target: deleteTarget,
+							timestamp: new Date().toISOString(),
+						},
+					})
+				);
 			}
-			
+
 			showDeleteConfirm = false;
 			deleteTarget = null;
-			
+
 			// Show success feedback
 			alert(`נמחק בהצלחה!\n\n${result.deleted_count || 0} פריטים הוסרו`);
 		} catch (err) {
@@ -169,18 +190,20 @@
 			const res = await fetch(`${base}/api/data/compact-database`, {
 				method: "POST",
 			});
-			
+
 			if (!res.ok) {
 				const data = await res.json().catch(() => ({}));
 				throw new Error(data.error || "Compaction failed");
 			}
-			
+
 			const result = await res.json();
-			
+
 			if (result.space_reclaimed_mb > 0.1) {
 				alert(`מסד הנתונים דוחס!\n\nשוחזרו ${result.space_reclaimed_mb.toFixed(1)} MB של שטח דיסק`);
 			} else {
-				alert(`מסד הנתונים כבר מיטבי\n\nאין שטח משמעותי לשחזר (${result.space_reclaimed_mb.toFixed(2)} MB)`);
+				alert(
+					`מסד הנתונים כבר מיטבי\n\nאין שטח משמעותי לשחזר (${result.space_reclaimed_mb.toFixed(2)} MB)`
+				);
 			}
 		} catch (err) {
 			console.error("Compaction failed:", err);
@@ -208,10 +231,12 @@
 </script>
 
 {#if isOpen}
-	<Modal on:close={onClose}>
+	<Modal onclose={onClose}>
 		<div class="w-full max-w-2xl" dir="rtl">
 			<!-- Header -->
-			<div class="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-700">
+			<div
+				class="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-700"
+			>
 				<h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">ניהול נתונים</h2>
 				<button
 					type="button"
@@ -229,8 +254,8 @@
 					onclick={() => (activeTab = "export")}
 					class="flex flex-1 items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-colors
 						{activeTab === 'export'
-							? 'border-b-2 border-blue-500 bg-blue-50/50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-							: 'text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200'}"
+						? 'border-b-2 border-blue-500 bg-blue-50/50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
+						: 'text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200'}"
 				>
 					<CarbonDownload class="h-4 w-4" />
 					ייצוא
@@ -240,8 +265,8 @@
 					onclick={() => (activeTab = "delete")}
 					class="flex flex-1 items-center justify-center gap-2 px-6 py-3 text-sm font-medium transition-colors
 						{activeTab === 'delete'
-							? 'border-b-2 border-red-500 bg-red-50/50 text-red-600 dark:bg-red-900/20 dark:text-red-400'
-							: 'text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200'}"
+						? 'border-b-2 border-red-500 bg-red-50/50 text-red-600 dark:bg-red-900/20 dark:text-red-400'
+						: 'text-gray-500 hover:bg-gray-50 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-800/50 dark:hover:text-gray-200'}"
 				>
 					<CarbonTrashCan class="h-4 w-4" />
 					מחיקה
@@ -253,7 +278,8 @@
 				{#if activeTab === "export"}
 					<div class="space-y-4">
 						<p class="text-sm text-gray-600 dark:text-gray-300">
-							ייצא את כל נתוני הזיכרון שלך כגיבוי. אתה יכול לבחור אילו קולקציות לכלול בעמוד הגיבוי המלא.
+							ייצא את כל נתוני הזיכרון שלך כגיבוי. אתה יכול לבחור אילו קולקציות לכלול בעמוד הגיבוי
+							המלא.
 						</p>
 						<a
 							href="{base}/settings/backup"
@@ -267,7 +293,9 @@
 				{:else}
 					<div class="space-y-4">
 						<!-- Warning -->
-						<div class="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-900/30 dark:bg-red-900/10">
+						<div
+							class="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-900/30 dark:bg-red-900/10"
+						>
 							<CarbonWarningAlt class="mt-0.5 h-5 w-5 flex-shrink-0 text-red-500" />
 							<p class="text-sm font-medium text-red-700 dark:text-red-400">
 								אזור סכנה - פעולות אלה קבועות
@@ -276,15 +304,21 @@
 
 						{#if isLoadingStats}
 							<div class="flex items-center justify-center py-12">
-								<div class="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500"></div>
+								<div
+									class="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-500"
+								></div>
 							</div>
 						{:else}
 							<div class="space-y-2">
 								{#each deleteItems as item}
 									{@const count = getDeleteItemCount(item.key)}
-									<div class="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800/50">
+									<div
+										class="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-700 dark:bg-gray-800/50"
+									>
 										<div class="flex-1">
-											<div class="text-sm font-medium text-gray-800 dark:text-gray-200">{item.label}</div>
+											<div class="text-sm font-medium text-gray-800 dark:text-gray-200">
+												{item.label}
+											</div>
 											<div class="text-xs text-gray-500 dark:text-gray-400">{item.desc}</div>
 										</div>
 										<div class="flex items-center gap-3">
@@ -295,8 +329,8 @@
 												disabled={count === 0}
 												class="rounded-lg px-3 py-1.5 text-sm font-medium transition-colors
 													{count === 0
-														? 'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500'
-														: 'border border-red-300 bg-red-50 text-red-600 hover:bg-red-100 dark:border-red-900/30 dark:bg-red-900/10 dark:text-red-400 dark:hover:bg-red-900/20'}"
+													? 'cursor-not-allowed bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500'
+													: 'border border-red-300 bg-red-50 text-red-600 hover:bg-red-100 dark:border-red-900/30 dark:bg-red-900/10 dark:text-red-400 dark:hover:bg-red-900/20'}"
 											>
 												מחק
 											</button>
@@ -314,7 +348,9 @@
 									class="flex w-full items-center justify-center gap-2 rounded-lg border border-blue-300 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-blue-900/30 dark:bg-blue-900/10 dark:text-blue-400 dark:hover:bg-blue-900/20"
 								>
 									{#if isCompacting}
-										<div class="h-4 w-4 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"></div>
+										<div
+											class="h-4 w-4 animate-spin rounded-full border-2 border-blue-500 border-t-transparent"
+										></div>
 										דוחס מסד נתונים...
 									{:else}
 										<CarbonDataBase class="h-4 w-4" />
@@ -332,35 +368,49 @@
 
 <!-- Delete Confirmation Modal -->
 {#if showDeleteConfirm && deleteTarget}
-	<Modal on:close={() => { showDeleteConfirm = false; deleteTarget = null; deleteError = null; }}>
+	<Modal
+		onclose={() => {
+			showDeleteConfirm = false;
+			deleteTarget = null;
+			deleteError = null;
+		}}
+	>
 		<div class="w-full max-w-md p-6" dir="rtl">
 			<div class="mb-4 flex items-center gap-3">
-				<div class="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
+				<div
+					class="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30"
+				>
 					<CarbonWarningAlt class="h-5 w-5 text-red-600 dark:text-red-400" />
 				</div>
 				<h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
 					למחוק {getLabelHebrew(deleteTarget)}?
 				</h3>
 			</div>
-			
+
 			<p class="mb-4 text-sm text-gray-600 dark:text-gray-300">
 				{getDeleteMessage(deleteTarget)}
 			</p>
-			
+
 			<p class="mb-6 text-sm font-medium text-gray-800 dark:text-gray-200">
 				{getDeleteItemCount(deleteTarget)} פריטים יימחקו.
 			</p>
-			
+
 			{#if deleteError}
-				<div class="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/30 dark:bg-red-900/10 dark:text-red-400">
+				<div
+					class="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/30 dark:bg-red-900/10 dark:text-red-400"
+				>
 					{deleteError}
 				</div>
 			{/if}
-			
+
 			<div class="flex justify-end gap-3">
 				<button
 					type="button"
-					onclick={() => { showDeleteConfirm = false; deleteTarget = null; deleteError = null; }}
+					onclick={() => {
+						showDeleteConfirm = false;
+						deleteTarget = null;
+						deleteError = null;
+					}}
 					class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
 				>
 					ביטול
@@ -373,7 +423,9 @@
 				>
 					{#if isDeleting}
 						<span class="flex items-center gap-2">
-							<div class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+							<div
+								class="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+							></div>
 							מוחק...
 						</span>
 					{:else}

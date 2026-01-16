@@ -119,6 +119,7 @@
 			if (!response.ok) throw new Error(`Failed to fetch stats: ${response.status}`);
 			const data = await response.json();
 			stats = data?.stats ?? null;
+			memoryUi.setMemoryStats(stats ? (stats as unknown as Record<string, unknown>) : null);
 		} catch (err) {
 			console.error("Failed to load memory stats:", err);
 		}
@@ -131,7 +132,7 @@
 			if (selectedTier !== "all") params.set("tier", selectedTier);
 			params.set("sort_by", sortBy);
 			params.set("limit", "100");
-			
+
 			// Phase 25: Add DataGov filter params
 			if (includeDataGov) {
 				params.set("include_datagov", "true");
@@ -145,6 +146,14 @@
 			const data = await response.json();
 
 			memories = data.memories ?? [];
+			memoryUi.setRecentMemories(
+				(memories ?? []).map((m) => ({
+					memory_id: m.memory_id,
+					tier: m.tier,
+					preview: (m.content ?? "").slice(0, 200),
+					created_at: m.created_at ?? null,
+				}))
+			);
 		} catch (err) {
 			console.error("Failed to load memories:", err);
 			memories = [];
@@ -152,7 +161,7 @@
 			isLoading = false;
 		}
 	}
-	
+
 	// Phase 25: Toggle DataGov category selection
 	function toggleDataGovCategory(category: string) {
 		const newSet = new Set(selectedDataGovCategories);
@@ -163,12 +172,12 @@
 		}
 		selectedDataGovCategories = newSet;
 	}
-	
+
 	// Phase 25: Clear all DataGov category filters
 	function clearDataGovFilters() {
 		selectedDataGovCategories = new Set();
 	}
-	
+
 	// Phase 25: Get category badge for DataGov items
 	function getDataGovCategoryBadge(memory: MemoryItem): string | null {
 		if (!isDataGovTier(memory.tier)) return null;
@@ -217,15 +226,15 @@
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 			});
-			
+
 			if (!response.ok) {
 				console.error("Reindex trigger failed:", response.status);
 				return;
 			}
-			
+
 			const result = await response.json();
 			console.log("Reindex triggered:", result);
-			
+
 			// Wait a moment then refresh
 			await new Promise((resolve) => setTimeout(resolve, 2000));
 			await refresh();
@@ -245,7 +254,25 @@
 			refresh();
 		};
 		window.addEventListener("memoryUpdated", handler);
-		return () => window.removeEventListener("memoryUpdated", handler);
+		const unsubscribe = memoryUi.subscribe((state) => {
+			if (selectedTier !== "all" || sortBy !== "recent") return;
+			if (isLoading) return;
+			if (memories.length > 0) return;
+			const next = state.data.recentMemories ?? [];
+			if (next.length === 0) return;
+			memories = next.map((m) => ({
+				memory_id: m.memory_id,
+				content: m.preview,
+				tier: m.tier as MemoryTier,
+				wilson_score: 0.5,
+				created_at: m.created_at ?? new Date().toISOString(),
+			}));
+		});
+
+		return () => {
+			window.removeEventListener("memoryUpdated", handler);
+			unsubscribe();
+		};
 	});
 
 	$effect(() => {
@@ -340,12 +367,22 @@
 		<button
 			type="button"
 			onclick={() => (showDataGovFilter = !showDataGovFilter)}
-			class={["rounded p-1.5 transition-colors", showDataGovFilter || selectedDataGovCategories.size > 0 ? "bg-cyan-100 text-cyan-700 dark:bg-cyan-900 dark:text-cyan-300" : "text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600"]}
+			class={[
+				"rounded p-1.5 transition-colors",
+				showDataGovFilter || selectedDataGovCategories.size > 0
+					? "bg-cyan-100 text-cyan-700 dark:bg-cyan-900 dark:text-cyan-300"
+					: "text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600",
+			]}
 			title="סנן לפי מאגרי מידע ממשלתיים"
 			aria-label="סנן DataGov"
 		>
 			<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+				/>
 			</svg>
 		</button>
 
@@ -380,10 +417,15 @@
 				aria-label="סגור עזרה"
 			>
 				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/>
 				</svg>
 			</button>
-			
+
 			<h4 class="mb-2 text-sm font-medium text-blue-800 dark:text-blue-200">סוגי זיכרון</h4>
 			<div class="space-y-1.5">
 				{#each Object.entries(tierDescriptions) as [tier, info]}
@@ -428,12 +470,17 @@
 				aria-label="סגור סינון DataGov"
 			>
 				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/>
 				</svg>
 			</button>
-			
+
 			<h4 class="mb-2 text-sm font-medium text-cyan-800 dark:text-cyan-200">מאגרי מידע ממשלתיים</h4>
-			
+
 			<!-- Include DataGov Toggle -->
 			<label class="mb-2 flex items-center gap-2 text-xs">
 				<input
@@ -443,7 +490,7 @@
 				/>
 				<span class="text-cyan-700 dark:text-cyan-300">הצג מאגרי מידע ממשלתיים</span>
 			</label>
-			
+
 			{#if includeDataGov}
 				<!-- Category Chips -->
 				<div class="mb-2 flex flex-wrap gap-1">
@@ -451,13 +498,18 @@
 						<button
 							type="button"
 							onclick={() => toggleDataGovCategory(key)}
-							class={["rounded-full px-2 py-0.5 text-[10px] transition-colors", selectedDataGovCategories.has(key) ? "bg-cyan-600 text-white" : "bg-cyan-100 text-cyan-700 hover:bg-cyan-200 dark:bg-cyan-800 dark:text-cyan-300 dark:hover:bg-cyan-700"]}
+							class={[
+								"rounded-full px-2 py-0.5 text-[10px] transition-colors",
+								selectedDataGovCategories.has(key)
+									? "bg-cyan-600 text-white"
+									: "bg-cyan-100 text-cyan-700 hover:bg-cyan-200 dark:bg-cyan-800 dark:text-cyan-300 dark:hover:bg-cyan-700",
+							]}
 						>
 							{label}
 						</button>
 					{/each}
 				</div>
-				
+
 				<!-- Clear Button -->
 				{#if selectedDataGovCategories.size > 0}
 					<button
@@ -483,14 +535,12 @@
 		{:else if memories.length === 0}
 			<!-- Phase 5: Enhanced 0-results feedback with diagnostics -->
 			<div class="py-4 text-center">
-				<div class="mb-3 text-sm text-gray-500 dark:text-gray-400">
-					אין זיכרונות להצגה
-				</div>
+				<div class="mb-3 text-sm text-gray-500 dark:text-gray-400">אין זיכרונות להצגה</div>
 				<!-- Debug panel for 0 results -->
-				<div class="mx-auto max-w-xs rounded-lg border border-amber-200 bg-amber-50 p-3 text-right dark:border-amber-800 dark:bg-amber-900/30">
-					<p class="mb-2 text-xs font-medium text-amber-800 dark:text-amber-200">
-						סיבות אפשריות:
-					</p>
+				<div
+					class="mx-auto max-w-xs rounded-lg border border-amber-200 bg-amber-50 p-3 text-right dark:border-amber-800 dark:bg-amber-900/30"
+				>
+					<p class="mb-2 text-xs font-medium text-amber-800 dark:text-amber-200">סיבות אפשריות:</p>
 					<ul class="mb-3 space-y-1 text-xs text-amber-700 dark:text-amber-300">
 						<li class="flex items-start gap-1">
 							<span class="mt-1">•</span>
@@ -523,6 +573,7 @@
 			>
 				{#snippet children({ item: memory })}
 					{@const mem = memory as MemoryItem}
+					{@const categoryBadge = getDataGovCategoryBadge(mem)}
 					<button
 						type="button"
 						onclick={() => openMemoryDetail(mem)}
@@ -533,10 +584,10 @@
 							<span class="text-xs text-gray-500 dark:text-gray-400">
 								{tierDescriptions[mem.tier]?.name ?? mem.tier}
 							</span>
-							<!-- Phase 25: DataGov category badge -->
-							{@const categoryBadge = getDataGovCategoryBadge(mem)}
 							{#if categoryBadge}
-								<span class="rounded-full bg-cyan-100 px-1.5 py-0.5 text-[10px] text-cyan-700 dark:bg-cyan-800 dark:text-cyan-300">
+								<span
+									class="rounded-full bg-cyan-100 px-1.5 py-0.5 text-[10px] text-cyan-700 dark:bg-cyan-800 dark:text-cyan-300"
+								>
 									{categoryBadge}
 								</span>
 							{/if}

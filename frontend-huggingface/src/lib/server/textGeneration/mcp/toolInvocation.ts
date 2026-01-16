@@ -34,7 +34,7 @@ import type { Client } from "@modelcontextprotocol/sdk/client";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
 import { ADMIN_USER_ID } from "$lib/server/constants";
 // Phase 2 (+16): Tool Result Ingestion
-import { ingestToolResult } from "$lib/server/memory/services/ToolResultIngestionService";
+import { ToolResultIngestionService } from "$lib/server/memory/services/ToolResultIngestionService";
 // Phase 19: Action Outcomes Tracking
 import type { Outcome, ToolRunStatus, ActionType, ContextType } from "$lib/server/memory/types";
 
@@ -92,7 +92,7 @@ async function resolveDoclingFilePath(
  * Bridge docling tool output to the memory system
  * This ensures documents processed via tool calls are stored in memory
  * for visibility in the Memory Panel and future retrieval
- * 
+ *
  * Phase 4: Now uses SHA-256 hash for document deduplication
  * - Prevents duplicate storage when same document is processed multiple times
  * - Uses hash-based documentId for consistent identification
@@ -129,14 +129,14 @@ async function bridgeDoclingToMemory(
 		try {
 			const { Database } = await import("$lib/server/database");
 			const { MemoryMongoStore } = await import("$lib/server/memory/stores/MemoryMongoStore");
-			
+
 			const db = await Database.getInstance();
 			const client = db.getClient();
 			const mongoStore = new MemoryMongoStore({ client, dbName: "chat-ui" });
 			await mongoStore.initialize();
 
 			const exists = await mongoStore.documentExists(ADMIN_USER_ID, contentHash);
-			
+
 			if (exists) {
 				// Phase 4.1.3: Skip storage if duplicate
 				logger.info(
@@ -191,10 +191,7 @@ async function bridgeDoclingToMemory(
 					document_hash: contentHash,
 				},
 			});
-			logger.debug(
-				{ chunkIndex: i, memoryId: res.memory_id },
-				"[mcp→memory] Stored docling chunk"
-			);
+			logger.debug({ chunkIndex: i, memoryId: res.memory_id }, "[mcp→memory] Stored docling chunk");
 		}
 
 		logger.info(
@@ -331,12 +328,12 @@ function classifyToolOutcome(result: { error?: string; output?: string }): {
 		}
 		return { outcome: "failed", toolStatus: "error" };
 	}
-	
+
 	if (!result.output || result.output.trim().length === 0) {
 		// Empty result - partial success (tool ran but nothing found)
 		return { outcome: "partial", toolStatus: "ok" };
 	}
-	
+
 	// Check for error-like content in output
 	const outputLower = result.output.toLowerCase();
 	if (
@@ -346,7 +343,7 @@ function classifyToolOutcome(result: { error?: string; output?: string }): {
 	) {
 		return { outcome: "partial", toolStatus: "error" };
 	}
-	
+
 	return { outcome: "worked", toolStatus: "ok" };
 }
 
@@ -355,7 +352,7 @@ function classifyToolOutcome(result: { error?: string; output?: string }): {
  */
 function toolNameToActionType(toolName: string): ActionType {
 	const nameLower = toolName.toLowerCase();
-	
+
 	// Memory tools
 	if (nameLower.includes("search_memory") || nameLower.includes("memory_search")) {
 		return "search_memory";
@@ -375,7 +372,7 @@ function toolNameToActionType(toolName: string): ActionType {
 	if (nameLower.includes("delete_memory")) {
 		return "delete_memory";
 	}
-	
+
 	// Return tool name as ActionType (extensible string type)
 	return toolName as ActionType;
 }
@@ -383,7 +380,7 @@ function toolNameToActionType(toolName: string): ActionType {
 /**
  * Fire-and-forget action outcome recording
  * Phase 19.2: Record tool execution outcomes for learning
- * 
+ *
  * This helps the system learn:
  * - Which tools work best for which types of queries
  * - Which tools have high error rates
@@ -400,7 +397,7 @@ async function recordToolActionOutcome(params: {
 	try {
 		const facade = UnifiedMemoryFacade.getInstance();
 		const { outcome, toolStatus } = classifyToolOutcome(params.result);
-		
+
 		await facade.recordActionOutcome({
 			action_id: randomUUID(),
 			action_type: toolNameToActionType(params.toolName),
@@ -419,7 +416,7 @@ async function recordToolActionOutcome(params: {
 			error_message: params.result.error?.slice(0, 500) ?? null,
 			timestamp: new Date().toISOString(),
 		});
-		
+
 		logger.debug(
 			{
 				toolName: params.toolName,
@@ -1371,23 +1368,46 @@ export async function* executeToolCalls({
 		// Fire-and-forget: NEVER blocks user response path
 		// ============================================
 		if (!r.error && r.output && conversationId) {
-			// Extract query from tool arguments (varies by tool)
-			const toolQuery = (r.params as Record<string, unknown>)?.query as string
-				?? (r.params as Record<string, unknown>)?.prompt as string
-				?? (r.params as Record<string, unknown>)?.q as string
-				?? undefined;
+			const trimmedOutputLen = r.output.trim().length;
+			if (trimmedOutputLen < 100) {
+				logger.warn({ toolName }, "[ingest] Skipped - output too short");
+			} else {
+				// Extract query from tool arguments (varies by tool)
+				const toolQuery =
+					((r.params as Record<string, unknown>)?.query as string) ??
+					((r.params as Record<string, unknown>)?.prompt as string) ??
+					((r.params as Record<string, unknown>)?.q as string) ??
+					undefined;
 
-			// Fire and forget ingestion (service handles eligibility check)
-			ingestToolResult({
-				conversationId,
-				toolName,
-				query: toolQuery,
-				output: r.output,
-				metadata: {
-					tool_call_id: toolCallId,
-					params_preview: JSON.stringify(r.paramsClean ?? {}).slice(0, 200),
-				},
-			});
+				ToolResultIngestionService.getInstance()
+					.ingestToolResult({
+						conversationId,
+						toolName,
+						query: toolQuery,
+						output: r.output,
+						metadata: {
+							tool_call_id: toolCallId,
+							params_preview: JSON.stringify(r.paramsClean ?? {}).slice(0, 200),
+						},
+					})
+					.then((res) => {
+						if (res.stored) {
+							logger.info(
+								{ toolName, outputLen: r.output?.length ?? 0 },
+								"[ingest] Tool result stored"
+							);
+							logger.info({ toolName, category: "unknown" }, "[tool-ingest] Stored result");
+						} else if (res.attempted) {
+							logger.warn(
+								{ toolName, reason: res.reason ?? "unknown" },
+								"[tool-ingest] Skipped - low quality output"
+							);
+						}
+					})
+					.catch((err) => {
+						logger.warn({ err, toolName }, "[mcp] Tool result ingestion failed (non-blocking)");
+					});
+			}
 		}
 
 		// ============================================

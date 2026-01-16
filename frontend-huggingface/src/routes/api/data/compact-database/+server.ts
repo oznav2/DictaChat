@@ -1,6 +1,6 @@
 /**
  * POST /api/data/compact-database - Compact/optimize the database
- * 
+ *
  * RoamPal parity: /api/data/compact-database
  * Runs database compaction to reclaim disk space after deletions
  */
@@ -15,10 +15,11 @@ export const POST: RequestHandler = async ({ locals }) => {
 
 	try {
 		await dbReady;
-		
-		const db = (collections as unknown as Record<string, any>).books?.db 
-			?? (collections as unknown as Record<string, any>).conversations?.db;
-			
+
+		const db =
+			(collections as unknown as Record<string, any>).books?.db ??
+			(collections as unknown as Record<string, any>).conversations?.db;
+
 		if (!db) {
 			return json({ success: false, error: "Database not initialized" }, { status: 500 });
 		}
@@ -30,7 +31,7 @@ export const POST: RequestHandler = async ({ locals }) => {
 		// Run compact on main collections
 		const collectionsToCompact = [
 			"memory_items",
-			"memory_versions", 
+			"memory_versions",
 			"memory_outcomes",
 			"known_solutions",
 			"action_outcomes",
@@ -41,7 +42,7 @@ export const POST: RequestHandler = async ({ locals }) => {
 		];
 
 		const compactResults: Record<string, boolean> = {};
-		
+
 		for (const collName of collectionsToCompact) {
 			try {
 				await db.command({ compact: collName });
@@ -64,7 +65,7 @@ export const POST: RequestHandler = async ({ locals }) => {
 			success: true,
 			space_reclaimed_mb: Math.round(spaceReclaimedMb * 100) / 100,
 			space_reclaimed_bytes: spaceReclaimedBytes,
-			collections_compacted: Object.keys(compactResults).filter(k => compactResults[k]).length,
+			collections_compacted: Object.keys(compactResults).filter((k) => compactResults[k]).length,
 			compact_results: compactResults,
 			timestamp: new Date().toISOString(),
 		});

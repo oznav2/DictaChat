@@ -536,10 +536,10 @@ export async function storeWorkingMemory(params: {
 	/** Source attribution from tool execution (Phase 9.9) */
 	sourceAttribution?: SourceAttribution | null;
 	conversationTitle?: string | null;
-}): Promise<void> {
+}): Promise<string | null> {
 	const flags = getMemoryFeatureFlags();
 	if (!flags.systemEnabled) {
-		return;
+		return null;
 	}
 
 	try {
@@ -593,36 +593,38 @@ export async function storeWorkingMemory(params: {
 		// Extract entities from the stored memory and add to Content Graph
 		// ============================================
 		if (storeResult.memory_id) {
-			try {
-				const entityResult = await facade.extractAndStoreEntities({
+			void facade
+				.extractAndStoreEntities({
 					userId: params.userId,
 					memoryId: storeResult.memory_id,
 					text,
-					importance: 0.5, // Default importance for working memory
-					confidence: 0.6, // Reasonable confidence for exchange content
+					importance: 0.5,
+					confidence: 0.6,
+				})
+				.then((entityResult) => {
+					if (entityResult.entitiesStored > 0) {
+						logger.debug(
+							{
+								userId: params.userId,
+								memoryId: storeResult.memory_id,
+								entitiesExtracted: entityResult.entitiesExtracted,
+								entitiesStored: entityResult.entitiesStored,
+								entities: entityResult.entities.slice(0, 5),
+							},
+							"Entities extracted and stored to Content KG"
+						);
+					}
+				})
+				.catch((entityErr) => {
+					logger.debug({ err: entityErr }, "Entity extraction failed, continuing");
 				});
-
-				if (entityResult.entitiesStored > 0) {
-					logger.debug(
-						{
-							userId: params.userId,
-							memoryId: storeResult.memory_id,
-							entitiesExtracted: entityResult.entitiesExtracted,
-							entitiesStored: entityResult.entitiesStored,
-							entities: entityResult.entities.slice(0, 5),
-						},
-						"Entities extracted and stored to Content KG"
-					);
-				}
-			} catch (entityErr) {
-				// Entity extraction should never block - fail silently
-				logger.debug({ err: entityErr }, "Entity extraction failed, continuing");
-			}
 		}
 
 		// Increment message count for auto-promotion (Roampal pattern)
 		// This triggers promotion every 20 messages
-		await facade.incrementMessageCount(params.userId);
+		void facade.incrementMessageCount(params.userId).catch((err) => {
+			logger.debug({ err }, "Failed to increment message count");
+		});
 
 		logger.debug(
 			{
@@ -633,9 +635,12 @@ export async function storeWorkingMemory(params: {
 			},
 			"Stored working memory from exchange"
 		);
+
+		return storeResult.memory_id ?? null;
 	} catch (err) {
 		// Working memory storage should never block or throw
 		logger.warn({ err }, "Failed to store working memory");
+		return null;
 	}
 }
 
@@ -689,9 +694,7 @@ export interface ColdStartContextResult {
  * @param recentMessages - Recent messages in the conversation
  * @returns true if this appears to be the first user message
  */
-export function isFirstMessage(
-	recentMessages: Array<{ role: string; content: string }>
-): boolean {
+export function isFirstMessage(recentMessages: Array<{ role: string; content: string }>): boolean {
 	// If no recent messages, this is definitely first
 	if (!recentMessages || recentMessages.length === 0) {
 		return true;
@@ -1050,7 +1053,7 @@ export async function recordToolActionsInBatch(
 
 /**
  * Memory attribution result from parsing LLM response
- * 
+ *
  * RoamPal Parity (agent_chat.py lines 180-220):
  * - LLM adds hidden annotation: <!-- MEM: 1👍 2👎 3➖ -->
  * - parse_memory_marks() extracts and strips annotation
@@ -1102,7 +1105,7 @@ export interface OutcomeDetectionResult {
 /**
  * v0.2.12 Scoring Matrix for Causal Attribution
  * Combines detected outcome with LLM's memory marks
- * 
+ *
  * Matrix (outcome vs mark):
  * | Mark/Outcome | YES (worked) | KINDA (partial) | NO (failed) |
  * |--------------|--------------|-----------------|-------------|
@@ -1127,7 +1130,7 @@ export const SCORING_MATRIX: Record<string, Record<string, ScoringMatrixEntry>> 
 	// outcome -> mark -> action
 	worked: {
 		upvoted: { action: "upvote", delta: 0.2 },
-		downvoted: { action: "neutral", delta: 0.0 },  // Don't punish on success
+		downvoted: { action: "neutral", delta: 0.0 }, // Don't punish on success
 		neutral: { action: "neutral", delta: 0.0 },
 	},
 	partial: {
@@ -1136,7 +1139,7 @@ export const SCORING_MATRIX: Record<string, Record<string, ScoringMatrixEntry>> 
 		neutral: { action: "neutral", delta: 0.0 },
 	},
 	failed: {
-		upvoted: { action: "neutral", delta: 0.0 },   // Don't reward on failure
+		upvoted: { action: "neutral", delta: 0.0 }, // Don't reward on failure
 		downvoted: { action: "downvote", delta: -0.3 },
 		neutral: { action: "neutral", delta: 0.0 },
 	},
@@ -1169,7 +1172,7 @@ export interface ParseMemoryMarksResult {
 
 /**
  * Memory attribution instruction to inject into system prompt
- * 
+ *
  * When memories are injected, we ask the LLM to mark which ones were helpful
  * using a hidden comment at the end of the response.
  */
@@ -1210,10 +1213,10 @@ export const MEMORY_ATTRIBUTION_INSTRUCTION_HE = `
 
 /**
  * Parse memory marks from LLM response
- * 
+ *
  * Extracts the attribution comment and returns both the cleaned response
  * and the parsed attribution data.
- * 
+ *
  * @param response - Raw LLM response that may contain attribution comment
  * @returns Cleaned response and parsed attribution
  */
@@ -1267,6 +1270,11 @@ export function parseMemoryMarks(response: string): ParseMemoryMarksResult {
 		return { cleanedResponse, attribution: null };
 	}
 
+	logger.debug(
+		{ markCount: upvoted.length + downvoted.length + neutral.length },
+		"[marks] Parsed memory marks"
+	);
+
 	return {
 		cleanedResponse,
 		attribution: {
@@ -1280,7 +1288,7 @@ export function parseMemoryMarks(response: string): ParseMemoryMarksResult {
 
 /**
  * Get memory ID by position from search position map
- * 
+ *
  * @param searchPositionMap - Map of memory IDs to positions
  * @param position - 1-indexed position (as used in LLM attribution)
  * @returns Memory ID or null if not found
@@ -1303,12 +1311,12 @@ export function getMemoryIdByPosition(
 
 /**
  * Record selective outcomes based on memory attribution
- * 
+ *
  * v0.2.12 Enhanced: Uses scoring matrix to combine outcome detection with LLM marks
- * 
+ *
  * Uses the attribution from the LLM response to record positive/negative
  * outcomes for specific memories, rather than all-or-nothing scoring.
- * 
+ *
  * @param params - Selective outcome parameters
  */
 export async function recordSelectiveOutcomes(params: {
@@ -1318,7 +1326,16 @@ export async function recordSelectiveOutcomes(params: {
 	attribution: MemoryAttribution;
 	/** v0.2.12: Optional outcome detection result for scoring matrix */
 	detectedOutcome?: "worked" | "failed" | "partial" | "unknown";
-}): Promise<{ recorded: number; errors: number; scoringDetails: Array<{ position: number; memoryId: string; action: ScoringAction; delta: number }> }> {
+}): Promise<{
+	recorded: number;
+	errors: number;
+	scoringDetails: Array<{
+		position: number;
+		memoryId: string;
+		action: ScoringAction;
+		delta: number;
+	}>;
+}> {
 	const flags = getMemoryFeatureFlags();
 	if (!flags.systemEnabled || !flags.outcomeEnabled) {
 		return { recorded: 0, errors: 0, scoringDetails: [] };
@@ -1326,7 +1343,12 @@ export async function recordSelectiveOutcomes(params: {
 
 	let recorded = 0;
 	let errors = 0;
-	const scoringDetails: Array<{ position: number; memoryId: string; action: ScoringAction; delta: number }> = [];
+	const scoringDetails: Array<{
+		position: number;
+		memoryId: string;
+		action: ScoringAction;
+		delta: number;
+	}> = [];
 	const outcome = params.detectedOutcome ?? "unknown";
 
 	try {
@@ -1338,7 +1360,7 @@ export async function recordSelectiveOutcomes(params: {
 			if (memoryId) {
 				const { action, delta } = getScoringAction(outcome, "upvoted");
 				scoringDetails.push({ position, memoryId, action, delta });
-				
+
 				// Only record if action suggests score change
 				if (action === "upvote" || action === "slight_up") {
 					try {
@@ -1366,7 +1388,7 @@ export async function recordSelectiveOutcomes(params: {
 			if (memoryId) {
 				const { action, delta } = getScoringAction(outcome, "downvoted");
 				scoringDetails.push({ position, memoryId, action, delta });
-				
+
 				// Only record if action suggests score change
 				if (action === "downvote" || action === "slight_down") {
 					try {
@@ -1408,7 +1430,7 @@ export async function recordSelectiveOutcomes(params: {
 				neutralCount: params.attribution.neutral.length,
 				recorded,
 				errors,
-				scoringActions: scoringDetails.map(d => d.action),
+				scoringActions: scoringDetails.map((d) => d.action),
 			},
 			"v0.2.12 Recorded selective memory outcomes with scoring matrix"
 		);
@@ -1421,12 +1443,12 @@ export async function recordSelectiveOutcomes(params: {
 
 /**
  * Process LLM response with memory attribution
- * 
+ *
  * This is the main entry point for memory attribution. It:
  * 1. Parses memory marks from the response
  * 2. Records selective outcomes if attribution is found
  * 3. Returns the cleaned response (attribution comment stripped)
- * 
+ *
  * @param params - Processing parameters
  * @returns Cleaned response and whether attribution was found
  */
@@ -1435,7 +1457,11 @@ export async function processResponseWithAttribution(params: {
 	conversationId: string;
 	response: string;
 	searchPositionMap: SearchPositionMap;
-}): Promise<{ cleanedResponse: string; attributionFound: boolean; attribution: MemoryAttribution | null }> {
+}): Promise<{
+	cleanedResponse: string;
+	attributionFound: boolean;
+	attribution: MemoryAttribution | null;
+}> {
 	const { cleanedResponse, attribution } = parseMemoryMarks(params.response);
 
 	if (attribution && Object.keys(params.searchPositionMap).length > 0) {
@@ -1459,7 +1485,7 @@ export async function processResponseWithAttribution(params: {
 
 /**
  * Get the appropriate attribution instruction based on language
- * 
+ *
  * @param language - Language code ('he' | 'en' | 'mixed')
  * @returns Attribution instruction string
  */
@@ -1476,10 +1502,10 @@ export function getAttributionInstruction(language?: "he" | "en" | "mixed"): str
 
 /**
  * v0.2.12 Fix #5: Build surfaced memories structure for selective scoring
- * 
+ *
  * Creates position_map and content_map from search results to track
  * which memories were actually surfaced to the main LLM.
- * 
+ *
  * @param searchPositionMap - The search position map from memory retrieval
  * @param memoryContents - Optional map of memory_id to content previews
  * @returns SurfacedMemories structure for outcome detection
@@ -1495,7 +1521,7 @@ export function buildSurfacedMemories(
 		// Position in UI is 1-indexed
 		const uiPosition = entry.position + 1;
 		position_map[uiPosition] = memoryId;
-		
+
 		// Content preview if available
 		if (memoryContents?.[memoryId]) {
 			content_map[uiPosition] = memoryContents[memoryId].slice(0, 100);
@@ -1507,20 +1533,17 @@ export function buildSurfacedMemories(
 
 /**
  * v0.2.12 Fix #5: Infer which memories were actually USED in the response
- * 
+ *
  * When LLM doesn't provide explicit attribution marks, we fall back to
  * inference by checking if memory content appears referenced in the response.
- * 
+ *
  * This is the TypeScript equivalent of OutcomeDetector's used_positions inference.
- * 
+ *
  * @param response - The LLM's response text
  * @param surfacedMemories - The surfaced memories with content
  * @returns Array of positions that appear to have been used
  */
-export function inferUsedPositions(
-	response: string,
-	surfacedMemories: SurfacedMemories
-): number[] {
+export function inferUsedPositions(response: string, surfacedMemories: SurfacedMemories): number[] {
 	const usedPositions: number[] = [];
 	const responseLower = response.toLowerCase();
 
@@ -1533,9 +1556,9 @@ export function inferUsedPositions(
 		const keywords = content
 			.toLowerCase()
 			.split(/\s+/)
-			.filter(w => w.length >= 4)  // Skip short words
-			.slice(0, 10);  // Limit to first 10 keywords
-		
+			.filter((w) => w.length >= 4) // Skip short words
+			.slice(0, 10); // Limit to first 10 keywords
+
 		// If 2+ keywords match, consider it "used"
 		let matchCount = 0;
 		for (const keyword of keywords) {
@@ -1543,7 +1566,7 @@ export function inferUsedPositions(
 				matchCount++;
 			}
 		}
-		
+
 		if (matchCount >= 2 || (keywords.length <= 3 && matchCount >= 1)) {
 			usedPositions.push(position);
 		}
@@ -1554,16 +1577,16 @@ export function inferUsedPositions(
 
 /**
  * v0.2.12: Simple outcome detection based on response characteristics
- * 
+ *
  * This is a simplified version of OutcomeDetector.analyze() for TypeScript.
  * For full LLM-based outcome detection, use the Python backend.
- * 
+ *
  * Detects indicators like:
  * - explicit_thanks
- * - follow_up_question  
+ * - follow_up_question
  * - correction_needed
  * - error_message
- * 
+ *
  * @param userMessage - The user's follow-up message (if any)
  * @param assistantResponse - The assistant's response
  * @returns Basic outcome detection result
@@ -1594,7 +1617,7 @@ export function detectBasicOutcome(
 	// Check user's follow-up message for positive/negative signals
 	if (userMessage) {
 		const userLower = userMessage.toLowerCase();
-		
+
 		// Positive signals
 		if (
 			userLower.includes("thank") ||
@@ -1602,15 +1625,15 @@ export function detectBasicOutcome(
 			userLower.includes("perfect") ||
 			userLower.includes("great") ||
 			userLower.includes("exactly") ||
-			userLower.includes("תודה") ||  // Hebrew: thank you
-			userLower.includes("מעולה")   // Hebrew: excellent
+			userLower.includes("תודה") || // Hebrew: thank you
+			userLower.includes("מעולה") // Hebrew: excellent
 		) {
 			indicators.push("explicit_thanks");
 			outcome = "worked";
 			confidence = 0.8;
 			reasoning = "User expressed gratitude or satisfaction";
 		}
-		
+
 		// Negative signals
 		if (
 			userLower.includes("wrong") ||
@@ -1618,14 +1641,14 @@ export function detectBasicOutcome(
 			userLower.includes("no, ") ||
 			userLower.includes("that's not") ||
 			userLower.includes("actually") ||
-			userLower.includes("לא נכון")  // Hebrew: not correct
+			userLower.includes("לא נכון") // Hebrew: not correct
 		) {
 			indicators.push("correction_needed");
 			outcome = "failed";
 			confidence = 0.7;
 			reasoning = "User indicated response was wrong";
 		}
-		
+
 		// Follow-up question (neutral - could indicate partial success)
 		if (
 			userLower.includes("?") ||
@@ -1654,13 +1677,13 @@ export function detectBasicOutcome(
 
 /**
  * v0.2.12: Process response with full outcome detection and attribution
- * 
+ *
  * Enhanced version that combines:
  * - LLM attribution marks (Fix #7)
  * - Inferred usage (Fix #5)
  * - Scoring matrix application
  * - Fallback to all-scoring (Fix #4)
- * 
+ *
  * @param params - Enhanced processing parameters
  * @returns Full processing result with outcome detection
  */
@@ -1677,22 +1700,25 @@ export async function processResponseWithFullAttribution(params: {
 	cleanedResponse: string;
 	attributionFound: boolean;
 	attribution: MemoryAttribution | null;
-	outcomeDetection: Pick<OutcomeDetectionResult, "outcome" | "confidence" | "indicators" | "reasoning">;
+	outcomeDetection: Pick<
+		OutcomeDetectionResult,
+		"outcome" | "confidence" | "indicators" | "reasoning"
+	>;
 	usedPositions: number[];
 	scoringApplied: "attribution" | "inference" | "all" | "none";
 }> {
 	// Step 1: Parse LLM attribution marks
 	const { cleanedResponse, attribution } = parseMemoryMarks(params.response);
-	
+
 	// Step 2: Detect outcome
 	const outcomeDetection = detectBasicOutcome(params.userFollowUp ?? null, cleanedResponse);
-	
+
 	// Step 3: Determine used positions and scoring strategy
 	let usedPositions: number[] = [];
 	let scoringApplied: "attribution" | "inference" | "all" | "none" = "none";
-	
+
 	const memoryCount = Object.keys(params.searchPositionMap).length;
-	
+
 	if (memoryCount === 0) {
 		// No memories to score
 		scoringApplied = "none";
@@ -1700,7 +1726,7 @@ export async function processResponseWithFullAttribution(params: {
 		// v0.2.12 Fix #7: Use LLM attribution marks with scoring matrix
 		usedPositions = [...attribution.upvoted, ...attribution.downvoted];
 		scoringApplied = "attribution";
-		
+
 		// Record with scoring matrix
 		recordSelectiveOutcomes({
 			userId: params.userId,
@@ -1716,7 +1742,7 @@ export async function processResponseWithFullAttribution(params: {
 		const surfacedMemories = buildSurfacedMemories(params.searchPositionMap, params.memoryContents);
 		usedPositions = inferUsedPositions(cleanedResponse, surfacedMemories);
 		scoringApplied = usedPositions.length > 0 ? "inference" : "all";
-		
+
 		if (usedPositions.length > 0) {
 			// Score only inferred used memories
 			const inferredAttribution: MemoryAttribution = {
@@ -1725,7 +1751,7 @@ export async function processResponseWithFullAttribution(params: {
 				neutral: [],
 				raw: `inferred:${usedPositions.join(",")}`,
 			};
-			
+
 			recordSelectiveOutcomes({
 				userId: params.userId,
 				conversationId: params.conversationId,
@@ -1737,16 +1763,20 @@ export async function processResponseWithFullAttribution(params: {
 			});
 		} else {
 			// Fix #4 fallback: Score all memories with detected outcome
-			const allPositions = Object.values(params.searchPositionMap)
-				.map(entry => entry.position + 1);
-			
+			const allPositions = Object.values(params.searchPositionMap).map(
+				(entry) => entry.position + 1
+			);
+
 			const allAttribution: MemoryAttribution = {
 				upvoted: outcomeDetection.outcome === "worked" ? allPositions : [],
 				downvoted: outcomeDetection.outcome === "failed" ? allPositions : [],
-				neutral: outcomeDetection.outcome === "unknown" || outcomeDetection.outcome === "partial" ? allPositions : [],
+				neutral:
+					outcomeDetection.outcome === "unknown" || outcomeDetection.outcome === "partial"
+						? allPositions
+						: [],
 				raw: `fallback_all:${allPositions.join(",")}`,
 			};
-			
+
 			if (outcomeDetection.outcome !== "unknown") {
 				recordSelectiveOutcomes({
 					userId: params.userId,
@@ -1762,10 +1792,9 @@ export async function processResponseWithFullAttribution(params: {
 	} else {
 		// No content map - can't infer, use Fix #4 fallback
 		scoringApplied = "all";
-		const allPositions = Object.values(params.searchPositionMap)
-			.map(entry => entry.position + 1);
+		const allPositions = Object.values(params.searchPositionMap).map((entry) => entry.position + 1);
 		usedPositions = allPositions;
-		
+
 		// Record all with detected outcome if not unknown
 		if (outcomeDetection.outcome !== "unknown") {
 			const flags = getMemoryFeatureFlags();
@@ -1783,7 +1812,7 @@ export async function processResponseWithFullAttribution(params: {
 			}
 		}
 	}
-	
+
 	logger.debug(
 		{
 			userId: params.userId,
@@ -1810,11 +1839,11 @@ export async function processResponseWithFullAttribution(params: {
 
 /**
  * v0.2.12: Get doc_ids from cold-start context for outcome scoring
- * 
+ *
  * RoamPal Parity (unified_memory_system.py get_cold_start_context):
  * Returns (formatted_context, doc_ids, raw_context) for outcome scoring.
  * doc_ids derived via: doc_ids = [r.get("id") for r in all_context if r.get("id")]
- * 
+ *
  * @param searchPositionMap - The search position map from memory retrieval
  * @returns Array of memory IDs (doc_ids) for outcome scoring
  */
@@ -1829,7 +1858,7 @@ export function extractDocIdsForScoring(searchPositionMap: SearchPositionMap): s
 
 /**
  * Memory Bank Philosophy - Three-layer purpose and selectivity guidance
- * 
+ *
  * RoamPal v0.2.10: Prevents LLM from spamming create_memory with every fact.
  * Instead, guides LLM to store only strategic knowledge that enables
  * continuity and learning across sessions.
@@ -1922,14 +1951,14 @@ export interface ToolGuidanceResult {
 
 /**
  * Get tool guidance based on action effectiveness from Action KG
- * 
+ *
  * RoamPal v0.2.10: After learning from 3+ uses, system automatically injects warnings:
- * 
+ *
  * ═══ CONTEXTUAL GUIDANCE (Context: memory_test) ═══
  * 🎯 Tool Guidance (learned from past outcomes):
  *   ✓ search_memory() → 87% success (42 uses)
  *   ✗ create_memory() → only 5% success (19 uses) - AVOID
- * 
+ *
  * @param userId - User identifier
  * @param contextType - Detected context type (docker, debugging, coding_help, etc.)
  * @param availableTools - List of available tool names in current session
@@ -1968,7 +1997,7 @@ export async function getToolGuidance(
 		}
 
 		// Filter to only relevant tools (with 3+ uses for statistical significance)
-		const relevantStats = actionStats.filter(stat => stat.total_uses >= 3);
+		const relevantStats = actionStats.filter((stat) => stat.total_uses >= 3);
 
 		if (relevantStats.length === 0) {
 			result.timingMs = Date.now() - startTime;
@@ -1982,7 +2011,8 @@ export async function getToolGuidance(
 			"🎯 Tool Effectiveness (learned from past outcomes):",
 		];
 
-		for (const stat of relevantStats.slice(0, 6)) { // Limit to top 6
+		for (const stat of relevantStats.slice(0, 6)) {
+			// Limit to top 6
 			const successRate = stat.success_rate;
 			let emoji: string;
 			let warning = "";
@@ -1998,7 +2028,9 @@ export async function getToolGuidance(
 				emoji = "○";
 			}
 
-			lines.push(`  ${emoji} ${stat.action_type}() → ${(successRate * 100).toFixed(0)}% success (${stat.total_uses} uses)${warning}`);
+			lines.push(
+				`  ${emoji} ${stat.action_type}() → ${(successRate * 100).toFixed(0)}% success (${stat.total_uses} uses)${warning}`
+			);
 		}
 
 		// Add warning if tools to avoid exist
@@ -2031,7 +2063,7 @@ export async function getToolGuidance(
 
 /**
  * Get the appropriate Memory Bank Philosophy instruction based on language
- * 
+ *
  * @param language - Language code ('he' | 'en' | 'mixed')
  * @returns Memory Bank Philosophy string
  */
@@ -2044,14 +2076,15 @@ export function getMemoryBankPhilosophy(language?: "he" | "en" | "mixed"): strin
 
 /**
  * Check if add_to_memory_bank tool is available in the current tool set
- * 
+ *
  * @param tools - Array of tool definitions
  * @returns true if add_to_memory_bank is available
  */
 export function hasMemoryBankTool(tools: Array<{ function: { name: string } }>): boolean {
-	return tools.some(t => 
-		t.function.name === "add_to_memory_bank" || 
-		t.function.name === "create_memory" ||
-		t.function.name === "store_memory"
+	return tools.some(
+		(t) =>
+			t.function.name === "add_to_memory_bank" ||
+			t.function.name === "create_memory" ||
+			t.function.name === "store_memory"
 	);
 }

@@ -148,7 +148,7 @@ export class ContextServiceImpl implements ContextService {
 	/**
 	 * Extract entities from text and store them in the Content KG
 	 * Phase 3 Gap 7: Content KG Entity Extraction
-	 * 
+	 *
 	 * RoamPal Parity:
 	 * - On memory storage, extracts entities from text
 	 * - Builds Content Graph with entity relationships
@@ -208,7 +208,10 @@ export class ContextServiceImpl implements ContextService {
 
 			return result;
 		} catch (err) {
-			logger.error({ err, userId: params.userId, memoryId: params.memoryId }, "Failed to extract and store entities");
+			logger.error(
+				{ err, userId: params.userId, memoryId: params.memoryId },
+				"Failed to extract and store entities"
+			);
 			return result;
 		}
 	}

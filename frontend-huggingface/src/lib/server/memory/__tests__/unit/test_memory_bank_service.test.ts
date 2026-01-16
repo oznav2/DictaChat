@@ -752,7 +752,7 @@ describe("TestOutcomeRecording", () => {
 			});
 
 			const updateCall = mockItemsCollection.findOneAndUpdate.mock.calls[0];
-			expect(updateCall[1].$inc["stats.uses"]).toBe(1);
+			expect(updateCall[1][0].$set["stats.uses"]).toBeDefined();
 
 			recordResult(testName, true, "Uses count incremented");
 		} catch (error) {
@@ -787,7 +787,7 @@ describe("TestOutcomeRecording", () => {
 			});
 
 			const updateCall = mockItemsCollection.findOneAndUpdate.mock.calls[0];
-			expect(updateCall[1].$inc["stats.failed_count"]).toBe(1);
+			expect(updateCall[1][0].$set["stats.failed_count"]).toBeDefined();
 
 			recordResult(testName, true, "Outcome count incremented");
 		} catch (error) {

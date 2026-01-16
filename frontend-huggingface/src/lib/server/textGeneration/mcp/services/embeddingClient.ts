@@ -29,10 +29,45 @@ interface EmbeddingsResponse {
 export class EmbeddingClient {
 	private readonly endpoint: string;
 	private readonly timeout: number;
+	private queue: Array<() => Promise<void>> = [];
+	private inFlight = 0;
+	private readonly concurrency = 2;
 
 	constructor(options: EmbeddingClientOptions = {}) {
 		this.endpoint = options.endpoint || env.EMBEDDING_SERVICE_URL || "http://localhost:5005";
 		this.timeout = options.timeout ?? 30000;
+	}
+
+	submitEmbedBatch(
+		texts: string[],
+		onComplete: (embeddings: number[][]) => Promise<void> | void,
+		onError?: (err: unknown) => Promise<void> | void
+	): void {
+		this.enqueue(async () => {
+			try {
+				const embeddings = await this.embedBatch(texts);
+				await onComplete(embeddings);
+			} catch (err) {
+				if (onError) await onError(err);
+			}
+		});
+	}
+
+	private enqueue(task: () => Promise<void>): void {
+		this.queue.push(task);
+		this.drain();
+	}
+
+	private drain(): void {
+		while (this.inFlight < this.concurrency && this.queue.length > 0) {
+			const task = this.queue.shift();
+			if (!task) return;
+			this.inFlight++;
+			task().finally(() => {
+				this.inFlight--;
+				this.drain();
+			});
+		}
 	}
 
 	/**

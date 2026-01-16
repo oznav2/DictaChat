@@ -26,9 +26,10 @@
 		onclose,
 		dir = "ltr",
 	}: Props = $props();
-	
+
 	// Respect user's motion preferences
-	const prefersReducedMotion = browser && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const prefersReducedMotion =
+		browser && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 	let backdropEl: HTMLDivElement | undefined = $state();
 	let modalEl: HTMLDivElement | undefined = $state();
@@ -92,7 +93,10 @@
 			>
 				{#if closeButton}
 					<button
-						class="modal-close-btn absolute top-4 z-50 rounded-full p-1 transition-all duration-200 hover:bg-gray-100 active:scale-95 dark:hover:bg-gray-700 {dir === 'rtl' ? 'left-4' : 'right-4'}"
+						class="modal-close-btn absolute top-4 z-50 rounded-full p-1 transition-all duration-200 hover:bg-gray-100 active:scale-95 dark:hover:bg-gray-700 {dir ===
+						'rtl'
+							? 'left-4'
+							: 'right-4'}"
 						onclick={() => onclose?.()}
 						aria-label="Close modal"
 					>
@@ -107,8 +111,16 @@
 				tabindex="-1"
 				bind:this={modalEl}
 				onkeydown={handleKeydown}
-				in:fly={{ y: prefersReducedMotion ? 0 : 30, duration: prefersReducedMotion ? 0 : 300, easing: backOut }}
-				out:fly={{ y: prefersReducedMotion ? 0 : 20, duration: prefersReducedMotion ? 0 : 200, easing: cubicOut }}
+				in:fly={{
+					y: prefersReducedMotion ? 0 : 30,
+					duration: prefersReducedMotion ? 0 : 300,
+					easing: backOut,
+				}}
+				out:fly={{
+					y: prefersReducedMotion ? 0 : 20,
+					duration: prefersReducedMotion ? 0 : 200,
+					easing: cubicOut,
+				}}
 				class={[
 					"modal-content scrollbar-custom relative mx-auto max-h-[95dvh] max-w-[90dvw] overflow-y-auto overflow-x-hidden rounded-2xl bg-white shadow-2xl outline-none transition-shadow duration-300 dark:bg-gray-800 dark:text-gray-200",
 					width,
@@ -116,7 +128,10 @@
 			>
 				{#if closeButton}
 					<button
-						class="modal-close-btn absolute top-4 z-50 rounded-full p-1 transition-all duration-200 hover:bg-gray-100 active:scale-95 dark:hover:bg-gray-700 {dir === 'rtl' ? 'left-4' : 'right-4'}"
+						class="modal-close-btn absolute top-4 z-50 rounded-full p-1 transition-all duration-200 hover:bg-gray-100 active:scale-95 dark:hover:bg-gray-700 {dir ===
+						'rtl'
+							? 'left-4'
+							: 'right-4'}"
 						onclick={() => onclose?.()}
 						aria-label="Close modal"
 					>

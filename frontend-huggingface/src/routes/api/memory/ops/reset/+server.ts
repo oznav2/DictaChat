@@ -6,10 +6,10 @@ import { config } from "$lib/server/config";
 
 /**
  * Memory System Nuclear Reset API
- * 
+ *
  * GET: Returns what will be deleted (dry run / preview)
  * POST: Executes the reset (requires confirmation token)
- * 
+ *
  * This endpoint completely wipes all memory system data:
  * - All MongoDB memory collections
  * - All Qdrant vector embeddings
@@ -73,8 +73,18 @@ interface ResetPreview {
 /**
  * GET - Preview what will be deleted
  */
-export const GET: RequestHandler = async () => {
+export const GET: RequestHandler = async ({ locals }) => {
 	try {
+		if (!locals.isAdmin) {
+			return json(
+				{
+					success: false,
+					error: "Admin only",
+				},
+				{ status: 403 }
+			);
+		}
+
 		const database = await Database.getInstance();
 		const client = database.getClient();
 		const db = client.db(config.MONGODB_DB_NAME);
@@ -160,9 +170,19 @@ export const GET: RequestHandler = async () => {
 /**
  * POST - Execute the reset
  */
-export const POST: RequestHandler = async ({ request }) => {
+export const POST: RequestHandler = async ({ request, locals }) => {
 	const body = await request.json().catch(() => ({}));
 	const confirm = body.confirm === true;
+
+	if (!locals.isAdmin) {
+		return json(
+			{
+				success: false,
+				error: "Admin only",
+			},
+			{ status: 403 }
+		);
+	}
 
 	if (!confirm) {
 		return json(
@@ -175,7 +195,11 @@ export const POST: RequestHandler = async ({ request }) => {
 	}
 
 	const results: {
-		mongodb: Array<{ collection: string; status: "dropped" | "not_found" | "error"; error?: string }>;
+		mongodb: Array<{
+			collection: string;
+			status: "dropped" | "not_found" | "error";
+			error?: string;
+		}>;
 		qdrant: { collection: string; status: "deleted" | "not_found" | "error"; error?: string };
 	} = {
 		mongodb: [],

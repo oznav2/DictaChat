@@ -219,7 +219,7 @@ export class GhostRegistry {
 	/**
 	 * Clear all ghosted memories for a specific tier
 	 * v0.2.9 Parity: Used by "Clear Books" to remove all ghost records for books tier
-	 * 
+	 *
 	 * @param userId - User identifier
 	 * @param tier - Tier to clear (e.g., "books")
 	 * @returns Number of ghost records cleared
@@ -242,7 +242,7 @@ export class GhostRegistry {
 	/**
 	 * Clear all ghosted memories for a user
 	 * v0.2.9 Parity: Used by collection nuke to remove all ghost records
-	 * 
+	 *
 	 * @param userId - User identifier
 	 * @returns Number of ghost records cleared
 	 */

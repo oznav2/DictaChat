@@ -501,11 +501,11 @@ export class QdrantAdapter {
 
 	/**
 	 * Delete points by filter (e.g., all points for a user)
-	 * 
+	 *
 	 * Supports two filter formats:
 	 * 1. Simple object: { userId, tier, status }
 	 * 2. Qdrant-native filter: { must: [{ key, match: { value } }] }
-	 * 
+	 *
 	 * v0.2.9 Parity: Used by clearBooksTier for "True Collection Nuke"
 	 */
 	async deleteByFilter(filter: {
@@ -560,7 +560,8 @@ export class QdrantAdapter {
 			body
 		);
 
-		const success = result?.result?.status === "completed" || result?.result?.status === "acknowledged";
+		const success =
+			result?.result?.status === "completed" || result?.result?.status === "acknowledged";
 		return { deleted: willDelete, success };
 	}
 

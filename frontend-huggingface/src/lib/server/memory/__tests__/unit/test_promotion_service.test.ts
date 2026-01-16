@@ -43,6 +43,7 @@ const mockMongoStore = {
 	getById: vi.fn().mockResolvedValue(null),
 	update: vi.fn().mockResolvedValue(undefined),
 	archive: vi.fn().mockResolvedValue(undefined),
+	getCollections: vi.fn().mockReturnValue(null),
 };
 
 // Mock Qdrant adapter
@@ -158,8 +159,12 @@ describe("TestWorkingToHistoryPromotion", () => {
 					memory_id: "mem_123",
 					user_id: "user_123",
 					tier: "working",
-					wilson_score: 0.8,
-					uses: 3,
+					stats: {
+						wilson_score: 0.8,
+						uses: 3,
+						last_used_at: new Date().toISOString(),
+						success_count: 0,
+					},
 					status: "active",
 				},
 			]);
@@ -204,8 +209,12 @@ describe("TestWorkingToHistoryPromotion", () => {
 					memory_id: "mem_123",
 					user_id: "user_123",
 					tier: "working",
-					wilson_score: 0.5, // Below 0.7 threshold
-					uses: 3,
+					stats: {
+						wilson_score: 0.5,
+						uses: 3,
+						last_used_at: new Date().toISOString(),
+						success_count: 0,
+					},
 					status: "active",
 				},
 			]);
@@ -239,8 +248,12 @@ describe("TestWorkingToHistoryPromotion", () => {
 					memory_id: "mem_123",
 					user_id: "user_123",
 					tier: "working",
-					wilson_score: 0.8,
-					uses: 1, // Below 2 threshold
+					stats: {
+						wilson_score: 0.8,
+						uses: 1,
+						last_used_at: new Date().toISOString(),
+						success_count: 0,
+					},
 					status: "active",
 				},
 			]);
@@ -293,8 +306,12 @@ describe("TestHistoryToPatternsPromotion", () => {
 					memory_id: "mem_456",
 					user_id: "user_123",
 					tier: "history",
-					wilson_score: 0.95, // >= 0.9 threshold
-					uses: 5, // >= 3 threshold
+					stats: {
+						wilson_score: 0.95,
+						uses: 5,
+						last_used_at: new Date().toISOString(),
+						success_count: 5,
+					},
 					status: "active",
 				},
 			]);
@@ -308,7 +325,7 @@ describe("TestHistoryToPatternsPromotion", () => {
 			expect(stats.promoted).toBe(1);
 
 			const updateCall = mockMongoStore.update.mock.calls[0][0];
-			expect(updateCall.updates.tier).toBe("patterns");
+			expect(updateCall.tier).toBe("patterns");
 
 			recordResult(testName, true, `Promoted to patterns: ${stats.promoted}`);
 		} catch (error) {
@@ -333,8 +350,12 @@ describe("TestHistoryToPatternsPromotion", () => {
 					memory_id: "mem_456",
 					user_id: "user_123",
 					tier: "history",
-					wilson_score: 0.85, // Below 0.9 threshold
-					uses: 5,
+					stats: {
+						wilson_score: 0.85,
+						uses: 5,
+						last_used_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+						success_count: 5,
+					},
 					status: "active",
 				},
 			]);
@@ -389,15 +410,20 @@ describe("TestTTLCleanup", () => {
 					memory_id: "old_mem_1",
 					user_id: "user_123",
 					tier: "working",
-					wilson_score: 0.5, // Not high enough to preserve
-					created_at: oldDate,
+					timestamps: { created_at: oldDate.toISOString() },
+					stats: {
+						wilson_score: 0.5,
+						uses: 1,
+						last_used_at: null,
+						success_count: 0,
+					},
 					status: "active",
 				},
 			]);
 
 			// Mock getById for preservation check
 			mockMongoStore.getById.mockResolvedValueOnce({
-				wilson_score: 0.5, // Below 0.8 preservation threshold
+				stats: { wilson_score: 0.5 },
 			});
 
 			// TTL cleanup - history tier (empty)
@@ -437,15 +463,20 @@ describe("TestTTLCleanup", () => {
 					memory_id: "high_value_mem",
 					user_id: "user_123",
 					tier: "working",
-					wilson_score: 0.9, // High value
-					created_at: oldDate,
+					timestamps: { created_at: oldDate.toISOString() },
+					stats: {
+						wilson_score: 0.9,
+						uses: 1,
+						last_used_at: null,
+						success_count: 0,
+					},
 					status: "active",
 				},
 			]);
 
 			// Mock getById for preservation check
 			mockMongoStore.getById.mockResolvedValueOnce({
-				wilson_score: 0.9, // Above 0.8 preservation threshold
+				stats: { wilson_score: 0.9 },
 			});
 
 			mockMongoStore.query.mockResolvedValue([]);
@@ -502,8 +533,7 @@ describe("TestGarbageCleanup", () => {
 					memory_id: "low_score_mem",
 					user_id: "user_123",
 					tier: "working",
-					wilson_score: 0.15, // Below 0.2 threshold
-					uses: 2, // Has been used
+					stats: { wilson_score: 0.15, uses: 2 },
 					status: "active",
 				},
 			]);
@@ -546,8 +576,7 @@ describe("TestGarbageCleanup", () => {
 					memory_id: "unused_mem",
 					user_id: "user_123",
 					tier: "working",
-					wilson_score: 0.15, // Low score
-					uses: 0, // Never used - no outcome recorded
+					stats: { wilson_score: 0.15, uses: 0 },
 					status: "active",
 				},
 			]);
@@ -773,8 +802,12 @@ describe("TestPromotionStats", () => {
 					memory_id: "mem_123",
 					user_id: "user_123",
 					tier: "working",
-					wilson_score: 0.8,
-					uses: 3,
+					stats: {
+						wilson_score: 0.8,
+						uses: 3,
+						last_used_at: new Date().toISOString(),
+						success_count: 0,
+					},
 					status: "active",
 				},
 			]);
@@ -828,8 +861,12 @@ describe("TestPromotionRules", () => {
 					memory_id: "mem_edge",
 					user_id: "user_123",
 					tier: "working",
-					wilson_score: expectedMinScore, // Exactly 0.7
-					uses: expectedMinUses, // Exactly 2
+					stats: {
+						wilson_score: expectedMinScore,
+						uses: expectedMinUses,
+						last_used_at: new Date().toISOString(),
+						success_count: 0,
+					},
 					status: "active",
 				},
 			]);
@@ -874,8 +911,12 @@ describe("TestPromotionRules", () => {
 					memory_id: "mem_edge",
 					user_id: "user_123",
 					tier: "history",
-					wilson_score: expectedMinScore, // Exactly 0.9
-					uses: expectedMinUses, // Exactly 3
+					stats: {
+						wilson_score: expectedMinScore,
+						uses: expectedMinUses,
+						last_used_at: new Date().toISOString(),
+						success_count: 5,
+					},
 					status: "active",
 				},
 			]);
@@ -922,8 +963,7 @@ describe("TestPromotionRules", () => {
 					memory_id: "garbage_mem",
 					user_id: "user_123",
 					tier: "working",
-					wilson_score: expectedThreshold - 0.01, // Just below
-					uses: 2, // Has been used
+					stats: { wilson_score: expectedThreshold - 0.01, uses: 2 },
 					status: "active",
 				},
 			]);

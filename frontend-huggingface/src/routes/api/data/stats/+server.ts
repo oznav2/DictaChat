@@ -1,6 +1,6 @@
 /**
  * GET /api/data/stats - Get comprehensive data statistics for Data Management UI
- * 
+ *
  * RoamPal parity: /api/data/stats
  * Returns counts for all memory tiers, sessions, and knowledge graph
  */
@@ -26,10 +26,11 @@ export const GET: RequestHandler = async ({ locals }) => {
 
 	try {
 		await dbReady;
-		
-		const db = (collections as unknown as Record<string, any>).books?.db 
-			?? (collections as unknown as Record<string, any>).conversations?.db;
-			
+
+		const db =
+			(collections as unknown as Record<string, any>).books?.db ??
+			(collections as unknown as Record<string, any>).conversations?.db;
+
 		if (!db) {
 			return json({ success: false, error: "Database not initialized" }, { status: 500 });
 		}
@@ -39,37 +40,37 @@ export const GET: RequestHandler = async ({ locals }) => {
 
 		// Memory bank counts
 		const memoryBank = coll("memory_items");
-		const memoryBankAll = await memoryBank.countDocuments({ 
-			...userFilter, 
-			tier: "memory_bank" 
+		const memoryBankAll = await memoryBank.countDocuments({
+			...userFilter,
+			tier: "memory_bank",
 		});
-		const memoryBankActive = await memoryBank.countDocuments({ 
-			...userFilter, 
-			tier: "memory_bank", 
-			status: "active" 
+		const memoryBankActive = await memoryBank.countDocuments({
+			...userFilter,
+			tier: "memory_bank",
+			status: "active",
 		});
-		const memoryBankArchived = await memoryBank.countDocuments({ 
-			...userFilter, 
-			tier: "memory_bank", 
-			status: "archived" 
+		const memoryBankArchived = await memoryBank.countDocuments({
+			...userFilter,
+			tier: "memory_bank",
+			status: "archived",
 		});
 
 		// Tier counts
-		const workingCount = await memoryBank.countDocuments({ 
-			...userFilter, 
-			tier: "working" 
+		const workingCount = await memoryBank.countDocuments({
+			...userFilter,
+			tier: "working",
 		});
-		const historyCount = await memoryBank.countDocuments({ 
-			...userFilter, 
-			tier: "history" 
+		const historyCount = await memoryBank.countDocuments({
+			...userFilter,
+			tier: "history",
 		});
-		const patternsCount = await memoryBank.countDocuments({ 
-			...userFilter, 
-			tier: "patterns" 
+		const patternsCount = await memoryBank.countDocuments({
+			...userFilter,
+			tier: "patterns",
 		});
-		const booksCount = await memoryBank.countDocuments({ 
-			...userFilter, 
-			tier: "books" 
+		const booksCount = await memoryBank.countDocuments({
+			...userFilter,
+			tier: "books",
 		});
 
 		// Sessions count (conversations)

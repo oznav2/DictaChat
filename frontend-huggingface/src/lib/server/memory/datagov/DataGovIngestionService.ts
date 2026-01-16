@@ -529,7 +529,10 @@ This domain maps bidirectional Hebrew↔English terms for ${domain.toLowerCase()
 			schemasBasePath = path.join(projectRoot, "..", "datagov", "schemas");
 		}
 		if (!fs.existsSync(schemasBasePath)) {
-			logger.warn({ path: schemasBasePath }, "[DataGov] Schemas directory not found, skipping schema ingestion");
+			logger.warn(
+				{ path: schemasBasePath },
+				"[DataGov] Schemas directory not found, skipping schema ingestion"
+			);
 			return;
 		}
 
@@ -614,12 +617,9 @@ This domain maps bidirectional Hebrew↔English terms for ${domain.toLowerCase()
 							userId: ADMIN_USER_ID,
 							tier: "memory_bank", // Using memory_bank for compatibility
 							text: content,
-							tags: [
-								"datagov",
-								"schema",
-								entry.category,
-								entry.format.toLowerCase(),
-							].filter(Boolean),
+							tags: ["datagov", "schema", entry.category, entry.format.toLowerCase()].filter(
+								Boolean
+							),
 							importance: 0.7, // Datasets are medium-high importance
 							metadata: {
 								datagov_type: "schema",
@@ -657,7 +657,7 @@ This domain maps bidirectional Hebrew↔English terms for ${domain.toLowerCase()
 						totalBatches,
 						processed,
 						skipped,
-						percent: Math.round((i + batch.length) / totalResources * 100),
+						percent: Math.round(((i + batch.length) / totalResources) * 100),
 					},
 					"[DataGov] Schema ingestion progress"
 				);
@@ -683,7 +683,13 @@ This domain maps bidirectional Hebrew↔English terms for ${domain.toLowerCase()
 	private buildSchemaDescription(
 		entry: ResourceIndexEntry,
 		schema: DatasetSchema | null,
-		fieldAvail: { has_phone: boolean; has_address: boolean; has_location: boolean; has_email: boolean; has_date: boolean }
+		fieldAvail: {
+			has_phone: boolean;
+			has_address: boolean;
+			has_location: boolean;
+			has_email: boolean;
+			has_date: boolean;
+		}
 	): string {
 		const hebrewCategoryName = CATEGORY_HEBREW_NAMES[entry.category] ?? entry.category;
 		const title = schema?.title ?? entry.title;
@@ -699,7 +705,7 @@ This domain maps bidirectional Hebrew↔English terms for ${domain.toLowerCase()
 		if (fieldAvail.has_phone) features.push("מספרי טלפון (phone numbers)");
 		if (fieldAvail.has_address) features.push("כתובות (addresses)");
 		if (fieldAvail.has_location) features.push("מיקום גיאוגרפי (location)");
-		if (fieldAvail.has_email) features.push("דוא\"ל (email)");
+		if (fieldAvail.has_email) features.push('דוא"ל (email)');
 		if (fieldAvail.has_date) features.push("תאריכים (dates)");
 		const featuresText = features.length > 0 ? features.join(", ") : "מידע כללי (general data)";
 
@@ -996,10 +1002,7 @@ Source: data.gov.il
 			const memoryItems = this.db.collection("memory_items");
 			const exists = await memoryItems.findOne(
 				{
-					$or: [
-						{ memory_id: memoryId },
-						{ "metadata.memory_id_override": memoryId },
-					],
+					$or: [{ memory_id: memoryId }, { "metadata.memory_id_override": memoryId }],
 				},
 				{ projection: { _id: 1 } }
 			);

@@ -1,7 +1,7 @@
-<!-- Updated: v0.2.30 TIER 8 Phase 9 - January 15, 2026 -->
+<!-- Updated: v0.2.31 TIER 8 COMPLETE - January 15, 2026 -->
 # Project Status
 
-**Last Updated**: January 15, 2026 (v0.2.30 - Phase 9 Prefetch Optimization COMPLETE!)
+**Last Updated**: January 15, 2026 (v0.2.31 - ALL TIERS 1-8 FULLY COMPLETE!)
 
 ---
 
@@ -18,7 +18,7 @@ All critical phases from the Memory System Implementation Plan are now complete:
 | 5 | SEARCH QUALITY | 15, 19 | ✅ COMPLETE |
 | 6 | PLATFORM HARDENING | 24, 14 | ✅ COMPLETE |
 | 7 | KNOWLEDGE EXPANSION | 25 | ✅ COMPLETE |
-| 8 | POLISH | 6, 21, 9 | ✅ COMPLETE (10-11, 18 deferred) |
+| 8 | POLISH | 6, 21, 9, 10, 11, 18 | ✅ FULLY COMPLETE |
 
 ### Session Commits (January 14-15, 2026)
 
@@ -31,6 +31,62 @@ All critical phases from the Memory System Implementation Plan are now complete:
 | `cd9c68b` | 6 | Add trace event deduplication |
 | `ec1a0b6` | 21 | Memory System Observability (MemoryLogger, MemoryMetrics, /health) |
 | *pending* | 9 | Memory Prefetch Optimization (Parallel + Token Budget) |
+| v0.2.31 | 10, 11, 18 | Phases verified as pre-existing implementations |
+
+### Local Workspace Updates (Uncommitted)
+- January 15, 2026: Tier 1 (codespace_pending.md) implemented: KG write buffer flush serialization (Mutex + snapshot swap), ISearchService + ServiceFactory, and related unit/concurrency tests.
+- January 15, 2026: Tier 2 implemented: MCP stream/tool-call robustness (repairXmlStream + fenced tool_calls parsing), async ingestion (store-now/embed-later + needs_reindex/embedding_status + caps), and targeted unit tests.
+- January 15, 2026: Tier 3 implemented: generic tool result ingestion (categories + source.tool_name attribution + hash dedup tags), ingestible category registry, and toolInvocation bridging for ingestible tools.
+- January 15, 2026: Tier 4 implemented: working-memory storage no longer blocks on entity extraction/counters; stored UI updates more reliable; upload hash dedup verified for duplicate uploads. Verified via `npm run check`, `npm run lint`, `npm run test`.
+- January 15, 2026: Tier 5 (K.5) implemented: sampled OpenAI raw stream diagnostics behind DEBUG_RAW_STREAM with redaction + requestId correlation; defaults off. Verified via `npm run check`, `npm run lint`, `npm run test`.
+- January 15, 2026: Tier 5 (K.9) implemented: admin-only guards for sensitive diagnostics/ops/MCP endpoints and strengthened tool-result sanitization (secrets/PII redaction) before storage. Verified via `npm run check`, `npm run lint`, `npm run test -- --run`.
+- January 15, 2026: Tier 5 (K.4 + Phase 7 + K.8) implemented: wired MemoryMetrics into prefetch/search/store/embed (added stage-level search timing + ops/sec rates) and added `/api/memory/prefetch` + `scripts/k4Baseline.ts` capture/compare; trace events now use distinct run IDs for memory vs tools and include `runType`; documented multi-instance readiness and Redis lock priorities in AGENTS.md. Verified via `npm run check`, `npm run lint`.
+- January 15, 2026: Tier 6 implemented: deprecated legacy memoryBank default reads/indexes, added emergency feature flags (memory consolidation, tool-result ingestion, memory-first gating) wired into key code paths, and added monitoring metrics for needs_reindex, embedding circuit breaker open, and tool-skip events. Verified via `npm run check`, `npm run lint`.
+- January 15, 2026: Fixed TS diagnostics in `frontend-huggingface/src/lib/components/memory/KnowledgeGraph3D.svelte` (correct 3d-force-graph node/link typings + typed `cameraPosition()` getter/setter overloads). Verified with `npm run check` + `npm run lint`.
+- January 15, 2026: Added missing observability logs from `codespace_logs.md` (tool ingestion, tool gating, cold-start, attribution/marks, search degradation/RRF, promotion, outcome time-decay, SSE progress, KG3D debug). Verified via `npm run check` + `npm run lint`.
+
+---
+
+## ✅ v0.2.31 PHASES 10, 11, 18: VERIFIED AS PRE-EXISTING
+
+**Branch**: genspark_ai_developer
+**Priority**: TIER 8 - POLISH (Final verification)
+
+### Verification Summary
+
+Upon detailed code inspection, Phases 10, 11, and 18 were discovered to already be fully implemented:
+
+| Phase | Description | Implementation | Status |
+|-------|-------------|----------------|--------|
+| 10 | Working Memory Lifecycle | `PromotionService.ts` | ✅ VERIFIED |
+| 11 | History Tier Management | `PromotionService.ts` | ✅ VERIFIED |
+| 18 | Prompt Template System | `PromptEngine.ts` + `templates/*.hbs` | ✅ VERIFIED |
+
+### Phase 10 - Working Memory Lifecycle
+**File**: `src/lib/server/memory/learning/PromotionService.ts`
+
+- `runTtlCleanup()` - Handles TTL-based expiration (lines 448-485)
+- `TTL_RULES` - Configurable TTL per tier: working=24h, history=30d (lines 89-102)
+- `preserveHighValue` - Promotion check before expiration (lines 461-465)
+- `archiveMemory()` - Removes from both MongoDB and Qdrant (lines 565-573)
+- `startScheduler()` - Runs cleanup immediately on startup (line 140)
+
+### Phase 11 - History Tier Management
+**File**: `src/lib/server/memory/learning/PromotionService.ts`
+
+- `PROMOTION_RULES` - history→patterns: score≥0.9, uses≥3 (line 67)
+- `MIN_SUCCESS_COUNT_FOR_PATTERNS = 5` - Phase 22.4 requirement (line 73)
+- `resetPromotionCounters()` - Counter reset on working→history (lines 416-443)
+- `promoteMemory()` - Handles all tier transitions (lines 374-408)
+
+### Phase 18 - Prompt Template System
+**Files**: `src/lib/server/memory/PromptEngine.ts` + `templates/*.hbs`
+
+- **Template Files (14)**: personality-prompt.hbs, memory-injection.hbs, book-context.hbs, failure-prevention.hbs, organic-recall.hbs, and 9 more
+- **PromptEngine.ts (679 lines)**: Full Handlebars-based template engine
+- **25+ Helpers**: ifLang, rtl, join, truncate, formatDate, percent, etc.
+- **Bilingual Support**: `renderBilingual()`, `detectLanguage()`, RTL wrapper
+- **Singleton Pattern**: `getPromptEngine()` for global access
 
 ---
 

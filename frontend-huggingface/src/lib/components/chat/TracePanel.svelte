@@ -21,7 +21,7 @@
 
 	// Track which steps have been collapsed (after fade delay)
 	let collapsedSteps: Set<string> = new Set();
-	
+
 	// Track animated steps to stagger animations
 	let animatedSteps: Set<string> = new Set();
 
@@ -125,17 +125,18 @@
 				{@const isError = step.status === "error"}
 				{@const isCollapsing = isDone && !collapsedSteps.has(step.id)}
 				{@const shouldShow = isStepVisible(step, index)}
-				{@const stepClass = `trace-step flex items-center gap-2.5 rounded-lg transition-all duration-300 ${
-					run.completed ? "px-0 py-1" : "px-2.5 py-2"
-				} ${language === "he" ? "flex-row-reverse" : ""} ${
-					isActive ? "bg-blue-50/80 dark:bg-blue-900/20 shadow-sm" : ""
-				} ${isDone ? "opacity-80" : ""} ${isError ? "bg-red-50/80 dark:bg-red-900/20 shadow-sm" : ""} ${
-					isCollapsing ? "trace-step-completing" : ""
-				}`.trim()}
+				{@const stepClass =
+					`trace-step flex items-center gap-2.5 rounded-lg transition-all duration-300 ${
+						run.completed ? "px-0 py-1" : "px-2.5 py-2"
+					} ${language === "he" ? "flex-row-reverse" : ""} ${
+						isActive ? "bg-blue-50/80 dark:bg-blue-900/20 shadow-sm" : ""
+					} ${isDone ? "opacity-80" : ""} ${isError ? "bg-red-50/80 dark:bg-red-900/20 shadow-sm" : ""} ${
+						isCollapsing ? "trace-step-completing" : ""
+					}`.trim()}
 
 				{#if shouldShow}
-					<div 
-						class={stepClass} 
+					<div
+						class={stepClass}
 						in:slide={{ duration: 300, easing: backOut, delay: getStaggerDelay(index) }}
 						out:slide={{ duration: 250, easing: cubicOut }}
 					>
@@ -180,8 +181,12 @@
 
 						<!-- Progress indicator for active steps -->
 						{#if isActive}
-							<div class="trace-progress h-1 w-12 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-600">
-								<div class="trace-progress-bar h-full w-full rounded-full bg-blue-500 dark:bg-blue-400"></div>
+							<div
+								class="trace-progress h-1 w-12 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-600"
+							>
+								<div
+									class="trace-progress-bar h-full w-full rounded-full bg-blue-500 dark:bg-blue-400"
+								></div>
 							</div>
 						{/if}
 					</div>
@@ -238,7 +243,8 @@
 	}
 
 	@keyframes iconPulse {
-		0%, 100% {
+		0%,
+		100% {
 			transform: scale(1);
 			opacity: 1;
 		}

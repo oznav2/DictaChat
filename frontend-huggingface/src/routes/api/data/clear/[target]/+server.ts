@@ -1,6 +1,6 @@
 /**
  * POST /api/data/clear/[target] - Clear specific data collections
- * 
+ *
  * RoamPal parity: /api/data/clear/${target}
  * Supports clearing: memory_bank, working, history, patterns, books, sessions, knowledge-graph
  */
@@ -10,13 +10,13 @@ import { collections, ready as dbReady } from "$lib/server/database";
 import { ADMIN_USER_ID } from "$lib/server/constants";
 import { UnifiedMemoryFacade, type MemoryTier } from "$lib/server/memory";
 
-type ClearTarget = 
-	| "memory_bank" 
-	| "working" 
-	| "history" 
-	| "patterns" 
-	| "books" 
-	| "sessions" 
+type ClearTarget =
+	| "memory_bank"
+	| "working"
+	| "history"
+	| "patterns"
+	| "books"
+	| "sessions"
 	| "knowledge-graph";
 
 const TIER_MAP: Record<string, MemoryTier> = {
@@ -33,22 +33,28 @@ export const POST: RequestHandler = async ({ params, locals }) => {
 	}
 
 	const target = params.target as ClearTarget;
-	
+
 	const validTargets: ClearTarget[] = [
-		"memory_bank", "working", "history", "patterns", 
-		"books", "sessions", "knowledge-graph"
+		"memory_bank",
+		"working",
+		"history",
+		"patterns",
+		"books",
+		"sessions",
+		"knowledge-graph",
 	];
-	
+
 	if (!validTargets.includes(target)) {
 		return error(400, `Invalid target: ${target}. Valid targets: ${validTargets.join(", ")}`);
 	}
 
 	try {
 		await dbReady;
-		
-		const db = (collections as unknown as Record<string, any>).books?.db 
-			?? (collections as unknown as Record<string, any>).conversations?.db;
-			
+
+		const db =
+			(collections as unknown as Record<string, any>).books?.db ??
+			(collections as unknown as Record<string, any>).conversations?.db;
+
 		if (!db) {
 			return json({ success: false, error: "Database not initialized" }, { status: 500 });
 		}
@@ -68,7 +74,7 @@ export const POST: RequestHandler = async ({ params, locals }) => {
 			const kgRoutingConcepts = coll("kg_routing_concepts");
 			const kgRoutingStats = coll("kg_routing_stats");
 			const kgActionEffectiveness = coll("kg_action_effectiveness");
-			
+
 			const [nodesRes, edgesRes, routingRes, statsRes, actionRes] = await Promise.all([
 				kgNodes.deleteMany(userFilter),
 				kgEdges.deleteMany(userFilter),
@@ -76,12 +82,12 @@ export const POST: RequestHandler = async ({ params, locals }) => {
 				kgRoutingStats.deleteMany(userFilter),
 				kgActionEffectiveness.deleteMany(userFilter),
 			]);
-			
-			deletedCount = 
-				nodesRes.deletedCount + 
-				edgesRes.deletedCount + 
-				routingRes.deletedCount + 
-				statsRes.deletedCount + 
+
+			deletedCount =
+				nodesRes.deletedCount +
+				edgesRes.deletedCount +
+				routingRes.deletedCount +
+				statsRes.deletedCount +
 				actionRes.deletedCount;
 		} else if (target === "books") {
 			// Use the clearBooksTier method from OpsServiceImpl for proper cleanup
@@ -95,19 +101,24 @@ export const POST: RequestHandler = async ({ params, locals }) => {
 			if (!tier) {
 				return error(400, `Unknown tier mapping for: ${target}`);
 			}
-			
+
 			const memoryItems = coll("memory_items");
-			const result = await memoryItems.deleteMany({ 
-				...userFilter, 
-				tier 
+			const result = await memoryItems.deleteMany({
+				...userFilter,
+				tier,
 			});
 			deletedCount = result.deletedCount;
-			
+
 			// Also clear from Qdrant if applicable
 			try {
 				const facade = UnifiedMemoryFacade.getInstance();
 				// Mark cache as stale after deletion
-				if (tier === "working" || tier === "history" || tier === "patterns" || tier === "memory_bank") {
+				if (
+					tier === "working" ||
+					tier === "history" ||
+					tier === "patterns" ||
+					tier === "memory_bank"
+				) {
 					// The facade will handle Qdrant cleanup on next search
 					console.log(`[API] Cleared ${deletedCount} ${tier} items from MongoDB`);
 				}

@@ -156,7 +156,9 @@ export interface ContextService {
 	 * Extract entities from text and store them in the Content KG
 	 * Phase 3 Gap 7: Content KG Entity Extraction
 	 */
-	extractAndStoreEntities?(params: ExtractAndStoreEntitiesParams): Promise<ExtractAndStoreEntitiesResult>;
+	extractAndStoreEntities?(
+		params: ExtractAndStoreEntitiesParams
+	): Promise<ExtractAndStoreEntitiesResult>;
 }
 
 /**
@@ -187,6 +189,14 @@ export interface OpsService {
 	consistencyCheck(params: ConsistencyCheckParams): Promise<ConsistencyCheckResult>;
 	exportBackup(params: ExportBackupParams): Promise<ExportBackupResult>;
 	importBackup(params: ImportBackupParams): Promise<ImportBackupResult>;
+	clearBooksTier(userId: string): Promise<{
+		success: boolean;
+		mongoDeleted: number;
+		qdrantDeleted: number;
+		ghostsCleared: number;
+		actionKgCleared: number;
+		errors: string[];
+	}>;
 	getStats(userId: string): Promise<StatsSnapshot>;
 }
 
@@ -266,6 +276,8 @@ export interface StoreParams {
 
 export interface StoreResult {
 	memory_id: string;
+	tier?: MemoryTier;
+	preview?: string | null;
 }
 
 export interface RecordOutcomeParams {
@@ -407,6 +419,20 @@ function createNoopStatsSnapshot(userId: string): StatsSnapshot {
 				uses_total: 0,
 				success_rate: 0.5,
 			},
+			datagov_schema: {
+				active_count: 0,
+				archived_count: 0,
+				deleted_count: 0,
+				uses_total: 0,
+				success_rate: 0.5,
+			},
+			datagov_expansion: {
+				active_count: 0,
+				archived_count: 0,
+				deleted_count: 0,
+				uses_total: 0,
+				success_rate: 0.5,
+			},
 		},
 		action_effectiveness: [],
 	};
@@ -517,6 +543,14 @@ function createNoopServices(): ResolvedServices {
 				},
 				errors: [],
 			}),
+			clearBooksTier: async () => ({
+				success: true,
+				mongoDeleted: 0,
+				qdrantDeleted: 0,
+				ghostsCleared: 0,
+				actionKgCleared: 0,
+				errors: [],
+			}),
 			getStats: async (userId: string) => createNoopStatsSnapshot(userId),
 		},
 	};
@@ -609,7 +643,9 @@ export class UnifiedMemoryFacade {
 
 	static getInstance(): UnifiedMemoryFacade {
 		if (!UnifiedMemoryFacade.instance) {
-			logger.warn("UnifiedMemoryFacade.getInstance() called before initialization - creating NoOp instance");
+			logger.warn(
+				"UnifiedMemoryFacade.getInstance() called before initialization - creating NoOp instance"
+			);
 			UnifiedMemoryFacade.instance = new UnifiedMemoryFacade();
 		}
 		return UnifiedMemoryFacade.instance;
@@ -1164,5 +1200,16 @@ export class UnifiedMemoryFacade {
 			logger.warn({ err, userId, query }, "Failed to retrieve from books");
 			return [];
 		}
+	}
+
+	async clearBooksTier(userId: string): Promise<{
+		success: boolean;
+		mongoDeleted: number;
+		qdrantDeleted: number;
+		ghostsCleared: number;
+		actionKgCleared: number;
+		errors: string[];
+	}> {
+		return this.services.ops.clearBooksTier(userId);
 	}
 }

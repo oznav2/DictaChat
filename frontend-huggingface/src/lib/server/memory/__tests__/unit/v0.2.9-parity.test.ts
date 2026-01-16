@@ -165,9 +165,7 @@ describe("BM25 Cache Invalidation v0.2.9", () => {
 			return this.mockCount;
 		}
 
-		async checkCacheValidity(
-			userId: string
-		): Promise<{
+		async checkCacheValidity(userId: string): Promise<{
 			needsRebuild: boolean;
 			previousCount: number;
 			currentCount: number;

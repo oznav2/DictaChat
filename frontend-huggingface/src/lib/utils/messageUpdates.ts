@@ -157,7 +157,7 @@ function parseMessageUpdates(value: string): {
 			// Handle ALL error types to prevent silent failures
 			console.error("[parseMessageUpdates] Error parsing:", {
 				error: error instanceof Error ? error.message : String(error),
-				inputPreview: input.slice(0, 100)
+				inputPreview: input.slice(0, 100),
 			});
 			return {
 				messageUpdates,

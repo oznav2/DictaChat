@@ -3,11 +3,14 @@ import type { RequestHandler } from "./$types";
 import { Database } from "$lib/server/database";
 import { config } from "$lib/server/config";
 import { ADMIN_USER_ID } from "$lib/server/constants";
-import { isEntityBlocklistedLabel, normalizeEntityLabel } from "$lib/server/memory/kg/entityHygiene";
+import {
+	isEntityBlocklistedLabel,
+	normalizeEntityLabel,
+} from "$lib/server/memory/kg/entityHygiene";
 
 /**
  * Phase 3 Gap 8: Dual KG Visualization
- * 
+ *
  * RoamPal Parity (memory_visualization_enhanced.py lines 179-316):
  * - /knowledge-graph/concepts returns merged entities from Routing KG AND Content KG
  * - Nodes include source: 'routing' | 'content' | 'both'
@@ -45,9 +48,7 @@ type KgMode = "routing" | "content" | "both";
 function formatBilingualLabel(labelRaw: string, aliasesRaw: unknown): string {
 	const label = normalizeEntityLabel(labelRaw);
 	const aliases = Array.isArray(aliasesRaw)
-		? aliasesRaw
-				.map((a) => normalizeEntityLabel(String(a)))
-				.filter((a) => a.length > 0)
+		? aliasesRaw.map((a) => normalizeEntityLabel(String(a))).filter((a) => a.length > 0)
 		: [];
 	const hasHebrew = /[\u0590-\u05FF]/.test(label);
 	const aliasHeb = aliases.find((a) => /[\u0590-\u05FF]/.test(a));
@@ -63,7 +64,7 @@ function formatBilingualLabel(labelRaw: string, aliasesRaw: unknown): string {
 export const GET: RequestHandler = async ({ url }) => {
 	const modeRaw = String(url.searchParams.get("mode") ?? "both");
 	const mode: KgMode = modeRaw === "routing" || modeRaw === "content" ? modeRaw : "both";
-	
+
 	const conceptsByLabel = new Map<string, KgConcept>();
 	const actionEffectiveness: ActionEffectiveness[] = [];
 	const startedAt = Date.now();
@@ -86,7 +87,7 @@ export const GET: RequestHandler = async ({ url }) => {
 				for (const doc of routingDocs) {
 					const label = normalizeEntityLabel(String(doc.label || doc.concept_id || "Unknown"));
 					if (isEntityBlocklistedLabel(label)) continue;
-					
+
 					const concept: KgConcept = {
 						concept_id: String(doc.concept_id || doc._id),
 						label,
@@ -117,10 +118,10 @@ export const GET: RequestHandler = async ({ url }) => {
 					const rawLabel = String(doc.label || doc.node_id || "Unknown");
 					const label = formatBilingualLabel(rawLabel, doc.aliases);
 					if (isEntityBlocklistedLabel(label)) continue;
-					
+
 					const labelKey = label.toLowerCase();
 					const existing = conceptsByLabel.get(labelKey);
-					
+
 					if (existing) {
 						// Merge: entity exists in both KGs
 						existing.source = "both";
@@ -175,8 +176,9 @@ export const GET: RequestHandler = async ({ url }) => {
 		}
 
 		// Convert map to array and sort by score
-		const concepts = Array.from(conceptsByLabel.values())
-			.sort((a, b) => b.wilson_score - a.wilson_score);
+		const concepts = Array.from(conceptsByLabel.values()).sort(
+			(a, b) => b.wilson_score - a.wilson_score
+		);
 
 		return json({
 			success: true,
@@ -184,9 +186,9 @@ export const GET: RequestHandler = async ({ url }) => {
 			actionEffectiveness,
 			meta: {
 				mode,
-				routing_count: concepts.filter(c => c.source === "routing" || c.source === "both").length,
-				content_count: concepts.filter(c => c.source === "content" || c.source === "both").length,
-				merged_count: concepts.filter(c => c.source === "both").length,
+				routing_count: concepts.filter((c) => c.source === "routing" || c.source === "both").length,
+				content_count: concepts.filter((c) => c.source === "content" || c.source === "both").length,
+				merged_count: concepts.filter((c) => c.source === "both").length,
 				built_ms: Date.now() - startedAt,
 			},
 		});

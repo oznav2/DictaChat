@@ -158,6 +158,8 @@
 		patterns: { name: "דפוסים", color: "bg-green-500" },
 		books: { name: "ספרים", color: "bg-amber-500" },
 		memory_bank: { name: "בנק זיכרון", color: "bg-pink-500" },
+		datagov_schema: { name: "DataGov סכמות", color: "bg-slate-500" },
+		datagov_expansion: { name: "DataGov הרחבות", color: "bg-slate-500" },
 	};
 
 	async function fetchJson(url: string): Promise<{ ok: boolean; data: unknown | null }> {

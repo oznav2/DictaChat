@@ -28,8 +28,10 @@
 
 import { createHash } from "crypto";
 import { logger } from "$lib/server/logger";
+import { MetricsServer } from "$lib/server/metrics";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
+import { memoryMetrics } from "../observability";
 
 /**
  * Error categories for smart handling
@@ -151,13 +153,15 @@ export class DictaEmbeddingClient {
 		this.endpoint = params.endpoint;
 		this.batchSize = params.batchSize ?? 32;
 		this.timeoutMs = params.timeoutMs ?? 10000;
-		this.expectedDims = params.expectedDims ?? params.config?.qdrant?.expected_embedding_dims ?? 1024;
+		this.expectedDims =
+			params.expectedDims ?? params.config?.qdrant?.expected_embedding_dims ?? 1024;
 		this.config = params.config ?? defaultMemoryConfig;
 		this.enableGracefulDegradation = params.enableGracefulDegradation ?? true;
 		this.unhealthyThresholdMs = params.unhealthyThresholdMs ?? 30000; // 30s default
-		
+
 		// Start background health monitoring
 		this.startHealthMonitoring();
+		this.setCircuitBreakerMetric(false);
 	}
 
 	/**
@@ -165,7 +169,7 @@ export class DictaEmbeddingClient {
 	 */
 	private categorizeError(error: string | Error, statusCode?: number): EmbeddingErrorCategory {
 		const errorStr = error instanceof Error ? error.message : error;
-		
+
 		// Configuration errors - need manual intervention
 		if (
 			errorStr.includes("InvalidIntervalError") ||
@@ -175,7 +179,7 @@ export class DictaEmbeddingClient {
 		) {
 			return EmbeddingErrorCategory.CONFIGURATION;
 		}
-		
+
 		// Transient errors - may resolve on retry
 		if (
 			errorStr.includes("timeout") ||
@@ -185,20 +189,16 @@ export class DictaEmbeddingClient {
 			errorStr.includes("network") ||
 			statusCode === 429 || // Rate limit
 			statusCode === 502 || // Bad Gateway
-			statusCode === 504    // Gateway Timeout
+			statusCode === 504 // Gateway Timeout
 		) {
 			return EmbeddingErrorCategory.TRANSIENT;
 		}
-		
+
 		// Service down
-		if (
-			errorStr.includes("ENOTFOUND") ||
-			errorStr.includes("fetch failed") ||
-			statusCode === 500
-		) {
+		if (errorStr.includes("ENOTFOUND") || errorStr.includes("fetch failed") || statusCode === 500) {
 			return EmbeddingErrorCategory.SERVICE_DOWN;
 		}
-		
+
 		return EmbeddingErrorCategory.UNKNOWN;
 	}
 
@@ -210,15 +210,15 @@ export class DictaEmbeddingClient {
 	private generateFallbackEmbedding(text: string): number[] {
 		const hash = createHash("sha256").update(text).digest();
 		const embedding: number[] = new Array(this.expectedDims);
-		
+
 		// Generate pseudo-random but deterministic values from hash
 		for (let i = 0; i < this.expectedDims; i++) {
 			const byteIndex = i % hash.length;
 			const byte = hash[byteIndex];
 			// Normalize to [-1, 1] range like real embeddings
-			embedding[i] = (byte / 127.5) - 1;
+			embedding[i] = byte / 127.5 - 1;
 		}
-		
+
 		// Normalize the vector
 		const magnitude = Math.sqrt(embedding.reduce((sum, val) => sum + val * val, 0));
 		if (magnitude > 0) {
@@ -226,7 +226,7 @@ export class DictaEmbeddingClient {
 				embedding[i] /= magnitude;
 			}
 		}
-		
+
 		return embedding;
 	}
 
@@ -244,6 +244,7 @@ export class DictaEmbeddingClient {
 	 */
 	async embedBatch(texts: string[]): Promise<EmbeddingBatchResult> {
 		const startTime = Date.now();
+		let success = false;
 
 		if (texts.length === 0) {
 			return {
@@ -254,111 +255,122 @@ export class DictaEmbeddingClient {
 			};
 		}
 
-		// Check circuit breaker - but handle gracefully
-		if (this.isOpen && !this.shouldAttemptHalfOpen()) {
-			// GRACEFUL DEGRADATION: Instead of returning empty results,
-			// generate fallback embeddings if enabled
-			if (this.enableGracefulDegradation) {
-				logger.warn(
-					{ textCount: texts.length, degradedMode: true },
-					"DictaEmbeddingClient circuit breaker is open, using fallback embeddings"
-				);
-				this.degradedMode = true;
-				
-				const results: EmbeddingResult[] = texts.map((text) => ({
-					text,
-					vector: this.generateFallbackEmbedding(text),
-					hash: hashText(text),
-					cached: false,
-				}));
-				
+		try {
+			// Check circuit breaker - but handle gracefully
+			if (this.isOpen && !this.shouldAttemptHalfOpen()) {
+				// GRACEFUL DEGRADATION: Instead of returning empty results,
+				// generate fallback embeddings if enabled
+				if (this.enableGracefulDegradation) {
+					logger.warn(
+						{ textCount: texts.length, degradedMode: true },
+						"DictaEmbeddingClient circuit breaker is open, using fallback embeddings"
+					);
+					this.degradedMode = true;
+
+					const results: EmbeddingResult[] = texts.map((text) => ({
+						text,
+						vector: this.generateFallbackEmbedding(text),
+						hash: hashText(text),
+						cached: false,
+					}));
+
+					success = results.length > 0;
+
+					return {
+						results,
+						cacheHits: 0,
+						cacheMisses: texts.length,
+						latencyMs: Date.now() - startTime,
+					};
+				}
+
+				logger.warn("DictaEmbeddingClient circuit breaker is open, returning empty results");
+				success = false;
 				return {
-					results,
+					results: [],
 					cacheHits: 0,
-					cacheMisses: texts.length,
+					cacheMisses: 0,
 					latencyMs: Date.now() - startTime,
 				};
 			}
-			
-			logger.warn("DictaEmbeddingClient circuit breaker is open, returning empty results");
-			return {
-				results: [],
-				cacheHits: 0,
-				cacheMisses: 0,
-				latencyMs: Date.now() - startTime,
-			};
-		}
 
-		// Check cache for all texts
-		const results: EmbeddingResult[] = [];
-		const uncachedTexts: string[] = [];
-		const uncachedIndices: number[] = [];
-		let cacheHits = 0;
+			// Check cache for all texts
+			const results: EmbeddingResult[] = [];
+			const uncachedTexts: string[] = [];
+			const uncachedIndices: number[] = [];
+			let cacheHits = 0;
 
-		for (let i = 0; i < texts.length; i++) {
-			const text = texts[i];
-			const hash = hashText(text);
-			const cached = this.memoryCache.get(hash);
+			for (let i = 0; i < texts.length; i++) {
+				const text = texts[i];
+				const hash = hashText(text);
+				const cached = this.memoryCache.get(hash);
 
-			if (cached) {
-				results.push({
-					text,
-					vector: cached,
-					hash,
-					cached: true,
-				});
-				cacheHits++;
-			} else {
-				uncachedTexts.push(text);
-				uncachedIndices.push(i);
-				// Placeholder for now
-				results.push({
-					text,
-					vector: [],
-					hash,
-					cached: false,
-				});
+				if (cached) {
+					results.push({
+						text,
+						vector: cached,
+						hash,
+						cached: true,
+					});
+					cacheHits++;
+				} else {
+					uncachedTexts.push(text);
+					uncachedIndices.push(i);
+					// Placeholder for now
+					results.push({
+						text,
+						vector: [],
+						hash,
+						cached: false,
+					});
+				}
 			}
-		}
 
-		// Fetch embeddings for uncached texts
-		if (uncachedTexts.length > 0) {
-			const embeddings = await this.fetchEmbeddings(uncachedTexts);
+			// Fetch embeddings for uncached texts
+			if (uncachedTexts.length > 0) {
+				const embeddings = await this.fetchEmbeddings(uncachedTexts);
 
-			if (embeddings) {
-				// Update results and cache
-				for (let i = 0; i < uncachedTexts.length; i++) {
-					const originalIndex = uncachedIndices[i];
-					const text = uncachedTexts[i];
-					const vector = embeddings[i];
-					const hash = hashText(text);
+				if (embeddings) {
+					// Update results and cache
+					for (let i = 0; i < uncachedTexts.length; i++) {
+						const originalIndex = uncachedIndices[i];
+						const text = uncachedTexts[i];
+						const vector = embeddings[i];
+						const hash = hashText(text);
 
-					if (vector && vector.length === this.expectedDims) {
-						results[originalIndex] = {
-							text,
-							vector,
-							hash,
-							cached: false,
-						};
+						if (vector && vector.length === this.expectedDims) {
+							results[originalIndex] = {
+								text,
+								vector,
+								hash,
+								cached: false,
+							};
 
-						// Add to cache
-						this.addToCache(hash, vector);
+							// Add to cache
+							this.addToCache(hash, vector);
+						}
 					}
 				}
 			}
+
+			// Filter out empty results
+			const validResults = results.filter((r) => r.vector.length > 0);
+
+			this.recordCacheEvent(cacheHits, uncachedTexts.length);
+
+			success = validResults.length > 0;
+
+			return {
+				results: validResults,
+				cacheHits,
+				cacheMisses: uncachedTexts.length,
+				latencyMs: Date.now() - startTime,
+			};
+		} finally {
+			const durationMs = Date.now() - startTime;
+			memoryMetrics.recordOperation("embed", success);
+			memoryMetrics.recordLatency("embed", durationMs);
 		}
-
-		// Filter out empty results
-		const validResults = results.filter((r) => r.vector.length > 0);
-
-		this.recordCacheEvent(cacheHits, uncachedTexts.length);
-
-		return {
-			results: validResults,
-			cacheHits,
-			cacheMisses: uncachedTexts.length,
-			latencyMs: Date.now() - startTime,
-		};
 	}
 
 	getCacheMetrics(windowMs: number): {
@@ -428,7 +440,7 @@ export class DictaEmbeddingClient {
 	 */
 	private async fetchBatch(texts: string[]): Promise<number[][] | null> {
 		const controller = new AbortController();
-		
+
 		// Adaptive timeout: reduce timeout if we've seen failures recently
 		// This prevents UI freezes by failing fast when service is likely down
 		let effectiveTimeout = this.timeoutMs;
@@ -436,11 +448,15 @@ export class DictaEmbeddingClient {
 			// Use 3s timeout instead of 10s if we've had recent issues
 			effectiveTimeout = Math.min(3000, this.timeoutMs);
 			logger.debug(
-				{ effectiveTimeout, failureCount: this.failureCount, slowResponses: this.consecutiveSlowResponses },
+				{
+					effectiveTimeout,
+					failureCount: this.failureCount,
+					slowResponses: this.consecutiveSlowResponses,
+				},
 				"Using reduced timeout due to recent failures"
 			);
 		}
-		
+
 		const timeoutId = setTimeout(() => controller.abort(), effectiveTimeout);
 
 		try {
@@ -456,10 +472,10 @@ export class DictaEmbeddingClient {
 			if (!response.ok) {
 				const errorText = await response.text().catch(() => "Unknown error");
 				const errorCategory = this.categorizeError(errorText, response.status);
-				
+
 				this.lastError = errorText;
 				this.lastErrorCategory = errorCategory;
-				
+
 				// Handle different error categories appropriately
 				switch (errorCategory) {
 					case EmbeddingErrorCategory.CONFIGURATION:
@@ -472,7 +488,7 @@ export class DictaEmbeddingClient {
 						this.recordFailure();
 						this.recordFailure(); // Double failure for faster circuit break
 						break;
-						
+
 					case EmbeddingErrorCategory.TRANSIENT:
 						// Transient errors - single failure, may recover
 						logger.warn(
@@ -481,7 +497,7 @@ export class DictaEmbeddingClient {
 						);
 						this.recordFailure();
 						break;
-						
+
 					case EmbeddingErrorCategory.SERVICE_DOWN:
 						// Service completely down
 						logger.error(
@@ -491,7 +507,7 @@ export class DictaEmbeddingClient {
 						this.recordFailure();
 						this.recordFailure();
 						break;
-						
+
 					default:
 						logger.error(
 							{ status: response.status, error: errorText, category: errorCategory },
@@ -531,7 +547,7 @@ export class DictaEmbeddingClient {
 
 			const errorMessage = err instanceof Error ? err.message : String(err);
 			const errorCategory = this.categorizeError(errorMessage);
-			
+
 			this.lastError = errorMessage;
 			this.lastErrorCategory = errorCategory;
 
@@ -542,10 +558,7 @@ export class DictaEmbeddingClient {
 				);
 				this.consecutiveSlowResponses++;
 			} else {
-				logger.error(
-					{ err, category: errorCategory },
-					"Embedding request failed"
-				);
+				logger.error({ err, category: errorCategory }, "Embedding request failed");
 			}
 
 			this.recordFailure();
@@ -636,17 +649,22 @@ export class DictaEmbeddingClient {
 		return elapsed > this.config.circuit_breakers.embeddings.open_duration_ms;
 	}
 
+	private setCircuitBreakerMetric(isOpen: boolean): void {
+		MetricsServer.getMetrics().memory.circuitBreakerOpen.set(isOpen ? 1 : 0);
+	}
+
 	private recordSuccess(): void {
 		this.lastSuccessfulCall = Date.now();
 		this.degradedMode = false;
 		this.lastError = null;
 		this.lastErrorCategory = null;
-		
+
 		if (this.isOpen) {
 			this.successCount++;
 			this.recoveryAttempts++;
 			if (this.successCount >= this.config.circuit_breakers.embeddings.success_threshold) {
 				this.isOpen = false;
+				this.setCircuitBreakerMetric(false);
 				this.failureCount = 0;
 				this.successCount = 0;
 				this.recoveryAttempts = 0;
@@ -665,7 +683,10 @@ export class DictaEmbeddingClient {
 		this.successCount = 0;
 		this.lastFailure = Date.now();
 		if (this.failureCount >= this.config.circuit_breakers.embeddings.failure_threshold) {
-			this.isOpen = true;
+			if (!this.isOpen) {
+				this.isOpen = true;
+				this.setCircuitBreakerMetric(true);
+			}
 			logger.warn("Embedding circuit breaker opened");
 		}
 	}
@@ -703,6 +724,7 @@ export class DictaEmbeddingClient {
 					this.successCount++;
 					if (this.successCount >= this.config.circuit_breakers.embeddings.success_threshold) {
 						this.isOpen = false;
+						this.setCircuitBreakerMetric(false);
 						this.failureCount = 0;
 						this.successCount = 0;
 						logger.info("DictaEmbeddingClient: Circuit breaker closed after health recovery");
@@ -763,16 +785,20 @@ export class DictaEmbeddingClient {
 	getDiagnostics(): EmbeddingServiceDiagnostics {
 		const now = Date.now();
 		const recommendations: string[] = [];
-		
+
 		// Generate recommendations based on state
 		if (this.isOpen) {
 			recommendations.push("Circuit breaker is OPEN - embedding service is unavailable");
-			
+
 			if (this.lastErrorCategory === EmbeddingErrorCategory.CONFIGURATION) {
-				recommendations.push("CONFIGURATION ERROR detected - check MODEL_IDLE_TIMEOUT environment variable");
+				recommendations.push(
+					"CONFIGURATION ERROR detected - check MODEL_IDLE_TIMEOUT environment variable"
+				);
 				recommendations.push("Restart dicta-retrieval container after fixing configuration");
 			} else if (this.lastErrorCategory === EmbeddingErrorCategory.SERVICE_DOWN) {
-				recommendations.push("Service appears to be DOWN - check if dicta-retrieval container is running");
+				recommendations.push(
+					"Service appears to be DOWN - check if dicta-retrieval container is running"
+				);
 				recommendations.push("Run: docker-compose ps dicta-retrieval");
 				recommendations.push("Run: docker-compose logs dicta-retrieval --tail=50");
 			} else if (this.lastErrorCategory === EmbeddingErrorCategory.TRANSIENT) {
@@ -780,20 +806,22 @@ export class DictaEmbeddingClient {
 				recommendations.push("Wait for health check to close circuit breaker");
 			}
 		}
-		
+
 		if (this.degradedMode) {
 			recommendations.push("DEGRADED MODE active - using fallback embeddings (reduced quality)");
 			recommendations.push("Memory operations continue but semantic search quality is reduced");
 		}
-		
+
 		if (this.consecutiveSlowResponses > 2) {
-			recommendations.push(`${this.consecutiveSlowResponses} consecutive slow responses - service may be overloaded`);
+			recommendations.push(
+				`${this.consecutiveSlowResponses} consecutive slow responses - service may be overloaded`
+			);
 		}
-		
+
 		if (this.recoveryAttempts > 3) {
 			recommendations.push(`${this.recoveryAttempts} recovery attempts - service may be unstable`);
 		}
-		
+
 		return {
 			isOperational: !this.isOpen || this.degradedMode,
 			circuitBreakerOpen: this.isOpen,

@@ -28,7 +28,17 @@ function getEmbeddingClient() {
 	return embeddingClient;
 }
 
-export const GET: RequestHandler = async () => {
+export const GET: RequestHandler = async ({ locals }) => {
+	if (!locals.isAdmin) {
+		return json(
+			{
+				success: false,
+				error: "Admin only",
+			},
+			{ status: 403 }
+		);
+	}
+
 	const envConfig = getMemoryEnvConfig();
 	const qdrantBase = `${envConfig.qdrantHttps ? "https" : "http"}://${envConfig.qdrantHost}:${envConfig.qdrantPort}`;
 	const qdrantOk = await fetchOk(`${qdrantBase}/healthz`, 1000);
@@ -36,10 +46,12 @@ export const GET: RequestHandler = async () => {
 	// Check embedding service health
 	const embeddingBase = env.EMBEDDING_SERVICE_URL || "http://dicta-retrieval:5005";
 	const embeddingOk = await fetchOk(`${embeddingBase}/health`, 3000);
-	
+
 	// Get circuit breaker status
 	const client = getEmbeddingClient();
-	const circuitBreakerStatus = (client as unknown as { getCircuitBreakerStatus?: () => unknown })?.getCircuitBreakerStatus?.() || {
+	const circuitBreakerStatus = (
+		client as unknown as { getCircuitBreakerStatus?: () => unknown }
+	)?.getCircuitBreakerStatus?.() || {
 		isOpen: client.isCircuitOpen(),
 	};
 
@@ -55,8 +67,8 @@ export const GET: RequestHandler = async () => {
 			warnings,
 			services: {
 				qdrant: { ok: qdrantOk, base_url: qdrantBase },
-				embedding: { 
-					ok: embeddingOk, 
+				embedding: {
+					ok: embeddingOk,
 					base_url: embeddingBase,
 					circuit_breaker: circuitBreakerStatus,
 				},

@@ -1,12 +1,12 @@
 /**
  * Unified Document Module
- * 
+ *
  * Exports consolidated document ingestion services that provide parity
  * between RAG uploads (input area file attachment) and Bookstore uploads (navbar modal).
- * 
+ *
  * Both upload paths now use the same underlying ingestion pipeline:
  * - Document hash for cross-chat recognition
- * - Semantic chunking with token-aware boundaries  
+ * - Semantic chunking with token-aware boundaries
  * - Embedding generation via dicta-retrieval
  * - Memory system integration (books tier)
  * - Docling extraction for complex formats

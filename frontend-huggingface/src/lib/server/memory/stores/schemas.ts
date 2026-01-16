@@ -88,6 +88,13 @@ export interface MemoryItemDocument {
 	archived_at: Date | null;
 	expires_at: Date | null;
 
+	needs_reindex?: boolean;
+	reindex_reason?: string;
+	reindex_marked_at?: Date;
+	embedding_status?: "pending" | "indexed" | "failed";
+	embedding_error?: string | null;
+	last_reindexed_at?: Date | null;
+
 	// Embedding info (for consistency checks with Qdrant)
 	embedding: {
 		model: string;

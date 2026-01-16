@@ -76,7 +76,7 @@ export class Bm25Adapter {
 
 	/**
 	 * v0.2.9 Parity: Check if BM25 cache needs rebuild based on collection size change
-	 * 
+	 *
 	 * RoamPal tracks _last_count and sets _bm25_needs_rebuild when count changes.
 	 * Since MongoDB full-text is always fresh, this is more for tracking purposes
 	 * and can trigger re-indexing if needed.
@@ -88,9 +88,9 @@ export class Bm25Adapter {
 	}> {
 		const currentCount = await this.getActiveCount(userId);
 		const previousCount = this.lastCountByUser.get(userId) ?? -1;
-		
+
 		let needsRebuild = false;
-		
+
 		if (previousCount === -1) {
 			// First check - initialize
 			this.lastCountByUser.set(userId, currentCount);
@@ -99,15 +99,18 @@ export class Bm25Adapter {
 			needsRebuild = true;
 			this.bm25NeedsRebuild.set(userId, true);
 			this.lastCountByUser.set(userId, currentCount);
-			
-			logger.debug({
-				userId,
-				previousCount,
-				currentCount,
-				delta: currentCount - previousCount,
-			}, "BM25 cache invalidated due to count change");
+
+			logger.debug(
+				{
+					userId,
+					previousCount,
+					currentCount,
+					delta: currentCount - previousCount,
+				},
+				"BM25 cache invalidated due to count change"
+			);
 		}
-		
+
 		return { needsRebuild, previousCount, currentCount };
 	}
 

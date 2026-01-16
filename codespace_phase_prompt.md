@@ -12,6 +12,8 @@
     *   *Usage:* High-level changelog for completed phases.
 5.  **Agent Guidelines:** `AGENTS.md`
     *   *Usage:* Core operating principles and parity protocols.
+6.  **Code Rules:** `codespace_code_rules.md`
+    *   *Usage:* Mandatory coding standards and patterns for implementation.
 
 **Sandbox Environment Constraints (CRITICAL):**
 - **No Heavy Builds**: You are operating in a memory-constrained sandbox. **DO NOT** run `npm run build`, compilation steps, or heavy test suites that require building the entire project.
@@ -50,23 +52,27 @@ You are responsible for "Enterprise-Grade" stability. Before writing a single li
     - If the last task was a sub-task, is the parent task complete?
     - If the Phase is complete, what is the *first* task of the *next* Phase in `codespace_priorities.md`?
 
-**Step 2: Targeted Execution**
+**Step 2: Targeted Execution & Phase Comprehension**
+- **Goal Alignment**: Explicitly articulate the **goal** of the current phase, its **Risk Factors**, and **Breaking Points** before writing code. You must demonstrate understanding of *why* this phase is being built and *what* could go wrong.
+- **End-to-End Commitment**: Once a phase is started, you must complete **ALL** pending tasks within that phase end-to-end. Do not switch contexts or prioritize tasks from other phases until the current phase is fully complete, regardless of global priority labels.
 - Announce: "Resuming execution at [Phase X.Y] - [Task Name]"
 - Extract technical specs for *this specific task* from `codespace_gaps_enhanced.md`.
 - **Apply Risk Analysis** (as per Protocol).
 
 **Step 3: Implementation Loop**
 For each step in your plan:
-1.  **Implement**: Write the code with the planned safeguards included.
-2.  **Verify**: Check for syntax/lint errors on a file-basis. **Do not compile**. Attempt to verify logic handling of "Breaking Points" via lightweight tests.
-3.  **Document (Progress)**:
-    - Open `codespace_progress.md`.
-    - Mark the sub-task as checked `[x]`.
-    - Append a log entry:
-      - Timestamp
-      - Implementation details
-      - **Risk Mitigation Verified**: (e.g., "Verified null-check logic via unit test")
-4.  **Commit**: Create an atomic git commit to branch `genspark_ai_developer`.
+1.  **Code Rules Compliance**: You MUST read and strictly follow `codespace_code_rules.md` during implementation.
+2.  **Implement**: Write the code with the planned safeguards included.
+3.  **Verify**: Check for syntax/lint errors on a file-basis. **Do not compile**. Attempt to verify logic handling of "Breaking Points" via lightweight tests.
+4.  **Document (Progress & Status)**:
+    - Open `codespace_progress.md` and mark the sub-task as checked `[x]` with a log entry.
+    - **Update STATUS.md**: Before committing, update `STATUS.md` with the specific changes, improvements, or fixes implemented in this step.
+5.  **Commit**: Create an atomic git commit to branch `genspark_ai_developer`.
+    - **Rules**:
+      - Make small, incremental commits with sequential naming.
+      - Only `git add` specific files that were modified.
+      - Never squash + force-push.
+      - Always coordinate with the user before any history-altering operations.
     - Format: `feat(scope): [Phase X.Y] Description`
 
 **Step 4: Phase Completion**

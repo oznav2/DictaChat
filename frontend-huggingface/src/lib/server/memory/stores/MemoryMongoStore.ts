@@ -41,7 +41,7 @@ type ValidOutcome = (typeof VALID_OUTCOMES)[number];
 /**
  * Success values for Wilson score calculation.
  * Phase 23.1/22.3: Authoritative outcome semantics.
- * 
+ *
  * | Outcome | success_count Delta | Wilson Impact |
  * |---------|---------------------|---------------|
  * | worked  | +1.0                | Positive      |
@@ -184,10 +184,10 @@ export interface RecordActionOutcomeParams {
 /**
  * Calculate Wilson score lower bound for confidence interval.
  * Used for ranking memories by outcome success rate.
- * 
+ *
  * Phase 23.2: Now uses cumulative success_count field instead of capped outcome_history.
  * This fixes the bug where Wilson was incorrectly calculated for memories with >10 uses.
- * 
+ *
  * @param successCount - Cumulative success value (sum of outcome success deltas)
  * @param uses - Total number of uses (denominator)
  * @param z - Z-score for confidence interval (default: 1.96 for 95% CI)
@@ -209,7 +209,7 @@ function calculateWilsonScore(successCount: number, uses: number, z = 1.96): num
 /**
  * Calculate Wilson score from memory stats with fallback for legacy records.
  * Phase 23.2: Uses success_count field if available, falls back to counting individual outcome counts.
- * 
+ *
  * @param stats - Memory stats object
  * @returns Wilson score [0, 1]
  */
@@ -280,7 +280,9 @@ export class MemoryMongoStore {
 		this.actionOutcomes = this.db.collection<ActionOutcomeDocument>(
 			MEMORY_COLLECTIONS.ACTION_OUTCOMES
 		);
-		this.knownSolutions = this.db.collection<KnownSolutionDocument>(MEMORY_COLLECTIONS.KNOWN_SOLUTIONS);
+		this.knownSolutions = this.db.collection<KnownSolutionDocument>(
+			MEMORY_COLLECTIONS.KNOWN_SOLUTIONS
+		);
 		this.kgNodes = this.db.collection<KgNodeDocument>(MEMORY_COLLECTIONS.KG_NODES);
 		this.kgEdges = this.db.collection<KgEdgeDocument>(MEMORY_COLLECTIONS.KG_EDGES);
 		this.personalityMappings = this.db.collection<PersonalityMemoryMappingDocument>(
@@ -477,11 +479,11 @@ export class MemoryMongoStore {
 		const now = new Date();
 
 		logger.info(
-			{ 
-				dbName: this.db.databaseName, 
+			{
+				dbName: this.db.databaseName,
 				collection: this.items.collectionName,
-				memoryId 
-			}, 
+				memoryId,
+			},
 			"[MemoryMongoStore] storing item"
 		);
 
@@ -825,6 +827,8 @@ export class MemoryMongoStore {
 					patterns: 0,
 					books: 0,
 					memory_bank: 0,
+					datagov_schema: 0,
+					datagov_expansion: 0,
 				};
 
 				for (const item of counts) {
@@ -837,7 +841,17 @@ export class MemoryMongoStore {
 			"countByTier"
 		);
 
-		return result ?? { working: 0, history: 0, patterns: 0, books: 0, memory_bank: 0 };
+		return (
+			result ?? {
+				working: 0,
+				history: 0,
+				patterns: 0,
+				books: 0,
+				memory_bank: 0,
+				datagov_schema: 0,
+				datagov_expansion: 0,
+			}
+		);
 	}
 
 	// ============================================
@@ -846,13 +860,13 @@ export class MemoryMongoStore {
 
 	/**
 	 * Record an outcome for a memory and update its stats.
-	 * 
+	 *
 	 * Phase 23 Bug Fixes (v0.2.8 Safeguards):
 	 * - 23.1: Validates outcome type explicitly (no silent fallthrough)
 	 * - 23.2: Uses cumulative success_count for Wilson (not capped history)
 	 * - 23.3: Always increments uses counter (including for failed/unknown)
 	 * - 23.4: Atomic update with aggregation pipeline
-	 * 
+	 *
 	 * Roampal-aligned: Uses time-weighted score deltas.
 	 */
 	async recordOutcome(params: RecordOutcomeParams): Promise<boolean> {
@@ -935,9 +949,10 @@ export class MemoryMongoStore {
 					unknown_count: stats.unknown_count,
 					failed_count: stats.failed_count,
 				});
-				const successRate = stats.uses > 0 
-					? ((stats as Record<string, unknown>).success_count as number ?? 0) / stats.uses 
-					: 0.5;
+				const successRate =
+					stats.uses > 0
+						? (((stats as Record<string, unknown>).success_count as number) ?? 0) / stats.uses
+						: 0.5;
 
 				// Second update for Wilson score (could be combined with aggregation pipeline
 				// but kept separate for clarity and debugging)
@@ -1225,6 +1240,12 @@ export class MemoryMongoStore {
 			org_id: doc.org_id,
 			tier: doc.tier,
 			status: doc.status,
+			needs_reindex: doc.needs_reindex ?? false,
+			reindex_reason: doc.reindex_reason ?? null,
+			reindex_marked_at: doc.reindex_marked_at?.toISOString() ?? null,
+			embedding_status: doc.embedding_status,
+			embedding_error: doc.embedding_error ?? null,
+			last_reindexed_at: doc.last_reindexed_at?.toISOString() ?? null,
 			tags: doc.tags,
 			always_inject: doc.always_inject,
 			text: doc.text,
@@ -1305,10 +1326,10 @@ export class MemoryMongoStore {
 
 	/**
 	 * Find memories by document hash (for cross-chat document recognition)
-	 * 
+	 *
 	 * This enables the memory system to recognize previously processed documents
 	 * even when uploaded in a new chat session.
-	 * 
+	 *
 	 * @param userId - User ID to scope the search
 	 * @param documentHash - SHA256 hash of the document content
 	 * @param options - Optional filters for tier and status
@@ -1360,9 +1381,9 @@ export class MemoryMongoStore {
 
 	/**
 	 * Get document metadata by hash (book info without loading all chunks)
-	 * 
+	 *
 	 * Returns summary info about a previously processed document.
-	 * 
+	 *
 	 * @param userId - User ID to scope the search
 	 * @param documentHash - SHA256 hash of the document content
 	 * @returns Document metadata or null if not found
@@ -1403,7 +1424,8 @@ export class MemoryMongoStore {
 					title: firstChunk.source.book.title ?? "Unknown",
 					author: firstChunk.source.book.author ?? null,
 					chunkCount,
-					firstChunkPreview: firstChunk.text.slice(0, 200) + (firstChunk.text.length > 200 ? "..." : ""),
+					firstChunkPreview:
+						firstChunk.text.slice(0, 200) + (firstChunk.text.length > 200 ? "..." : ""),
 					uploadTimestamp: firstChunk.source.book.upload_timestamp ?? null,
 				};
 			},
@@ -1416,9 +1438,9 @@ export class MemoryMongoStore {
 
 	/**
 	 * Check if a document has been processed (exists in memory system)
-	 * 
+	 *
 	 * Fast check to determine if document processing can be skipped.
-	 * 
+	 *
 	 * @param userId - User ID to scope the search
 	 * @param documentHash - SHA256 hash of the document content
 	 * @returns true if document exists, false otherwise

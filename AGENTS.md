@@ -235,6 +235,22 @@ Run `npm run format` before committing.
 
 ---
 
+## Multi-Instance Readiness (K.8)
+
+**Current posture (single-instance):**
+- One active frontend + gateway + memory stack; assumes a single admin user.
+- Some state is process-local (in-memory metrics windows, circuit-breaker counters, background queues).
+
+**Future posture (multi-instance):**
+- If running multiple frontend/gateway replicas, add Redis-backed distributed locks (or leader election) for all critical write-side flows that currently rely on local serialization.
+
+**Components that will require distributed locks first:**
+- Knowledge Graph writes (KG write buffer / flush serialization).
+- Deduplication gates (document-hash dedup and any future hash-based tool-result dedup).
+- Circuit breaker + retry orchestration (embedding service and reranker health state).
+
+---
+
 ## Key Files
 
 | File | Purpose |

@@ -21,7 +21,7 @@
 
 import { json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
-import { collections } from "$lib/server/database";
+import { Database } from "$lib/server/database";
 import { logger } from "$lib/server/logger";
 import { ADMIN_USER_ID } from "$lib/server/constants";
 import { createDictaEmbeddingClient, memoryMetrics } from "$lib/server/memory";
@@ -91,32 +91,42 @@ interface DiagnosticsResult {
 /**
  * Get MongoDB collection counts with timeout
  */
-async function getMongoStats(
-	userId: string
-): Promise<{
+async function getMongoStats(userId: string): Promise<{
 	total: number;
 	byTier: Map<MemoryTier, number>;
 	needsReindex: number;
 	needsReindexSample: Array<{ memory_id: string; tier: string; created_at: string }>;
 }> {
-	const tiers: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+	const tiers: MemoryTier[] = [
+		"working",
+		"history",
+		"patterns",
+		"books",
+		"memory_bank",
+		"datagov_schema",
+		"datagov_expansion",
+	];
 	const byTier = new Map<MemoryTier, number>();
+
+	const db = await Database.getInstance();
+	const client = db.getClient();
+	const items = client.db().collection("memory_items");
 
 	// Get counts by tier
 	for (const tier of tiers) {
-		const count = await collections.memoryItems
+		const count = await items
 			.countDocuments({ user_id: userId, tier, status: "active" }, { maxTimeMS: 3000 })
 			.catch(() => 0);
 		byTier.set(tier, count);
 	}
 
 	// Get total
-	const total = await collections.memoryItems
+	const total = await items
 		.countDocuments({ user_id: userId, status: "active" }, { maxTimeMS: 3000 })
 		.catch(() => 0);
 
 	// Get items needing reindex (no embedding or embedding not indexed)
-	const needsReindex = await collections.memoryItems
+	const needsReindex = await items
 		.countDocuments(
 			{
 				user_id: userId,
@@ -128,7 +138,7 @@ async function getMongoStats(
 		.catch(() => 0);
 
 	// Get sample of items needing reindex for debugging
-	const needsReindexSample = await collections.memoryItems
+	const needsReindexSample = await items
 		.find(
 			{
 				user_id: userId,
@@ -147,20 +157,20 @@ async function getMongoStats(
 		total,
 		byTier,
 		needsReindex,
-		needsReindexSample: needsReindexSample.map((doc) => ({
-			memory_id: doc.memory_id ?? "unknown",
-			tier: doc.tier ?? "unknown",
-			created_at: doc.created_at?.toISOString() ?? "unknown",
-		})),
+		needsReindexSample: needsReindexSample.map(
+			(doc: { memory_id?: string; tier?: string; created_at?: Date }) => ({
+				memory_id: doc.memory_id ?? "unknown",
+				tier: doc.tier ?? "unknown",
+				created_at: doc.created_at ? doc.created_at.toISOString() : "unknown",
+			})
+		),
 	};
 }
 
 /**
  * Get Qdrant collection counts with timeout
  */
-async function getQdrantStats(
-	userId: string
-): Promise<{
+async function getQdrantStats(userId: string): Promise<{
 	total: number;
 	byTier: Map<MemoryTier, number>;
 	healthy: boolean;
@@ -281,7 +291,7 @@ function analyzeHealth(
 		issues.push("Embedding service is not healthy");
 		if (embeddingStatus.circuitOpen) {
 			recommendations.push("Circuit breaker is open - check dicta-retrieval container");
-			recommendations.push("Reset via POST /api/memory/ops/circuit-breaker {\"action\":\"reset\"}");
+			recommendations.push('Reset via POST /api/memory/ops/circuit-breaker {"action":"reset"}');
 		}
 	}
 
@@ -313,11 +323,21 @@ function analyzeHealth(
 // Route Handler
 // ============================================
 
-export const GET: RequestHandler = async ({ url }) => {
+export const GET: RequestHandler = async ({ url, locals }) => {
 	const startTime = Date.now();
 	const includeMetrics = url.searchParams.get("metrics") === "true";
 
 	try {
+		if (!locals.isAdmin) {
+			return json(
+				{
+					success: false,
+					error: "Admin only",
+				},
+				{ status: 403 }
+			);
+		}
+
 		const userId = ADMIN_USER_ID;
 		const tiers: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
 
@@ -400,7 +420,10 @@ export const GET: RequestHandler = async ({ url }) => {
 			result.metrics = memoryMetrics.getSnapshot();
 		}
 
-		logger.info({ diagnosticsMs, issues: issues.length }, "[diagnostics] Memory system check complete");
+		logger.info(
+			{ diagnosticsMs, issues: issues.length },
+			"[diagnostics] Memory system check complete"
+		);
 
 		return json(result);
 	} catch (err) {

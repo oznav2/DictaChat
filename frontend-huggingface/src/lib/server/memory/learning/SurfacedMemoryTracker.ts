@@ -13,7 +13,7 @@
  * - Fire-and-forget storage (non-blocking)
  */
 
-import { collections } from "$lib/server/database";
+import { Database } from "$lib/server/database";
 import { logger } from "$lib/server/logger";
 import type { SearchPositionMap } from "../../textGeneration/mcp/memoryIntegration";
 
@@ -49,10 +49,9 @@ const COLLECTION_NAME = "surfaced_memories";
  * Get the surfaced memories collection
  */
 async function getSurfacedMemoriesCollection() {
-	// Use the conversations collection's db reference to get/create our collection
-	const db = collections.conversations.dbName
-		? collections.conversations.client.db(collections.conversations.dbName)
-		: collections.conversations.client.db();
+	const database = await Database.getInstance();
+	const client = database.getClient();
+	const db = client.db();
 
 	const collection = db.collection<SurfacedMemoryRecord>(COLLECTION_NAME);
 
@@ -116,7 +115,10 @@ export async function storeSurfacedMemories(params: {
 		);
 	} catch (err) {
 		// Fire-and-forget - don't throw, just log
-		logger.warn({ err, conversationId: params.conversationId }, "[surfaced-memory] Failed to store surfaced memories");
+		logger.warn(
+			{ err, conversationId: params.conversationId },
+			"[surfaced-memory] Failed to store surfaced memories"
+		);
 	}
 }
 
@@ -165,7 +167,10 @@ export async function clearSurfacedMemories(conversationId: string): Promise<voi
 		const collection = await getSurfacedMemoriesCollection();
 		await collection.deleteOne({ conversation_id: conversationId });
 
-		logger.debug({ conversationId }, "[surfaced-memory] Cleared surfaced memories after outcome recording");
+		logger.debug(
+			{ conversationId },
+			"[surfaced-memory] Cleared surfaced memories after outcome recording"
+		);
 	} catch (err) {
 		logger.warn({ err, conversationId }, "[surfaced-memory] Failed to clear surfaced memories");
 	}

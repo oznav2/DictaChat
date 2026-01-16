@@ -155,6 +155,7 @@ interface MessageTraceUpdateBase<TSubtype extends MessageTraceUpdateType> {
 	type: MessageUpdateType.Trace;
 	subtype: TSubtype;
 	runId: string;
+	runType?: "memory_prefetch" | "tool_execution";
 }
 
 export interface MessageTraceRunCreatedUpdate
@@ -198,6 +199,7 @@ export enum MessageMemoryUpdateType {
 	Searching = "searching",
 	Found = "found",
 	Storing = "storing",
+	Stored = "stored",
 	Outcome = "outcome",
 	Degraded = "degraded", // Circuit breaker open - memory system temporarily unavailable
 	DocumentIngesting = "document_ingesting", // Document upload progress
@@ -224,6 +226,14 @@ export interface MessageMemoryStoringUpdate
 	tier: string;
 }
 
+export interface MessageMemoryStoredUpdate
+	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.Stored> {
+	tier: string;
+	memoryId: string;
+	preview: string;
+	createdAt?: string;
+}
+
 export interface MessageMemoryOutcomeUpdate
 	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.Outcome> {
 	outcome: "positive" | "negative" | "neutral";
@@ -239,7 +249,14 @@ export interface MessageMemoryDegradedUpdate
 export interface MessageMemoryDocumentIngestingUpdate
 	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.DocumentIngesting> {
 	documentName: string;
-	stage: "reading" | "extracting" | "chunking" | "embedding" | "storing" | "completed" | "recognized";
+	stage:
+		| "reading"
+		| "extracting"
+		| "chunking"
+		| "embedding"
+		| "storing"
+		| "completed"
+		| "recognized";
 	chunksProcessed?: number;
 	totalChunks?: number;
 	recognized?: boolean;
@@ -250,6 +267,7 @@ export type MessageMemoryUpdate =
 	| MessageMemorySearchingUpdate
 	| MessageMemoryFoundUpdate
 	| MessageMemoryStoringUpdate
+	| MessageMemoryStoredUpdate
 	| MessageMemoryOutcomeUpdate
 	| MessageMemoryDegradedUpdate
 	| MessageMemoryDocumentIngestingUpdate;

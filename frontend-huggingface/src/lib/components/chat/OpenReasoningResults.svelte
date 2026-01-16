@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { slide } from "svelte/transition";
-	import { cubicOut, backOut } from "svelte/easing";
+	import { cubicOut } from "svelte/easing";
 	import { browser } from "$app/environment";
 	import MarkdownRenderer from "./MarkdownRenderer.svelte";
 	import { detectRTLLanguage } from "$lib/utils/marked";
@@ -17,9 +17,10 @@
 	let wasLoading = $state(false);
 	let initialized = $state(false);
 	let isRTL = $derived(detectRTLLanguage(content));
-	
+
 	// Respect user's motion preferences
-	const prefersReducedMotion = browser && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const prefersReducedMotion =
+		browser && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 	$effect(() => {
 		void hasNext;
@@ -65,7 +66,9 @@
 					class="size-4 transition-transform duration-300 ease-out {isOpen ? 'rotate-180' : ''}"
 				/>
 			</div>
-			<span class="line-clamp-1 flex-1 text-right font-medium transition-colors duration-200 group-hover:text-gray-700 dark:group-hover:text-gray-200">
+			<span
+				class="line-clamp-1 flex-1 text-right font-medium transition-colors duration-200 group-hover:text-gray-700 dark:group-hover:text-gray-200"
+			>
 				{isOpen
 					? "Thought process"
 					: content
@@ -90,7 +93,9 @@
 					<span class="thinking-dot h-1.5 w-1.5 rounded-full bg-blue-400"></span>
 				</div>
 			{/if}
-			<span class="line-clamp-1 flex-1 font-medium transition-colors duration-200 group-hover:text-gray-700 dark:group-hover:text-gray-200">
+			<span
+				class="line-clamp-1 flex-1 font-medium transition-colors duration-200 group-hover:text-gray-700 dark:group-hover:text-gray-200"
+			>
 				{isOpen
 					? "Thought process"
 					: content
@@ -147,7 +152,9 @@
 	}
 
 	@keyframes thinkingPulse {
-		0%, 80%, 100% {
+		0%,
+		80%,
+		100% {
 			opacity: 0.3;
 			transform: scale(0.8);
 		}

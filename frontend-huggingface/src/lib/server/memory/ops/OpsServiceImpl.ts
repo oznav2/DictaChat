@@ -738,7 +738,7 @@ export class OpsServiceImpl {
 
 	/**
 	 * Get memory system stats snapshot
-	 * 
+	 *
 	 * Note: Books are stored in a separate 'books' collection, so we need to
 	 * count them separately and merge into the stats.
 	 */
@@ -789,21 +789,25 @@ export class OpsServiceImpl {
 		let booksTotalChunks = 0;
 		try {
 			const booksCollection = this.db.collection("books");
-			const booksAgg = await booksCollection.aggregate<{
-				_id: string | null;
-				count: number;
-				totalChunks: number;
-			}>([
-				{ $match: { userId: userId } },
-				{
-					$group: {
-						_id: "$status",
-						count: { $sum: 1 },
-						totalChunks: { $sum: { $ifNull: ["$totalChunks", "$processing_stats.total_chunks", 0] } },
+			const booksAgg = await booksCollection
+				.aggregate<{
+					_id: string | null;
+					count: number;
+					totalChunks: number;
+				}>([
+					{ $match: { userId } },
+					{
+						$group: {
+							_id: "$status",
+							count: { $sum: 1 },
+							totalChunks: {
+								$sum: { $ifNull: ["$totalChunks", "$processing_stats.total_chunks", 0] },
+							},
+						},
 					},
-				},
-			]).toArray();
-			
+				])
+				.toArray();
+
 			for (const agg of booksAgg) {
 				if (agg._id === "completed" || agg._id === "active" || !agg._id) {
 					booksActiveCount += agg.count;
@@ -822,19 +826,21 @@ export class OpsServiceImpl {
 		let memoryBankArchivedCount = 0;
 		try {
 			const memoryBankCollection = this.db.collection("memoryBank");
-			const mbAgg = await memoryBankCollection.aggregate<{
-				_id: string | null;
-				count: number;
-			}>([
-				{ $match: { userId: userId } },
-				{
-					$group: {
-						_id: "$status",
-						count: { $sum: 1 },
+			const mbAgg = await memoryBankCollection
+				.aggregate<{
+					_id: string | null;
+					count: number;
+				}>([
+					{ $match: { userId } },
+					{
+						$group: {
+							_id: "$status",
+							count: { $sum: 1 },
+						},
 					},
-				},
-			]).toArray();
-			
+				])
+				.toArray();
+
 			for (const agg of mbAgg) {
 				if (agg._id === "active" || !agg._id) {
 					memoryBankActiveCount += agg.count;
@@ -853,7 +859,7 @@ export class OpsServiceImpl {
 				const worked = agg?.worked_total ?? 0;
 				const failed = agg?.failed_total ?? 0;
 				const denom = worked + failed;
-				
+
 				// For books tier, merge counts from both memory_items AND books collection
 				if (tier === "books") {
 					const memoryItemsActive = agg?.active_count ?? 0;
@@ -870,7 +876,7 @@ export class OpsServiceImpl {
 						},
 					];
 				}
-				
+
 				// For memory_bank tier, merge counts from both memory_items AND memoryBank collection
 				if (tier === "memory_bank") {
 					const memoryItemsActive = agg?.active_count ?? 0;
@@ -887,7 +893,7 @@ export class OpsServiceImpl {
 						},
 					];
 				}
-				
+
 				return [
 					tier,
 					{
@@ -929,7 +935,8 @@ export class OpsServiceImpl {
 		const promotionDenom = promotionStats
 			? promotionStats.promoted + promotionStats.archived + promotionStats.deleted
 			: 0;
-		const promotionRate = promotionDenom > 0 && promotionStats ? promotionStats.promoted / promotionDenom : null;
+		const promotionRate =
+			promotionDenom > 0 && promotionStats ? promotionStats.promoted / promotionDenom : null;
 		const demotionRate =
 			promotionDenom > 0 && promotionStats
 				? (promotionStats.archived + promotionStats.deleted) / promotionDenom
@@ -949,16 +956,16 @@ export class OpsServiceImpl {
 
 	/**
 	 * Clear all books for a user (v0.2.9 "Clear Books" functionality)
-	 * 
+	 *
 	 * This is the "nuke" operation that:
 	 * 1. Deletes all books from MongoDB
 	 * 2. Deletes all books vectors from Qdrant
 	 * 3. Clears ghost registry for books tier
 	 * 4. Clears Action KG entries for books
-	 * 
+	 *
 	 * RoamPal Parity: delete_collection() + create_collection() rebuilt HNSW
 	 * DictaChat: Uses filter deletion (Qdrant supports this efficiently)
-	 * 
+	 *
 	 * @param userId - User identifier
 	 * @returns Clear result with counts
 	 */
@@ -992,7 +999,9 @@ export class OpsServiceImpl {
 				.toArray();
 			bookMemoryIds = bookDocs.map((d) => d.memory_id);
 		} catch (err) {
-			result.errors.push(`Failed to get book IDs: ${err instanceof Error ? err.message : String(err)}`);
+			result.errors.push(
+				`Failed to get book IDs: ${err instanceof Error ? err.message : String(err)}`
+			);
 		}
 
 		// Step 2: Delete all books from MongoDB
@@ -1005,7 +1014,9 @@ export class OpsServiceImpl {
 			logger.debug({ userId, deleted: result.mongoDeleted }, "Books deleted from MongoDB");
 		} catch (err) {
 			result.success = false;
-			result.errors.push(`MongoDB deletion failed: ${err instanceof Error ? err.message : String(err)}`);
+			result.errors.push(
+				`MongoDB deletion failed: ${err instanceof Error ? err.message : String(err)}`
+			);
 		}
 
 		// Step 3: Delete all books vectors from Qdrant
@@ -1021,7 +1032,9 @@ export class OpsServiceImpl {
 			logger.debug({ userId, deleted: result.qdrantDeleted }, "Books deleted from Qdrant");
 		} catch (err) {
 			result.success = false;
-			result.errors.push(`Qdrant deletion failed: ${err instanceof Error ? err.message : String(err)}`);
+			result.errors.push(
+				`Qdrant deletion failed: ${err instanceof Error ? err.message : String(err)}`
+			);
 		}
 
 		// Step 4: Clear ghost registry for books tier
@@ -1031,7 +1044,9 @@ export class OpsServiceImpl {
 			result.ghostsCleared = await ghostRegistry.clearByTier(userId, "books");
 			logger.debug({ userId, cleared: result.ghostsCleared }, "Book ghosts cleared");
 		} catch (err) {
-			result.errors.push(`Ghost registry clear failed: ${err instanceof Error ? err.message : String(err)}`);
+			result.errors.push(
+				`Ghost registry clear failed: ${err instanceof Error ? err.message : String(err)}`
+			);
 		}
 
 		// Step 5: Clear Action KG entries for deleted books (v0.2.9 requirement)
@@ -1045,7 +1060,9 @@ export class OpsServiceImpl {
 				result.actionKgCleared = actionResult.deletedCount;
 				logger.debug({ userId, cleared: result.actionKgCleared }, "Book action outcomes cleared");
 			} catch (err) {
-				result.errors.push(`Action KG clear failed: ${err instanceof Error ? err.message : String(err)}`);
+				result.errors.push(
+					`Action KG clear failed: ${err instanceof Error ? err.message : String(err)}`
+				);
 			}
 		}
 
@@ -1056,7 +1073,9 @@ export class OpsServiceImpl {
 				logger.debug({ userId }, "BM25 cache invalidated");
 			}
 		} catch (err) {
-			result.errors.push(`BM25 cache invalidation failed: ${err instanceof Error ? err.message : String(err)}`);
+			result.errors.push(
+				`BM25 cache invalidation failed: ${err instanceof Error ? err.message : String(err)}`
+			);
 		}
 
 		const latencyMs = Date.now() - startTime;
@@ -1074,7 +1093,7 @@ export class OpsServiceImpl {
 
 	/**
 	 * Clean up Action KG entries for specific doc_ids (v0.2.9 book deletion cleanup)
-	 * 
+	 *
 	 * @param userId - User identifier
 	 * @param docIds - Document/memory IDs to clean up
 	 * @returns Number of entries deleted
@@ -1086,13 +1105,13 @@ export class OpsServiceImpl {
 			const actionOutcomes = this.db.collection("memory_action_outcomes");
 			const result = await actionOutcomes.deleteMany({
 				user_id: userId,
-				$or: [
-					{ memory_id: { $in: docIds } },
-					{ doc_id: { $in: docIds } },
-				],
+				$or: [{ memory_id: { $in: docIds } }, { doc_id: { $in: docIds } }],
 			});
-			
-			logger.debug({ userId, docIds: docIds.length, deleted: result.deletedCount }, "Action KG entries cleaned up");
+
+			logger.debug(
+				{ userId, docIds: docIds.length, deleted: result.deletedCount },
+				"Action KG entries cleaned up"
+			);
 			return result.deletedCount;
 		} catch (err) {
 			logger.error({ err, userId }, "Failed to cleanup Action KG entries");

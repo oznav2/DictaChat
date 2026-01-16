@@ -26,6 +26,62 @@
 		weight: number;
 	}
 
+	type GraphLibNode = {
+		id: string;
+		name: string;
+		type: ConceptType;
+		score: number;
+		usage: number;
+		success_rate?: number;
+		best_collection?: string;
+		val?: number;
+		x?: number;
+		y?: number;
+		z?: number;
+	};
+
+	type GraphLibLink = GraphEdge & {
+		source: string;
+		target: string;
+	};
+
+	interface ForceGraph3DInstance {
+		backgroundColor(color: string): ForceGraph3DInstance;
+		width(width: number): ForceGraph3DInstance;
+		height(height: number): ForceGraph3DInstance;
+		nodeColor(cb: (node: GraphLibNode) => string): ForceGraph3DInstance;
+		nodeOpacity(value: number): ForceGraph3DInstance;
+		nodeResolution(value: number): ForceGraph3DInstance;
+		nodeVal(cb: (node: GraphLibNode) => number): ForceGraph3DInstance;
+		nodeLabel(cb: (node: GraphLibNode) => string): ForceGraph3DInstance;
+		linkColor(cb: (link: GraphLibLink) => string): ForceGraph3DInstance;
+		linkWidth(cb: (link: GraphLibLink) => number): ForceGraph3DInstance;
+		linkOpacity(value: number): ForceGraph3DInstance;
+		linkDirectionalParticles(value: number): ForceGraph3DInstance;
+		linkDirectionalParticleWidth(value: number): ForceGraph3DInstance;
+		linkDirectionalParticleSpeed(value: number): ForceGraph3DInstance;
+		linkDirectionalParticleColor(cb: (link: GraphLibLink) => string): ForceGraph3DInstance;
+		onNodeHover(cb: (node: GraphLibNode | null) => void): ForceGraph3DInstance;
+		onNodeClick(cb: (node: GraphLibNode) => void): ForceGraph3DInstance;
+		onBackgroundClick(cb: () => void): ForceGraph3DInstance;
+		d3AlphaDecay(value: number): ForceGraph3DInstance;
+		d3VelocityDecay(value: number): ForceGraph3DInstance;
+		warmupTicks(value: number): ForceGraph3DInstance;
+		cooldownTicks(value: number): ForceGraph3DInstance;
+		cameraPosition(): { x: number; y: number; z: number };
+		cameraPosition(
+			pos: { x: number; y: number; z: number },
+			lookAt?: unknown,
+			ms?: number
+		): unknown;
+		graphData(data: { nodes: GraphLibNode[]; links: GraphLibLink[] }): void;
+		scene(): THREE.Scene;
+		nodeThreeObject(cb: (node: GraphLibNode) => THREE.Object3D): ForceGraph3DInstance;
+		_destructor?: () => void;
+	}
+
+	type ForceGraph3DFactory = () => (el: HTMLElement) => ForceGraph3DInstance;
+
 	interface ConceptDefinition {
 		id: string;
 		label: string;
@@ -69,20 +125,17 @@
 	let { graphMode = "both", timeFilter = "all", sortBy = "hybrid", onNodeSelect }: Props = $props();
 
 	let containerEl = $state<HTMLDivElement | null>(null);
-	let tooltipEl = $state<HTMLDivElement | null>(null);
 	let isLoading = $state(true);
 	let error = $state<string | null>(null);
 	let graphNodes = $state<GraphNode[]>([]);
 	let graphEdges = $state<GraphEdge[]>([]);
-	let hoveredNode = $state<GraphNode | null>(null);
 	let selectedNode = $state<GraphNode | null>(null);
 	let selectedNodeDefinition = $state<ConceptDefinition | null>(null);
 	let definitionLoading = $state(false);
-	let tooltipPosition = $state({ x: 0, y: 0 });
 
 	// 3D Force Graph instance
-	let Graph: any = null;
-	let graphInstance: any = null;
+	let Graph: ForceGraph3DFactory | null = null;
+	let graphInstance: ForceGraph3DInstance | null = null;
 
 	// Node colors by type (hex numbers for Three.js)
 	const nodeColors: Record<ConceptType, string> = {
@@ -97,14 +150,6 @@
 		content: 0x22c55e,
 		action: 0xf97316,
 		both: 0xa855f7,
-	};
-
-	// Glow colors (lighter versions)
-	const glowColors: Record<ConceptType, string> = {
-		routing: "#60A5FA",
-		content: "#4ADE80",
-		action: "#FB923C",
-		both: "#C084FC",
 	};
 
 	const glowColorsHex: Record<ConceptType, number> = {
@@ -128,7 +173,9 @@
 			let filteredNodes = (data.nodes || []) as GraphNode[];
 			if (timeFilter !== "all") {
 				const now = new Date();
-				const sessionStart = new Date(sessionStorage.getItem("kg_session_start") || now.toISOString());
+				const sessionStart = new Date(
+					sessionStorage.getItem("kg_session_start") || now.toISOString()
+				);
 
 				filteredNodes = filteredNodes.filter((node: GraphNode) => {
 					if (!node.last_used) return false;
@@ -191,9 +238,12 @@
 		selectedNodeDefinition = null;
 
 		try {
-			const idForFetch = node.type === "routing" && !node.id.startsWith("routing_") ? `routing_${node.id}` : node.id;
+			const idForFetch =
+				node.type === "routing" && !node.id.startsWith("routing_") ? `routing_${node.id}` : node.id;
 
-			const response = await fetch(`${base}/api/memory/kg/concept/${encodeURIComponent(idForFetch)}/definition`);
+			const response = await fetch(
+				`${base}/api/memory/kg/concept/${encodeURIComponent(idForFetch)}/definition`
+			);
 			if (response.ok) {
 				const data = await response.json();
 				if (data.success) {
@@ -225,7 +275,7 @@
 		if (!graphInstance) return;
 
 		// Transform data for 3d-force-graph
-		const graphData = {
+		const graphData: { nodes: GraphLibNode[]; links: GraphLibLink[] } = {
 			nodes: graphNodes.map((node) => ({
 				id: node.id,
 				name: node.concept,
@@ -234,7 +284,7 @@
 				usage: node.usage,
 				success_rate: node.success_rate,
 				best_collection: node.best_collection,
-				val: Math.max(1, (node.score || 0.5) * 10), // Node size
+				val: Math.max(1, (node.score || 0.5) * 10),
 			})),
 			links: graphEdges.map((edge) => ({
 				source: edge.source,
@@ -252,20 +302,24 @@
 		try {
 			// Dynamically import 3d-force-graph (browser-only)
 			const ForceGraph3DModule = await import("3d-force-graph");
-			Graph = ForceGraph3DModule.default;
+			Graph = ForceGraph3DModule.default as unknown as ForceGraph3DFactory;
+			if (!Graph) return;
 
 			// Create the graph instance
-			graphInstance = Graph()(containerEl)
+			const instance = Graph()(containerEl);
+			graphInstance = instance;
+
+			instance
 				.backgroundColor("#0a0a0f")
 				.width(containerEl.clientWidth)
 				.height(containerEl.clientHeight)
 				// Node styling
-				.nodeColor((node: any) => nodeColors[node.type as ConceptType] || nodeColors.routing)
+				.nodeColor((node: GraphLibNode) => nodeColors[node.type] ?? nodeColors.routing)
 				.nodeOpacity(0.9)
 				.nodeResolution(16)
-				.nodeVal((node: any) => node.val)
+				.nodeVal((node: GraphLibNode) => node.val ?? 1)
 				// Node labels
-				.nodeLabel((node: any) => {
+				.nodeLabel((node: GraphLibNode) => {
 					const successRate = node.success_rate ? `${Math.round(node.success_rate * 100)}%` : "N/A";
 					return `<div style="background: rgba(0,0,0,0.8); padding: 8px 12px; border-radius: 8px; border: 1px solid ${nodeColors[node.type as ConceptType] || "#3B82F6"};">
 						<div style="font-weight: bold; color: ${nodeColors[node.type as ConceptType] || "#3B82F6"}; margin-bottom: 4px;">${node.name}</div>
@@ -275,31 +329,20 @@
 					</div>`;
 				})
 				// Link styling
-				.linkColor(() => "rgba(100, 116, 139, 0.3)")
-				.linkWidth((link: any) => Math.max(0.5, (link.weight || 0.5) * 2))
+				.linkColor((_link: GraphLibLink) => "rgba(100, 116, 139, 0.3)")
+				.linkWidth((link: GraphLibLink) => Math.max(0.5, (link.weight || 0.5) * 2))
 				.linkOpacity(0.6)
 				.linkDirectionalParticles(2)
 				.linkDirectionalParticleWidth(1.5)
 				.linkDirectionalParticleSpeed(0.005)
-				.linkDirectionalParticleColor(() => "#60A5FA")
+				.linkDirectionalParticleColor((_link: GraphLibLink) => "#60A5FA")
 				// Interaction
-				.onNodeHover((node: any) => {
+				.onNodeHover((node: GraphLibNode | null) => {
 					if (containerEl) {
 						containerEl.style.cursor = node ? "pointer" : "default";
 					}
-					hoveredNode = node
-						? {
-								id: node.id,
-								concept: node.name,
-								type: node.type,
-								score: node.score,
-								usage: node.usage,
-								success_rate: node.success_rate,
-								best_collection: node.best_collection,
-							}
-						: null;
 				})
-				.onNodeClick((node: any) => {
+				.onNodeClick((node: GraphLibNode) => {
 					if (node) {
 						const graphNode: GraphNode = {
 							id: node.id,
@@ -316,9 +359,12 @@
 
 						// Focus on node
 						const distance = 120;
-						const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
-						graphInstance.cameraPosition(
-							{ x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio },
+						const x = node.x ?? 0;
+						const y = node.y ?? 0;
+						const z = node.z ?? 0;
+						const distRatio = 1 + distance / Math.hypot(x, y, z);
+						instance.cameraPosition(
+							{ x: x * distRatio, y: y * distRatio, z: z * distRatio },
 							node,
 							2000
 						);
@@ -336,12 +382,12 @@
 				.cooldownTicks(200);
 
 			// Add custom node rendering with glow effect
-			graphInstance.nodeThreeObject((node: any) => {
+			instance.nodeThreeObject((node: GraphLibNode) => {
 				// Create a group to hold sphere and glow
 				const group = new THREE.Group();
 
 				// Calculate node radius based on score
-				const nodeRadius = Math.max(2, Math.cbrt(node.val) * 2);
+				const nodeRadius = Math.max(2, Math.cbrt(node.val ?? 1) * 2);
 
 				// Main sphere with Phong shading for glossy look
 				const geometry = new THREE.SphereGeometry(nodeRadius, 32, 32);
@@ -391,7 +437,8 @@
 					ctx.fill();
 
 					// Label text - Use system fonts with Hebrew support (Phase 6.1)
-					ctx.font = "bold 36px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Hebrew', 'Heebo', sans-serif";
+					ctx.font =
+						"bold 36px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans Hebrew', 'Heebo', sans-serif";
 					ctx.fillStyle = "#ffffff";
 					ctx.textAlign = "center";
 					ctx.textBaseline = "middle";
@@ -399,6 +446,7 @@
 					// Phase 6.3: Defensive fallback for empty/missing node names
 					const nodeName = node.name?.trim() || node.id || "Unknown";
 					const label = nodeName.length > 15 ? nodeName.slice(0, 15) + "…" : nodeName;
+					console.debug("[KG3D] Rendering node:", node.id, label);
 					ctx.fillText(label, canvas.width / 2, canvas.height / 2);
 
 					// Success rate indicator
@@ -475,7 +523,11 @@
 		if (graphInstance) {
 			const pos = graphInstance.cameraPosition();
 			const factor = 0.7;
-			graphInstance.cameraPosition({ x: pos.x * factor, y: pos.y * factor, z: pos.z * factor }, undefined, 500);
+			graphInstance.cameraPosition(
+				{ x: pos.x * factor, y: pos.y * factor, z: pos.z * factor },
+				undefined,
+				500
+			);
 		}
 	}
 
@@ -483,7 +535,11 @@
 		if (graphInstance) {
 			const pos = graphInstance.cameraPosition();
 			const factor = 1.4;
-			graphInstance.cameraPosition({ x: pos.x * factor, y: pos.y * factor, z: pos.z * factor }, undefined, 500);
+			graphInstance.cameraPosition(
+				{ x: pos.x * factor, y: pos.y * factor, z: pos.z * factor },
+				undefined,
+				500
+			);
 		}
 	}
 
@@ -546,7 +602,9 @@
 	{#if isLoading}
 		<div class="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
 			<div class="flex flex-col items-center gap-3">
-				<div class="size-10 animate-spin rounded-full border-4 border-blue-500/30 border-t-blue-500"></div>
+				<div
+					class="size-10 animate-spin rounded-full border-4 border-blue-500/30 border-t-blue-500"
+				></div>
 				<span class="text-sm text-zinc-400">טוען גרף תלת-ממדי...</span>
 			</div>
 		</div>
@@ -557,7 +615,10 @@
 		<div class="absolute inset-0 flex items-center justify-center bg-black/50">
 			<div class="rounded-lg bg-red-900/50 p-4 text-red-300">
 				<p class="text-sm">{error}</p>
-				<button onclick={() => loadGraphData()} class="mt-2 text-xs text-red-400 hover:text-red-300 underline">
+				<button
+					onclick={() => loadGraphData()}
+					class="mt-2 text-xs text-red-400 underline hover:text-red-300"
+				>
 					נסה שוב
 				</button>
 			</div>
@@ -635,7 +696,10 @@
 	</div>
 
 	<!-- Instructions -->
-	<div class="absolute right-4 top-4 rounded-lg bg-zinc-900/80 px-3 py-2 backdrop-blur-sm" dir="rtl">
+	<div
+		class="absolute right-4 top-4 rounded-lg bg-zinc-900/80 px-3 py-2 backdrop-blur-sm"
+		dir="rtl"
+	>
 		<div class="text-xs text-zinc-400">
 			<span class="text-zinc-300">גרור</span> לסיבוב ·
 			<span class="text-zinc-300">גלגל</span> לזום ·
@@ -667,8 +731,19 @@
 					class="text-zinc-500 transition-colors hover:text-zinc-300"
 					aria-label="סגור פרטי מושג"
 				>
-					<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					<svg
+						class="size-4"
+						fill="none"
+						stroke="currentColor"
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M6 18L18 6M6 6l12 12"
+						/>
 					</svg>
 				</button>
 			</div>
@@ -676,22 +751,30 @@
 			<!-- Quick Stats -->
 			<div class="mb-3 flex gap-2 text-xs">
 				{#if selectedNode.success_rate !== undefined}
-					<span class="rounded-md bg-zinc-800 px-2 py-1 {getSuccessColor(selectedNode.success_rate)}">
+					<span
+						class="rounded-md bg-zinc-800 px-2 py-1 {getSuccessColor(selectedNode.success_rate)}"
+					>
 						הצלחה: {Math.round(selectedNode.success_rate * 100)}%
 					</span>
 				{/if}
 				{#if selectedNode.usage}
-					<span class="rounded-md bg-zinc-800 px-2 py-1 text-zinc-300">שימושים: {selectedNode.usage}x</span>
+					<span class="rounded-md bg-zinc-800 px-2 py-1 text-zinc-300"
+						>שימושים: {selectedNode.usage}x</span
+					>
 				{/if}
 				{#if selectedNode.best_collection}
-					<span class="rounded-md bg-zinc-800 px-2 py-1 text-zinc-300">{selectedNode.best_collection}</span>
+					<span class="rounded-md bg-zinc-800 px-2 py-1 text-zinc-300"
+						>{selectedNode.best_collection}</span
+					>
 				{/if}
 			</div>
 
 			<!-- Definition Loading/Content -->
 			{#if definitionLoading}
 				<div class="flex items-center justify-center py-4">
-					<div class="size-5 animate-spin rounded-full border-2 border-blue-500/30 border-t-blue-500"></div>
+					<div
+						class="size-5 animate-spin rounded-full border-2 border-blue-500/30 border-t-blue-500"
+					></div>
 				</div>
 			{:else if selectedNodeDefinition}
 				<div class="space-y-3 text-xs">
@@ -700,10 +783,15 @@
 						<div class="rounded-lg bg-zinc-800/50 p-2">
 							<div class="mb-1.5 text-zinc-400">מעקב תוצאות</div>
 							<div class="flex gap-3">
-								<span class="text-green-400">✓ {selectedNodeDefinition.outcome_breakdown.worked}</span>
-								<span class="text-red-400">✗ {selectedNodeDefinition.outcome_breakdown.failed}</span>
+								<span class="text-green-400"
+									>✓ {selectedNodeDefinition.outcome_breakdown.worked}</span
+								>
+								<span class="text-red-400">✗ {selectedNodeDefinition.outcome_breakdown.failed}</span
+								>
 								{#if selectedNodeDefinition.outcome_breakdown.partial > 0}
-									<span class="text-yellow-400">◐ {selectedNodeDefinition.outcome_breakdown.partial}</span>
+									<span class="text-yellow-400"
+										>◐ {selectedNodeDefinition.outcome_breakdown.partial}</span
+									>
 								{/if}
 							</div>
 						</div>

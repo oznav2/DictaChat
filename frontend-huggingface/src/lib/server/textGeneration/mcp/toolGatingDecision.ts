@@ -155,7 +155,10 @@ export function decideToolGating(input: ToolGatingInput): ToolGatingOutput {
 	// K.1.4: Rule 1 - Fail-open when memoryDegraded=true
 	// ============================================
 	if (memoryDegraded) {
-		logger.info({ reason: "FAIL_OPEN_DEGRADED" }, "[toolGating] Memory degraded, allowing all tools");
+		logger.info(
+			{ reason: "FAIL_OPEN_DEGRADED" },
+			"[toolGating] Memory degraded, allowing all tools"
+		);
 		return {
 			allowedTools: availableTools,
 			reducedCount: 0,
@@ -171,6 +174,10 @@ export function decideToolGating(input: ToolGatingInput): ToolGatingOutput {
 	// K.1.5: Rule 2 - Allow all tools when explicitToolRequest detected
 	// ============================================
 	if (explicitToolRequest) {
+		logger.warn(
+			{ toolName: explicitToolRequest },
+			"[tool-gate] Allowing tool despite high confidence (explicit request)"
+		);
 		logger.info(
 			{ reason: "EXPLICIT_TOOL_REQUEST", tool: explicitToolRequest },
 			"[toolGating] Explicit tool request detected, allowing all tools"
@@ -189,10 +196,17 @@ export function decideToolGating(input: ToolGatingInput): ToolGatingOutput {
 	// ============================================
 	// K.1.6: Rule 3 - Allow all tools for Hebrew research/search/official_data intent
 	// ============================================
-	if (detectedHebrewIntent === "research" || detectedHebrewIntent === "search" || detectedHebrewIntent === "official_data") {
-		const intentLabel = detectedHebrewIntent === "research" ? "מחקר" 
-			: detectedHebrewIntent === "search" ? "חפש" 
-			: "נתונים רשמיים";
+	if (
+		detectedHebrewIntent === "research" ||
+		detectedHebrewIntent === "search" ||
+		detectedHebrewIntent === "official_data"
+	) {
+		const intentLabel =
+			detectedHebrewIntent === "research"
+				? "מחקר"
+				: detectedHebrewIntent === "search"
+					? "חפש"
+					: "נתונים רשמיים";
 		logger.info(
 			{ reason: "EXPLICIT_INTENT", intent: detectedHebrewIntent },
 			"[toolGating] Explicit intent detected, allowing all tools"
@@ -212,6 +226,11 @@ export function decideToolGating(input: ToolGatingInput): ToolGatingOutput {
 	// K.1.7: Rule 4 - Reduce tools when retrievalConfidence='high' + 3+ results
 	// ============================================
 	if (retrievalConfidence === "high" && memoryResultCount >= 3) {
+		logger.info(
+			{ confidence: "high", toolCount: availableTools.length },
+			"[filter] HIGH confidence - filtering search tools"
+		);
+
 		const filteredTools = availableTools.filter((tool) => {
 			const toolName = tool.function.name;
 
@@ -228,6 +247,17 @@ export function decideToolGating(input: ToolGatingInput): ToolGatingOutput {
 			// Keep all other tools by default
 			return true;
 		});
+
+		const skippedTools = availableTools
+			.filter((t) => !filteredTools.some((ft) => ft.function.name === t.function.name))
+			.map((t) => t.function.name);
+		if (skippedTools.length > 0) {
+			logger.debug({ skippedTools }, "[tool-gate] Skipped redundant search tools");
+		}
+		logger.info(
+			{ confidence: "high", filteredCount: filteredTools.length },
+			"[tool-gate] Tools filtered by confidence"
+		);
 
 		const reducedCount = availableTools.length - filteredTools.length;
 

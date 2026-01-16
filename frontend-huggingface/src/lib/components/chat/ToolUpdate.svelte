@@ -14,9 +14,10 @@
 	import { page } from "$app/state";
 	import CarbonChevronRight from "~icons/carbon/chevron-right";
 	import BlockWrapper from "./BlockWrapper.svelte";
-	
+
 	// Respect user's motion preferences
-	const prefersReducedMotion = browser && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const prefersReducedMotion =
+		browser && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 	interface Props {
 		tool: MessageToolUpdate[];
@@ -110,7 +111,10 @@
 
 {#snippet icon()}
 	{#if toolSuccess}
-		<div class="tool-success-icon" in:scale={{ duration: prefersReducedMotion ? 0 : 300, easing: backOut }}>
+		<div
+			class="tool-success-icon"
+			in:scale={{ duration: prefersReducedMotion ? 0 : 300, easing: backOut }}
+		>
 			<LucideCheck class="size-3.5 text-purple-600 dark:text-purple-400" />
 		</div>
 	{:else}
@@ -157,14 +161,16 @@
 				aria-label={isOpen ? "Collapse" : "Expand"}
 			>
 				<CarbonChevronRight
-					class="chevron-icon size-4 text-gray-400 transition-transform duration-300 ease-out {isOpen ? 'rotate-90' : ''}"
+					class="chevron-icon size-4 text-gray-400 transition-transform duration-300 ease-out {isOpen
+						? 'rotate-90'
+						: ''}"
 				/>
 			</button>
 		</div>
 
 		<!-- Expandable content -->
 		{#if isOpen}
-			<div 
+			<div
 				class="tool-content mt-2 space-y-3"
 				transition:slide={{ duration: prefersReducedMotion ? 0 : 250, easing: cubicOut }}
 			>
@@ -284,7 +290,8 @@
 	}
 
 	@keyframes toolPulse {
-		0%, 100% {
+		0%,
+		100% {
 			transform: scale(1);
 			opacity: 1;
 		}
@@ -348,10 +355,18 @@
 		animation: sectionSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
 	}
 
-	.tool-section:nth-child(1) { animation-delay: 0ms; }
-	.tool-section:nth-child(2) { animation-delay: 50ms; }
-	.tool-section:nth-child(3) { animation-delay: 100ms; }
-	.tool-section:nth-child(n+4) { animation-delay: 150ms; }
+	.tool-section:nth-child(1) {
+		animation-delay: 0ms;
+	}
+	.tool-section:nth-child(2) {
+		animation-delay: 50ms;
+	}
+	.tool-section:nth-child(3) {
+		animation-delay: 100ms;
+	}
+	.tool-section:nth-child(n + 4) {
+		animation-delay: 150ms;
+	}
 
 	@keyframes sectionSlideIn {
 		from {
@@ -370,7 +385,8 @@
 	}
 
 	@keyframes errorShake {
-		0%, 100% {
+		0%,
+		100% {
 			transform: translateX(0);
 		}
 		20% {

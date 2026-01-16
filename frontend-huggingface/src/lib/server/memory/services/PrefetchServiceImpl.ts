@@ -14,6 +14,7 @@
 import { logger } from "$lib/server/logger";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
+import { memoryMetrics } from "../observability";
 import type { SearchDebug, RetrievalConfidence, MemoryTier } from "../types";
 import { MEMORY_TIER_GROUPS } from "../types";
 import type { SearchService as HybridSearchService } from "../search/SearchService";
@@ -62,88 +63,97 @@ export class PrefetchServiceImpl implements PrefetchService {
 
 	/**
 	 * Prefetch context for prompt injection
-	 * 
+	 *
 	 * Phase 9.1: Uses Promise.all() for parallel always-inject + hybrid search
 	 * Phase 9.3: Applies token budget management
 	 */
 	async prefetchContext(params: PrefetchContextParams): Promise<PrefetchContextResult> {
 		const startTime = Date.now();
+		let success = false;
 		const timings: Record<string, number> = {};
 
-		// Phase 9.1: Execute always-inject fetch AND hybrid search in PARALLEL
-		// This reduces total prefetch time by ~30-50% compared to sequential execution
-		const limit = params.limit ?? this.estimateContextLimit(params.query, params.hasDocuments);
-		const tiers = this.determineTierPlan(params.hasDocuments, params.includeDataGov);
+		try {
+			// Phase 9.1: Execute always-inject fetch AND hybrid search in PARALLEL
+			// This reduces total prefetch time by ~30-50% compared to sequential execution
+			const limit = params.limit ?? this.estimateContextLimit(params.query, params.hasDocuments);
+			const tiers = this.determineTierPlan(params.hasDocuments, params.includeDataGov);
 
-		const parallelStart = Date.now();
-		const [alwaysInjectMemories, searchResponse] = await Promise.all([
-			this.fetchAlwaysInjectMemories(params.userId),
-			this.hybridSearch.search({
-				userId: params.userId,
-				query: params.query,
-				tiers,
-				limit,
-				enableRerank: true,
-			}),
-		]);
-		timings.parallel_prefetch_ms = Date.now() - parallelStart;
+			const parallelStart = Date.now();
+			const [alwaysInjectMemories, searchResponse] = await Promise.all([
+				this.fetchAlwaysInjectMemories(params.userId),
+				this.hybridSearch.search({
+					userId: params.userId,
+					query: params.query,
+					tiers,
+					limit,
+					enableRerank: true,
+				}),
+			]);
+			timings.parallel_prefetch_ms = Date.now() - parallelStart;
 
-		// Record individual timings from search response
-		if (searchResponse.debug.stage_timings_ms) {
-			timings.search_ms = Object.values(searchResponse.debug.stage_timings_ms).reduce(
-				(sum, v) => sum + (typeof v === "number" ? v : 0),
-				0
+			// Record individual timings from search response
+			if (searchResponse.debug.stage_timings_ms) {
+				timings.search_ms = Object.values(searchResponse.debug.stage_timings_ms).reduce(
+					(sum, v) => sum + (typeof v === "number" ? v : 0),
+					0
+				);
+			}
+
+			// Step 3: Build context injection string with token budget management
+			const formatStart = Date.now();
+			const tokenBudget = params.tokenBudget ?? PrefetchServiceImpl.DEFAULT_TOKEN_BUDGET;
+			const memoryContextInjection = this.formatContextInjection(
+				alwaysInjectMemories,
+				searchResponse.results.map((r) => ({
+					position: r.position,
+					tier: r.tier,
+					content: r.content,
+					memoryId: r.memory_id,
+				})),
+				params.recentMessages,
+				tokenBudget
 			);
-		}
+			timings.format_ms = Date.now() - formatStart;
 
-		// Step 3: Build context injection string with token budget management
-		const formatStart = Date.now();
-		const tokenBudget = params.tokenBudget ?? PrefetchServiceImpl.DEFAULT_TOKEN_BUDGET;
-		const memoryContextInjection = this.formatContextInjection(
-			alwaysInjectMemories,
-			searchResponse.results.map((r) => ({
-				position: r.position,
-				tier: r.tier,
-				content: r.content,
-				memoryId: r.memory_id,
-			})),
-			params.recentMessages,
-			tokenBudget
-		);
-		timings.format_ms = Date.now() - formatStart;
+			// Step 4: Calculate confidence
+			const confidence = this.calculateConfidence(
+				alwaysInjectMemories.length,
+				searchResponse.results.length,
+				searchResponse.debug
+			);
 
-		// Step 4: Calculate confidence
-		const confidence = this.calculateConfidence(
-			alwaysInjectMemories.length,
-			searchResponse.results.length,
-			searchResponse.debug
-		);
+			const totalMs = Date.now() - startTime;
 
-		const totalMs = Date.now() - startTime;
-
-		logger.debug(
-			{
-				userId: params.userId,
-				alwaysInjectCount: alwaysInjectMemories.length,
-				searchResultCount: searchResponse.results.length,
-				confidence,
-				totalMs,
-			},
-			"Context prefetch completed"
-		);
-
-		return {
-			memoryContextInjection,
-			retrievalDebug: {
-				...searchResponse.debug,
-				stage_timings_ms: {
-					...searchResponse.debug.stage_timings_ms,
-					parallel_prefetch_ms: timings.parallel_prefetch_ms,
-					format_ms: timings.format_ms,
+			logger.debug(
+				{
+					userId: params.userId,
+					alwaysInjectCount: alwaysInjectMemories.length,
+					searchResultCount: searchResponse.results.length,
+					confidence,
+					totalMs,
 				},
-			},
-			retrievalConfidence: confidence,
-		};
+				"Context prefetch completed"
+			);
+
+			success = true;
+
+			return {
+				memoryContextInjection,
+				retrievalDebug: {
+					...searchResponse.debug,
+					stage_timings_ms: {
+						...searchResponse.debug.stage_timings_ms,
+						parallel_prefetch_ms: timings.parallel_prefetch_ms,
+						format_ms: timings.format_ms,
+					},
+				},
+				retrievalConfidence: confidence,
+			};
+		} finally {
+			const durationMs = Date.now() - startTime;
+			memoryMetrics.recordOperation("prefetch", success);
+			memoryMetrics.recordLatency("prefetch", durationMs);
+		}
 	}
 
 	/**
@@ -252,7 +262,7 @@ export class PrefetchServiceImpl implements PrefetchService {
 
 	/**
 	 * Format context for prompt injection
-	 * 
+	 *
 	 * Phase 22.6: Filters empty memories and limits to 3 items
 	 * Phase 9.3: Applies token budget for context window management
 	 */
@@ -269,7 +279,9 @@ export class PrefetchServiceImpl implements PrefetchService {
 	): string {
 		const sections: string[] = [];
 		let usedTokens = 0;
-		const headerTokens = this.estimateTokens("═══ CONTEXTUAL MEMORY ═══\n\n═══════════════════════");
+		const headerTokens = this.estimateTokens(
+			"═══ CONTEXTUAL MEMORY ═══\n\n═══════════════════════"
+		);
 		usedTokens += headerTokens;
 
 		// Phase 22.6: Filter out empty memories from always-inject
@@ -323,11 +335,11 @@ export class PrefetchServiceImpl implements PrefetchService {
 		const filteredOutSearch = searchResults.length - filteredSearchResults.length;
 		if (filteredOutSearch > 0) {
 			logger.debug(
-				{ 
-					filtered: filteredOutSearch, 
+				{
+					filtered: filteredOutSearch,
 					total: searchResults.length,
 					kept: filteredSearchResults.length,
-					maxAllowed: PrefetchServiceImpl.MAX_CONTEXT_MEMORIES
+					maxAllowed: PrefetchServiceImpl.MAX_CONTEXT_MEMORIES,
 				},
 				"[Phase 22.6] Filtered/limited search result memories"
 			);
@@ -377,7 +389,7 @@ export class PrefetchServiceImpl implements PrefetchService {
 			if (lastUserMessage && lastUserMessage.content.length > 50) {
 				const section = `**Recent Topic:** ${lastUserMessage.content.slice(0, 100)}${lastUserMessage.content.length > 100 ? "..." : ""}`;
 				const sectionTokens = this.estimateTokens(section);
-				
+
 				// Phase 9.3: Only include if within budget (lowest priority)
 				if (usedTokens + sectionTokens <= tokenBudget) {
 					sections.push(section);

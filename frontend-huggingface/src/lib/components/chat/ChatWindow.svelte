@@ -305,7 +305,7 @@
 	// Threshold: 50 messages or user-enabled setting
 	const VIRTUALIZATION_THRESHOLD = 50;
 	let shouldVirtualize = $derived(
-		$enableVirtualization ?? (messages.length > VIRTUALIZATION_THRESHOLD)
+		$enableVirtualization ?? messages.length > VIRTUALIZATION_THRESHOLD
 	);
 	const multimodalOverrides = deriveStore(settings, (s) => s.multimodalOverrides);
 	const toolsOverrides = deriveStore(settings, (s) => s.toolsOverrides);
@@ -490,7 +490,7 @@
 	}}
 />
 
-<div class="relative z-[-1] min-h-0 min-w-0" dir={isRTL ? "rtl" : "ltr"}>
+<div class="relative h-full w-full min-h-0 min-w-0" dir={isRTL ? "rtl" : "ltr"}>
 	{#if shareModalOpen}
 		<ShareConversationModal open={shareModalOpen} onclose={() => shareModal.close()} />
 	{/if}
@@ -523,7 +523,7 @@
 							{isReadOnly}
 							bind:editMsdgId
 							{alternativesByMessageId}
-							height={typeof window !== 'undefined' ? window.innerHeight - 300 : 600}
+							height={typeof window !== "undefined" ? window.innerHeight - 300 : 600}
 							onretry={(payload) => onretry?.(payload)}
 							onshowAlternateMsg={(payload) => onshowAlternateMsg?.(payload)}
 						/>

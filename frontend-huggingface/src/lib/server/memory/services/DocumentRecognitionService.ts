@@ -88,6 +88,9 @@ export class DocumentRecognitionService {
 				return { isKnown: false };
 			}
 
+			const preview = docInfo.firstChunkPreview;
+			const processedAt = docInfo.uploadTimestamp;
+
 			const userMessage = `I have already digested this document "${docInfo.title}". Let me collect the memories I have from it and verify they are relevant to your query.`;
 			const userMessageHe = `כבר עיבדתי את המסמך "${docInfo.title}". הרשו לי לאסוף את הזיכרונות שיש לי ממנו ולוודא שהם רלוונטיים לשאילתה שלכם.`;
 
@@ -108,8 +111,8 @@ export class DocumentRecognitionService {
 				title: docInfo.title,
 				author: docInfo.author,
 				chunkCount: docInfo.chunkCount,
-				preview: docInfo.firstChunkPreview,
-				processedAt: docInfo.uploadTimestamp,
+				preview: preview === null ? undefined : (preview as string),
+				processedAt: processedAt === null ? undefined : processedAt,
 				userMessage,
 				userMessageHe,
 			};

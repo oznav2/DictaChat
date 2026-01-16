@@ -42,6 +42,13 @@ export interface MemoryUiState {
 		activeConcepts: string[];
 		lastContextInsights: Record<string, unknown> | null;
 		lastRetrievalDebug: Record<string, unknown> | null;
+		recentMemories: Array<{
+			memory_id: string;
+			tier: string;
+			preview: string;
+			created_at?: string | null;
+		}>;
+		memoryStats: Record<string, unknown> | null;
 		lastKnownContextTextByMessageId: Record<string, string>;
 		lastCitationsByMessageId: Record<
 			string,
@@ -67,7 +74,15 @@ export interface MemoryUiState {
 		foundCount: number;
 		lastQuery: string | null;
 		documentName: string | null;
-		documentStage: "reading" | "extracting" | "chunking" | "embedding" | "storing" | "completed" | "recognized" | null;
+		documentStage:
+			| "reading"
+			| "extracting"
+			| "chunking"
+			| "embedding"
+			| "storing"
+			| "completed"
+			| "recognized"
+			| null;
 		chunksProcessed: number;
 		totalChunks: number;
 	};
@@ -120,6 +135,8 @@ const initialState: MemoryUiState = {
 		activeConcepts: [],
 		lastContextInsights: null,
 		lastRetrievalDebug: null,
+		recentMemories: [],
+		memoryStats: null,
 		lastKnownContextTextByMessageId: {},
 		lastCitationsByMessageId: {},
 		lastMemoryMetaByMessageId: {},
@@ -157,6 +174,21 @@ function createMemoryUiStore() {
 				activeAssistantMessageId: null,
 			},
 		}));
+	}
+
+	function setRecentMemories(
+		recentMemories: Array<{
+			memory_id: string;
+			tier: string;
+			preview: string;
+			created_at?: string | null;
+		}>
+	) {
+		store.update((s) => ({ ...s, data: { ...s.data, recentMemories } }));
+	}
+
+	function setMemoryStats(memoryStats: Record<string, unknown> | null) {
+		store.update((s) => ({ ...s, data: { ...s.data, memoryStats } }));
 	}
 
 	function toggleRightDock(tab?: RightDockTab) {
@@ -471,7 +503,7 @@ function createMemoryUiStore() {
 				documentStage: params.stage,
 				chunksProcessed: params.chunksProcessed ?? s.processing.chunksProcessed,
 				totalChunks: params.totalChunks ?? s.processing.totalChunks,
-				foundCount: params.recognized ? params.totalChunks ?? 0 : s.processing.foundCount,
+				foundCount: params.recognized ? (params.totalChunks ?? 0) : s.processing.foundCount,
 			},
 		}));
 	}
@@ -566,6 +598,8 @@ function createMemoryUiStore() {
 		subscribe: store.subscribe,
 		setEnabled,
 		setConversation,
+		setRecentMemories,
+		setMemoryStats,
 		openRightDock,
 		closeRightDock,
 		toggleRightDock,

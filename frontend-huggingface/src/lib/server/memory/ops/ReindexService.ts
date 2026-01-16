@@ -44,11 +44,20 @@ function sanitizeMemoryContent(text: string): { sanitized: string; wasCorrupted:
 		return match;
 	});
 
-	// Remove raw binary-looking sequences
-	sanitized = sanitized.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]{3,}/g, "");
+	// Remove raw control/binary characters
+	sanitized = Array.from(sanitized)
+		.filter((ch) => {
+			const code = ch.charCodeAt(0);
+			if (code <= 8) return false;
+			if (code === 11 || code === 12) return false;
+			if (code >= 14 && code <= 31) return false;
+			if (code >= 127 && code <= 159) return false;
+			return true;
+		})
+		.join("");
 
 	// Remove sequences with excessive special characters (corrupted binary)
-	sanitized = sanitized.replace(/(?:[^\w\s\u0590-\u05FF.,;:!?'"()\[\]{}<>@#$%&*+=-]){10,}/g, "");
+	sanitized = sanitized.replace(/(?:[^\w\s\u0590-\u05FF.,;:!?'"()[\]{}<>@#$%&*+=-]){10,}/g, "");
 
 	// Normalize whitespace
 	sanitized = sanitized.replace(/[ \t]+/g, " ");
@@ -67,8 +76,9 @@ function sanitizeMemoryContent(text: string): { sanitized: string; wasCorrupted:
 	sanitized = sanitized.trim();
 
 	// Check if any significant changes were made
-	const wasCorrupted = sanitized.length < original.length * 0.9 || 
-		sanitized.includes("[binary-data-removed]") || 
+	const wasCorrupted =
+		sanitized.length < original.length * 0.9 ||
+		sanitized.includes("[binary-data-removed]") ||
 		sanitized.includes("[image]");
 
 	return { sanitized, wasCorrupted };
@@ -519,11 +529,20 @@ export class ReindexService {
 						{ memory_id: memoryId },
 						{
 							$unset: { needs_reindex: "", reindex_reason: "", reindex_marked_at: "" },
-							$set: { last_reindexed_at: new Date() },
+							$set: { last_reindexed_at: new Date(), embedding_status: "indexed" },
 						}
 					);
 					processed++;
 				} else {
+					await items.updateOne(
+						{ memory_id: memoryId },
+						{
+							$set: {
+								embedding_status: "failed",
+								embedding_error: "Deferred reindex failed",
+							},
+						}
+					);
 					failed++;
 				}
 			}
@@ -569,17 +588,19 @@ export class ReindexService {
 	/**
 	 * Sanitize corrupted memory content (remove base64/binary artifacts)
 	 * This scans all memories and fixes corrupted text content.
-	 * 
+	 *
 	 * @param userId Optional: only sanitize specific user's memories
 	 * @param tier Optional: only sanitize specific tier
 	 * @param dryRun If true, only report what would be changed without making changes
 	 * @returns Result with count of sanitized and unchanged items
 	 */
-	async sanitizeCorruptedContent(params: {
-		userId?: string;
-		tier?: MemoryTier;
-		dryRun?: boolean;
-	} = {}): Promise<{
+	async sanitizeCorruptedContent(
+		params: {
+			userId?: string;
+			tier?: MemoryTier;
+			dryRun?: boolean;
+		} = {}
+	): Promise<{
 		success: boolean;
 		totalScanned: number;
 		totalCorrupted: number;
@@ -609,16 +630,24 @@ export class ReindexService {
 			let totalCorrupted = 0;
 			let totalSanitized = 0;
 			let totalFailed = 0;
-			const corruptedSamples: Array<{ id: string; originalLength: number; sanitizedLength: number }> = [];
+			const corruptedSamples: Array<{
+				id: string;
+				originalLength: number;
+				sanitizedLength: number;
+			}> = [];
 
 			const cursor = items.find(filter as any).batchSize(batchSize);
 
 			let batch: Array<any> = [];
 			for await (const memory of cursor) {
 				batch.push(memory);
-				
+
 				if (batch.length >= batchSize) {
-					const result = await this.processSanitizationBatch(batch, params.dryRun ?? false, corruptedSamples);
+					const result = await this.processSanitizationBatch(
+						batch,
+						params.dryRun ?? false,
+						corruptedSamples
+					);
 					totalScanned += result.scanned;
 					totalCorrupted += result.corrupted;
 					totalSanitized += result.sanitized;
@@ -629,7 +658,11 @@ export class ReindexService {
 
 			// Process remaining items
 			if (batch.length > 0) {
-				const result = await this.processSanitizationBatch(batch, params.dryRun ?? false, corruptedSamples);
+				const result = await this.processSanitizationBatch(
+					batch,
+					params.dryRun ?? false,
+					corruptedSamples
+				);
 				totalScanned += result.scanned;
 				totalCorrupted += result.corrupted;
 				totalSanitized += result.sanitized;
@@ -682,13 +715,13 @@ export class ReindexService {
 		for (const memory of memories) {
 			scanned++;
 			const text = memory.text;
-			if (!text || typeof text !== 'string') continue;
+			if (!text || typeof text !== "string") continue;
 
 			const { sanitized: cleanText, wasCorrupted } = sanitizeMemoryContent(text);
 
 			if (wasCorrupted) {
 				corrupted++;
-				
+
 				if (samples.length < 10) {
 					samples.push({
 						id: String(memory.memory_id),
@@ -713,11 +746,18 @@ export class ReindexService {
 						);
 						sanitized++;
 						logger.debug(
-							{ memoryId: memory.memory_id, originalLen: text.length, sanitizedLen: cleanText.length },
+							{
+								memoryId: memory.memory_id,
+								originalLen: text.length,
+								sanitizedLen: cleanText.length,
+							},
 							"ReindexService: Sanitized corrupted memory"
 						);
 					} catch (err) {
-						logger.error({ err, memoryId: memory.memory_id }, "ReindexService: Failed to sanitize memory");
+						logger.error(
+							{ err, memoryId: memory.memory_id },
+							"ReindexService: Failed to sanitize memory"
+						);
 						failed++;
 					}
 				}
@@ -730,7 +770,10 @@ export class ReindexService {
 	/**
 	 * Count memories that appear to have corrupted content
 	 */
-	async countCorruptedContent(userId?: string, tier?: MemoryTier): Promise<{
+	async countCorruptedContent(
+		userId?: string,
+		tier?: MemoryTier
+	): Promise<{
 		total: number;
 		corrupted: number;
 		samples: string[];
@@ -759,12 +802,12 @@ export class ReindexService {
 		for await (const memory of cursor) {
 			total++;
 			const text = memory.text;
-			if (typeof text === 'string') {
-				const isCorrupted = corruptionPatterns.some(pattern => pattern.test(text));
+			if (typeof text === "string") {
+				const isCorrupted = corruptionPatterns.some((pattern) => pattern.test(text));
 				if (isCorrupted) {
 					corrupted++;
 					if (samples.length < 5) {
-						samples.push(text.substring(0, 200) + '...');
+						samples.push(text.substring(0, 200) + "...");
 					}
 				}
 			}

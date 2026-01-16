@@ -30,6 +30,9 @@ import type { MemoryOperation } from "./MemoryLogger";
 /** Maximum number of latency samples to keep per operation */
 const MAX_LATENCY_SAMPLES = 1000;
 
+/** Maximum number of rate samples to keep per operation */
+const MAX_RATE_SAMPLES = 5000;
+
 /** Window size in milliseconds for rate calculation (5 minutes) */
 const RATE_WINDOW_MS = 5 * 60 * 1000;
 
@@ -82,9 +85,20 @@ export interface MetricsSnapshot {
 	// Latency stats
 	latencies: {
 		search: LatencyStats | null;
+		searchStages: {
+			qdrant_query: LatencyStats | null;
+			bm25_query: LatencyStats | null;
+			rerank: LatencyStats | null;
+		};
 		store: LatencyStats | null;
 		embed: LatencyStats | null;
 		prefetch: LatencyStats | null;
+	};
+
+	// Operation rates (per second) over a rolling window
+	rates: {
+		window_ms: number;
+		byOperation: Partial<Record<MemoryOperation, number>>;
 	};
 
 	// Circuit breakers
@@ -156,6 +170,9 @@ class MemoryMetricsCollector {
 	// Latencies
 	private latencies = new Map<string, RollingArray>();
 
+	// Rates
+	private operationEvents = new Map<MemoryOperation, number[]>();
+
 	// Circuit breakers
 	private circuitBreakers = new Map<string, CircuitBreakerMetric>();
 
@@ -169,6 +186,9 @@ class MemoryMetricsCollector {
 	constructor() {
 		// Initialize latency trackers
 		this.latencies.set("search", new RollingArray(MAX_LATENCY_SAMPLES));
+		this.latencies.set("qdrant_query", new RollingArray(MAX_LATENCY_SAMPLES));
+		this.latencies.set("bm25_query", new RollingArray(MAX_LATENCY_SAMPLES));
+		this.latencies.set("rerank", new RollingArray(MAX_LATENCY_SAMPLES));
 		this.latencies.set("store", new RollingArray(MAX_LATENCY_SAMPLES));
 		this.latencies.set("embed", new RollingArray(MAX_LATENCY_SAMPLES));
 		this.latencies.set("prefetch", new RollingArray(MAX_LATENCY_SAMPLES));
@@ -182,6 +202,8 @@ class MemoryMetricsCollector {
 	 * Record an operation completion
 	 */
 	recordOperation(operation: MemoryOperation, success: boolean, tier?: MemoryTier): void {
+		this.recordRateEvent(operation);
+
 		// Update operation counter
 		const opCounter = this.operationCounters.get(operation) ?? {
 			total: 0,
@@ -229,6 +251,40 @@ class MemoryMetricsCollector {
 		if (tracker) {
 			tracker.push(durationMs);
 		}
+	}
+
+	private recordRateEvent(operation: MemoryOperation): void {
+		const now = Date.now();
+		const cutoff = now - RATE_WINDOW_MS;
+		const events = this.operationEvents.get(operation) ?? [];
+		events.push(now);
+
+		while (events.length > 0 && events[0] < cutoff) {
+			events.shift();
+		}
+
+		if (events.length > MAX_RATE_SAMPLES) {
+			events.splice(0, events.length - MAX_RATE_SAMPLES);
+		}
+
+		this.operationEvents.set(operation, events);
+	}
+
+	private getRate(operation: MemoryOperation): number {
+		const now = Date.now();
+		const cutoff = now - RATE_WINDOW_MS;
+		const events = this.operationEvents.get(operation) ?? [];
+
+		let idx = 0;
+		while (idx < events.length && events[idx] < cutoff) {
+			idx++;
+		}
+		if (idx > 0) {
+			events.splice(0, idx);
+			this.operationEvents.set(operation, events);
+		}
+
+		return events.length / (RATE_WINDOW_MS / 1000);
 	}
 
 	// ============================================
@@ -313,9 +369,24 @@ class MemoryMetricsCollector {
 
 			latencies: {
 				search: this.latencies.get("search")?.getStats() ?? null,
+				searchStages: {
+					qdrant_query: this.latencies.get("qdrant_query")?.getStats() ?? null,
+					bm25_query: this.latencies.get("bm25_query")?.getStats() ?? null,
+					rerank: this.latencies.get("rerank")?.getStats() ?? null,
+				},
 				store: this.latencies.get("store")?.getStats() ?? null,
 				embed: this.latencies.get("embed")?.getStats() ?? null,
 				prefetch: this.latencies.get("prefetch")?.getStats() ?? null,
+			},
+
+			rates: {
+				window_ms: RATE_WINDOW_MS,
+				byOperation: {
+					search: this.getRate("search"),
+					store: this.getRate("store"),
+					embed: this.getRate("embed"),
+					prefetch: this.getRate("prefetch"),
+				},
 			},
 
 			circuitBreakers: Array.from(this.circuitBreakers.values()),
@@ -339,6 +410,7 @@ class MemoryMetricsCollector {
 		for (const tracker of this.latencies.values()) {
 			tracker.clear();
 		}
+		this.operationEvents.clear();
 		this.circuitBreakers.clear();
 		this.queues.clear();
 		this.searchCount = 0;

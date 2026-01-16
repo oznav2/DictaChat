@@ -35,4 +35,3 @@ describe("StoreServiceImpl (embedding fallback)", () => {
 		expect(res.memory_id).toBe("mem_123");
 	});
 });
-

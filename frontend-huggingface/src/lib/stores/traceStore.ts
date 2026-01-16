@@ -39,8 +39,10 @@ function getEventKey(update: MessageTraceUpdate): string {
 			return `${update.subtype}:${update.runId}:${update.stepId}:${update.status}`;
 		case MessageTraceUpdateType.StepDetail:
 			return `${update.subtype}:${update.runId}:${update.stepId}:${update.detail?.slice(0, 50)}`;
-		default:
-			return `unknown:${update.runId}:${Date.now()}`;
+		default: {
+			const u = update as unknown as { runId?: string };
+			return `unknown:${u.runId ?? "none"}:${Date.now()}`;
+		}
 	}
 }
 
@@ -50,7 +52,7 @@ function getEventKey(update: MessageTraceUpdate): string {
 function isDuplicateEvent(update: MessageTraceUpdate): boolean {
 	const key = getEventKey(update);
 	const now = Date.now();
-	
+
 	// Cleanup old entries
 	if (recentEvents.size > MAX_DEDUP_ENTRIES) {
 		const cutoff = now - DEDUP_WINDOW_MS;
@@ -60,12 +62,12 @@ function isDuplicateEvent(update: MessageTraceUpdate): boolean {
 			}
 		}
 	}
-	
+
 	const existing = recentEvents.get(key);
-	if (existing && (now - existing.timestamp) < DEDUP_WINDOW_MS) {
+	if (existing && now - existing.timestamp < DEDUP_WINDOW_MS) {
 		return true; // Duplicate within window
 	}
-	
+
 	// Record this event
 	recentEvents.set(key, { timestamp: now });
 	return false;
@@ -354,7 +356,7 @@ export function handleMessageTraceUpdate(update: MessageTraceUpdate): void {
 	if (isDuplicateEvent(update)) {
 		return;
 	}
-	
+
 	switch (update.subtype) {
 		case MessageTraceUpdateType.RunCreated:
 			createRun(update.runId, "en");

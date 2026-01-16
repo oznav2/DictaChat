@@ -1,6 +1,6 @@
 /**
  * Memory Attribution Tests - LLM Annotation Parsing
- * 
+ *
  * Tests for the v0.2.12 memory attribution system:
  * - parseMemoryMarks() - Extracts <!-- MEM: 1👍 2👎 3➖ --> annotations
  * - getMemoryIdByPosition() - Maps positions to memory IDs
@@ -208,19 +208,19 @@ Some text after.`;
 
 describe("Memory Attribution - getMemoryIdByPosition()", () => {
 	const searchPositionMap: SearchPositionMap = {
-		"mem_abc123": {
+		mem_abc123: {
 			position: 0,
 			tier: "working",
 			score: 0.9,
 			alwaysInjected: false,
 		},
-		"mem_def456": {
+		mem_def456: {
 			position: 1,
 			tier: "history",
 			score: 0.8,
 			alwaysInjected: false,
 		},
-		"mem_ghi789": {
+		mem_ghi789: {
 			position: 2,
 			tier: "patterns",
 			score: 0.7,
@@ -300,12 +300,12 @@ describe("Memory Attribution - getScoringAction()", () => {
 describe("Memory Attribution - buildSurfacedMemories()", () => {
 	it("should build position and content maps correctly", () => {
 		const searchPositionMap: SearchPositionMap = {
-			"mem_abc": { position: 0, tier: "working", score: 0.9, alwaysInjected: false },
-			"mem_def": { position: 1, tier: "history", score: 0.8, alwaysInjected: false },
+			mem_abc: { position: 0, tier: "working", score: 0.9, alwaysInjected: false },
+			mem_def: { position: 1, tier: "history", score: 0.8, alwaysInjected: false },
 		};
 		const memoryContents = {
-			"mem_abc": "User prefers dark mode for coding",
-			"mem_def": "User lives in Jerusalem",
+			mem_abc: "User prefers dark mode for coding",
+			mem_def: "User lives in Jerusalem",
 		};
 
 		const result = buildSurfacedMemories(searchPositionMap, memoryContents);
@@ -319,7 +319,7 @@ describe("Memory Attribution - buildSurfacedMemories()", () => {
 
 	it("should handle missing content map", () => {
 		const searchPositionMap: SearchPositionMap = {
-			"mem_abc": { position: 0, tier: "working", score: 0.9, alwaysInjected: false },
+			mem_abc: { position: 0, tier: "working", score: 0.9, alwaysInjected: false },
 		};
 
 		const result = buildSurfacedMemories(searchPositionMap);
@@ -330,10 +330,10 @@ describe("Memory Attribution - buildSurfacedMemories()", () => {
 
 	it("should truncate long content previews", () => {
 		const searchPositionMap: SearchPositionMap = {
-			"mem_abc": { position: 0, tier: "working", score: 0.9, alwaysInjected: false },
+			mem_abc: { position: 0, tier: "working", score: 0.9, alwaysInjected: false },
 		};
 		const memoryContents = {
-			"mem_abc": "A".repeat(200), // 200 character content
+			mem_abc: "A".repeat(200), // 200 character content
 		};
 
 		const result = buildSurfacedMemories(searchPositionMap, memoryContents);
@@ -405,7 +405,10 @@ describe("Memory Attribution - inferUsedPositions()", () => {
 
 describe("Memory Attribution - detectBasicOutcome()", () => {
 	it("should detect explicit thanks as worked", () => {
-		const result = detectBasicOutcome("Thanks! That's exactly what I needed.", "Here is the answer.");
+		const result = detectBasicOutcome(
+			"Thanks! That's exactly what I needed.",
+			"Here is the answer."
+		);
 
 		expect(result.outcome).toBe("worked");
 		expect(result.confidence).toBeGreaterThanOrEqual(0.8);
@@ -498,8 +501,8 @@ describe("Memory Attribution - Constants", () => {
 
 describe("Memory Attribution - processResponseWithAttribution()", () => {
 	const mockSearchPositionMap: SearchPositionMap = {
-		"mem_abc": { position: 0, tier: "working", score: 0.9, alwaysInjected: false },
-		"mem_def": { position: 1, tier: "history", score: 0.8, alwaysInjected: false },
+		mem_abc: { position: 0, tier: "working", score: 0.9, alwaysInjected: false },
+		mem_def: { position: 1, tier: "history", score: 0.8, alwaysInjected: false },
 	};
 
 	it("should process response with attribution and strip comment", async () => {
@@ -553,8 +556,8 @@ describe("Memory Attribution - processResponseWithAttribution()", () => {
 
 describe("Memory Attribution - processResponseWithFullAttribution()", () => {
 	const mockSearchPositionMap: SearchPositionMap = {
-		"mem_abc": { position: 0, tier: "working", score: 0.9, alwaysInjected: false },
-		"mem_def": { position: 1, tier: "history", score: 0.8, alwaysInjected: false },
+		mem_abc: { position: 0, tier: "working", score: 0.9, alwaysInjected: false },
+		mem_def: { position: 1, tier: "history", score: 0.8, alwaysInjected: false },
 	};
 
 	it("should use attribution marks when present", async () => {
@@ -583,8 +586,8 @@ describe("Memory Attribution - processResponseWithFullAttribution()", () => {
 			response,
 			searchPositionMap: mockSearchPositionMap,
 			memoryContents: {
-				"mem_abc": "User prefers dark mode for coding",
-				"mem_def": "User lives in Jerusalem",
+				mem_abc: "User prefers dark mode for coding",
+				mem_def: "User lives in Jerusalem",
 			},
 		});
 
@@ -601,8 +604,8 @@ describe("Memory Attribution - processResponseWithFullAttribution()", () => {
 			response,
 			searchPositionMap: mockSearchPositionMap,
 			memoryContents: {
-				"mem_abc": "User prefers dark mode for coding",
-				"mem_def": "User lives in Jerusalem",
+				mem_abc: "User prefers dark mode for coding",
+				mem_def: "User lives in Jerusalem",
 			},
 		});
 
@@ -721,9 +724,7 @@ describe("Memory Attribution - v0.2.10 Memory Bank Philosophy", () => {
 		});
 
 		it("should return true when store_memory is present", () => {
-			const tools = [
-				{ function: { name: "store_memory" } },
-			];
+			const tools = [{ function: { name: "store_memory" } }];
 			expect(hasMemoryBankTool(tools)).toBe(true);
 		});
 
@@ -749,7 +750,7 @@ describe("Memory Attribution - v0.2.10 Tool Guidance", () => {
 	describe("getToolGuidance()", () => {
 		it("should return empty guidance when no action stats are available", async () => {
 			const result = await getToolGuidance("user123", "general", ["search_memory"]);
-			
+
 			// Returns empty because no stats in mock
 			expect(result.hasGuidance).toBe(false);
 			expect(result.guidanceText).toBeNull();
@@ -759,14 +760,14 @@ describe("Memory Attribution - v0.2.10 Tool Guidance", () => {
 
 		it("should return timing information", async () => {
 			const result = await getToolGuidance("user123", "debugging", []);
-			
+
 			expect(typeof result.timingMs).toBe("number");
 			expect(result.timingMs).toBeGreaterThanOrEqual(0);
 		});
 
 		it("should accept different context types", async () => {
 			const contextTypes = ["general", "docker", "debugging", "coding_help", "memory_test"];
-			
+
 			for (const contextType of contextTypes) {
 				const result = await getToolGuidance("user123", contextType, []);
 				expect(result).toHaveProperty("hasGuidance");

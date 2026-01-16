@@ -10,11 +10,11 @@ export type Outcome = "worked" | "failed" | "partial" | "unknown";
  * - datagov_schema: Israeli government data schemas (Phase 25)
  * - datagov_expansion: Hebrew/English term expansions (Phase 25)
  */
-export type MemoryTier = 
-	| "working" 
-	| "history" 
-	| "patterns" 
-	| "books" 
+export type MemoryTier =
+	| "working"
+	| "history"
+	| "patterns"
+	| "books"
 	| "memory_bank"
 	| "datagov_schema"
 	| "datagov_expansion";
@@ -151,6 +151,12 @@ export interface MemoryItem {
 	org_id: string | null;
 	tier: MemoryTier;
 	status: MemoryStatus;
+	needs_reindex?: boolean;
+	reindex_reason?: string | null;
+	reindex_marked_at?: string | null;
+	embedding_status?: "pending" | "indexed" | "failed";
+	embedding_error?: string | null;
+	last_reindexed_at?: string | null;
 	tags: string[];
 	always_inject?: boolean;
 	text: string;
@@ -200,9 +206,12 @@ export interface ActionOutcome {
 
 export interface StageTimingsMs {
 	memory_prefetch_ms?: number;
+	parallel_prefetch_ms?: number;
+	format_ms?: number;
 	qdrant_query_ms?: number;
 	bm25_query_ms?: number;
 	candidate_merge_ms?: number;
+	wilson_blend_ms?: number;
 	rerank_ms?: number;
 	kg_insights_ms?: number;
 	known_solution_lookup?: number;
