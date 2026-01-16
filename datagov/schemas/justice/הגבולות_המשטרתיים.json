@@ -1,0 +1,46 @@
+{
+  "dataset_id": "d01a5ee3-9198-44a3-8eec-4120423cc45f",
+  "title": "הגבולות המשטרתיים",
+  "organization": "משטרת ישראל",
+  "tags": [
+    "גבול",
+    "מחוז",
+    "מרחב",
+    "משטרה",
+    "משטרת ישראל",
+    "תחנה",
+    "תחנות"
+  ],
+  "categories": [
+    "justice",
+    "geography"
+  ],
+  "keywords": [
+    "מחוז",
+    "גבול",
+    "המשטרתיים",
+    "משטרה",
+    "ישראל",
+    "תחנה",
+    "הגבולות",
+    "תחנות",
+    "מרחב",
+    "משטרת"
+  ],
+  "resources": [
+    {
+      "resource_id": "98b01a9d-09d1-4c9a-aaef-5f78bae6a319",
+      "title": "גבולות משטרת ישראל",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

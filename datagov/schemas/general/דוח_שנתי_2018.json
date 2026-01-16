@@ -1,0 +1,50 @@
+{
+  "dataset_id": "d2211e7f-c80b-4e4e-892d-f2c7b4faf667",
+  "title": "דו\"ח שנתי 2018",
+  "organization": "רשות האכיפה והגבייה",
+  "tags": [
+    "הוצאה לפועל",
+    "מרכז לגביית קנסות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "הוצאה",
+    "לפועל",
+    "והגבייה",
+    "לגביית",
+    "רשות",
+    "שנתי",
+    "מרכז",
+    "קנסות",
+    "האכיפה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d593216b-6c1c-43d7-bae6-9620af2cf47d",
+      "title": "דוח נתונים שנתיים 2018",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "הוצאה לפועל",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1971
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

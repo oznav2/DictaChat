@@ -1,0 +1,74 @@
+{
+  "dataset_id": "dd5d6fb3-0b6f-48d0-81a7-c29c8be0ecc1",
+  "title": "אומדן ביצוע ליום 30-6-2024 לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "תקציב",
+    "תקציב וביצוע"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "תוכנית",
+    "ברוטו",
+    "תקציב",
+    "מיועדת",
+    "ביצוע",
+    "מבוקר",
+    "משרד",
+    "אומדן",
+    "וביצוע",
+    "השתתפויות",
+    "שינוייו",
+    "האוצר",
+    "הכנסה"
+  ],
+  "resources": [
+    {
+      "resource_id": "f8075922-f2a1-4f5f-a65f-0a6964530480",
+      "title": "אומדן ביצוע התקציב - 30.6.2024 - לא מבוקר",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תוכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו על שינוייו",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע ברוטו כולל השתתפויות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 450
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

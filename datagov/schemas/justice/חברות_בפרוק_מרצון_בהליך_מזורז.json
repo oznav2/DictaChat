@@ -1,0 +1,147 @@
+{
+  "dataset_id": "01aeaf5c-59a2-4ddc-a616-31b85621bfe2",
+  "title": "חברות בפרוק מרצון בהליך מזורז",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "אישור",
+    "מיקוד",
+    "סוג",
+    "בקשת",
+    "רחוב",
+    "החיסול",
+    "בפרוק",
+    "מרצון",
+    "תאגיד",
+    "מדינה",
+    "חברות",
+    "בהליך",
+    "עיר",
+    "משרד",
+    "באנגלית",
+    "הפירוק",
+    "מפרה",
+    "המשפטים",
+    "סטטוס",
+    "הצפוי",
+    "בית",
+    "אצל",
+    "מועד",
+    "מזורז",
+    "חברה"
+  ],
+  "resources": [
+    {
+      "resource_id": "6f3f0df3-5968-4135-81c5-8dd76bf89410",
+      "title": "חברות בפרוק מרצון בהליך מזורז",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר חברה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם חברה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג תאגיד",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סטטוס חברה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "אישור בקשת הפירוק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מועד החיסול הצפוי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תת סטטוס",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "מפרה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם עיר",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מספר בית",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מיקוד",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ת.ד.",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מדינה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אצל",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1798
+    },
+    {
+      "resource_id": "48fe32c3-6404-4aaa-8f16-4cd7c04e91b6",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

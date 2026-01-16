@@ -1,0 +1,179 @@
+{
+  "dataset_id": "be345cc9-60a8-4bbc-a8f7-3cc5d16f5e69",
+  "title": "ספר תוכניות העבודה לשנת 2024",
+  "organization": "משרד ראש הממשלה ",
+  "tags": [
+    "אגף תכנון",
+    "אסטרטגיה",
+    "בקרה",
+    "דיווח",
+    "חשיבה תוצאתית",
+    "יישום",
+    "מדדים",
+    "מדיניות",
+    "ממשלה",
+    "מעקב",
+    "משרד ראש הממשלה",
+    "תכנון"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "חשיבה",
+    "העבודה",
+    "תוצאתית",
+    "מדיניות",
+    "מעקב",
+    "הממשלה",
+    "דיווח",
+    "accumulation",
+    "end",
+    "date",
+    "month",
+    "אסטרטגיה",
+    "ראש",
+    "ממשלה",
+    "value",
+    "מדדים",
+    "אגף",
+    "office",
+    "תכנון",
+    "משרד",
+    "בקרה",
+    "method",
+    "יישום",
+    "measures",
+    "base",
+    "index",
+    "year",
+    "תוכניות",
+    "ספר",
+    "wanted"
+  ],
+  "resources": [
+    {
+      "resource_id": "7bb18dfa-b8e3-419d-ada8-ced8d9deb973",
+      "title": "מדדים מרכזיים לשנת 2024.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Office",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Index",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Measures",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Method",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Accumulation",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Base Value 2023",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Wanted Value 2024",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "End Date (month, year)",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Value at end date",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 339
+    },
+    {
+      "resource_id": "3286ff21-2b97-42ea-a4eb-9bc6739ca878",
+      "title": "מדדי הצלחה לשנת 2024.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Office",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Index",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Measures",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Method",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Accumulation",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Base Value 2023",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Wanted Value 2024",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "End Date (month, year)",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Value at end date",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 1441
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

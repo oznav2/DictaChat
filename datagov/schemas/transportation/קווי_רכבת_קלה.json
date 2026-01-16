@@ -1,0 +1,144 @@
+{
+  "dataset_id": "b65ae5cf-8aab-4b8e-ae08-de941368fff0",
+  "title": "קווי רכבת קלה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "הסעת המונים",
+    "חצב",
+    "ממג",
+    "נתע",
+    "רכבת קלה",
+    "רקל"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "קווי",
+    "הסעת",
+    "ממג",
+    "status",
+    "start",
+    "freq",
+    "gis",
+    "נתע",
+    "destnation",
+    "רכבת",
+    "comp",
+    "בדרכים",
+    "רקל",
+    "והבטיחות",
+    "המונים",
+    "mtr",
+    "משרד",
+    "קלה",
+    "lengt",
+    "length",
+    "חצב",
+    "yearmonth",
+    "shape",
+    "area",
+    "oid",
+    "line",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "9d98bcd1-8399-47fe-b9b2-af8971b0a16d",
+      "title": "LRT_LINE_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "48051902-f9cd-49f9-840d-c8f13beb8612",
+      "title": "LRT_LINE_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "ddd624b1-b244-4184-a94a-3629927cea0b",
+      "title": "LRT_LINE_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LINE_EG",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FREQ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "COMP",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "START_",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DESTNATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MTR_AREA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 27
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

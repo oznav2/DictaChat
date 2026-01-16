@@ -1,0 +1,108 @@
+{
+  "dataset_id": "12fb4671-b222-4b9c-a8a2-12d7555d5062",
+  "title": "תכניות בניין עיר (תב\"עות)",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "תכנון עיר וגיאוגרפיה"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "numer",
+    "status",
+    "lat",
+    "taba",
+    "outside",
+    "שבע",
+    "תכניות",
+    "lon",
+    "בניין",
+    "leng",
+    "עיר",
+    "תכנון",
+    "shape",
+    "באר",
+    "area",
+    "עיריית",
+    "עות",
+    "plan",
+    "וגיאוגרפיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "562c3e91-8b7e-489d-9b6a-e8909c81df2e",
+      "title": "SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "dd45d273-4fc9-4717-b7bc-b5e663251f92",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "201436f4-5699-494e-a67d-efe8acfd19fc",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Plan",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "Taba_Numer",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "OutSide_li",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "SHAPE_Leng",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 4366
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

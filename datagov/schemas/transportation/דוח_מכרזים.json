@@ -1,0 +1,160 @@
+{
+  "dataset_id": "af67fe35-6a80-418f-8de2-eb5b1c588a30",
+  "title": "דוח מכרזים",
+  "organization": "מינהל הרכש הממשלתי",
+  "tags": [
+    "חשב כללי",
+    "מינהל הרכש",
+    "מכרז",
+    "מכרזים",
+    "מרכבה",
+    "רכש",
+    "תקציב"
+  ],
+  "categories": [
+    "transportation",
+    "finance"
+  ],
+  "keywords": [
+    "אחרונה",
+    "מרכבה",
+    "השגות",
+    "סוג",
+    "נושאים",
+    "אחרון",
+    "יחידה",
+    "רכש",
+    "כללי",
+    "ספק",
+    "הממשלתי",
+    "דוח",
+    "תקציב",
+    "מינהל",
+    "מכרזים",
+    "המשרד",
+    "פרסום",
+    "התקשרות",
+    "מפרסמת",
+    "תקופת",
+    "שעה",
+    "הרכש",
+    "הסל",
+    "סיום",
+    "תאריך",
+    "סטטוס",
+    "מכרז",
+    "זוכה",
+    "להגשת",
+    "חשב",
+    "הליך",
+    "עדכון",
+    "תחילת"
+  ],
+  "resources": [
+    {
+      "resource_id": "7038b3e6-a74d-442e-b16b-466c8196124a",
+      "title": "דוח מכרזים ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר פרסום",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "שם המשרד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם יחידה מפרסמת",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג הליך",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מספר הליך",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "שם הליך",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סטטוס",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך פרסום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך עדכון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך אחרון להגשת השגות",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שעה אחרונה להגשת השגות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם הסל",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם ספק זוכה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר חפ ספק",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך תחילת תקופת התקשרות",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך סיום תקופת התקשרות",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "נושאים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 14205
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

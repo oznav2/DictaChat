@@ -1,0 +1,198 @@
+{
+  "dataset_id": "ce12ebb6-fbec-4134-80b1-79d068bd96ee",
+  "title": "תוכנית יתד במשרד הרווחה",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "יתד",
+    "צעירים בסיכון"
+  ],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "צעירים",
+    "גמיש",
+    "בנתוני",
+    "מענים",
+    "במסגרות",
+    "אחרים",
+    "חוץ",
+    "אחוז",
+    "בהשמה",
+    "עלות",
+    "והביטחון",
+    "השמות",
+    "שרות",
+    "תוכנית",
+    "מחוז",
+    "אוכלוסיית",
+    "יתד",
+    "משרד",
+    "מקבלי",
+    "ביתית",
+    "בסיכון",
+    "למשרד",
+    "וניצוץ",
+    "החברתי",
+    "השמה",
+    "בקהילה",
+    "במשרד",
+    "במסר",
+    "הרווחה",
+    "תוכניות",
+    "מושמים",
+    "אוכלוסית"
+  ],
+  "resources": [
+    {
+      "resource_id": "782b899d-db79-4e4b-a0d9-4a364a4275a9",
+      "title": "תוכנית יתד במשרד הרווחה - שנת 2022 ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "אוכלוסיית יתד מקבלי שרות בנתוני יס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אוכלוסית יתד מושמים במסר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחוז השמה במסר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "בהשמה חוץ ביתית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "בהשמה בקהילה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עלות סך תוכניות יתד למשרד",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "עלות השמות במסגרות",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "עלות השמה חוץ ביתית",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "עלות השמה בקהילה",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "עלות מענים אחרים סל גמיש וניצוץ מל",
+          "type": "text",
+          "semantic": "price"
+        }
+      ],
+      "total_records": 5
+    },
+    {
+      "resource_id": "a683c177-131b-400d-b639-cc9b77e6f4c3",
+      "title": "קובץ הסבר - תוכניות יתד",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "724416f6-d420-4a8f-b8d5-19f65c5294eb",
+      "title": "תוכניות יתד במשרד הרווחה - שנת 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "אוכלוסיית יתד מקבלי שרות בנתוני יס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אוכלוסיית יתד מושמים במסר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחוז השמה במסר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "בהשמה חוץ ביתית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "בהשמה בקהילה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עלות סך תוכניות יתד למשרד",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "עלות השמות במסגרות",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "עלות השמה חוץ ביתית",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "עלות השמה בקהילה",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "עלות מענים אחרים סל גמיש וניצוץ (מל",
+          "type": "text",
+          "semantic": "price"
+        }
+      ],
+      "total_records": 5
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

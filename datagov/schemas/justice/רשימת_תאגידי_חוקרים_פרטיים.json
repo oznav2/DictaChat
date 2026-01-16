@@ -1,0 +1,53 @@
+{
+  "dataset_id": "c016695e-229f-4a4a-9205-d2852462a460",
+  "title": "רשימת תאגידי חוקרים פרטיים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "חקירות"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "תאגידי",
+    "משרד",
+    "חקירות",
+    "חוקרים",
+    "פרטיים",
+    "תאגיד",
+    "המשפטים",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "94722051-b0c7-4f73-b543-c558c6c2c660",
+      "title": "רשימת תאגידי חוקרים פרטיים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תאגיד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר רישיון",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 33
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

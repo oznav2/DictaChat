@@ -1,0 +1,50 @@
+{
+  "dataset_id": "c997de62-dc1e-44ce-8fc0-1d094a05f530",
+  "title": "סקר נוסעים בתחנות רכבת במטרופולין תל אביב 2013",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "סקר נוסעים בתחנות",
+    "רכבת",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "רכבת",
+    "אביב",
+    "נוסעים",
+    "סקר",
+    "תחבורה",
+    "בדרכים",
+    "משרד",
+    "בתחנות",
+    "והבטיחות",
+    "ציבורית",
+    "במטרופולין",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "625ef70c-9671-4b18-8657-fbeba4f15382",
+      "title": "OBRailTA2013.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "9410afcf-73fe-437d-8f98-fc3fc46c5d3e",
+      "title": "OBRail2013_meta.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "dataset_id": "06e8a1a5-9637-4cf9-a859-ad54e617af39",
+  "title": "רחובות בחיפה לפי תתי רובע ואזורים סטטיסטיים",
+  "organization": "עיריית חיפה",
+  "tags": [
+    "אוכלוסיה",
+    "אזורים",
+    "חיפה",
+    "רובע",
+    "רחובות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "שיוך",
+    "אוכלוסיה",
+    "סוג",
+    "סטטיסטי",
+    "תתי",
+    "חיפה",
+    "רחוב",
+    "אזור",
+    "סטטיסטיים",
+    "רובע",
+    "בחיפה",
+    "סמל",
+    "ואזורים",
+    "לאזור",
+    "רחובות",
+    "בית",
+    "אזורים",
+    "עיריית",
+    "סטטסיטי",
+    "מבית"
+  ],
+  "resources": [
+    {
+      "resource_id": "260b34b8-0b9d-4c64-99be-0f54634c5bff",
+      "title": "רחובות בחיפה לפי תתי רובע ואזורים סטטיסטיים",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "שם רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "סמל",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "מבית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עד בית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שיוך לאזור סטטיסטי",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "שם אזור סטטסיטי",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 2263
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

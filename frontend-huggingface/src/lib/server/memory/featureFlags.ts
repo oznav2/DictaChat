@@ -26,6 +26,11 @@ export interface MemoryFeatureFlags {
 	enableOutcomeDetection: boolean;
 	enableProblemSolutionIndex: boolean;
 	requireConfirmation: boolean;
+
+	// Emergency feature flags (runtime kill switches)
+	memoryConsolidationEnabled: boolean;
+	toolResultIngestionEnabled: boolean;
+	memoryFirstLogicEnabled: boolean;
 }
 
 export interface MemoryEnvConfig {
@@ -104,6 +109,10 @@ export function getMemoryFeatureFlags(): MemoryFeatureFlags {
 		enableOutcomeDetection: parseBoolean(env.MEMORY_ENABLE_OUTCOME_DETECTION, true),
 		enableProblemSolutionIndex: parseBoolean(env.MEMORY_ENABLE_PROBLEM_SOLUTION_INDEX, true),
 		requireConfirmation: parseBoolean(env.MEMORY_REQUIRE_CONFIRMATION, true),
+
+		memoryConsolidationEnabled: parseBoolean(env.MEMORY_CONSOLIDATION_ENABLED, true),
+		toolResultIngestionEnabled: parseBoolean(env.TOOL_RESULT_INGESTION_ENABLED, true),
+		memoryFirstLogicEnabled: parseBoolean(env.MEMORY_FIRST_LOGIC_ENABLED, true),
 	};
 }
 

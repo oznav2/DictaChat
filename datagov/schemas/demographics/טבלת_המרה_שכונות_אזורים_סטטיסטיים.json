@@ -1,0 +1,68 @@
+{
+  "dataset_id": "947814b2-f2a8-4f4b-a8ec-a5f4bd2f0abe",
+  "title": "טבלת המרה שכונות - אזורים סטטיסטיים",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "אוכלוסייה ודמוגרפיה"
+  ],
+  "categories": [
+    "demographics"
+  ],
+  "keywords": [
+    "באר",
+    "area",
+    "המרה",
+    "שכונות",
+    "stat",
+    "טבלת",
+    "אזורים",
+    "עיריית",
+    "שבע",
+    "ודמוגרפיה",
+    "אוכלוסייה",
+    "סטטיסטיים",
+    "neighborhood"
+  ],
+  "resources": [
+    {
+      "resource_id": "dac7a88f-d627-46be-93e8-4901ac8242fb",
+      "title": "טבלת המרה - שכונות - אזורים סטטיסטיים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "stat-area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "neighborhood_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "neighborhood_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "neighborhood_3",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 61
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

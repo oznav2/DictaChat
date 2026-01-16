@@ -1,0 +1,201 @@
+{
+  "dataset_id": "333315b7-09f0-4837-9543-43df4f7f1810",
+  "title": "מועדי מרכזי מידע ניידים עדכניים לחודשים מרץ-ספטמבר 2024",
+  "organization": "הרשות לזכויות ניצולי השואה",
+  "tags": [
+    "זכאים",
+    "זכויות",
+    "זכויות ניצולי שואה",
+    "לשכות",
+    "מיצוי זכויות",
+    "ניצולי שואה",
+    "ניצולים",
+    "קבלת קהל",
+    "שואה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "קבלת",
+    "ספטמבר",
+    "ניצולי",
+    "מועדי",
+    "time",
+    "לשכות",
+    "מרץ",
+    "fax",
+    "עדכניים",
+    "לחודשים",
+    "לזכויות",
+    "answer",
+    "activity",
+    "זכויות",
+    "areas",
+    "השואה",
+    "שואה",
+    "more",
+    "זכאים",
+    "קהל",
+    "directions",
+    "accessibility",
+    "ניצולים",
+    "הרשות",
+    "days",
+    "מרכזי",
+    "מיצוי",
+    "branch",
+    "ניידים",
+    "telephone",
+    "address",
+    "service",
+    "info"
+  ],
+  "resources": [
+    {
+      "resource_id": "82e3db45-51ef-49b5-89cd-50331be3fb7b",
+      "title": "מועדי קבלת קהל במרכזי המידע של הרשות לזכויות ניצולי השואה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Branch name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Directions",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Service areas",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Telephone Answer",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Activity days",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Activity time",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Accessibility",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "More info",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 25
+    },
+    {
+      "resource_id": "2dcab887-289a-4574-8dc7-f7debf43f6e2",
+      "title": "מועדי קבלת קהל במרכזי המידע של הרשות לזכויות ניצולי השואה - CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Branch name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Directions",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Service areas",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Telephone Answer",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Activity days",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Activity time",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Accessibility",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "More info",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 36
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

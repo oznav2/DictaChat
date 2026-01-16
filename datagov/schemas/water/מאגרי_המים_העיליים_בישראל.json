@@ -1,0 +1,150 @@
+{
+  "dataset_id": "cd668779-16e1-404d-a603-3cd76671daa9",
+  "title": "מאגרי המים העיליים בישראל",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "reservoirs",
+    "water",
+    "מאגר",
+    "מים",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "עומק",
+    "חיפוי",
+    "דונם",
+    "סוג",
+    "רשות",
+    "שטח",
+    "איכות",
+    "הממשלתית",
+    "בעלות",
+    "מים",
+    "ארצי",
+    "נפח",
+    "המאגר",
+    "אלמק",
+    "רום",
+    "בישראל",
+    "משוייכים",
+    "מכוני",
+    "water",
+    "התא",
+    "reservoirs",
+    "מקור",
+    "למים",
+    "העיליים",
+    "הקמה",
+    "הרשות",
+    "פני",
+    "מאגרי",
+    "ולביוב",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "90bcf5e0-8a57-41f2-b67b-e2030fd6cdea",
+      "title": "מאגרי המים העיליים בישראל",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי מאגר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם המאגר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג המאגר",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מכוני מים משוייכים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "איכות מים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עומק (מ')",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נפח (אלמק)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנת הקמה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שטח המאגר (דונם)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שטח פני המים (דונם)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם התא",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "בעלות",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "מקור המאגר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר ארצי",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "חיפוי המאגר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רום (מ')",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 725
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

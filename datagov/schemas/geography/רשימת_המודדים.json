@@ -1,0 +1,98 @@
+{
+  "dataset_id": "04027bcc-4d4c-4289-8088-0ecccede57f5",
+  "title": "רשימת המודדים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "המרכז למיפוי ישראל",
+    "מדידות",
+    "מודדים"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "מדידות",
+    "למיפוי",
+    "name",
+    "information",
+    "status",
+    "המודדים",
+    "ישראל",
+    "link",
+    "search",
+    "cer",
+    "המרכז",
+    "family",
+    "number",
+    "letters",
+    "measurs",
+    "מודדים"
+  ],
+  "resources": [
+    {
+      "resource_id": "096e5fba-420c-4822-8172-78be54767cef",
+      "title": "רשימת המודדים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "search",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "measurs",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "name1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "family_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "number",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "letters",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "information",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "cer_link",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 1368
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

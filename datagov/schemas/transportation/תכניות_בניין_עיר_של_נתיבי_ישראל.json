@@ -1,0 +1,113 @@
+{
+  "dataset_id": "ed5a59db-6a7c-4d51-8a89-741adc49cf80",
+  "title": "תכניות בניין עיר של נתיבי ישראל",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "דרכים",
+    "ממג",
+    "נתיבי ישראל",
+    "תבע",
+    "תכנית בנין עיר"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "objectid",
+    "status",
+    "mishasava",
+    "gis",
+    "תכניות",
+    "תבע",
+    "דרכים",
+    "בדרכים",
+    "בניין",
+    "והבטיחות",
+    "עיר",
+    "משרד",
+    "נתיבי",
+    "url",
+    "shape",
+    "area",
+    "ישראל",
+    "תכנית",
+    "בנין",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "67499d2c-f781-4a8f-9ede-3d106d3b7952",
+      "title": "nti_taba_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a638b64d-b32c-418e-aa19-c9736f4bac93",
+      "title": "NTI_TABA_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "93323f17-0856-499f-b04b-c4590b61454c",
+      "title": "NTI_TABA_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "MISHASAVA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 579
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

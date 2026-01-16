@@ -1,0 +1,160 @@
+{
+  "dataset_id": "86fce9f0-0e5a-4012-8a84-86a233e83191",
+  "title": "תחנות רכבת קלה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "הסעת המונים",
+    "חצב",
+    "ממג",
+    "רכבת קלה",
+    "רקל",
+    "תחנות"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "הסעת",
+    "ממג",
+    "status",
+    "lbl",
+    "gis",
+    "acsbl",
+    "רכבת",
+    "comp",
+    "בדרכים",
+    "רקל",
+    "והבטיחות",
+    "המונים",
+    "mtr",
+    "stat",
+    "משרד",
+    "type",
+    "קלה",
+    "חצב",
+    "entrc",
+    "entr",
+    "תחנות",
+    "yearmonth",
+    "area",
+    "notes",
+    "oid",
+    "exit",
+    "line",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "93400849-51ff-42c9-a151-cbaee630ded2",
+      "title": "LRT_STAT_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a196eedd-f52c-4237-ace9-c2a0a6c53c3f",
+      "title": "LRT_STAT_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "b2ca8ac5-d7ea-41a5-8119-a30e98cf71e0",
+      "title": "LRT_STAT_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "ENTRC_EXIT",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "ACSBL_ENTR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ENTRC_TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "NOTES",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LINE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "COMP",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MTR_AREA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STAT_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ENTRC_LBL",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 332
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

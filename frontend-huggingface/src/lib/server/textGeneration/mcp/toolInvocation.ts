@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomUUID, createHash } from "crypto";
 import { logger } from "../../logger";
 import { existsSync } from "fs";
 import { readdir } from "fs/promises";
@@ -33,6 +33,10 @@ import {
 import type { Client } from "@modelcontextprotocol/sdk/client";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
 import { ADMIN_USER_ID } from "$lib/server/constants";
+// Phase 2 (+16): Tool Result Ingestion
+import { ToolResultIngestionService } from "$lib/server/memory/services/ToolResultIngestionService";
+// Phase 19: Action Outcomes Tracking
+import type { Outcome, ToolRunStatus, ActionType, ContextType } from "$lib/server/memory/types";
 
 // ============================================
 // DOCLING TOOL TRACE INTEGRATION
@@ -88,6 +92,10 @@ async function resolveDoclingFilePath(
  * Bridge docling tool output to the memory system
  * This ensures documents processed via tool calls are stored in memory
  * for visibility in the Memory Panel and future retrieval
+ *
+ * Phase 4: Now uses SHA-256 hash for document deduplication
+ * - Prevents duplicate storage when same document is processed multiple times
+ * - Uses hash-based documentId for consistent identification
  */
 async function bridgeDoclingToMemory(
 	conversationId: string,
@@ -101,18 +109,52 @@ async function bridgeDoclingToMemory(
 	}
 
 	try {
-		logger.info(
-			{ conversationId, toolName, outputLength: output.length },
-			"[mcp→memory] Bridging docling output to memory system"
-		);
-
 		const facade = UnifiedMemoryFacade.getInstance();
 		if (!facade.isInitialized()) {
 			logger.warn("[mcp→memory] Memory system not initialized, skipping bridge");
 			return;
 		}
 
-		const documentId = `docling:${conversationId}:${Date.now()}`;
+		// Phase 4.1.1: Calculate content hash for deduplication
+		const contentHash = createHash("sha256").update(output.trim()).digest("hex");
+		const shortHash = contentHash.slice(0, 16);
+
+		logger.info(
+			{ conversationId, toolName, outputLength: output.length, contentHash: shortHash },
+			"[mcp→memory] Bridging docling output to memory system"
+		);
+
+		// Phase 4.1.2: Check if document already exists via hash lookup
+		// Use MemoryMongoStore directly for document existence check
+		try {
+			const { Database } = await import("$lib/server/database");
+			const { MemoryMongoStore } = await import("$lib/server/memory/stores/MemoryMongoStore");
+
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const mongoStore = new MemoryMongoStore({ client, dbName: "chat-ui" });
+			await mongoStore.initialize();
+
+			const exists = await mongoStore.documentExists(ADMIN_USER_ID, contentHash);
+
+			if (exists) {
+				// Phase 4.1.3: Skip storage if duplicate
+				logger.info(
+					{ contentHash: shortHash, fileName, conversationId },
+					"[mcp→memory] Document already in memory, skipping duplicate storage"
+				);
+				return;
+			}
+		} catch (checkErr) {
+			// If existence check fails, proceed with storage (fail-open)
+			logger.warn(
+				{ err: checkErr, contentHash: shortHash },
+				"[mcp→memory] Document existence check failed, proceeding with storage"
+			);
+		}
+
+		// Phase 4.1.4: Use hash-based documentId instead of timestamp
+		const documentId = `docling:${shortHash}`;
 
 		// Chunk with overlap (same as books endpoint)
 		const chunkSize = 1000;
@@ -145,12 +187,11 @@ async function bridgeDoclingToMemory(
 					source: "docling_tool",
 					conversation_id: conversationId,
 					tool_name: toolName,
+					// Phase 4.1.5: Persist document_hash for deduplication queries
+					document_hash: contentHash,
 				},
 			});
-			logger.debug(
-				{ chunkIndex: i, memoryId: res.memory_id },
-				"[mcp→memory] Stored docling chunk"
-			);
+			logger.debug({ chunkIndex: i, memoryId: res.memory_id }, "[mcp→memory] Stored docling chunk");
 		}
 
 		logger.info(
@@ -266,6 +307,129 @@ function createDoclingTraceRunCompleted(runId: string): MessageTraceUpdate {
 		runId,
 		timestamp: Date.now(),
 	};
+}
+
+// ============================================
+// Phase 19: ACTION OUTCOMES TRACKING
+// ============================================
+
+/**
+ * Map tool execution status to action outcome
+ * Phase 19.2.3: Classify outcome: success, error, timeout, empty
+ */
+function classifyToolOutcome(result: { error?: string; output?: string }): {
+	outcome: Outcome;
+	toolStatus: ToolRunStatus;
+} {
+	if (result.error) {
+		const errorLower = result.error.toLowerCase();
+		if (errorLower.includes("timeout") || errorLower.includes("timed out")) {
+			return { outcome: "failed", toolStatus: "timeout" };
+		}
+		return { outcome: "failed", toolStatus: "error" };
+	}
+
+	if (!result.output || result.output.trim().length === 0) {
+		// Empty result - partial success (tool ran but nothing found)
+		return { outcome: "partial", toolStatus: "ok" };
+	}
+
+	// Check for error-like content in output
+	const outputLower = result.output.toLowerCase();
+	if (
+		outputLower.includes("error:") ||
+		outputLower.includes("failed to") ||
+		outputLower.includes("exception")
+	) {
+		return { outcome: "partial", toolStatus: "error" };
+	}
+
+	return { outcome: "worked", toolStatus: "ok" };
+}
+
+/**
+ * Map tool name to ActionType for consistent tracking
+ */
+function toolNameToActionType(toolName: string): ActionType {
+	const nameLower = toolName.toLowerCase();
+
+	// Memory tools
+	if (nameLower.includes("search_memory") || nameLower.includes("memory_search")) {
+		return "search_memory";
+	}
+	if (nameLower.includes("add_to_memory") || nameLower.includes("memory_bank")) {
+		return "add_to_memory_bank";
+	}
+	if (nameLower.includes("context_insights") || nameLower.includes("get_context")) {
+		return "get_context_insights";
+	}
+	if (nameLower.includes("update_memory")) {
+		return "update_memory";
+	}
+	if (nameLower.includes("archive_memory")) {
+		return "archive_memory";
+	}
+	if (nameLower.includes("delete_memory")) {
+		return "delete_memory";
+	}
+
+	// Return tool name as ActionType (extensible string type)
+	return toolName as ActionType;
+}
+
+/**
+ * Fire-and-forget action outcome recording
+ * Phase 19.2: Record tool execution outcomes for learning
+ *
+ * This helps the system learn:
+ * - Which tools work best for which types of queries
+ * - Which tools have high error rates
+ * - Latency patterns for optimization
+ */
+async function recordToolActionOutcome(params: {
+	toolName: string;
+	result: { error?: string; output?: string };
+	conversationId?: string;
+	userId?: string;
+	latencyMs?: number;
+	contextType?: ContextType;
+}): Promise<void> {
+	try {
+		const facade = UnifiedMemoryFacade.getInstance();
+		const { outcome, toolStatus } = classifyToolOutcome(params.result);
+
+		await facade.recordActionOutcome({
+			action_id: randomUUID(),
+			action_type: toolNameToActionType(params.toolName),
+			context_type: params.contextType ?? "general",
+			outcome,
+			tool_status: toolStatus,
+			conversation_id: params.conversationId ?? null,
+			message_id: null,
+			answer_attempt_id: null,
+			tier: null,
+			doc_id: null,
+			memory_id: null,
+			action_params: null,
+			latency_ms: params.latencyMs ?? null,
+			error_type: params.result.error ? "tool_error" : null,
+			error_message: params.result.error?.slice(0, 500) ?? null,
+			timestamp: new Date().toISOString(),
+		});
+
+		logger.debug(
+			{
+				toolName: params.toolName,
+				outcome,
+				toolStatus,
+				latencyMs: params.latencyMs,
+			},
+			"[Phase 19] Recorded tool action outcome"
+		);
+	} catch (err) {
+		// Fire-and-forget: don't let outcome recording failures affect tool execution
+		logger.warn({ err, toolName: params.toolName }, "[Phase 19] Failed to record action outcome");
+	}
 }
 
 export type Primitive = string | number | boolean;
@@ -686,6 +850,9 @@ export async function* executeToolCalls({
 		error?: string;
 		uuid: string;
 		paramsClean: Record<string, Primitive>;
+		// Phase 19: Track tool execution latency for outcome learning
+		latencyMs?: number;
+		params?: Record<string, unknown>;
 	};
 
 	const prepared = calls.map((call) => {
@@ -935,6 +1102,8 @@ export async function* executeToolCalls({
 					}
 				}
 
+				// Phase 19: Track execution timing
+				const toolStartTime = Date.now();
 				const toolResponse: McpToolTextResponse = await callMcpTool(
 					serverCfg,
 					mappingEntry.tool,
@@ -945,9 +1114,10 @@ export async function* executeToolCalls({
 						timeoutMs: toolTimeoutMs,
 					}
 				);
+				const toolLatencyMs = Date.now() - toolStartTime;
 				const { annotated } = processToolOutput(toolResponse.text ?? "");
 				logger.debug(
-					{ server: mappingEntry.server, tool: mappingEntry.tool },
+					{ server: mappingEntry.server, tool: mappingEntry.tool, latencyMs: toolLatencyMs },
 					"[mcp] tool call completed"
 				);
 				q.push({
@@ -957,6 +1127,8 @@ export async function* executeToolCalls({
 					blocks: toolResponse.content,
 					uuid: p.uuid,
 					paramsClean: p.paramsClean,
+					latencyMs: toolLatencyMs,
+					params: p.argsObj,
 				});
 			} catch (err) {
 				const message = err instanceof Error ? err.message : String(err);
@@ -1188,6 +1360,67 @@ export async function* executeToolCalls({
 				logger.warn({ err, toolName }, "[mcp] Memory bridge failed (non-blocking)");
 			});
 		}
+
+		// ============================================
+		// PHASE 2 (+16): INGEST ALL TOOL RESULTS TO MEMORY
+		// For non-docling tools (search, research, data queries),
+		// store results for future retrieval without re-researching
+		// Fire-and-forget: NEVER blocks user response path
+		// ============================================
+		if (!r.error && r.output && conversationId) {
+			const trimmedOutputLen = r.output.trim().length;
+			if (trimmedOutputLen < 100) {
+				logger.warn({ toolName }, "[ingest] Skipped - output too short");
+			} else {
+				// Extract query from tool arguments (varies by tool)
+				const toolQuery =
+					((r.params as Record<string, unknown>)?.query as string) ??
+					((r.params as Record<string, unknown>)?.prompt as string) ??
+					((r.params as Record<string, unknown>)?.q as string) ??
+					undefined;
+
+				ToolResultIngestionService.getInstance()
+					.ingestToolResult({
+						conversationId,
+						toolName,
+						query: toolQuery,
+						output: r.output,
+						metadata: {
+							tool_call_id: toolCallId,
+							params_preview: JSON.stringify(r.paramsClean ?? {}).slice(0, 200),
+						},
+					})
+					.then((res) => {
+						if (res.stored) {
+							logger.info(
+								{ toolName, outputLen: r.output?.length ?? 0 },
+								"[ingest] Tool result stored"
+							);
+							logger.info({ toolName, category: "unknown" }, "[tool-ingest] Stored result");
+						} else if (res.attempted) {
+							logger.warn(
+								{ toolName, reason: res.reason ?? "unknown" },
+								"[tool-ingest] Skipped - low quality output"
+							);
+						}
+					})
+					.catch((err) => {
+						logger.warn({ err, toolName }, "[mcp] Tool result ingestion failed (non-blocking)");
+					});
+			}
+		}
+
+		// ============================================
+		// PHASE 19: RECORD ACTION OUTCOME FOR LEARNING
+		// Track tool execution success/failure for future optimization
+		// Fire-and-forget: NEVER blocks user response path
+		// ============================================
+		recordToolActionOutcome({
+			toolName,
+			result: { error: r.error, output: r.output },
+			conversationId,
+			latencyMs: r.latencyMs,
+		}).catch(() => {}); // Silently ignore failures
 
 		// ============================================
 		// EMIT TRACE STEP COMPLETION FOR REAL TOOL CALLS

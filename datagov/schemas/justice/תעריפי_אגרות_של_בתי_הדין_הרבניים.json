@@ -1,0 +1,64 @@
+{
+  "dataset_id": "15c65f47-0c45-477b-b4d4-a50bd2999bcb",
+  "title": "תעריפי אגרות של בתי הדין הרבניים",
+  "organization": "בתי הדין הרבניים",
+  "tags": [
+    "אוכלוסיה",
+    "דת",
+    "משפט"
+  ],
+  "categories": [
+    "justice",
+    "religion"
+  ],
+  "keywords": [
+    "משפט",
+    "הרבניים",
+    "תביעה",
+    "בתי",
+    "אוכלוסיה",
+    "אגרות",
+    "אגרה",
+    "תעריף",
+    "תעריפי",
+    "הדין",
+    "נושא"
+  ],
+  "resources": [
+    {
+      "resource_id": "87969ef3-ac7e-4597-8909-995c8df422bf",
+      "title": "תעריפי אגרות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "נושא תביעה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אגרה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תעריף",
+          "type": "numeric",
+          "semantic": "price"
+        }
+      ],
+      "total_records": 147
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

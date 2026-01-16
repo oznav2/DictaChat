@@ -1,0 +1,36 @@
+{
+  "dataset_id": "7a0d5cae-0d73-4a63-a002-25b7adeba963",
+  "title": "כותרים בספריית משרד החוץ",
+  "organization": "משרד החוץ",
+  "tags": [
+    "כותרים",
+    "משרד החוץ",
+    "ספריה"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "החוץ",
+    "בספריית",
+    "משרד",
+    "כותרים",
+    "ספריה"
+  ],
+  "resources": [
+    {
+      "resource_id": "eaa4f8ff-7c65-441b-8ea9-4e2e8273dbc6",
+      "title": "כותרים בספריית משרד החוץ",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

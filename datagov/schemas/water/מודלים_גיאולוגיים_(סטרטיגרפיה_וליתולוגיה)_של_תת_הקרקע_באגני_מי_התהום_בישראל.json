@@ -1,0 +1,67 @@
+{
+  "dataset_id": "cc0ebf7c-9fc3-4171-b9d0-60dde53b2273",
+  "title": "מודלים גיאולוגיים (סטרטיגרפיה וליתולוגיה) של תת הקרקע באגני מי התהום בישראל",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "water",
+    "גיאולוגיה",
+    "הידרוגיאולוגיה",
+    "מים",
+    "סטרטיגרפיה",
+    "רשות המים",
+    "תת הקרקע"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "הרשות",
+    "וליתולוגיה",
+    "סטרטיגרפיה",
+    "מודלים",
+    "water",
+    "רשות",
+    "הידרוגיאולוגיה",
+    "התהום",
+    "למים",
+    "הממשלתית",
+    "המים",
+    "מים",
+    "ולביוב",
+    "גיאולוגיה",
+    "הקרקע",
+    "גיאולוגיים",
+    "באגני",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "920d9ccf-a5ed-49cb-885a-1a184fc7c526",
+      "title": "שלד גיאולוגי - אזור הכרמל",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a38a2297-5cd1-4110-94e4-2d7938637ced",
+      "title": "שכבות חציצה באקוויפר החוף",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "576e6fb8-005c-4d7b-ae64-e08d7aa72801",
+      "title": "שלד גיאולוגי - מודל חרמון",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "dataset_id": "ed63bffb-5932-4c8a-a168-403709bc78b4",
+  "title": "מרכזים למשפחות לילדים עם מוגבלות",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "ילדים עם מוגבלות",
+    "מוגבלות",
+    "משרד הרווחה"
+  ],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "והביטחון",
+    "מחוז",
+    "מייל",
+    "למשפחות",
+    "מוגבלות",
+    "משרד",
+    "ישוב",
+    "היועץ",
+    "הרווחה",
+    "החברתי",
+    "מרכזים",
+    "ילדים",
+    "לילדים"
+  ],
+  "resources": [
+    {
+      "resource_id": "e02335b2-3297-486c-a9e0-92794336529b",
+      "title": "מרכז למשפחה - שירות משלים למשפחות לילדים עם מוגבלות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם היועץ",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מייל",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 95
+    },
+    {
+      "resource_id": "c32343e6-4d20-4d60-9c0b-5063e5cacf04",
+      "title": "הסבר - מרכז למשפחה - שירות משלים למשפחות לילדים עם מוגבלות",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

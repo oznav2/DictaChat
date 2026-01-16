@@ -1,0 +1,232 @@
+{
+  "dataset_id": "f96dd976-7f9c-4bcf-9288-a1efd8c8c1a5",
+  "title": "בתי ספר איזוריים בפיקוח המינהל לחינוך התיישבותי",
+  "organization": "המינהל לחינוך התיישבותי",
+  "tags": [
+    "בתי ספר",
+    "בתי ספר איזוריים",
+    "משרד החינוך"
+  ],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "classes",
+    "לחינוך",
+    "החינוך",
+    "המינהל",
+    "number",
+    "website",
+    "איזוריים",
+    "משרד",
+    "area",
+    "בפיקוח",
+    "בתי",
+    "text",
+    "address",
+    "school",
+    "ספר",
+    "התיישבותי",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "cf910eda-c929-46d6-b98b-7da531a41db1",
+      "title": "בתי ספר איזוריים (עברית)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "school_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "school_number",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "classes_text",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "classes",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "area_text",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "website",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 177
+    },
+    {
+      "resource_id": "0284fe05-345d-42d1-90d3-4be5e77ea09d",
+      "title": "בתי ספר איזוריים (ערבית)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "school_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "school_number",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "classes_text",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "classes",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "area_text",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "website",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 177
+    },
+    {
+      "resource_id": "c24cbff6-80a3-4bab-a7f8-a7e096756471",
+      "title": "בתי ספר איזוריים (רוסית)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "school_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "school_number",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "classes_text",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "classes",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "area_text",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "website",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 177
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

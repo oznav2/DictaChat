@@ -1,4 +1,8 @@
-import { findEnglishTranslation, findHebrewTranslation, normalizeHebrew } from "../seed/bilingualEntities";
+import {
+	findEnglishTranslation,
+	findHebrewTranslation,
+	normalizeHebrew,
+} from "../seed/bilingualEntities";
 
 function stableHash32(input: string): string {
 	let hash = 0;
@@ -52,4 +56,3 @@ export function buildProblemHash(query: string): string {
 	const signature = expanded.sort().join("_");
 	return `prob_${stableHash32(signature)}`;
 }
-

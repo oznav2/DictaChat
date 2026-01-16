@@ -1,0 +1,185 @@
+{
+  "dataset_id": "85451410-ba71-489e-828a-9fbf90138586",
+  "title": "רשימת פריטים ליבוא מסחרי שאישורם בתוקף לצורך הגשת אישור על סמך אישור",
+  "organization": "משרד התקשורת",
+  "tags": [
+    "יבוא ציוד",
+    "מכס",
+    "מסלול",
+    "משרד התקשורת",
+    "ציוד אלחוטי",
+    "ציוד קצה"
+  ],
+  "categories": [
+    "finance",
+    "economy",
+    "communications"
+  ],
+  "keywords": [
+    "אישור",
+    "בתוקף",
+    "נמוך",
+    "פריטים",
+    "מכס",
+    "יבוא",
+    "אלחוטי",
+    "השידור",
+    "היצרן",
+    "גבוה",
+    "שאישורם",
+    "הגשת",
+    "התקשורת",
+    "תדר",
+    "לצורך",
+    "אפנון",
+    "number",
+    "תוקף",
+    "rows",
+    "משרד",
+    "מסחרי",
+    "רוחב",
+    "האישור",
+    "ליבוא",
+    "הדגם",
+    "הספק",
+    "מסלול",
+    "קצה",
+    "ציוד",
+    "סמך"
+  ],
+  "resources": [
+    {
+      "resource_id": "78a1a14d-8f30-43e5-b0d7-00e737ec9346",
+      "title": "רשימת פריטים ליבוא מסחרי שאישורם בתוקף לצורך הגשת אישור על סמך אישור",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ROWS_NUMBER",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר אישור",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם היצרן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם הדגם",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תדר נמוך",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תדר גבוה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הספק השידור",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "רוחב פס",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אפנון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תוקף האישור",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 17169
+    },
+    {
+      "resource_id": "d91a1af4-a9a5-48b1-a1a0-6be4eba1618e",
+      "title": "רשימת פריטים ליבוא מסחרי שאישורם בתוקף לצורך הגשת אישור על סמך אישור",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ROWS_NUMBER",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר אישור",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם היצרן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם הדגם",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תדר נמוך",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תדר גבוה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הספק השידור",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "רוחב פס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אפנון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תוקף האישור",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 17169
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

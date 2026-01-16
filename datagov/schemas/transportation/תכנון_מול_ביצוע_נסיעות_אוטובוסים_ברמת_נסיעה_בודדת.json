@@ -1,0 +1,258 @@
+{
+  "dataset_id": "626b0931-8385-4f62-87e5-cadae3379754",
+  "title": "תכנון מול ביצוע נסיעות אוטובוסים ברמת נסיעה בודדת",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אוטובוסים",
+    "משרד התחבורה",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation",
+    "religion"
+  ],
+  "keywords": [
+    "operatorlineid",
+    "תחבורה",
+    "start",
+    "ind",
+    "trip",
+    "tripid",
+    "history",
+    "time",
+    "officelineid",
+    "operator",
+    "erua",
+    "ברמת",
+    "בדרכים",
+    "end",
+    "month",
+    "והבטיחות",
+    "viechle",
+    "אוטובוסים",
+    "נסיעות",
+    "מול",
+    "בודדת",
+    "cluster",
+    "direction",
+    "תכנון",
+    "משרד",
+    "week",
+    "num",
+    "operatorid",
+    "ציבורית",
+    "linealternative",
+    "נסיעה",
+    "day",
+    "ביצוע",
+    "bitzua",
+    "hachraga",
+    "clusterid",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "084b8e33-e359-47aa-95f7-26782e52c9af",
+      "title": "תכנון מול ביצוע נסיעות אוטובוסים 2025 ברמת נסיעה בודדת",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OperatorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "operator_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ClusterId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "cluster_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OperatorLineId",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "OfficeLineId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Direction",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LineAlternative",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Viechle_num",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TripId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "trip_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "trip_time",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "trip_month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "trip_day_in_week",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "bitzua_history_start_dt",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "bitzua_history_end_dt",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "erua_hachraga_ind",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 21709372
+    },
+    {
+      "resource_id": "aba233c2-6a5a-487d-b0a8-9413ef849f15",
+      "title": "תכנון מול ביצוע נסיעות אוטובוסים 2024 ברמת נסיעה בודדת",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OperatorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "operator_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ClusterId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "cluster_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OperatorLineId",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "OfficeLineId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Direction",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LineAlternative",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Viechle_num",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TripId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "trip_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "trip_time",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "trip_month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "trip_day_in_week",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "bitzua_history_start_dt",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "bitzua_history_end_dt",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "erua_hachraga_ind",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 32524024
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

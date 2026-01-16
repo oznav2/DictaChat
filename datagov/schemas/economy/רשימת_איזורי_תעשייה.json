@@ -1,0 +1,171 @@
+{
+  "dataset_id": "4acf8b98-776e-4c36-8f98-73cc73fed623",
+  "title": "רשימת איזורי תעשייה",
+  "organization": "משרד הכלכלה והתעשייה",
+  "tags": [
+    "איזורי תעשייה",
+    "כלכלה",
+    "תעשייה"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "תעשייה",
+    "name",
+    "phone",
+    "big",
+    "occupied",
+    "medium",
+    "factories",
+    "small",
+    "geom",
+    "והתעשייה",
+    "contact",
+    "email",
+    "הכלכלה",
+    "description",
+    "כלכלה",
+    "website",
+    "available",
+    "current",
+    "משרד",
+    "open",
+    "district",
+    "role",
+    "alina",
+    "איזורי",
+    "employees",
+    "market",
+    "eng",
+    "space",
+    "future"
+  ],
+  "resources": [
+    {
+      "resource_id": "30af8da4-7586-4b00-ac88-c5ee75251632",
+      "title": "רשימת איזורי תעשייה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "alina_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "website",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "alina_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "alina_description_eng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "alina_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "alina_eng_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "district_en",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "available_space",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "occupied_space",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "future_employees",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "current_employees",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "open_to_market",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "geom",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "contact_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "contact_role",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "contact_email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "contact_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "small_factories",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "medium_factories",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "big_factories",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 40
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "dataset_id": "a5b7e889-de77-4062-85e1-cf427bfbf9d1",
+  "title": "סיווגי IPC לבקשות פטנט",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משפטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "פטנט",
+    "בקשה",
+    "באנגלית",
+    "סיווגי",
+    "ipc",
+    "לבקשות",
+    "משרד",
+    "בעברית",
+    "סיווג",
+    "האמצאה",
+    "ראשי",
+    "משפטים",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "3343e150-79b5-4927-adad-50ebe14925b5",
+      "title": "סיווגי IPC לבקשות פטנט",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם האמצאה בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם האמצאה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "IPC סיווג",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "ראשי",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 754417
+    },
+    {
+      "resource_id": "49e08811-8f53-4a66-9204-8190fe06cf16",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

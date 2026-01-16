@@ -1,0 +1,126 @@
+{
+  "dataset_id": "2987efb0-1145-4cc9-a893-af3f354bfc83",
+  "title": "מעבדות רפואיות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "מעבדות מזון"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "inhouse",
+    "phone",
+    "manager",
+    "city",
+    "institute",
+    "רפואיות",
+    "fax",
+    "sub",
+    "הבריאות",
+    "street",
+    "lab",
+    "code",
+    "משרד",
+    "subject",
+    "מזון",
+    "main",
+    "notes",
+    "internship",
+    "מעבדות",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "23be5eed-ec17-40fc-a8ab-f8df7fc36125",
+      "title": "רשימת מעבדות רפואיות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "institute_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "lab_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "main_subject",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sub_subject",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "internship_code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "internship",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lab_name_inhouse",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 347
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

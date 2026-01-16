@@ -1,0 +1,63 @@
+{
+  "dataset_id": "297a656a-b929-4f63-af6b-a3d2411f7f7e",
+  "title": "תעריפי חלקות קבר מחיים 2025",
+  "organization": "המשרד לשירותי דת",
+  "tags": [],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "kadisha",
+    "קבר",
+    "מחיים",
+    "חלקות",
+    "המשרד",
+    "rate",
+    "year",
+    "לשירותי",
+    "תעריפי",
+    "inorder"
+  ],
+  "resources": [
+    {
+      "resource_id": "04f046d0-643b-47ea-8a72-e9c079cd67d2",
+      "title": "תעריפי רכישת קבר מחיים 2025",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Kadisha",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Rate",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "InOrder",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Year",
+          "type": "numeric",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 94
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

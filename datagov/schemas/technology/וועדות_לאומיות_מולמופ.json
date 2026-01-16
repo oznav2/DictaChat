@@ -1,0 +1,62 @@
+{
+  "dataset_id": "0572b9b9-f4f6-4b57-96d2-bccf360fcf94",
+  "title": "וועדות לאומיות מולמו\"פ",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "מדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "מדע",
+    "החדשנות",
+    "מולמו",
+    "לאומיות",
+    "הוועדה",
+    "יושב",
+    "משרד",
+    "מרכז",
+    "המדע",
+    "וועדות",
+    "ראש",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "4ba730c5-d16b-475c-a846-c3e2f59be1f1",
+      "title": "וועדות לאומיות מולמו\"פ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הוועדה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "יושב ראש הוועדה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מרכז",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 10
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

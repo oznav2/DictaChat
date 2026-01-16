@@ -1,0 +1,112 @@
+{
+  "dataset_id": "9579874b-7a1f-4981-ae17-80e57fd22e71",
+  "title": "זכאות להנחה בתחבורה ציבורית",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "הנחה",
+    "זכאות",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "discount",
+    "תחבורה",
+    "streetname",
+    "economic",
+    "בדרכים",
+    "cityname",
+    "hnum",
+    "בתחבורה",
+    "והבטיחות",
+    "streetcode",
+    "זכאות",
+    "stat",
+    "משרד",
+    "להנחה",
+    "score",
+    "peripheral",
+    "approved",
+    "ציבורית",
+    "הנחה",
+    "area",
+    "socio",
+    "citycode",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "8c344502-e294-436a-84e2-00a40b318d8b",
+      "title": "זכאות להנחה בתחבורה ציבורית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CityName",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "CityCode",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "StreetName",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "StreetCode",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "Hnum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "discount_approved",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "Stat_area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "socio_economic_score",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "peripheral_score",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 41243
+    },
+    {
+      "resource_id": "ed9284e2-808d-46a0-b47a-acd1fcab60e5",
+      "title": "זכאות להנחה בתחבורה ציבורית לפי מדדים סוצי ו-אקונומיים ופריפריאליים",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

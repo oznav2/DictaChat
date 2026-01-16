@@ -1,0 +1,132 @@
+{
+  "dataset_id": "053b5233-bf3c-4d43-95ee-44ccf3e99e5f",
+  "title": "עיצומים כספיים על ליקויי בטיחות",
+  "organization": "משרד העבודה",
+  "tags": [
+    "משרד העבודה",
+    "עיצומים כספיים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "בטיחות",
+    "העבודה",
+    "כספיים",
+    "sumaftercommittee",
+    "עיצומים",
+    "commissionersdecision",
+    "adress",
+    "date",
+    "hpnumber",
+    "reasonforreduction",
+    "number",
+    "sumafterdecision",
+    "משרד",
+    "volationclause",
+    "decisiondate",
+    "reductionpercentage",
+    "committeedecision",
+    "committeedate",
+    "companyname",
+    "sum",
+    "ליקויי"
+  ],
+  "resources": [
+    {
+      "resource_id": "16d8510b-aee9-4223-aa26-263d2b7ca83a",
+      "title": "עיצומים כספיים על ליקויי בטיחות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "number",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "companyname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "hpnumber",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "volationclause",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "sum",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "decisiondate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "commissionersdecision",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sumafterdecision",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "reasonforreduction",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "reductionpercentage",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "committeedate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "committeedecision",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sumaftercommittee",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 3820
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

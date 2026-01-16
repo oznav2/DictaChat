@@ -27,10 +27,17 @@ export type {
 	BookListItem,
 	ConsistencyCheckParams as FacadeConsistencyCheckParams,
 	SearchService as FacadeSearchService,
+	// Phase 1: Consolidate Memory Collections types
+	GetByIdParams,
+	UpdateParams,
+	DeleteParams,
+	MemoryItemResult,
 } from "./UnifiedMemoryFacade";
 export { defaultMemoryConfig } from "./memory_config";
 export type { MemoryConfig } from "./memory_config";
 export type * from "./types";
+// Phase 25: Export tier group constants for consistent tier usage
+export { MEMORY_TIER_GROUPS } from "./types";
 
 // Feature flags
 export {
@@ -281,3 +288,36 @@ export type {
 	RankedList,
 	MemoryRetrievalServiceConfig,
 } from "./retrieval";
+
+// DataGov (Phase 25: Knowledge Pre-Ingestion)
+export { DataGovIngestionService, getDataGovIngestionService } from "./datagov";
+export type {
+	DataGovTier,
+	DataGovSourceMetadata,
+	DataGovSchemaMetadata,
+	DataGovExpansionMetadata,
+	DataGovMemoryItem,
+	DataGovIngestionResult,
+	DataGovIngestionCheckpoint,
+	DataGovConfig,
+	DataGovIntent,
+} from "./datagov";
+export { CATEGORY_HEBREW_NAMES, DATAGOV_INTENT_PATTERNS, DEFAULT_DATAGOV_CONFIG } from "./datagov";
+
+// Observability (Phase 21: Memory System Observability)
+export {
+	memoryLogger,
+	generateCorrelationId,
+	createRequestLogger,
+	memoryMetrics,
+} from "./observability";
+export type {
+	MemoryLogContext,
+	MemoryOperation,
+	LogLevel,
+	OperationCounter,
+	LatencyStats,
+	CircuitBreakerMetric,
+	QueueMetric,
+	MetricsSnapshot,
+} from "./observability";

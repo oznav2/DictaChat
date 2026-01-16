@@ -1,0 +1,69 @@
+{
+  "dataset_id": "0b03f792-954c-4c0d-991f-4aec0139845d",
+  "title": "מועצת המוזיאונים - חברי מועצה",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "מוזיאונים חברי מועצה"
+  ],
+  "categories": [
+    "technology",
+    "municipal"
+  ],
+  "keywords": [
+    "החדשנות",
+    "טלפון",
+    "מועצת",
+    "מוזיאונים",
+    "משרד",
+    "דואר",
+    "המדע",
+    "אלקטרוני",
+    "תפקיד",
+    "המוזיאונים",
+    "מועצה",
+    "חברי",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c78d6c91-ba2f-4f00-a6a2-8d953bdb33f5",
+      "title": "מועצת המוזיאונים - חברי מועצה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "תפקיד",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 19
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

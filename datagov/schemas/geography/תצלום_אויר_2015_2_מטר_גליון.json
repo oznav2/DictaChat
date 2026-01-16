@@ -1,0 +1,34 @@
+{
+  "dataset_id": "73aae9b9-65ba-4fcf-a51b-feebc3da9f8d",
+  "title": "תצלום אויר 2015 2 מטר - גליון",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "52287708-9fa5-4f5a-9e4e-cc414270c257",
+      "title": "תצלום אויר 2015 2 מטר - גליון הר חצרון",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "dataset_id": "8379fa95-2b82-4f03-9a9b-650178de1ea8",
+  "title": "מאגר מחסני עופות חצר ופינות חי",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [],
+  "categories": [
+    "water",
+    "agriculture"
+  ],
+  "keywords": [
+    "name",
+    "המזון",
+    "area",
+    "החקלאות",
+    "phone",
+    "license",
+    "משרד",
+    "מחסני",
+    "חצר",
+    "first",
+    "last",
+    "email",
+    "note",
+    "עופות",
+    "ופינות",
+    "ובטחון",
+    "qualification"
+  ],
+  "resources": [
+    {
+      "resource_id": "64eb055d-0887-4e26-b3c3-cdb2331d6abc",
+      "title": "מאגר מחסני עופות חצר ופינות חי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "last_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "first_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "qualification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "license_no",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "phone_no",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "area",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "note",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 40
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": true,
+    "has_date": false
+  }
+}

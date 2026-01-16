@@ -1,0 +1,169 @@
+{
+  "dataset_id": "35b377dc-91e0-4b42-ae45-7dd8071a9191",
+  "title": "תקציב עיריית באר-שבע",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "עירייה"
+  ],
+  "categories": [
+    "finance",
+    "municipal"
+  ],
+  "keywords": [
+    "באר",
+    "תקציב",
+    "עירייה",
+    "הצעת",
+    "ביצוע",
+    "חשבון",
+    "מעודכן",
+    "עיריית",
+    "מחלקה",
+    "שנה",
+    "מקורי",
+    "שבע"
+  ],
+  "resources": [
+    {
+      "resource_id": "2d66eb8f-a3cd-45c8-8cfe-39f48d833e72",
+      "title": "תקציב עיריית באר שבע - כל השנים - CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "חשבון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם חשבון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מחלקה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מקורי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מעודכן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 87742
+    },
+    {
+      "resource_id": "56f0140c-73cc-494a-8b5c-4b66294d793b",
+      "title": "תקציב עיריית באר שבע 2017 - CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "חשבון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם חשבון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מחלקה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע 2015",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב 2016 מעודכן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הצעת תקציב 2017",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 6919
+    },
+    {
+      "resource_id": "90c364c9-7a55-4602-8bce-780efd7dd153",
+      "title": "תקציב עיריית באר שבע 2016 - CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "חשבון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם חשבון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מחלקה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע 2014",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב 2015 מעודכן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הצעת תקציב 2016",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 6609
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

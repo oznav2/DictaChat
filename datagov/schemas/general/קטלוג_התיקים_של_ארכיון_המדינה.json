@@ -1,0 +1,100 @@
+{
+  "dataset_id": "8b18bbc7-4951-43a2-83ac-18d196eba835",
+  "title": "קטלוג התיקים של ארכיון המדינה",
+  "organization": "ארכיון המדינה",
+  "tags": [
+    "ארכיון המדינה",
+    "קטלוגתיקיהארכיוון"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "status",
+    "creator",
+    "signature",
+    "creation",
+    "קטלוג",
+    "date",
+    "המדינה",
+    "file",
+    "from",
+    "קטלוגתיקיהארכיוון",
+    "description",
+    "התיקים",
+    "code",
+    "type",
+    "reference",
+    "closure",
+    "ארכיון",
+    "title",
+    "until"
+  ],
+  "resources": [
+    {
+      "resource_id": "1296c3cd-0cb6-47a3-8ca9-e3af6e774681",
+      "title": "קטלוג התיקים של ארכיון המדינה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Signature",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Reference_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Creator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Closure_status",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "Creation_date_from",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Creation_date_until",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "File_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Description",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1837140
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

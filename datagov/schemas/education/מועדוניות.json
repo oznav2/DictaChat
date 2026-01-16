@@ -1,0 +1,77 @@
+{
+  "dataset_id": "0646d9f5-0e44-4b79-8840-50d14ad3fff9",
+  "title": "מועדוניות",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "גני ילדים",
+    "חינוך",
+    "מעדוניות"
+  ],
+  "categories": [
+    "education",
+    "water",
+    "welfare"
+  ],
+  "keywords": [
+    "name",
+    "objectid",
+    "חינוך",
+    "אדומים",
+    "סוג",
+    "מעדוניות",
+    "עיריית",
+    "מועדוניות",
+    "telefon",
+    "ktovet",
+    "מעלה",
+    "גני",
+    "ילדים"
+  ],
+  "resources": [
+    {
+      "resource_id": "09fa0468-204b-483d-ad1c-2c93e062c71e",
+      "title": "רשימת מועדוניות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ktovet",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "telefon",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "סוג",
+          "type": "text",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 18
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

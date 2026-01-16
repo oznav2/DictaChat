@@ -1,0 +1,47 @@
+{
+  "dataset_id": "5b8efc55-e12d-434e-8bae-7579a0975e6c",
+  "title": "מלגות לנשים בתחומי המדע והטכנולוגיה",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "משרד המדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "לנשים",
+    "משרד",
+    "המדע",
+    "בתחומי",
+    "והטכנולוגיה",
+    "מלגות"
+  ],
+  "resources": [
+    {
+      "resource_id": "c95990f0-1195-47fe-a369-8b6be2650e7f",
+      "title": "מלגות לנשים בתחומי המדע והטכנולוגיה.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מלגות לנשים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 10
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

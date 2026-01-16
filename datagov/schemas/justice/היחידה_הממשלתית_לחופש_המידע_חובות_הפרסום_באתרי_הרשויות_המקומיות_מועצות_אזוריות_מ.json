@@ -1,0 +1,68 @@
+{
+  "dataset_id": "b6ff0c6f-3886-461c-9d53-9f3f2b1c710c",
+  "title": "היחידה הממשלתית לחופש המידע-חובות הפרסום באתרי הרשויות המקומיות-מועצות אזוריות מעבר לקו הירוק",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "סוג",
+    "הירוק",
+    "הממשלתית",
+    "היחידה",
+    "לחופש",
+    "מעבר",
+    "הרשויות",
+    "המקור",
+    "באתרי",
+    "מיוחדות",
+    "חובות",
+    "המקומיות",
+    "לקו",
+    "משרד",
+    "הפרסום",
+    "אזוריות",
+    "המשפטים",
+    "הוראות",
+    "החוקי",
+    "מועצות"
+  ],
+  "resources": [
+    {
+      "resource_id": "4e42f167-bd5c-404d-b096-5c3255580b90",
+      "title": "חובות הפרסום באתרי הרשויות המקומיות-מועצות אזוריות מעבר לקו הירוק",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג המידע",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "הוראות מיוחדות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "המקור החוקי",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 15
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,889 @@
+{
+  "dataset_id": "eb26b8f9-213f-4bd6-90c1-1a3c65b82c72",
+  "title": "נסועה בקווי אוטובוס",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אוטובוסים",
+    "משרד התחבורה",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "servicetype",
+    "routelength",
+    "maxridership",
+    "תחבורה",
+    "averagetripduration",
+    "routename",
+    "אוטובוס",
+    "operationsince",
+    "bustype",
+    "origincityname",
+    "bussize",
+    "averagespeed",
+    "weekyrides",
+    "בקווי",
+    "בדרכים",
+    "numofalternatives",
+    "והבטיחות",
+    "נסועה",
+    "אוטובוסים",
+    "workday",
+    "clustername",
+    "stationsinroute",
+    "avgcommutersperride",
+    "uniquestations",
+    "avgpassengersperweek",
+    "משרד",
+    "weeklykm",
+    "weekly",
+    "saturday",
+    "routetype",
+    "dailyrides",
+    "tuesday",
+    "uniquelocations",
+    "weeklypassengers",
+    "ציבורית",
+    "operatingcostperpassenger",
+    "agencyname",
+    "metropolin",
+    "dailypassengers",
+    "routedirection",
+    "friday",
+    "year",
+    "routeid",
+    "routeparticular",
+    "destinationcityname",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "e6cfac2f-979a-44fd-b439-ecb116ec0b16",
+      "title": "קובץ נסועה בקווי אוטובוס שנת 2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "RouteID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "RouteName",
+          "type": "numeric",
+          "semantic": "name"
+        },
+        {
+          "name": "RouteDirection",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AgencyName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ClusterName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Metropolin",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OriginCityName",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "DestinationCityName",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "RouteType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ServiceType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RouteParticular",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BusType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "BusSize",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NumOfAlternatives",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "RouteLength",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "WeeklyKM",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AVGPassengersPerWeek",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "StationsInRoute",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "OperationSince",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "UniqueStations",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "UniqueLocations",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AverageSpeed",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AverageTripDuration",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "OperatingCostPerPassenger",
+          "type": "numeric",
+          "semantic": "price"
+        },
+        {
+          "name": "DailyRides(Tuesday)",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WeekyRides",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DailyPassengers",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WeeklyPassengers",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AVGCommutersPerRide(Weekly)",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 00:00-03:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 04:00-05:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 06:00-08:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 09:00-11:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 12:00-14:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 15:00-18:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 19:00-23:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 00:00-03:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 04:00-05:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 06:00-08:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 09:00-11:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 12:00-14:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 15:00-18:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 19:00-23:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 00:00-03:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 04:00-05:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 06:00-08:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 09:00-11:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 12:00-14:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 15:00-18:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 19:00-23:59",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MaxRidership",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Q",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 16052
+    },
+    {
+      "resource_id": "9cf3237f-80cd-4646-836f-f1370088430a",
+      "title": "קובץ נסועה בקווי אוטובוס שנת 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "RouteID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "RouteName",
+          "type": "numeric",
+          "semantic": "name"
+        },
+        {
+          "name": "RouteDirection",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AgencyName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ClusterName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Metropolin",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OriginCityName",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "DestinationCityName",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "RouteType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ServiceType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RouteParticular",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BusType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "BusSize",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NumOfAlternatives",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "RouteLength",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "WeeklyKM",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AVGPassengersPerWeek",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "StationsInRoute",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "OperationSince",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "UniqueStations",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "UniqueLocations",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AverageSpeed",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AverageTripDuration",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OperatingCostPerPassenger",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "DailyRides(Tuesday)",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WeekyRides",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DailyPassengers",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WeeklyPassengers",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AVGCommutersPerRide(Weekly)",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 00:00-03:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 04:00-05:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 06:00-08:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 09:00-11:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 12:00-14:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 15:00-18:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 19:00-23:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 00:00-03:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 04:00-05:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 06:00-08:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 09:00-11:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 12:00-14:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 15:00-18:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 19:00-23:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 00:00-03:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 04:00-05:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 06:00-08:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 09:00-11:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 12:00-14:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 15:00-18:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 19:00-23:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MaxRidership",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Q",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 10836
+    },
+    {
+      "resource_id": "9dd76d51-376a-4324-8d7b-6719601bbf7f",
+      "title": "קובץ נסועה בקווי אוטובוס רבעון 4 שנת 2022",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "RouteID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "RouteName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "RouteDirection",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AgencyName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ClusterName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Metropolin",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OriginCityName",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "DestinationCityName",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "RouteType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ServiceType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RouteParticular",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BusType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "BusSize",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NumOfAlternatives",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "RouteLength",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "WeeklyKM",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AVGPassengersPerWeek",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "StationsInRoute",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OperationSince",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "UniqueStations",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "UniqueLocations",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DailyRides(Tuesday)",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WeekyRides",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DailyPassengers",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WeeklyPassengers",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AVGCommutersPerRide(Weekly)",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 00:00-03:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 04:00-05:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 06:00-08:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 09:00-11:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 12:00-14:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 15:00-18:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "WorkDay - 19:00-23:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 00:00-03:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 04:00-05:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 06:00-08:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 09:00-11:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 12:00-14:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 15:00-18:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Friday - 19:00-23:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 00:00-03:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 04:00-05:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 06:00-08:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 09:00-11:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 12:00-14:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 15:00-18:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Saturday - 19:00-23:59",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MaxRidership",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Q",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 5376
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

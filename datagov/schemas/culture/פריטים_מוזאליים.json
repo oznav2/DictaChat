@@ -1,0 +1,35 @@
+{
+  "dataset_id": "2e0e4762-52c1-475e-8f08-437f3056ef9f",
+  "title": "פריטים מוזאליים",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "מוזיאונים"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "התרבות",
+    "מוזיאונים",
+    "מוזאליים",
+    "משרד",
+    "פריטים",
+    "והספורט"
+  ],
+  "resources": [
+    {
+      "resource_id": "838a6aa0-bc0e-4437-bf3b-dc90d42a6e3c",
+      "title": "museumsinisrael.gov.il",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -22,7 +22,7 @@
 	import { fetchMessageUpdates } from "$lib/utils/messageUpdates";
 	import type { v4 } from "uuid";
 	import { useSettingsStore } from "$lib/stores/settings.js";
-	import { derived as deriveStore } from "svelte/store";
+	import { derived as deriveStore, get } from "svelte/store";
 	import { enabledServers } from "$lib/stores/mcpServers";
 	import { browser } from "$app/environment";
 	import {
@@ -35,6 +35,7 @@
 	import SubscribeModal from "$lib/components/SubscribeModal.svelte";
 	import { loading } from "$lib/stores/loading.js";
 	import { requireAuthUser } from "$lib/utils/auth.js";
+	import { dispatchMemoryEvent } from "$lib/stores/memoryEvents";
 
 	let { data = $bindable() } = $props();
 
@@ -251,13 +252,23 @@
 				if ($disableStreamSetting) return;
 				if (buffer.length === 0) return;
 
+				// DEFENSIVE: Validate messageToWriteTo still exists (enterprise robustness)
+				if (!messageToWriteTo) {
+					console.error("[flushStreamBuffer] messageToWriteTo became null during streaming");
+					buffer = "";
+					return;
+				}
+
 				messageToWriteTo.content += buffer;
 				const len = buffer.length;
 				buffer = "";
 				bufferedStreamLen += len;
 				lastUpdateTime = currentTime;
 
-				const existingUpdates = messageToWriteTo.updates ?? [];
+				// DEFENSIVE: Ensure updates is an array
+				const existingUpdates = Array.isArray(messageToWriteTo.updates)
+					? messageToWriteTo.updates
+					: [];
 				const lastUpdate = existingUpdates.at(-1);
 				const marker = {
 					type: MessageUpdateType.Stream as const,
@@ -266,10 +277,13 @@
 				};
 
 				if (lastUpdate?.type === MessageUpdateType.Stream && lastUpdate.token === "") {
+					// DEFENSIVE: Validate len is a number
+					const lastLen =
+						typeof lastUpdate.len === "number" && lastUpdate.len >= 0 ? lastUpdate.len : 0;
 					const merged = {
 						...lastUpdate,
 						token: "",
-						len: (lastUpdate.len ?? 0) + bufferedStreamLen,
+						len: lastLen + bufferedStreamLen,
 					};
 					messageToWriteTo.updates = [...existingUpdates.slice(0, -1), merged];
 				} else {
@@ -280,14 +294,25 @@
 
 			for await (const update of messageUpdatesIterator) {
 				if ($isAborted) {
+					// DEFENSIVE: Flush pending buffer before aborting to prevent data loss
+					if (buffer.length > 0 && messageToWriteTo) {
+						flushStreamBuffer(new Date());
+					}
 					messageUpdatesAbortController.abort();
 					return;
 				}
 
 				// Remove null characters added due to remote keylogging prevention
 				// See server code for more details
-				if (update.type === MessageUpdateType.Stream)
-					update.token = update.token.replaceAll("\0", "");
+				// DEFENSIVE: Type guard to prevent crash if token is undefined
+				if (update.type === MessageUpdateType.Stream) {
+					if (typeof update.token === "string") {
+						update.token = update.token.replaceAll("\0", "");
+					} else {
+						console.warn("[stream] Received non-string token:", typeof update.token);
+						update.token = "";
+					}
+				}
 
 				const isKeepAlive =
 					update.type === MessageUpdateType.Status &&
@@ -330,7 +355,8 @@
 						messageToWriteTo.updates?.some((u) => u.type === MessageUpdateType.Tool) ?? false;
 
 					if (hadTools) {
-						const existing = messageToWriteTo.content;
+						// DEFENSIVE: Ensure existing is always a string to prevent .replace()/.endsWith() crashes
+						const existing = messageToWriteTo.content ?? "";
 						const finalText = update.text ?? "";
 						const trimmedExistingSuffix = existing.replace(/\s+$/, "");
 						const trimmedFinalPrefix = finalText.replace(/^\s+/, "");
@@ -415,10 +441,66 @@
 						memoryUi.setProcessingFound(update.count);
 					} else if (update.subtype === MessageMemoryUpdateType.Storing) {
 						memoryUi.setProcessingStatus("storing");
+					} else if (update.subtype === MessageMemoryUpdateType.Stored) {
+						const state = get(memoryUi);
+						const existing = state.data.recentMemories ?? [];
+						memoryUi.setRecentMemories(
+							[
+								{
+									memory_id: update.memoryId,
+									tier: update.tier,
+									preview: update.preview,
+									created_at: update.createdAt ?? null,
+								},
+								...existing,
+							].slice(0, 100)
+						);
+						dispatchMemoryEvent({
+							type: "memory_updated",
+							userId: "admin",
+							detail: {
+								source: "memory_stored",
+								memoryId: update.memoryId,
+								tier: update.tier,
+								conversationId: page.params.id,
+							},
+						});
+						setTimeout(() => memoryUi.resetProcessing(), 1500);
 					} else if (update.subtype === MessageMemoryUpdateType.Outcome) {
 						memoryUi.setProcessingStatus("learning");
+						// Dispatch memoryUpdated event to trigger UI refresh in memory panels
+						// This is the Phase 1 P0 fix for Gap 4 (Memory Update Events)
+						dispatchMemoryEvent({
+							type: "memory_updated",
+							userId: "admin",
+							detail: {
+								source: "response_outcome",
+								memoryIds: update.memoryIds ?? [],
+								conversationId: page.params.id,
+							},
+						});
 						// Clear status after a short delay
 						setTimeout(() => memoryUi.resetProcessing(), 2000);
+					} else if (update.subtype === MessageMemoryUpdateType.Degraded) {
+						// Memory system is temporarily unavailable (circuit breaker open)
+						// This prevents UI freezes by notifying the user immediately
+						memoryUi.setProcessingStatus("degraded");
+						// Don't block - continue without memory context
+						console.debug("Memory system degraded:", update.reason, update.message);
+						setTimeout(() => memoryUi.resetProcessing(), 3000);
+					} else if (update.subtype === MessageMemoryUpdateType.DocumentIngesting) {
+						// Document upload/processing progress
+						memoryUi.setDocumentProcessing({
+							documentName: update.documentName,
+							stage: update.stage,
+							chunksProcessed: update.chunksProcessed,
+							totalChunks: update.totalChunks,
+							recognized: update.recognized,
+						});
+						// If completed or recognized, reset after delay
+						if (update.stage === "completed" || update.stage === "recognized") {
+							setTimeout(() => memoryUi.resetProcessing(), 3000);
+						}
 					}
 				}
 			}

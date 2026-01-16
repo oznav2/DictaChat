@@ -1,0 +1,143 @@
+{
+  "dataset_id": "b6fcb3eb-4206-48b0-8241-a3579dea1fd1",
+  "title": "היחידה לחופש המידע - מאגר פסקי דין",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "חוק",
+    "החלטה",
+    "עותרים",
+    "הוצאות",
+    "היחידה",
+    "לחופש",
+    "רלוונטיים",
+    "הדין",
+    "נושא",
+    "משיבים",
+    "פסק",
+    "פסקי",
+    "ההחלטה",
+    "פירוט",
+    "הגשת",
+    "סעיפי",
+    "מעמד",
+    "מחוז",
+    "העתירה",
+    "משרד",
+    "המשיב",
+    "דין",
+    "תאריך",
+    "המשפטים",
+    "לעותר",
+    "הליך",
+    "למשיב"
+  ],
+  "resources": [
+    {
+      "resource_id": "26bec047-6b2a-4c2d-9317-539115085bda",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "6a469006-3844-476f-84e8-960a8fd9df22",
+      "title": "היחידה לחופש המידע_טבלת פסקי דין.CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "מספר הליך",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך הגשת העתירה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עותרים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "משיבים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "משיבים 2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך פסק הדין",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מעמד המשיב",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מעמד המשיב 2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נושא העתירה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הוצאות לעותר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הוצאות למשיב",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "פירוט ההחלטה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "החלטה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סעיפי חוק רלוונטיים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 310
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

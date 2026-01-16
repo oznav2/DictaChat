@@ -1,0 +1,139 @@
+{
+  "dataset_id": "b1f49721-9af5-412a-97ae-c9493564e3ec",
+  "title": "לשכות תיירות חו\"ל - Tourism Offices Abroad",
+  "organization": "משרד התיירות",
+  "tags": [
+    "חול",
+    "לשכות",
+    "משרד התיירות",
+    "תיירות"
+  ],
+  "categories": [
+    "tourism"
+  ],
+  "keywords": [
+    "country",
+    "office",
+    "phone",
+    "website",
+    "abroad",
+    "offices",
+    "tourism",
+    "משרד",
+    "התיירות",
+    "manager",
+    "type",
+    "חול",
+    "לשכות",
+    "world",
+    "url",
+    "region",
+    "תיירות",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "5d34967a-bf66-4239-95e5-26a4551b2d57",
+      "title": "לשכות תיירות חו\"ל - עברית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "office_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "url",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "region",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 17
+    },
+    {
+      "resource_id": "9443bcb0-b6d9-4c25-904b-66a388142558",
+      "title": "Tourism Offices (Abroad) - English",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "office_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "website",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "World_Region",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 17
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

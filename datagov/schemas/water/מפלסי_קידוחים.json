@@ -1,0 +1,171 @@
+{
+  "dataset_id": "72aeb4ae-83f6-4f02-a9ca-9ff4f5aa1dca",
+  "title": "מפלסי קידוחים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "borehole",
+    "level",
+    "water",
+    "מים",
+    "מפלס",
+    "קידוח",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "עומק",
+    "borehole",
+    "רשות",
+    "הממשלתית",
+    "משך",
+    "מים",
+    "קידוח",
+    "הערה",
+    "level",
+    "השמן",
+    "הפסקה",
+    "מפלסי",
+    "water",
+    "בשעות",
+    "מפלס",
+    "למים",
+    "קידוחים",
+    "מודד",
+    "תאריך",
+    "הרשות",
+    "מוסד",
+    "עובי",
+    "פני",
+    "ולביוב",
+    "מטרים",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "f2d9436d-2352-442a-9d2e-10cd693c28d1",
+      "title": "מפלסי קידוחים עד שנת 2000",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי קידוח",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מפלס (מטרים)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "משך הפסקה בשעות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם מוסד מודד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "עומק עד פני המים (מטרים)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עובי השמן (מטרים)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הערה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 951975
+    },
+    {
+      "resource_id": "586b52c8-1aea-4f26-81fd-b55f51e665da",
+      "title": "מפלסי קידוחים משנת 2000",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי קידוח",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מפלס (מטרים)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "משך הפסקה בשעות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם מוסד מודד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "עומק עד פני המים (מטרים)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עובי השמן (מטרים)",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הערה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 272942
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

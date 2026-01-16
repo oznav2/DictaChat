@@ -1,6 +1,6 @@
-import { collections } from "$lib/server/database";
+import { collections, ready } from "$lib/server/database";
 import { ObjectId } from "mongodb";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
 // function used to insert conversations used for testing
 
@@ -146,6 +146,10 @@ export const insertSideBranchesConversation = async () => {
 };
 
 describe("inserting conversations", () => {
+	beforeAll(async () => {
+		await ready;
+	});
+
 	it("should insert a legacy conversation", async () => {
 		const id = await insertLegacyConversation();
 		expect(id).toBeDefined();

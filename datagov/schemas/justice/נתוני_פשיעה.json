@@ -1,0 +1,316 @@
+{
+  "dataset_id": "0d9a6652-41a8-4e99-b543-12ae1178c5bf",
+  "title": "נתוני פשיעה",
+  "organization": "משטרת ישראל",
+  "tags": [
+    "משטרה",
+    "משטרת ישראל",
+    "פלילי",
+    "פשיעה",
+    "תחנות"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "policedistrict",
+    "statistictype",
+    "משטרה",
+    "sensitivityflag",
+    "policestation",
+    "statisticcrimetypename",
+    "statisticcrimegroupname",
+    "statistictypekod",
+    "משטרת",
+    "statisticcrimetypecode",
+    "statisticcrimegroupcode",
+    "yeshuv",
+    "פלילי",
+    "municipalname",
+    "פשיעה",
+    "crimename",
+    "policemerhavkod",
+    "policestationkod",
+    "policedistrictkod",
+    "municipalkod",
+    "policemerhav",
+    "statisticarea",
+    "quarter",
+    "statisticareakod",
+    "תחנות",
+    "ישראל",
+    "yeshuvkod",
+    "fictiveidnumber",
+    "statisticgroupkod",
+    "year",
+    "statisticgroup"
+  ],
+  "resources": [
+    {
+      "resource_id": "b53b64f8-57ed-4213-9191-a7401c0cf436",
+      "title": "רשימת העבירות עם קבוצת העבירה סוג העבירה ורגישות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "StatisticCrimeGroupCode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "StatisticCrimeGroupName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "StatisticCrimeTypeCode",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "StatisticCrimeTypeName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "CrimeName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "SensitivityFlag",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 5286
+    },
+    {
+      "resource_id": "e311b6a1-be5a-4a82-8298-f3afbee07b6b",
+      "title": "פירוט של תיקי פשיעה לפי אזור, רבעון וסוגי עבירות ב2025",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FictiveIDNumber",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Quarter",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YeshuvKod",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Yeshuv",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PoliceDistrictKod",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "PoliceDistrict",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "PoliceMerhavKod",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PoliceMerhav",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PoliceStationKod",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PoliceStation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "municipalKod",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "municipalName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "StatisticAreaKod",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "StatisticArea",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "StatisticGroupKod",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "StatisticGroup",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "StatisticTypeKod",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "StatisticType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 156033
+    },
+    {
+      "resource_id": "5fc13c50-b6f3-4712-b831-a75e0f91a17e",
+      "title": "פירוט של תיקי פשיעה לפי אזור רבעון וסוגי עבירות ב-2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FictiveIDNumber",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Quarter",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YeshuvKod",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Yeshuv",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PoliceDistrictKod",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "PoliceDistrict",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "PoliceMerhavKod",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PoliceMerhav",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PoliceStationKod",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PoliceStation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "municipalKod",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "municipalName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "StatisticAreaKod",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "StatisticArea",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "StatisticGroupKod",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "StatisticGroup",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "StatisticTypeKod",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "StatisticType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 197531
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

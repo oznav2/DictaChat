@@ -12,7 +12,7 @@ export const GET: RequestHandler = async () => {
 			console.warn("[API] Memory facade not initialized");
 			return json({ success: false, error: "System not ready" });
 		}
-		
+
 		const stats = await facade.getStats(ADMIN_USER_ID);
 		console.log(`[API] Got memory stats:`, JSON.stringify(stats));
 

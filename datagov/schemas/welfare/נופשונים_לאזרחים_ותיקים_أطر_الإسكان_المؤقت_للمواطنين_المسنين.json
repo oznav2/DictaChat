@@ -1,0 +1,73 @@
+{
+  "dataset_id": "6229e020-6a05-4355-bc1b-399b5552dc77",
+  "title": "נופשונים לאזרחים ותיקים أطر الإسكان المؤقت للمواطنين المسنين",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare",
+    "tourism"
+  ],
+  "keywords": [
+    "locality",
+    "phone",
+    "frame",
+    "משרד",
+    "נופשונים",
+    "adress",
+    "ותיקים",
+    "הרווחה",
+    "לאזרחים",
+    "החברתי",
+    "והביטחון",
+    "number"
+  ],
+  "resources": [
+    {
+      "resource_id": "7255103c-6f5b-435b-9aa4-2ecbcfc57bc2",
+      "title": "أطر الإسكان المؤقت للمواطنين المسنين  נופשונים לאזרחים ותיקים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "frame",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "locality",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "phone_number",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 59
+    },
+    {
+      "resource_id": "19fedbf7-2736-496a-838f-506aaf308580",
+      "title": "הסבר מבנה הנתונים בקובץ נופשונים לאזרחים ותיקים ",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

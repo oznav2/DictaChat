@@ -68,7 +68,7 @@
 </script>
 
 {#if isVisible}
-	<div class="mx-3 mt-3">
+	<div class="absolute left-1/2 top-3 z-50 -translate-x-1/2">
 		<AnnouncementBanner title="קיים עדכון חדש">
 			<button
 				type="button"
@@ -79,6 +79,5 @@
 			</button>
 		</AnnouncementBanner>
 	</div>
-{:else if lastError}
-	<div class="mx-3 mt-3 text-xs text-gray-500 dark:text-gray-400">{lastError}</div>
 {/if}
+<!-- Note: lastError is intentionally not rendered to avoid disrupting grid layout -->

@@ -1,0 +1,152 @@
+{
+  "dataset_id": "1d933ddf-3cf8-4b65-bc86-123edc53ae5f",
+  "title": "רשימת בתי חולים פסיכיאטריים ממשלתי וכללית - האגף לשעת חירום",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות הנפש",
+    "שעת חירום"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "city",
+    "ממשלתי",
+    "עמודה",
+    "declaration",
+    "חיוני",
+    "contact",
+    "הבריאות",
+    "האגף",
+    "בריאות",
+    "וכללית",
+    "authority",
+    "מפעל",
+    "supervisor",
+    "משרד",
+    "visit",
+    "num",
+    "פסיכיאטריים",
+    "שעת",
+    "בתי",
+    "branch",
+    "hospital",
+    "חולים",
+    "address",
+    "last",
+    "הנפש",
+    "service",
+    "לשעת",
+    "חירום",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "23be69ef-4f35-4785-90c0-1d2fcab35586",
+      "title": "רשימת בתי חולים פסיכיאטריים ממשלתי וכללית - האגף לשעת חירום",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מס' מפעל חיוני",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hospital_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "hp_num",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "supervisor",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "authority",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "rh",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mk",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "service",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "branch",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "declaration",
+          "type": "timestamp",
+          "semantic": null
+        },
+        {
+          "name": "last_visit",
+          "type": "timestamp",
+          "semantic": null
+        },
+        {
+          "name": "contact",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עמודה1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 17
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

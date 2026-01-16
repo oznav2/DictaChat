@@ -1,0 +1,48 @@
+{
+  "dataset_id": "878fa044-b7cf-43f4-ac46-0d863840781c",
+  "title": "מאמנים - ענפים, דרגות ותחומים",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "משרד התרבות והספורט"
+  ],
+  "categories": [
+    "water",
+    "culture"
+  ],
+  "keywords": [
+    "מאמנים",
+    "התרבות",
+    "משרד",
+    "ענפים",
+    "והספורט",
+    "ותחומים",
+    "דרגות"
+  ],
+  "resources": [
+    {
+      "resource_id": "7a05d4e6-25be-4a71-996b-5c5a03010cfa",
+      "title": "מאמנים - ענפים, דרגות ותחומים.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 10
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

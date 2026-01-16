@@ -1,0 +1,41 @@
+{
+  "dataset_id": "4cdbeba6-3b73-4e50-885c-a5f6932ef675",
+  "title": "שקיפות תקציבית רשויות תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "רשויות מקומיות",
+    "תקציב"
+  ],
+  "categories": [
+    "education",
+    "finance"
+  ],
+  "keywords": [
+    "רשויות",
+    "תקציב",
+    "חינוך",
+    "משרד",
+    "החינוך",
+    "שקיפות",
+    "תקציבית",
+    "תשע",
+    "מקומיות"
+  ],
+  "resources": [
+    {
+      "resource_id": "f05517ff-6666-4d14-bd68-8ff2fd334378",
+      "title": "שקיפות תקציבית רשויות תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

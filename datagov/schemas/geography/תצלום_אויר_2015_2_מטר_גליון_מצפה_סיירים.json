@@ -1,0 +1,36 @@
+{
+  "dataset_id": "c0f12a4f-6c9d-4e37-ad13-e6c572d37846",
+  "title": "תצלום אויר 2015 2 מטר - גליון מצפה סיירים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "סיירים",
+    "תצלום",
+    "אויר",
+    "מצפה",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "dc5c6736-c457-491b-b2f9-4942ccb1da43",
+      "title": "תצלום אויר 2015 2 מטר - גליון מצפה סיירים",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

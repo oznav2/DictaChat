@@ -1,0 +1,54 @@
+{
+  "dataset_id": "1de95a22-576e-4e9c-b7c4-59db01d85290",
+  "title": "שכבות מידע גיאוגרפי (GIS) - התחדשות ערונית",
+  "organization": "משרד הבינוי והשיכון",
+  "tags": [
+    "GIS",
+    "התחדשות עירונית",
+    "משרד הבינוי והשיכון",
+    "פינוי בינוי",
+    "תכנית מתאר"
+  ],
+  "categories": [
+    "housing",
+    "geography"
+  ],
+  "keywords": [
+    "בינוי",
+    "והשיכון",
+    "עירונית",
+    "תכנית",
+    "שכבות",
+    "גיאוגרפי",
+    "משרד",
+    "פינוי",
+    "ערונית",
+    "gis",
+    "הבינוי",
+    "מתאר",
+    "התחדשות"
+  ],
+  "resources": [
+    {
+      "resource_id": "38555a84-8523-4ab1-9fe5-df6b523c15ea",
+      "title": "תוכניות מתאר של התחדשות עירונית",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "ceb7bbb0-e2db-4e87-8a6c-0a250f5de001",
+      "title": "מתחמי התחדשות עירונית מוכרזים",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

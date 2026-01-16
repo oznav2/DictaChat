@@ -1,0 +1,115 @@
+{
+  "dataset_id": "df60d73b-aa60-46dc-bb76-f183d6bf055c",
+  "title": "Israel Numbering Plan",
+  "organization": "משרד התקשורת",
+  "tags": [
+    "מספור שירותי טלפוניה",
+    "משרד התקשורת"
+  ],
+  "categories": [
+    "finance",
+    "communications"
+  ],
+  "keywords": [
+    "notes",
+    "numbering",
+    "טלפוניה",
+    "within",
+    "שירותי",
+    "israel",
+    "משרד",
+    "format",
+    "dialing",
+    "allocated",
+    "התקשורת",
+    "range",
+    "מספור",
+    "plan",
+    "ndc"
+  ],
+  "resources": [
+    {
+      "resource_id": "74b44725-d8cc-4ae9-ba08-2c40a61ab68e",
+      "title": "Israel Numbering Plan",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "NDC",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "E.164 Range Format",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Dialing Within Israel",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Allocated To",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Notes",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 439
+    },
+    {
+      "resource_id": "caa80822-5880-4bbf-808a-06d7f53c4ae5",
+      "title": "Israel Numbering Plan",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "NDC",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "E.164 Range Format",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Dialing Within Israel",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Allocated To",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Notes",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 439
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

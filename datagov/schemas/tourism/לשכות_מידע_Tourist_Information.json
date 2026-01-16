@@ -1,0 +1,267 @@
+{
+  "dataset_id": "a416609e-f68a-4fea-b278-657f92bfbe73",
+  "title": "לשכות מידע - Tourist Information",
+  "organization": "משרד התיירות",
+  "tags": [
+    "אטרקציות תיירות",
+    "לשכות תיירות",
+    "משרד התיירות",
+    "תיירות"
+  ],
+  "categories": [
+    "tourism"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "התיירות",
+    "city",
+    "fulldescription",
+    "product",
+    "hours",
+    "תיירות",
+    "לשכות",
+    "information",
+    "vendor",
+    "אטרקציות",
+    "office",
+    "shortdescription",
+    "משרד",
+    "tourist",
+    "type",
+    "directions",
+    "url",
+    "opening",
+    "region",
+    "notes",
+    "address",
+    "for",
+    "vendorid",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "967a8a23-c08c-4c47-b39d-ce350537821b",
+      "title": "Tourist_Information_GOISRAEL_Hebrew",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ShortDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "VendorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Vendor_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Product_Url",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Directions",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "Notes_for_opening_hours",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Office_Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Opening_Hours",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 18
+    },
+    {
+      "resource_id": "7d00ab76-1795-4277-978f-c3ce8cc3905b",
+      "title": "Tourist_Information_GOISRAEL_English",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ShortDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "VendorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Vendor_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Product_Url",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Directions",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "Notes_for_opening_hours",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Office_Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Opening_Hours",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 18
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

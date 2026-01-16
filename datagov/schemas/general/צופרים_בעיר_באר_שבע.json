@@ -1,0 +1,91 @@
+{
+  "dataset_id": "566c2420-1b00-4813-8a75-c6d8750c5ec8",
+  "title": "צופרים בעיר באר שבע",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "ביטחון ותשתיות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "ביטחון",
+    "name",
+    "בעיר",
+    "באר",
+    "lon",
+    "lat",
+    "ותשתיות",
+    "עיריית",
+    "address",
+    "שבע",
+    "צופרים",
+    "neiborhood"
+  ],
+  "resources": [
+    {
+      "resource_id": "b4466330-c32c-40de-a092-6bb780a52a22",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a37d0e59-af78-4e8c-b580-43a85f242468",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Neiborhood",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 72
+    },
+    {
+      "resource_id": "803d7359-1bff-4423-bc10-707323a0d8df",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

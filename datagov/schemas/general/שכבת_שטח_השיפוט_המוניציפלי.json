@@ -1,0 +1,118 @@
+{
+  "dataset_id": "3c6d4061-41bf-4403-82e9-c8fae5df04dd",
+  "title": "שכבת שטח השיפוט המוניציפלי",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "באר שבע",
+    "שכבת השטח המוניציפלי"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "lon",
+    "באר",
+    "area",
+    "lat",
+    "code",
+    "שטח",
+    "עיריית",
+    "sign",
+    "השיפוט",
+    "background",
+    "שבע",
+    "vaad",
+    "whole",
+    "השטח",
+    "leng",
+    "המוניציפלי",
+    "shape"
+  ],
+  "resources": [
+    {
+      "resource_id": "c971a5a4-045b-4332-acce-bc7cac6565e5",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0bb7256a-6b60-4c38-95ed-3fdd8f724e27",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "P_CODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "AREA_CODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "AREA_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "VAAD_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "background",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Whole_Sign",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Leng",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 1
+    },
+    {
+      "resource_id": "3a46546f-3ea7-4974-a741-52a7865a5144",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

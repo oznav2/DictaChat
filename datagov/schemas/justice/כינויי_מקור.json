@@ -1,0 +1,101 @@
+{
+  "dataset_id": "9859abec-1c73-410a-971e-fbb571245003",
+  "title": "כינויי מקור",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "כינויי מקור",
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "תיאור",
+    "הסימן",
+    "אנגלית",
+    "בקשה",
+    "עברית",
+    "לאומי",
+    "רישום",
+    "משרד",
+    "כינויי",
+    "מקור",
+    "בינלאומי",
+    "סוגי",
+    "לבקשה",
+    "מצב",
+    "סימן",
+    "ניצה",
+    "תאריך",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "defdbacf-de63-425e-962c-569b6f643292",
+      "title": "כינויי מקור",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר הסימן",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מצב",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "לאומי/בינלאומי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור סימן עברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תיאור סימן אנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך בקשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך רישום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סוגי ניצה לבקשה",
+          "type": "text",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 1182
+    },
+    {
+      "resource_id": "e00971aa-4386-4f22-af01-54df331fa08c",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

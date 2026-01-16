@@ -1,0 +1,93 @@
+{
+  "dataset_id": "87d2955a-9b63-406b-8deb-aa75f6a898f0",
+  "title": "Social work study institutions and programs abroad מוסדות ותכניות לימודי עבודה סוציאלית בחו\"ל",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "start",
+    "state",
+    "sort",
+    "degree",
+    "institute",
+    "בחו",
+    "study",
+    "עבודה",
+    "program",
+    "date",
+    "לימודי",
+    "והביטחון",
+    "social",
+    "work",
+    "abroad",
+    "משרד",
+    "מוסדות",
+    "החברתי",
+    "programs",
+    "סוציאלית",
+    "notes",
+    "and",
+    "הרווחה",
+    "ותכניות",
+    "institutions"
+  ],
+  "resources": [
+    {
+      "resource_id": "1d950706-2099-4f33-9b47-693ca84aa85e",
+      "title": "Social work study institutions and programs abroad",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "institute",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "date_program",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "start_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "state",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "institute_sort",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degree",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 267
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "dataset_id": "75073d17-8db5-471e-9a93-3b447b79fb3c",
+  "title": "מרכזי בריאות",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "בריאות ורפואה"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "באר",
+    "מרכזי",
+    "neighborho",
+    "עיריית",
+    "ורפואה",
+    "address",
+    "שבע",
+    "hmoname",
+    "בריאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "12ecf964-81e1-412a-9773-633ae2371bd2",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e9195086-fea3-4be4-ad50-026b9d48e1be",
+      "title": "CSV-CLINICS",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "Z",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "neighborho",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HMOname",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 112
+    },
+    {
+      "resource_id": "7aa435ab-fdca-4712-bb5b-7d5f7d2946b0",
+      "title": "XML-CLINICS",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

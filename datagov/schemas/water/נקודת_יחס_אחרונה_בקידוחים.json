@@ -1,0 +1,119 @@
+{
+  "dataset_id": "331b82cd-60f5-4d1c-afb1-9a44fc39456c",
+  "title": "נקודת יחס אחרונה בקידוחים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "borehole",
+    "water",
+    "מים",
+    "קידוח",
+    "רשות המים"
+  ],
+  "categories": [
+    "water",
+    "religion"
+  ],
+  "keywords": [
+    "יחס",
+    "אחרונה",
+    "borehole",
+    "רשות",
+    "אקוויפר",
+    "הממשלתית",
+    "מים",
+    "אקויפר",
+    "בקידוחים",
+    "קידוח",
+    "דיווח",
+    "רום",
+    "תוקף",
+    "water",
+    "איזור",
+    "נקודת",
+    "למים",
+    "קוד",
+    "תאריך",
+    "הרשות",
+    "איזון",
+    "ולביוב",
+    "תחילת",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "5bae3e98-2689-4f84-a3cc-f2412e2125d1",
+      "title": "נקודת יחס אחרונה בקידוחים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "תאריך תחילת תוקף",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "רום נקודת יחס",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד איזון",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "איזון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד איזור",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "איזור",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד אקויפר",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "אקוויפר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד תא דיווח",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "תא דיווח",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3446
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

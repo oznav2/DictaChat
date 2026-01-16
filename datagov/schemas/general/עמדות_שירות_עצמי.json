@@ -1,0 +1,85 @@
+{
+  "dataset_id": "aff3802e-53e8-40ad-a451-373683dbd4ad",
+  "title": "עמדות שירות עצמי",
+  "organization": "מערך הדיגיטל הלאומי",
+  "tags": [
+    "עמדות שירות",
+    "עמדות שירות ממשלתיות",
+    "עמדות שירות עצמי",
+    "שירות עצמי"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "objectid",
+    "office",
+    "service",
+    "עמדות",
+    "הדיגיטל",
+    "ממשלתיות",
+    "הלאומי",
+    "עצמי",
+    "שירות",
+    "addr",
+    "מערך"
+  ],
+  "resources": [
+    {
+      "resource_id": "11a1072e-d441-4eed-9d3a-f80e6bdb8ca3",
+      "title": "עמדות שירות ממשלתיות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "addr",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "service",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "office",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 182
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

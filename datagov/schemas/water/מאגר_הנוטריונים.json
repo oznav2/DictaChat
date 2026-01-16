@@ -1,0 +1,73 @@
+{
+  "dataset_id": "d08d4a17-78f6-43a5-83f9-e6465e64cd24",
+  "title": "מאגר הנוטריונים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "נוטריונים",
+    "רשימת הנוטריונים"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "הנוטריונים",
+    "ישוב",
+    "משרד",
+    "רשיון",
+    "שפות",
+    "תיק",
+    "המשפטים",
+    "נוטריונים"
+  ],
+  "resources": [
+    {
+      "resource_id": "3ead5fae-3513-46f8-a458-959ea3e035ae",
+      "title": "רשימת הנוטריונים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר תיק רשיון",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שפות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 7760
+    },
+    {
+      "resource_id": "9f34c18d-ef5d-4544-9175-07b16f3f7b56",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

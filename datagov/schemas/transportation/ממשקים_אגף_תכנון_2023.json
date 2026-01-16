@@ -1,0 +1,111 @@
+{
+  "dataset_id": "c89255c6-15b0-47a2-b1c4-c58d4e2ab217",
+  "title": "ממשקים אגף תכנון 2023",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2023",
+    "GIS",
+    "אגף תכנון",
+    "מטרופולין תל אביב",
+    "ממג",
+    "ממשקים"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "ממשקים",
+    "name",
+    "אגף",
+    "אביב",
+    "ממג",
+    "objectid",
+    "בדרכים",
+    "תכנון",
+    "משרד",
+    "מטרופולין",
+    "type",
+    "והבטיחות",
+    "gis",
+    "intensity",
+    "transhour",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "83c999e2-71ef-4c04-be34-81a1a3c78b1d",
+      "title": "MIMSHAKIM_2023_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1bc3c615-9ba7-440e-b450-5b3d70f01355",
+      "title": "MIMSHAKIM_2023_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "376d2bcb-8815-4a64-a5c4-ed7be94b3816",
+      "title": "MIMSHAKIM_2023_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "id",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "INTENSITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "is_2023",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "is_2030",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TRANSHOUR",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 36
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

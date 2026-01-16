@@ -1,0 +1,71 @@
+{
+  "dataset_id": "61dc38b6-803e-476e-a1ac-0679c354b2ef",
+  "title": "מחירים תיאורטיים של מוצרי דלק שאינם בפיקוח",
+  "organization": "משרד האנרגיה ",
+  "tags": [
+    "אנרגיה",
+    "דלק",
+    "מחירים תיאורטיים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "מחיר",
+    "בפיקוח",
+    "מוצר",
+    "מידה",
+    "משרד",
+    "יחידת",
+    "מחירים",
+    "דלק",
+    "שאינם",
+    "מוצרי",
+    "אנרגיה",
+    "האנרגיה",
+    "תאריך",
+    "תיאורטיים"
+  ],
+  "resources": [
+    {
+      "resource_id": "157689c0-69fb-4923-8b27-c780ed64199d",
+      "title": "מחירים תיאורטיים של מוצרי דלק שאינם בפיקוח ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מוצר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "יחידת מידה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מחיר",
+          "type": "numeric",
+          "semantic": "price"
+        }
+      ],
+      "total_records": 1417
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

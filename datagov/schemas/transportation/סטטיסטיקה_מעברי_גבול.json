@@ -1,0 +1,78 @@
+{
+  "dataset_id": "4fa30912-2a14-4865-bb2b-68d9a192eed9",
+  "title": "סטטיסטיקה מעברי גבול",
+  "organization": "רשות שדות התעופה",
+  "tags": [
+    "אוכלוסיה",
+    "סביבה",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "environment"
+  ],
+  "keywords": [
+    "גבול",
+    "שדות",
+    "תחבורה",
+    "נוסעים",
+    "אוכלוסיה",
+    "נהר",
+    "רשות",
+    "מעברי",
+    "רכבים",
+    "שנה",
+    "הירדן",
+    "מטענים",
+    "סטטיסטיקה",
+    "סביבה",
+    "התעופה"
+  ],
+  "resources": [
+    {
+      "resource_id": "30663d4f-3f1d-4579-b08e-e72d00650798",
+      "title": "סטטיסטיקה מעברי גבול",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "נהר הירדן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "נוסעים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רכבים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מטענים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 35
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

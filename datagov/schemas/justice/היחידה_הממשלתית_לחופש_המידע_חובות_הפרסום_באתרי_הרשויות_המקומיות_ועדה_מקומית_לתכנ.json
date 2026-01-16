@@ -1,0 +1,73 @@
+{
+  "dataset_id": "0c61ba57-fd1b-47c5-8965-fed0ed32841f",
+  "title": "היחידה הממשלתית לחופש המידע-חובות הפרסום באתרי הרשויות המקומיות-ועדה מקומית לתכנון ובניה בעירייה",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice",
+    "housing",
+    "municipal"
+  ],
+  "keywords": [
+    "סוג",
+    "הממשלתית",
+    "היחידה",
+    "לחופש",
+    "והבניה",
+    "הרשויות",
+    "בחוק",
+    "ובניה",
+    "המקור",
+    "באתרי",
+    "מיוחדות",
+    "חובות",
+    "המקומיות",
+    "משרד",
+    "לתכנון",
+    "הפרסום",
+    "המשפטים",
+    "בעירייה",
+    "הוראות",
+    "החוקי",
+    "התכנון",
+    "מקומית",
+    "ועדה"
+  ],
+  "resources": [
+    {
+      "resource_id": "78fbedda-2435-4d04-aaa2-7a2727c60fb7",
+      "title": "חובות הפרסום באתרי הרשויות המקומיות-ועדה מקומית לתכנון ובניה בעירייה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג המידע",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "הוראות מיוחדות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "המקור החוקי בחוק התכנון והבניה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 44
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

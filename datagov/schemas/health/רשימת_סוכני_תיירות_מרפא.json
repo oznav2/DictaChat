@@ -1,0 +1,165 @@
+{
+  "dataset_id": "93af8b7b-536e-4589-9509-46536e0cd97d",
+  "title": "רשימת סוכני תיירות מרפא",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "תיירות מרפא"
+  ],
+  "categories": [
+    "health",
+    "tourism"
+  ],
+  "keywords": [
+    "name",
+    "משרד",
+    "desc",
+    "מרפא",
+    "city",
+    "first",
+    "last",
+    "הבריאות",
+    "mta",
+    "סוכני",
+    "prof",
+    "רשומה",
+    "תיירות"
+  ],
+  "resources": [
+    {
+      "resource_id": "2ccc36ae-b6e3-4592-969e-80fc22f48a40",
+      "title": "רשימת סוכני תיירות מרפא",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר רשומה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "mta_last_prof_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mta_last_prof",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mta_last_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "mta_first_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "mta_last_city",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 306
+    },
+    {
+      "resource_id": "42fd5d56-ae5c-45f1-9254-ebe88a712133",
+      "title": "רשימת סוכני תיירות מרפא - אנגלית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר רשומה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "mta_last_prof_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mta_last_prof",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mta_last_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "mta_first_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "mta_last_city",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 306
+    },
+    {
+      "resource_id": "37ce6cbd-57f8-49fa-8bfe-2542501ffb17",
+      "title": "רשימת סוכני תיירות מרפא - רוסית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר רשומה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "mta_last_prof_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mta_last_prof",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mta_last_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "mta_first_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "mta_last_city",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 306
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

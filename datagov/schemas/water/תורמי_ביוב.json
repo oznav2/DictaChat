@@ -1,0 +1,105 @@
+{
+  "dataset_id": "7475b53e-7c28-49e2-b0e1-b11e645de0ac",
+  "title": "תורמי ביוב",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "water",
+    "ביוב",
+    "טיפול בשפכים",
+    "מים",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "רשות",
+    "מטש",
+    "ביוב",
+    "איכות",
+    "הממשלתית",
+    "מים",
+    "באלפי",
+    "בשפכים",
+    "תורמי",
+    "water",
+    "המטש",
+    "כמות",
+    "למים",
+    "מתקן",
+    "טיפול",
+    "הרשות",
+    "שנה",
+    "ולביוב",
+    "מפעיל",
+    "המים",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "746bd9f9-4a8e-4330-b8ad-8e71d45361ce",
+      "title": "תורמי ביוב",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "רישיון מטש",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם רישיון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר מתקן",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם המטש",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "איכות מים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מפעיל",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "תורמי ביוב",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות באלפי מק",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 1174
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

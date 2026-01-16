@@ -1,0 +1,46 @@
+{
+  "dataset_id": "2df14d89-f8fd-4159-b22f-bae41e987ced",
+  "title": "תכניות תשתיות לאומיות",
+  "organization": "מינהל התכנון ",
+  "tags": [
+    "ותל",
+    "לאומית",
+    "מינהל התכנון",
+    "תכנון",
+    "תכנית",
+    "תכנית תשתיות לאומית",
+    "תשתיות",
+    "תתל"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "לאומית",
+    "לאומיות",
+    "מינהל",
+    "תכנית",
+    "תכנון",
+    "תשתיות",
+    "התכנון",
+    "תכניות",
+    "תתל",
+    "ותל"
+  ],
+  "resources": [
+    {
+      "resource_id": "10ff42d6-7dbc-420c-af06-0886fd95b985",
+      "title": "קישור למידע תכנוני של מינהל התכנון - תכניות תשתיות לאומיות",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

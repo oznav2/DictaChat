@@ -1,0 +1,34 @@
+{
+  "dataset_id": "ea58c0d7-7b85-49d3-ab65-222c90913858",
+  "title": "שקיפות תקציבית מגזר תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [],
+  "categories": [
+    "education",
+    "finance"
+  ],
+  "keywords": [
+    "משרד",
+    "החינוך",
+    "מגזר",
+    "שקיפות",
+    "תקציבית",
+    "תשע"
+  ],
+  "resources": [
+    {
+      "resource_id": "7e09408c-6cbd-4efd-9fe2-250c26f38c33",
+      "title": "שקיפות תקציבית מגזר תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "dataset_id": "54b90478-73cf-4161-8933-853664b1b395",
+  "title": "נתוני הערכת גדילה של תלמידים בישראל - משרד הבריאות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות",
+    "בריאות הציבור",
+    "בריאות התלמיד",
+    "בריאות ורווחה",
+    "משרד הבריאות",
+    "נתוני גדילה"
+  ],
+  "categories": [
+    "health",
+    "education",
+    "welfare"
+  ],
+  "keywords": [
+    "בתת",
+    "תלמידים",
+    "גובה",
+    "מדידה",
+    "עודף",
+    "אזורית",
+    "משקל",
+    "כיתה",
+    "בנים",
+    "השמנה",
+    "הבריאות",
+    "אחוז",
+    "מועצה",
+    "בריאות",
+    "נפה",
+    "מחוז",
+    "משרד",
+    "הערכת",
+    "ורווחה",
+    "הציבור",
+    "כיסוי",
+    "חמורה",
+    "גדילה",
+    "התלמיד",
+    "בנות",
+    "יישוב",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "2c181d7b-be3a-41be-a99a-7228eccb665b",
+      "title": "נתוני הערכת גדילה של תלמידים בישראל לשנת 2016",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "נפה",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "יישוב / מועצה אזורית",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "כיתה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחוז כיסוי מדידה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז כיסוי מדידה בנות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז כיסוי מדידה בנים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז תלמידים עם השמנה חמורה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז בנים עם השמנה חמורה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז בנות עם השמנה חמורה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז תלמידים עם השמנה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז בנים עם השמנה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז בנות עם השמנה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז תלמידים עם עודף משקל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז בנים עם עודף משקל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז בנות עם עודף משקל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז תלמידים עם עודף משקל או השמנה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז בנים עם עודף משקל או השמנה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז בנות עם עודף משקל או השמנה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז תלמידים בתת משקל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז בנים בתת משקל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז בנות בתת משקל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז תלמידים בתת גובה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז בנים בתת גובה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אחוז בנות בתת גובה",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 504
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

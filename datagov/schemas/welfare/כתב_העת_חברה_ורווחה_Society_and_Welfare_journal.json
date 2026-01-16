@@ -1,0 +1,90 @@
+{
+  "dataset_id": "1ba21c94-c45e-4d45-a29f-49da77e8d2b8",
+  "title": "כתב העת חברה ורווחה - Society and Welfare journal",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "name",
+    "welfare",
+    "journal",
+    "כתב",
+    "author",
+    "והביטחון",
+    "העת",
+    "משרד",
+    "type",
+    "ורווחה",
+    "publication",
+    "החברתי",
+    "magazine",
+    "article",
+    "and",
+    "society",
+    "year",
+    "הרווחה",
+    "חברה",
+    "link"
+  ],
+  "resources": [
+    {
+      "resource_id": "3058868b-9138-4aeb-bfb9-020cf823ddeb",
+      "title": "Society and Welfare journal",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "article_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "magazine_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "publication_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "author",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "publication_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "link_to_article",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 122
+    },
+    {
+      "resource_id": "8c94c64d-a276-434f-a864-48f558f7a277",
+      "title": "Society and Welfare journal- Explanatory file ",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

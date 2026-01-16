@@ -1,0 +1,81 @@
+{
+  "dataset_id": "cb1f204e-3edb-4bdd-93c3-2c7f5de579a3",
+  "title": "תמ\"א 42",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "ממג",
+    "תחבורה",
+    "תמא 42"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "תמא",
+    "ממג",
+    "תחבורה",
+    "objectid",
+    "בדרכים",
+    "משרד",
+    "open",
+    "rotation",
+    "והבטיחות",
+    "gis",
+    "חצב",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "b6158ca8-95ce-45fd-8168-fe88b5b8db3f",
+      "title": "תמ\"א 42 - מנהור SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d0998a11-9215-44b7-b972-eec335436820",
+      "title": "תמ\"א 42 - מנהור KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "546fa19a-e575-4473-ab24-1f07e708598c",
+      "title": "תמ\"א 42 - מנהור CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "rotation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OPEN",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 44
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

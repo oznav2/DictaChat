@@ -1,0 +1,56 @@
+{
+  "dataset_id": "3f3f6b1f-2678-4405-94a3-2d68df22cfff",
+  "title": "אוכלוסייה ומקבלי גמלאות לפי יישוב - שנת 2014",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "אוכלוסיה",
+    "אוצר וכלכלה"
+  ],
+  "categories": [
+    "welfare",
+    "economy",
+    "demographics"
+  ],
+  "keywords": [
+    "וכלכלה",
+    "לאומי",
+    "אוכלוסיה",
+    "לביטוח",
+    "ומקבלי",
+    "גמלאות",
+    "אוצר",
+    "יישוב",
+    "המוסד",
+    "אוכלוסייה"
+  ],
+  "resources": [
+    {
+      "resource_id": "bef6133b-aaca-4a9a-99ac-ed9cb563f155",
+      "title": "היישובים בישראל, מספר התושבים ומספר מקבלי גמלאות",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a9b5176e-b452-4276-b755-aa77a88edf6d",
+      "title": "היישובים בישראל, מספר התושבים ומספר מקבלי גמלאות",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "b6ac0148-20ca-4f5d-9dcd-cf31c37d3ac0",
+      "title": "היישובים בישראל, מקבלי הגמלאות כאחוז מהאוכלוסייה ביישוב\t",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

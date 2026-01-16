@@ -1,0 +1,102 @@
+{
+  "dataset_id": "65e88686-422a-4ea6-a73b-ed848ae6f219",
+  "title": "רשת רכיבה מחוז תל אביב",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "אופניים",
+    "חצב",
+    "משרד התחבורה",
+    "רכיבה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "מחוז",
+    "yearmonth",
+    "shape",
+    "אביב",
+    "oid",
+    "בדרכים",
+    "משרד",
+    "type",
+    "pathtypcod",
+    "lengt",
+    "אופניים",
+    "והבטיחות",
+    "gis",
+    "חצב",
+    "length",
+    "רכיבה",
+    "רשת",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "51c76a6c-49f8-4995-81e7-503cdf4243b2",
+      "title": "BIKE_NET_TLV.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "c2c8ab2e-f7db-45f0-9b1f-b273ee13894d",
+      "title": "BIKE_NET_TLV_KMZ.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d45559c9-2c81-483c-9b86-4ebde6c646b2",
+      "title": "BIKE_NET_TLV.CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LENGT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PATHTYPCOD",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1746
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

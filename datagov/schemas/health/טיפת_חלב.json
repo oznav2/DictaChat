@@ -1,0 +1,85 @@
+{
+  "dataset_id": "9c7ca994-42b8-4458-a27b-85120ae60ff1",
+  "title": "טיפת חלב",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "בדיקות",
+    "בריאות",
+    "הגיל הרך",
+    "התפתחות",
+    "ילדים",
+    "רפואה"
+  ],
+  "categories": [
+    "health",
+    "water",
+    "welfare"
+  ],
+  "keywords": [
+    "חלב",
+    "כתובת",
+    "objectid",
+    "הגיל",
+    "הרך",
+    "התפתחות",
+    "העסק",
+    "אדומים",
+    "בדיקות",
+    "טלפון",
+    "רפואה",
+    "עיריית",
+    "אחות",
+    "אחראית",
+    "טיפת",
+    "מעלה",
+    "ילדים",
+    "בריאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "37aeb5a1-4a8a-4950-b32f-a44570474c41",
+      "title": "רשימת טיפות חלב",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_העסק",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "אחות_אחראית",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

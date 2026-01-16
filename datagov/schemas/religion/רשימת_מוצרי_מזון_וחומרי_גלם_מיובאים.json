@@ -1,0 +1,134 @@
+{
+  "dataset_id": "1a49cbba-3722-4a67-9c20-9895697d0373",
+  "title": "רשימת מוצרי מזון וחומרי גלם מיובאים",
+  "organization": "הרבנות הראשית לישראל",
+  "tags": [
+    "איכות מזון",
+    "גוף כשרות",
+    "חומרי גלם",
+    "כשרות",
+    "מוצר",
+    "מוצרי מזון",
+    "מזון",
+    "מיובאים",
+    "רבנות"
+  ],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "name",
+    "חומרי",
+    "וחומרי",
+    "מוצר",
+    "הרבנות",
+    "רבנות",
+    "גלם",
+    "הראשית",
+    "לישראל",
+    "איכות",
+    "מיובאים",
+    "מוצרי",
+    "מזון",
+    "גוף",
+    "description",
+    "כשרות"
+  ],
+  "resources": [
+    {
+      "resource_id": "4cc6c561-5975-4bac-904f-c06489ceeb6d",
+      "title": "רשימת מוצרי מזון וחומרי גלם מיובאים 25.12.2025",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "name4",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name5",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name7",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name3",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name8",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name6",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name9",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name10",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name11",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name14",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name12",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name15",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 34546
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

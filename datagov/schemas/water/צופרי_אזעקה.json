@@ -1,0 +1,69 @@
+{
+  "dataset_id": "9e9e66b4-8ffa-4a00-8909-689380f2f19f",
+  "title": "צופרי אזעקה",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "אזעקה",
+    "ביטחון",
+    "חירום"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "ביטחון",
+    "objectid",
+    "nam",
+    "location",
+    "אדומים",
+    "emergency",
+    "עיריית",
+    "אזעקה",
+    "מעלה",
+    "street",
+    "צופרי",
+    "חירום"
+  ],
+  "resources": [
+    {
+      "resource_id": "c1d99179-49fc-440a-8835-36a7affe95f7",
+      "title": "צופרי אזעקה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "STREET_NAM",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Emergency_",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Location",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 12
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

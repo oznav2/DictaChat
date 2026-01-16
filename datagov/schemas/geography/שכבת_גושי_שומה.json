@@ -1,0 +1,38 @@
+{
+  "dataset_id": "200b7541-b11b-4b35-b350-a90e4d7fe25c",
+  "title": "שכבת גושי שומה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "גוש שומה",
+    "המרכז למיפוי ישראל",
+    "שכבה"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "שומה",
+    "שכבה",
+    "ישראל",
+    "גושי",
+    "המרכז",
+    "גוש"
+  ],
+  "resources": [
+    {
+      "resource_id": "4dfb3a22-5236-47ca-ad5a-a3fd013bae6e",
+      "title": "גושי שומה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

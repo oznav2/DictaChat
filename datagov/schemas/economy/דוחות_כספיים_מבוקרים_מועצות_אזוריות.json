@@ -1,0 +1,272 @@
+{
+  "dataset_id": "a1dd6b12-3a86-44ce-8aa0-ae37211a8dba",
+  "title": "דוחות כספיים מבוקרים - מועצות אזוריות",
+  "organization": "משרד הפנים",
+  "tags": [
+    "אוצר וכלכלה",
+    "דוחות ביקורת",
+    "מועצות",
+    "מועצות אזוריות",
+    "מועצות מקומיות",
+    "רשויות מקומיות"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "מבוקרים",
+    "ערך",
+    "וכלכלה",
+    "תקופה",
+    "מיפוי",
+    "כספיים",
+    "סוג",
+    "ביקורת",
+    "רשות",
+    "הדוח",
+    "דוחות",
+    "הפנים",
+    "עמודה",
+    "מקומיות",
+    "דוח",
+    "שורה",
+    "למס",
+    "גיליון",
+    "code",
+    "משרד",
+    "אוצר",
+    "muni",
+    "קוד",
+    "אזוריות",
+    "רשויות",
+    "מועצות"
+  ],
+  "resources": [
+    {
+      "resource_id": "9759f4a9-fa40-40b2-820a-29f8e45edf2e",
+      "title": "דוחות כספיים מבוקרים של מועצות אזוריות לשנת 2021",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Muni_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "קוד_למס",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שנת_הדוח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקופה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת_נתונים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג_דוח",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "גיליון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שורה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עמודה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד_מיפוי",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ערך",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 313342
+    },
+    {
+      "resource_id": "712bff41-d9fa-4700-ac2e-4a60c4acafba",
+      "title": "דוחות כספיים מבוקרים של מועצות אזוריות לשנת 2020",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Muni_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "קוד_למס",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שנת_הדוח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקופה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת_נתונים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג_דוח",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "גיליון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שורה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עמודה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד_מיפוי",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ערך",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 301524
+    },
+    {
+      "resource_id": "1763aaea-ede6-4a8f-ab5b-70e41378fad4",
+      "title": "דוחות כספיים מבוקרים של מועצות אזוריות לשנת 2019",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Muni_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "קוד_למס",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שנת_הדוח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקופה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת_נתונים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג_דוח",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "גיליון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שורה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עמודה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד_מיפוי",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ערך",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 273707
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "dataset_id": "d93e0372-0d55-4cde-b844-0cb897f9225a",
+  "title": "קול קורא - וותיקים",
+  "organization": "המשרד לשוויון חברתי",
+  "tags": [
+    "וותיקים",
+    "ותיקים",
+    "פעילויות",
+    "קול",
+    "קול קורא",
+    "קול קורא - וותיקים",
+    "קול קורא - ותיקים",
+    "קול קורא וותיקים",
+    "קול קורא ותיקים",
+    "קורא",
+    "רשויות",
+    "שינויים בתקציב"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "פעילויות",
+    "וותיקים",
+    "קורא",
+    "רשות",
+    "היעד",
+    "נושא",
+    "משתתפים",
+    "לשוויון",
+    "השתתפות",
+    "שינויים",
+    "הפעילות",
+    "המשרד",
+    "ותיקים",
+    "אחוז",
+    "עלות",
+    "חברתי",
+    "קהל",
+    "קוד",
+    "רשויות",
+    "קול",
+    "מינימלי",
+    "בתקציב"
+  ],
+  "resources": [
+    {
+      "resource_id": "aba29dfe-03f9-43c6-9a77-8f30399e47ed",
+      "title": "קול קורא ותיקים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "קוד רשות",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "אחוז השתתפות המשרד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם הפעילות",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "השתתפות המשרד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נושא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד הפעילות",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קהל היעד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר משתתפים מינימלי",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "עלות הפעילות",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "השתתפות רשות",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 755
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

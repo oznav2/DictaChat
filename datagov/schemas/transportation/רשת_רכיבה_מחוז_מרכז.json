@@ -1,0 +1,109 @@
+{
+  "dataset_id": "7b2cae8d-f7cd-494b-ba0a-0b8c6c16c66a",
+  "title": "רשת רכיבה מחוז מרכז",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2030",
+    "GIS",
+    "אופניים",
+    "חצב",
+    "מטרופולין תל אביב",
+    "ממג",
+    "רשת",
+    "שביל"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "ממג",
+    "אופניים",
+    "gis",
+    "אביב",
+    "בדרכים",
+    "מטרופולין",
+    "והבטיחות",
+    "רשת",
+    "מחוז",
+    "משרד",
+    "type",
+    "lengt",
+    "חצב",
+    "רכיבה",
+    "yearmonth",
+    "shape",
+    "oid",
+    "שביל",
+    "pathtypcod",
+    "מרכז",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "860bb09a-56be-4da6-9010-b47ece4bab89",
+      "title": "BIKE_NET_CENTER.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d80a24cc-dc9b-491a-83ba-117876663730",
+      "title": "BIKE_NET_CENTER_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "af8f8d15-fa17-4a83-9c82-02604a7a52a3",
+      "title": "BIKE_NET_TLV_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LENGT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PATHTYPCOD",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1235
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "dataset_id": "d8c1a631-b5eb-4165-8274-cae20ab6bbfd",
+  "title": "דוח חופש המידע",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "חופש",
+    "דוח",
+    "משרד",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "1fe021b5-94f8-4129-82f5-4136e7f39d49",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "b4d1ca3e-a946-4496-8816-0090438b83d2",
+      "title": "דוח חופש המידע",
+      "format": "CSV",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

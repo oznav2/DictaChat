@@ -1,0 +1,104 @@
+{
+  "dataset_id": "5a2d2f62-781a-4994-bf6d-2c2585f83d36",
+  "title": "הליכי בתי הדין ברשות הפטנטים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "הליכי בתי הדין",
+    "משרד המשפטים",
+    "סמני מסחר",
+    "פטנטים"
+  ],
+  "categories": [
+    "finance",
+    "justice",
+    "economy"
+  ],
+  "keywords": [
+    "סטטוס",
+    "בתי",
+    "סוג",
+    "משרד",
+    "הליכי",
+    "פטנטים",
+    "ברשות",
+    "מסחר",
+    "הפטנטים",
+    "הליך",
+    "סמני",
+    "תיק",
+    "הליכים",
+    "הדין",
+    "קשורים",
+    "תאריך",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "df6abde0-8746-48c4-b09a-d9b20a7c6f9c",
+      "title": "הליכי בתי הדין ברשות הפטנטים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר הליך",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סוג תיק",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סוג הליך",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שם הליך",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר תיק",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "הליכים קשורים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטטוס",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך סטטוס",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 9203
+    },
+    {
+      "resource_id": "a29fd418-cc18-4dd2-bd3d-799592c56214",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

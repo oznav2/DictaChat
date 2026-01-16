@@ -1,0 +1,980 @@
+{
+  "dataset_id": "4d95a5ed-d567-4515-bbfb-517c6c0b859f",
+  "title": "המדרך דיווחי השפעות סביבתיות מדודות ממוצרים",
+  "organization": "המשרד להגנת הסביבה",
+  "tags": [
+    "EPD",
+    "LCA",
+    "PEF",
+    "המידרך",
+    "השפעות סביבתיות",
+    "פחמן"
+  ],
+  "categories": [
+    "transportation",
+    "environment"
+  ],
+  "keywords": [
+    "name",
+    "pef",
+    "commercial",
+    "producers",
+    "מדודות",
+    "eutrophication",
+    "state",
+    "resources",
+    "terrestrial",
+    "product",
+    "depletion",
+    "energy",
+    "producing",
+    "להגנת",
+    "עמודה",
+    "פחמן",
+    "measure",
+    "material",
+    "subclassification",
+    "operator",
+    "nonrenewable",
+    "teu",
+    "freshwater",
+    "gwp",
+    "program",
+    "date",
+    "המשרד",
+    "acidification",
+    "persentage",
+    "unit",
+    "validity",
+    "number",
+    "epd",
+    "classification",
+    "description",
+    "ozone",
+    "meu",
+    "total",
+    "data",
+    "השפעות",
+    "lca",
+    "verification",
+    "url",
+    "feu",
+    "tropospheric",
+    "דיווחי",
+    "specific",
+    "הסביבה",
+    "המידרך",
+    "המדרך",
+    "functional",
+    "site",
+    "publishing",
+    "סביבתיות",
+    "system",
+    "marine",
+    "ממוצרים",
+    "importers",
+    "boundaries",
+    "sum",
+    "erd",
+    "serial"
+  ],
+  "resources": [
+    {
+      "resource_id": "cd20b024-bbcb-4a4c-a5c3-542a590fa3a0",
+      "title": "המדרך דיווחי השפעות סביבתיות מדודות ממוצרים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "commercial_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "product_serial_number",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "product_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "producers_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "importers_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "system_boundaries",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "functional_unit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "gwp_total_sum",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "GWP_A1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "GWP_A2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "GWP_A3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "GWP_total_A1_A3",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "GWP_A4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "GWP_A5",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "GWP_B1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GWP_B2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GWP_B3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GWP_B4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GWP_B5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GWP_B6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GWP_B7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GWP_C1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "GWP_C2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "GWP_C3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "GWP_C4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "GWP_D",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ozone_depletion_sum",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "DO_A1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DO_A2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DO_A3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ozone_depletion_sum_A1-A3",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "DO_A4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "DO_A5",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "DO_B1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DO_B2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DO_B3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DO_B4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DO_B5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DO_B6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DO_B7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DO_C1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "DO_C2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "DO_C3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "DO_C4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "DO_D",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "acidification_sum",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "AC_unit_of_measure",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AC_A1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AC_A2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AC_A3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "acidification_sum_A1-A3",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "AC_A4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AC_A5",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AC_B1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AC_B2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AC_B3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AC_B4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AC_B5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AC_B6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AC_B7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AC_C1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AC_C2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AC_C3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AC_C4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AC_D",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "nonrenewable_energy_resources_depletion_sum",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ERD_A1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ERD_A2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ERD_A3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "nonrenewable_energy_resources_depletion_sum_A1-A3",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ERD_A4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ERD_A5",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ERD_B1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ERD_B2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ERD_B3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ERD_B4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ERD_B5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ERD_B6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ERD_B7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ERD_C1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ERD_C2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ERD_C3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ERD_C4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ERD_D",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "marine_eutrophication_sum",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "MEU_unit_of_measure",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MEU_A1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MEU_A2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MEU_A3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "marine_eutrophication_sum_A1-A3",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "MEU_A4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MEU_A5",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MEU_B1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MEU_B2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MEU_B3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MEU_B4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MEU_B5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MEU_B6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MEU_B7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MEU_C1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MEU_C2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MEU_C3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MEU_C4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MEU_D",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "freshwater_eutrophication_sum",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "FEU_unit_of_measure",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FEU_A1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FEU_A2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FEU_A3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "freshwater_eutrophication_sum_A1-A3",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "FEU_A4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FEU_A5",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FEU_B1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FEU_B2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FEU_B3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FEU_B4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FEU_B5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FEU_B6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FEU_B7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FEU_C1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FEU_C2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FEU_C3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FEU_C4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FEU_D",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "terrestrial_eutrophication_sum",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "TEU_unit_of_measure",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEU_A1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEU_A2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEU_A3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "terrestrial_eutrophication_sum_A1-A3",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "TEU_A4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TEU_A5",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TEU_B1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEU_B2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEU_B3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEU_B4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEU_B5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEU_B6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEU_B7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEU_C1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TEU_C2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TEU_C3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TEU_C4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TEU_D",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tropospheric_ozone_sum",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "TO_A1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TO_A2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TO_A3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tropospheric_ozone_sum_A1-A3",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "TO_A4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TO_A5",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TO_B1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TO_B2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TO_B3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TO_B4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TO_B5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TO_B6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TO_B7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TO_C1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TO_C2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TO_C3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TO_C4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עמודה1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "material_classification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "material_subclassification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "producing_state",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "producing_site",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "p(ef)cr",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "specific_data_persentage",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "verification_date",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "verification_validity",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "program_operator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "publishing_date",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "lca_epd_cf_pef_url",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 110
+    },
+    {
+      "resource_id": "f3afc44d-6625-4a2e-8b27-4b2c47914480",
+      "title": "מילון מונחים.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "dataset_id": "f3f8a529-8336-4eb1-8c33-b7d0933bc9fb",
+  "title": "מבנים",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "תכנון עיר וגיאוגרפיה"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "lat",
+    "שבע",
+    "floors",
+    "lon",
+    "used",
+    "leng",
+    "background",
+    "reside",
+    "עיר",
+    "תכנון",
+    "not",
+    "entrances",
+    "shape",
+    "באר",
+    "area",
+    "ruleid",
+    "עיריית",
+    "appartment",
+    "מבנים",
+    "וגיאוגרפיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "6c74d9a4-6728-4c91-830f-30d0dbf422ef",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "676cfeb1-d257-4870-9d93-26c1aeced98b",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "background",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Entrances",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Not_reside",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Used",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "floors",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "appartment",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "RuleID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Shape_Leng",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 26179
+    },
+    {
+      "resource_id": "46693612-c9b7-4838-83c6-81c0aa76dcf2",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

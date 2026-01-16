@@ -1,0 +1,83 @@
+{
+  "dataset_id": "f7be7b65-3c78-461c-8e88-20eba193b436",
+  "title": "רשימת תאי דיווח",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "water",
+    "אגן",
+    "מים",
+    "רשות המים",
+    "תא דיווח הידרולוגי",
+    "תת אגן"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "הידרולוגי",
+    "הרשות",
+    "דיווח",
+    "רשות",
+    "אגן",
+    "למים",
+    "הממשלתית",
+    "המים",
+    "מים",
+    "ולביוב",
+    "קוד",
+    "תאי",
+    "water"
+  ],
+  "resources": [
+    {
+      "resource_id": "10a4ef9c-35ab-43d8-bb80-5278e497a56e",
+      "title": "רשימת תאי דיווח",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד אגן",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "אגן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד תת אגן",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "תת אגן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד תא דיווח",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "תא דיווח",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 173
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

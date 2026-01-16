@@ -1,0 +1,103 @@
+{
+  "dataset_id": "9fac2d91-4abc-4cd8-a794-d2c4fa9db1e4",
+  "title": "ציוד אלחוטי - פריטים ביבוא אישי שקיבלו אישור ממשרד התקשורת",
+  "organization": "משרד התקשורת",
+  "tags": [
+    "יבוא ציוד",
+    "מכס",
+    "מסלול",
+    "משרד התקשורת",
+    "ציוד אלחוטי",
+    "ציוד קצה"
+  ],
+  "categories": [
+    "finance",
+    "economy",
+    "communications"
+  ],
+  "keywords": [
+    "אישור",
+    "אלחוטי",
+    "יבוא",
+    "מסלול",
+    "משרד",
+    "manufacturer",
+    "type",
+    "פריטים",
+    "מכס",
+    "product",
+    "התקשורת",
+    "שקיבלו",
+    "קצה",
+    "ממשרד",
+    "model",
+    "ציוד",
+    "אישי",
+    "ביבוא"
+  ],
+  "resources": [
+    {
+      "resource_id": "fe229457-3864-49fc-b22f-1e8386ec304c",
+      "title": "פריטים ביבוא אישי שקיבלו אישור המשרד",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "model",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "manufacturer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "type_of_product",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1472
+    },
+    {
+      "resource_id": "6fe4073c-c556-4f29-8571-741c2b7c98f2",
+      "title": "פריטים ביבוא אישי שקיבלו אישור המשרד",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "model",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "manufacturer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "type_of_product",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1472
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "dataset_id": "06fafb1e-481d-40c9-aa06-1bb53b996453",
+  "title": "שקיפות תקציבית חטיבות ביניים רגילות תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "מוסדות_חינוך",
+    "תקציב"
+  ],
+  "categories": [
+    "education",
+    "finance"
+  ],
+  "keywords": [
+    "תקציב",
+    "חינוך",
+    "ביניים",
+    "משרד",
+    "החינוך",
+    "מוסדות",
+    "שקיפות",
+    "תקציבית",
+    "תשע",
+    "רגילות",
+    "חטיבות"
+  ],
+  "resources": [
+    {
+      "resource_id": "d1be959c-7f98-457b-aced-277dd922d264",
+      "title": "שקיפות תקציבית חטיבות ביניים רגילות תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

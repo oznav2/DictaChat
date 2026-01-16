@@ -1,0 +1,619 @@
+{
+  "dataset_id": "1e9d4542-97af-47ac-a780-f2a6b291b1f5",
+  "title": "תיקופי מסלקה לתחנה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משרד התחבורה",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation",
+    "finance"
+  ],
+  "keywords": [
+    "תחבורה",
+    "לתחנה",
+    "stationname",
+    "בדרכים",
+    "stationid",
+    "משרד",
+    "day",
+    "year",
+    "month",
+    "והבטיחות",
+    "תיקופי",
+    "key",
+    "ציבורית",
+    "מסלקה",
+    "loworpeakdescfull",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "b2c6b258-4638-4f8e-bcad-600f0cdfb449",
+      "title": "מאגר תיקופי מסלקה לתחנה 2025",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "StationId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "StationName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LowOrPeakDescFull",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "year_key",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "month_key",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "day_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_3",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_4",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_5",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_6",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_7",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_8",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_9",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_10",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_11",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_12",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_13",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_14",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_15",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_16",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_17",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_18",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_19",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_20",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_21",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_22",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_23",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_24",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_25",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_26",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_27",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_28",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_29",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_30",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_31",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1813221
+    },
+    {
+      "resource_id": "51703b73-c27b-497e-8701-ea979a0c3835",
+      "title": "מאגר תיקופי מסלקה לתחנה 2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "StationId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "StationName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LowOrPeakDescFull",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "year_key",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "month_key",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "day_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_3",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_4",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_5",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_6",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_7",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_8",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_9",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_10",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_11",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_12",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_13",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_14",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_15",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_16",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_17",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_18",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_19",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_20",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_21",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_22",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_23",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_24",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_25",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_26",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_27",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_28",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_29",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_30",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_31",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1942296
+    },
+    {
+      "resource_id": "e265857e-9f53-419f-ad0b-860d2bf6fbb8",
+      "title": "מאגר תיקופי מסלקה לתחנה 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "StationId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "StationName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LowOrPeakDescFull",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "year_key",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "month_key",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "day_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_3",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_4",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_5",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_6",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_7",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_8",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_9",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_10",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_11",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_12",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_13",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_14",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_15",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_16",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_17",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_18",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_19",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_20",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_21",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_22",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_23",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_24",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_25",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_26",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_27",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_28",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_29",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_30",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "day_31",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1957511
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

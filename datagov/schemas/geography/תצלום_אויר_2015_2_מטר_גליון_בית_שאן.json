@@ -1,0 +1,36 @@
+{
+  "dataset_id": "c958eec8-4e98-4387-b783-2ce632e6c03c",
+  "title": "תצלום אויר 2015 2 מטר - גליון בית שאן",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "בית",
+    "מטר",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "שאן",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "4533ea9c-950d-448c-b83f-9a207be34f71",
+      "title": "תצלום אויר 2015 2 מטר - גליון בית שאן",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

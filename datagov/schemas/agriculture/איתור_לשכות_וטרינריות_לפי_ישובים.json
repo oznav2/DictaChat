@@ -1,0 +1,72 @@
+{
+  "dataset_id": "28954732-da33-48d0-b22c-1c0c279aadca",
+  "title": "איתור לשכות וטרינריות לפי ישובים",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [],
+  "categories": [
+    "agriculture"
+  ],
+  "keywords": [
+    "name",
+    "איתור",
+    "המזון",
+    "החקלאות",
+    "ובטחון",
+    "lishka",
+    "infolink",
+    "משרד",
+    "ישובים",
+    "semel",
+    "hebrew",
+    "english",
+    "לשכות",
+    "וטרינריות"
+  ],
+  "resources": [
+    {
+      "resource_id": "13750688-f463-48fd-a8f1-ad9a85d394d4",
+      "title": "lishka.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "SEMEL",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "HEBREW_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ENGLISH_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LISHKA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "InfoLink",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 1519
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "dataset_id": "0c3b6dd0-b921-45d2-b5e3-342dce777933",
+  "title": "shkifut_2015",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך"
+  ],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "החינוך",
+    "משרד",
+    "shkifut",
+    "חינוך"
+  ],
+  "resources": [
+    {
+      "resource_id": "91191253-6663-41ed-829f-4865180f6261",
+      "title": "שקיפות בחינוך - נתוני שנת תשע\"ה ",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "7dcae24d-2fcf-44ba-b2a7-20fd00b9ba5b",
+      "title": "שקיפות תשעה - רשויות מוסדות חינוך וגני ילדים תשעה",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

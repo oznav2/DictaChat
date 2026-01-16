@@ -1,0 +1,113 @@
+{
+  "dataset_id": "d828a2a1-43ea-435c-a0e5-9e3a357b4755",
+  "title": "רכבת כבדה - תכנית אסטרטגית - מסילות",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "ממג",
+    "מסילות ברזל",
+    "רכבת",
+    "רכבת כבדה",
+    "תכנית אסטרטגית"
+  ],
+  "categories": [
+    "transportation",
+    "finance",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "objectid",
+    "status",
+    "gis",
+    "כבדה",
+    "רכבת",
+    "בדרכים",
+    "leng",
+    "והבטיחות",
+    "upgrade",
+    "מסילות",
+    "משרד",
+    "length",
+    "חצב",
+    "isactive",
+    "shape",
+    "ברזל",
+    "תכנית",
+    "אסטרטגית",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "65c4cc65-1dde-4535-9cd0-28b164dc90fe",
+      "title": "RAIL_STRATEGIC_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "cbf3dfd0-cb56-47ac-9284-296b7174b011",
+      "title": "RAIL_STRATEGIC_KML",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "786456ec-3e97-42d7-839b-a2df1020034f",
+      "title": "RAIL_STRATEGIC_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "UPGRADE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_LENG",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ISACTIVE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "SHAPE_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 217
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

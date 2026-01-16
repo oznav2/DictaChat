@@ -1,0 +1,35 @@
+{
+  "dataset_id": "e679f031-2174-4cb3-8433-6e37d2b34e84",
+  "title": "תצלום אויר 2015 2 מטר - גליון נהריה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "נהריה",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "f57cdd1f-4f1d-4b9e-8b4c-5da1ec2bae51",
+      "title": "תצלום אויר 2015 2 מטר - גליון נהריה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

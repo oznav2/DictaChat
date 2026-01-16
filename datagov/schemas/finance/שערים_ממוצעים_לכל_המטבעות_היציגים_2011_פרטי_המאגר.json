@@ -1,0 +1,50 @@
+{
+  "dataset_id": "dab9a07c-07ca-40bf-ac78-33c7818c2d46",
+  "title": "שערים ממוצעים לכל המטבעות היציגים - 2011 פרטי המאגר",
+  "organization": "בנק ישראל",
+  "tags": [
+    "2011",
+    "אוצר וכלכלה",
+    "בנק ישראל",
+    "שערי מטבע",
+    "שערים יציגים"
+  ],
+  "categories": [
+    "finance",
+    "environment",
+    "water",
+    "economy"
+  ],
+  "keywords": [
+    "המטבעות",
+    "ממוצעים",
+    "וכלכלה",
+    "ישראל",
+    "מטבע",
+    "פרטי",
+    "שערים",
+    "המאגר",
+    "בנק",
+    "היציגים",
+    "אוצר",
+    "שערי",
+    "יציגים",
+    "לכל"
+  ],
+  "resources": [
+    {
+      "resource_id": "8b6067ec-41f9-4158-95a0-7eb79d02d751",
+      "title": "שערים ממוצעים לכל המטבעות היציגים - 2011 פרטי המאגר",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

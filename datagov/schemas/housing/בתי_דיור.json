@@ -1,0 +1,114 @@
+{
+  "dataset_id": "b08fae4e-d4b1-4936-bec0-9340ee2db9b5",
+  "title": "בתי דיור",
+  "organization": "משרד הבינוי והשיכון",
+  "tags": [
+    "בינוי",
+    "בתי דיור",
+    "גיל זהב",
+    "הוסטל",
+    "שיכון"
+  ],
+  "categories": [
+    "housing"
+  ],
+  "keywords": [
+    "זהב",
+    "בינוי",
+    "והשיכון",
+    "בתי",
+    "הוסטל",
+    "cityname",
+    "משרד",
+    "citycode",
+    "housingunits",
+    "שיכון",
+    "address",
+    "longitude",
+    "latitude",
+    "companyname",
+    "דיור",
+    "הבינוי",
+    "גיל",
+    "zip"
+  ],
+  "resources": [
+    {
+      "resource_id": "0c6fa0a9-a0ef-4860-aa42-ba4d4c78caa4",
+      "title": "שכבת נתוני בית דיור גיל זהב",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CompanyName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "CityCode",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "CityName",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Zip",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "HousingUnits",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "Longitude",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Latitude",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 123
+    },
+    {
+      "resource_id": "55bf6bca-e639-4503-8514-4543905b0687",
+      "title": "שכבת נתוני בית דיור גיל זהב GIS",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

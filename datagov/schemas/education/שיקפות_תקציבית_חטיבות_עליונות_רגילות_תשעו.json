@@ -1,0 +1,43 @@
+{
+  "dataset_id": "cce9fac0-f74b-4bc6-9f15-083aec907332",
+  "title": "שיקפות תקציבית חטיבות עליונות רגילות תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "מוסדות_חינוך",
+    "תקציב"
+  ],
+  "categories": [
+    "education",
+    "finance"
+  ],
+  "keywords": [
+    "תקציב",
+    "חינוך",
+    "משרד",
+    "החינוך",
+    "מוסדות",
+    "שיקפות",
+    "חטיבות",
+    "תקציבית",
+    "עליונות",
+    "תשע",
+    "רגילות"
+  ],
+  "resources": [
+    {
+      "resource_id": "5811b162-4cb0-4716-8db9-280320c5eaf4",
+      "title": "שיקפות תקציבית חטיבות עליונות רגילות תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

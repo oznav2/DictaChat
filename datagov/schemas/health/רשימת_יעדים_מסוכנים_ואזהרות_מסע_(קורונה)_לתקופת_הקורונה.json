@@ -1,0 +1,239 @@
+{
+  "dataset_id": "9ec1dc04-7efe-4248-ab38-4bad39bb5fd1",
+  "title": "רשימת יעדים מסוכנים ואזהרות מסע (קורונה) לתקופת הקורונה",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "יעדים אדומים בקורונה",
+    "יעדים ירוקים בקורונה",
+    "תעופה בזמן קורונה"
+  ],
+  "categories": [
+    "health",
+    "finance",
+    "water"
+  ],
+  "keywords": [
+    "status",
+    "יעדים",
+    "update",
+    "בקורונה",
+    "קורונה",
+    "flag",
+    "ירוקים",
+    "image",
+    "מסע",
+    "guidance",
+    "date",
+    "מסוכנים",
+    "הבריאות",
+    "לתקופת",
+    "more",
+    "ואזהרות",
+    "אדומים",
+    "משרד",
+    "הקורונה",
+    "country",
+    "בזמן",
+    "destination",
+    "תעופה",
+    "info"
+  ],
+  "resources": [
+    {
+      "resource_id": "486e0319-e667-4904-b930-7d6d892496ca",
+      "title": "רשימת יעדים מסוכנים ואזהרות מסע לתקופת הקורונה (עברית)",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "destination",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "country_status",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "country_status_id",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "update_date",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "update_info",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "guidance",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "more_info",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "image",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "flag",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 220
+    },
+    {
+      "resource_id": "84f224b0-ef3c-437a-b049-a55389b235bd",
+      "title": "רשימת יעדים מסוכנים ואזהרות מסע לתקופת הקורונה (ערבית)",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "destination",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "country_status",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "country_status_id",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "update_date",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "update_info",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "guidance",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "more_info",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "image",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "flag",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 220
+    },
+    {
+      "resource_id": "49ad0cbf-3164-4b76-ad70-0cab7aa0e487",
+      "title": "רשימת יעדים אדומים וירוקים לתקופת הקורונה (אנגלית)",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "destination",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "country_status",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "country_status_id",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "update_date",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "update_info",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "guidance",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "more_info",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "image",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "flag",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 220
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

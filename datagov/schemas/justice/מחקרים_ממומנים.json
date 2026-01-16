@@ -1,0 +1,164 @@
+{
+  "dataset_id": "80862c9b-fe75-4950-8bc8-62d9e414dd2e",
+  "title": "מחקרים ממומנים",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "המדען הראשי",
+    "חוקר",
+    "מחקרים",
+    "קול קורא",
+    "שיתוף פעולה"
+  ],
+  "categories": [
+    "justice",
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "מרכבה",
+    "מטבע",
+    "קורא",
+    "שותפה",
+    "תקציבית",
+    "נושא",
+    "מלגה",
+    "הראשי",
+    "חוקר",
+    "תקציב",
+    "ההסכם",
+    "סידורי",
+    "מחקר",
+    "מחקרים",
+    "מדינה",
+    "משרד",
+    "שיתוף",
+    "סיום",
+    "החוקר",
+    "ממומנים",
+    "תאריך",
+    "סטטוס",
+    "מוסד",
+    "תחום",
+    "המדען",
+    "מגדר",
+    "התכנית",
+    "שנה",
+    "קול",
+    "המדע",
+    "פעולה",
+    "תחילת",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "5a99a36e-1222-4ca9-b881-37409c67fd79",
+      "title": "מאגר מחקרים מאוחד 2012-2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר סידורי",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר מרכבה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "שם החוקר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מגדר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מוסד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נושא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך תחילת ההסכם",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך סיום ההסכם",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תקציב ההסכם",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מטבע",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "התכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מדינה שותפה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנה תקציבית",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "תחום קול קורא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מחקר/מלגה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטטוס",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "24/03/2025",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3457
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

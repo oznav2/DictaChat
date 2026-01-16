@@ -1,0 +1,44 @@
+{
+  "dataset_id": "1e12fbb8-8b6b-4333-8e2e-31466a9faf37",
+  "title": "שכבת נמלי פריקה והטענה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "נמלי פריקה והטענה",
+    "נמלים",
+    "סביבה",
+    "פריקה",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "environment",
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "תחבורה",
+    "פריקה",
+    "ישראל",
+    "נמלים",
+    "נמלי",
+    "והטענה",
+    "המרכז",
+    "סביבה"
+  ],
+  "resources": [
+    {
+      "resource_id": "90c199f1-a32a-493b-ba8b-e7c46f87023c",
+      "title": "שכבת נמלי פריקה והטענה ",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

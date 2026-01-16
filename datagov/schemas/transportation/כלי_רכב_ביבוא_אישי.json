@@ -1,0 +1,154 @@
+{
+  "dataset_id": "9b2ac550-d4bf-4da6-a1f2-bcfd57ed5e7f",
+  "title": "כלי רכב ביבוא אישי",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "economy"
+  ],
+  "keywords": [
+    "nefach",
+    "תחבורה",
+    "mivchan",
+    "yevu",
+    "lakvish",
+    "sug",
+    "אישי",
+    "degem",
+    "aliya",
+    "mispar",
+    "moed",
+    "בדרכים",
+    "tokef",
+    "רכב",
+    "והבטיחות",
+    "כלי",
+    "shnat",
+    "acharon",
+    "shilda",
+    "ביבוא",
+    "משרד",
+    "delek",
+    "yitzur",
+    "rechev",
+    "kolel",
+    "eretz",
+    "tozeret",
+    "mishkal",
+    "manoa",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "03adc637-b6fe-402b-9937-7c3d3afc9140",
+      "title": "כלי רכב ביבוא אישי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shilda",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_kolel",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "nefach_manoa",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_eretz_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mivchan_acharon_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tokef_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_yevu",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "moed_aliya_lakvish",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "sug_delek_nm",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 27940
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

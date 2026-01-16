@@ -1,0 +1,123 @@
+{
+  "dataset_id": "965b52b6-7267-45d9-bccd-020416fbcfb5",
+  "title": "דו\"ח מהירות השחרור",
+  "organization": "רשות המסים בישראל",
+  "tags": [
+    "זמני שחרור טובין",
+    "מהירות שחרור",
+    "מכס",
+    "שחרור",
+    "תהליך שחרור",
+    "תשר"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "להצהרה",
+    "זמן",
+    "סוג",
+    "רשות",
+    "שחרור",
+    "מהירות",
+    "מכס",
+    "השחרור",
+    "מקסימלי",
+    "תשר",
+    "תהליך",
+    "שהיו",
+    "בתור",
+    "הצהרות",
+    "טובין",
+    "המסים",
+    "אוטונומיה",
+    "כמות",
+    "חודש",
+    "חובה",
+    "האם",
+    "בית",
+    "ממוצע",
+    "שנה",
+    "זמני",
+    "מינימלי",
+    "בדקות",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "761c11e2-4047-4956-89a7-c3b3131aff2b",
+      "title": "נתוני מהירות השחרור",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "חודש",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "בית מכס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תהליך להצהרה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג תהליך",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "האם אוטונומיה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "כמות הצהרות",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "זמן מינימלי בדקות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "זמן מקסימלי בדקות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "זמן ממוצע בדקות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מספר הצהרות שהיו בתור חובה",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 2961
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

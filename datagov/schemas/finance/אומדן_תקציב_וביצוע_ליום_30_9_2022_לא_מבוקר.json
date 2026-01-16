@@ -1,0 +1,123 @@
+{
+  "dataset_id": "301f965a-37b6-470f-bb72-40c4de6edc6f",
+  "title": "אומדן תקציב וביצוע ליום 30-9-2022 לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "תקציב",
+    "תקציב וביצוע"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "תוכנית",
+    "ברוטו",
+    "תקציב",
+    "מיועדת",
+    "ביצוע",
+    "משרד",
+    "מבוקר",
+    "אומדן",
+    "וביצוע",
+    "מקורי",
+    "השתתפויות",
+    "שינוייו",
+    "האוצר",
+    "הכנסה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d6091f75-e6f1-4d72-9b04-2211f876c25f",
+      "title": "אומדן תקציב וביצוע ליום 30-9-2022 לא מבוקר",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תוכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו מקורי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו על שינוייו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע ברוטו כולל השתתפויות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 488
+    },
+    {
+      "resource_id": "1ce4281d-a8f5-4800-8f34-d1f90d94774e",
+      "title": "דוח תקציב וביצוע לפי תכניות לפרסום - 30.9.2022.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תוכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו מקורי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו על שינוייו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע ברוטו כולל השתתפויות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 488
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "dataset_id": "efa4ea82-a560-44d9-af64-bd3f6a11f23e",
+  "title": "סדנאות והכשרות בחירום",
+  "organization": "משרד העבודה",
+  "tags": [
+    "הכשרות",
+    "חירום",
+    "סדנאות",
+    "שעת חירום"
+  ],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "working",
+    "העבודה",
+    "duration",
+    "reg",
+    "והכשרות",
+    "contact",
+    "program",
+    "date",
+    "סדנאות",
+    "description",
+    "frequency",
+    "additional",
+    "משרד",
+    "type",
+    "enter",
+    "opening",
+    "link",
+    "בחירום",
+    "lastday",
+    "audience",
+    "training",
+    "שעת",
+    "comments",
+    "registration",
+    "service",
+    "location",
+    "details",
+    "הכשרות",
+    "חירום",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "2e9ae3b7-35df-4461-b8f2-2a3ad5780562",
+      "title": "סדנאות והכשרות בחירום",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "service_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "service_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "program_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "service_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "opening_date",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "reg_lastday",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "training_duration",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "frequency",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "working_hr",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "audience",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "enter_link",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "link_details_registration",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "enter_email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "contact_email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "contact_phone",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "additional_comments",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 5
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": true
+  }
+}

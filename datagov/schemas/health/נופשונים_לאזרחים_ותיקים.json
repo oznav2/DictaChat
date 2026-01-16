@@ -1,0 +1,82 @@
+{
+  "dataset_id": "95cd4c73-07b1-4782-bd0b-cdb0818549d3",
+  "title": "נופשונים לאזרחים ותיקים",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "אזרחים וותיקים",
+    "בריאות ורווחה",
+    "נופשונים"
+  ],
+  "categories": [
+    "health",
+    "welfare",
+    "tourism"
+  ],
+  "keywords": [
+    "וותיקים",
+    "locality",
+    "phone",
+    "בריאות",
+    "frame",
+    "משרד",
+    "נופשונים",
+    "adress",
+    "ותיקים",
+    "ורווחה",
+    "הרווחה",
+    "לאזרחים",
+    "החברתי",
+    "והביטחון",
+    "number",
+    "אזרחים"
+  ],
+  "resources": [
+    {
+      "resource_id": "d1f41850-0cae-47bc-9c32-ae80e0ed0994",
+      "title": "רשימת נופשונים לאזרחים ותיקים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "frame",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "locality",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "phone_number",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 59
+    },
+    {
+      "resource_id": "18081c07-9861-4d10-91e9-8f33055c3602",
+      "title": "הסבר מבנה הנתונים בקובץ נופשונים",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

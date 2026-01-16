@@ -1,0 +1,157 @@
+{
+  "dataset_id": "e9894cce-6be0-470b-8109-e10da06e3be1",
+  "title": "רשימת אסיפות במערכת ההצבעה האלקטרונית",
+  "organization": "רשות ניירות ערך",
+  "tags": [
+    "אוצר וכלכלה",
+    "בורסה",
+    "ההצבעה האלקטרונית",
+    "רשות ניירות ערך",
+    "רשימת אסיפות ציבוריות"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "ברשם",
+    "ערך",
+    "כתובת",
+    "נייר",
+    "וכלכלה",
+    "במערכת",
+    "ציבוריות",
+    "סוג",
+    "רשות",
+    "מזמנת",
+    "בורסה",
+    "אסיפות",
+    "הצבעות",
+    "האסיפה",
+    "דיווח",
+    "מקום",
+    "מזכה",
+    "ההצבעות",
+    "האלקטרונית",
+    "סגירת",
+    "מנפיקה",
+    "אוצר",
+    "אסמכתא",
+    "ההצבעה",
+    "ראשון",
+    "קובע",
+    "סטטוס",
+    "ניירות",
+    "שעת",
+    "מועד",
+    "אחרון",
+    "חברה"
+  ],
+  "resources": [
+    {
+      "resource_id": "82183bbe-126e-4c2e-8b7e-bfef0f3fec5e",
+      "title": "רשימת אסיפות במערכת ההצבעה האלקטרונית ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר ברשם חברה מזמנת",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם חברה מזמנת",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר ברשם חברה מנפיקה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם חברה מנפיקה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סטטוס האסיפה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "סוג האסיפה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מועד האסיפה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שעת האסיפה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כתובת מקום האסיפה",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "סוג נייר מזכה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שם נייר מזכה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר נייר מזכה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "אסמכתא דיווח אחרון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אסמכתא דיווח ראשון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מועד קובע",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מועד סגירת הצבעות במערכת ההצבעות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שעת סגירת ההצבעה במערכת ההצבעות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 9814
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

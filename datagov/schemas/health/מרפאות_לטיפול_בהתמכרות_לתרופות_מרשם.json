@@ -1,0 +1,116 @@
+{
+  "dataset_id": "db54a6ef-7fb0-4041-9685-1b70f477c5fc",
+  "title": "מרפאות לטיפול בהתמכרות לתרופות מרשם",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "תרופות"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "manager",
+    "city",
+    "institute",
+    "מרפאות",
+    "מרשם",
+    "first",
+    "הבריאות",
+    "street",
+    "streetcode",
+    "לתרופות",
+    "website",
+    "לטיפול",
+    "code",
+    "משרד",
+    "תרופות",
+    "בהתמכרות",
+    "citycode",
+    "address",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "a05837e9-8e0f-421b-af29-3ec8d9d6c704",
+      "title": "מרפאות לטיפול בהתמכרות לתרופות מרשם",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "institute_code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "institute_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "cityCode",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "streetCode",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "phone2",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "website",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Manager_first_name",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 1
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

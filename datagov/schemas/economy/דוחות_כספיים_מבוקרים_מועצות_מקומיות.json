@@ -1,0 +1,269 @@
+{
+  "dataset_id": "f2912680-1d55-4acb-96be-c53045bf6d2e",
+  "title": "דוחות כספיים מבוקרים - מועצות מקומיות",
+  "organization": "משרד הפנים",
+  "tags": [
+    "אוצר וכלכלה",
+    "דוחות ביקורת",
+    "דוחות כספיים",
+    "דוחות מבוקרים",
+    "מועצות מקומיות",
+    "רשויות מקומיות"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "מבוקרים",
+    "ערך",
+    "וכלכלה",
+    "תקופה",
+    "מיפוי",
+    "כספיים",
+    "סוג",
+    "ביקורת",
+    "רשות",
+    "הדוח",
+    "דוחות",
+    "הפנים",
+    "עמודה",
+    "מקומיות",
+    "דוח",
+    "שורה",
+    "למס",
+    "גיליון",
+    "משרד",
+    "אוצר",
+    "קוד",
+    "רשויות",
+    "מועצות"
+  ],
+  "resources": [
+    {
+      "resource_id": "a001d2a7-f941-4ea9-beab-8065f549994f",
+      "title": "דוחות כספיים מבוקרים של מועצות מקומיות לשנת 2021",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד_רשות",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "שם_רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "קוד_למס",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שנת_הדוח",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקופה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת_נתונים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סוג_דוח",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "גיליון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שורה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עמודה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד_מיפוי",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ערך",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 693000
+    },
+    {
+      "resource_id": "f2f0d291-2d4c-43dc-a3ab-a884625e9f9a",
+      "title": "דוחות כספיים מבוקרים של מועצות מקומיות לשנת 2020",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד_רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם_רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "קוד_למס",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שנת_הדוח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקופה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת_נתונים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג_דוח",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "גיליון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שורה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עמודה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד_מיפוי",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ערך",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1026157
+    },
+    {
+      "resource_id": "613801c5-2ac5-4d22-a76a-8ce57634def5",
+      "title": "דוחות כספיים מבוקרים של מועצות מקומיות לשנת 2019",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד_רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם_רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "קוד_למס",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שנת_הדוח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקופה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת_נתונים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג_דוח",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "גיליון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שורה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עמודה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד_מיפוי",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ערך",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 636006
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

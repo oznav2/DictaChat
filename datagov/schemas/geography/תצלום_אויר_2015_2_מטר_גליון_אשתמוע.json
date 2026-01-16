@@ -1,0 +1,35 @@
+{
+  "dataset_id": "de406dd6-864f-4ace-a30f-835638acb9c6",
+  "title": "תצלום אויר 2015 2 מטר - גליון אשתמוע",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "אשתמוע",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "ac830697-6e1f-4ce8-a867-ff702cde6fe4",
+      "title": "תצלום אויר 2015 2 מטר - גליון אשתמוע",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "dataset_id": "ee626064-7d09-401c-9f32-d5d8947cfc6e",
+  "title": "שכבות מידע גיאוגרפי (GIS) של משרד הבינוי והשיכון",
+  "organization": "משרד הבינוי והשיכון",
+  "tags": [
+    "GIS",
+    "דירה בהנחה",
+    "התחדשות עירונית",
+    "מחיר למשתכן",
+    "משרד הבינוי והשיכון",
+    "שיקום שכונות",
+    "שכבה",
+    "שכבות"
+  ],
+  "categories": [
+    "housing",
+    "geography"
+  ],
+  "keywords": [
+    "מחיר",
+    "והשיכון",
+    "למשתכן",
+    "שכונות",
+    "שכבה",
+    "עירונית",
+    "שכבות",
+    "משרד",
+    "גיאוגרפי",
+    "דירה",
+    "בהנחה",
+    "gis",
+    "הבינוי",
+    "שיקום",
+    "התחדשות"
+  ],
+  "resources": [
+    {
+      "resource_id": "6a52e766-76b7-4de2-b767-dc6caf12ae1f",
+      "title": "שכבת שיקום שכונות (שיפוץ מבנים)",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "3738b4fb-55c9-4d91-8e96-832f566364b8",
+      "title": "שכבת שיקום שכונות (גבולות השכונות)",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "942efa87-f180-45a4-9b9a-f041b6021502",
+      "title": "שכבות מחיר למשתכן ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

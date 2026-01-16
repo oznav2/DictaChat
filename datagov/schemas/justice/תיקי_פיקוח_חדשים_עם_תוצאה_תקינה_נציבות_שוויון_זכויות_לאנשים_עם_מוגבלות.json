@@ -1,0 +1,145 @@
+{
+  "dataset_id": "49f21b3f-3ffc-43d1-b8c8-d9abad2ace9a",
+  "title": "תיקי פיקוח חדשים עם תוצאה תקינה - נציבות שוויון זכויות לאנשים עם מוגבלות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "תיקי פיקוח"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "כתובת",
+    "המפוקחת",
+    "סוג",
+    "הישות",
+    "רחוב",
+    "ושעת",
+    "אורך",
+    "תוצאה",
+    "שוויון",
+    "לכתובת",
+    "ישות",
+    "האינטרנט",
+    "זכויות",
+    "נציבות",
+    "מוגבלות",
+    "משרד",
+    "פיקוח",
+    "רוחב",
+    "אתר",
+    "תאריך",
+    "מפוקחת",
+    "המשפטים",
+    "קואורדינטות",
+    "בית",
+    "תיקי",
+    "מסלול",
+    "ישוב",
+    "תקינה",
+    "חדשים",
+    "תיק",
+    "הערות",
+    "לאנשים"
+  ],
+  "resources": [
+    {
+      "resource_id": "f3fd5657-1b75-46ef-9a10-9f434b326aa7",
+      "title": "תיקי פיקוח חדשים עם תוצאה תקינה - נציבות שוויון זכויות לאנשים עם מוגבלות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר תיק פיקוח",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "ישות מפוקחת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג הישות המפוקחת",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מסלול פיקוח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך ושעת פיקוח",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מספר בית",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "הערות לכתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "קואורדינטות רוחב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קואורדינטות אורך",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קואורדינטות  רוחב 1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קואורדינטות אורך 1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "כתובת  אתר האינטרנט",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 1009
+    },
+    {
+      "resource_id": "192208cd-33ee-441e-ab22-e2a1bd824a88",
+      "title": "פתיחת קובץ המאגר בתוכנת excel.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

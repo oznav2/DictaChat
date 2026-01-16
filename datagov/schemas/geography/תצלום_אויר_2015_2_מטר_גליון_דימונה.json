@@ -1,0 +1,35 @@
+{
+  "dataset_id": "34dede7a-1361-4beb-9c1a-66d7ad89e06b",
+  "title": "תצלום אויר 2015 2 מטר - גליון דימונה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "דימונה",
+    "מטר",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "b6c7cf4b-984d-45b2-b715-2727c42560ae",
+      "title": "תצלום אויר 2015 2 מטר - גליון דימונה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

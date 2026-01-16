@@ -1,0 +1,179 @@
+{
+  "dataset_id": "8523add6-91f1-445c-b6c1-dcc854f8c80c",
+  "title": "כמויות מים ממתקני התפלה",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "desalination",
+    "water",
+    "התפלה",
+    "מים",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "תקופה",
+    "רשות",
+    "הממשלתית",
+    "מים",
+    "ממתקני",
+    "desalination",
+    "התפלה",
+    "כמויות",
+    "יצור",
+    "אחוז",
+    "סידורי",
+    "מול",
+    "water",
+    "תוכנית",
+    "מפעל",
+    "תכנון",
+    "למים",
+    "מתקן",
+    "מאושרות",
+    "בפועל",
+    "חודש",
+    "הרשות",
+    "סכום",
+    "תכנית",
+    "שנה",
+    "ייצור",
+    "ולביוב",
+    "המים",
+    "ושנה"
+  ],
+  "resources": [
+    {
+      "resource_id": "f4481461-0877-4be8-88b8-ee5a42ff3d00",
+      "title": "כמויות מים ממתקני התפלה 2016-2019",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מפעל התפלה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "חודש",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "יצור",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תכנית",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 240
+    },
+    {
+      "resource_id": "72d62881-e4a5-47b6-a30d-f6f01bcaf286",
+      "title": "כמויות מים ממפעלי התפלה 2020-2021",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר סידורי",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "חודש ושנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סכום של כמויות מים מאושרות",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סכום של תכנית ייצור",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מתקן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "% ייצור בפועל מול תכנון",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 120
+    },
+    {
+      "resource_id": "a8b9aa88-443c-425c-8715-5a110eaea7ff",
+      "title": "כמויות מים ממתקני התפלה 2022",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תקופה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חודש",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מתקן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תוכנית  ייצור",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ייצור בפועל",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחוז ייצור בפועל מול תכנון",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 60
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

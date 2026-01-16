@@ -1,0 +1,39 @@
+{
+  "dataset_id": "1cdcca64-4d89-4b4d-a22e-218363eeb44a",
+  "title": "תקציב וביצוע 2009-2011",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אוצר וכלכלה",
+    "ביצוע",
+    "תקציב"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "תקציב",
+    "וכלכלה",
+    "ביצוע",
+    "משרד",
+    "וביצוע",
+    "אוצר",
+    "האוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "25b4b425-63b2-4cf2-aaf5-e6dc1e1aa00a",
+      "title": "תקציב וביצוע 2009-2011",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "dataset_id": "4491ecd9-5f9c-4299-a79f-43ed979651f9",
+  "title": "סטארט-אפים מהדרום 2017",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "כלכלה עסקים ויזמות"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "אפים",
+    "ויזמות",
+    "שבע",
+    "product",
+    "compay",
+    "company",
+    "עסקים",
+    "date",
+    "logo",
+    "כלכלה",
+    "סטארט",
+    "website",
+    "באר",
+    "emp",
+    "עיריית",
+    "מהדרום",
+    "describe",
+    "video",
+    "foundation",
+    "field",
+    "location"
+  ],
+  "resources": [
+    {
+      "resource_id": "57e8792e-dccf-4fb5-8f2a-30bcad896e83",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "company-name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "company-field",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "company-website",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "foundation-date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "company-location",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "company-emp",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "describe",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "compay-logo",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "product-video",
+          "type": "text",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 37
+    },
+    {
+      "resource_id": "f235d6e3-576b-4ac8-8f9b-ba17fa97c814",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "4a298c66-8c52-491e-a2fc-e2c674ae3acf",
+      "title": "JSON",
+      "format": "JSON",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "dataset_id": "836be8e0-40ae-4e4b-afc3-74b96e9c754a",
+  "title": "חוקרים",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "משרד המדע"
+  ],
+  "categories": [
+    "justice",
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "משרד",
+    "חוקרים",
+    "המדע",
+    "החוקר",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "86e3496b-3864-436d-a530-2232c9e32826",
+      "title": "רשימת חוקרים משרד המדע.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם החוקר",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 457
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

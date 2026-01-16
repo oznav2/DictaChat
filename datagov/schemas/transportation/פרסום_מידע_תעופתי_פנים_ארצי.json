@@ -1,0 +1,51 @@
+{
+  "dataset_id": "a48c6d29-cedb-40e0-b614-bfe7046052cb",
+  "title": "פרסום מידע תעופתי פנים ארצי",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "בקרה מרחבית",
+    "טיסות אזרחיות",
+    "מודיעין טיס",
+    "מידע תעופתי פנים ארצי",
+    "תחבורה",
+    "תעבורה אווירית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "ארצי",
+    "אזרחיות",
+    "תחבורה",
+    "בדרכים",
+    "פנים",
+    "משרד",
+    "טיסות",
+    "מודיעין",
+    "בקרה",
+    "פרסום",
+    "מרחבית",
+    "אווירית",
+    "והבטיחות",
+    "טיס",
+    "תעבורה",
+    "התחבורה",
+    "תעופתי"
+  ],
+  "resources": [
+    {
+      "resource_id": "2c85a557-f14f-4b2e-bab1-ebf82327e1d3",
+      "title": "פרסום מידע תעופתי פנים ארצי",
+      "format": "RSS",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "dataset_id": "b5ee9460-87d7-4eb4-868a-58e35bc507b2",
+  "title": "קלפיות נגישות להצבעת בוחרים המוגבלים בניידות",
+  "organization": "משרד הפנים",
+  "tags": [
+    "בחירות",
+    "נגישות",
+    "קלפי",
+    "קלפיות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "בוחרים",
+    "symbol",
+    "בחירות",
+    "city",
+    "הפנים",
+    "להצבעת",
+    "בניידות",
+    "adress",
+    "street",
+    "משרד",
+    "type",
+    "district",
+    "נגישות",
+    "num",
+    "המוגבלים",
+    "קלפי",
+    "קלפיות",
+    "location",
+    "yishuv"
+  ],
+  "resources": [
+    {
+      "resource_id": "d12632aa-1c0b-4162-8584-58dd6f404a6c",
+      "title": "קלפיות נגישות להצבעת בוחרים המוגבלים בניידות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "num",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "symbol",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "yishuv",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "type",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 54
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

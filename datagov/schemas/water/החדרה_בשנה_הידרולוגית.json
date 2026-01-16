@@ -1,0 +1,85 @@
+{
+  "dataset_id": "d6b97e2a-76ad-46f1-bdc6-0ecc9a07cc80",
+  "title": "החדרה בשנה הידרולוגית",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "borehole",
+    "penetration",
+    "water",
+    "החדרה",
+    "מים",
+    "קידוח",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "החדרה",
+    "borehole",
+    "רשות",
+    "penetration",
+    "הממשלתית",
+    "מים",
+    "נפח",
+    "קידוח",
+    "דיווח",
+    "הידרולוגית",
+    "תקופתי",
+    "water",
+    "למים",
+    "קוד",
+    "הרשות",
+    "בשנה",
+    "שנה",
+    "ולביוב",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "a72dea24-3865-4b70-98ee-4f6705b1e76a",
+      "title": "החדרה בשנה הידרולוגית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם קידוח",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנה הידרולוגית",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "נפח החדרה תקופתי (מק)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קוד תא דיווח",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "תא דיווח",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3037
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

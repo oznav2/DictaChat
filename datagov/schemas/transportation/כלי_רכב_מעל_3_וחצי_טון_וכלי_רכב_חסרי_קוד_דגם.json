@@ -1,0 +1,214 @@
+{
+  "dataset_id": "df773fd2-e598-4772-b6ec-d0b7e12f8762",
+  "title": "כלי רכב מעל 3 וחצי טון וכלי רכב חסרי קוד דגם",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "nefach",
+    "hanaa",
+    "תחבורה",
+    "lakvish",
+    "sug",
+    "kvutzat",
+    "degem",
+    "aliya",
+    "ahori",
+    "horaat",
+    "חסרי",
+    "mispar",
+    "moed",
+    "בדרכים",
+    "tkina",
+    "grira",
+    "רכב",
+    "והבטיחות",
+    "כלי",
+    "shnat",
+    "nahag",
+    "mitan",
+    "shilda",
+    "דגם",
+    "zmig",
+    "harama",
+    "משרד",
+    "וחצי",
+    "delek",
+    "וכלי",
+    "קוד",
+    "mekomot",
+    "kidmi",
+    "rechev",
+    "yitzur",
+    "kolel",
+    "מעל",
+    "azmi",
+    "rishum",
+    "eretz",
+    "tozeret",
+    "mishkal",
+    "leyd",
+    "טון",
+    "manoa",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "cd3acc5c-03c3-4c89-9c54-d40f93c0d790",
+      "title": "מאגר כלי רכב מעל 3 וחצי טון וכלי רכב חסרי קוד דגם",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mispar_shilda",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tkina_EU",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_eretz_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_delek_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_delek_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_kolel",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_azmi",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "nefach_manoa",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "degem_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hanaa_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hanaa_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_mitan_harama",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "moed_aliya_lakvish",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "horaat_rishum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mispar_mekomot_leyd_nahag",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "mispar_mekomot",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kvutzat_sug_rechev",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "grira_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "zmig_kidmi",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "zmig_ahori",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mispar_manoa",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 406902
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

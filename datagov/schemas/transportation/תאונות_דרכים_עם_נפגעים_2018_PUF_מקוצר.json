@@ -1,0 +1,90 @@
+{
+  "dataset_id": "758ada44-8e74-4bc8-ad10-66109bf6eb89",
+  "title": "תאונות דרכים עם נפגעים - 2018 - PUF מקוצר",
+  "organization": "הלשכה המרכזית לסטטיסטיקה",
+  "tags": [
+    "תאונות דרכים",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "מקוצר",
+    "תחבורה",
+    "teur",
+    "נפגעים",
+    "הלשכה",
+    "המרכזית",
+    "לסטטיסטיקה",
+    "kod",
+    "puf",
+    "מסמך",
+    "מילון",
+    "תאונות",
+    "tavla",
+    "דרכים"
+  ],
+  "resources": [
+    {
+      "resource_id": "0cd3917b-6601-4b48-aacf-48b9923fc6fd",
+      "title": "Data dictionary document - accidents",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מסמך מילון נתונים – תאונות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 201
+    },
+    {
+      "resource_id": "fffb14ab-6c76-4637-ab8e-59016aca10a3",
+      "title": "Dictionary.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "MS_TAVLA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "KOD",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TEUR",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 780
+    },
+    {
+      "resource_id": "39f9da79-5029-4691-b9bf-bdd405bc66de",
+      "title": "introduction",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

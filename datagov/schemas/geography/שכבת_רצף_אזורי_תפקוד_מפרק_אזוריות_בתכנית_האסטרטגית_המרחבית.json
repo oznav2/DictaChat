@@ -1,0 +1,50 @@
+{
+  "dataset_id": "231bb737-cf24-443b-8975-a920b9b0d39f",
+  "title": "שכבת רצף אזורי תפקוד מפרק אזוריות בתכנית האסטרטגית המרחבית",
+  "organization": "מינהל התכנון ",
+  "tags": [
+    "אזור תפקוד",
+    "אזוריות",
+    "אסטרטגי",
+    "גבול",
+    "גבולות",
+    "התכנית האסטרטגית",
+    "רצף"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "גבולות",
+    "גבול",
+    "תפקוד",
+    "בתכנית",
+    "האסטרטגית",
+    "מינהל",
+    "התכנית",
+    "המרחבית",
+    "התכנון",
+    "אזור",
+    "רצף",
+    "מפרק",
+    "אזורי",
+    "אסטרטגי",
+    "אזוריות"
+  ],
+  "resources": [
+    {
+      "resource_id": "ca81e776-55da-4350-a5d8-aac69d16b234",
+      "title": "שכבת אזורי תפקוד פרק אזוריות.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

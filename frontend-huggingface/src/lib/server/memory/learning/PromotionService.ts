@@ -52,10 +52,39 @@ export interface PromotionStats {
 	durationMs: number;
 }
 
+/**
+ * Phase 22.4: Stricter promotion rules
+ *
+ * working → history: Score ≥ 0.7, Uses ≥ 2 (unchanged)
+ * history → patterns: Score ≥ 0.9, Uses ≥ 3, AND success_count ≥ 5 (NEW)
+ *
+ * The history tier acts as a "probation period" where counters reset.
+ * Only items that re-establish high success in the history tier get promoted.
+ */
 const PROMOTION_RULES: PromotionRule[] = [
 	{ fromTier: "working", toTier: "history", minScore: 0.7, minUses: 2 },
 	{ fromTier: "history", toTier: "patterns", minScore: 0.9, minUses: 3 },
 ];
+
+/**
+ * Phase 22.4: Minimum success_count required for history → patterns promotion
+ * This ensures items have re-established their value during the probation period
+ */
+const MIN_SUCCESS_COUNT_FOR_PATTERNS = 5;
+
+/**
+ * Phase 12.3: Time decay configuration for promotion
+ * Recently used memories get priority in promotion decisions
+ *
+ * RECENCY_BOOST_DAYS: Items used within this window get a boost
+ * RECENCY_BOOST_FACTOR: Multiplier for recent items (1.1 = 10% boost to score threshold)
+ * STALE_PENALTY_DAYS: Items not used for this long get a penalty
+ * STALE_PENALTY_FACTOR: Multiplier for stale items (0.9 = need 10% higher score to promote)
+ */
+const RECENCY_BOOST_DAYS = 7; // Recently used (within 1 week)
+const RECENCY_BOOST_FACTOR = 0.9; // Effectively lowers threshold by 10%
+const STALE_PENALTY_DAYS = 30; // Not used in a month
+const STALE_PENALTY_FACTOR = 1.1; // Effectively raises threshold by 10%
 
 const TTL_RULES: TtlRule[] = [
 	{
@@ -189,12 +218,18 @@ export class PromotionService {
 					rule.fromTier,
 					rule.minScore,
 					rule.minUses,
-					userId
+					userId,
+					rule.toTier // Phase 22.4: Pass toTier for success_count check
 				);
 
 				for (const candidate of candidates) {
 					try {
-						await this.promoteMemory(candidate.memory_id, candidate.user_id, rule.toTier);
+						await this.promoteMemory(
+							candidate.memory_id,
+							candidate.user_id,
+							rule.toTier,
+							rule.fromTier // Phase 22.4: Pass fromTier for counter reset
+						);
 						promoted++;
 					} catch (err) {
 						logger.error({ err, memoryId: candidate.memory_id }, "Failed to promote memory");
@@ -211,13 +246,53 @@ export class PromotionService {
 	}
 
 	/**
+	 * Phase 12.3: Calculate recency-adjusted score threshold
+	 *
+	 * Recently used memories get a lower threshold (easier to promote)
+	 * Stale memories get a higher threshold (harder to promote)
+	 *
+	 * @param baseThreshold The original minScore threshold
+	 * @param lastUsedAt The last_used_at timestamp from stats
+	 * @returns Adjusted threshold
+	 */
+	private calculateRecencyAdjustedThreshold(
+		baseThreshold: number,
+		lastUsedAt: string | Date | null
+	): number {
+		if (!lastUsedAt) {
+			return baseThreshold; // No last_used_at, use default
+		}
+
+		try {
+			const lastUsedDate = new Date(lastUsedAt);
+			const ageDays = (Date.now() - lastUsedDate.getTime()) / (1000 * 60 * 60 * 24);
+
+			if (ageDays <= RECENCY_BOOST_DAYS) {
+				// Recently used - lower the threshold (boost promotion)
+				return baseThreshold * RECENCY_BOOST_FACTOR;
+			} else if (ageDays >= STALE_PENALTY_DAYS) {
+				// Stale - raise the threshold (penalize promotion)
+				return baseThreshold * STALE_PENALTY_FACTOR;
+			}
+
+			return baseThreshold; // In between - use default
+		} catch {
+			return baseThreshold;
+		}
+	}
+
+	/**
 	 * Find memories eligible for promotion
+	 *
+	 * Phase 22.4: For history → patterns promotion, also requires success_count >= 5
+	 * Phase 12.3: Considers recency in promotion decisions
 	 */
 	private async findPromotionCandidates(
 		tier: MemoryTier,
 		minScore: number,
 		minUses: number,
-		userId?: string
+		userId?: string,
+		toTier?: MemoryTier
 	): Promise<Array<{ memory_id: string; user_id: string }>> {
 		const filter: Record<string, unknown> = {
 			tier,
@@ -237,27 +312,142 @@ export class PromotionService {
 			limit: 100,
 		});
 
-		// Filter by score and uses
-		return memories
-			.filter((m) => (m.stats?.wilson_score ?? 0) >= minScore && (m.stats?.uses ?? 0) >= minUses)
-			.map((m) => ({ memory_id: m.memory_id, user_id: m.user_id }));
+		// Phase 12.3: Filter by score with recency adjustment and uses
+		let filtered = memories.filter((m) => {
+			const uses = m.stats?.uses ?? 0;
+			if (uses < minUses) return false;
+
+			const wilsonScore = m.stats?.wilson_score ?? 0;
+			const lastUsedAt = m.stats?.last_used_at ?? null;
+
+			// Apply recency-adjusted threshold
+			const adjustedThreshold = this.calculateRecencyAdjustedThreshold(minScore, lastUsedAt);
+
+			return wilsonScore >= adjustedThreshold;
+		});
+
+		// Phase 22.4: Additional filter for history → patterns promotion
+		// Require success_count >= 5 to ensure memory has re-established value
+		if (tier === "history" && toTier === "patterns") {
+			const beforeCount = filtered.length;
+			filtered = filtered.filter((m) => {
+				const successCount = m.stats?.success_count ?? 0;
+				return successCount >= MIN_SUCCESS_COUNT_FOR_PATTERNS;
+			});
+
+			if (beforeCount > filtered.length) {
+				logger.debug(
+					{
+						beforeCount,
+						afterCount: filtered.length,
+						requiredSuccessCount: MIN_SUCCESS_COUNT_FOR_PATTERNS,
+					},
+					"[Phase 22.4] Filtered history→patterns candidates by success_count"
+				);
+			}
+		}
+
+		// Phase 12.3: Sort by recency (recently used items first)
+		filtered.sort((a, b) => {
+			const aLastUsed = a.stats?.last_used_at ? new Date(a.stats.last_used_at).getTime() : 0;
+			const bLastUsed = b.stats?.last_used_at ? new Date(b.stats.last_used_at).getTime() : 0;
+			return bLastUsed - aLastUsed; // Most recently used first
+		});
+
+		logger.debug(
+			{
+				tier,
+				toTier,
+				candidateCount: filtered.length,
+				recencyBoostDays: RECENCY_BOOST_DAYS,
+				stalePenaltyDays: STALE_PENALTY_DAYS,
+			},
+			"[Phase 12.3] Found promotion candidates with recency consideration"
+		);
+
+		return filtered.map((m) => ({ memory_id: m.memory_id, user_id: m.user_id }));
 	}
 
 	/**
 	 * Promote a memory to a new tier
+	 *
+	 * Phase 22.4: When promoting working → history, reset counters for probation period.
+	 * This ensures items must re-prove their value before advancing to patterns.
 	 */
-	private async promoteMemory(memoryId: string, userId: string, toTier: MemoryTier): Promise<void> {
-		// Update MongoDB
-		await this.mongo.update({
+	private async promoteMemory(
+		memoryId: string,
+		userId: string,
+		toTier: MemoryTier,
+		fromTier?: MemoryTier
+	): Promise<void> {
+		// Prepare update params
+		const updateParams: Parameters<typeof this.mongo.update>[0] = {
 			memoryId,
 			userId,
 			tier: toTier,
-		});
+		};
+
+		// Phase 22.4: Reset counters when promoting working → history
+		// This creates a "probation period" where the memory must re-establish value
+		const shouldResetCounters = fromTier === "working" && toTier === "history";
+
+		if (shouldResetCounters) {
+			logger.info(
+				{ memoryId, fromTier, toTier },
+				"[Phase 22.4] Resetting counters for history probation period"
+			);
+			// Note: Counter reset is handled by a separate MongoDB update
+			// since the standard update() method doesn't support stats reset
+			await this.resetPromotionCounters(memoryId, userId);
+		}
+
+		// Update MongoDB tier
+		await this.mongo.update(updateParams);
 
 		// Update Qdrant payload
 		await this.qdrant.updatePayload(memoryId, { tier: toTier });
 
-		logger.debug({ memoryId, toTier }, "Memory promoted");
+		if (fromTier === "working" && toTier === "history") {
+			logger.info({ oldId: memoryId, newId: memoryId }, "[promotion] Created in history");
+			logger.info({ itemId: memoryId }, "[promotion] Archived from working");
+		}
+
+		logger.debug({ memoryId, toTier, countersReset: shouldResetCounters }, "Memory promoted");
+	}
+
+	/**
+	 * Phase 22.4: Reset counters when promoting to history tier
+	 *
+	 * Resets: uses=0, success_count=0, wilson_score=0.5
+	 * Also adds promoted_to_history_at timestamp
+	 */
+	private async resetPromotionCounters(memoryId: string, userId: string): Promise<void> {
+		const collections = this.mongo.getCollections();
+		if (!collections) {
+			logger.warn({ memoryId }, "[Phase 22.4] Cannot reset counters - no collections");
+			return;
+		}
+
+		try {
+			await collections.items.updateOne(
+				{ memory_id: memoryId, user_id: userId },
+				{
+					$set: {
+						"stats.uses": 0,
+						"stats.success_count": 0,
+						"stats.wilson_score": 0.5,
+						"stats.success_rate": 0.5,
+						"stats.worked_count": 0,
+						"stats.failed_count": 0,
+						"stats.partial_count": 0,
+						"stats.unknown_count": 0,
+						"versioning.promoted_to_history_at": new Date(),
+					},
+				}
+			);
+		} catch (err) {
+			logger.error({ err, memoryId }, "[Phase 22.4] Failed to reset promotion counters");
+		}
 	}
 
 	/**

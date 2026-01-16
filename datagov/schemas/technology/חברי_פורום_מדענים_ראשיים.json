@@ -1,0 +1,69 @@
+{
+  "dataset_id": "0989d1f9-ec31-47e6-be53-f5f0627884ef",
+  "title": "חברי פורום מדענים ראשיים",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "מדען ראשי חברי פורום"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "טלפון",
+    "ראשיים",
+    "משרד",
+    "דואר",
+    "מדענים",
+    "תפקיד",
+    "המדע",
+    "מדען",
+    "ראשי",
+    "אלקטרוני",
+    "פורום",
+    "חברי",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "db41ea48-8983-46b2-9f4a-41cedef36ed9",
+      "title": "חברי פורום מדענים ראשיים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "תפקיד",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 23
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

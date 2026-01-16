@@ -1,0 +1,50 @@
+{
+  "dataset_id": "b4d6b2e6-75dc-4fad-951d-4047d43c66d5",
+  "title": "שיעור דמי הביטוח כאחוז מההכנסה - לא עובד שכיר ולא עובד עצמאי בגיל הביטוח",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "אוצר וכלכלה",
+    "ביטוח לאומי",
+    "לא שכירים"
+  ],
+  "categories": [
+    "finance",
+    "welfare",
+    "economy"
+  ],
+  "keywords": [
+    "עובד",
+    "ביטוח",
+    "וכלכלה",
+    "לאומי",
+    "מההכנסה",
+    "עצמאי",
+    "ולא",
+    "לביטוח",
+    "שכיר",
+    "בגיל",
+    "הביטוח",
+    "אוצר",
+    "דמי",
+    "שיעור",
+    "שכירים",
+    "כאחוז",
+    "המוסד"
+  ],
+  "resources": [
+    {
+      "resource_id": "453cbd07-12ca-44f8-88d6-176aaca2ae51",
+      "title": "שיעור דמי הביטוח כאחוז מההכנסה - לא עובד שכיר ולא עובד עצמאי בגיל הביטוח",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "dataset_id": "aa664f7b-4cdc-4ff9-91b5-93dd3fcee69a",
+  "title": "כבאות והצלה - גבולות מחוזות ותחנות אזוריות",
+  "organization": "כבאות והצלה לישראל",
+  "tags": [
+    "כבאות והצלה",
+    "מחוזות",
+    "תחנות אזוריות"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "גבולות",
+    "כבאות",
+    "מחוזות",
+    "לישראל",
+    "ותחנות",
+    "תחנות",
+    "אזוריות",
+    "והצלה"
+  ],
+  "resources": [
+    {
+      "resource_id": "f6b8a67e-ac41-4653-b9b6-0f03b2f00057",
+      "title": "מטא-דאטה.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "631ebdf9-7ef8-447e-a425-73aa5e1ee1ec",
+      "title": "גבול מחוזות.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d7371007-2161-47bc-b124-f33abb4c46ce",
+      "title": "גבול תחנות אזוריות.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

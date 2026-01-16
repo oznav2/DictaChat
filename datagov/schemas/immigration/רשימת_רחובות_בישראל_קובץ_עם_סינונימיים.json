@@ -1,0 +1,109 @@
+{
+  "dataset_id": "785ad9fb-6da6-426d-b5ea-b8e36febbc8a",
+  "title": "רשימת רחובות בישראל - קובץ עם סינונימיים",
+  "organization": "רשות האוכלוסין וההגירה",
+  "tags": [
+    "אוכלוסיה",
+    "סינונימי",
+    "רחוב",
+    "רחובות",
+    "רחובות בישראל"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "name",
+    "status",
+    "street",
+    "אוכלוסיה",
+    "סינונימי",
+    "code",
+    "רחוב",
+    "רשות",
+    "city",
+    "official",
+    "וההגירה",
+    "region",
+    "רחובות",
+    "האוכלוסין",
+    "בישראל",
+    "סינונימיים"
+  ],
+  "resources": [
+    {
+      "resource_id": "bf185c7f-1a4e-4662-88c5-fa118a244bda",
+      "title": "רשימת רחובות בישראל - קובץ עם סינונימיים - מתעדכן",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "region_code",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "region_name",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "city_code",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "city_name",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "street_code",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "street_name",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "street_name_status",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "official_code",
+          "type": "numeric",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 150798
+    },
+    {
+      "resource_id": "98d231af-67c7-4554-b54d-69b933c52b0d",
+      "title": "רשימת רחובות בישראל - קובץ עם סינונימיים - מתעדכן",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "2f9c3a0d-bcdc-4539-b626-a8d708ed98d8",
+      "title": "רחובות בישראל - קובץ עם סינונימיים",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

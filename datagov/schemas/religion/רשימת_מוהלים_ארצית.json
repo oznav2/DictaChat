@@ -1,0 +1,105 @@
+{
+  "dataset_id": "b72acc9a-6512-4849-9529-3ce73370bff2",
+  "title": "רשימת מוהלים ארצית",
+  "organization": "הרבנות הראשית לישראל",
+  "tags": [
+    "בריתות",
+    "מוהל",
+    "מוהל מוסמך",
+    "מוהלים",
+    "מוהלים מוסמכים",
+    "רבנות",
+    "רשימת מוהלים"
+  ],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "phone",
+    "מוסמך",
+    "הראשית",
+    "לישראל",
+    "city",
+    "בריתות",
+    "ארצית",
+    "הרבנות",
+    "certificationexpiresengdate",
+    "מוסמכים",
+    "cellphone",
+    "street",
+    "certificationexpireshebdate",
+    "רבנות",
+    "מוהלים",
+    "מוהל",
+    "lastname",
+    "firstname",
+    "confirmationnumber"
+  ],
+  "resources": [
+    {
+      "resource_id": "0e526e20-ca57-4ca8-ad6f-2bc5b520824b",
+      "title": "רשימת מוהלים ארצית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "confirmationnumber",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "lastname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "firstname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "cellphone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "certificationexpireshebdate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "certificationexpiresengdate",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 403
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

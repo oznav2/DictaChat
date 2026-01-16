@@ -1,0 +1,94 @@
+{
+  "dataset_id": "cf92190d-eec4-4906-beec-26fd2e2bb83d",
+  "title": "מאגר החלטות בית הדין לעררים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "בתי דין לעררים",
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "החלטות",
+    "בקשה",
+    "בית",
+    "החלטה",
+    "דיין",
+    "בתי",
+    "סוג",
+    "משרד",
+    "לעררים",
+    "תיק",
+    "דין",
+    "הדין",
+    "נושא",
+    "תאריך",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "b9580b33-6b41-4ca3-b6e1-eb4bbf96a318",
+      "title": "מאגר החלטות בית הדין לעררים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר תיק",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "בית דין",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם דיין",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך החלטה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סוג בקשה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "נושא",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 65177
+    },
+    {
+      "resource_id": "e895b7a1-d4be-4b79-9e3e-530ddb367933",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

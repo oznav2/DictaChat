@@ -1,0 +1,139 @@
+{
+  "dataset_id": "f28ff5b6-d01e-42ed-bd97-86bb0ca5a52a",
+  "title": "חופים ותחנות הצלה",
+  "organization": "משרד הפנים",
+  "tags": [
+    "אוכלוסיה",
+    "חופים",
+    "ים",
+    "סוג חוף",
+    "תחנת הצלה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "אוכלוסיה",
+    "מטר",
+    "סוג",
+    "מוכרז",
+    "הפנים",
+    "תחנת",
+    "חופים",
+    "ידי",
+    "אורך",
+    "מופעל",
+    "מוניציפלי",
+    "החוף",
+    "מחוז",
+    "חוף",
+    "משרד",
+    "רוחב",
+    "ותחנות",
+    "הצלה",
+    "ישוב",
+    "גוף"
+  ],
+  "resources": [
+    {
+      "resource_id": "48cbb4b2-4492-4a33-93f9-b615e37d8eb5",
+      "title": "חופים ותחנות הצלה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "תת סוג גוף",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "גוף מוניציפלי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם החוף",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג חוף",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "החוף מופעל על ידי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג חוף מוכרז",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שם תחנת הצלה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "אורך החוף (מטר)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "רוחב החוף (מטר)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נ.צ 1 אורך",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נ.צ 1 רוחב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נ.צ 2 אורך",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נ.צ 2 רוחב",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 442
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

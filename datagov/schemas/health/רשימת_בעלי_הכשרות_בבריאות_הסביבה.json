@@ -1,0 +1,83 @@
+{
+  "dataset_id": "9f0ea3dc-2e25-43f0-9b8f-10f53e23c335",
+  "title": "רשימת בעלי הכשרות בבריאות הסביבה",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות הסביבה"
+  ],
+  "categories": [
+    "health",
+    "environment",
+    "religion"
+  ],
+  "keywords": [
+    "name",
+    "הסביבה",
+    "training",
+    "certified",
+    "בעלי",
+    "משרד",
+    "date",
+    "first",
+    "validity",
+    "הבריאות",
+    "בבריאות",
+    "family",
+    "number",
+    "בריאות",
+    "הכשרות",
+    "received"
+  ],
+  "resources": [
+    {
+      "resource_id": "6bf142d3-3fcc-45e9-8637-abcf3fc52c1a",
+      "title": "רשימת בעלי הכשרות בבריאות הסביבה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "training_name",
+          "type": "numeric",
+          "semantic": "name"
+        },
+        {
+          "name": "family_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "first_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "certified_number",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "received_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "validity_date",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 13822
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

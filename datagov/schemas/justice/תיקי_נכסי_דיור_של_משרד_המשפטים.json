@@ -1,0 +1,121 @@
+{
+  "dataset_id": "cab50ebd-1cda-4d9b-a6d3-a09475e8eb9c",
+  "title": "תיקי נכסי דיור  של משרד המשפטים",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice",
+    "housing"
+  ],
+  "keywords": [
+    "כתובת",
+    "סוג",
+    "שטח",
+    "מחסן",
+    "בעלות",
+    "דיור",
+    "סטאטוס",
+    "נכסי",
+    "מחוז",
+    "ברוטו",
+    "משרד",
+    "יצירה",
+    "תאריך",
+    "object",
+    "המשפטים",
+    "תיקי",
+    "ברודו",
+    "ישוב",
+    "הערות",
+    "הנכס"
+  ],
+  "resources": [
+    {
+      "resource_id": "3934203a-70f9-45da-8c76-0594a7363872",
+      "title": "תיקי נכסי דיור.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "r_object_id",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הנכס",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "הערות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטאטוס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך סטאטוס",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "כתובת הנכס",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "ישוב הנכס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מחוז הנכס",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סוג בעלות הנכס",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שטח ברודו משרד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שטח ברוטו מחסן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך יצירה",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 91
+    },
+    {
+      "resource_id": "7c44eafc-fcd1-4bcf-8946-df3c5e1a7bbc",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

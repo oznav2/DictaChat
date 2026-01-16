@@ -1,0 +1,127 @@
+{
+  "dataset_id": "7a973115-c27c-40f4-8072-07bbe3aef3d2",
+  "title": "תחנות התחסנות כנגד חצבת",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "חיסונים",
+    "חצבת",
+    "מחלות"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "חצבת",
+    "city",
+    "institute",
+    "vaccination",
+    "time",
+    "מחלות",
+    "הבריאות",
+    "station",
+    "code",
+    "משרד",
+    "type",
+    "חיסונים",
+    "כנגד",
+    "תחנות",
+    "התחסנות",
+    "address",
+    "population",
+    "owner",
+    "availability"
+  ],
+  "resources": [
+    {
+      "resource_id": "54533763-9edb-4fff-bc9b-1952f1ae66d0",
+      "title": "תחנות התחסנות כנגד חצבת",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "station_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "station_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "population_type",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "population_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "vaccination_type",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "vaccination_type_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "owner_code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "owner",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "availability_time",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "city_code",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "in_institute_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "in_institute",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 184
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

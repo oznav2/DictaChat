@@ -1,0 +1,413 @@
+{
+  "dataset_id": "3c1de3e2-1028-4efc-8f48-60edc80fa4df",
+  "title": "התכנית הלאומית למדדי איכות של משרד הבריאות - פרה הוספיטל",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "מדדי איכות",
+    "פרה הוספיטל"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "gender",
+    "start",
+    "duration",
+    "איכות",
+    "provider",
+    "age",
+    "cases",
+    "measure",
+    "target",
+    "הוספיטל",
+    "measurement",
+    "shift",
+    "groups",
+    "month",
+    "למדדי",
+    "הבריאות",
+    "range",
+    "number",
+    "description",
+    "ownership",
+    "long",
+    "detailed",
+    "code",
+    "משרד",
+    "subject",
+    "type",
+    "הלאומית",
+    "quarter",
+    "approved",
+    "פרה",
+    "מדדי",
+    "day",
+    "treament",
+    "התכנית",
+    "desc",
+    "year"
+  ],
+  "resources": [
+    {
+      "resource_id": "11af0fc1-900a-4373-b32e-dd3331304890",
+      "title": "CO2",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "subject_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "provider_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "measure_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "measure_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "measure_long_description",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "measurement_start_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "measurement_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Quarter",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "provider_ownership",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "provider",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "gender",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shift",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "day_range",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "age_range",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "target",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "treament_duration",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "treament_duration_range",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "number_of_cases",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "number_of_cases_approved",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "detailed_age_range_groups",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 7566
+    },
+    {
+      "resource_id": "46e2f476-fab0-4436-9ded-15a10e7f92d4",
+      "title": "הערכת שבץ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "subject_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "provider_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "measure_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "measure_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "measure_long_description",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "measurement_start_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "measurement_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Quarter",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "provider_ownership",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "provider",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "gender",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shift",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "day_range",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "age_range",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "target",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "treament_duration",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "treament_duration_range",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "number_of_cases",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "number_of_cases_approved",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "detailed_age_range_groups",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3377
+    },
+    {
+      "resource_id": "6b5826ce-a8de-4259-81a3-cdd828b876fd",
+      "title": "מסירת תוצאות אק\"ג של מטופלים עם חשד ל-STEMI",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "subject_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "provider_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "measure_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "measure_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "measure_long_description",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "measurement_start_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "measurement_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Quarter",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "provider_ownership",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "provider",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "gender",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shift",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "day_range",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "age_range",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "target",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "treament_duration",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "treament_duration_range",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "number_of_cases",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "number_of_cases_approved",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "detailed_age_range_groups",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 8125
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -127,7 +127,9 @@ export const DELETE: RequestHandler = async ({ params }) => {
 					const conversationId = context.conversationId;
 					// Delete chunks, context, and memory
 					await ragDb.collection("document_chunks").deleteMany({ conversationId });
-					await ragDb.collection("document_contexts").deleteOne({ documentHash: book.documentHash });
+					await ragDb
+						.collection("document_contexts")
+						.deleteOne({ documentHash: book.documentHash });
 					await ragDb.collection("conversation_memory").deleteOne({ conversationId });
 					console.log(`[API] Deleted RAG data for documentHash: ${book.documentHash}`);
 				}

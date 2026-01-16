@@ -1,0 +1,105 @@
+{
+  "dataset_id": "d0be6a3a-573a-4664-848f-a118fbc274e7",
+  "title": "רכבת כבדה - תדירות שעתית 2019",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2019",
+    "GIS",
+    "חצב",
+    "ממג",
+    "רכבת כבדה",
+    "תדירות",
+    "תדירות שעתית",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "abba",
+    "רכבת",
+    "yearmonth",
+    "ממג",
+    "objectid",
+    "תחבורה",
+    "shape",
+    "בדרכים",
+    "freq",
+    "משרד",
+    "length",
+    "שעתית",
+    "והבטיחות",
+    "gis",
+    "חצב",
+    "כבדה",
+    "תדירות",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "1d606695-68af-4b5e-8df7-619a4d3b3390",
+      "title": "RAIL_FREQ_2019_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "9565fd80-7aaa-4533-8302-969f9fc59921",
+      "title": "RAIL_FREQ_2019_KML",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "301af368-558f-462d-a287-03354823adf8",
+      "title": "RAIL_FREQ_2019_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "AB_FREQ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BA_FREQ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ABBA_FREQ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 78
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

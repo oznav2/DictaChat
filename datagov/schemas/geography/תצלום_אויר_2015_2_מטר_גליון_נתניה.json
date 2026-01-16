@@ -1,0 +1,35 @@
+{
+  "dataset_id": "583a907a-1d6c-4d44-b384-575fd6f26c0e",
+  "title": "תצלום אויר 2015 2 מטר - גליון נתניה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "נתניה",
+    "מטר",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "7d27b330-0d4b-43c8-bdc6-f23c641ba97f",
+      "title": "תצלום אויר 2015 2 מטר - גליון נתניה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

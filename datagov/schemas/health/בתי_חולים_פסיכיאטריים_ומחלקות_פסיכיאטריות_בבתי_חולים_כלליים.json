@@ -1,0 +1,121 @@
+{
+  "dataset_id": "1d372883-3587-4cbc-a40e-377a6fa211a8",
+  "title": "בתי חולים פסיכיאטריים ומחלקות פסיכיאטריות בבתי חולים כלליים",
+  "organization": "משרד הבריאות",
+  "tags": [],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "כלליים",
+    "city",
+    "institute",
+    "age",
+    "fax",
+    "פסיכיאטריות",
+    "הבריאות",
+    "description",
+    "ownership",
+    "website",
+    "ומחלקות",
+    "code",
+    "משרד",
+    "type",
+    "district",
+    "בבתי",
+    "פסיכיאטריים",
+    "בתי",
+    "hospital",
+    "חולים",
+    "address"
+  ],
+  "resources": [
+    {
+      "resource_id": "5b4dfe37-ca97-4973-9752-5f1950939832",
+      "title": "בתי חולים פסיכיאטריים ומחלקות פסיכיאטריות בבתי חולים כלליים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "hospital_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "age_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "age_code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "type_code",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ownership",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Institute_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "website",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 38
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "dataset_id": "d39807e1-195c-4ab1-92e0-6197f11bf069",
+  "title": "שקיפות תקציבית אשכול למ\"ס תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "אשכול",
+    "חינוך",
+    "תקציב"
+  ],
+  "categories": [
+    "education",
+    "finance"
+  ],
+  "keywords": [
+    "אשכול",
+    "תקציב",
+    "חינוך",
+    "משרד",
+    "החינוך",
+    "שקיפות",
+    "תקציבית",
+    "תשע"
+  ],
+  "resources": [
+    {
+      "resource_id": "17b8d440-91a2-4795-a305-a6f3b8956a4c",
+      "title": "שקיפות תקציבית אשכול למ\"ס תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

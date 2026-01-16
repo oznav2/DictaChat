@@ -1,0 +1,102 @@
+{
+  "dataset_id": "727e865d-25b1-43ce-9dcb-af297851f87b",
+  "title": "מספרי בתים ושמות הרחובות",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "תכנון עיר וגיאוגרפיה"
+  ],
+  "categories": [
+    "finance",
+    "geography"
+  ],
+  "keywords": [
+    "housenuber",
+    "באר",
+    "lon",
+    "עיר",
+    "lat",
+    "streetname",
+    "תכנון",
+    "עיריית",
+    "הרחובות",
+    "citycode",
+    "בתים",
+    "שבע",
+    "ושמות",
+    "מספרי",
+    "letter",
+    "streetcode",
+    "וגיאוגרפיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "65bbfd5e-6707-4298-9bc7-24db9c7d010d",
+      "title": "SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "8f8c002b-f305-44de-92fe-2debf312b7ac",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "66755b06-bf71-4e4e-989b-e6ee98cffb68",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "StreetCode",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "HouseNuber",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "cityCode",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "streetName",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "letter",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 29371
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

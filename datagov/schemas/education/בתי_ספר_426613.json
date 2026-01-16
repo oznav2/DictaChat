@@ -1,0 +1,78 @@
+{
+  "dataset_id": "426613d5-57dc-4d3d-b320-221606f2409c",
+  "title": "בתי ספר",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "בתי ספר",
+    "חינוך",
+    "לימודים",
+    "מעלה אדומים",
+    "תיכון"
+  ],
+  "categories": [
+    "education",
+    "water"
+  ],
+  "keywords": [
+    "name",
+    "objectid",
+    "חינוך",
+    "בתי",
+    "אדומים",
+    "עיריית",
+    "תיכון",
+    "mikum",
+    "לימודים",
+    "telefon",
+    "ktovet",
+    "מעלה",
+    "ספר"
+  ],
+  "resources": [
+    {
+      "resource_id": "1a6d0069-6311-44f7-80ad-a06aadb2ec69",
+      "title": "רשימת בתי ספר",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "mikum",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ktovet",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "telefon",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 24
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

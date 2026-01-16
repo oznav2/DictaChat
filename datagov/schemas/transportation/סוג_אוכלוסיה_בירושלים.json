@@ -1,0 +1,89 @@
+{
+  "dataset_id": "400f0ed0-eb0a-4295-b4fa-e52a03ee3a03",
+  "title": "סוג אוכלוסיה בירושלים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "ירושלים",
+    "סוג אוכלוסיה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "pop",
+    "shape",
+    "area",
+    "objectid",
+    "אוכלוסיה",
+    "בדרכים",
+    "סוג",
+    "משרד",
+    "type",
+    "ירושלים",
+    "בירושלים",
+    "והבטיחות",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "0cd4e68b-7980-4650-ba2e-f79abfff690c",
+      "title": "taz_jer_pop_type_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0ff15e2d-2632-41be-a7c1-46e24f668854",
+      "title": "TAZ_JER_POP_TYPE_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a44710d4-60ea-43e3-80e3-3be4a7f83646",
+      "title": "TAZ_JER_POP_TYPE_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "POP_TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 655
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

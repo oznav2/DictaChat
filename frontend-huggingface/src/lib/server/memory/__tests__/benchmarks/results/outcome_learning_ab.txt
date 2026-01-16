@@ -1,21 +1,21 @@
 ============================= test session starts =============================
 platform: node v20.18.1
 test framework: vitest
-timestamp: 2026-01-11T16:08:11.799Z
+timestamp: 2026-01-15T12:55:35.870Z
 rootdir: /home/ilan/BricksLLM/frontend-huggingface
 
 collecting ... collected 10 items
 
-test_outcome_learning_ab::test_ab_learning_effectiveness PASSED (14ms) [learning_group_italian_rank=1.000, control_group_italian_rank=3.000, learning_improved_rank=1.000, italian_confidence=72.000, learning_enabled_a=1.000, learning_enabled_b=0.000] [ 10%]
-test_outcome_learning_ab::test_positive_negative_impact PASSED (6ms) [initial_a_score=50.000, final_a_score=100.000, initial_b_score=50.000, final_b_score=0.000, a_confidence=84.000, b_confidence=0.000, positive_impact=1.000, negative_impact=1.000] [ 20%]
+test_outcome_learning_ab::test_ab_learning_effectiveness PASSED (5ms) [learning_group_italian_rank=1.000, control_group_italian_rank=3.000, learning_improved_rank=1.000, italian_confidence=72.000, learning_enabled_a=1.000, learning_enabled_b=0.000] [ 10%]
+test_outcome_learning_ab::test_positive_negative_impact PASSED (1ms) [initial_a_score=50.000, final_a_score=100.000, initial_b_score=50.000, final_b_score=0.000, a_confidence=84.000, b_confidence=0.000, positive_impact=1.000, negative_impact=1.000] [ 20%]
 test_outcome_learning_ab::test_hebrew_feedback_impact PASSED (2ms) [hebrew_a_score=100.000, hebrew_b_score=0.000, hebrew_a_confidence=80.000, hebrew_learning_effective=1.000] [ 30%]
 test_outcome_learning_ab::test_convergence_speed PASSED (1ms) [iterations_to_converge=8.000, final_confidence=70.000, target_confidence=70.000, converged=1.000, samples_needed=8.000] [ 40%]
-test_outcome_learning_ab::test_learning_stability PASSED (1ms) [high_confidence=84.000, after_negative=61.000, stability_ratio=73.000, stable=1.000] [ 50%]
-test_outcome_learning_ab::test_context_isolation PASSED (3ms) [work_a_score=100.000, work_b_score=0.000, home_a_score=0.000, home_b_score=100.000, work_prefers_a=1.000, home_prefers_b=1.000, context_isolation=1.000] [ 60%]
+test_outcome_learning_ab::test_learning_stability PASSED (0ms) [high_confidence=84.000, after_negative=61.000, stability_ratio=73.000, stable=1.000] [ 50%]
+test_outcome_learning_ab::test_context_isolation PASSED (1ms) [work_a_score=100.000, work_b_score=0.000, home_a_score=0.000, home_b_score=100.000, work_prefers_a=1.000, home_prefers_b=1.000, context_isolation=1.000] [ 60%]
 test_outcome_learning_ab::test_wilson_score_calculation PASSED (0ms) [test_cases=5.000, accurate_calculations=5.000, accuracy_rate=100.000, min_score=0.000, max_score=89.000] [ 70%]
 test_outcome_learning_ab::test_confidence_growth PASSED (0ms) [sample_sizes_tested=6.000, min_confidence=0.000, max_confidence=71.000, confidence_monotonic=1.000, confidence_at_100=71.000] [ 80%]
-test_outcome_learning_ab::test_bilingual_learning_parity PASSED (1ms) [english_a_score=100.000, english_b_score=0.000, hebrew_a_score=100.000, hebrew_b_score=0.000, english_diff=100.000, hebrew_diff=100.000, learning_parity=1.000] [ 90%]
-test_outcome_learning_ab::test_outcome_learning_ab PASSED (7ms) [items_tested=5.000, feedback_rounds=20.000, learning_high_rank=1.000, control_high_rank=3.000, learning_improved=1.000, high_quality_confidence=84.000, low_quality_confidence=0.000, quality_differentiation=1.000, ab_test_success=1.000] [100%]
+test_outcome_learning_ab::test_bilingual_learning_parity PASSED (0ms) [english_a_score=100.000, english_b_score=0.000, hebrew_a_score=100.000, hebrew_b_score=0.000, english_diff=100.000, hebrew_diff=100.000, learning_parity=1.000] [ 90%]
+test_outcome_learning_ab::test_outcome_learning_ab PASSED (3ms) [items_tested=5.000, feedback_rounds=20.000, learning_high_rank=1.000, control_high_rank=3.000, learning_improved=1.000, high_quality_confidence=84.000, low_quality_confidence=0.000, quality_differentiation=1.000, ab_test_success=1.000] [100%]
 
 ============================== benchmark summary ==============================
 
@@ -80,5 +80,5 @@ Metrics Summary:
   ab_test_success: avg=1.000, min=1.000, max=1.000
 
 ============================== test results ===================================
-10 passed, 0 failed in 0.07s
+10 passed, 0 failed in 0.04s
 ===============================================================================

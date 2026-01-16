@@ -1,0 +1,66 @@
+{
+  "dataset_id": "ff8b0e45-4d07-4ae2-bec7-482bc3fdea29",
+  "title": "ממונים משרדיים למניעת גזענות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "גזענות",
+    "מניעת גזענות"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "משרדיים",
+    "טלפון",
+    "כתובת",
+    "למניעת",
+    "משרד",
+    "מניעת",
+    "ממונים",
+    "גזענות",
+    "מייל",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "ff07a3d4-134a-490e-8264-1cd821e437be",
+      "title": "ממונים משרדיים למניעת גזענות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "משרד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "כתובת מייל",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 71
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

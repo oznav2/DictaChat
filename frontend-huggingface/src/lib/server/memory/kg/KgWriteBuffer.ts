@@ -1,4 +1,5 @@
 import type { AnyBulkWriteOperation, Collection } from "mongodb";
+import { Mutex } from "async-mutex";
 import { logger } from "$lib/server/logger";
 import type { MemoryTier, Outcome } from "../types";
 import type { ActionExample, ActionEffectiveness, KgEdge, KgNode } from "./types";
@@ -50,10 +51,11 @@ export class KgWriteBuffer {
 	private timer: ReturnType<typeof setInterval> | null = null;
 	private flushing = false;
 	private pendingFlush = false;
+	private flushMutex = new Mutex();
 
-	private nodeDeltas = new Map<NodeKey, NodeDelta>();
-	private edgeDeltas = new Map<EdgeKey, EdgeDelta>();
-	private actionDeltas = new Map<ActionKey, ActionDelta>();
+	private nodeDeltas: Map<NodeKey, NodeDelta> = new Map();
+	private edgeDeltas: Map<EdgeKey, EdgeDelta> = new Map();
+	private actionDeltas: Map<ActionKey, ActionDelta> = new Map();
 
 	constructor(params: {
 		kgNodes: Collection<KgNode>;
@@ -180,30 +182,48 @@ export class KgWriteBuffer {
 	}
 
 	async flush(): Promise<void> {
-		if (this.flushing) {
-			this.pendingFlush = true;
-			return;
-		}
-		this.flushing = true;
+		const shouldFlush = await this.flushMutex.runExclusive(() => {
+			if (this.flushing) {
+				this.pendingFlush = true;
+				return false;
+			}
+			this.flushing = true;
+			return true;
+		});
+
+		if (!shouldFlush) return;
+
 		try {
 			for (;;) {
-				this.pendingFlush = false;
+				const snapshot = await this.flushMutex.runExclusive(() => {
+					this.pendingFlush = false;
 
-				const nodes = Array.from(this.nodeDeltas.values());
-				const edges = Array.from(this.edgeDeltas.values());
-				const actions = Array.from(this.actionDeltas.values());
-				this.nodeDeltas.clear();
-				this.edgeDeltas.clear();
-				this.actionDeltas.clear();
+					const nodeDeltas = this.nodeDeltas;
+					const edgeDeltas = this.edgeDeltas;
+					const actionDeltas = this.actionDeltas;
+					this.nodeDeltas = new Map();
+					this.edgeDeltas = new Map();
+					this.actionDeltas = new Map();
 
-				await this.flushNodes(nodes);
-				await this.flushEdges(edges);
-				await this.flushActions(actions);
+					return {
+						nodes: Array.from(nodeDeltas.values()),
+						edges: Array.from(edgeDeltas.values()),
+						actions: Array.from(actionDeltas.values()),
+					};
+				});
 
-				if (!this.pendingFlush) break;
+				await this.flushNodes(snapshot.nodes);
+				await this.flushEdges(snapshot.edges);
+				await this.flushActions(snapshot.actions);
+
+				const hasPendingFlush = await this.flushMutex.runExclusive(() => this.pendingFlush);
+				if (!hasPendingFlush) break;
 			}
 		} finally {
-			this.flushing = false;
+			await this.flushMutex.runExclusive(() => {
+				this.flushing = false;
+				this.pendingFlush = false;
+			});
 		}
 	}
 
@@ -238,11 +258,7 @@ export class KgWriteBuffer {
 					{
 						$set: {
 							avg_quality: {
-								$cond: [
-									{ $gt: ["$mentions", 0] },
-									{ $divide: ["$quality_sum", "$mentions"] },
-									0,
-								],
+								$cond: [{ $gt: ["$mentions", 0] }, { $divide: ["$quality_sum", "$mentions"] }, 0],
 							},
 						},
 					},
@@ -365,11 +381,7 @@ export class KgWriteBuffer {
 										total: { $add: ["$worked", "$failed"] },
 									},
 									in: {
-										$cond: [
-											{ $gt: ["$$total", 0] },
-											{ $divide: ["$worked", "$$total"] },
-											0.5,
-										],
+										$cond: [{ $gt: ["$$total", 0] }, { $divide: ["$worked", "$$total"] }, 0.5],
 									},
 								},
 							},
@@ -391,10 +403,7 @@ export class KgWriteBuffer {
 															vars: {
 																denominator: { $add: [1, { $divide: [z2, "$$total"] }] },
 																center: {
-																	$add: [
-																		"$$p",
-																		{ $divide: [z2, { $multiply: [2, "$$total"] }] },
-																	],
+																	$add: ["$$p", { $divide: [z2, { $multiply: [2, "$$total"] }] }],
 																},
 																spread: {
 																	$multiply: [
@@ -501,11 +510,7 @@ export class KgWriteBuffer {
 												total: { $add: ["$worked", "$failed"] },
 											},
 											in: {
-												$cond: [
-													{ $gt: ["$$total", 0] },
-													{ $divide: ["$worked", "$$total"] },
-													0.5,
-												],
+												$cond: [{ $gt: ["$$total", 0] }, { $divide: ["$worked", "$$total"] }, 0.5],
 											},
 										},
 									},
@@ -543,16 +548,10 @@ export class KgWriteBuffer {
 																							{
 																								$add: [
 																									{
-																										$multiply: [
-																											"$$p",
-																											{ $subtract: [1, "$$p"] },
-																										],
+																										$multiply: ["$$p", { $subtract: [1, "$$p"] }],
 																									},
 																									{
-																										$divide: [
-																											z2,
-																											{ $multiply: [4, "$$total"] },
-																										],
+																										$divide: [z2, { $multiply: [4, "$$total"] }],
 																									},
 																								],
 																							},
@@ -588,7 +587,8 @@ export class KgWriteBuffer {
 		}
 
 		try {
-			const bulkWrite = (this.contextActionEffectiveness as unknown as { bulkWrite?: unknown }).bulkWrite;
+			const bulkWrite = (this.contextActionEffectiveness as unknown as { bulkWrite?: unknown })
+				.bulkWrite;
 			if (typeof bulkWrite === "function") {
 				await this.contextActionEffectiveness.bulkWrite(rollupOps, { ordered: false });
 			} else {

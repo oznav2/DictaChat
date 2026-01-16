@@ -1,0 +1,48 @@
+{
+  "dataset_id": "96f3897c-5eec-460d-87c6-b64a8cab0edc",
+  "title": "שערים ממוצעים לכל המטבעות היציגים - 2007",
+  "organization": "בנק ישראל",
+  "tags": [
+    "2007",
+    "אוצר וכלכלה",
+    "בנק ישראל",
+    "מטבעות יציגים",
+    "שערי מטבע"
+  ],
+  "categories": [
+    "finance",
+    "environment",
+    "economy"
+  ],
+  "keywords": [
+    "מטבעות",
+    "המטבעות",
+    "ממוצעים",
+    "וכלכלה",
+    "ישראל",
+    "מטבע",
+    "שערים",
+    "שערי",
+    "בנק",
+    "היציגים",
+    "אוצר",
+    "יציגים",
+    "לכל"
+  ],
+  "resources": [
+    {
+      "resource_id": "50cc8f1e-1546-445d-9e85-951b852fa7a8",
+      "title": "שערים ממוצעים לכל המטבעות היציגים - 2007",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

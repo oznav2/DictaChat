@@ -1,0 +1,298 @@
+{
+  "dataset_id": "e4a5e2d7-6668-42d0-b6c8-4a64f246242a",
+  "title": "תכנון וביצוע אוטובוסים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אוטובוסים",
+    "משרד התחבורה",
+    "תחבורה",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "operatorlineid",
+    "תחבורה",
+    "trip",
+    "officelineid",
+    "operator",
+    "בדרכים",
+    "month",
+    "והבטיחות",
+    "rishui",
+    "hakdama",
+    "אוטובוסים",
+    "cluster",
+    "eibizua",
+    "תכנון",
+    "משרד",
+    "loberishui",
+    "operatorid",
+    "ציבורית",
+    "takin",
+    "year",
+    "וביצוע",
+    "eihurim",
+    "clusterid",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "588dfec1-b95c-495b-a1f4-e1ca4278be5d",
+      "title": "מאגר תכנון וביצוע אוטובוסים 2025",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OperatorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "operator_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ClusterId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "cluster_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OperatorLineId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "OfficeLineId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "trip_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "trip_month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "rishui",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "eibizua",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hakdama",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "eihurim",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "takin",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "loberishui",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 22896
+    },
+    {
+      "resource_id": "86eceab6-44ac-4301-a6a7-9a4a92dae48b",
+      "title": "מאגר תכנון וביצוע אוטובוסים 2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OperatorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "operator_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ClusterId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "cluster_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OperatorLineId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "OfficeLineId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "trip_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "trip_month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "rishui",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "eibizua",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hakdama",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "eihurim",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "takin",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "loberishui",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 33729
+    },
+    {
+      "resource_id": "5dcbd34b-8103-4207-b7c9-571ec51846de",
+      "title": "מאגר תכנון וביצוע אוטובוסים 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OperatorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "operator_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ClusterId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "cluster_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OperatorLineId",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "OfficeLineId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "trip_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "trip_month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "rishui",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "eibizua",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hakdama",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "eihurim",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "takin",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "loberishui",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 34223
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

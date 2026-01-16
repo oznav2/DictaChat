@@ -1,0 +1,74 @@
+{
+  "dataset_id": "12c7457c-a9f0-40f8-9ed6-b4689d3d3fa4",
+  "title": "מאגר פריטים המחייבים רישיון יבוא כימיקלים",
+  "organization": "משרד הכלכלה והתעשייה",
+  "tags": [
+    "יבוא",
+    "כימיקלים",
+    "כלכלה",
+    "רישוי"
+  ],
+  "categories": [
+    "water",
+    "economy"
+  ],
+  "keywords": [
+    "רישוי",
+    "כימיקלים",
+    "number",
+    "משרד",
+    "פריטים",
+    "custom",
+    "category",
+    "הכלכלה",
+    "item",
+    "והתעשייה",
+    "יבוא",
+    "המחייבים",
+    "כלכלה",
+    "description",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "76be9404-9ba2-480d-b728-9801aec0a8bc",
+      "title": "מאגר פריטים המחייבים רישיון יבוא כימיקלים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "custom_item",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "category_number",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "category",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 117
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

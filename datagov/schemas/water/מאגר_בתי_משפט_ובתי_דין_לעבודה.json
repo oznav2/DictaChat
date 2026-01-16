@@ -1,0 +1,78 @@
+{
+  "dataset_id": "b71257cf-d117-47b0-a800-06fd6e53f2d8",
+  "title": "מאגר בתי משפט ובתי דין לעבודה",
+  "organization": "הרשות השופטת",
+  "tags": [],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "name",
+    "משפט",
+    "מחוז",
+    "הרשות",
+    "השופטת",
+    "תחום",
+    "לעבודה",
+    "בתי",
+    "court",
+    "district",
+    "דין",
+    "activity",
+    "ובתי",
+    "details"
+  ],
+  "resources": [
+    {
+      "resource_id": "5f8cff43-30fb-449b-96b1-280b2aafb2c3",
+      "title": "מאגר בתי משפט ובתי דין לעבודה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "court_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "court_district",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "court_activity",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "תחום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "court_details",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 121
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

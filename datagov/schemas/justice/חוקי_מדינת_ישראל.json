@@ -1,0 +1,41 @@
+{
+  "dataset_id": "db7d2617-00e9-4d65-94e4-a04505e58bba",
+  "title": "חוקי מדינת ישראל",
+  "organization": "הכנסת",
+  "tags": [
+    "חוקי מדינת ישראל",
+    "חוקים",
+    "חקיקה",
+    "כנסת",
+    "משפטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "הכנסת",
+    "חוקי",
+    "ישראל",
+    "חקיקה",
+    "משפטים",
+    "כנסת",
+    "חוקים",
+    "מדינת"
+  ],
+  "resources": [
+    {
+      "resource_id": "5fd71ccb-3bbf-4d34-9cfe-c9b063c22913",
+      "title": "lawlaws.aspx?t=lawlaws&st=lawlaws",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "dataset_id": "107236de-ba5d-4fef-8311-6a70b3553463",
+  "title": "שערים ממוצעים לכל המטבעות היציגים - 2012",
+  "organization": "בנק ישראל",
+  "tags": [
+    "2012",
+    "אוצר וכלכלה",
+    "בנק ישראל",
+    "מטבעות יציגים",
+    "שער חליפין",
+    "שערי מטבע"
+  ],
+  "categories": [
+    "finance",
+    "environment",
+    "economy"
+  ],
+  "keywords": [
+    "מטבעות",
+    "המטבעות",
+    "ממוצעים",
+    "חליפין",
+    "וכלכלה",
+    "ישראל",
+    "מטבע",
+    "שערים",
+    "שערי",
+    "בנק",
+    "היציגים",
+    "אוצר",
+    "שער",
+    "יציגים",
+    "לכל"
+  ],
+  "resources": [
+    {
+      "resource_id": "9dea0adc-15d3-4b13-86cb-8bb5cae6473b",
+      "title": "שערים ממוצעים לכל המטבעות היציגים - 2012",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

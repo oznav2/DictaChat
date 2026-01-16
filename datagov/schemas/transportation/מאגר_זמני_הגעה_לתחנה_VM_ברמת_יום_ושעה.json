@@ -1,0 +1,135 @@
+{
+  "dataset_id": "8d40abd7-60e3-4007-8f9d-f6683e018009",
+  "title": "מאגר זמני הגעה לתחנה VM ברמת יום ושעה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אוטובוסים",
+    "משרד התחבורה",
+    "תחבורה",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation",
+    "water"
+  ],
+  "keywords": [
+    "תחבורה",
+    "dayofweek",
+    "std",
+    "hoursourcetime",
+    "count",
+    "ברמת",
+    "לתחנה",
+    "בדרכים",
+    "month",
+    "והבטיחות",
+    "rishui",
+    "route",
+    "אוטובוסים",
+    "distcumsum",
+    "stopcode",
+    "משרד",
+    "mean",
+    "יום",
+    "stopsequence",
+    "ציבורית",
+    "timecumsum",
+    "desc",
+    "הגעה",
+    "זמני",
+    "ושעה",
+    "common",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "e3673768-3dc2-4e62-b0ea-cf763c07a037",
+      "title": "קובץ זמני הגעה לתחנה VM ברמת יום ושעה 2024",
+      "format": "CSV",
+      "fields": [],
+      "error": "The read operation timed out"
+    },
+    {
+      "resource_id": "fe1cd200-0b1d-4e98-87af-faf73d19b697",
+      "title": "קובץ זמני הגעה לתחנה VM ברמת יום ושעה 2023",
+      "format": "CSV",
+      "fields": [],
+      "error": "The read operation timed out"
+    },
+    {
+      "resource_id": "c96b9865-006d-4c69-8d6a-bfbdea5d6da5",
+      "title": "קובץ זמני הגעה לתחנה VM ברמת יום ושעה 2022",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "route_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "route_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "DayOfWeek",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "HourSourceTime",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "StopSequence_Rishui",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "StopCode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "count_common",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "timeCumSum_mean",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "timeCumSum_std",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "distCumSum_mean",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 70356342
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

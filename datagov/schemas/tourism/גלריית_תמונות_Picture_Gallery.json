@@ -1,0 +1,226 @@
+{
+  "dataset_id": "fd857fd2-0f56-4c99-9174-250fd017336a",
+  "title": "גלריית תמונות - Picture Gallery",
+  "organization": "משרד התיירות",
+  "tags": [
+    "גלריית תמונות",
+    "משרד התיירות",
+    "תיירות"
+  ],
+  "categories": [
+    "tourism"
+  ],
+  "keywords": [
+    "name",
+    "התיירות",
+    "city",
+    "fulldescription",
+    "product",
+    "תיירות",
+    "gallery",
+    "vendor",
+    "shortdescription",
+    "גלריית",
+    "משרד",
+    "ascription",
+    "url",
+    "region",
+    "photographer",
+    "theme",
+    "תמונות",
+    "vendorid",
+    "picture"
+  ],
+  "resources": [
+    {
+      "resource_id": "07f57519-193d-458e-9cf3-fe3edd3a34cc",
+      "title": "גלריית תמונות",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ShortDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "VendorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Vendor_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Product_Url",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Ascription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Photographer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Theme",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 695
+    },
+    {
+      "resource_id": "a8589927-99a9-470f-8372-0ceb6240c5c5",
+      "title": "קובץ הסבר",
+      "format": "DOCX",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0702f70f-cbbc-4256-b473-af41bf322cbd",
+      "title": "Picture Gallery  - English",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ShortDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "VendorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Vendor_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Product_Url",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Ascription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Photographer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Theme",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 695
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

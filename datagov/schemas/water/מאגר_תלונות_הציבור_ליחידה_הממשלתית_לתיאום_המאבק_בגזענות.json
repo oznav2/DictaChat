@@ -1,0 +1,148 @@
+{
+  "dataset_id": "0126c251-b06d-4b0f-81a3-821f52e03aaf",
+  "title": "מאגר תלונות הציבור ליחידה הממשלתית לתיאום המאבק בגזענות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "גזענות",
+    "היחידה למאבק בגזענות",
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "קבלת",
+    "המאבק",
+    "למאבק",
+    "גורם",
+    "הממשלתית",
+    "היחידה",
+    "משני",
+    "נושא",
+    "כללי",
+    "לתיאום",
+    "עילת",
+    "מגורי",
+    "ליחידה",
+    "נילון",
+    "גזענות",
+    "מטפל",
+    "שליחת",
+    "משרד",
+    "בגזענות",
+    "הפונה",
+    "מספור",
+    "סיום",
+    "תאריך",
+    "המשפטים",
+    "מכתב",
+    "הגורם",
+    "טיפול",
+    "תלונות",
+    "הציבור",
+    "סטטוס",
+    "אופן",
+    "הפניה",
+    "מגדר",
+    "תיק",
+    "קטין"
+  ],
+  "resources": [
+    {
+      "resource_id": "575d7272-ed40-4956-ae56-97f1529b2d3c",
+      "title": "תלונות הציבור ליחידה הממשלתית לתיאום המאבק בגזענות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספור",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מס' תיק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הגורם הפונה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אופן קבלת הפניה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך קבלת הפניה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שליחת מכתב סיום טיפול",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "נושא הפניה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מגדר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קטין",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מגורי הפונה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נילון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גורם מטפל כללי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גורם מטפל משני",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטטוס",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "עילת סיום טיפול",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 322
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

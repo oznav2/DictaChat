@@ -1,0 +1,53 @@
+{
+  "dataset_id": "87fead9c-187e-46ca-8a97-12b4f0fa62e3",
+  "title": "שערים ממוצעים לכל המטבעות היציגים - 2002",
+  "organization": "בנק ישראל",
+  "tags": [
+    "אוצר וכלכלה",
+    "מטבע חוץ",
+    "מטבעות יציגים",
+    "שער יציג",
+    "שערי חליפין",
+    "שערים ממוצעים"
+  ],
+  "categories": [
+    "finance",
+    "environment",
+    "economy"
+  ],
+  "keywords": [
+    "מטבעות",
+    "המטבעות",
+    "ממוצעים",
+    "חליפין",
+    "וכלכלה",
+    "ישראל",
+    "מטבע",
+    "יציג",
+    "שערים",
+    "שערי",
+    "בנק",
+    "היציגים",
+    "אוצר",
+    "שער",
+    "חוץ",
+    "יציגים",
+    "לכל"
+  ],
+  "resources": [
+    {
+      "resource_id": "96523b8e-c7ac-427f-952f-ff94ed9a0750",
+      "title": "שערים ממוצעים לכל המטבעות היציגים - 2002",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

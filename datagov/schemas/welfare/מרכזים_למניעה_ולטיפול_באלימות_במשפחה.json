@@ -1,0 +1,89 @@
+{
+  "dataset_id": "83ea6136-4a12-4a9a-a33a-d393304b09d0",
+  "title": "מרכזים למניעה ולטיפול באלימות במשפחה",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "אלימות",
+    "אלימות במשפחה"
+  ],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "והביטחון",
+    "באלימות",
+    "locality",
+    "phone",
+    "fax",
+    "display",
+    "frame",
+    "משרד",
+    "למניעה",
+    "הרווחה",
+    "address",
+    "ולטיפול",
+    "במשפחה",
+    "אלימות",
+    "החברתי",
+    "מרכזים",
+    "number",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "ed7208af-6ed7-4e92-9375-714c301bbe78",
+      "title": "מרכזים למניעת אלימות.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "frame",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "locality",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "phone_number",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "fax_number",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "display",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Email",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 241
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "dataset_id": "de7eaf1d-d568-407b-a657-681091deefd7",
+  "title": "רשות תמרור מתחמים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [],
+  "categories": [
+    "transportation",
+    "water"
+  ],
+  "keywords": [
+    "name",
+    "תמרור",
+    "yearmonth",
+    "shape",
+    "area",
+    "oid",
+    "בדרכים",
+    "משרד",
+    "רשות",
+    "trafauth",
+    "length",
+    "והבטיחות",
+    "trafcode",
+    "מתחמים",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d78e4de7-8e64-46b7-8af4-1453f322e925",
+      "title": "AREA_AUTHORITY.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a5b12cb3-fd88-4c1b-b672-653f5b75f4ff",
+      "title": "AREA_AUTHORITY_KMZ.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "5056917d-fc31-4b0e-b40b-203958b8dbd9",
+      "title": "AREA_AUTHORITY.CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "TRAFAUTH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TRAFCODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 174
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

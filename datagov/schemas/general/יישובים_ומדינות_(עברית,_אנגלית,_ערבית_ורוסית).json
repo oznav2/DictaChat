@@ -1,0 +1,195 @@
+{
+  "dataset_id": "7a6d0673-920c-470a-ad90-600d4ce3adcb",
+  "title": "יישובים ומדינות (עברית, אנגלית, ערבית ורוסית)",
+  "organization": "מערך הדיגיטל הלאומי",
+  "tags": [
+    "יישובים",
+    "ישובים",
+    "ישובים בישראל",
+    "ערבית",
+    "ערים",
+    "קאורדינטות",
+    "רוסית"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "symbol",
+    "עברית",
+    "lebanon",
+    "short",
+    "ערבית",
+    "הדיגיטל",
+    "ערים",
+    "alfa",
+    "tld",
+    "distance",
+    "ומדינות",
+    "הלאומי",
+    "russian",
+    "border",
+    "syria",
+    "רוסית",
+    "from",
+    "number",
+    "יישובים",
+    "international",
+    "arabic",
+    "long",
+    "קאורדינטות",
+    "code",
+    "gazastrip",
+    "ישובים",
+    "ורוסית",
+    "אנגלית",
+    "internet",
+    "hebrew",
+    "english",
+    "full",
+    "מערך",
+    "numeric",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "e9701dcb-9f1c-43bb-bd44-eb380ade542f",
+      "title": "יישובים בשפות עברית, אנגלית, ערבית, רוסית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "symbol_number",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "name_in_hebrew",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name_in_english",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name_in_arabic",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "name_in_russian",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "Distance_From_Lebanon_Border",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Distance_From_GazaStrip_Border",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Distance_From_Syria_Border",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1256
+    },
+    {
+      "resource_id": "9980228a-e0e9-4b17-b5a6-5a0b76cd700c",
+      "title": "מדינות מאוחד (קוד בינלאומי, שם באנגלית, עברית וערבית וקידומת טלפון)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "International_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Full_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Short_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Hebrew_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Arabic_ Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Russian_Long_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Russian_short_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Alfa_2_Code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Alfa_3_Code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Internet_cc_TLD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Numeric_Code",
+          "type": "text",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 250
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

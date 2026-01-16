@@ -1,0 +1,122 @@
+{
+  "dataset_id": "ee1265d8-de2b-4223-b6dc-4f6dac157fd7",
+  "title": "אסטרטגית למתע\"ן חדרה נתניה 2050",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "name",
+    "start",
+    "status",
+    "אסטרטגית",
+    "destnation",
+    "company",
+    "נתניה",
+    "בדרכים",
+    "והבטיחות",
+    "infra",
+    "משרד",
+    "lengt",
+    "למתע",
+    "חדרה",
+    "yearmonth",
+    "shape",
+    "oid",
+    "color",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "0b3cc1f9-629e-492b-99d8-d04d36ca8514",
+      "title": "MATAAN_HDR_NTN_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e8281995-f09a-494a-8d11-004c3f0112ef",
+      "title": "MATAAN_HDR_NTN_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "03bcb366-0468-4cbe-8f89-eac1e7866356",
+      "title": "MATAAN_HDR_NTN_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "COLOR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DESTNATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "START_",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "COMPANY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "INFRA",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 7
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

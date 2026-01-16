@@ -1,0 +1,76 @@
+{
+  "dataset_id": "3a4c012f-11c5-4a57-bc82-21d85c02c106",
+  "title": "מאגר מודדים",
+  "organization": "רשות מקרקעי ישראל",
+  "tags": [
+    "דיור"
+  ],
+  "categories": [
+    "water",
+    "housing"
+  ],
+  "keywords": [
+    "phone",
+    "מקרקעי",
+    "officename",
+    "ישראל",
+    "officenumber",
+    "רשות",
+    "address",
+    "freesearch",
+    "דיור",
+    "מודדים"
+  ],
+  "resources": [
+    {
+      "resource_id": "ae20b319-e45e-4702-88be-3a2f4773cdf3",
+      "title": "מאגר מודדים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "officename",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "officenumber",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "freesearch",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 128
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,255 @@
+{
+  "dataset_id": "a38ee853-150f-4360-9177-669063f3322b",
+  "title": "רישוי מערך האוטובוסים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אוטובוס",
+    "אוטובוסים",
+    "משרד התחבורה",
+    "תחבורה",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "רישוי",
+    "תחבורה",
+    "vehiclesize",
+    "אוטובוס",
+    "count",
+    "operator",
+    "האוטובוסים",
+    "בדרכים",
+    "date",
+    "והבטיחות",
+    "rishui",
+    "אוטובוסים",
+    "cluster",
+    "station",
+    "office",
+    "משרד",
+    "type",
+    "ציבורית",
+    "trips",
+    "origin",
+    "destination",
+    "vehicletype",
+    "מערך",
+    "line",
+    "התחבורה",
+    "yishuv"
+  ],
+  "resources": [
+    {
+      "resource_id": "41f49c0d-d5c8-47ac-b760-7698dded9dfa",
+      "title": "מבנה הנתונים במאגר",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d32171d2-7a47-4bb3-89cb-d11305c0692d",
+      "title": "מאגר רישוי מערך האוטובוסים לשנת 2025",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "operator_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "operator_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "cluster_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "cluster_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "operator_line_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "office_line_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "line_type_nm",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "VehicleType_nm",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "VehicleSize_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "rishui_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "origin_station_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "origin_station_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "origin_yishuv_nm",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "destination_station_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "destination_station_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "destination_yishuv_nm",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "trips_count",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 1691480
+    },
+    {
+      "resource_id": "5646ae25-706d-4bbb-9e45-03aa9942404b",
+      "title": "מאגר רישוי מערך האוטובוסים לשנת 2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "operator_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "operator_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "cluster_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "cluster_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "operator_line_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "office_line_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "line_type_nm",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "VehicleType_nm",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "VehicleSize_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "rishui_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "origin_station_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "origin_station_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "origin_yishuv_nm",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "destination_station_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "destination_station_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "destination_yishuv_nm",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "trips_count",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 1747026
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

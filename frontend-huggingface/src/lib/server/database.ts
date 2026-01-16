@@ -33,6 +33,8 @@ import { config as serverConfig } from "$lib/server/config";
 
 export const CONVERSATION_STATS_COLLECTION = "conversations.stats";
 
+let didWarnDeprecatedMemoryBankCollection = false;
+
 export class Database {
 	private client?: MongoClient;
 	private mongoServer?: MongoMemoryServer;
@@ -143,6 +145,10 @@ export class Database {
 		const tools = db.collection("tools");
 		const configCollection = db.collection<ConfigKey>("config");
 		const books = db.collection<Book>("books");
+		if (!didWarnDeprecatedMemoryBankCollection) {
+			logger.warn("[memory-bank] Accessing deprecated collection memoryBank");
+			didWarnDeprecatedMemoryBankCollection = true;
+		}
 		const memoryBank = db.collection<MemoryBankItem>("memoryBank");
 		const userPersonality = db.collection<UserPersonality>("userPersonality");
 		const memoryOutcomes = db.collection<MemoryOutcome>("memoryOutcomes");
@@ -323,10 +329,6 @@ export class Database {
 		books.createIndex({ userId: 1, uploadTimestamp: -1 }).catch((e) => logger.error(e));
 		books.createIndex({ userId: 1, title: 1 }, { unique: true }).catch((e) => logger.error(e));
 		books.createIndex({ taskId: 1 }).catch((e) => logger.error(e));
-
-		// MemoryBank indexes
-		memoryBank.createIndex({ userId: 1, status: 1, createdAt: -1 }).catch((e) => logger.error(e));
-		memoryBank.createIndex({ userId: 1, tags: 1 }).catch((e) => logger.error(e));
 
 		// UserPersonality indexes
 		userPersonality.createIndex({ userId: 1 }, { unique: true }).catch((e) => logger.error(e));

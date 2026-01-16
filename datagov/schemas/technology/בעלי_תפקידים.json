@@ -1,0 +1,58 @@
+{
+  "dataset_id": "f426bec6-9317-421b-aa75-aef6711000fd",
+  "title": "בעלי תפקידים",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "משרד המדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "טלפון",
+    "משרד",
+    "בעלי",
+    "תפקידים",
+    "המדע",
+    "תפקיד",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "1fe8684b-da41-4148-84ac-e996ae1b624c",
+      "title": "בעלי תפקידים ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תפקיד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 5
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

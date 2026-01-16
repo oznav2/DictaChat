@@ -1,0 +1,89 @@
+{
+  "dataset_id": "f1972672-fc5f-4853-94f3-25db73fdbf38",
+  "title": "צפיפות מקומות עבודה לשנת 2030",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2030",
+    "GIS",
+    "ממג",
+    "מקומות עבודה",
+    "צפיפות"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "צפיפות",
+    "shape",
+    "area",
+    "ממג",
+    "מקומות",
+    "בדרכים",
+    "משרד",
+    "dens",
+    "fid",
+    "leng",
+    "והבטיחות",
+    "gis",
+    "עבודה",
+    "התחבורה",
+    "job"
+  ],
+  "resources": [
+    {
+      "resource_id": "da39d422-3980-48dd-8ec2-3f9d3fdc9200",
+      "title": "TAZ_JOB_DENS_2030_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "6d32e0a6-6a86-49ea-bb84-194110bccf66",
+      "title": "TAZ_JOB_DENS_2030_KML",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "11eb5ea7-8e3c-4c16-bb24-aaad5e16756f",
+      "title": "TAZ_JOB_DENS_2030_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "JOB30_DENS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Leng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 585
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -15,6 +15,8 @@ import type { Endpoint } from "../endpoints";
 import type OpenAI from "openai";
 import { createImageProcessorOptionsValidator, makeImageProcessor } from "../images";
 import { prepareMessagesWithFiles } from "$lib/server/textGeneration/utils/prepareFiles";
+import { logger } from "$lib/server/logger";
+import { randomUUID } from "crypto";
 // uuid import removed (no tool call ids)
 
 export const endpointOAIParametersSchema = z.object({
@@ -79,6 +81,61 @@ export async function endpointOai(
 	// Store router metadata if captured
 	let routerMetadata: { route?: string; model?: string; provider?: string } = {};
 
+	const debugRawStreamEnabled =
+		config.DEBUG_RAW_STREAM === "true" || config.DEBUG_RAW_STREAM === "1";
+	const debugRawStreamSampleRateRaw = config.DEBUG_RAW_STREAM_SAMPLE_RATE;
+	const debugRawStreamSampleRate = Math.min(
+		1,
+		Math.max(
+			0,
+			typeof debugRawStreamSampleRateRaw === "number"
+				? debugRawStreamSampleRateRaw
+				: Number.parseFloat(String(debugRawStreamSampleRateRaw ?? "0.01"))
+		)
+	);
+	const debugRawStreamSampleBytesRaw = config.DEBUG_RAW_STREAM_SAMPLE_BYTES;
+	const debugRawStreamSampleBytes = Math.max(
+		256,
+		Math.min(
+			1024 * 1024,
+			typeof debugRawStreamSampleBytesRaw === "number"
+				? debugRawStreamSampleBytesRaw
+				: Number.parseInt(String(debugRawStreamSampleBytesRaw ?? "4096"), 10)
+		)
+	);
+
+	const redactSensitiveText = (input: string): string => {
+		let text = input;
+		text = text.replace(
+			/Authorization:\s*Bearer\s+[^\s\r\n"]+/gi,
+			"Authorization: Bearer [REDACTED]"
+		);
+		text = text.replace(/Bearer\s+[A-Za-z0-9\-._~+/]+=*/g, "Bearer [REDACTED]");
+		text = text.replace(/sk-[A-Za-z0-9]{16,}/g, "sk-[REDACTED]");
+		text = text.replace(
+			/("?(?:password|pass|api[_-]?key|apikey|token|secret)"?\s*:\s*)"[^"]*"/gi,
+			'$1"[REDACTED]"'
+		);
+		text = text.replace(/([?&](?:api[_-]?key|apikey|token|secret)=)[^&\s]+/gi, "$1[REDACTED]");
+		return text;
+	};
+
+	const getHeaderValue = (
+		headers: RequestInit["headers"] | undefined,
+		name: string
+	): string | undefined => {
+		if (!headers) return undefined;
+		if (headers instanceof Headers) return headers.get(name) ?? undefined;
+		if (Array.isArray(headers)) {
+			const match = headers.find(([key]) => key.toLowerCase() === name.toLowerCase());
+			return match?.[1];
+		}
+		const value = (headers as Record<string, string | undefined>)[name];
+		if (typeof value === "string") return value;
+		const fallback = (headers as Record<string, string | undefined>)[name.toLowerCase()];
+		return typeof fallback === "string" ? fallback : undefined;
+	};
+
 	// Custom fetch wrapper to capture response headers for router metadata
 	const customFetch = async (url: RequestInfo, init?: RequestInit): Promise<Response> => {
 		const response = await fetch(url, init);
@@ -101,7 +158,62 @@ export async function endpointOai(
 			};
 		}
 
-		return response;
+		const contentType = response.headers.get("content-type")?.toLowerCase() ?? "";
+		const isEventStream = contentType.includes("text/event-stream");
+		if (!debugRawStreamEnabled || !isEventStream || !response.body) {
+			return response;
+		}
+		if (Math.random() > debugRawStreamSampleRate) {
+			return response;
+		}
+
+		const requestId = getHeaderValue(init?.headers, "X-Request-ID");
+		const conversationId = getHeaderValue(init?.headers, "ChatUI-Conversation-ID");
+
+		const [logStream, passthroughStream] = response.body.tee();
+		void (async () => {
+			const decoder = new TextDecoder();
+			const reader = logStream.getReader();
+			let rawText = "";
+			let receivedBytes = 0;
+
+			try {
+				while (receivedBytes < debugRawStreamSampleBytes) {
+					const { value, done } = await reader.read();
+					if (done) break;
+					if (!value) continue;
+					receivedBytes += value.byteLength;
+					rawText += decoder.decode(value, { stream: true });
+				}
+				rawText += decoder.decode();
+			} catch (err) {
+				logger.warn({ err, requestId, conversationId }, "[DEBUG_RAW_STREAM] failed to read sample");
+			} finally {
+				try {
+					await reader.cancel();
+				} catch {}
+			}
+
+			const redacted = redactSensitiveText(rawText);
+			logger.warn(
+				{
+					requestId,
+					conversationId,
+					status: response.status,
+					url: typeof url === "string" ? url : url?.toString?.(),
+					sampleBytes: receivedBytes,
+					routerMetadata,
+				},
+				"[DEBUG_RAW_STREAM] OpenAI stream sample"
+			);
+			logger.warn({ requestId, sample: redacted }, "[DEBUG_RAW_STREAM] chunk");
+		})();
+
+		return new Response(passthroughStream, {
+			status: response.status,
+			statusText: response.statusText,
+			headers: new Headers(response.headers),
+		});
 	};
 
 	const openai = new OpenAI({
@@ -126,6 +238,7 @@ export async function endpointOai(
 			locals,
 			abortSignal,
 		}) => {
+			const requestId = randomUUID();
 			const prompt = await buildPrompt({
 				messages,
 				preprompt,
@@ -148,6 +261,7 @@ export async function endpointOai(
 			const openAICompletion = await openai.completions.create(body, {
 				body: { ...body, ...extraBody },
 				headers: {
+					"X-Request-ID": requestId,
 					"ChatUI-Conversation-ID": conversationId?.toString() ?? "",
 					"X-use-cache": "false",
 					...(locals?.token ? { Authorization: `Bearer ${locals.token}` } : {}),
@@ -171,6 +285,7 @@ export async function endpointOai(
 			locals,
 			abortSignal,
 		}) => {
+			const requestId = randomUUID();
 			// Format messages for the chat API, handling multimodal content if supported
 			let messagesOpenAI: OpenAI.Chat.Completions.ChatCompletionMessageParam[] =
 				await prepareMessagesWithFiles(messages, imageProcessor, isMultimodal ?? model.multimodal);
@@ -228,12 +343,17 @@ export async function endpointOai(
 				stopSequences = stopSequences.filter((s) => s !== "</tool_call>");
 			}
 
-			console.debug("[endpointOai] Constructing body", {
-				model: model.id,
-				maxTokens,
-				stop: stopSequences,
-				streaming: streamingSupported,
-			});
+			logger.debug(
+				{
+					requestId,
+					conversationId: conversationId?.toString() ?? "",
+					model: model.id,
+					maxTokens,
+					stop: stopSequences,
+					streaming: streamingSupported,
+				},
+				"[endpointOai] constructing request"
+			);
 
 			const body = {
 				model: model.id ?? model.name,
@@ -255,6 +375,7 @@ export async function endpointOai(
 					{
 						body: { ...body, ...extraBody },
 						headers: {
+							"X-Request-ID": requestId,
 							"ChatUI-Conversation-ID": conversationId?.toString() ?? "",
 							"X-use-cache": "false",
 							...(locals?.token ? { Authorization: `Bearer ${locals.token}` } : {}),
@@ -273,6 +394,7 @@ export async function endpointOai(
 					{
 						body: { ...body, ...extraBody },
 						headers: {
+							"X-Request-ID": requestId,
 							"ChatUI-Conversation-ID": conversationId?.toString() ?? "",
 							"X-use-cache": "false",
 							...(locals?.token ? { Authorization: `Bearer ${locals.token}` } : {}),

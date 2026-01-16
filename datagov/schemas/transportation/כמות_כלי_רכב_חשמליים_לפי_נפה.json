@@ -1,0 +1,72 @@
+{
+  "dataset_id": "eb09155c-af56-4485-af9d-1c49e3585728",
+  "title": "כמות כלי רכב חשמליים לפי נפה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב חשמלי"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "car",
+    "baalut",
+    "כמות",
+    "בדרכים",
+    "mahoz",
+    "משרד",
+    "רכב",
+    "והבטיחות",
+    "כלי",
+    "nafa",
+    "חשמלי",
+    "חשמליים",
+    "num",
+    "התחבורה",
+    "נפה"
+  ],
+  "resources": [
+    {
+      "resource_id": "07421a4e-5b12-4444-9173-5ca297b31f79",
+      "title": "מאגר כמויות כלי רכב חשמליים לפי נפה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "baalut",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mahoz_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "nafa_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "car_num",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 91
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

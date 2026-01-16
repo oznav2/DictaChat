@@ -1,0 +1,97 @@
+{
+  "dataset_id": "a698417e-e51d-43cd-b82f-356d8cf9de0e",
+  "title": "רשימת לשכות פרטיות מורשות לתיווך עבודה (עובדים ישראלים בלבד)",
+  "organization": "משרד העבודה",
+  "tags": [
+    "לשכות",
+    "משרד העבודה",
+    "עובדים",
+    "תיווך עבודה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "העבודה",
+    "עובדים",
+    "עבודה",
+    "לשכות",
+    "fax",
+    "פרטיות",
+    "תיווך",
+    "mikud",
+    "משרד",
+    "town",
+    "licensenumber",
+    "מורשות",
+    "לתיווך",
+    "telephone",
+    "validuntil",
+    "address",
+    "ישראלים",
+    "בלבד",
+    "companyname"
+  ],
+  "resources": [
+    {
+      "resource_id": "00a3819e-7e15-4603-85ea-bdacbc71084c",
+      "title": "privateChambersIL.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "companyname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "licensenumber",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "town",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "mikud",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "validuntil",
+          "type": "text",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 857
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

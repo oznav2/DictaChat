@@ -1,0 +1,44 @@
+{
+  "dataset_id": "1d92d261-a196-4103-85c3-22ea2fe4932c",
+  "title": "רשימת בוחנים בתחום מכוניות - נהיגה ספורטיבית",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "בוחן רכב",
+    "מכוניו",
+    "נהיגה ספורטיבי"
+  ],
+  "categories": [
+    "transportation",
+    "culture"
+  ],
+  "keywords": [
+    "מכוניו",
+    "בוחנים",
+    "התרבות",
+    "מכוניות",
+    "משרד",
+    "ספורטיבי",
+    "נהיגה",
+    "רכב",
+    "והספורט",
+    "בתחום",
+    "ספורטיבית",
+    "בוחן"
+  ],
+  "resources": [
+    {
+      "resource_id": "72d6a1c6-2985-4226-821f-55f07c48ef99",
+      "title": "most.DB.506-1.xlsx",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "dataset_id": "4f77b927-3c4d-4474-9f8b-98c9469b38b6",
+  "title": "XPLAN - מה חל במקום שלי",
+  "organization": "מינהל התכנון ",
+  "tags": [
+    "XPLAN",
+    "service",
+    "אפליקציה",
+    "ייעודי קרקע",
+    "מבאת",
+    "מינהל התכנון",
+    "מקוונות",
+    "סטטוס",
+    "סרביס",
+    "קווים כחולים",
+    "תכנון",
+    "תכניות מקוונות",
+    "תכנית"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "ייעודי",
+    "קרקע",
+    "xplan",
+    "מבאת",
+    "סטטוס",
+    "כחולים",
+    "מינהל",
+    "תכנית",
+    "תכנון",
+    "סרביס",
+    "התכנון",
+    "קווים",
+    "מקוונות",
+    "תכניות",
+    "service",
+    "שלי",
+    "במקום",
+    "אפליקציה"
+  ],
+  "resources": [
+    {
+      "resource_id": "e6bbdecc-9a4b-446b-8f62-af8a1959d26b",
+      "title": "קישור לאתר XPLAN",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

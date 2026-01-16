@@ -1,0 +1,59 @@
+{
+  "dataset_id": "c7eaa31a-d624-4874-b3be-65cf140240f3",
+  "title": "שרי משרד המדע לדורותיהם",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "משרד המדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "לדורותיהם",
+    "משרד",
+    "שרי",
+    "המשרד",
+    "שנים",
+    "המדע",
+    "השר",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "e4030e8a-e013-42bc-ab10-21825aea97be",
+      "title": "שרי מדע והטכנולוגיה לדורותהם",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המשרד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם השר/ה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 22
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

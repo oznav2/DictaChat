@@ -120,7 +120,13 @@
 			const res = await fetch(`${base}/api/memory/search`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ query: searchQuery, tier: "all", sortBy: "relevance", limit: 10, offset: 0 }),
+				body: JSON.stringify({
+					query: searchQuery,
+					tier: "all",
+					sortBy: "relevance",
+					limit: 10,
+					offset: 0,
+				}),
 			});
 			const data = await res.json();
 			if (!res.ok) throw new Error(data?.error || `search failed (${res.status})`);
@@ -375,7 +381,9 @@
 					<div class="text-gray-500 dark:text-gray-400">No calls yet</div>
 				{:else}
 					{#each apiTimings as t}
-						<div class="flex items-start justify-between gap-3 font-mono text-gray-700 dark:text-gray-200">
+						<div
+							class="flex items-start justify-between gap-3 font-mono text-gray-700 dark:text-gray-200"
+						>
 							<div class="min-w-0 flex-1">
 								<div class="truncate">{t.name}</div>
 								<div class="text-[11px] text-gray-500 dark:text-gray-400">{t.at}</div>

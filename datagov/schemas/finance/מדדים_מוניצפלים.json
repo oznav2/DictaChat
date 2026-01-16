@@ -1,0 +1,107 @@
+{
+  "dataset_id": "beb05afc-55ac-4bbf-a605-c66e146f523a",
+  "title": "מדדים מוניצפלים",
+  "organization": "משרד ראש הממשלה ",
+  "tags": [
+    "דוחות מבוקרים",
+    "מדדים",
+    "מדדים מונציפלים",
+    "מוניצפאלי",
+    "משרד הפנים",
+    "נתוני הלמס",
+    "רשויות מקומיות"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "municipality",
+    "מבוקרים",
+    "מונציפלים",
+    "דוחות",
+    "הפנים",
+    "normalizator",
+    "מקומיות",
+    "הלמס",
+    "מוניצפלים",
+    "הממשלה",
+    "ראש",
+    "מוניצפאלי",
+    "value",
+    "מדדים",
+    "denominator",
+    "data",
+    "משרד",
+    "type",
+    "רשויות",
+    "index",
+    "year"
+  ],
+  "resources": [
+    {
+      "resource_id": "169820f7-c235-49c0-ba3c-0561778ae063",
+      "title": "מדדים מוניצפליים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Municipality",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Index",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Data_Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Value",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Denominator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Denominator_Value",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Normalizator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Normalizator_Value",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1372829
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

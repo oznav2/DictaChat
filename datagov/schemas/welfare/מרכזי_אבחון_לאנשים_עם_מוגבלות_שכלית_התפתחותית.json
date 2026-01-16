@@ -1,0 +1,126 @@
+{
+  "dataset_id": "6855babe-08cc-4a0e-859e-716189dc73c0",
+  "title": "מרכזי אבחון לאנשים עם מוגבלות שכלית התפתחותית",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "phone",
+    "coordinator",
+    "age",
+    "secretary",
+    "operator",
+    "אבחון",
+    "fax",
+    "locality",
+    "adress",
+    "שכלית",
+    "והביטחון",
+    "mail",
+    "מוגבלות",
+    "משרד",
+    "החברתי",
+    "מרכזי",
+    "התפתחותית",
+    "districr",
+    "center",
+    "הרווחה",
+    "לאנשים"
+  ],
+  "resources": [
+    {
+      "resource_id": "6b0a3096-969d-4a9f-8d98-4ebd04033f9f",
+      "title": "מרכזי אבחון לאנשים עם מוגבלות שכלית התפתחותית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "operator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "center",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "coordinator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "coordinator_mail",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "secretary",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "secretary_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "center_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "secretary_mail",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "locality",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "age",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "districr",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 12
+    },
+    {
+      "resource_id": "3915685f-83b3-44e6-90fd-4997e056254f",
+      "title": "מבנה הנתונים בקובץ מרכזי אבחון לאנשים עם מוגבלות שכלית התפתחותית",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

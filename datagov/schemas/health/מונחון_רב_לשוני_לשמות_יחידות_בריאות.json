@@ -1,0 +1,94 @@
+{
+  "dataset_id": "7a04fc3b-6e20-47a1-970c-3f20f7fcfd3f",
+  "title": "מונחון רב-לשוני לשמות יחידות בריאות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בתי חולים",
+    "קופת חולים",
+    "שילוט",
+    "שפה",
+    "תרגום"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "סוג",
+    "rus",
+    "תרגום",
+    "קופת",
+    "יחידות",
+    "מונחון",
+    "unit",
+    "הבריאות",
+    "בריאות",
+    "שפה",
+    "משרד",
+    "type",
+    "לשמות",
+    "בתי",
+    "שילוט",
+    "eng",
+    "חולים",
+    "arb",
+    "לשוני"
+  ],
+  "resources": [
+    {
+      "resource_id": "32355e02-f72a-4b9a-a327-1e12b5ea83f1",
+      "title": "מינוח רב לשוני של יחידות בריאות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "unit_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "unit_type",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "unit_type_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "arb",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "eng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "rus",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג",
+          "type": "text",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 1700
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

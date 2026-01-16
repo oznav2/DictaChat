@@ -1,0 +1,45 @@
+{
+  "dataset_id": "2db79b14-43a6-447c-a326-7395c2abf7ca",
+  "title": "לרשימת הנרשמים לנישואין",
+  "organization": "המשרד לשירותי דת",
+  "tags": [
+    "אוכלוסיה",
+    "חתונה",
+    "נישואין",
+    "נרשמים לנישואין",
+    "שירותי דת"
+  ],
+  "categories": [
+    "water",
+    "demographics",
+    "religion"
+  ],
+  "keywords": [
+    "לרשימת",
+    "נרשמים",
+    "אוכלוסיה",
+    "נישואין",
+    "שירותי",
+    "המשרד",
+    "לנישואין",
+    "הנרשמים",
+    "לשירותי",
+    "חתונה"
+  ],
+  "resources": [
+    {
+      "resource_id": "ae4bef87-fdba-445f-b96b-9f94fb8e4762",
+      "title": "רשימת הנרשמים לנישואין",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

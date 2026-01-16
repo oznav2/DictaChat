@@ -1,0 +1,167 @@
+{
+  "dataset_id": "176f2727-476e-440e-bc8d-5d3461ea0e76",
+  "title": "פנקס הסניגורים הציבוריים - הסנגוריה הציבורית",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "מחוז",
+    "בית",
+    "המינוי",
+    "שבו",
+    "משרד",
+    "פרטי",
+    "פנקס",
+    "הסנגוריה",
+    "הסניגורים",
+    "מינוי",
+    "המשפט",
+    "תיק",
+    "הציבורית",
+    "משפחה",
+    "תאריך",
+    "הציבוריים",
+    "המשפטים",
+    "מונה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c0938e1a-259a-41c3-a225-94e477264137",
+      "title": "מחוז דרום",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך המינוי",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מספר תיק בית המשפט שבו מונה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר תיק הסנגוריה הציבורית",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 620837
+    },
+    {
+      "resource_id": "c4a8e209-c4a4-4482-b094-defc5bf4588e",
+      "title": "מחוז צפון",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך מינוי",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מספר תיק בית המשפט שבו מונה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר תיק הסנגוריה הציבורית",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 249161
+    },
+    {
+      "resource_id": "3d4ea557-de94-4947-9322-676ab8d5bfc0",
+      "title": "מחוז ירושלים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך מינוי",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מספר תיק בית המשפט שבו מונה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר תיק הסנגוריה הציבורית",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 371492
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

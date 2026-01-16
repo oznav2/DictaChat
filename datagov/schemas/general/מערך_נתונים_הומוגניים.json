@@ -1,0 +1,124 @@
+{
+  "dataset_id": "5e325710-b00f-42cb-ad8c-807eb7d8daec",
+  "title": "מערך נתונים הומוגניים",
+  "organization": "השירות המטאורולוגי",
+  "tags": [
+    "גשם",
+    "הומוגני",
+    "טמפרטורה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "station",
+    "טמפרטורה",
+    "day",
+    "השירות",
+    "הומוגניים",
+    "year",
+    "month",
+    "גשם",
+    "המטאורולוגי",
+    "מערך",
+    "homog",
+    "הומוגני"
+  ],
+  "resources": [
+    {
+      "resource_id": "12b62ada-23b2-43bb-9deb-c7b7f53dd5e7",
+      "title": "הסבר ואופן השימוש במערך נתונים הומוגניים",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "08259129-e1ec-45f2-be1e-f60c2878ddf3",
+      "title": "מערך נתונים הומוגניים- טמפרטורות מקסימום ומינימום",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Station",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Day",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TX(homog)",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "TN(homog)",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 844092
+    },
+    {
+      "resource_id": "1a231f9d-7461-4d5e-8659-b170c0eafd2f",
+      "title": "מערך נתונים הומוגניים – גשם (תחנות A-M)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Station",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Day",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "mm.homog.",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1043154
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

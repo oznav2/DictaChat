@@ -1,0 +1,94 @@
+{
+  "dataset_id": "aee606f8-d3a4-44d6-9359-8682cc78adad",
+  "title": "מועדונים חברתיים לקשיש",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "פנאי רווחה וספורט"
+  ],
+  "categories": [
+    "welfare",
+    "culture"
+  ],
+  "keywords": [
+    "name",
+    "lon",
+    "באר",
+    "רווחה",
+    "lat",
+    "לקשיש",
+    "עיריית",
+    "type",
+    "פנאי",
+    "address",
+    "שבע",
+    "מועדונים",
+    "וספורט",
+    "חברתיים"
+  ],
+  "resources": [
+    {
+      "resource_id": "4f98e9d0-df9f-4260-89f6-362d830ad82b",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "68a292ca-0647-472e-9900-695293d819e1",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 17
+    },
+    {
+      "resource_id": "c6be7e3e-6834-48ce-8ebe-00823cc5295d",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

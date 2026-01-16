@@ -1,0 +1,35 @@
+{
+  "dataset_id": "1f565f98-2c07-49ba-8d67-4bebf32d4c44",
+  "title": "תצלום אויר 2015 2 מטר - גליון גדרה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "גדרה",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "3cc15f20-9cfd-45ab-80c7-b0333047b26d",
+      "title": "תצלום אויר 2015 2 מטר - גליון גדרה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

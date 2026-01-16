@@ -1,0 +1,103 @@
+{
+  "dataset_id": "d80c9929-afa2-464a-9abe-b9c38a13a5ad",
+  "title": "שדות תעופה אזרחיים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "airport",
+    "חצב",
+    "ממג",
+    "שדות תעופה",
+    "תעופה אזרחית"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "shape",
+    "area",
+    "yearmonth",
+    "אזרחיים",
+    "שדות",
+    "ממג",
+    "oid",
+    "אזרחית",
+    "airport",
+    "בדרכים",
+    "משרד",
+    "והבטיחות",
+    "gis",
+    "חצב",
+    "length",
+    "תעופה",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "38309681-4d3c-4302-9010-d453b09b8cb4",
+      "title": "AIRPORT_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "00afe3ea-2b94-4e45-a951-b91e8c619554",
+      "title": "AIRPORT_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1176fc86-c40e-4b9c-ade2-ed3829d3dd0f",
+      "title": "AIRPORT_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "AREA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 8
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

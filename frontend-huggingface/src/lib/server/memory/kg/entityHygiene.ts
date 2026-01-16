@@ -51,4 +51,3 @@ export function isEntityBlocklistedLabel(rawLabel: string): boolean {
 
 	return false;
 }
-

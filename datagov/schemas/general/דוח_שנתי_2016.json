@@ -1,0 +1,108 @@
+{
+  "dataset_id": "2628c584-5098-4543-a4b4-c31d4f292b31",
+  "title": "דו\"ח שנתי 2016",
+  "organization": "רשות האכיפה והגבייה",
+  "tags": [
+    "הוצאה לפועל",
+    "מרכז לגביית קנסות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "הוצאה",
+    "רשות",
+    "מאסר",
+    "המסירה",
+    "לפועל",
+    "והגבייה",
+    "קנסות",
+    "צווי",
+    "מלאי",
+    "שננקטו",
+    "הבאה",
+    "כמות",
+    "שנתי",
+    "האכיפה",
+    "בתיקי",
+    "התפלגות",
+    "ההליכים",
+    "לגביית",
+    "שנה",
+    "מרכז",
+    "מצב"
+  ],
+  "resources": [
+    {
+      "resource_id": "6ee77f09-2096-464a-a951-354abb05eba2",
+      "title": "חלק ב הוצלפ אישורי מסירה 2016",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "התפלגות מצב המסירה בתיקי מלאי",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 9
+    },
+    {
+      "resource_id": "09a27cc1-c0ca-431c-b3dc-afeeb38ea384",
+      "title": "חלק ב הוצלפ הליכים 2016",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "כמות צווי הבאה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "כמות צווי מאסר",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 6
+    },
+    {
+      "resource_id": "05e3114e-89b4-43bb-a1c7-b51bc8011beb",
+      "title": "חלק ב הוצלפ מנהל הגבייה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "כמות ההליכים שננקטו בשנת 2016",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 9
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

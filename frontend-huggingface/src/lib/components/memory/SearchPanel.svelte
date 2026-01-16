@@ -28,6 +28,8 @@
 		{ value: "patterns", label: "דפוסים" },
 		{ value: "books", label: "ספרים" },
 		{ value: "memory_bank", label: "בנק זיכרון" },
+		{ value: "datagov_schema", label: "DataGov סכמות" },
+		{ value: "datagov_expansion", label: "DataGov הרחבות" },
 	];
 
 	const sortOptions: Array<{ value: SortBy; label: string }> = [
@@ -43,6 +45,8 @@
 			patterns: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300",
 			books: "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300",
 			memory_bank: "bg-pink-100 text-pink-800 dark:bg-pink-900/30 dark:text-pink-300",
+			datagov_schema: "bg-slate-100 text-slate-800 dark:bg-slate-900/30 dark:text-slate-300",
+			datagov_expansion: "bg-slate-100 text-slate-800 dark:bg-slate-900/30 dark:text-slate-300",
 		};
 		return colors[tier] ?? "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300";
 	}
@@ -54,6 +58,8 @@
 			patterns: "דפוסים",
 			books: "ספרים",
 			memory_bank: "בנק",
+			datagov_schema: "DataGov סכמות",
+			datagov_expansion: "DataGov הרחבות",
 		};
 		return labels[tier] ?? tier;
 	}

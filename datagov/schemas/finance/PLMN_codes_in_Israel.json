@@ -1,0 +1,91 @@
+{
+  "dataset_id": "7ae4a3da-1c40-410b-bffb-d89f81709d12",
+  "title": "PLMN codes in Israel",
+  "organization": "משרד התקשורת",
+  "tags": [
+    "מספור שירותי טלפוניה",
+    "משרד התקשורת"
+  ],
+  "categories": [
+    "finance",
+    "communications"
+  ],
+  "keywords": [
+    "operator",
+    "טלפוניה",
+    "mnc",
+    "שירותי",
+    "israel",
+    "משרד",
+    "התקשורת",
+    "mcc",
+    "מספור",
+    "plmn",
+    "codes"
+  ],
+  "resources": [
+    {
+      "resource_id": "d6b9480c-f09e-471c-a9a7-46494d221d27",
+      "title": "israel_PLMN.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Operator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MCC",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MNC",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 27
+    },
+    {
+      "resource_id": "5afb773e-adc1-4665-a44a-ed7056a430b5",
+      "title": "israel_PLMN.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Operator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MCC",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MNC",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 27
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

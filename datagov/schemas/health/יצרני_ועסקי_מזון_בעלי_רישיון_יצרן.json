@@ -1,0 +1,120 @@
+{
+  "dataset_id": "5a5aa50a-58b4-40e7-98d7-4630d76947d5",
+  "title": "יצרני ועסקי מזון בעלי רישיון יצרן",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "יצרני מזון",
+    "עסקי מזון",
+    "רישיון יצרן",
+    "שירות המזון הארצי"
+  ],
+  "categories": [
+    "health",
+    "economy"
+  ],
+  "keywords": [
+    "health",
+    "city",
+    "gmpstatuscode",
+    "license",
+    "date",
+    "יצרן",
+    "הבריאות",
+    "gmp",
+    "number",
+    "בעלי",
+    "משרד",
+    "district",
+    "שירות",
+    "מזון",
+    "המזון",
+    "יצרני",
+    "title",
+    "ועסקי",
+    "desc",
+    "הארצי",
+    "productactivityfoodtype",
+    "עסקי",
+    "accounttype",
+    "addr",
+    "expire",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "9c55a7dd-3b92-4141-811c-5e30cc74a8a4",
+      "title": "יצרני ועסקי מזון בעלי רישיון יצרן",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "license",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "expire_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "gmp_expire_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "ProductActivityFoodType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "accountType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "gmpstatuscode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "health_district_desc",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "city_number",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Addr",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 4012
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

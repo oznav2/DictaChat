@@ -1,0 +1,105 @@
+{
+  "dataset_id": "ead01a73-a949-484e-9ca3-732617b0bb66",
+  "title": "מספור דרכים בתמ\"א",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [],
+  "categories": [
+    "transportation",
+    "finance"
+  ],
+  "keywords": [
+    "בתמ",
+    "name",
+    "yearmonth",
+    "shape",
+    "oid",
+    "roadnewnum",
+    "בדרכים",
+    "code",
+    "משרד",
+    "change",
+    "roadoldnum",
+    "level",
+    "והבטיחות",
+    "מספור",
+    "length",
+    "התחבורה",
+    "דרכים"
+  ],
+  "resources": [
+    {
+      "resource_id": "e88ea565-61c1-4a6a-b45f-e694f8e8441c",
+      "title": "ROADNUMBER_TMA",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d2cd3043-2ae5-449b-99e7-e5b5b6204ba3",
+      "title": "roadnumber_tma_kmz",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "5a4d20d7-b16c-4d77-83aa-f6648ec14982",
+      "title": "ROADNUMBER_TMA",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "LEVEL_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LEVEL_CODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ROADNEWNUM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ROADOLDNUM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHANGE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 518
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

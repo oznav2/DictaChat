@@ -1,0 +1,130 @@
+{
+  "dataset_id": "52375644-64a6-4701-bac5-ffe581de8b2e",
+  "title": "קורפוס השפה העברית - תיוג מורפולוגי",
+  "organization": "מערך הדיגיטל הלאומי",
+  "tags": [
+    "hebrew",
+    "nlp",
+    "עברית",
+    "קורפוס",
+    "שפה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "עברית",
+    "word",
+    "הדיגיטל",
+    "nlp",
+    "הלאומי",
+    "source",
+    "מורפולוגי",
+    "העברית",
+    "שפה",
+    "תיוג",
+    "feats",
+    "type",
+    "השפה",
+    "pos",
+    "form",
+    "misc",
+    "domain",
+    "lemma",
+    "text",
+    "index",
+    "קורפוס",
+    "hebrew",
+    "מערך"
+  ],
+  "resources": [
+    {
+      "resource_id": "10a77ebc-5992-4a5d-b65c-e3a6932d9a0f",
+      "title": "חבילת תיוג",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ID (word index)",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FORM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LEMMA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "U-POS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X-POS",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FEATS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MISC",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 643505
+    },
+    {
+      "resource_id": "3b7b5db5-4198-4499-9a6c-568f9b3d154e",
+      "title": "מטא-נתונים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "SOURCE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DOMAIN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEXT_TYPE",
+          "type": "text",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 1411
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

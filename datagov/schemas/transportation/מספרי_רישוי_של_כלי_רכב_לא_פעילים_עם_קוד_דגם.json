@@ -1,0 +1,197 @@
+{
+  "dataset_id": "aef33db6-37c4-4026-82ba-6c1237bd2cf0",
+  "title": "מספרי רישוי של כלי רכב לא פעילים עם קוד דגם",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "finance"
+  ],
+  "keywords": [
+    "רישוי",
+    "תחבורה",
+    "misgeret",
+    "mivchan",
+    "tzeva",
+    "lakvish",
+    "sug",
+    "ramat",
+    "degem",
+    "kvutzat",
+    "eivzur",
+    "ahori",
+    "aliya",
+    "horaat",
+    "mispar",
+    "moed",
+    "בדרכים",
+    "tokef",
+    "רכב",
+    "gimur",
+    "והבטיחות",
+    "כלי",
+    "shnat",
+    "acharon",
+    "zmig",
+    "דגם",
+    "baalut",
+    "kinuy",
+    "משרד",
+    "zihum",
+    "delek",
+    "מספרי",
+    "mishari",
+    "קוד",
+    "kidmi",
+    "betihuty",
+    "rechev",
+    "yitzur",
+    "rishum",
+    "tozeret",
+    "פעילים",
+    "manoa",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "f6efe89a-fb3d-43a4-bb61-9bf12a9b9099",
+      "title": "מספרי רישוי של כלי רכב לא פעילים עם קוד דגם",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_degem",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ramat_gimur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ramat_eivzur_betihuty",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kvutzat_zihum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "degem_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mivchan_acharon_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tokef_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "baalut",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "misgeret",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tzeva_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tzeva_rechev",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "zmig_kidmi",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "zmig_ahori",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_delek_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "horaat_rishum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "moed_aliya_lakvish",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kinuy_mishari",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 563812
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

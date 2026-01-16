@@ -1,0 +1,246 @@
+{
+  "dataset_id": "f72117a6-2b71-43e9-bc81-75c284a4d1e2",
+  "title": "ספיקה רגעית בתחנות הידרומטריות - הידרוגרף",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "discharge",
+    "water",
+    "הידרומטריה",
+    "מים",
+    "ספיקה",
+    "רשות המים",
+    "תחנה הידרומטרית"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "זמן",
+    "תחנה",
+    "סוג",
+    "רשות",
+    "הידרומטריות",
+    "הממשלתית",
+    "רגעית",
+    "מים",
+    "רשומה",
+    "נתון",
+    "מדידת",
+    "רום",
+    "הידרולוגית",
+    "הידרומטריה",
+    "water",
+    "discharge",
+    "שנייה",
+    "הידרומטרית",
+    "למים",
+    "בתחנות",
+    "ספיקה",
+    "באנגלית",
+    "הרשות",
+    "הידרוגרף",
+    "שנה",
+    "ולביוב",
+    "זרימה",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "8c513de9-a9b0-48f7-a893-ad0330b3c4fa",
+      "title": "הידרוגרף עד סוף שנה הידרולוגית 1999/2000",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי תחנה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם תחנה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם תחנה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנה הידרולוגית",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "זמן מדידת ספיקה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רום המים (מ')",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ספיקה (מ''ק/שנייה)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סוג נתון",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סוג זרימה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סוג רשומה",
+          "type": "text",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 838288
+    },
+    {
+      "resource_id": "37f0e85c-c5ac-48a7-80e1-cb9c129a2e0b",
+      "title": "הידרוגרף משנה הידרולוגית 2000/2001 ועד 2009/2010",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי תחנה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם תחנה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם תחנה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנה הידרולוגית",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "זמן מדידת ספיקה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רום המים (מ')",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ספיקה (מ''ק/שנייה)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סוג נתון",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סוג זרימה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סוג רשומה",
+          "type": "text",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 798138
+    },
+    {
+      "resource_id": "0c63d2ce-636c-4814-8a73-98820b9f0450",
+      "title": "הידרוגרף משנה הידרולוגית 2010/2011 ועד 2018/2019",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי תחנה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם תחנה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם תחנה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנה הידרולוגית",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "זמן מדידת ספיקה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רום המים (מ')",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ספיקה (מ''ק/שנייה)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סוג נתון",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סוג זרימה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סוג רשומה",
+          "type": "text",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 969236
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

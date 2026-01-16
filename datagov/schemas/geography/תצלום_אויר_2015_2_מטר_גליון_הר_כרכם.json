@@ -1,0 +1,35 @@
+{
+  "dataset_id": "dd10be76-9d94-4e5f-80e9-2186f47cae3b",
+  "title": "תצלום אויר 2015 2 מטר - גליון הר כרכם",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "כרכם",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "49504cfb-65af-45d5-bd8b-cb2591ec493a",
+      "title": "תצלום אויר 2015 2 מטר - גליון הר כרכם",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "dataset_id": "83aba0a3-dc03-48a4-87eb-74af55b0cc5e",
+  "title": "נתוני כלוריד בכנרת",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "Kineret",
+    "monitoring",
+    "quality",
+    "water",
+    "דגימות",
+    "הידרומטריה",
+    "יונים ראשיים",
+    "כנרת",
+    "מים",
+    "ניטור",
+    "רשות המים",
+    "תחנה הידרומטרית"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "עומק",
+    "פרמטר",
+    "ראשיים",
+    "במטרים",
+    "תחנה",
+    "מדידה",
+    "רשות",
+    "הממשלתית",
+    "מים",
+    "תוצאה",
+    "כלוריד",
+    "הידרומטריה",
+    "ניטור",
+    "water",
+    "הדגימה",
+    "דגימות",
+    "הידרומטרית",
+    "כנרת",
+    "יחידת",
+    "סמל",
+    "למים",
+    "יונים",
+    "kineret",
+    "בכנרת",
+    "תאריך",
+    "monitoring",
+    "הרשות",
+    "quality",
+    "ולביוב",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "b1d290c4-220b-494d-8376-0465789e972b",
+      "title": "נתוני כלוריד בכנרת",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תחנה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך ניטור",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סמל פרמטר",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "עומק הדגימה במטרים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תוצאה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יחידת מדידה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2402
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

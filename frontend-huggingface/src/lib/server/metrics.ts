@@ -1,6 +1,9 @@
-import { collectDefaultMetrics, Counter, Registry, Summary } from "prom-client";
+import { collectDefaultMetrics, Counter, Gauge, Registry, Summary } from "prom-client";
 import { logger } from "$lib/server/logger";
 import { config } from "$lib/server/config";
+import { Database } from "$lib/server/database";
+import { ADMIN_USER_ID } from "$lib/server/constants";
+import { MEMORY_COLLECTIONS } from "$lib/server/memory/stores/schemas";
 import { createServer, type Server as HttpServer } from "http";
 import { onExit } from "./exitHandler";
 
@@ -31,6 +34,11 @@ interface Metrics {
 		toolUseDuration: Summary<ToolLabel>;
 		timeToChooseTools: Summary<ModelLabel>;
 	};
+	memory: {
+		itemsNeedsReindex: Gauge;
+		circuitBreakerOpen: Gauge;
+		toolSkipCount: Counter;
+	};
 }
 
 export class MetricsServer {
@@ -39,6 +47,7 @@ export class MetricsServer {
 	private readonly register: Registry;
 	private readonly metrics: Metrics;
 	private httpServer: HttpServer | undefined;
+	private lastMemoryNeedsReindexUpdateMs = 0;
 
 	private constructor() {
 		this.enabled = config.METRICS_ENABLED === "true";
@@ -75,7 +84,32 @@ export class MetricsServer {
 			return "";
 		}
 
+		await this.updateDynamicMetrics();
+
 		return this.register.metrics();
+	}
+
+	private async updateDynamicMetrics(): Promise<void> {
+		await Promise.all([this.updateMemoryNeedsReindexGauge()]);
+	}
+
+	private async updateMemoryNeedsReindexGauge(): Promise<void> {
+		const now = Date.now();
+		if (now - this.lastMemoryNeedsReindexUpdateMs < 10_000) {
+			return;
+		}
+		this.lastMemoryNeedsReindexUpdateMs = now;
+
+		try {
+			const db = (await Database.getInstance()).getClient().db(config.MONGODB_DB_NAME);
+			const count = await db.collection(MEMORY_COLLECTIONS.ITEMS).countDocuments({
+				userId: ADMIN_USER_ID,
+				needs_reindex: true,
+			});
+			this.metrics.memory.itemsNeedsReindex.set(count);
+		} catch (err) {
+			logger.warn({ err }, "Failed to update memory.itemsNeedsReindex gauge");
+		}
 	}
 
 	private createMetrics(): Metrics {
@@ -202,6 +236,23 @@ export class MetricsServer {
 					registers: [registry],
 					maxAgeSeconds: 5 * 60,
 					ageBuckets: 5,
+				}),
+			},
+			memory: {
+				itemsNeedsReindex: new Gauge({
+					name: "memory_items_needs_reindex",
+					help: "Count of memory_items that need embedding/reindexing",
+					registers: [registry],
+				}),
+				circuitBreakerOpen: new Gauge({
+					name: "memory_circuit_breaker_open",
+					help: "Whether the embedding circuit breaker is open (1=open, 0=closed)",
+					registers: [registry],
+				}),
+				toolSkipCount: new Counter({
+					name: "memory_tool_skip_count",
+					help: "Count of tool-skip events due to memory-first gating",
+					registers: [registry],
 				}),
 			},
 		};

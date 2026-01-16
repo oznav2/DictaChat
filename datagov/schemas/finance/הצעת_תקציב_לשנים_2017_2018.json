@@ -1,0 +1,254 @@
+{
+  "dataset_id": "a0b15105-7dc2-46e3-970e-808712b1b650",
+  "title": "הצעת תקציב לשנים 2017-2018",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אוצר",
+    "אוצר וכלכלה",
+    "משרד האוצר",
+    "תקציב"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "הוצאה",
+    "שיא",
+    "וכלכלה",
+    "מיועדת",
+    "סוג",
+    "פשח",
+    "ושם",
+    "עבצ",
+    "הכנסה",
+    "תקציב",
+    "הצעת",
+    "בהכנסה",
+    "רמה",
+    "סעיף",
+    "נטו",
+    "הרשאה",
+    "האוצר",
+    "להתחייב",
+    "תקנה",
+    "כמות",
+    "משרד",
+    "אדם",
+    "אוצר",
+    "לשנים",
+    "קוד",
+    "תחום",
+    "תכנית",
+    "מיון",
+    "שנה",
+    "מותנית"
+  ],
+  "resources": [
+    {
+      "resource_id": "0785388c-eb39-46b0-bb9c-ecf53b5f6339",
+      "title": "הצעת תקציב 2017-2018",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "קוד רמה 1",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם רמה 1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד ושם רמה 1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד רמה 2",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם רמה 2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד ושם רמה 2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד סוג סעיף",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם סוג סעיף",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד סעיף",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם סעיף",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד ושם סעיף",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד תחום",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תחום",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד ושם תחום",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד תכנית",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד ושם תכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד תקנה",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תקנה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד ושם תקנה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד מיון רמה 1",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מיון רמה 1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד ושם מיון רמה 1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד מיון רמה 2",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מיון רמה 2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד ושם מיון רמה 2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "הוצאה/הכנסה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "פשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג תקציב",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "הוצאה נטו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הוצאה מותנית בהכנסה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הרשאה להתחייב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שיא כח אדם",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עבצ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "כמות",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 5078
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

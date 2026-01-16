@@ -1,0 +1,113 @@
+{
+  "dataset_id": "bc1df8cb-c266-4962-9e18-a9cf986f9640",
+  "title": "אסטרטגית למתע\"ן מטרופולין חיפה 2040",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "דרכים בין עירוניות",
+    "הסעת המונים",
+    "חצב",
+    "תחבורה ציבורית",
+    "תנועה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "הסעת",
+    "status",
+    "תחבורה",
+    "עירוניות",
+    "חיפה",
+    "destnation",
+    "דרכים",
+    "בדרכים",
+    "מטרופולין",
+    "והבטיחות",
+    "המונים",
+    "תנועה",
+    "משרד",
+    "type",
+    "length",
+    "lengt",
+    "למתע",
+    "חצב",
+    "ציבורית",
+    "shape",
+    "oid",
+    "בין",
+    "origin",
+    "אסטרטגית",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "a957b958-43d5-4daf-b9b1-46cca4cf1e65",
+      "title": "MATAAN_HAIFA_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "248dc8e0-9249-4614-9047-507d7380c8f5",
+      "title": "MATAAN_HAIFA_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "b9c0d3b2-2660-4bb9-b253-76b15f1e3d7b",
+      "title": "MATAAN_HAIFA_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ORIGIN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "DESTNATION",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 80
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "dataset_id": "6cf0c0e3-625e-4196-a622-294014aa09eb",
+  "title": "איתור קורסים מאושרים למוסדות - חיילים משוחררים",
+  "organization": "משרד העבודה",
+  "tags": [
+    "חיילים",
+    "חיילים משוחררים",
+    "קורסים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "איתור",
+    "העבודה",
+    "course",
+    "telephone",
+    "משרד",
+    "מאושרים",
+    "קורסים",
+    "חיילים",
+    "city",
+    "address",
+    "district",
+    "institution",
+    "למוסדות",
+    "משוחררים",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "a0bdb3c2-d3ac-494f-a193-811791066f01",
+      "title": "איתור קורסים מאושרים למוסדות - חיילים משוחררים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "institution",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "course",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 16975
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

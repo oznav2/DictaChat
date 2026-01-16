@@ -1,0 +1,68 @@
+{
+  "dataset_id": "2706952a-a86d-4887-a6a6-6e42d91cba6c",
+  "title": "מפלס כנרת",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "Kineret",
+    "level",
+    "water",
+    "הידרומטריה",
+    "כנרת",
+    "מים",
+    "מפלס",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "הרשות",
+    "כנרת",
+    "רשות",
+    "date",
+    "level",
+    "מפלס",
+    "הממשלתית",
+    "למים",
+    "המים",
+    "מים",
+    "ולביוב",
+    "survey",
+    "הידרומטריה",
+    "kinneret",
+    "kineret",
+    "water"
+  ],
+  "resources": [
+    {
+      "resource_id": "2de7b543-e13d-4e7e-b4c8-56071bc4d3c8",
+      "title": "מפלס כנרת",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Survey_Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Kinneret_Level",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 11082
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

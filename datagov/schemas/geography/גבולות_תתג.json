@@ -1,0 +1,38 @@
+{
+  "dataset_id": "79deed28-e923-41e1-a1ec-96dd5d1d8cae",
+  "title": "גבולות תת\"ג",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "גבולות",
+    "המרכז",
+    "ישראל",
+    "למיפוי"
+  ],
+  "resources": [
+    {
+      "resource_id": "9d540201-510a-41c0-932e-0783338829cf",
+      "title": "גבולות תת\"ג",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "2c8b7b73-828a-4f83-8dce-fd2bc18babab",
+      "title": "פירוט שמות שדות בשכבות גבולות תת\"ג",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

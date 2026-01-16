@@ -1,0 +1,102 @@
+{
+  "dataset_id": "6d3b1bda-f10d-4629-ac13-08f84ce1a28e",
+  "title": "תאגידים עירוניים",
+  "organization": "משרד הפנים",
+  "tags": [
+    "בעלי שליטה",
+    "תאגיד",
+    "תאגיד עירוני"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "שליטה",
+    "תאגידים",
+    "עירוניים",
+    "עירוני",
+    "supervisor",
+    "בעלי",
+    "משרד",
+    "date",
+    "chairman",
+    "first",
+    "last",
+    "הפנים",
+    "member",
+    "תאגיד",
+    "corporation"
+  ],
+  "resources": [
+    {
+      "resource_id": "4d7e9bb8-2457-46f9-9eb3-0c0acf5cd766",
+      "title": "רשימת התאגידים העירוניים הרשומים במשרד הפנים.",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "corporation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "supervisor",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "first",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "last",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "member",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "date1",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "date2",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "date3",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "date4",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "chairman",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3436
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

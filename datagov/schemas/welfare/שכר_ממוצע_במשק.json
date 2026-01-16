@@ -1,0 +1,41 @@
+{
+  "dataset_id": "5a97534a-160f-4b09-ae81-eb2bdb388403",
+  "title": "שכר ממוצע במשק",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "אוצר וכלכלה",
+    "משק",
+    "שכר"
+  ],
+  "categories": [
+    "welfare",
+    "economy"
+  ],
+  "keywords": [
+    "וכלכלה",
+    "לאומי",
+    "במשק",
+    "שכר",
+    "משק",
+    "ממוצע",
+    "לביטוח",
+    "אוצר",
+    "המוסד"
+  ],
+  "resources": [
+    {
+      "resource_id": "b9781f06-78d9-4af0-a3ae-419923f77c48",
+      "title": "שכר ממוצע לפי סעיפים 1 ו-2 מאז שנת 1973 ועד היום",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

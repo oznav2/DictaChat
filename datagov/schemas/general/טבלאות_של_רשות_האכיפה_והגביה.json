@@ -1,0 +1,149 @@
+{
+  "dataset_id": "3224d9ba-5379-43e6-9eb0-c7d079242030",
+  "title": "טבלאות של רשות האכיפה והגביה",
+  "organization": "רשות האכיפה והגבייה",
+  "tags": [
+    "הוצאה לפועל"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "הוצאה",
+    "לפועל",
+    "והגבייה",
+    "טבלאות",
+    "טבלה",
+    "רשות",
+    "מתאריך",
+    "ריבית",
+    "אחוז",
+    "קוד",
+    "והגביה",
+    "האכיפה",
+    "תאריך"
+  ],
+  "resources": [
+    {
+      "resource_id": "3e0dfe1e-6b69-4bb7-8e33-0f8f58a00f5b",
+      "title": "טבלת ריביות 09.01.2020",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד טבלה",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם טבלה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מתאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עד תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "אחוז ריבית",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 5898
+    },
+    {
+      "resource_id": "19da5e41-50f9-4db8-9848-6a38e636616f",
+      "title": "טבלת ריביות 10.12.2019",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד טבלה",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם טבלה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מתאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עד תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "אחוז ריבית",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 5889
+    },
+    {
+      "resource_id": "61738ac5-b22a-47f3-a3f4-a7e6f46edbee",
+      "title": "טבלת ריביות 10.11.2019",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד טבלה",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם טבלה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מתאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עד תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "אחוז ריבית",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 5886
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

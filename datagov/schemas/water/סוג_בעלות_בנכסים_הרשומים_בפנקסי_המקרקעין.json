@@ -1,0 +1,82 @@
+{
+  "dataset_id": "10288bf1-b6d5-4855-a633-6c650c277bd3",
+  "title": "סוג בעלות בנכסים הרשומים בפנקסי המקרקעין",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "טאבו",
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "תיאור",
+    "סוג",
+    "הרשומים",
+    "משרד",
+    "חלקה",
+    "שיטה",
+    "בפנקסי",
+    "בעלות",
+    "טאבו",
+    "בנכסים",
+    "המקרקעין",
+    "המשפטים",
+    "גוש"
+  ],
+  "resources": [
+    {
+      "resource_id": "a1a91496-d692-4420-bc21-3487600b71a5",
+      "title": "רשימת הנכסים בפנקסי המקרקעין על פי סוג בעלות לכל נכס.",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "גוש",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "חלקה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תת חלקה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תיאור שיטה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג בעלות",
+          "type": "text",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 2835422
+    },
+    {
+      "resource_id": "55f10608-6148-4dc1-a4cf-a281be4a1e92",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

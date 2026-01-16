@@ -1,0 +1,38 @@
+{
+  "dataset_id": "ee2df3bf-bf21-4370-b87e-765a7286d59b",
+  "title": "ביצוע תקציב על שינוייו ספטמבר 2017 לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "שינויים בתקציב"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "תקציב",
+    "ביצוע",
+    "שינויים",
+    "מבוקר",
+    "משרד",
+    "ספטמבר",
+    "שינוייו",
+    "האוצר",
+    "בתקציב"
+  ],
+  "resources": [
+    {
+      "resource_id": "11525abe-faaa-40df-91ac-05cb1d43ea0f",
+      "title": "ביצוע תקציב על שינוייו ספטמבר 2017 לא מבוקר",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

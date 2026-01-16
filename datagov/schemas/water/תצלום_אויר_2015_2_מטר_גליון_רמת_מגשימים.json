@@ -1,0 +1,37 @@
+{
+  "dataset_id": "6f3b9e11-3d67-4aa1-859d-fac3e065d2c9",
+  "title": "תצלום אויר 2015 2 מטר - גליון רמת מגשימים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "water",
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "רמת",
+    "ישראל",
+    "מגשימים",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "66905fac-dd63-44e9-9e43-e089f9a55efe",
+      "title": "תצלום אויר 2015 2 מטר - גליון רמת מגשימים",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

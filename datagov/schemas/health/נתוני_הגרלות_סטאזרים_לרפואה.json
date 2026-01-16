@@ -1,0 +1,94 @@
+{
+  "dataset_id": "bb1a07f0-07a4-457d-882e-f2bcecd2d8f8",
+  "title": "נתוני הגרלות סטאזרים לרפואה",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות ורווחה",
+    "הגרלה",
+    "העדפה",
+    "סטאז"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "בחירה",
+    "הגרלה",
+    "העדפה",
+    "עדיפות",
+    "שלב",
+    "הבריאות",
+    "בזוגות",
+    "הגרלות",
+    "בריאות",
+    "משרד",
+    "עוסקים",
+    "חול",
+    "לרפואה",
+    "ורווחה",
+    "תאריך",
+    "מוסד",
+    "סטאזרים",
+    "ארץ",
+    "סטאז",
+    "בוגר"
+  ],
+  "resources": [
+    {
+      "resource_id": "24273aa9-4abb-44b5-bd08-641c2ecd517f",
+      "title": "נתוני הגרלות סטאזרים לרפואה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שלב",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך הגרלה",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "בוגר ארץ/חול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מוסד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עדיפות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "בחירה בזוגות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר עוסקים",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 39687
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

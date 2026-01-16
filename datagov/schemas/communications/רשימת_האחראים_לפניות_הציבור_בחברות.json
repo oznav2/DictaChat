@@ -1,0 +1,193 @@
+{
+  "dataset_id": "723b70b6-d802-425a-89da-6241dacf5349",
+  "title": "רשימת האחראים לפניות הציבור בחברות",
+  "organization": "משרד התקשורת",
+  "tags": [
+    "משרד התקשורת",
+    "פניות הציבור"
+  ],
+  "categories": [
+    "communications"
+  ],
+  "keywords": [
+    "לפניות",
+    "נושא",
+    "דואר",
+    "האחראים",
+    "company",
+    "פקס",
+    "טלפון",
+    "fax",
+    "פניות",
+    "unit",
+    "התקשורת",
+    "postal",
+    "online",
+    "number",
+    "רגיל",
+    "משרד",
+    "טופס",
+    "form",
+    "הציבור",
+    "telephone",
+    "address",
+    "בחברות",
+    "אלקטרוני",
+    "מקוון",
+    "חברה",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "c027a835-aa60-4698-9667-837b3f985692",
+      "title": "רשימת האחראים לפניות הציבור בחברות.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "נושא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חברה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טופס מקוון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואר רגיל",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 26
+    },
+    {
+      "resource_id": "c4a2b0ea-5d31-4849-9bcc-935396625144",
+      "title": "רשימת האחראים לפניות הציבור בחברות.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "נושא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חברה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טופס מקוון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואר רגיל",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 26
+    },
+    {
+      "resource_id": "80d553c4-abf7-42e4-9622-434467f88e9d",
+      "title": "Public-inquiry officials in communications companies_english version.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Unit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Company",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Online Form",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "Fax Number",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Postal Address",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 26
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

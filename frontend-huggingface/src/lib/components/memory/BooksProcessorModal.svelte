@@ -414,6 +414,8 @@
 			clearTimeout(fallbackTimer);
 			try {
 				const payload = JSON.parse((evt as MessageEvent).data);
+				const data = payload as { type?: unknown };
+				console.debug({ event: data.type ?? "progress" }, "[sse] Memory event received");
 				applyProgress(payload);
 			} catch {
 				es.close();

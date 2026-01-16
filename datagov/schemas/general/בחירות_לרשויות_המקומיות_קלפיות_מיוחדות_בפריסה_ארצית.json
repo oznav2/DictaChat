@@ -1,0 +1,83 @@
+{
+  "dataset_id": "f8bc8173-367b-4d14-930e-3c8a1d53099f",
+  "title": "בחירות לרשויות המקומיות - קלפיות מיוחדות בפריסה ארצית",
+  "organization": "משרד הפנים",
+  "tags": [
+    "בחירות",
+    "קלפי",
+    "קלפיות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "המקומיות",
+    "location",
+    "בחירות",
+    "קלפי",
+    "משרד",
+    "district",
+    "city",
+    "address",
+    "קלפיות",
+    "בפריסה",
+    "הפנים",
+    "לרשויות",
+    "access",
+    "מיוחדות",
+    "direction",
+    "ארצית"
+  ],
+  "resources": [
+    {
+      "resource_id": "ec097015-b3a0-4b2d-aaa9-da343bdf3b90",
+      "title": "בחירות לרשויות המקומיות - קלפיות מיוחדות בפריסה ארצית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "direction",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "access",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 65
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

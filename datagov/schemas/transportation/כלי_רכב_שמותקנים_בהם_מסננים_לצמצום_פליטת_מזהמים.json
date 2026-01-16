@@ -1,0 +1,87 @@
+{
+  "dataset_id": "98ee52e8-27fb-46d1-9d5f-6891d1a9509e",
+  "title": "כלי רכב שמותקנים בהם מסננים לצמצום פליטת מזהמים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "finance",
+    "water"
+  ],
+  "keywords": [
+    "לצמצום",
+    "תחבורה",
+    "מסננים",
+    "בהם",
+    "sug",
+    "rishon",
+    "hatkana",
+    "mispar",
+    "בדרכים",
+    "רכב",
+    "שמותקנים",
+    "והבטיחות",
+    "כלי",
+    "shnat",
+    "משרד",
+    "מזהמים",
+    "פליטת",
+    "yitzur",
+    "rechev",
+    "rishum",
+    "taarich",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "7cb2bd95-bf2e-49b6-aea1-fcb5ff6f0473",
+      "title": "כלי רכב שמותקנים בהם מסננים לצמצום פליטת מזהמים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_EU_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "rishum_rishon_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "taarich_hatkana",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 6569
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

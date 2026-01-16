@@ -1,0 +1,44 @@
+{
+  "dataset_id": "268f160e-9915-4251-9834-3ac593b5324e",
+  "title": "רשימת מדחנים בחיפה לפי רחובות עם חניה יומית/שעתית",
+  "organization": "עיריית חיפה",
+  "tags": [
+    "אוכלוסיה",
+    "חיפה",
+    "חניה יומית",
+    "מדחנים",
+    "רחובות",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "מדחנים",
+    "יומית",
+    "תחבורה",
+    "אוכלוסיה",
+    "עיריית",
+    "בחיפה",
+    "שעתית",
+    "חיפה",
+    "רחובות",
+    "חניה"
+  ],
+  "resources": [
+    {
+      "resource_id": "082ba512-1468-44a8-a2ae-81af9f656f81",
+      "title": "רשימת מדחנים בחיפה לפי רחובות עם חניה יומית/שעתית ",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "dataset_id": "56639c97-30ba-4307-a768-9f4b1655c68a",
+  "title": "מסגרות הרווחה שבפיקוח משרד הרווחה והביטחון החברתי",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "finance",
+    "welfare"
+  ],
+  "keywords": [
+    "name",
+    "gender",
+    "status",
+    "misgeret",
+    "business",
+    "city",
+    "box",
+    "classific",
+    "age",
+    "maneger",
+    "educate",
+    "target",
+    "authoritys",
+    "fax",
+    "gisx",
+    "department",
+    "busines",
+    "from",
+    "והביטחון",
+    "capacity",
+    "authority",
+    "שבפיקוח",
+    "head",
+    "code",
+    "משרד",
+    "type",
+    "religion",
+    "מסגרות",
+    "region",
+    "mailing",
+    "gisy",
+    "החברתי",
+    "num",
+    "des",
+    "organizations",
+    "telephone",
+    "startd",
+    "actual",
+    "registered",
+    "second",
+    "population",
+    "הרווחה",
+    "owner",
+    "descr",
+    "adrees",
+    "organization"
+  ],
+  "resources": [
+    {
+      "resource_id": "de069ddf-bcbc-4754-bda0-84873a353f7b",
+      "title": "מסגרות רווחה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Misgeret_Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Type_Descr",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Head_Department",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Second_Classific",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Owner_Code_Descr",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Organization",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ORGANIZATIONS_BUSINES_NUM",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Registered_Business_Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Authoritys",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Authority_Id",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Region_Descr",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Actual_Capacity",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "Gender_Descr",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "From_Age",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "To_Age",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Status_des",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "STARTD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Maneger_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Religion",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Educate",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "City_Name",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Adrees",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Telephone",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Fax",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Mailing_Box_Id",
+          "type": "numeric",
+          "semantic": "email"
+        },
+        {
+          "name": "GisX",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "GisY",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Target_Population_Descr",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 9169
+    },
+    {
+      "resource_id": "5e467cc1-478e-4c46-bbd3-09f3a2508f52",
+      "title": "הסבר מבנה הנתונים בקובץ מסגרות רווחה",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

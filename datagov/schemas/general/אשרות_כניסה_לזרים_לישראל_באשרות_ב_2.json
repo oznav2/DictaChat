@@ -1,0 +1,107 @@
+{
+  "dataset_id": "4eaa3676-34ea-4c88-8980-dd64cba86411",
+  "title": "אשרות כניסה לזרים לישראל באשרות ב-2",
+  "organization": "משרד החוץ",
+  "tags": [],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "לישראל",
+    "passpor",
+    "כניסה",
+    "biomenric",
+    "החוץ",
+    "אשרות",
+    "באשרות",
+    "code",
+    "משרד",
+    "biometric",
+    "fee",
+    "country",
+    "לזרים",
+    "national",
+    "remark",
+    "diplomatic",
+    "passport",
+    "service"
+  ],
+  "resources": [
+    {
+      "resource_id": "6c801ecf-019e-47d6-95be-b5fcb60cf87d",
+      "title": "אשרות כניסה לזרים לישראל באשרות ב/2",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Country_code",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "No",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Country_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Fee",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "National_passport",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "National_passport_Biomenric",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Diplomatic_passport",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Diplomatic_passpor_Biometric",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Service_passport",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Service_passport_Biometric",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Remark",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 198
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

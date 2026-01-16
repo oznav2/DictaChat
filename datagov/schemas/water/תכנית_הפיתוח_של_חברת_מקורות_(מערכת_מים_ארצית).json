@@ -1,0 +1,43 @@
+{
+  "dataset_id": "937c6d2b-c78a-4145-a311-740d1b94fdf9",
+  "title": "תכנית הפיתוח של חברת מקורות (מערכת מים ארצית)",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "רשות המים"
+  ],
+  "categories": [
+    "water",
+    "technology"
+  ],
+  "keywords": [
+    "הפיתוח",
+    "הרשות",
+    "תכנית",
+    "רשות",
+    "חברת",
+    "למים",
+    "הממשלתית",
+    "המים",
+    "מים",
+    "ולביוב",
+    "מקורות",
+    "מערכת",
+    "ארצית"
+  ],
+  "resources": [
+    {
+      "resource_id": "2d6f21ba-d270-4128-b266-c5d2f5ace4d2",
+      "title": "תכנית פיתוח תלת שנתית 2023-2025 מקורות.xlsx",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

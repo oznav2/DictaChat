@@ -1,0 +1,53 @@
+{
+  "dataset_id": "585b5431-9ff8-4277-9758-1424920b24ea",
+  "title": "סקר משאיות ארצי 2017",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "ארצי",
+    "מצב קיים",
+    "משאיות",
+    "משרד התחבורה",
+    "תנועה מסחרית"
+  ],
+  "categories": [
+    "transportation",
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "ארצי",
+    "משאיות",
+    "סקר",
+    "תנועה",
+    "בדרכים",
+    "משרד",
+    "מסחרית",
+    "והבטיחות",
+    "מצב",
+    "קיים",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "aab9a1e2-d946-48fa-beea-9d55ae6d19f6",
+      "title": "Truck_Survey_2017",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "2f1cf3d9-ab01-49c1-9fea-19e62615ca83",
+      "title": "Trucks_Survey_2017_Metadata",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

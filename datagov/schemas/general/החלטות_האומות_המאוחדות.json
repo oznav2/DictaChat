@@ -1,0 +1,121 @@
+{
+  "dataset_id": "84ce31f4-2294-4a82-aa60-fd5ee6b6639c",
+  "title": "החלטות האומות המאוחדות",
+  "organization": "משרד החוץ",
+  "tags": [
+    "אום"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "החלטות",
+    "האומות",
+    "name",
+    "country",
+    "החוץ",
+    "body",
+    "משרד",
+    "אום",
+    "decision",
+    "המאוחדות",
+    "year",
+    "sponsor",
+    "vote"
+  ],
+  "resources": [
+    {
+      "resource_id": "ab6f76ef-9024-4618-8af2-f07654f0f3c8",
+      "title": "הצבעות מדינות בהחלטות האום - אנגלית ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "UN_Body_en",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Decision_Name_en",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Year_en",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Country_en",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Vote_en",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Sponsor_en",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 75442
+    },
+    {
+      "resource_id": "bdfe5c52-e4a0-4396-bce3-3c438747d43e",
+      "title": "הצבעות מדינות בהחלטות האום - עברית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "UN_Body",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Decision_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Vote",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Sponsor",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 75442
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

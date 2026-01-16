@@ -1,0 +1,105 @@
+{
+  "dataset_id": "bc32c88f-ae44-4156-bdb8-ef1768d532d3",
+  "title": "צפיפות אוכלוסיה לקילומטר רבוע בצפון הארץ",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2016",
+    "GIS",
+    "ממג",
+    "צפון",
+    "צפיפות אוכלוסיה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "צפיפות",
+    "ממג",
+    "objectid",
+    "אוכלוסיה",
+    "gis",
+    "רבוע",
+    "taz",
+    "בדרכים",
+    "הארץ",
+    "והבטיחות",
+    "בצפון",
+    "pop",
+    "משרד",
+    "dens",
+    "shape",
+    "צפון",
+    "area",
+    "population",
+    "לקילומטר",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "2e21fcfd-c6e4-4c38-866c-8659d8733f2d",
+      "title": "TAZ_NORTH_POPDENS_2016_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "24f1b7d7-d5c7-41f6-ad39-d501659ffa9e",
+      "title": "TAZ_NORTH_POPDENS_2016_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "8f64389b-cbb9-4279-abd7-27991ea47901",
+      "title": "TAZ_NORTH_POPDENS_2016_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "POP_DENS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "POPULATION",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TAZ_AREA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 781
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

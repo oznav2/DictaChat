@@ -1,0 +1,39 @@
+{
+  "dataset_id": "d17d3a55-ffb2-4cac-a9f9-78f3d56c5184",
+  "title": "רשימת קרנות נאמנות",
+  "organization": "רשות ניירות ערך",
+  "tags": [
+    "אוצר וכלכלה",
+    "קרנות נאמנות"
+  ],
+  "categories": [
+    "finance",
+    "culture",
+    "economy"
+  ],
+  "keywords": [
+    "ערך",
+    "וכלכלה",
+    "ניירות",
+    "קרנות",
+    "נאמנות",
+    "רשות",
+    "אוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "a33b2fde-6620-4204-9d24-f5fc332ed24b",
+      "title": "רשימת קרנות נאמנות",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

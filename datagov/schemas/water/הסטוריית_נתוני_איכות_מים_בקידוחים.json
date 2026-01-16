@@ -1,0 +1,270 @@
+{
+  "dataset_id": "1ac4189b-95c2-45fc-bb52-a363f01478f5",
+  "title": "הסטוריית נתוני איכות מים בקידוחים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "borehole",
+    "quality",
+    "water",
+    "water quality",
+    "אגן",
+    "איכות מים",
+    "יונים ראשיים",
+    "מים",
+    "קידוח",
+    "רשות המים",
+    "תא דיווח הידרולוגי"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "פרמטר",
+    "גדול",
+    "ראשיים",
+    "borehole",
+    "מדידה",
+    "הסטוריית",
+    "רשות",
+    "איכות",
+    "אגן",
+    "הממשלתית",
+    "מים",
+    "שתיה",
+    "קטן",
+    "בקידוחים",
+    "מהתקן",
+    "קידוח",
+    "דיווח",
+    "דגימה",
+    "אחוז",
+    "water",
+    "תקן",
+    "יחידת",
+    "תוצאת",
+    "למי",
+    "למים",
+    "שימוש",
+    "יונים",
+    "תאריך",
+    "הרשות",
+    "quality",
+    "ולביוב",
+    "סימן",
+    "הידרולוגי",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "0f1a5a02-ba94-4ad9-b011-33723256e23f",
+      "title": "נתוני איכות מים בקידוחים עד 1950",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "אגן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תא דיווח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שימוש",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך דגימה",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "פרמטר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "יחידת מדידה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תוצאת דגימה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקן למי שתיה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סימן קטן/גדול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחוז מהתקן",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 732
+    },
+    {
+      "resource_id": "49300b80-14e7-430f-a090-80f3b31c3287",
+      "title": "נתוני איכות מים בקידוחים 1950-1959",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "אגן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תא דיווח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שימוש",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך דגימה",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "פרמטר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "יחידת מדידה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תוצאת דגימה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקן למי שתיה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סימן קטן/גדול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחוז מהתקן",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 38728
+    },
+    {
+      "resource_id": "bc6dba8b-8f62-4d9f-82f6-304cc9d3004e",
+      "title": "נתוני איכות מים בקידוחים 1960-1969",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "אגן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תא דיווח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שימוש",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך דגימה",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "פרמטר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "יחידת מדידה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תוצאת דגימה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקן למי שתיה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סימן קטן/גדול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחוז מהתקן",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 138897
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

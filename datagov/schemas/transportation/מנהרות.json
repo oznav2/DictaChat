@@ -1,0 +1,151 @@
+{
+  "dataset_id": "3d0fdf91-d1df-4202-9a79-52308d108793",
+  "title": "מנהרות",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "כבישים",
+    "ממג",
+    "מנהרות",
+    "רכבת",
+    "רכבת כבדה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "מנהרות",
+    "name",
+    "ממג",
+    "city",
+    "gis",
+    "dircode",
+    "כבדה",
+    "רכבת",
+    "בדרכים",
+    "והבטיחות",
+    "street",
+    "streetcode",
+    "direction",
+    "משרד",
+    "type",
+    "lengt",
+    "חצב",
+    "yearmonth",
+    "shape",
+    "road",
+    "oid",
+    "כבישים",
+    "citycode",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "b8bc799c-bb94-44d8-a1dd-2a59d2518770",
+      "title": "TUNNELS_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "49450226-d44b-4b8c-9bc0-792cce552785",
+      "title": "TUNNELS_KML",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a3907f72-ebec-4ca9-8b7f-6a0a524f84c1",
+      "title": "TUNNELS.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "StreetCode",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "CITYCODE",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "DIRCODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DIRECTION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ROAD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "LENGT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 258
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

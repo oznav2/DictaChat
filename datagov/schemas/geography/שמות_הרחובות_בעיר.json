@@ -1,0 +1,106 @@
+{
+  "dataset_id": "82a30a97-01b0-4281-854c-c7931f3445c0",
+  "title": "שמות הרחובות בעיר",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "תכנון עיר וגיאוגרפיה"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "בעיר",
+    "באר",
+    "נוספת",
+    "תואר",
+    "עיר",
+    "תכנון",
+    "סוג",
+    "עיריית",
+    "הרחובות",
+    "שכונה",
+    "שבע",
+    "שמות",
+    "ראשי",
+    "קוד",
+    "מישני",
+    "וגיאוגרפיה",
+    "קבוצה"
+  ],
+  "resources": [
+    {
+      "resource_id": "08ce9158-4ef7-4476-a01a-1771ca5f8533",
+      "title": "JSON",
+      "format": "JSON",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "84fb7cca-7643-4438-bcc2-d4144ad7f95f",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם ראשי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תואר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם מישני",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קבוצה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קבוצה נוספת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "קוד",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שכונה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1219
+    },
+    {
+      "resource_id": "504d7651-67ba-4f5f-a5ab-dfc18729b70e",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

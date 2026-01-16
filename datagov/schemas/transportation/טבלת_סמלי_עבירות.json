@@ -1,0 +1,151 @@
+{
+  "dataset_id": "fe034844-99f1-471c-b1be-00ae5b459236",
+  "title": "טבלת סמלי עבירות",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משטרת ישראל",
+    "משרד התחבורה",
+    "שיטת הניקוד"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תיאור",
+    "teurchok",
+    "חוק",
+    "ניקוד",
+    "משטרת",
+    "בדרכים",
+    "טבלת",
+    "סעיף",
+    "הניקוד",
+    "והבטיחות",
+    "סמלי",
+    "תקנה",
+    "עבירה",
+    "משרד",
+    "סמל",
+    "שיטת",
+    "ישראל",
+    "עבירות",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "a2dd714b-e012-46e4-a996-6307f8b46fc5",
+      "title": "טבלת סמלי עבירות  ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל עבירה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "תיאור עבירה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סעיף תקנה 1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEURCHOK1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סעיף תקנה 2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור חוק 2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סעיף תקנה 3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור חוק 3",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סעיף תקנה 4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור חוק 4",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סעיף תקנה 5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור חוק 5",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סעיף תקנה 6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור חוק 6",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סעיף תקנה 7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור חוק 7",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סעיף תקנה 8",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור חוק 8",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ניקוד",
+          "type": "numeric",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 1550
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

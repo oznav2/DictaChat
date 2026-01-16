@@ -1,0 +1,48 @@
+{
+  "dataset_id": "92065267-aa64-47d5-8625-5d100affa0ce",
+  "title": "שמות פרטיים בישראל",
+  "organization": "רשות האוכלוסין וההגירה",
+  "tags": [
+    "שמות",
+    "שמות פרטיים"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "פרטי",
+    "רשות",
+    "פרטיים",
+    "שמות",
+    "וההגירה",
+    "האוכלוסין",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "c4fb2685-381f-4e99-a88e-b9b7ed703117",
+      "title": "שמות פרטיים בישראל",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 116673
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

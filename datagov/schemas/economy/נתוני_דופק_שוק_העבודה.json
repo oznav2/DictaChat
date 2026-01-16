@@ -1,0 +1,130 @@
+{
+  "dataset_id": "fb39569d-2693-4147-9a39-a93bade472c5",
+  "title": "נתוני דופק שוק העבודה",
+  "organization": "שירות התעסוקה",
+  "tags": [
+    "אבטלה",
+    "אוכלוסיה",
+    "אוצר וכלכלה",
+    "דורשי עבודה",
+    "שוק עבודה",
+    "תעסוקה"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "התעסוקה",
+    "וכלכלה",
+    "העבודה",
+    "אוכלוסיה",
+    "שוק",
+    "עבודה",
+    "דורשי",
+    "end",
+    "date",
+    "month",
+    "jobseekers",
+    "data",
+    "trend",
+    "unemployment",
+    "דופק",
+    "אוצר",
+    "quarter",
+    "שירות",
+    "seasonally",
+    "claimants",
+    "תעסוקה",
+    "adjusted",
+    "אבטלה",
+    "year",
+    "original"
+  ],
+  "resources": [
+    {
+      "resource_id": "50a32c08-be13-4c73-a067-58c47dc41776",
+      "title": "דופק שוק העבודה - אפריל 2020",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "End date",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "Quarter",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Month",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "Jobseekers Original data",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Jobseekers  (seasonally adjusted)",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Jobseekers Trend",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Unemployment claimants Original data",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Unemployment claimants  (seasonally adjusted)",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Unemployment claimants Trend",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Hh Original data",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Hh  (seasonally adjusted)",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Hh Trend",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 148
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

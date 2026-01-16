@@ -1,0 +1,99 @@
+{
+  "dataset_id": "c5b1b556-09c4-4d10-8efb-ba1bc0cafe0d",
+  "title": "ספרייה מקצועית - Professional Library",
+  "organization": "משרד התיירות",
+  "tags": [
+    "משרד התיירות",
+    "תיירות"
+  ],
+  "categories": [
+    "tourism"
+  ],
+  "keywords": [
+    "name",
+    "professional",
+    "library",
+    "pub",
+    "ספרייה",
+    "משרד",
+    "publishing",
+    "התיירות",
+    "year",
+    "place",
+    "item",
+    "remarks",
+    "sticker",
+    "house",
+    "pages",
+    "author",
+    "תיירות",
+    "מקצועית"
+  ],
+  "resources": [
+    {
+      "resource_id": "d08657a8-9adc-45e7-9c53-9dcf200ea0e3",
+      "title": "קטלוג הידע המשרדי",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "item_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "item_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "item_sticker",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "pub_year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "remarks",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "publishing_house",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "pub_place",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "pages",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "author_name",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 9076
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "dataset_id": "ba068ed2-f04a-48bc-a4e4-8444745bc084",
+  "title": "שקיפות תקציבית סוג פיקוח תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "סוג פיקוח",
+    "תקציב"
+  ],
+  "categories": [
+    "education",
+    "finance"
+  ],
+  "keywords": [
+    "תקציב",
+    "חינוך",
+    "סוג",
+    "משרד",
+    "פיקוח",
+    "החינוך",
+    "שקיפות",
+    "תקציבית",
+    "תשע"
+  ],
+  "resources": [
+    {
+      "resource_id": "718f1c03-f0e8-4844-a6a7-92fdd4c2720d",
+      "title": "שקיפות תקציבית סוג פיקוח תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

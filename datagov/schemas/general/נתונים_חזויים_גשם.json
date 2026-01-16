@@ -1,0 +1,122 @@
+{
+  "dataset_id": "5dd3e67a-17b9-42ab-a3b5-125c3bb6b046",
+  "title": "נתונים חזויים- גשם",
+  "organization": "השירות המטאורולוגי",
+  "tags": [],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "day",
+    "השירות",
+    "year",
+    "month",
+    "חזויים",
+    "גשם",
+    "המטאורולוגי",
+    "model",
+    "scenario"
+  ],
+  "resources": [
+    {
+      "resource_id": "4cd5def7-7773-4671-92e7-f48873ba03f9",
+      "title": "הסבר לפורמט נתונים חזויים - גשם .docx",
+      "format": "DOCX",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "4211a220-b991-4c5e-9b65-5f55a5906d5f",
+      "title": "AKKO_pr_15models_rcp45_rcp85_QDM.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "day",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "pr",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "model",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "scenario",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1037142
+    },
+    {
+      "resource_id": "e15a10d3-03ab-4cde-b726-375545c93c98",
+      "title": "BEEROT-YIZHAQ_pr_15models_rcp45_rcp85_QDM.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "day",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "pr",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "model",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "scenario",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1037142
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

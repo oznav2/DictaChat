@@ -1,0 +1,47 @@
+{
+  "dataset_id": "6288f974-5d18-47b4-94b1-9f2aa544f5a0",
+  "title": "שערים ממוצעים לכל המטבעות היציגים - 2013",
+  "organization": "בנק ישראל",
+  "tags": [
+    "2013",
+    "אוצר וכלכלה",
+    "בנק ישראל",
+    "מטבע יציג",
+    "שערי מטבע"
+  ],
+  "categories": [
+    "finance",
+    "environment",
+    "economy"
+  ],
+  "keywords": [
+    "המטבעות",
+    "ממוצעים",
+    "וכלכלה",
+    "ישראל",
+    "מטבע",
+    "יציג",
+    "שערים",
+    "שערי",
+    "בנק",
+    "היציגים",
+    "אוצר",
+    "לכל"
+  ],
+  "resources": [
+    {
+      "resource_id": "9e18f00b-a3ac-437c-988d-43702d3df364",
+      "title": "שערים ממוצעים לכל המטבעות היציגים - 2013",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

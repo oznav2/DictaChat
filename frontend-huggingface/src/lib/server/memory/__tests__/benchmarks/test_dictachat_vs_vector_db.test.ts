@@ -25,6 +25,7 @@ import {
 	calculateWilsonScore,
 	BenchmarkReporter,
 } from "../mock-utilities";
+import { performance } from "node:perf_hooks";
 
 // Global reporter for this test file
 const reporter = new BenchmarkReporter("test_dictachat_vs_vector_db");
@@ -583,13 +584,13 @@ describe("DictaChat vs Vector DB Comparison", () => {
 				for (let i = 0; i < iterations; i++) {
 					const query = `topic ${i % 5}`;
 
-					const vectorStart = Date.now();
+					const vectorStart = performance.now();
 					await vectorDB.search(query, 5);
-					vectorTotalMs += Date.now() - vectorStart;
+					vectorTotalMs += performance.now() - vectorStart;
 
-					const dictaStart = Date.now();
+					const dictaStart = performance.now();
 					await dictaChat.search(query, 5);
-					dictaTotalMs += Date.now() - dictaStart;
+					dictaTotalMs += performance.now() - dictaStart;
 				}
 
 				const vectorAvgMs = vectorTotalMs / iterations;

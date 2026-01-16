@@ -1,0 +1,122 @@
+{
+  "dataset_id": "98d0ba5a-8f81-493c-a4a8-d0d2ba3fad78",
+  "title": "תוצרי פיילוט (מעבדה) קורפוס השפה העברית - תיוג מורפולוגי",
+  "organization": "מערך הדיגיטל הלאומי",
+  "tags": [
+    "hebrew",
+    "nlp",
+    "עברית",
+    "קורפוס",
+    "שפה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "academy",
+    "עברית",
+    "פיילוט",
+    "הדיגיטל",
+    "תוצרי",
+    "word",
+    "מעבדה",
+    "nlp",
+    "miscellaneous",
+    "הלאומי",
+    "מורפולוגי",
+    "העברית",
+    "שפה",
+    "תיוג",
+    "feats",
+    "השפה",
+    "pos",
+    "form",
+    "tikniyyut",
+    "lemma",
+    "index",
+    "קורפוס",
+    "hebrew",
+    "מערך"
+  ],
+  "resources": [
+    {
+      "resource_id": "dd12db00-a303-4748-9eb8-f17282db0402",
+      "title": "פרסום טיוטת תקן תיוג מורפולוגי עבור עיבוד שפה טבעית",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e857e994-98c8-4b1e-a8cb-9148cae299c0",
+      "title": "תיוג מורפולוגי 1.2",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ID (word index)",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FORM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LEMMA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "U-POS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X-POS",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FEATS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MISCELLANEOUS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LEMMA ACADEMY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TIKNIYYUT",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 17130
+    },
+    {
+      "resource_id": "cb6ae8f0-e52b-49d0-ac65-0a53c5e41474",
+      "title": "תיוג מורפולוגי 1.2",
+      "format": "TXT",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

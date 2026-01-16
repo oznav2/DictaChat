@@ -1,0 +1,51 @@
+{
+  "dataset_id": "e11f431a-de4c-4b92-9801-22e00b42b426",
+  "title": "עולים מ 1989 עד 2015 - לפי מקצועות",
+  "organization": "משרד העלייה והקליטה",
+  "tags": [
+    "אוכלוסיה",
+    "מקצועות",
+    "מקצועות של עולים חדשים",
+    "משלח יד",
+    "עולה חדש",
+    "עולים חדשים",
+    "עליה",
+    "עלייה",
+    "קליטת עליה",
+    "קליטת עלייה"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "קליטת",
+    "עלייה",
+    "אוכלוסיה",
+    "עולה",
+    "משרד",
+    "והקליטה",
+    "עולים",
+    "עליה",
+    "מקצועות",
+    "חדשים",
+    "העלייה",
+    "משלח",
+    "חדש"
+  ],
+  "resources": [
+    {
+      "resource_id": "dc0969bd-6711-4bc7-baa6-78d1faf14a61",
+      "title": "עולים מ 1989 עד 2015 - לפי משלח יד",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "dataset_id": "bf4fd9a3-f25c-4b44-89f9-ef23a6234fe7",
+  "title": "תיקי חוזי דיור של משרד המשפטים",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice",
+    "housing"
+  ],
+  "keywords": [
+    "מוקדמת",
+    "תיקי",
+    "סטאטוס",
+    "משרד",
+    "בסיס",
+    "חוזי",
+    "הצמדה",
+    "אופציה",
+    "סיום",
+    "יצירה",
+    "הערות",
+    "תאריך",
+    "דיור",
+    "תחילת",
+    "חוזה",
+    "המשפטים",
+    "יציאה"
+  ],
+  "resources": [
+    {
+      "resource_id": "e279e48c-4118-4b7e-aa18-9443040cffdf",
+      "title": "תיקי חוזי דיור.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר חוזה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "הערות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטאטוס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך סטאטוס",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך תחילת חוזה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך סיום חוזה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך סיום אופציה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "יציאה מוקדמת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך בסיס הצמדה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך יצירה",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 124
+    },
+    {
+      "resource_id": "deb07829-77c1-4426-b88c-b6a4b5bb550e",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

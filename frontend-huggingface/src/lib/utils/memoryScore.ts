@@ -11,4 +11,3 @@ export function scoreToBgColor(score: number): string {
 	if (score < 0.7) return "bg-amber-500";
 	return "bg-green-500";
 }
-

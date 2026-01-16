@@ -1,0 +1,366 @@
+{
+  "dataset_id": "32348d0b-dc49-4bd0-a931-860e55709689",
+  "title": "סניפים של בנקים",
+  "organization": "בנק ישראל",
+  "tags": [
+    "אוצר וכלכלה"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "וכלכלה",
+    "free",
+    "city",
+    "access",
+    "coordinate",
+    "pob",
+    "fax",
+    "closed",
+    "date",
+    "סניפים",
+    "code",
+    "open",
+    "type",
+    "בנק",
+    "handicap",
+    "אוצר",
+    "tel",
+    "accessible",
+    "zip",
+    "close",
+    "day",
+    "ישראל",
+    "branch",
+    "telephone",
+    "merge",
+    "בנקים",
+    "address",
+    "bank"
+  ],
+  "resources": [
+    {
+      "resource_id": "1c5bc716-8210-4ec7-85be-92e6271955c2",
+      "title": "סניפים - עברית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Bank_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Bank_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Branch_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Branch_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Branch_Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Zip_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "POB",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Free_Tel",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Handicap_Access",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "day_closed",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Branch_Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Open_Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Close_Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Merge_Bank",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Merge_Branch",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "X_Coordinate",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Y_Coordinate",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1423
+    },
+    {
+      "resource_id": "90b68d68-1bc5-409e-b13f-0ae32642b2ba",
+      "title": "סניפים - אנגלית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Bank_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Bank_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Branch_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Branch_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Zip_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "POB",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Free_Telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Handicap_Accessible",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Day_Closed",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Open_Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Close_Date",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 1480
+    },
+    {
+      "resource_id": "2202bada-4baf-45f5-aa61-8c5bad9646d3",
+      "title": "סניפים - עברית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Bank_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Bank_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Branch_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Branch_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Branch_Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Zip_Code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "POB",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Free_Tel",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Handicap_Access",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "day_closed",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Branch_Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Open_Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Close_Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Merge_Bank",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Merge_Branch",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "X_Coordinate",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Y_Coordinate",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1423
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

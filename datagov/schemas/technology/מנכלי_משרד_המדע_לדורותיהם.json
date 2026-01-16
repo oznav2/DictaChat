@@ -1,0 +1,59 @@
+{
+  "dataset_id": "b3c72abc-73f2-49d6-8ddb-88995c56c9ca",
+  "title": "מנכ\"לי משרד המדע לדורותיהם",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "משרד המדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "לדורותיהם",
+    "משרד",
+    "המשרד",
+    "שנים",
+    "מנכ",
+    "המדע",
+    "המנכל",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "a353ee97-a141-4644-ae2c-87a6a5617478",
+      "title": "מנכלי משרד המדע לדורותיהם",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המשרד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם המנכל",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 19
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

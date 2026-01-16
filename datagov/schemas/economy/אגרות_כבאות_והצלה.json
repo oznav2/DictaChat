@@ -1,0 +1,119 @@
+{
+  "dataset_id": "8b3d9aa2-3eed-4204-9c32-0764773e9b6f",
+  "title": "אגרות כבאות והצלה",
+  "organization": "כבאות והצלה לישראל",
+  "tags": [
+    "אגרה",
+    "כבאות והצלה",
+    "כלכלה"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "כבאות",
+    "תיאור",
+    "תחום",
+    "השירות",
+    "לישראל",
+    "אגרות",
+    "אגרה",
+    "תעריף",
+    "שירות",
+    "והצלה",
+    "כלכלה"
+  ],
+  "resources": [
+    {
+      "resource_id": "8b336205-fe67-476b-a367-582ce6203c6b",
+      "title": "תעריפי אגרות כבאות והצלה לשנת 2026",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תחום שירות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור השירות",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תעריף אגרה",
+          "type": "text",
+          "semantic": "price"
+        }
+      ],
+      "total_records": 69
+    },
+    {
+      "resource_id": "81c7f90d-4dcb-44b0-b5d4-814a5735ec94",
+      "title": "תעריפי אגרות כבאות והצלה לשנת 2025",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תחום שירות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור השירות",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תעריף אגרה",
+          "type": "text",
+          "semantic": "price"
+        }
+      ],
+      "total_records": 69
+    },
+    {
+      "resource_id": "3d24532b-4d45-41f5-b253-3188e2bfd8c1",
+      "title": "תעריפי אגרות כבאות והצלה לשנת 2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תחום שירות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור השירות",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תעריף אגרה",
+          "type": "text",
+          "semantic": "price"
+        }
+      ],
+      "total_records": 69
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

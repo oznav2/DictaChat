@@ -1,0 +1,35 @@
+{
+  "dataset_id": "747d1fcb-c602-48d6-be52-06bdae5b4693",
+  "title": "ספר השמות הגיאוגרפיים בישראל משנת 1997",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "ישראל",
+    "משנת",
+    "הגיאוגרפיים",
+    "השמות",
+    "ספר",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "dbd28d01-fb8a-40be-ac06-85632dea129b",
+      "title": "טופומומסטיקון",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

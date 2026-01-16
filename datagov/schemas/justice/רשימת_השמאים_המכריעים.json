@@ -1,0 +1,84 @@
+{
+  "dataset_id": "83372c35-23ce-4ddf-829f-1067b5ef3409",
+  "title": "רשימת השמאים המכריעים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "שמאים מכריעים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "שמאים",
+    "השמאים",
+    "כתובת",
+    "טלפון",
+    "נייד",
+    "פקס",
+    "דוא",
+    "משרד",
+    "שמאי",
+    "המכריעים",
+    "מכריעים",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "a0839273-c03b-489b-ad51-e5280624ab00",
+      "title": "רשימת השמאים המכריעים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם שמאי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "נייד",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דוא~ל",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 28
+    },
+    {
+      "resource_id": "00f08c6e-19cd-4ab7-ae36-865d5d49b5e2",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

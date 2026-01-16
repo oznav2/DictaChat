@@ -1,0 +1,101 @@
+{
+  "dataset_id": "25862093-583b-43c4-b637-531645cf3955",
+  "title": "מעיינות - ספיקה מדודה",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "discharge",
+    "spring",
+    "water",
+    "מים",
+    "מעיין",
+    "ספיקה",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "עברית",
+    "מדידה",
+    "רשות",
+    "הממשלתית",
+    "מים",
+    "מדודה",
+    "מדידת",
+    "הידרולוגית",
+    "ליטר",
+    "water",
+    "discharge",
+    "שניה",
+    "spring",
+    "למים",
+    "ספיקה",
+    "תאריך",
+    "אנגלית",
+    "הרשות",
+    "שיטת",
+    "מעיין",
+    "שנה",
+    "מעיינות",
+    "ולביוב",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "26d650da-9d47-4dd5-8cbe-2f7d6955110b",
+      "title": "מעיינות - ספיקה מדודה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר זיהוי",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם עברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם אנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנה הידרולוגית",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך מדידת ספיקה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "ספיקה (ליטר/שניה)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שיטת מדידה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 112596
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

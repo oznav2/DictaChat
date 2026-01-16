@@ -1,0 +1,82 @@
+{
+  "dataset_id": "31bac4a3-7392-48f2-887a-6bd8106d0abe",
+  "title": "דרי רחוב - יחידות",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "בריאו ורווחה",
+    "דרי רחוב"
+  ],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "yechida",
+    "phone",
+    "יחידות",
+    "משרד",
+    "הרווחה",
+    "manager",
+    "district",
+    "דרי",
+    "ורווחה",
+    "בריאו",
+    "החברתי",
+    "והביטחון",
+    "רחוב",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "112378c8-3d0c-41b3-bb2c-c3761622d723",
+      "title": "יחידות דרי רחוב",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "yechida",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 29
+    },
+    {
+      "resource_id": "8f242c6a-deec-431e-a329-294538c4908c",
+      "title": "הסבר מבנה הנתונים בקובץ יחידות דרי רחוב",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

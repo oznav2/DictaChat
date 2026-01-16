@@ -1,0 +1,97 @@
+{
+  "dataset_id": "3179d831-37b1-4082-a460-1325316d0db8",
+  "title": "תמ\"א 23-א-4 - דיפו",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "דיפו",
+    "חצב",
+    "מטרופולין תל אביב",
+    "ממג",
+    "מתען",
+    "תמא 23 א 4"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "דיפו",
+    "shape",
+    "area",
+    "אביב",
+    "ממג",
+    "תמא",
+    "objectid",
+    "בדרכים",
+    "משרד",
+    "מטרופולין",
+    "והבטיחות",
+    "gis",
+    "מתען",
+    "חצב",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "dd5f8c61-e32e-40f4-ad83-217526fb6693",
+      "title": "TMA_23A4_DIPO_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "97d3192a-0ad9-4544-a89b-71e2e6023f29",
+      "title": "TMA_23A4_DIPO_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "f4ed636a-79db-49a9-a322-dbcacf0a5652",
+      "title": "TMA_23A4_DIPO_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "AREA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 11
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

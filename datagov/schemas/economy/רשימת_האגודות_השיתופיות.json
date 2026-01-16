@@ -1,0 +1,122 @@
+{
+  "dataset_id": "ed98fd7a-0e62-4691-b733-1960a6ea2c73",
+  "title": "רשימת האגודות השיתופיות",
+  "organization": "משרד הכלכלה והתעשייה",
+  "tags": [],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "streetname",
+    "primarytype",
+    "והתעשייה",
+    "השיתופיות",
+    "הכלכלה",
+    "townname",
+    "townid",
+    "statusdesc",
+    "משרד",
+    "statusdate",
+    "registrationdate",
+    "zip",
+    "building",
+    "secondarytypes",
+    "האגודות",
+    "address",
+    "identity"
+  ],
+  "resources": [
+    {
+      "resource_id": "cad6bb66-5560-4cf4-a39c-92518f3f18ef",
+      "title": "רשימת האגודות השיתופיות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Identity",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TownId",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "TownName",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "StreetName",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Building",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "zip",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "StatusDesc",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "RegistrationDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "StatusDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PrimaryType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SecondaryTypes",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 7125
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

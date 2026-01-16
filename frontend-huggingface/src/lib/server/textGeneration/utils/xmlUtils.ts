@@ -68,6 +68,27 @@ export function repairXmlTags(
 	return repairedText;
 }
 
+export function repairXmlStream(text: string): string {
+	let repairedText = text;
+
+	if (isTagOpen(repairedText, "think")) {
+		repairedText += "</think>";
+	}
+
+	repairedText = repairedText.replace(
+		/```(?:json)?\s*\r?\n([\s\S]*?)\r?\n```/gi,
+		(full, inner: string) => {
+			const trimmed = String(inner ?? "").trim();
+			if (/^\{\s*(?:"tool_calls"|'tool_calls'|tool_calls)\s*:/.test(trimmed)) {
+				return trimmed;
+			}
+			return full;
+		}
+	);
+
+	return repairedText;
+}
+
 /**
  * Extracts content within specific XML tags.
  * Handles cases where the tag might be unclosed (returns content up to end of string).

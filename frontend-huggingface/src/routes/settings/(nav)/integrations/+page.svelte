@@ -28,10 +28,13 @@
 		loading = true;
 		errorMsg = null;
 		try {
-			const data = await apiRequest<{ integrations?: IntegrationItem[] }>(`${base}/api/integrations`, {
-				timeoutMs: 8000,
-				retries: 1,
-			});
+			const data = await apiRequest<{ integrations?: IntegrationItem[] }>(
+				`${base}/api/integrations`,
+				{
+					timeoutMs: 8000,
+					retries: 1,
+				}
+			);
 			integrations = Array.isArray(data.integrations) ? data.integrations : [];
 		} catch (e) {
 			errorMsg = e instanceof Error ? e.message : "Failed to load integrations";
@@ -68,7 +71,8 @@
 
 	function badgeClasses(item: IntegrationItem): string {
 		if (!item.enabled) return "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200";
-		if (item.health.ok) return "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-300";
+		if (item.health.ok)
+			return "bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-300";
 		if (!item.health.configured)
 			return "bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-300";
 		return "bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-300";
@@ -108,21 +112,27 @@
 	</div>
 
 	{#if errorMsg}
-		<div class="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800 dark:border-red-800/30 dark:bg-red-900/10 dark:text-red-200">
+		<div
+			class="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800 dark:border-red-800/30 dark:bg-red-900/10 dark:text-red-200"
+		>
 			{errorMsg}
 		</div>
 	{/if}
 
 	<div class="mt-4 grid gap-3">
 		{#each integrations as item (item.id)}
-			<div class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
+			<div
+				class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+			>
 				<div class="flex items-start justify-between gap-3">
 					<div class="min-w-0">
 						<div class="flex items-center gap-2">
 							<h2 class="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">
 								{item.name}
 							</h2>
-							<span class={"rounded-full px-2 py-0.5 text-[11px] font-semibold " + badgeClasses(item)}>
+							<span
+								class={"rounded-full px-2 py-0.5 text-[11px] font-semibold " + badgeClasses(item)}
+							>
 								{badgeText(item)}
 							</span>
 						</div>

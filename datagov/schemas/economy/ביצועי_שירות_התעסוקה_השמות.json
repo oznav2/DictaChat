@@ -1,0 +1,139 @@
+{
+  "dataset_id": "ee0ace24-1bff-4df3-9262-7840ffc60079",
+  "title": "ביצועי שירות התעסוקה - השמות",
+  "organization": "שירות התעסוקה",
+  "tags": [
+    "אוכלוסיה",
+    "איזורים",
+    "גיל",
+    "דת",
+    "השכלה",
+    "השמות",
+    "מגבלות",
+    "עיסוק"
+  ],
+  "categories": [
+    "economy",
+    "religion"
+  ],
+  "keywords": [
+    "התעסוקה",
+    "gender",
+    "אוכלוסיה",
+    "מגבלות",
+    "age",
+    "גיל",
+    "pacement",
+    "started",
+    "השכלה",
+    "month",
+    "icluded",
+    "איזורים",
+    "from",
+    "השמות",
+    "disability",
+    "עיסוק",
+    "april",
+    "not",
+    "district",
+    "references",
+    "religion",
+    "שירות",
+    "february",
+    "placement",
+    "self",
+    "education",
+    "ביצועי",
+    "until",
+    "group",
+    "practice",
+    "placements"
+  ],
+  "resources": [
+    {
+      "resource_id": "1ceed2a7-6e16-49ce-bb22-f2c90def190c",
+      "title": "סטטיסטיקת השמות - אפריל 2020",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "District",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Age group",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Gender",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Education",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Disability",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Religion",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Practice placement until february 2015",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Practice placement started in april 2015",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Placements",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Placement ( self pacement not icluded)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Self placement",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Placements from references",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 172319
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

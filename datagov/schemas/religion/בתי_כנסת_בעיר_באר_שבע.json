@@ -1,0 +1,102 @@
+{
+  "dataset_id": "dae759e1-aa71-421a-8649-b8974a82bf2d",
+  "title": "בתי כנסת בעיר באר-שבע",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "דת"
+  ],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "name",
+    "lon",
+    "בעיר",
+    "באר",
+    "housenumbe",
+    "lat",
+    "בתי",
+    "neighborho",
+    "עיריית",
+    "כנסת",
+    "שבע",
+    "othername",
+    "street"
+  ],
+  "resources": [
+    {
+      "resource_id": "b1c5f975-1ba2-4b4e-b581-b0e6b0b99d72",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "40de91c6-1eb3-4f12-9cea-5c44484377d7",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "neighborho",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "HouseNumbe",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "OtherName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 269
+    },
+    {
+      "resource_id": "b4c02d86-2bd0-4f03-9cb0-ceb681d31f67",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

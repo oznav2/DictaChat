@@ -1,0 +1,39 @@
+{
+  "dataset_id": "2e378c05-6b62-4c5e-b5ac-20ed8e04a54f",
+  "title": "תקציב וביצוע 2005-2008",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אוצר וכלכלה",
+    "ביצוע",
+    "תקציב"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "תקציב",
+    "וכלכלה",
+    "ביצוע",
+    "משרד",
+    "וביצוע",
+    "אוצר",
+    "האוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "baf6aaf5-06fa-444c-92fd-07763d37a2f7",
+      "title": "תקציב וביצוע 2005-2008",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "dataset_id": "1275ac06-0f6e-473c-ad51-36bddff86dce",
+  "title": "מבני חינוך",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "חינוך"
+  ],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "lon",
+    "באר",
+    "חינוך",
+    "lat",
+    "oldname",
+    "עיריית",
+    "type",
+    "address",
+    "שבע",
+    "מבני",
+    "institutio"
+  ],
+  "resources": [
+    {
+      "resource_id": "0c57dee1-d54b-41ec-9f25-ca4072133989",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "97eaf0c4-fd2e-4d9c-bb6d-6e34a83049d0",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Institutio",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ADDRESS",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "oldName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 506
+    },
+    {
+      "resource_id": "f13b5e93-96dc-43e7-aa12-b85dbfeeea86",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

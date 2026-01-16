@@ -1,0 +1,183 @@
+{
+  "dataset_id": "2df529d9-3f5a-44da-82e0-d6cbb8cdf856",
+  "title": "זמני הגעה לתחנה VM ברמת שעה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אוטובוסים",
+    "משרד התחבורה",
+    "תחבורה",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תחבורה",
+    "std",
+    "hoursourcetime",
+    "count",
+    "ברמת",
+    "לתחנה",
+    "בדרכים",
+    "month",
+    "והבטיחות",
+    "rishui",
+    "route",
+    "אוטובוסים",
+    "distcumsum",
+    "stopcode",
+    "משרד",
+    "mean",
+    "שעה",
+    "stopsequence",
+    "ציבורית",
+    "timecumsum",
+    "desc",
+    "הגעה",
+    "זמני",
+    "common",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "ad60edd5-33f8-47e9-9407-f70be4a7dcdd",
+      "title": "קובץ זמני הגעה לתחנה VM ברמת שעה 2024",
+      "format": "CSV",
+      "fields": [],
+      "error": "The read operation timed out"
+    },
+    {
+      "resource_id": "a1eb21d6-c05f-44c0-b9fc-91cd379c7c15",
+      "title": "קובץ זמני הגעה לתחנה VM ברמת שעה 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "route_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "route_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "HourSourceTime",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "StopSequence_Rishui",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "StopCode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "count_common",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "timeCumSum_mean",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "timeCumSum_std",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "distCumSum_mean",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 20455999
+    },
+    {
+      "resource_id": "f1b2055b-ea4c-4a40-8ec7-5847206e2237",
+      "title": "קובץ זמני הגעה לתחנה VM ברמת שעה 2022",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "route_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "route_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "HourSourceTime",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "StopSequence_Rishui",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "StopCode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "count_common",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "timeCumSum_mean",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "timeCumSum_std",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "distCumSum_mean",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 20014533
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -245,7 +245,9 @@ describe("TestEntityExtraction", () => {
 	it("should filter blocklisted internal tokens", () => {
 		const testName = "test_filter_blocklisted_tokens";
 		try {
-			const entities = service.extractEntities("Function Request Response Query Result Python Django");
+			const entities = service.extractEntities(
+				"Function Request Response Query Result Python Django"
+			);
 			const labels = entities.map((e: any) => e.label);
 			expect(labels).toContain("Python");
 			expect(labels).toContain("Django");

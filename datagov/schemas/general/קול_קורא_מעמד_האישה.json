@@ -1,0 +1,119 @@
+{
+  "dataset_id": "919bf4d7-7fee-4c6c-99fe-26660ba4631c",
+  "title": "קול קורא - מעמד האישה",
+  "organization": "המשרד לשוויון חברתי",
+  "tags": [
+    "אישה",
+    "מעמד",
+    "מעמד האישה",
+    "קול",
+    "קול קורא",
+    "קורא",
+    "רשויות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "סוג",
+    "קורא",
+    "רשות",
+    "מפגשים",
+    "פעילות",
+    "האישה",
+    "לשוויון",
+    "השתתפות",
+    "הפעילות",
+    "המשרד",
+    "מעמד",
+    "היקף",
+    "אחוז",
+    "עלות",
+    "חברתי",
+    "קהל",
+    "קוד",
+    "רשויות",
+    "הרשות",
+    "אישה",
+    "קול",
+    "ושעות",
+    "יעד"
+  ],
+  "resources": [
+    {
+      "resource_id": "9465b706-33d7-4be3-9528-79a3e7f0bf10",
+      "title": "קול קורא מעמד האישה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "קוד רשות",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "אחוז השתתפות המשרד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג הפעילות",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "שם הפעילות",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד פעילות",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קהל יעד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "היקף הפעילות (מפגשים ושעות)",
+          "type": "numeric",
+          "semantic": "status"
+        },
+        {
+          "name": "עלות פעילות",
+          "type": "numeric",
+          "semantic": "status"
+        },
+        {
+          "name": "השתתפות המשרד",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "השתתפות הרשות",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 1687
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "dataset_id": "cb3f5bef-a0e1-40a3-903a-723c44550802",
+  "title": "חברות להכשרת חובשי רפואת חירום",
+  "organization": "משרד הבריאות",
+  "tags": [],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "status",
+    "course",
+    "manager",
+    "city",
+    "institution",
+    "contact",
+    "end",
+    "taagid",
+    "date",
+    "הבריאות",
+    "חברות",
+    "להכשרת",
+    "appruvel",
+    "medical",
+    "משרד",
+    "district",
+    "primary",
+    "רפואת",
+    "חובשי",
+    "חירום"
+  ],
+  "resources": [
+    {
+      "resource_id": "06a0faf1-0fac-4a1a-b3e4-ff2bab60dc1e",
+      "title": "חברות להכשרת חובשי רפואת חירום",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "taagid_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "primary_contact",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "manager_taagid",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "manager_institution",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "course_medical_manager",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "date_appruvel",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "date_end_appruvel",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 4
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

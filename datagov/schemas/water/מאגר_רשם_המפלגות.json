@@ -1,0 +1,85 @@
+{
+  "dataset_id": "ebec1eda-e114-4f2e-b5fb-9766d10b890d",
+  "title": "מאגר רשם המפלגות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "רשם המפלגות"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "כתובת",
+    "רישום",
+    "רשם",
+    "משרד",
+    "דואר",
+    "מטרות",
+    "מפלגה",
+    "אלקטרוני",
+    "המפלגות",
+    "תאריך",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "1dbfc053-e92f-4354-92d6-1b99aadb20d7",
+      "title": "רשימת המפלגות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מפלגה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר מפלגה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מטרות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "תאריך רישום",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 170
+    },
+    {
+      "resource_id": "d0922c77-c1b8-457a-97af-e91ed02245b3",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": false,
+    "has_email": true,
+    "has_date": true
+  }
+}

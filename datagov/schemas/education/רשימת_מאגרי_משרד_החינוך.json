@@ -1,0 +1,36 @@
+{
+  "dataset_id": "d519af94-f60b-4d69-b2da-5728c999a80b",
+  "title": "רשימת מאגרי משרד החינוך",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך ותרבות"
+  ],
+  "categories": [
+    "education",
+    "water",
+    "culture"
+  ],
+  "keywords": [
+    "חינוך",
+    "משרד",
+    "החינוך",
+    "מאגרי",
+    "ותרבות"
+  ],
+  "resources": [
+    {
+      "resource_id": "d45b9863-a0da-43a3-a768-ea74c7ad515b",
+      "title": "רשימת מאגרי משרד החינוך",
+      "format": "DOC",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

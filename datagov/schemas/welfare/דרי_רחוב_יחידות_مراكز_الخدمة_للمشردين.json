@@ -1,0 +1,70 @@
+{
+  "dataset_id": "648d4005-de32-4618-8b6b-f7fd6f9316df",
+  "title": "דרי רחוב - יחידות مراكز الخدمة للمشردين",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "yechida",
+    "phone",
+    "יחידות",
+    "משרד",
+    "manager",
+    "district",
+    "דרי",
+    "הרווחה",
+    "החברתי",
+    "והביטחון",
+    "רחוב",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "82fa6941-910a-4e2b-a37d-6fe109fb93d9",
+      "title": "יחידות דרי רחוב ערבית مراكز الخدمة للمشردين ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "yechida",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 29
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "dataset_id": "c9b0ffc6-4904-425c-a121-9bdc56560ff4",
+  "title": "ראמ\"ה מיצ\"ב",
+  "organization": "משרד החינוך",
+  "tags": [
+    "הישגים",
+    "מיצב",
+    "ראמה"
+  ],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "name",
+    "teur",
+    "ראמ",
+    "norm",
+    "shichva",
+    "החינוך",
+    "מיצ",
+    "response",
+    "var",
+    "מיצב",
+    "value",
+    "הישגים",
+    "students",
+    "משרד",
+    "subject",
+    "tested",
+    "schools",
+    "score",
+    "semel",
+    "ראמה",
+    "rashut",
+    "index",
+    "year",
+    "mosad"
+  ],
+  "resources": [
+    {
+      "resource_id": "b81f0760-2562-4a27-9db7-699542d071a0",
+      "title": "הישגים בית ספרי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "semel_mosad",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "shichva",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "subject_id",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "score",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 21307
+    },
+    {
+      "resource_id": "7f496c97-d957-439b-a03d-9d9fadb59954",
+      "title": "אקלים בית ספרי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "semel_mosad",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "shichva",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "var_id",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "var_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "value",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "index_id",
+          "type": "text",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 792725
+    },
+    {
+      "resource_id": "72e9f439-2b86-44d6-831b-bfbc68c19c4c",
+      "title": "הישגים רשותי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "rashut",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "rashut_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "norm_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "shichva",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "subject_id",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "score",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "n_students_tested",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "n_schools_tested",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "n_students",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "n_schools",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "p_response",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 3067
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

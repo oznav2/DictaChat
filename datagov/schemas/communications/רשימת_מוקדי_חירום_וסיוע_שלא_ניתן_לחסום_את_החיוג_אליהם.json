@@ -1,0 +1,80 @@
+{
+  "dataset_id": "a6c90661-7a18-4773-9553-7d26b4db4cb1",
+  "title": "רשימת מוקדי חירום וסיוע שלא ניתן לחסום את החיוג אליהם",
+  "organization": "משרד התקשורת",
+  "tags": [
+    "משרד התקשורת"
+  ],
+  "categories": [
+    "communications"
+  ],
+  "keywords": [
+    "וסיוע",
+    "טלפון",
+    "מוקדי",
+    "לחסום",
+    "המוקד",
+    "משרד",
+    "החיוג",
+    "התקשורת",
+    "ניתן",
+    "אליהם",
+    "שלא",
+    "חירום"
+  ],
+  "resources": [
+    {
+      "resource_id": "199eb131-6808-4321-95a3-9b57cdc729da",
+      "title": "רשימת מוקדי חירום וסיוע שאין לחסום את החיוג למספר הטלפון שלהם",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המוקד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 2
+    },
+    {
+      "resource_id": "ddd32e38-560b-4ea2-af9b-d2f827e2ba4f",
+      "title": "רשימת מוקדי חירום וסיוע שאין לחסום את החיוג למספר הטלפון שלהם",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המוקד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 2
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

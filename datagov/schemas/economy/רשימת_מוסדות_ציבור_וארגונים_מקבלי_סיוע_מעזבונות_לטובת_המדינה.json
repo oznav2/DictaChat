@@ -1,0 +1,63 @@
+{
+  "dataset_id": "98aa25bd-bae9-4636-8c72-5e5bd83d84f8",
+  "title": "רשימת מוסדות ציבור וארגונים מקבלי סיוע מעזבונות לטובת המדינה",
+  "organization": "משרד העלייה והקליטה",
+  "tags": [
+    "אוכלוסיה",
+    "אוצר וכלכלה",
+    "מוסדות ציבור",
+    "סיוע",
+    "עזבונות"
+  ],
+  "categories": [
+    "economy",
+    "immigration"
+  ],
+  "keywords": [
+    "וכלכלה",
+    "אוכלוסיה",
+    "וארגונים",
+    "לטובת",
+    "עזבונות",
+    "משרד",
+    "המדינה",
+    "ציבור",
+    "והקליטה",
+    "מוסדות",
+    "סיוע",
+    "מקבלי",
+    "אוצר",
+    "מעזבונות",
+    "העלייה"
+  ],
+  "resources": [
+    {
+      "resource_id": "99c9e494-814e-437f-b56f-10b34c65bcb6",
+      "title": "עזבונות 2009",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "650238cb-20d8-425a-ad5b-b995e5ce736e",
+      "title": "עזבונות 2010",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "23542ba4-045e-4a8a-8765-061278a78486",
+      "title": "עזבונות 2011",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

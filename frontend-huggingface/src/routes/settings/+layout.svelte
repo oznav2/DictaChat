@@ -16,14 +16,14 @@
 	let previousPage: string = $state(base || "/");
 
 	function handleClose() {
-		if (canPopSettingsStack()) {
-			const next = popSettingsStack();
-			if (next) {
-				goto(next);
-				return;
-			}
-		}
-		goto(previousPage);
+		// Simple navigation - go back to previous page or root
+		const target = previousPage || base || "/";
+		console.log("[Settings Modal] Closing, navigating to:", target);
+		goto(target).catch((err) => {
+			console.error("[Settings Modal] Navigation failed:", err);
+			// Fallback: force navigation via window.location
+			window.location.href = target;
+		});
 	}
 
 	afterNavigate(({ from }) => {

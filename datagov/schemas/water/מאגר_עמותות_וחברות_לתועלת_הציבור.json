@@ -1,0 +1,334 @@
+{
+  "dataset_id": "c5ac01fb-c7ef-4e5e-ba81-e9e11c6f7bd9",
+  "title": "מאגר עמותות וחברות לתועלת הציבור",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "מיקוד",
+    "אחרונה",
+    "אישור",
+    "כתובת",
+    "תרומה",
+    "הוצאות",
+    "דירה",
+    "סיווג",
+    "קבלת",
+    "סוג",
+    "מטבע",
+    "מטרות",
+    "זרה",
+    "עובדים",
+    "פעילות",
+    "מישות",
+    "משני",
+    "העמותה",
+    "אחרון",
+    "התנאים",
+    "רחוב",
+    "רשומה",
+    "עמותות",
+    "דוח",
+    "הכנסות",
+    "התרומה",
+    "רישום",
+    "דיווח",
+    "תורמת",
+    "הגשת",
+    "ישות",
+    "מימון",
+    "לתרומה",
+    "לתועלת",
+    "מדינית",
+    "וחברות",
+    "כמות",
+    "משרד",
+    "כספי",
+    "האישור",
+    "ענפי",
+    "מתנדבים",
+    "באנגלית",
+    "קוד",
+    "תרומות",
+    "תאריך",
+    "המשפטים",
+    "עמותה",
+    "איזורי",
+    "הציבור",
+    "סטטוס",
+    "תחום",
+    "המרה",
+    "עותומנית",
+    "סכום",
+    "עיקר",
+    "בקשה",
+    "מחזור",
+    "ישוב",
+    "האם",
+    "רבעון",
+    "אגודה",
+    "שער",
+    "מטרת",
+    "עדכון",
+    "בעברית",
+    "חברי"
+  ],
+  "resources": [
+    {
+      "resource_id": "be5b7935-3922-45d4-9638-08871b17ec95",
+      "title": "עמותות רשומות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר עמותה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך רישום עמותה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שם עמותה בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם עמותה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך עדכון סטטוס",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סטטוס עמותה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "סיווג פעילות ענפי",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תחום פעילות משני",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "שנת דיווח דוח כספי אחרון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מחזור כספי (הכנסות)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סך הוצאות העמותה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "כמות מתנדבים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "כמות עובדים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר חברי עמותה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "איזורי פעילות",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "שנת דיווח אחרונה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם אגודה עותומנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "כתובת - ישוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "כתובת - רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "כתובת - מספר דירה",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "כתובת - מיקוד",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "מטרות עמותה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 74265
+    },
+    {
+      "resource_id": "35cb40b5-3f13-4bca-9ce2-488085913107",
+      "title": "תרומות מישות מדינית זרה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר עמותה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם עמותה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך קבלת התרומה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "ישות מדינית זרה תורמת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג ישות מדינית זרה תורמת (קוד)",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "סכום התרומה בש~ח",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מטבע",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שער המרה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מטרת תרומה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "התנאים לתרומה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת תרומה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "רבעון תרומה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עיקר מימון תרומות מישות מדינית זרה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 13107
+    },
+    {
+      "resource_id": "cb12ac14-7429-4268-bc03-460f48157858",
+      "title": "אישור ניהול תקין",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר עמותה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "שם עמותה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנת האישור",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הגשת בקשה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "האם יש אישור",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך עדכון אחרון של רשומה",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 318552
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

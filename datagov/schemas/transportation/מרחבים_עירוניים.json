@@ -1,0 +1,108 @@
+{
+  "dataset_id": "6fd4fb6c-d5e2-40a1-926e-057107804af5",
+  "title": "מרחבים עירוניים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "ממג",
+    "מרחבים עירוניים",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "objectid",
+    "תחבורה",
+    "bloc",
+    "gis",
+    "בדרכים",
+    "settlemnts",
+    "והבטיחות",
+    "משרד",
+    "חצב",
+    "ציבורית",
+    "yearmonth",
+    "shape",
+    "area",
+    "עירוניים",
+    "length",
+    "מרחבים",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "197d3650-5bcc-460a-b60f-1d11d9046471",
+      "title": "MERHAVIRONI_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "8ddb6911-77b8-4c67-8ecd-3610e4d035fe",
+      "title": "MERHAVIRONI_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "8ff4b8e8-e412-42dd-b593-8072e303631d",
+      "title": "MERHAVIRONI_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Bloc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "SETTLEMNTS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 52
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

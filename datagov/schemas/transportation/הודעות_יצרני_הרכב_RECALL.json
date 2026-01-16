@@ -1,0 +1,137 @@
+{
+  "dataset_id": "1c8e79c5-0ddb-461f-84ea-5bdcbaefaef4",
+  "title": "הודעות יצרני הרכב RECALL",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תחבורה",
+    "yevuan",
+    "teur",
+    "sug",
+    "tozar",
+    "degem",
+    "בדרכים",
+    "end",
+    "tkina",
+    "רכב",
+    "והבטיחות",
+    "shnat",
+    "tikun",
+    "ofen",
+    "recall",
+    "הודעות",
+    "website",
+    "משרד",
+    "הרכב",
+    "begin",
+    "יצרני",
+    "telephone",
+    "build",
+    "takala",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "2c33523f-87aa-44ec-a736-edbb0a82975e",
+      "title": "Recall",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "RECALL_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "TOZAR_CD",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TOZAR_TEUR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DEGEM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHNAT_RECALL",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "BUILD_BEGIN_A",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BUILD_END_A",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SUG_RECALL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SUG_TAKALA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEUR_TAKALA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OFEN_TIKUN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TKINA_EU",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEVUAN_TEUR",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TELEPHONE",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "WEBSITE",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 3451
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

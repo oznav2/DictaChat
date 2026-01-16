@@ -1,0 +1,129 @@
+{
+  "dataset_id": "aba0b50f-9f3e-4014-af4e-d911e914e154",
+  "title": "מוסדות אקדמאיים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "המרכז למיפוי ישראל",
+    "חינוך ותרבות"
+  ],
+  "categories": [
+    "education",
+    "culture",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ver",
+    "המרכז",
+    "ord",
+    "uniq",
+    "למיפוי",
+    "latin",
+    "fcode",
+    "חינוך",
+    "setl",
+    "אקדמאיים",
+    "ותרבות",
+    "data",
+    "code",
+    "type",
+    "מוסדות",
+    "usg",
+    "ישראל",
+    "year",
+    "prdct",
+    "group"
+  ],
+  "resources": [
+    {
+      "resource_id": "b2970446-98e0-483a-86c1-7ec00170b386",
+      "title": "מוסדות אקדמאיים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "UNIQ_ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "FCODE_TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SETL_CODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "SETL_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LATIN_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "USG_GROUP",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "USG_CODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "E_ORD",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "N_ORD",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DATA_YEAR",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PRDCT_VER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 390
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

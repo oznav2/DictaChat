@@ -1,0 +1,35 @@
+{
+  "dataset_id": "0a612be2-75ab-4af7-90ad-75433af8b000",
+  "title": "תצלום אויר 2015 2 מטר - גליון הר שגיא",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "שגיא",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "db0017e1-7230-48ed-a068-42b46e8887c0",
+      "title": "תצלום אויר 2015 2 מטר - גליון הר שגיא",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

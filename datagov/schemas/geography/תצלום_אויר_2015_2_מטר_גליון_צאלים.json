@@ -1,0 +1,35 @@
+{
+  "dataset_id": "933c09b6-d696-47d5-b2aa-bb039c279173",
+  "title": "תצלום אויר 2015 2 מטר - גליון צאלים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "צאלים",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "c4a2008b-b638-45ca-b742-5106c960158e",
+      "title": "תצלום אויר 2015 2 מטר - גליון צאלים",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

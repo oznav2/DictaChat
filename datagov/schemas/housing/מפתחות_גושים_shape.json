@@ -1,0 +1,38 @@
+{
+  "dataset_id": "cf44567a-16aa-4f79-ac3c-527de2338b09",
+  "title": "מפתחות גושים shape",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "דיור",
+    "המרכז למיפוי ישראל"
+  ],
+  "categories": [
+    "housing",
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "גושים",
+    "ישראל",
+    "מפתחות",
+    "המרכז",
+    "דיור",
+    "shape"
+  ],
+  "resources": [
+    {
+      "resource_id": "e4beff76-0913-464f-8e6c-4162e5fec9a3",
+      "title": "מפתחות גושים sheetk",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "dataset_id": "5f310af2-f2ef-4e41-908f-1fbbb26b062f",
+  "title": "ארכיון פרשת ילדי תימן ואחרים",
+  "organization": "ארכיון המדינה",
+  "tags": [
+    "אוכלוסיה",
+    "ארכיון המדינה",
+    "ועדת בהלול מינקובסקי",
+    "ועדת כהן קדמי",
+    "ועדת שלגי"
+  ],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "ואחרים",
+    "לתוצאות",
+    "אוכלוסיה",
+    "כהן",
+    "תימן",
+    "ילד",
+    "שלגי",
+    "מינקובסקי",
+    "דוח",
+    "חקירה",
+    "פרשת",
+    "המדינה",
+    "ילדי",
+    "חיפוש",
+    "באתר",
+    "ארכיון",
+    "ועדת",
+    "קדמי",
+    "בהלול",
+    "לינק"
+  ],
+  "resources": [
+    {
+      "resource_id": "a2d230db-83d7-4fd9-9ffe-5f5924f29d1f",
+      "title": "לינקים לדוחות ומסקנות הועדות שדנו בהיעלמות הילדים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם / דוח",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ועדת חקירה\nכהן-קדמי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ועדת חקירה\nשלגי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ועדת חקירה\nבהלול-מינקובסקי",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1001
+    },
+    {
+      "resource_id": "75ff14ae-2ef2-45d2-b129-43f2901cf492",
+      "title": "לינקים לחיפוש תיקים ומסקנות הועדות לפי נעדר שעניינו נידון",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "#",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "לינק לתוצאות חיפוש באתר ארכיון ילד",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "כהן-קדמי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שלגי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "בהלול-מינקובסקי",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 500
+    },
+    {
+      "resource_id": "d9054aeb-bd39-4e45-9efd-6baf549bd52d",
+      "title": "דף הסבר",
+      "format": "DOCX",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

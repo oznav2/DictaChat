@@ -1,0 +1,70 @@
+{
+  "dataset_id": "fc30f6e3-8724-4a60-bb42-aa301579c89d",
+  "title": "חוגי מדע",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "חוגים",
+    "מדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "נושא",
+    "מדע",
+    "החדשנות",
+    "טלפון",
+    "חוגי",
+    "משרד",
+    "דואר",
+    "איש",
+    "קשר",
+    "המדע",
+    "אלקטרוני",
+    "החוג",
+    "חוגים",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "34c19798-754e-42ba-b877-6ce782b1439e",
+      "title": "חוגי מדע",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "נושא החוג",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "איש קשר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון;",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 42
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": true,
+    "has_date": false
+  }
+}

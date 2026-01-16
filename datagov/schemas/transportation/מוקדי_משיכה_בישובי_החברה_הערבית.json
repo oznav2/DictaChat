@@ -1,0 +1,108 @@
+{
+  "dataset_id": "06dd0c88-650b-40ba-9812-0b4b2f65e0d7",
+  "title": "מוקדי משיכה בישובי החברה הערבית",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "דרכים",
+    "החברה הערבית",
+    "חצב",
+    "מאגר פרויקטים",
+    "עירוני",
+    "תכנון כללי",
+    "תכנית אב"
+  ],
+  "categories": [
+    "transportation",
+    "water"
+  ],
+  "keywords": [
+    "בישובי",
+    "city",
+    "כללי",
+    "uniq",
+    "דרכים",
+    "עירוני",
+    "בדרכים",
+    "החברה",
+    "והבטיחות",
+    "תכנון",
+    "משרד",
+    "code",
+    "type",
+    "הערבית",
+    "חצב",
+    "מוקדי",
+    "oid",
+    "משיכה",
+    "תכנית",
+    "desc",
+    "התחבורה",
+    "פרויקטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "c26768d5-64dd-4ec5-8206-cc70ba7f96ba",
+      "title": "MIUTIM_POI",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "87af03ac-b498-42e9-a4bd-641c7e476f01",
+      "title": "MIUTIM_POI_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "16fe2c79-7c8c-4465-b043-c09179728d3b",
+      "title": "MIUTIM_POI.CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "UNIQ_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "TYPE_CODE",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DESC_",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TYPE_DESC",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 4666
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

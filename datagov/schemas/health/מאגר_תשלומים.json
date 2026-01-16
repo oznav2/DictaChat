@@ -1,0 +1,203 @@
+{
+  "dataset_id": "b2bd1852-ecd4-4fab-bfb9-4b0c0c374404",
+  "title": "מאגר תשלומים",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "בריאות ורווחה",
+    "מסגרות רווחה"
+  ],
+  "categories": [
+    "health",
+    "finance",
+    "water",
+    "welfare"
+  ],
+  "keywords": [
+    "תקציב",
+    "רווחה",
+    "תשלומים",
+    "סכום",
+    "משרד",
+    "סעיף",
+    "זכר",
+    "סהכ",
+    "תשלום",
+    "ורווחה",
+    "לתשלום",
+    "מסגרות",
+    "הרווחה",
+    "נקבה",
+    "החברתי",
+    "והביטחון",
+    "בריאות",
+    "תקציבי"
+  ],
+  "resources": [
+    {
+      "resource_id": "1a2e0815-b381-4ed8-a1c2-8fb35f3d94d7",
+      "title": "2022 ניתוח מגדרי לשנת.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "תקציב / סעיף תקציבי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "זכר 2022",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סכום לתשלום זכר 2022",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "נקבה 2022",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סכום לתשלום נקבה 2022",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סהכ 2022",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סהכ תשלום 2022",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 107
+    },
+    {
+      "resource_id": "f5f7072e-6ed5-40ea-96f9-f324700a9548",
+      "title": "ניתוח מגדרי לשנת 2021.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "תקציב / סעיף תקציבי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "זכר 2021",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סכום לתשלום זכר 2021",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "נקבה 2021",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סכום לתשלום נקבה 2021",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סהכ 2021",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סהכ תשלום 2021",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 108
+    },
+    {
+      "resource_id": "e130c996-eb85-43e3-b340-1874baf582b5",
+      "title": "2020 ניתוח מגדרי לשנת.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "תקציב / סעיף תקציבי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "זכר 2020",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סכום לתשלום זכר 2020",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "נקבה 2020",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סכום לתשלום נקבה 2020",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סהכ 2020",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סהכ תשלום 2020",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 109
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

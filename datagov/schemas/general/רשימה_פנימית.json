@@ -1,0 +1,30 @@
+{
+  "dataset_id": "ccc413e8-79d7-4a18-b9d5-9e490678ead9",
+  "title": "רשימה פנימית",
+  "organization": "GOV",
+  "tags": [],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "רשימה",
+    "פנימית",
+    "gov"
+  ],
+  "resources": [
+    {
+      "resource_id": "40023209-2964-4874-bc32-bd7fb1a40f35",
+      "title": "רשימה פנימית",
+      "format": "XLSX",
+      "fields": [],
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

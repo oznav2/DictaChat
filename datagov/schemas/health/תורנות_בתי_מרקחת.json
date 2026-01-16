@@ -1,0 +1,89 @@
+{
+  "dataset_id": "2f5ff1f8-e12a-482c-a949-bf250e6afad7",
+  "title": "תורנות בתי מרקחת",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "בריאות ורפואה"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "מרקחת",
+    "באר",
+    "phone",
+    "start",
+    "בתי",
+    "shift",
+    "end",
+    "עיריית",
+    "date",
+    "ורפואה",
+    "תורנות",
+    "address",
+    "שבע",
+    "location",
+    "בריאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "edf3a5f6-713c-4166-ad75-427f47496e39",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "shift-end-date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "shift-start-date",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 225
+    },
+    {
+      "resource_id": "1a1cfa7b-a542-4bd5-8003-afbcbc0e08cd",
+      "title": "JSON",
+      "format": "JSON",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "f80ca2d0-d13b-4a67-8c04-18559a4c6752",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

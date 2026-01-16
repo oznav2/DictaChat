@@ -1,0 +1,63 @@
+{
+  "dataset_id": "858ac897-64bb-4948-8a15-fe8042eac3b0",
+  "title": "ההיסטוריה של משרד המדע והטכנולוגיה",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "חלל",
+    "טכנולוגיה",
+    "מדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "מדע",
+    "החדשנות",
+    "תקופה",
+    "חלל",
+    "משרד",
+    "ההיסטוריה",
+    "המשרד",
+    "המדע",
+    "ממשלה",
+    "טכנולוגיה",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "b7d66c69-dc54-4dd7-a239-b9c2acf604d8",
+      "title": "most.DB.52.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המשרד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ממשלה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקופה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 17
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "dataset_id": "845e1d30-1b79-46a0-870c-6c39d18700d0",
+  "title": "קואורדינטות מוסדות החינוך",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "חינוך ותרבות",
+    "מיקום מוסדות"
+  ],
+  "categories": [
+    "education",
+    "culture",
+    "geography"
+  ],
+  "keywords": [
+    "קואורדינטות",
+    "utm",
+    "diyuk",
+    "itm",
+    "חינוך",
+    "shem",
+    "החינוך",
+    "משרד",
+    "מיקום",
+    "מוסדות",
+    "mikum",
+    "semel",
+    "ותרבות",
+    "ramat",
+    "mosad"
+  ],
+  "resources": [
+    {
+      "resource_id": "5c5d6bb0-755d-470d-84b6-d7dd3135ba9c",
+      "title": "קואורדינטות מוסדות החינוך",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "SEMEL_MOSAD",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "SHEM_MOSAD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ITM_X",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "ITM_Y",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "UTM_X",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "UTM_Y",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RAMAT_DIYUK_MIKUM",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 28312
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

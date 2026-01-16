@@ -1,0 +1,101 @@
+{
+  "dataset_id": "9e0aca66-772f-4a3f-8d8d-3a8095abebc6",
+  "title": "תמא 23 - קומפילציית מסילות ברזל",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "23",
+    "GIS",
+    "ממג",
+    "מסילות ברזל",
+    "תמא"
+  ],
+  "categories": [
+    "transportation",
+    "finance",
+    "geography"
+  ],
+  "keywords": [
+    "shape",
+    "תמא",
+    "ממג",
+    "objectid",
+    "ברזל",
+    "tochnit",
+    "מסילות",
+    "בדרכים",
+    "משרד",
+    "status",
+    "length",
+    "leng",
+    "והבטיחות",
+    "gis",
+    "קומפילציית",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "5490d11d-f092-4e0a-b68f-2bcda4cc1cb2",
+      "title": "TMA_23_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "4a4f2d78-75d3-4f15-8a04-2b597e27a6fc",
+      "title": "TMA_23_KML",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1d421a2a-c7cd-4216-830c-c56419378d0e",
+      "title": "TMA_23_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "TOCHNIT_NU",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TOCHNIT_NA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "SHAPE_Leng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 229
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

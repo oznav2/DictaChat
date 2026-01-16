@@ -1,0 +1,56 @@
+{
+  "dataset_id": "06e895bd-5c8a-4312-9b48-d46273d51549",
+  "title": "הכשרת מאמנים - ענפי קרב מוכרים",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "ענפי קרב מוכרים"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "מאמנים",
+    "התרבות",
+    "מוכרים",
+    "סוג",
+    "קרב",
+    "משרד",
+    "ענפי",
+    "פעילות",
+    "הכשרת",
+    "והספורט",
+    "ספורט"
+  ],
+  "resources": [
+    {
+      "resource_id": "7e2c3301-6190-466d-babc-bf5efb5c7ef9",
+      "title": "most.DB.521.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "סוג פעילות ספורט",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 11
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

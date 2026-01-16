@@ -1,0 +1,61 @@
+{
+  "dataset_id": "093b92d2-b730-420c-a9e6-a81f0ac8a044",
+  "title": "אזורי שיפוט (בית דין ליישוב)",
+  "organization": "בתי הדין הרבניים",
+  "tags": [
+    "בתי דין רבניים",
+    "בתי הדין",
+    "דת",
+    "משפט"
+  ],
+  "categories": [
+    "justice",
+    "religion"
+  ],
+  "keywords": [
+    "ליישוב",
+    "משפט",
+    "הרבניים",
+    "העיר",
+    "בית",
+    "בתי",
+    "הבית",
+    "שיפוט",
+    "דין",
+    "אזורי",
+    "הדין",
+    "רבניים"
+  ],
+  "resources": [
+    {
+      "resource_id": "b8b4755a-d34a-4fc9-8242-fe6eaa763021",
+      "title": "אזורי שיפוט (בית דין ליישוב)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם העיר",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם הבית דין",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 1238
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

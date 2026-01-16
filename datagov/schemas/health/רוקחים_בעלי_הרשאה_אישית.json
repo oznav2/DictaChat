@@ -1,0 +1,58 @@
+{
+  "dataset_id": "54601127-7b82-4bd7-ad80-271a802fdeeb",
+  "title": "רוקחים בעלי הרשאה אישית",
+  "organization": "משרד הבריאות",
+  "tags": [],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "אישית",
+    "רוקחים",
+    "license",
+    "משרד",
+    "בעלי",
+    "הבריאות",
+    "num",
+    "הרשאה",
+    "serial"
+  ],
+  "resources": [
+    {
+      "resource_id": "73df1b93-9735-4bc0-b84d-aa5f6bcbfb92",
+      "title": "רוקחים בעלי הרשאה אישית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Serial_num",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "License",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 548
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

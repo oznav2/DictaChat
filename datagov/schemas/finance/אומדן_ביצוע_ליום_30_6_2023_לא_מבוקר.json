@@ -1,0 +1,74 @@
+{
+  "dataset_id": "ab43c4b6-78ad-44a6-9068-9ca02594b71e",
+  "title": "אומדן ביצוע ליום 30-6-2023 לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "תקציב",
+    "תקציב וביצוע"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "תוכנית",
+    "ברוטו",
+    "תקציב",
+    "מיועדת",
+    "ביצוע",
+    "מבוקר",
+    "משרד",
+    "אומדן",
+    "וביצוע",
+    "השתתפויות",
+    "שינוייו",
+    "האוצר",
+    "הכנסה"
+  ],
+  "resources": [
+    {
+      "resource_id": "8ac26fbb-0cfb-496b-8bbd-3b1093a00811",
+      "title": "אומדן ביצוע ליום 30-06-2023 לא מבוקר.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תוכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו על שינוייו",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע ברוטו כולל השתתפויות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 444
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

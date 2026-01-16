@@ -1,0 +1,106 @@
+{
+  "dataset_id": "c9f1e99d-1f95-481e-897f-858eb8735bfa",
+  "title": "מתקני עזר לניווט",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "VOR",
+    "חצב",
+    "ממג",
+    "מתקני עזר לניווט",
+    "תעופה אזרחית"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "gis",
+    "בדרכים",
+    "leng",
+    "והבטיחות",
+    "buff",
+    "לניווט",
+    "אזרחית",
+    "משרד",
+    "חצב",
+    "shape",
+    "vor",
+    "area",
+    "oid",
+    "עזר",
+    "dist",
+    "length",
+    "תעופה",
+    "התחבורה",
+    "מתקני"
+  ],
+  "resources": [
+    {
+      "resource_id": "3bba1d0b-9abf-4568-a19e-51e45250478c",
+      "title": "VOR_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "b6c27d6c-9c41-4987-a4ab-5190312b9de8",
+      "title": "VOR_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "80f36b6a-68ce-43d9-9773-e88085cac0cc",
+      "title": "VOR_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "BUFF_DIST",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Shape_Leng",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 8
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

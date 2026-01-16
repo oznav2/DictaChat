@@ -69,8 +69,10 @@ async function approxBytes<T extends Record<string, unknown>>(
 	const sample = await coll.find(query, { limit, projection: { _id: 0 } }).toArray();
 	if (!Array.isArray(sample) || sample.length === 0) return 0;
 	const avg =
-		sample.reduce((acc: number, d: unknown) => acc + Buffer.byteLength(JSON.stringify(d), "utf8"), 0) /
-		sample.length;
+		sample.reduce(
+			(acc: number, d: unknown) => acc + Buffer.byteLength(JSON.stringify(d), "utf8"),
+			0
+		) / sample.length;
 	return Math.round(avg * count);
 }
 
@@ -124,20 +126,28 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
 	await estimateCollection("memory_versions", parsed.data.includeVersions, userFilter);
 	await estimateCollection("memory_outcomes", parsed.data.includeOutcomes, userFilter);
-	await estimateCollection(
-		"known_solutions",
-		parsed.data.includeOutcomes,
-		userFilter
-	);
+	await estimateCollection("known_solutions", parsed.data.includeOutcomes, userFilter);
 	await estimateCollection("action_outcomes", parsed.data.includeActionOutcomes, userFilter);
 	await estimateCollection("kg_nodes", parsed.data.includeKg, userFilter);
 	await estimateCollection("kg_edges", parsed.data.includeKg, userFilter);
 	await estimateCollection("kg_routing_concepts", parsed.data.includeRoutingKg, userFilter);
 	await estimateCollection("kg_routing_stats", parsed.data.includeRoutingKg, userFilter);
 	await estimateCollection("kg_action_effectiveness", parsed.data.includeActionKg, userFilter);
-	await estimateCollection("kg_context_action_effectiveness", parsed.data.includeActionKg, userFilter);
-	await estimateCollection("personality_memory_mappings", parsed.data.includePersonalityMappings, userFilter);
-	await estimateCollection("reindex_checkpoints", parsed.data.includeReindexCheckpoints, userFilter);
+	await estimateCollection(
+		"kg_context_action_effectiveness",
+		parsed.data.includeActionKg,
+		userFilter
+	);
+	await estimateCollection(
+		"personality_memory_mappings",
+		parsed.data.includePersonalityMappings,
+		userFilter
+	);
+	await estimateCollection(
+		"reindex_checkpoints",
+		parsed.data.includeReindexCheckpoints,
+		userFilter
+	);
 	await estimateCollection("consistency_logs", parsed.data.includeConsistencyLogs, userFilter);
 
 	const total_docs = Object.values(estimates).reduce((a, v) => a + v.count, 0);

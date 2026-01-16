@@ -1,0 +1,89 @@
+{
+  "dataset_id": "713440a1-9963-4548-a7d9-9d9c9da54f62",
+  "title": "מאגר רואי החשבון",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "רואי החשבון",
+    "רואי חשבון",
+    "רואי חשבון פעילים"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "סטטוס",
+    "רואי",
+    "חשבון",
+    "משרד",
+    "קבלת",
+    "פרטי",
+    "ישוב",
+    "החשבון",
+    "פעילים",
+    "משפחה",
+    "תאריך",
+    "המשפטים",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "7e86def9-0899-45f4-8942-d6fe38482b1a",
+      "title": "רשימת רואי החשבון",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר רישיון",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך קבלת רישיון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "סטטוס",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 41837
+    },
+    {
+      "resource_id": "9e4a8c2e-f472-4f72-8e83-45969f3716c1",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

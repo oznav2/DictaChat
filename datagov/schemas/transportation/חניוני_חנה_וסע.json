@@ -1,0 +1,109 @@
+{
+  "dataset_id": "263e3397-aac1-4f8a-b1e3-caff7eabcbff",
+  "title": "חניוני חנה וסע",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חנה וסע",
+    "חניון",
+    "ממג",
+    "נתיבי העדפה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "status",
+    "חניון",
+    "העדפה",
+    "חניוני",
+    "gis",
+    "חנה",
+    "בדרכים",
+    "והבטיחות",
+    "rank",
+    "stat",
+    "משרד",
+    "code",
+    "נתיבי",
+    "וסע",
+    "yearmonth",
+    "oid",
+    "desc",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c8fa89e8-4bc3-4a0a-949e-2580aa349574",
+      "title": "PARK_N_RIDE_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1f494d02-01a6-4df7-b9a9-0130ea6057f3",
+      "title": "PARK_N_RIDE_KML",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e1666064-8b58-41ec-b770-c909a5075134",
+      "title": "PARK_N_RIDE_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Rank",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STAT_CODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "RANK_DESC",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 24
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

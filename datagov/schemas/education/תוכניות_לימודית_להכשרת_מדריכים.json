@@ -1,0 +1,66 @@
+{
+  "dataset_id": "125896b4-91be-4085-abc9-7fa9b3d4c227",
+  "title": "תוכניות לימודית להכשרת מדריכים",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "תוכנית לימודים ענף ספורט הכשרת מדריכים"
+  ],
+  "categories": [
+    "education",
+    "culture"
+  ],
+  "keywords": [
+    "תוכנית",
+    "להכשרת",
+    "התרבות",
+    "קישור",
+    "משרד",
+    "מדריכים",
+    "לימודית",
+    "ענף",
+    "לימודים",
+    "והספורט",
+    "הכשרת",
+    "תוכניות",
+    "ספורט"
+  ],
+  "resources": [
+    {
+      "resource_id": "9efdbb1f-16ec-4b7e-9f3b-ef19ef71aa67",
+      "title": "",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e90b6ff7-53fb-4379-b0df-5c63fdc1af80",
+      "title": "תוכניות לימודית להכשרת מדריכים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תוכנית לימודים",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קישור",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 63
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

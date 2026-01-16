@@ -686,19 +686,16 @@ describe("OutcomeServiceImpl", () => {
 				keyTakeaway: "No outcome specified",
 			});
 
-			const storeCall = mockMongo.store.mock.calls[0][0];
+			const upsertCall = mockQdrant.upsert.mock.calls[0][0];
 
 			const result: TestResult = {
 				name: "default_unknown_outcome",
-				passed:
-					storeCall.metadata.initial_outcome === "unknown" &&
-					storeCall.metadata.initial_score === 0.5,
+				passed: upsertCall.payload.composite_score === 0.5,
 				duration: Date.now() - startTime,
 			};
 
 			harness.recordResult(result);
-			expect(storeCall.metadata.initial_outcome).toBe("unknown");
-			expect(storeCall.metadata.initial_score).toBe(0.5);
+			expect(upsertCall.payload.composite_score).toBe(0.5);
 		});
 
 		it("should use worked outcome score", async () => {
@@ -722,16 +719,16 @@ describe("OutcomeServiceImpl", () => {
 				outcome: "worked",
 			});
 
-			const storeCall = mockMongo.store.mock.calls[0][0];
+			const upsertCall = mockQdrant.upsert.mock.calls[0][0];
 
 			const result: TestResult = {
 				name: "worked_outcome_score",
-				passed: storeCall.metadata.initial_score === 0.7,
+				passed: upsertCall.payload.composite_score === 0.7,
 				duration: Date.now() - startTime,
 			};
 
 			harness.recordResult(result);
-			expect(storeCall.metadata.initial_score).toBe(0.7);
+			expect(upsertCall.payload.composite_score).toBe(0.7);
 		});
 
 		it("should call clearTurnTracking", async () => {
@@ -982,7 +979,7 @@ describe("OutcomeServiceImpl", () => {
 			mockMongo.getById.mockResolvedValue({
 				id: "mem_123",
 				tier: "working",
-				wilson_score: 0.75,
+				stats: { wilson_score: 0.75 },
 			});
 
 			const service = new OutcomeServiceImpl({

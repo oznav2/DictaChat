@@ -23,7 +23,10 @@ function safeOrigin(url: string | null | undefined): string | null {
 	}
 }
 
-async function probeOpenAI(baseURL: string, apiKey: string | null): Promise<Omit<ProviderStatus, "provider">> {
+async function probeOpenAI(
+	baseURL: string,
+	apiKey: string | null
+): Promise<Omit<ProviderStatus, "provider">> {
 	const controller = new AbortController();
 	const timeoutId = setTimeout(() => controller.abort(), 2500);
 	const start = Date.now();
@@ -43,7 +46,13 @@ async function probeOpenAI(baseURL: string, apiKey: string | null): Promise<Omit
 		clearTimeout(timeoutId);
 
 		if (res.ok) {
-			return { base_url_origin: safeOrigin(baseURL), configured: true, ok: true, latency_ms: latencyMs, error: null };
+			return {
+				base_url_origin: safeOrigin(baseURL),
+				configured: true,
+				ok: true,
+				latency_ms: latencyMs,
+				error: null,
+			};
 		}
 
 		if (res.status === 401 || res.status === 403) {
@@ -71,7 +80,13 @@ async function probeOpenAI(baseURL: string, apiKey: string | null): Promise<Omit
 			message.toLowerCase().includes("aborted") || message.toLowerCase().includes("timeout")
 				? "timeout"
 				: "network_error";
-		return { base_url_origin: safeOrigin(baseURL), configured: Boolean(baseURL), ok: false, latency_ms: latencyMs, error };
+		return {
+			base_url_origin: safeOrigin(baseURL),
+			configured: Boolean(baseURL),
+			ok: false,
+			latency_ms: latencyMs,
+			error,
+		};
 	}
 }
 
@@ -92,7 +107,13 @@ export const GET: RequestHandler = async ({ locals }) => {
 
 	const openai = baseURL
 		? await probeOpenAI(baseURL, apiKey && apiKey !== "sk-" ? apiKey : null)
-		: { base_url_origin: null, configured: false, ok: false, latency_ms: null, error: "missing_base_url" as const };
+		: {
+				base_url_origin: null,
+				configured: false,
+				ok: false,
+				latency_ms: null,
+				error: "missing_base_url" as const,
+			};
 
 	const providers: ProviderStatus[] = [
 		{
@@ -107,4 +128,3 @@ export const GET: RequestHandler = async ({ locals }) => {
 		providers,
 	});
 };
-

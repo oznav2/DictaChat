@@ -1,0 +1,51 @@
+{
+  "dataset_id": "12e87b4d-09a6-45a7-b8b8-fa049e1fc129",
+  "title": "תופעות לאחר חיסוני קורונה",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "covid19",
+    "קורונה"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "תופעות",
+    "חיסוני",
+    "לאחר",
+    "משרד",
+    "קורונה",
+    "הבריאות",
+    "covid"
+  ],
+  "resources": [
+    {
+      "resource_id": "425ce312-22d9-4166-a8ec-eb14c6d7aad8",
+      "title": "ReadMe דיווחים מהציבור.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "ef7d5284-db2e-4db9-b0df-01ed9ba92ed8",
+      "title": "Effects from Public",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "b7c1a598-7c3c-4261-9dba-11e04e1621cc",
+      "title": "דיווחים מצוותים רפואיים לפי גיל מין ויצרן.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

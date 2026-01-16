@@ -1,0 +1,103 @@
+{
+  "dataset_id": "f5473195-5093-406f-9e84-64d6ac8f9556",
+  "title": "רשימת מעבדות מים",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "מעבדות",
+    "מעבדות מים"
+  ],
+  "categories": [
+    "health",
+    "water"
+  ],
+  "keywords": [
+    "name",
+    "fax",
+    "phone",
+    "notes",
+    "מעבדות",
+    "משרד",
+    "manager",
+    "type",
+    "address",
+    "district",
+    "email",
+    "test",
+    "הבריאות",
+    "מים",
+    "material",
+    "lab"
+  ],
+  "resources": [
+    {
+      "resource_id": "318941c3-a2a3-489e-83d9-efb87ed01dc9",
+      "title": "רשימת מעבדות מים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "lab_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "test_material",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "test_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 26
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

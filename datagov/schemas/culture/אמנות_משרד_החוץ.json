@@ -1,0 +1,99 @@
+{
+  "dataset_id": "46577c12-8675-4464-a5ca-473ae20e3dd9",
+  "title": "אמנות משרד החוץ",
+  "organization": "משרד החוץ",
+  "tags": [
+    "משרד החוץ"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "name",
+    "language",
+    "force",
+    "parties",
+    "treaty",
+    "entry",
+    "signature",
+    "החוץ",
+    "date",
+    "number",
+    "website",
+    "משרד",
+    "subject",
+    "main",
+    "comment",
+    "folder",
+    "אמנות",
+    "into",
+    "for"
+  ],
+  "resources": [
+    {
+      "resource_id": "5c98ccc0-5462-41e9-b335-786cf617c314",
+      "title": "אמנות משרד החוץ ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "folder_number",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "Comment_for_website",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Entry_into_force",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Date_of_Signature",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Treaty_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Parties",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Subject_main",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "treaty",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Language1",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1099
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

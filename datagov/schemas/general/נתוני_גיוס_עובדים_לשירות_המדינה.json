@@ -1,0 +1,186 @@
+{
+  "dataset_id": "3266acec-bf9c-4224-a7b6-7fca1014d784",
+  "title": "נתוני גיוס עובדים לשירות המדינה",
+  "organization": "נציבות שירות המדינה",
+  "tags": [
+    "גיוס עובדים",
+    "הון אנושי",
+    "משאבי אנוש"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "אשכול",
+    "לשירות",
+    "גיוס",
+    "סוג",
+    "עובדים",
+    "מועמדים",
+    "משרות",
+    "יחידה",
+    "תום",
+    "הון",
+    "סיבת",
+    "המדינה",
+    "פרסום",
+    "אזור",
+    "אחוז",
+    "ארגונית",
+    "נציבות",
+    "דרוג",
+    "כמות",
+    "עיסוק",
+    "משרד",
+    "מתח",
+    "משרה",
+    "המשרה",
+    "שירות",
+    "למשרה",
+    "משאבי",
+    "תאריך",
+    "סטטוס",
+    "מכרז",
+    "מועמדות",
+    "אנוש",
+    "מדרג",
+    "מועד",
+    "יישוב",
+    "שהגישו",
+    "לאיוש",
+    "אנושי",
+    "דרגות"
+  ],
+  "resources": [
+    {
+      "resource_id": "009fd03b-17fd-4958-83a9-25f256ca3fb6",
+      "title": "נתוני גיוס לשירות המדינה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר מכרז",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם משרד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג מכרז",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סטטוס מכרז",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "סיבת סטטוס מכרז",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך פרסום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תום מועד פרסום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת פרסום",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "כמות משרות לאיוש",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר משרה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם משרה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "אחוז משרה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אזור",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "יישוב המשרה",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "דרוג משרה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מתח דרגות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מדרג",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם אשכול",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם עיסוק",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר עיסוק",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם יחידה ארגונית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר מועמדים שהגישו מועמדות למשרה",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 46229
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

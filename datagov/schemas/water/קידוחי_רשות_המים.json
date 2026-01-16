@@ -1,0 +1,148 @@
+{
+  "dataset_id": "fc549bf6-48e3-41a2-8a69-ca43ca8d0255",
+  "title": "קידוחי רשות המים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "borehole",
+    "water",
+    "מים",
+    "קידוח",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "אדמיניסטרטיבי",
+    "borehole",
+    "רשות",
+    "אקוויפר",
+    "הממשלתית",
+    "בעלות",
+    "מים",
+    "צרכן",
+    "בעל",
+    "ארצי",
+    "מקסימלית",
+    "קידוח",
+    "סטאטוס",
+    "גיאוגרפי",
+    "אזור",
+    "water",
+    "תכנון",
+    "קבוצת",
+    "למים",
+    "ספיקה",
+    "מתקן",
+    "המתקן",
+    "הרשות",
+    "קידוחי",
+    "הפקה",
+    "שעתית",
+    "ולביוב",
+    "חקלאי",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "71090141-46a0-42b7-aed8-c71322b25c6d",
+      "title": "קידוחי רשות המים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר מתקן",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם מתקן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר צרכן בעל המתקן",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם צרכן בעל המתקן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "בעלות המתקן",
+          "type": "text",
+          "semantic": "price"
+        },
+        {
+          "name": "סטאטוס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קבוצת מים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אקוויפר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ספיקה שעתית מקסימלית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מספר הפקה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר ארצי",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "אזור הפקה",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "אזור חקלאי",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "אזור גיאוגרפי",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "אזור אדמיניסטרטיבי",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "אזור תכנון",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 3971
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,247 @@
+{
+  "dataset_id": "279eb839-86d9-42c2-b344-7407e2d87108",
+  "title": "אוטובוסים - מהירות נסיעה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "shape",
+    "oid",
+    "נסיעה",
+    "בדרכים",
+    "משרד",
+    "מהירות",
+    "והבטיחות",
+    "אוטובוסים",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "a92b1de1-8006-4369-9d7f-f3b4f711671d",
+      "title": "BUS_SPEED_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "20db3e99-5bc7-4d0d-8bf7-4867eadc6ec9",
+      "title": "BUS_SPEED_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "ccea1923-e1b2-4b64-a334-968235adc415",
+      "title": "BUS_SPEED_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "d_1_h_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_1_h_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_1_h_3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_1_h_4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_1_h_5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_1_h_6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_1_h_7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_2_h_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_2_h_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_2_h_3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_2_h_4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_2_h_5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_2_h_6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_2_h_7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_3_h_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_3_h_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_3_h_3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_3_h_4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_3_h_5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_3_h_6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_3_h_7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_4_h_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_4_h_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_4_h_3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_4_h_4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_4_h_5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_4_h_6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_4_h_7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_5_h_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_5_h_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_5_h_3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_5_h_4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_5_h_5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_5_h_6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_5_h_7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 713943
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

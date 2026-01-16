@@ -1,0 +1,444 @@
+{
+  "dataset_id": "3b1e6441-83c5-47de-a1e2-1d35063bab3d",
+  "title": "נתונים סטטיסטים על יבוא טובין לישראל",
+  "organization": "רשות המסים בישראל",
+  "tags": [
+    "הצהרה",
+    "הצהרת יבוא",
+    "יבוא",
+    "מכס"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "quantity",
+    "לישראל",
+    "measurementunitname",
+    "רשות",
+    "istradeagreementwithquota",
+    "vat",
+    "מכס",
+    "niscurrencyamount",
+    "governmentproceduretypeenglishname",
+    "יבוא",
+    "autonomytypeid",
+    "currencycode",
+    "month",
+    "הצהרת",
+    "הצהרה",
+    "digits",
+    "טובין",
+    "autonomytype",
+    "המסים",
+    "tradeagreementname",
+    "measurementunitid",
+    "customshouse",
+    "סטטיסטים",
+    "customsitem",
+    "exempt",
+    "governmentproceduretypename",
+    "country",
+    "origin",
+    "ispreferencedocument",
+    "purchasetax",
+    "year",
+    "generalcustomstax",
+    "termsofsale",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "80c1e38e-06b9-4a67-b2a4-cc1a76374ee9",
+      "title": "נתונים סטטיסטיים 2025",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Origin_Country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItem_2_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_8_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Exempt_CustomsItem",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "CustomsHouse",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Quantity",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Quantity_MeasurementUnitID",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Quantity_MeasurementUnitName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TradeAgreementName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TermsOfSale",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "IsTradeAgreementWithQuota",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NISCurrencyAmount",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CurrencyCode",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AutonomyTypeID",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AutonomyType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "GovernmentProcedureTypeName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "GovernmentProcedureTypeEnglishName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "IsPreferenceDocument",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GeneralCustomsTax",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "PurchaseTax",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "VAT",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1919233
+    },
+    {
+      "resource_id": "6d3b03e1-de9c-42a8-bb08-91ba564c2f34",
+      "title": "נתונים סטטיסטים 2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Origin_Country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItem_2_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_8_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Exempt_CustomsItem",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "CustomsHouse",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Quantity",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Quantity_MeasurementUnitID",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Quantity_MeasurementUnitName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TradeAgreementName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TermsOfSale",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "IsTradeAgreementWithQuota",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NISCurrencyAmount",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CurrencyCode",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AutonomyTypeID",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AutonomyType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "GovernmentProcedureTypeName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "GovernmentProcedureTypeEnglishName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "IsPreferenceDocument",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GeneralCustomsTax",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "PurchaseTax",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "VAT",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2097424
+    },
+    {
+      "resource_id": "34a7dab2-c1a1-4634-9a95-3d1da2453471",
+      "title": "נתונים סטטיסטיים 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Origin_Country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItem_2_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_8_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Exempt_CustomsItem",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "CustomsHouse",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Quantity",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Quantity_MeasurementUnitID",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Quantity_MeasurementUnitName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TradeAgreementName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TermsOfSale",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "IsTradeAgreementWithQuota",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NISCurrencyAmount",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CurrencyCode",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AutonomyTypeID",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AutonomyType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "GovernmentProcedureTypeName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "GovernmentProcedureTypeEnglishName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "IsPreferenceDocument",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GeneralCustomsTax",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "PurchaseTax",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "VAT",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2165551
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

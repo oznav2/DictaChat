@@ -1,0 +1,86 @@
+{
+  "dataset_id": "e4c3e3d0-c4e4-497e-b2a5-43c533728624",
+  "title": "כתב העת חברה ורווחה",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "name",
+    "magazine",
+    "העת",
+    "article",
+    "משרד",
+    "type",
+    "כתב",
+    "year",
+    "ורווחה",
+    "publication",
+    "הרווחה",
+    "החברתי",
+    "והביטחון",
+    "חברה",
+    "link",
+    "author"
+  ],
+  "resources": [
+    {
+      "resource_id": "091db2ee-cc23-4c94-b5ba-a4c2eb06dd5d",
+      "title": "חברה ורווחה ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "article_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "magazine_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "publication_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "author",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "publication_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "link_to_article",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 1802
+    },
+    {
+      "resource_id": "24b3c2e7-f6ba-44c4-ac1e-dbc89f119b68",
+      "title": "הסבר מבנה הנתונים בקובץ חברה ורווחה",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

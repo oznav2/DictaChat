@@ -1,0 +1,115 @@
+{
+  "dataset_id": "029b6747-551b-47ad-9a05-ef7f7868fcd0",
+  "title": "בקשות לפטנטים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "בקשה",
+    "הגשה",
+    "פטנט",
+    "סטטוס",
+    "באנגלית",
+    "מתן",
+    "משרד",
+    "בינלאומי",
+    "לפטנטים",
+    "שני",
+    "פרסום",
+    "האמצאה",
+    "בעברית",
+    "תאריך",
+    "הבקשה",
+    "ראשון",
+    "בקשות",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "adca9a88-bf91-462a-8a49-62381af9b588",
+      "title": "בקשות לפטנטים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך הבקשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך הגשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שם האמצאה בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם האמצאה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר בקשה בינלאומי",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר פרסום בינלאומי",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך פרסום ראשון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך פרסום שני",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך מתן פטנט",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סטטוס בקשה/פטנט",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 270465
+    },
+    {
+      "resource_id": "42dfd68b-2382-48ec-89dc-50547fb321a2",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

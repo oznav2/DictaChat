@@ -1,0 +1,89 @@
+{
+  "dataset_id": "6a8f3548-f991-4f8b-ab52-80240324ab4d",
+  "title": "רשימת שוחטים ובודקים",
+  "organization": "הרבנות הראשית לישראל",
+  "tags": [
+    "בודק חוץ",
+    "בודק סכינים",
+    "בודק פנים",
+    "מנקר",
+    "ראשר צוות",
+    "שוחט"
+  ],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "phone",
+    "הראשית",
+    "לישראל",
+    "ובודקים",
+    "צוות",
+    "job",
+    "בודק",
+    "הרבנות",
+    "cellphone",
+    "חוץ",
+    "שוחטים",
+    "סכינים",
+    "פנים",
+    "lastname",
+    "מנקר",
+    "ראשר",
+    "firstname",
+    "שוחט",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "0fc0f3d0-267c-4606-abb9-c53a2aa1afd9",
+      "title": "רשימת שוחטים ובודקים 26.12.2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "firstname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "lastname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "job",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "cellphone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 640
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": true,
+    "has_date": false
+  }
+}

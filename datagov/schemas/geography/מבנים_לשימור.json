@@ -1,0 +1,51 @@
+{
+  "dataset_id": "0e8a1152-1cf2-4a9d-9fe8-2bfd7f60d970",
+  "title": "מבנים לשימור",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "תכנון עיר וגיאוגרפיה"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "באר",
+    "עיר",
+    "לשימור",
+    "תכנון",
+    "עיריית",
+    "שבע",
+    "מבנים",
+    "וגיאוגרפיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "397f8350-32ed-4921-9e2c-3b827ce3b219",
+      "title": "שימור אלמנטים - GeoJSON-ITM",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "11e06249-34f4-41d6-a8dc-39e0979db94b",
+      "title": "מבנים לשימור - GeoXML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "ec14bfe5-2d92-471e-8fca-63caaca0b263",
+      "title": "מבנים לשימור - KML",
+      "format": "KML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

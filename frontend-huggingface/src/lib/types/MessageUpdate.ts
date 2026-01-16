@@ -155,6 +155,7 @@ interface MessageTraceUpdateBase<TSubtype extends MessageTraceUpdateType> {
 	type: MessageUpdateType.Trace;
 	subtype: TSubtype;
 	runId: string;
+	runType?: "memory_prefetch" | "tool_execution";
 }
 
 export interface MessageTraceRunCreatedUpdate
@@ -198,7 +199,10 @@ export enum MessageMemoryUpdateType {
 	Searching = "searching",
 	Found = "found",
 	Storing = "storing",
+	Stored = "stored",
 	Outcome = "outcome",
+	Degraded = "degraded", // Circuit breaker open - memory system temporarily unavailable
+	DocumentIngesting = "document_ingesting", // Document upload progress
 }
 
 interface MessageMemoryUpdateBase<TSubtype extends MessageMemoryUpdateType> {
@@ -222,14 +226,48 @@ export interface MessageMemoryStoringUpdate
 	tier: string;
 }
 
+export interface MessageMemoryStoredUpdate
+	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.Stored> {
+	tier: string;
+	memoryId: string;
+	preview: string;
+	createdAt?: string;
+}
+
 export interface MessageMemoryOutcomeUpdate
 	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.Outcome> {
 	outcome: "positive" | "negative" | "neutral";
 	memoryIds?: string[];
 }
 
+export interface MessageMemoryDegradedUpdate
+	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.Degraded> {
+	reason: "circuit_breaker_open" | "service_unavailable" | "timeout";
+	message?: string;
+}
+
+export interface MessageMemoryDocumentIngestingUpdate
+	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.DocumentIngesting> {
+	documentName: string;
+	stage:
+		| "reading"
+		| "extracting"
+		| "chunking"
+		| "embedding"
+		| "storing"
+		| "completed"
+		| "recognized";
+	chunksProcessed?: number;
+	totalChunks?: number;
+	recognized?: boolean;
+	message?: string;
+}
+
 export type MessageMemoryUpdate =
 	| MessageMemorySearchingUpdate
 	| MessageMemoryFoundUpdate
 	| MessageMemoryStoringUpdate
-	| MessageMemoryOutcomeUpdate;
+	| MessageMemoryStoredUpdate
+	| MessageMemoryOutcomeUpdate
+	| MessageMemoryDegradedUpdate
+	| MessageMemoryDocumentIngestingUpdate;

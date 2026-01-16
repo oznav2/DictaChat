@@ -1,0 +1,90 @@
+{
+  "dataset_id": "d26ca45a-1c9b-4b35-8f44-5b270c5e381d",
+  "title": "רכזי ההתנדבות ברשויות המקומיות",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "בריאות ורווחה",
+    "התנדבות",
+    "רשויות",
+    "רשויות מקומיות"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "phone",
+    "city",
+    "מקומיות",
+    "ברשויות",
+    "cell",
+    "והביטחון",
+    "בריאות",
+    "ההתנדבות",
+    "המקומיות",
+    "rakaz",
+    "רכזי",
+    "משרד",
+    "district",
+    "ורווחה",
+    "החברתי",
+    "התנדבות",
+    "רשויות",
+    "הרווחה",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "1c00198b-0e63-4cef-8e25-2aa345f069f8",
+      "title": "רכזי התנדבות ברשויות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "rakaz",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "cell_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 216
+    },
+    {
+      "resource_id": "0afac59d-43c1-4863-b93d-fc8ae486a49c",
+      "title": "הסבר מבנה הנתונים בקובץ רכזי התנדבות ברשויות מקומיות",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

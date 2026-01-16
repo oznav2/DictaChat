@@ -1,0 +1,57 @@
+{
+  "dataset_id": "768f4b9f-9e67-430c-ba29-d329638230b9",
+  "title": "תוכניות מקוונות",
+  "organization": "מינהל התכנון ",
+  "tags": [
+    "אגף תכנון",
+    "גאוגרפי",
+    "מינהל התכנון",
+    "מפה",
+    "מפות",
+    "מרחבי תכנון",
+    "קווים כחולים",
+    "תכנון ובניה"
+  ],
+  "categories": [
+    "health",
+    "housing"
+  ],
+  "keywords": [
+    "אגף",
+    "כחולים",
+    "גאוגרפי",
+    "מינהל",
+    "תכנון",
+    "מפה",
+    "מרחבי",
+    "ובניה",
+    "התכנון",
+    "קווים",
+    "מקוונות",
+    "מפות",
+    "תוכניות"
+  ],
+  "resources": [
+    {
+      "resource_id": "f41c3be3-4c53-4895-8f3b-ee6fa84f715c",
+      "title": "XPLAN",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "28e0b8b3-4515-4f01-b55f-41e3e2d9dec4",
+      "title": "Xplan.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

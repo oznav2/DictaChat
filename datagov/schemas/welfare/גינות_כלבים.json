@@ -1,0 +1,89 @@
+{
+  "dataset_id": "3ce41381-9ac5-4191-a85a-d13ab95837fe",
+  "title": "גינות כלבים",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "פנאי רווחה וספורט"
+  ],
+  "categories": [
+    "welfare",
+    "culture"
+  ],
+  "keywords": [
+    "name",
+    "lon",
+    "באר",
+    "area",
+    "רווחה",
+    "lat",
+    "עיריית",
+    "פנאי",
+    "גינות",
+    "שבע",
+    "leng",
+    "וספורט",
+    "כלבים",
+    "shape"
+  ],
+  "resources": [
+    {
+      "resource_id": "22c45eb6-a93b-41d9-aed7-56488ad987b6",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "cf217872-1db5-4737-89da-38adc677df28",
+      "title": "SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "4b6e3408-afbe-4ea3-8b69-11d98233ffe7",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "SHAPE_Leng",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 27
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "dataset_id": "00b8ea16-5c03-4af3-8601-f1e0d57bd4be",
+  "title": "תושבים חוזרים מ 2006 עד 2015",
+  "organization": "משרד העלייה והקליטה",
+  "tags": [
+    "אוכלוסיה",
+    "עלייה",
+    "קליטת עלייה",
+    "תושב חוזר",
+    "תושבים חוזרים"
+  ],
+  "categories": [
+    "demographics",
+    "immigration"
+  ],
+  "keywords": [
+    "קליטת",
+    "עלייה",
+    "תושב",
+    "אוכלוסיה",
+    "חוזרים",
+    "משרד",
+    "והקליטה",
+    "חוזר",
+    "תושבים",
+    "העלייה"
+  ],
+  "resources": [
+    {
+      "resource_id": "95e892f6-cb89-4282-b6ab-485ff0730cc1",
+      "title": "תושבים חוזרים מ 2006 עד 2015 - לפי חודש ושנה",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "d1e333d7-91ee-46d4-863c-af5b17bee0ac",
+      "title": "תושבים חוזרים מ 2006 עד 2015 - לפי מקצועות",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "6955cddd-5c2f-41bd-940f-b4ef9e6e95c4",
+      "title": "תושבים חוזרים מ 2006 עד 2015 - מגדר",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

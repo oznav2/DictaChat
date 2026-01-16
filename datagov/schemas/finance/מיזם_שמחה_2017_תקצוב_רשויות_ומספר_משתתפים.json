@@ -1,0 +1,90 @@
+{
+  "dataset_id": "a043f4f9-7a9a-404f-995a-625f71c5ad35",
+  "title": "מיזם שמחה 2017 - תקצוב רשויות ומספר משתתפים",
+  "organization": "המשרד לשוויון חברתי",
+  "tags": [
+    "2017",
+    "המשרד",
+    "המשרד לשוויון חברתי",
+    "חברתי",
+    "לשוויון",
+    "מיזם",
+    "מיזם שמחה",
+    "מיזם שמחה 2017",
+    "שמחה"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "רשויות",
+    "משתתפים",
+    "תקצוב",
+    "לשוויון",
+    "חברתי",
+    "הרשות",
+    "מסד",
+    "כמות",
+    "מיזם",
+    "השתתפות",
+    "רשות",
+    "המשרד",
+    "ומספר",
+    "למס",
+    "קוד",
+    "מופעים",
+    "שמחה"
+  ],
+  "resources": [
+    {
+      "resource_id": "109a7312-96dc-407c-93ad-5f275f07b0ea",
+      "title": "Simcha_2017.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מסד",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קוד רשות למס",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "שם הרשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "כמות מופעים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "סך מספר משתתפים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "השתתפות המשרד",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 213
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

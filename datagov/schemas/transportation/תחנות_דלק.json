@@ -1,0 +1,85 @@
+{
+  "dataset_id": "c63fcc42-a249-4eed-b7a6-084c41b2fe60",
+  "title": "תחנות דלק",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "name",
+    "lon",
+    "באר",
+    "firma",
+    "תחבורה",
+    "lat",
+    "עיריית",
+    "דלק",
+    "address",
+    "שבע",
+    "תחנות"
+  ],
+  "resources": [
+    {
+      "resource_id": "4e37872d-c969-407d-a628-b94914b78fff",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "c595a623-cbd1-45d8-9308-3fd71dfd7a5c",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ADDRESS",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "firma",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 39
+    },
+    {
+      "resource_id": "505b2164-b620-4057-ab36-b9ff9408d49e",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

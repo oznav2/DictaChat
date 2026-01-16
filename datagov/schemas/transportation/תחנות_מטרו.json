@@ -1,0 +1,113 @@
+{
+  "dataset_id": "dee4e199-1afa-436d-a6c7-ead366cc63f5",
+  "title": "תחנות מטרו",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "METRO",
+    "מטרו",
+    "מטרופולין תל אביב",
+    "ממג",
+    "תחנות"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "yearmonth",
+    "אביב",
+    "ממג",
+    "oid",
+    "objectid",
+    "מטרו",
+    "בדרכים",
+    "nameeng",
+    "משרד",
+    "מטרופולין",
+    "metro",
+    "והבטיחות",
+    "gis",
+    "line",
+    "תחנות",
+    "masad",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "2d0c5425-c1d8-4932-9995-3ccf6b8a24f2",
+      "title": "METRO_STAT_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "418fd678-5285-4e4a-b5b6-25671d509240",
+      "title": "METRO_STAT_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "aaea25c0-1478-4ae6-9c61-1cce3cff5ae7",
+      "title": "METRO_STAT_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "NAMEENG",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LINE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MASAD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 109
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "dataset_id": "d73be1c1-10a8-43d6-803e-ba866caea3af",
+  "title": "תקציב וביצוע 2013",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אוצר וכלכלה"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "תקציב",
+    "וכלכלה",
+    "משרד",
+    "וביצוע",
+    "אוצר",
+    "האוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "48c15173-bfb0-454b-9b23-34fdc6ece99a",
+      "title": "תקציב וביצוע 2013",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

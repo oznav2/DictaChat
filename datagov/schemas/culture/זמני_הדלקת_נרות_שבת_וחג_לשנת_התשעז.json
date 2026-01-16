@@ -1,0 +1,43 @@
+{
+  "dataset_id": "6b30fa18-ff08-47a3-b65e-9c8faf645caa",
+  "title": "זמני הדלקת נרות שבת וחג לשנת התשע\"ז",
+  "organization": "המשרד לשירותי דת",
+  "tags": [
+    "הדלת נרות",
+    "חיונך ותרבות",
+    "שבת"
+  ],
+  "categories": [
+    "culture",
+    "religion"
+  ],
+  "keywords": [
+    "שבת",
+    "וחג",
+    "המשרד",
+    "נרות",
+    "זמני",
+    "לשירותי",
+    "חיונך",
+    "ותרבות",
+    "הדלקת",
+    "הדלת",
+    "התשע"
+  ],
+  "resources": [
+    {
+      "resource_id": "609a2406-3ee3-41a9-bb61-68ef91ae5eb3",
+      "title": "זמני הדלקת נרות שבת וחג לשנת תשע\"ז",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

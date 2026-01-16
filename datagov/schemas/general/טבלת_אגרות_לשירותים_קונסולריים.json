@@ -1,0 +1,111 @@
+{
+  "dataset_id": "0093a1b8-918b-42b7-b268-e35e22616de1",
+  "title": "טבלת אגרות לשירותים קונסולריים",
+  "organization": "משרד החוץ",
+  "tags": [],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "kcountry",
+    "locarrate",
+    "החוץ",
+    "קונסולריים",
+    "dollarrate",
+    "משרד",
+    "טבלת",
+    "לשירותים",
+    "ktype",
+    "year",
+    "currencyeng",
+    "אגרות",
+    "currencyheb",
+    "typeheb",
+    "eurorate",
+    "countryheb",
+    "typeeng",
+    "countryeng"
+  ],
+  "resources": [
+    {
+      "resource_id": "abf80622-209d-43aa-9283-47a749d8a889",
+      "title": "טבלת אגרות לשירותים קונסולריים בנציגות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Kcountry",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CountryHeb",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CountryEng",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Ktype",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TypeHeb",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TypeEng",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CurrencyHeb",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CurrencyEng",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DollarRate",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "EuroRate",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "locaRrate",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 3874
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "dataset_id": "c8205c2e-78df-4def-b0ec-0fcb35acffd3",
+  "title": "בתי ספר מפוקחים - שמאות רכוש",
+  "organization": "משרד העבודה",
+  "tags": [
+    "בתי ספר",
+    "סתי ספר מפוקחים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "העבודה",
+    "good",
+    "manager",
+    "city",
+    "רכוש",
+    "contact",
+    "שמאות",
+    "soldier",
+    "סתי",
+    "משרד",
+    "מפוקחים",
+    "instatuite",
+    "discharged",
+    "בתי",
+    "address",
+    "for",
+    "ספר"
+  ],
+  "resources": [
+    {
+      "resource_id": "39ba77de-887b-4ae8-b4eb-ca4b78e828eb",
+      "title": "בתי ספר מפוקחים - שמאות רכוש",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "instatuite_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "instatuite_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "manager_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "contact_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "city_name",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "is_good_for_discharged_soldier",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 23
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

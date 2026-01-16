@@ -1,0 +1,37 @@
+{
+  "dataset_id": "af674e85-29d0-4d46-b33c-079446f2e327",
+  "title": "תשובות לבקשות חופש מידע",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "חופש המידע",
+    "משפט",
+    "תשובות לבקשות"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "חופש",
+    "משפט",
+    "לבקשות",
+    "משרד",
+    "תשובות",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "58b3488e-f05f-4e64-b5a7-9a1492deb677",
+      "title": "תשובות לבקשות חופש מידע",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

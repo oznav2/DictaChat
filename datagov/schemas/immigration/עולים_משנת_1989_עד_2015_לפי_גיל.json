@@ -1,0 +1,48 @@
+{
+  "dataset_id": "26526e96-3268-4084-833a-80ec4a34f3d7",
+  "title": "עולים משנת 1989 עד 2015 - לפי גיל",
+  "organization": "משרד העלייה והקליטה",
+  "tags": [
+    "אוכלוסיה",
+    "לפי גיל",
+    "עולה חדש",
+    "עולים חדשים",
+    "עליה",
+    "עלייה",
+    "קליטת עלייה"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "קליטת",
+    "עלייה",
+    "אוכלוסיה",
+    "עולה",
+    "משנת",
+    "משרד",
+    "עולים",
+    "עליה",
+    "והקליטה",
+    "חדשים",
+    "העלייה",
+    "גיל",
+    "חדש"
+  ],
+  "resources": [
+    {
+      "resource_id": "df85b8fc-e083-4c78-8191-75da42530f06",
+      "title": "עולים מ 1989 עד 2015 - לפי גיל",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

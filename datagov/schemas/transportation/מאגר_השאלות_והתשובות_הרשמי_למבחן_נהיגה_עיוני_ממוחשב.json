@@ -1,0 +1,143 @@
+{
+  "dataset_id": "618dd157-8df3-43e7-bf9a-00974b4919e9",
+  "title": "מאגר השאלות והתשובות הרשמי למבחן נהיגה עיוני ממוחשב",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "מבחן נהיגה עיוני",
+    "משרד התחבורה",
+    "עיוני",
+    "שאלות תאוריה",
+    "תיאוריה"
+  ],
+  "categories": [
+    "transportation",
+    "water"
+  ],
+  "keywords": [
+    "language",
+    "והתשובות",
+    "מבחן",
+    "התחבורה",
+    "הרשמי",
+    "author",
+    "guid",
+    "בדרכים",
+    "שאלות",
+    "השאלות",
+    "תיאוריה",
+    "והבטיחות",
+    "category",
+    "description",
+    "תאוריה",
+    "משרד",
+    "pubdate",
+    "למבחן",
+    "עיוני",
+    "lastbuilddate",
+    "version",
+    "title",
+    "ממוחשב",
+    "נהיגה",
+    "generator",
+    "link"
+  ],
+  "resources": [
+    {
+      "resource_id": "8c0f314f-583d-48b6-9f5f-4483d95f6848",
+      "title": "TheoryExamHE-DATA.xml",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "bf7cb748-f220-474b-a4d5-2d59f93db28d",
+      "title": "TheoryExamHE-DATA.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "version",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "link",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "lastBuildDate",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "generator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "language",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "title2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "link3",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "guid",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "description4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "author",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "category",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "pubDate",
+          "type": "timestamp",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 1802
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

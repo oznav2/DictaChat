@@ -1,0 +1,123 @@
+{
+  "dataset_id": "1f6ef935-2d90-4f5f-81af-afcd4d63a189",
+  "title": "מרפאות ומעבדות מוכרות לאבחון נשאות HIV",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "איידס",
+    "בריאות",
+    "בריאות ורווחה",
+    "משרד הבריאות"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "לבדיקות",
+    "מרפאות",
+    "טלפון",
+    "המרפאה",
+    "הערה",
+    "נשאות",
+    "hiv",
+    "הבריאות",
+    "מרפאה",
+    "בריאות",
+    "מוכרות",
+    "משרד",
+    "ומיקומה",
+    "ורווחה",
+    "ימים",
+    "קבלה",
+    "איידס",
+    "מרכז",
+    "ומעבדות",
+    "ושעות",
+    "לאבחון"
+  ],
+  "resources": [
+    {
+      "resource_id": "7364cf75-5eb4-4f55-8e8b-c30508e5ce0d",
+      "title": "מרפאות/מעבדות מוכרות לאבחון נשאות  HIV",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "​מרכז / מרפאה לבדיקות איידס - HIV",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "המרפאה ומיקומה​",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ימים ושעות קבלה​",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון​",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "הערה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 16
+    },
+    {
+      "resource_id": "f183dbb0-78e0-4e14-84ec-1937665bff09",
+      "title": "מרפאות ומעבדות מוכרות לאבחון נשאות HIV - עודכן בספטמבר 2019",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "​מרכז / מרפאה לבדיקות איידס - HIV",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "המרפאה ומיקומה​",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ימים ושעות קבלה​",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון​",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "הערה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 16
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

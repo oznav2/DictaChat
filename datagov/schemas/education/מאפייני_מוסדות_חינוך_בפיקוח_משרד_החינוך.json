@@ -1,0 +1,35 @@
+{
+  "dataset_id": "5a9278c8-fa76-46e1-bf2d-0368078c9cc7",
+  "title": "מאפייני מוסדות חינוך בפיקוח משרד החינוך",
+  "organization": "משרד החינוך",
+  "tags": [
+    "משרד החינוך"
+  ],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "בפיקוח",
+    "חינוך",
+    "משרד",
+    "החינוך",
+    "מוסדות",
+    "מאפייני"
+  ],
+  "resources": [
+    {
+      "resource_id": "5548fd63-5868-4053-ad81-98caddc5e232",
+      "title": "מאפייני מוסדות חינוך בפיקוח משרד החינוך",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

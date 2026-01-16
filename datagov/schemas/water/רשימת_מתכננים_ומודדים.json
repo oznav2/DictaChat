@@ -1,0 +1,106 @@
+{
+  "dataset_id": "688d7791-b596-4b64-a307-113e8258b12a",
+  "title": "רשימת מתכננים ומודדים",
+  "organization": "משרד הבינוי והשיכון",
+  "tags": [
+    "וועדות תכנון",
+    "מאגר",
+    "מודדים",
+    "משרד השיכון",
+    "מתכננים"
+  ],
+  "categories": [
+    "water",
+    "housing"
+  ],
+  "keywords": [
+    "bait",
+    "kod",
+    "והשיכון",
+    "mispar",
+    "shem",
+    "sub",
+    "ומודדים",
+    "hitmahut",
+    "וועדות",
+    "description",
+    "תכנון",
+    "משרד",
+    "semel",
+    "tel",
+    "rechov",
+    "sapak",
+    "מודדים",
+    "מתכננים",
+    "השיכון",
+    "הבינוי",
+    "yishuv"
+  ],
+  "resources": [
+    {
+      "resource_id": "a8ca5203-7adc-4bc1-a0ed-3fd4eaa74dcc",
+      "title": "רשימת מודדים ומתכננים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "KOD_SAPAK",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SHEM_SAPAK",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "RECHOV",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MISPAR_BAIT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SEMEL_YISHUV",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SHEM_YISHUV",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MISPAR_TEL",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "HITMAHUT_DESCRIPTION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SUB_KOD_HITMAHUT_DESCRIPTION",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3697
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

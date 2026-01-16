@@ -1,0 +1,233 @@
+{
+  "dataset_id": "aa7747c4-fd59-4563-805a-d30e2fd431c8",
+  "title": "ספירות תנועה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "דרכים",
+    "ממג",
+    "ספירות תנועה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "start",
+    "status",
+    "format",
+    "gis",
+    "remarks",
+    "count",
+    "time",
+    "receiv",
+    "דרכים",
+    "customer",
+    "בדרכים",
+    "end",
+    "date",
+    "file",
+    "והבטיחות",
+    "input",
+    "תנועה",
+    "stat",
+    "משרד",
+    "pedestrian",
+    "exec",
+    "type",
+    "weekly",
+    "bicycle",
+    "ספירות",
+    "executor",
+    "yearmonth",
+    "car",
+    "oid",
+    "period",
+    "queue",
+    "year",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "064caf81-ce5b-4e5d-91db-f679b3f9cdf6",
+      "title": "SFIROT_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "8aad8c0e-73be-4cf4-a6d1-63d1761ad034",
+      "title": "SFIROT_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "cb930bf3-388f-48da-b501-a69038ea959a",
+      "title": "SFIROT_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "COUNT_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "STAT_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "COUNT_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "EXEC_TYPE",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "COUNT_TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CAR_TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "START_DATE",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "START_TIME",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "END_DATE",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "END_TIME",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PERIOD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CUSTOMER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "EXECUTOR",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "RECEIV_DATE",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "INPUT_DATE",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "FORMAT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "REMARKS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "INPUT_STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "EXEC_YEAR",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "INPUT_YEAR",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "PEDESTRIAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BICYCLE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "QUEUE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "WEEKLY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "FILE_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 5920
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

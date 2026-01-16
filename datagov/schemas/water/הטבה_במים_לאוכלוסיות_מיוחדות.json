@@ -1,0 +1,56 @@
+{
+  "dataset_id": "0bd67dd8-5a64-41c3-916a-db8f0958b66c",
+  "title": "הטבה במים לאוכלוסיות מיוחדות",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "water",
+    "מים",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "הטבה",
+    "הרשות",
+    "במים",
+    "לאוכלוסיות",
+    "רשות",
+    "ציבור",
+    "מוסדות",
+    "למים",
+    "הממשלתית",
+    "המים",
+    "מים",
+    "ולביוב",
+    "מיוחדות",
+    "water"
+  ],
+  "resources": [
+    {
+      "resource_id": "9a93c1dc-7ea1-4cfc-a0a6-0127b6a84a9d",
+      "title": "הטבה במים לאוכלוסיות מיוחדות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מוסדות ציבור",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -39,4 +39,3 @@ export const POST: RequestHandler = async ({ request }) => {
 		modified: result.modifiedCount,
 	});
 };
-

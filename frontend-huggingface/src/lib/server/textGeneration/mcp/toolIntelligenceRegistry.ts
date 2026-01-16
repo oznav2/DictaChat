@@ -17,6 +17,8 @@
 
 import { logger } from "../../logger";
 
+export const INGESTIBLE_TOOL_CATEGORIES = ["search", "research", "data", "document"] as const;
+
 // ============================================================================
 // Type Definitions
 // ============================================================================

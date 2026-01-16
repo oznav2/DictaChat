@@ -1,0 +1,106 @@
+{
+  "dataset_id": "f6f70c84-bc50-4101-b91e-9eb1b43fe257",
+  "title": "גנים ירוקים",
+  "organization": "המשרד להגנת הסביבה",
+  "tags": [
+    "גני ילדים",
+    "חינוך",
+    "סביבה"
+  ],
+  "categories": [
+    "education",
+    "environment",
+    "welfare"
+  ],
+  "keywords": [
+    "הסביבה",
+    "ירוקים",
+    "מחוז",
+    "חינוך",
+    "מקומית",
+    "רשות",
+    "המשרד",
+    "גנים",
+    "הגן",
+    "מעמד",
+    "להגנת",
+    "גני",
+    "ילדים",
+    "סביבה"
+  ],
+  "resources": [
+    {
+      "resource_id": "57064159-d2d1-48a0-9fb1-b3439a1ae2b0",
+      "title": "גני ילדים ירוקים 2020",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הגן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "רשות מקומית",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "מעמד",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 358
+    },
+    {
+      "resource_id": "44c1d5a4-b49b-4c25-aeeb-9414c590221d",
+      "title": "גני ילדים ירוקים 2021",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הגן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "מעמד",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 305
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

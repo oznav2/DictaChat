@@ -1,0 +1,86 @@
+{
+  "dataset_id": "1e6a05aa-7e6e-47be-b759-4f57a25a447d",
+  "title": "רכבת כבדה - מספר נוסעים בשנת 2040",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2040",
+    "GIS",
+    "חצב",
+    "ממג",
+    "נוסעים",
+    "רכבת",
+    "רכבת כבדה"
+  ],
+  "categories": [
+    "transportation",
+    "finance",
+    "geography"
+  ],
+  "keywords": [
+    "shape",
+    "רכבת",
+    "ממג",
+    "נוסעים",
+    "objectid",
+    "בדרכים",
+    "משרד",
+    "passengers",
+    "length",
+    "והבטיחות",
+    "gis",
+    "חצב",
+    "כבדה",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "2cdc1b6f-24eb-4302-83c8-9c49fd8ddb0a",
+      "title": "RAIL_FLOW_2040_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "523a376b-ac61-4d84-a960-b206f86ffa1a",
+      "title": "RAIL_FLOW_2040_KML",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "87cf8b7a-94d8-481c-bc56-ed40a40fd01e",
+      "title": "RAIL_FLOW_2040_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "PASSENGERS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 217
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

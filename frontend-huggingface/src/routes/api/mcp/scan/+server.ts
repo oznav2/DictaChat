@@ -50,7 +50,17 @@ function extractServersFromConfig(data: any): ScannedServer[] {
 	return servers;
 }
 
-export const GET: RequestHandler = async () => {
+export const GET: RequestHandler = async ({ locals }) => {
+	if (!locals.isAdmin) {
+		return json(
+			{
+				success: false,
+				error: "Admin only",
+			},
+			{ status: 403 }
+		);
+	}
+
 	const home = process.env.HOME || "";
 	const candidates = [
 		home ? path.join(home, ".config", "Claude", "claude_desktop_config.json") : null,

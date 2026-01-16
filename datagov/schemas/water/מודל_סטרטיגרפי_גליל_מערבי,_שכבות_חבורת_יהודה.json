@@ -1,0 +1,64 @@
+{
+  "dataset_id": "e20c1979-24cf-464b-8701-767d2127f4f3",
+  "title": "מודל סטרטיגרפי - גליל מערבי, שכבות חבורת יהודה",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "water",
+    "הידרוגיאולוגיה",
+    "מי תהום",
+    "מים",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "חבורת",
+    "גליל",
+    "הרשות",
+    "ולביוב",
+    "מודל",
+    "יהודה",
+    "שכבות",
+    "רשות",
+    "הידרוגיאולוגיה",
+    "סטרטיגרפי",
+    "תהום",
+    "למים",
+    "הממשלתית",
+    "המים",
+    "מערבי",
+    "מים",
+    "water"
+  ],
+  "resources": [
+    {
+      "resource_id": "d777d582-098e-4629-8a31-d685e782e52b",
+      "title": "רום בסיס אקוויפר חבורת יהודה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0260a221-b140-4572-a77f-7feaa8b574f7",
+      "title": "רום השכבה החוצצת",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "fe51b1a3-4dea-42c0-8e6e-1b806679bb03",
+      "title": "רום גג אקוויפר חבורת יהודה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "dataset_id": "fa316df9-3cc1-460e-a613-35d7bab3fb21",
+  "title": "מועצות דתיות וראשיהן",
+  "organization": "המשרד לשירותי דת",
+  "tags": [],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "name",
+    "וראשיהן",
+    "phone",
+    "fax",
+    "website",
+    "המשרד",
+    "type",
+    "address",
+    "מועצות",
+    "דתיות",
+    "לשירותי",
+    "council",
+    "family",
+    "zip"
+  ],
+  "resources": [
+    {
+      "resource_id": "80822f1d-ad3e-437c-b799-92c57aa06477",
+      "title": "מועצות דתיות וראשיהן",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Council_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Zip",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Website",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Family_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 129
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "dataset_id": "fb522ddd-bd25-4272-abef-eceab9aa268d",
+  "title": "דוח תוצאות ניטור של איכות מים בנהר הירדן בתחנת גשר הפקק",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "basin",
+    "monitoring",
+    "quality",
+    "streams",
+    "water",
+    "water quality",
+    "אגן",
+    "איכות מים",
+    "גשר הפקק",
+    "דגימות",
+    "הידרומטריה",
+    "יונים ראשיים",
+    "מים",
+    "נהר הירדן",
+    "נחל",
+    "ניטור",
+    "רשות המים",
+    "תחנה הידרומטרית"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "פרמטר",
+    "ראשיים",
+    "מדידה",
+    "תחנה",
+    "רשות",
+    "איכות",
+    "אגן",
+    "הממשלתית",
+    "מים",
+    "נחל",
+    "דוח",
+    "תוצאה",
+    "streams",
+    "הידרומטריה",
+    "ניטור",
+    "water",
+    "נהר",
+    "דגימות",
+    "גשר",
+    "הידרומטרית",
+    "יחידת",
+    "סמל",
+    "למים",
+    "הירדן",
+    "תוצאות",
+    "basin",
+    "יונים",
+    "תאריך",
+    "monitoring",
+    "הרשות",
+    "שיטת",
+    "בנהר",
+    "quality",
+    "הפקק",
+    "ולביוב",
+    "בתחנת",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "2d834439-3f88-45ef-bf6e-9924c2f7e8f9",
+      "title": "תוצאות ניטור של איכות מים בנהר הירדן בתחנת גשר הפקק",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תחנה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך ניטור",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שיטת מדידה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סמל פרמטר",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "תוצאה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יחידת מדידה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 213442
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

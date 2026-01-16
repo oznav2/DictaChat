@@ -1,0 +1,47 @@
+{
+  "dataset_id": "f34a71dd-7da5-4617-bd70-62a503c23a90",
+  "title": "פליטות מזהמים מכבישים",
+  "organization": "המשרד להגנת הסביבה",
+  "tags": [
+    "זיהום אוויר",
+    "כבישים",
+    "כלי רכב",
+    "סביבה",
+    "פליטות"
+  ],
+  "categories": [
+    "transportation",
+    "environment",
+    "water"
+  ],
+  "keywords": [
+    "הסביבה",
+    "כבישים",
+    "מזהמים",
+    "המשרד",
+    "רכב",
+    "פליטות",
+    "כלי",
+    "אוויר",
+    "להגנת",
+    "מכבישים",
+    "זיהום",
+    "סביבה"
+  ],
+  "resources": [
+    {
+      "resource_id": "71a3d33c-f31f-41f6-b582-35beaf9a82d9",
+      "title": "פליטות מזהמים מכבישים",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "dataset_id": "ecb05eb3-d4b9-4cc9-bd4b-4dca3f4d92c5",
+  "title": "תצלום אויר 2015 2 מטר - גליון לוד",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "לוד",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "47955660-ae3a-40f5-b92d-0674d6aaedba",
+      "title": "תצלום אויר 2015 2 מטר - גליון לוד",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

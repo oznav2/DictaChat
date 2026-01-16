@@ -1,0 +1,135 @@
+{
+  "dataset_id": "9e97f86f-50b5-4af6-98dc-8c6fd6c64527",
+  "title": "השלמת נתיבי העדפה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "gis",
+    "השלמה",
+    "חצב",
+    "ממג",
+    "נתיבי העדפה",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "natanya",
+    "ממג",
+    "objectid",
+    "תחבורה",
+    "status",
+    "city",
+    "העדפה",
+    "gis",
+    "בדרכים",
+    "והבטיחות",
+    "street",
+    "direction",
+    "binyroniyr",
+    "netaexecut",
+    "משרד",
+    "נתיבי",
+    "השלמה",
+    "חצב",
+    "ציבורית",
+    "executor",
+    "shape",
+    "yearmonth",
+    "השלמת",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "67b643d1-d0e6-4cf7-8a7d-7f8f261dcabc",
+      "title": "NATAZ_COMPLETION_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "3679ad03-c171-4c45-8947-55f02dca5abd",
+      "title": "NATAZ_COMPLETION_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "88b82600-c43a-4b31-a20c-0ff7d63a7c6d",
+      "title": "NATAZ_COMPLETION_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "STREET",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "BINYRONIYR",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "EXECUTOR",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "NETAEXECUT",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "DIRECTION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NATANYA",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SHAPE_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 719
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

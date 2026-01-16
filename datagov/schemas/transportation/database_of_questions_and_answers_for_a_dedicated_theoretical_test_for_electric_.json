@@ -1,0 +1,115 @@
+{
+  "dataset_id": "1afab4b5-f36e-4f96-b4e2-adca47d18d1b",
+  "title": "database of questions and answers for a dedicated theoretical test for electric bicycle vehicles",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "מבחן נהיגה עיוני",
+    "משרד התחבורה",
+    "שאלות תאוריה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "language",
+    "מבחן",
+    "dedicated",
+    "answers",
+    "בדרכים",
+    "theoretical",
+    "database",
+    "שאלות",
+    "test",
+    "והבטיחות",
+    "category",
+    "description",
+    "תאוריה",
+    "משרד",
+    "pubdate",
+    "עיוני",
+    "bicycle",
+    "lastbuilddate",
+    "electric",
+    "version",
+    "title",
+    "and",
+    "questions",
+    "נהיגה",
+    "for",
+    "generator",
+    "התחבורה",
+    "vehicles"
+  ],
+  "resources": [
+    {
+      "resource_id": "76d032de-222b-4c27-9bf6-5229d41ed379",
+      "title": "database of questions and answers for a dedicated theoretical test for electric bicycle vehicles",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "version",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lastBuildDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "generator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "language",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "title2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "description4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "category",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "pubDate",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 40
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

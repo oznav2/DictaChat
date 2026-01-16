@@ -1,0 +1,93 @@
+{
+  "dataset_id": "13370bc8-f04e-4758-bef2-7a91281881ec",
+  "title": "טבעות סל גודש",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "gis",
+    "חצב",
+    "משרד התחבורה",
+    "סל גודש"
+  ],
+  "categories": [
+    "transportation",
+    "environment",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "yearmonth",
+    "shape",
+    "area",
+    "oid",
+    "בדרכים",
+    "משרד",
+    "והבטיחות",
+    "gis",
+    "טבעות",
+    "חצב",
+    "length",
+    "התחבורה",
+    "גודש"
+  ],
+  "resources": [
+    {
+      "resource_id": "788a953a-5090-495b-a43d-4c2acce5ce71",
+      "title": "CONG_TAX_RINGS_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "4e25cc62-40cb-4d6a-b52c-61d8884ac567",
+      "title": "CONG_TAX_RINGS_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "2e727979-7555-48f4-a5d8-3da29b392ffc",
+      "title": "CONG_TAX_RINGS_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "SHAPE_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

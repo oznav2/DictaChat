@@ -1,0 +1,135 @@
+{
+  "dataset_id": "1745d2f8-1cff-4ef6-bd57-427ac7b9addb",
+  "title": "אשכולות תח\"צ",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אוטובוס",
+    "ארצי",
+    "אשכולות",
+    "חצב",
+    "נפחי תנועה",
+    "ספירות נוסעים",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תחבורה",
+    "kmr",
+    "אוטובוס",
+    "ארצי",
+    "operator",
+    "בדרכים",
+    "weektrips",
+    "אשכולות",
+    "והבטיחות",
+    "cluster",
+    "תנועה",
+    "משרד",
+    "weekriders",
+    "חצב",
+    "operatorid",
+    "ספירות",
+    "ציבורית",
+    "shape",
+    "area",
+    "נוסעים",
+    "oid",
+    "length",
+    "נפחי",
+    "clusterid",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "adfcbe30-8184-4123-97ad-fe1b4cb3342b",
+      "title": "TAHAZ_CLUSTERS_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d1bc0096-0acf-4828-be57-5636df25a670",
+      "title": "TAHAZ_CLUSTERS_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "7b6171ba-bbe7-471f-8a03-ec49ac8ad7a4",
+      "title": "TAHAZ_CLUSTERS_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "AREA_KMR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CLUSTER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CLUSTERID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "OPERATOR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OPERATORID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "WEEKRIDERS",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "WEEKTRIPS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 42
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

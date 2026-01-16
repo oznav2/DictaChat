@@ -1,0 +1,75 @@
+{
+  "dataset_id": "9ae2ef4c-6d7f-4336-acca-95b87806d428",
+  "title": "מרכזי להב\"ה",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "טכנולוגיה",
+    "מדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "מדע",
+    "להב",
+    "החדשנות",
+    "כתובת",
+    "מרכזי",
+    "עיר",
+    "טלפון",
+    "משרד",
+    "דואר",
+    "מנהל",
+    "המדע",
+    "אלקטרוני",
+    "טכנולוגיה",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "83bead53-7e53-441b-9567-c9bc76e91e78",
+      "title": "מרכזי להב\"ה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "עיר",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מנהל",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 30
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

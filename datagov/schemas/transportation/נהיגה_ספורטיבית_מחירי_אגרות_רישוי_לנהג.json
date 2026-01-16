@@ -1,0 +1,66 @@
+{
+  "dataset_id": "0ee9210f-dedc-453d-9b5f-90bff945c3da",
+  "title": "נהיגה ספורטיבית - מחירי אגרות רישוי לנהג",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "אגרה",
+    "נהיגה",
+    "נהיגה ספורטיבית",
+    "רישוי",
+    "רישיון"
+  ],
+  "categories": [
+    "transportation",
+    "culture"
+  ],
+  "keywords": [
+    "הסכום",
+    "רישוי",
+    "התרבות",
+    "סוג",
+    "משרד",
+    "לנהג",
+    "נהיגה",
+    "אגרות",
+    "אגרה",
+    "האגרה",
+    "בשקלים",
+    "חדשים",
+    "מחירי",
+    "והספורט",
+    "ספורטיבית",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "2326052f-46c9-404b-9f3a-585e85bdb13d",
+      "title": "most.DB.568.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג האגרה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "הסכום בשקלים חדשים",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 4
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

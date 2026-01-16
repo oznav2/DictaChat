@@ -1,0 +1,427 @@
+{
+  "dataset_id": "08645753-6d8b-4bb3-be0f-9cec2cd7557a",
+  "title": "מילוני מאסטר (Code Lists)",
+  "organization": "הלשכה המרכזית לסטטיסטיקה",
+  "tags": [],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "manufacturing",
+    "short",
+    "lists",
+    "מאסטר",
+    "הלשכה",
+    "לסטטיסטיקה",
+    "std",
+    "aut",
+    "continent",
+    "official",
+    "technologic",
+    "power",
+    "tech",
+    "heb",
+    "division",
+    "xcode",
+    "engnameanaf",
+    "codeanaf",
+    "description",
+    "pop",
+    "class",
+    "code",
+    "subregion",
+    "type",
+    "המרכזית",
+    "isic",
+    "xname",
+    "מילוני",
+    "high",
+    "region",
+    "nameanaf",
+    "sdmxcode",
+    "cont",
+    "country",
+    "sdmxname",
+    "comments",
+    "eng",
+    "hospital",
+    "desc",
+    "services",
+    "year",
+    "edition"
+  ],
+  "resources": [
+    {
+      "resource_id": "cd175110-4e71-4fa5-a828-591df6ff0871",
+      "title": "מילון ארצות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Heb_Description_Country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Eng_Description_Country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Country_Std_Code",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Pop_Aut_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Continent1_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Description1_Cont1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Continent2_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Description2_Cont2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Eng_Description_Country2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Division_Code_Pop_Aut",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Desc_division_Code_Pop_Aut",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Year_Division",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "UN2_Code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "UN3_Code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Region_Code_UN",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "Region_Name_UN",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "SubRegion_Code_UN",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "SubRegion_Name_UN",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Comments",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 265
+    },
+    {
+      "resource_id": "4e7ee924-c8a2-4dc7-8b4f-d6a178e0785e",
+      "title": "מילון סיווג ענפי כלכלה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CodeAnaf4",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NameAnaf4",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "EngNameAnaf4",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Official",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NameAnaf4short",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "EngNameAnaf4Short",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "CodeAnaf3",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NameAnaf3",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "EngNameAnaf3",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NameAnaf3short",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "EngNameAnaf3Short",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "CodeAnaf2",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NameAnaf2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "EngNameAnaf2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NameAnaf2short",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "EngNameAnaf2Short",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "CodeAnaf1",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NameAnaf1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "EngNameAnaf1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NameAnaf1short",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "EngNameAnaf1Short",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "SDMXCode4",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "SDMXName4",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "SDMXCode3",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "SDMXName3",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "SDMXCode2",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "SDMXName2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "SDMXCode1",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "SDMXName1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ISIC4XCode4",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "ISIC4XName4",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ISIC4XCode3",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "ISIC4XName3",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ISIC4XCode2",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "ISIC4XName2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ISIC4XCode1",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "ISIC4XName1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Technologic_Power",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "high_tech_manufacturing",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "high_tech_services",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Class_Year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Edition",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 783
+    },
+    {
+      "resource_id": "3ab6475a-7ff4-4c49-ba26-a099d584da4a",
+      "title": "מילון בתי חולים ומרכזי טראומה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Hospital_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Heb_Description_Hospital",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Eng_Description_Hospital",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Type",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 273
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "dataset_id": "1ad4c0e9-de8c-4ac4-b945-e008fa87ed41",
+  "title": "רשימות בעלי היתרים למתן שירותי דואר כמותי",
+  "organization": "משרד התקשורת",
+  "tags": [
+    "בעלי היתרים",
+    "משרד התקשורת",
+    "שירותי דואר"
+  ],
+  "categories": [
+    "communications"
+  ],
+  "keywords": [
+    "למתן",
+    "איש",
+    "רשימות",
+    "בעל",
+    "דואר",
+    "טלפון",
+    "פקס",
+    "שירותי",
+    "קשר",
+    "התקשורת",
+    "ההיתר",
+    "תוקף",
+    "בעלי",
+    "משרד",
+    "היתרים",
+    "היתר",
+    "ישוב",
+    "אלקטרוני",
+    "נוסף",
+    "כמותי",
+    "ומיקוד"
+  ],
+  "resources": [
+    {
+      "resource_id": "140d8dfa-8f45-469f-b645-7d349f8fa906",
+      "title": "רשימות בעלי היתרים למתן שירותי דואר כמותי",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "בעל ההיתר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "איש קשר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "רח' מס' ישוב ומיקוד",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "דואר אלקטרוני נוסף",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "תוקף היתר",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 8
+    },
+    {
+      "resource_id": "cbbb5e8f-072b-462e-9def-287ef745feb3",
+      "title": "רשימת בעלי היתרים למתן שירותי דואר כמותי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "בעל ההיתר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "איש קשר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "רח' מס' ישוב ומיקוד",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "דואר אלקטרוני נוסף",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "תוקף היתר",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 108
+    },
+    {
+      "resource_id": "1792b1e8-2308-4303-bf5d-b9d0e5d0edb1",
+      "title": "רשימות בעלי היתרים למתן שירותי דואר כמותי",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": true,
+    "has_date": false
+  }
+}

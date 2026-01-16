@@ -1,0 +1,48 @@
+{
+  "dataset_id": "3064b748-08a6-448a-9dac-640191a04d1a",
+  "title": "שערים ממוצעים לכל המטבעות היציגים - 2004",
+  "organization": "בנק ישראל",
+  "tags": [
+    "אוצר וכלכלה",
+    "בנק ישראל",
+    "שער יציג",
+    "שערי מטבע",
+    "שערים ממוצעים"
+  ],
+  "categories": [
+    "finance",
+    "environment",
+    "economy"
+  ],
+  "keywords": [
+    "המטבעות",
+    "ממוצעים",
+    "וכלכלה",
+    "ישראל",
+    "מטבע",
+    "יציג",
+    "שערים",
+    "שערי",
+    "בנק",
+    "היציגים",
+    "אוצר",
+    "שער",
+    "לכל"
+  ],
+  "resources": [
+    {
+      "resource_id": "1fba9b62-faf8-407a-8eed-2372af5ad997",
+      "title": "שערים ממוצעים לכל המטבעות היציגים - 2004",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

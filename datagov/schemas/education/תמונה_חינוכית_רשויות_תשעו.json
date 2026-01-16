@@ -1,0 +1,46 @@
+{
+  "dataset_id": "155885a9-e144-4cde-9304-38cedc40de1a",
+  "title": "תמונה חינוכית רשויות תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "רשויות_מקומיות",
+    "תמונה_חינוכית"
+  ],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "רשויות",
+    "חינוך",
+    "משרד",
+    "החינוך",
+    "תמונה",
+    "חינוכית",
+    "תשע",
+    "מקומיות"
+  ],
+  "resources": [
+    {
+      "resource_id": "29a2d76d-81e5-4e85-9640-83642e92d3af",
+      "title": "תמונה חינוכית רשויות תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "fb422707-38e0-4d42-8439-a3ce06ef2003",
+      "title": "תמונה חינוכית רשויות תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

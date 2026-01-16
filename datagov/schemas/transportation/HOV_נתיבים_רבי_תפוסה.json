@@ -1,0 +1,65 @@
+{
+  "dataset_id": "e85b8b04-e6c1-4c3d-8d86-fecd1d22bd4a",
+  "title": "HOV נתיבים רבי תפוסה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2023",
+    "GIS",
+    "HOV",
+    "gis",
+    "חצב",
+    "ממג",
+    "נרת",
+    "תכנית משלימה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "נתיבים",
+    "ממג",
+    "נרת",
+    "תכנית",
+    "בדרכים",
+    "משרד",
+    "משלימה",
+    "רבי",
+    "gis",
+    "והבטיחות",
+    "חצב",
+    "hov",
+    "תפוסה",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "e4740ee8-e2f6-48fe-bf4e-b4b7993fc5d0",
+      "title": "שכבה גאוגרפית של נתיבים רבי תפוסה HOV",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "632fc113-f52a-4fdc-8648-dc8cb17d3269",
+      "title": "מפת נתיבים רבי תפוסה ונתיבי תחבורה ציבורית",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "6a23c433-b7eb-41fd-9572-36fa95bf4c21",
+      "title": "HOV_2024_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

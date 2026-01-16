@@ -1,0 +1,66 @@
+{
+  "dataset_id": "1e8c213f-1a24-416a-b798-e85762f81604",
+  "title": "רשימות נכסים - קופות גמל",
+  "organization": "רשות שוק ההון, ביטוח וחיסכון",
+  "tags": [
+    "אוצר וכלכלה",
+    "גופים מוסדיים",
+    "גמל",
+    "השקעות",
+    "נכס בודד",
+    "פירוט נכסים",
+    "רשות שוק ההון"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "גופים",
+    "בודד",
+    "ביטוח",
+    "וכלכלה",
+    "השקעות",
+    "פירוט",
+    "נכסים",
+    "רשות",
+    "גמל",
+    "אוצר",
+    "שוק",
+    "ההון",
+    "וחיסכון",
+    "מוסדיים",
+    "רשימות",
+    "קופות",
+    "נכס"
+  ],
+  "resources": [
+    {
+      "resource_id": "7fa031a6-c227-4517-a0c0-9ffed3d79767",
+      "title": "רשימות נכסים של קופות הגמל ליום 30.09.2017",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "006796c4-0ab9-4a8c-83f2-aa53365e55e1",
+      "title": "רשימות נכסים של קופות הגמל ליום 30.6.2017",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0b03df36-5730-4999-a8c4-0f818b5ad6b9",
+      "title": "רשימות נכסים של קופות הגמל ליום 31.03.2017",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

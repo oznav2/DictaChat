@@ -1,0 +1,110 @@
+{
+  "dataset_id": "9d86c8a9-9240-4fc4-86a3-834c539f9488",
+  "title": "תושבים צעירים בישראל לפי ישובים",
+  "organization": "רשות האוכלוסין וההגירה",
+  "tags": [
+    "תושבים לפי גיל"
+  ],
+  "categories": [
+    "demographics",
+    "immigration"
+  ],
+  "keywords": [
+    "לשכת",
+    "צעירים",
+    "מנא",
+    "מועצה",
+    "ישוב",
+    "סהכ",
+    "רשות",
+    "סמל",
+    "אזורית",
+    "ישובים",
+    "האוכלוסין",
+    "וההגירה",
+    "קוד",
+    "תושבים",
+    "גיל",
+    "בישראל",
+    "נפה"
+  ],
+  "resources": [
+    {
+      "resource_id": "b8112650-a2f8-41f2-9c05-a9b9483fb4c0",
+      "title": "תושבים צעירים בישראל בחלוקה לפי ישובים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל_ישוב",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_ישוב",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סמל_נפה",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "נפה",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "קוד_לשכת_מנא",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "לשכת_מנא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד_מועצה_אזורית",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "מועצה_אזורית",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סהכ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל 18_34",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1275
+    },
+    {
+      "resource_id": "b6f578f0-5327-4239-a61b-83086a686f71",
+      "title": "תושבים צעירים בישראל בחלוקה לפי ישובים",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

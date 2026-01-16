@@ -1,0 +1,127 @@
+{
+  "dataset_id": "d16214ba-56b3-417d-9342-6a144f215b9b",
+  "title": "תחנות - ספיקות שיא ונפחים שנתיים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "discharge",
+    "volume",
+    "water",
+    "הידרומטריה",
+    "מים",
+    "נפח",
+    "ספיקה",
+    "רשות המים",
+    "תחנה הידרומטרית"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "שיא",
+    "תחנה",
+    "רשות",
+    "הממשלתית",
+    "מים",
+    "בעברית",
+    "נפח",
+    "מקסימלית",
+    "volume",
+    "רום",
+    "הידרולוגית",
+    "הידרומטריה",
+    "water",
+    "discharge",
+    "שניה",
+    "הערות",
+    "הידרומטרית",
+    "שנתי",
+    "המדידה",
+    "למים",
+    "ספיקה",
+    "מלמ",
+    "באנגלית",
+    "תחנות",
+    "ונפחים",
+    "תאריך",
+    "הרשות",
+    "שנתיים",
+    "שעת",
+    "ספיקות",
+    "שנה",
+    "ולביוב",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "fe88ac88-8c30-4b33-9ea8-ea6a050e0951",
+      "title": "תחנות - ספיקות שיא ונפחים שנתיים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי תחנה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם תחנה בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם תחנה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנה הידרולוגית",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "נפח שנתי (מלמ''ק)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ספיקה מקסימלית (מ''ק/שניה)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תאריך המדידה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שעת המדידה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רום המים (מ')",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הערות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 7526
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

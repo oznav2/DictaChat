@@ -1,0 +1,104 @@
+{
+  "dataset_id": "0b160f8a-a5d5-4edf-99d2-c562be343fd4",
+  "title": "רשימת מעבדות מזון",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "איכות מזון",
+    "מעבדות",
+    "מעבדות מזון"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "fax",
+    "phone",
+    "notes",
+    "מעבדות",
+    "משרד",
+    "manager",
+    "type",
+    "איכות",
+    "address",
+    "district",
+    "email",
+    "test",
+    "הבריאות",
+    "מזון",
+    "material",
+    "lab"
+  ],
+  "resources": [
+    {
+      "resource_id": "59cf6470-94b1-4cd0-8c7e-b292a24c51b4",
+      "title": "רשימת מעבדות מזון",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "lab_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "test_material",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "test_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 13
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

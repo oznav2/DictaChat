@@ -1,0 +1,139 @@
+{
+  "dataset_id": "33635c75-ffbc-426b-90fd-7120d54ce77f",
+  "title": "שטחים כלואים במחלפים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "gis",
+    "חצב",
+    "מחלפים",
+    "ממג",
+    "רמפות",
+    "שטחים כלואים",
+    "תשתית תחבורתית"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "ממג",
+    "objectid",
+    "mhtype",
+    "gis",
+    "mhname",
+    "שטחים",
+    "בדרכים",
+    "והבטיחות",
+    "מחלפים",
+    "במחלפים",
+    "משרד",
+    "תחבורתית",
+    "רמפות",
+    "חצב",
+    "תשתית",
+    "shape",
+    "yearmonth",
+    "כלואים",
+    "perimeter",
+    "area",
+    "length",
+    "dunam",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "3d9d71da-2ac5-44bb-a09d-9426426e7308",
+      "title": "INTERCHANGE_AREAS_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "59621c96-b717-4640-9fa7-33bc83e92ef3",
+      "title": "INTERCHANGE_AREAS_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "85bfda85-7221-4e46-a7cd-5eb499a688d5",
+      "title": "INTERCHANGE_AREAS_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "MHNAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "MHTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RD1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "RD2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "RD3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DUNAM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PERIMETER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "id",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 865
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "dataset_id": "a9d5c9bd-a7fd-4515-8e7d-3c6ac8e6dd59",
+  "title": "בתי כנסת בחיפה",
+  "organization": "עיריית חיפה",
+  "tags": [
+    "אוכלוסיה",
+    "איכות הסביבה",
+    "בתי כנסת",
+    "חינוך ותרבות",
+    "חיפה"
+  ],
+  "categories": [
+    "education",
+    "environment",
+    "culture"
+  ],
+  "keywords": [
+    "הסביבה",
+    "כתובת",
+    "חינוך",
+    "בתי",
+    "אוכלוסיה",
+    "שכונה",
+    "עיריית",
+    "איכות",
+    "כנסת",
+    "בחיפה",
+    "חיפה",
+    "ותרבות"
+  ],
+  "resources": [
+    {
+      "resource_id": "29b0e043-706d-47d3-b1b4-b6d57c27c450",
+      "title": "בתי כנסת בחיפה",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שכונה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 226
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

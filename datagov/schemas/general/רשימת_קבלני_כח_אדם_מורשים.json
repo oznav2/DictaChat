@@ -1,0 +1,100 @@
+{
+  "dataset_id": "8152ebdf-502f-4459-81ce-e828085abb5b",
+  "title": "רשימת קבלני כח אדם מורשים",
+  "organization": "משרד העבודה",
+  "tags": [
+    "כוח אדם",
+    "מורשים",
+    "משרד העבודה",
+    "קבלני",
+    "קבלנים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "companyceo",
+    "קבלני",
+    "status",
+    "העבודה",
+    "companyowner",
+    "משרד",
+    "town",
+    "licensenumber",
+    "מורשים",
+    "אדם",
+    "identitynumber",
+    "address",
+    "validuntil",
+    "כוח",
+    "companyname",
+    "קבלנים"
+  ],
+  "resources": [
+    {
+      "resource_id": "5938933b-35ce-4a73-9026-59ea377ee1b0",
+      "title": "רשימת קבלני כח אדם מורשים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "identitynumber",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "companyname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "licensenumber",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "companyowner",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "companyceo",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "town",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "validuntil",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 3191
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

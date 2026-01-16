@@ -1,0 +1,84 @@
+{
+  "dataset_id": "009348a4-40d5-4bbe-92ab-ac19e4460fce",
+  "title": "רשימה של הרשויות המוניציפאליות - מאוחד",
+  "organization": "מערך הדיגיטל הלאומי",
+  "tags": [
+    "רשויות",
+    "רשויות המקומיות",
+    "רשות מוניציפלית"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "רשויות",
+    "המקומיות",
+    "localauthoritytype",
+    "מוניציפלית",
+    "localauthorityhpnumber",
+    "הדיגיטל",
+    "הרשויות",
+    "רשות",
+    "הלאומי",
+    "רשימה",
+    "localauthoritylongname",
+    "localauthoritydistrict",
+    "localauthoritycode",
+    "מערך",
+    "localauthorityname",
+    "מאוחד",
+    "המוניציפאליות"
+  ],
+  "resources": [
+    {
+      "resource_id": "c4916937-f5d3-4295-a22e-88a1af5cde6a",
+      "title": "רשימה של הרשויות המוניציפאליות - מאוחד",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "LocalAuthorityType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LocalAuthorityCode",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LocalAuthorityName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LocalAuthorityHPNumber",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LocalAuthorityLongName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LocalAuthorityDistrict",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 259
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

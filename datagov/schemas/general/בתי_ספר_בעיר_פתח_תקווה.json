@@ -1,0 +1,38 @@
+{
+  "dataset_id": "73f16491-4e36-4083-bf00-2aeecdd253a3",
+  "title": "בתי ספר בעיר פתח תקווה",
+  "organization": "עיריית פתח תקוה",
+  "tags": [
+    "אוכלוסיה",
+    "בתי ספר"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "בעיר",
+    "בתי",
+    "אוכלוסיה",
+    "עיריית",
+    "פתח",
+    "תקווה",
+    "תקוה",
+    "ספר"
+  ],
+  "resources": [
+    {
+      "resource_id": "c38c6ac8-78d7-42ba-8430-1499e473efe8",
+      "title": "בתי ספר",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

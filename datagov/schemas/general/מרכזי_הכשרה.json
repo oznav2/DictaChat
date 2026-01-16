@@ -1,0 +1,156 @@
+{
+  "dataset_id": "e1721717-3e0a-4d6d-93b3-0129df2a57e2",
+  "title": "מרכזי הכשרה",
+  "organization": "משרד העבודה",
+  "tags": [
+    "הכשרה מקצועית",
+    "מוסדות הכשרה",
+    "מרכזי הכשרה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "objectid",
+    "העבודה",
+    "calc",
+    "noar",
+    "manager",
+    "city",
+    "geom",
+    "osek",
+    "adress",
+    "morshe",
+    "adult",
+    "postal",
+    "nbr",
+    "students",
+    "megama",
+    "code",
+    "משרד",
+    "poc",
+    "מוסדות",
+    "nafa",
+    "num",
+    "distrcit",
+    "הכשרה",
+    "מרכזי",
+    "list",
+    "mosad",
+    "actions",
+    "מקצועית"
+  ],
+  "resources": [
+    {
+      "resource_id": "55d1c36c-dc86-4401-9336-e309965f692b",
+      "title": "מאגר מרכזי הכשרה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ObjectID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Mosad_Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Mosad_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Nbr_Of_Students",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Megama_Code_list",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Megama_Name_list",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Postal_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Distrcit_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Nafa_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "City_Id",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "City_Name",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Poc_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Manager_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Osek_Morshe_Num_Calc",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Nbr_Of_Noar_Actions",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Nbr_Of_Adult_Actions",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "geom",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 496
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

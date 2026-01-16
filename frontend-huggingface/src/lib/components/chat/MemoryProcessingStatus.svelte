@@ -6,7 +6,14 @@
 	import CarbonDataBase from "~icons/carbon/data-base";
 	import CarbonMachineLearning from "~icons/carbon/machine-learning";
 
-	export type MemoryProcessingState = "idle" | "searching" | "found" | "storing" | "learning";
+	export type MemoryProcessingState =
+		| "idle"
+		| "searching"
+		| "found"
+		| "storing"
+		| "learning"
+		| "degraded"
+		| "ingesting";
 
 	interface Props {
 		status: MemoryProcessingState;
@@ -25,6 +32,8 @@
 		found: { icon: "check", color: "text-green-400" },
 		storing: { icon: "database", color: "text-purple-400" },
 		learning: { icon: "brain", color: "text-amber-400" },
+		degraded: { icon: "database", color: "text-red-400" },
+		ingesting: { icon: "spinner", color: "text-indigo-400" },
 	};
 
 	let config = $derived(statusConfig[status]);
@@ -40,6 +49,10 @@
 					return "שומר בזיכרון...";
 				case "learning":
 					return "לומד מהתשובה...";
+				case "degraded":
+					return "מערכת הזיכרון במצב ירוד";
+				case "ingesting":
+					return "מעבד מסמך...";
 				default:
 					return "";
 			}
@@ -54,6 +67,10 @@
 				return "Storing to memory...";
 			case "learning":
 				return "Learning from response...";
+			case "degraded":
+				return "Memory system degraded";
+			case "ingesting":
+				return "Processing document...";
 			default:
 				return "";
 		}

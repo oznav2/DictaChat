@@ -1,0 +1,53 @@
+{
+  "dataset_id": "cc26b13e-8490-449e-ad58-f949daa25bd3",
+  "title": "מידע על תנועות ארציות של נוסעים לפי נתוני טלפונים סלולריים 2018-19",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "מידע סלולרי",
+    "משרד התחבורה",
+    "סקר נסיעות",
+    "תכנון תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "נוסעים",
+    "סקר",
+    "תחבורה",
+    "סלולריים",
+    "תכנון",
+    "משרד",
+    "בדרכים",
+    "סלולרי",
+    "טלפונים",
+    "והבטיחות",
+    "ארציות",
+    "תנועות",
+    "נסיעות",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c2004caa-a9b2-4790-81e8-6b144ce227b8",
+      "title": "Celular1819_v1.3.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0e9965b3-45c0-4b87-864b-9b1b8c284468",
+      "title": "celular1819v1.3_meta.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

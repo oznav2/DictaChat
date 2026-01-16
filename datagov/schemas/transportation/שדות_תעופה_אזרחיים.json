@@ -1,0 +1,45 @@
+{
+  "dataset_id": "94527775-4e09-4fd0-af21-167912e77e30",
+  "title": "שדות תעופה אזרחיים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "אוכלוסיה",
+    "סביבה",
+    "שדה תעופה",
+    "שדות תעופה",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "environment",
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "אזרחיים",
+    "שדות",
+    "תחבורה",
+    "אוכלוסיה",
+    "ישראל",
+    "שדה",
+    "המרכז",
+    "תעופה",
+    "סביבה"
+  ],
+  "resources": [
+    {
+      "resource_id": "db9ef699-21fc-4bbe-b838-75d07fd21fe9",
+      "title": "שדות תעופה אזרחיים עם קואורדינטות",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

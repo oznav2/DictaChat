@@ -1,0 +1,141 @@
+{
+  "dataset_id": "c2690cd7-61e4-4cab-82d2-eecfaeed69a9",
+  "title": "צמתים מרומזרים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "gis",
+    "חצב",
+    "ממג",
+    "מרומזרים",
+    "צמתים",
+    "רמזורים"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "ממג",
+    "junction",
+    "city",
+    "gis",
+    "trafcode",
+    "בדרכים",
+    "והבטיחות",
+    "מרומזרים",
+    "משרד",
+    "district",
+    "חצב",
+    "num",
+    "צמתים",
+    "streetroad",
+    "domain",
+    "oid",
+    "districode",
+    "citycode",
+    "trafauth",
+    "רמזורים",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "930c2979-ffb4-43bf-be30-13b271fffed4",
+      "title": "TRAFFIC_LIGHT_JUNCTION_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "de4b51c7-4475-47b0-b441-f7d21af04578",
+      "title": "TRAFFIC_LIGHT_JUNCTION_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "77c61c20-8bcb-45d9-98b3-5623375e5b33",
+      "title": "TRAFFIC_LIGHT_JUNCTION_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ID_NUM",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "JUNCTION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CITYCODE",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "STREETROAD",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "DISTRICODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "DISTRICT",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "TRAFCODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "TRAFAUTH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "DOMAIN",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3016
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

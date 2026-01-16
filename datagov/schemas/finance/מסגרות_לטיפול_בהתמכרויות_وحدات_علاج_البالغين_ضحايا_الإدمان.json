@@ -1,0 +1,108 @@
+{
+  "dataset_id": "11c59757-9d46-467e-b576-fe8a2faae7ac",
+  "title": "מסגרות לטיפול בהתמכרויות وحدات علاج البالغين ضحايا الإدمان",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "finance",
+    "welfare"
+  ],
+  "keywords": [
+    "misgeret",
+    "בהתמכרויות",
+    "לטיפול",
+    "telephone",
+    "משרד",
+    "adress",
+    "type",
+    "manager",
+    "district",
+    "city",
+    "population",
+    "מסגרות",
+    "semel",
+    "הרווחה",
+    "owner",
+    "החברתי",
+    "והביטחון"
+  ],
+  "resources": [
+    {
+      "resource_id": "e8e490c8-6951-4621-ba2c-b3068e3fb09c",
+      "title": "وحدات علاج البالغين ضحايا الإدمان מסגרות לטיפול בהתמכרויות",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "misgeret",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "semel",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "owner",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "population",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 335
+    },
+    {
+      "resource_id": "58c759b7-6336-4d86-8fe1-c90570c87c4a",
+      "title": "הסבר מבנה הנתונים בקובץ מסגרות לטיפול בהתמכרויות (ערבית)",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

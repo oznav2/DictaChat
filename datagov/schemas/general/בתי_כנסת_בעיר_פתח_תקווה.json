@@ -1,0 +1,45 @@
+{
+  "dataset_id": "0a0e938a-e296-413d-99f4-bd00b41d7fd7",
+  "title": "בתי כנסת בעיר פתח תקווה",
+  "organization": "עיריית פתח תקוה",
+  "tags": [
+    "אוכלוסיה",
+    "בתי כנסת",
+    "עיריית פתח תקוה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "בעיר",
+    "בתי",
+    "אוכלוסיה",
+    "עיריית",
+    "כנסת",
+    "פתח",
+    "תקווה",
+    "תקוה"
+  ],
+  "resources": [
+    {
+      "resource_id": "b10bb9e1-7100-464e-a6cf-b2115d20f709",
+      "title": "בתי כנסת",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 0
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

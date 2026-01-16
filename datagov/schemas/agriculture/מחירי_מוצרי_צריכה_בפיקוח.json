@@ -1,0 +1,86 @@
+{
+  "dataset_id": "89fbf87e-6bc0-4e26-acc7-a288c31b12a1",
+  "title": "מחירי מוצרי צריכה בפיקוח",
+  "organization": "משרד הכלכלה והתעשייה",
+  "tags": [
+    "חקלאות",
+    "כלכלה",
+    "פיקוח על מחירים"
+  ],
+  "categories": [
+    "agriculture",
+    "economy"
+  ],
+  "keywords": [
+    "update",
+    "vat",
+    "product",
+    "והתעשייה",
+    "consumers",
+    "pricre",
+    "date",
+    "הכלכלה",
+    "צריכה",
+    "retailer",
+    "כלכלה",
+    "price",
+    "משרד",
+    "פיקוח",
+    "מחירים",
+    "eilat",
+    "includes",
+    "בפיקוח",
+    "without",
+    "consumer",
+    "מוצרי",
+    "מחירי",
+    "חקלאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "0a760550-0426-4eb7-acf6-2ee919bf12e7",
+      "title": "מחירים מירביים של מוצרי צריכה הנמצאים בפיקוח מחירים של משרד הכלכלה ושל משרד החקלאות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "update date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "retailer pricre without VAT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "consumers price includes VAT",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "consumer price in Eilat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "product",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 380
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "dataset_id": "47acbf53-8ad7-477b-a736-8ff96a3f806e",
+  "title": "חברי המועצה לקידום נשים במדע ובטכנולוגיה",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "מדע"
+  ],
+  "categories": [
+    "technology",
+    "municipal"
+  ],
+  "keywords": [
+    "מדע",
+    "החדשנות",
+    "במדע",
+    "ובטכנולוגיה",
+    "נשים",
+    "משרד",
+    "המועצה",
+    "לקידום",
+    "המדע",
+    "תפקיד",
+    "חברי",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c9ae96f3-1cbe-46ff-a759-fe938edea56c",
+      "title": "חברי המועצה לקידום נשים במדע ובטכנולוגיה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "תפקיד",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 6
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

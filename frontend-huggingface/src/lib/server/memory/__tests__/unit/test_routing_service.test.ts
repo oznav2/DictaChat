@@ -116,7 +116,15 @@ interface TestResult {
 
 const testResults: TestResult[] = [];
 
-const ALL_TIERS: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+const ALL_TIERS: MemoryTier[] = [
+	"working",
+	"history",
+	"patterns",
+	"books",
+	"memory_bank",
+	"datagov_schema",
+	"datagov_expansion",
+];
 
 // ============================================
 // Test Query Preprocessing

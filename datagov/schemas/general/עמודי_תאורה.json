@@ -1,0 +1,92 @@
+{
+  "dataset_id": "7edbd028-9704-440c-a1b6-a0ed566081bc",
+  "title": "עמודי תאורה",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "ביטחון ותשתיות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "ביטחון",
+    "lon",
+    "תאורה",
+    "עמודי",
+    "באר",
+    "nearaddres",
+    "led",
+    "lat",
+    "ותשתיות",
+    "עיריית",
+    "שבע",
+    "centerligh",
+    "lampost"
+  ],
+  "resources": [
+    {
+      "resource_id": "76bdc5f9-373a-48a9-81ec-2f2013c2c4c7",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e40306c7-ee78-4c93-82e8-65d747e80865",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Lampost",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "centerligh",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LED",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NearAddres",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 29449
+    },
+    {
+      "resource_id": "068452ae-ddf8-49c5-8f96-662c8ff4131b",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

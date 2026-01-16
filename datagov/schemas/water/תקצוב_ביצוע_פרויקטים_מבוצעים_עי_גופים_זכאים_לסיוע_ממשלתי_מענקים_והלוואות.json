@@ -1,0 +1,45 @@
+{
+  "dataset_id": "301519d9-b81d-444a-b143-66495ff5d64d",
+  "title": "תקצוב ביצוע פרויקטים מבוצעים ע\"י גופים זכאים לסיוע ממשלתי – מענקים והלוואות",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "גופים",
+    "תקצוב",
+    "הרשות",
+    "ולביוב",
+    "והלוואות",
+    "ביצוע",
+    "מבוצעים",
+    "זכאים",
+    "רשות",
+    "מענקים",
+    "למים",
+    "הממשלתית",
+    "לסיוע",
+    "ממשלתי",
+    "המים",
+    "פרויקטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "6a229ee7-2786-41e2-8b48-037677f0f6fd",
+      "title": "ריכוז הרשאות מענקים ביוב וקולחים 2022.xlsx",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -64,9 +64,94 @@ export class Bm25Adapter {
 	private lastFailure: number | null = null;
 	private successCount = 0;
 
+	// v0.2.9 Parity: Count-based cache invalidation
+	// Tracks last known count to detect when collection has been modified
+	private lastCountByUser = new Map<string, number>();
+	private bm25NeedsRebuild = new Map<string, boolean>();
+
 	constructor(params: Bm25AdapterConfig) {
 		this.collection = params.collection;
 		this.config = params.config ?? defaultMemoryConfig;
+	}
+
+	/**
+	 * v0.2.9 Parity: Check if BM25 cache needs rebuild based on collection size change
+	 *
+	 * RoamPal tracks _last_count and sets _bm25_needs_rebuild when count changes.
+	 * Since MongoDB full-text is always fresh, this is more for tracking purposes
+	 * and can trigger re-indexing if needed.
+	 */
+	async checkCacheValidity(userId: string): Promise<{
+		needsRebuild: boolean;
+		previousCount: number;
+		currentCount: number;
+	}> {
+		const currentCount = await this.getActiveCount(userId);
+		const previousCount = this.lastCountByUser.get(userId) ?? -1;
+
+		let needsRebuild = false;
+
+		if (previousCount === -1) {
+			// First check - initialize
+			this.lastCountByUser.set(userId, currentCount);
+		} else if (currentCount !== previousCount) {
+			// Count changed - mark for rebuild
+			needsRebuild = true;
+			this.bm25NeedsRebuild.set(userId, true);
+			this.lastCountByUser.set(userId, currentCount);
+
+			logger.debug(
+				{
+					userId,
+					previousCount,
+					currentCount,
+					delta: currentCount - previousCount,
+				},
+				"BM25 cache invalidated due to count change"
+			);
+		}
+
+		return { needsRebuild, previousCount, currentCount };
+	}
+
+	/**
+	 * v0.2.9 Parity: Mark BM25 cache as needing rebuild
+	 */
+	markCacheStale(userId: string): void {
+		this.bm25NeedsRebuild.set(userId, true);
+		logger.debug({ userId }, "BM25 cache marked as stale");
+	}
+
+	/**
+	 * v0.2.9 Parity: Clear cache rebuild flag after successful search
+	 */
+	clearRebuildFlag(userId: string): void {
+		this.bm25NeedsRebuild.delete(userId);
+	}
+
+	/**
+	 * v0.2.9 Parity: Check if cache needs rebuild for user
+	 */
+	needsRebuild(userId: string): boolean {
+		return this.bm25NeedsRebuild.get(userId) ?? false;
+	}
+
+	/**
+	 * v0.2.9 Parity: Invalidate cache for all users (e.g., after clear books)
+	 */
+	invalidateAllCaches(): void {
+		this.lastCountByUser.clear();
+		this.bm25NeedsRebuild.clear();
+		logger.info("BM25 caches invalidated for all users");
+	}
+
+	/**
+	 * v0.2.9 Parity: Invalidate cache for specific user
+	 */
+	invalidateUserCache(userId: string): void {
+		this.lastCountByUser.delete(userId);
+		this.bm25NeedsRebuild.set(userId, true);
+		logger.debug({ userId }, "BM25 cache invalidated for user");
 	}
 
 	/**

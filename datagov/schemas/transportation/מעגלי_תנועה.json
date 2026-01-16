@@ -1,0 +1,136 @@
+{
+  "dataset_id": "4949b4d9-32b1-410c-aab0-62054038ec2b",
+  "title": "מעגלי תנועה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "משרד התחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "junction",
+    "city",
+    "gis",
+    "בדרכים",
+    "והבטיחות",
+    "authority",
+    "תנועה",
+    "משרד",
+    "district",
+    "חצב",
+    "num",
+    "streetroad",
+    "domain",
+    "oid",
+    "districode",
+    "מעגלי",
+    "citycode",
+    "authcode",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "04ca4bac-dbcc-4d9c-b795-36f6945eb2f3",
+      "title": "ROUNDABOUT_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "40dbfccc-dd98-464d-9b9e-ae85bc473dfe",
+      "title": "ROUNDABOUT_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "81697c44-0bce-4eeb-80b0-994616a47c83",
+      "title": "ROUNDABOUT_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ID_NUM",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "CITYCODE",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "JUNCTION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STREETROAD",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "DOMAIN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DISTRICT",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "DISTRICODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "AUTHORITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AUTHCODE",
+          "type": "numeric",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 9622
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

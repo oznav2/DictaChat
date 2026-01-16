@@ -1,0 +1,106 @@
+{
+  "dataset_id": "5944b454-751c-4604-94d6-e676d7d34612",
+  "title": "עצים",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "תכנון עיר וגיאוגרפיה"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "lon",
+    "באר",
+    "nam",
+    "itm",
+    "עיר",
+    "street",
+    "lat",
+    "תכנון",
+    "neighborho",
+    "עיריית",
+    "שבע",
+    "plate",
+    "tree",
+    "num",
+    "speci",
+    "עצים",
+    "וגיאוגרפיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "7bfe172b-444f-410a-9c9c-ea4de8810c68",
+      "title": "SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d4c483d1-42b7-4540-b434-525197f3e916",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "b7bfe395-a977-452a-8429-e258b71c5b10",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "plate_num",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "tree_speci",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "street_nam",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "neighborho",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "itm_x",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "itm_y",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 59571
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

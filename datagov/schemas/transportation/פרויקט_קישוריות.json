@@ -1,0 +1,162 @@
+{
+  "dataset_id": "7368438e-6ab6-48be-9950-42ca439ccb23",
+  "title": "פרויקט קישוריות",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "חצב",
+    "מידע פרויקטלי",
+    "עירוני",
+    "תחבורה קלה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "name",
+    "תחבורה",
+    "matan",
+    "city",
+    "destnation",
+    "execoper",
+    "net",
+    "עירוני",
+    "בדרכים",
+    "cty",
+    "ifiun",
+    "dstrct",
+    "והבטיחות",
+    "פרויקט",
+    "prj",
+    "stat",
+    "משרד",
+    "type",
+    "קלה",
+    "district",
+    "פרויקטלי",
+    "lengt",
+    "length",
+    "חצב",
+    "קישוריות",
+    "shape",
+    "oid",
+    "origin",
+    "line",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "fe7e63d5-9e6e-45e2-b90b-fd51c422fb9b",
+      "title": "KISHURIYUT_PRJ_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "8cc3b9d7-f7c9-47c2-b11d-0581430b84ff",
+      "title": "KISHURIYUT_PRJ_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "70ec3f9c-0e6f-4b0c-98b7-628728470a3c",
+      "title": "KISHURIYUT_PRJ_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "MATAN_STAT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MATAN_LINE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "IFIUN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "EXECOPER",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "CTY_PRJ_ID",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PRJ_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "DESTNATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ORIGIN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PRJ_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "DSTRCT_NET",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DISTRICT",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "LENGT_M",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 343
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

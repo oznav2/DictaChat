@@ -1,0 +1,78 @@
+{
+  "dataset_id": "6817778c-5a99-45c2-ba0d-17af91812fcd",
+  "title": "המכון להשתלמות פרקליטים ויועצים משפטיים – תכנית השתלמויות שנתית",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "השתלמויות",
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "המכון",
+    "משפטיים",
+    "תכנית",
+    "שנתית",
+    "משרד",
+    "סוג",
+    "שנה",
+    "להשתלמות",
+    "ויועצים",
+    "כותרת",
+    "קהל",
+    "תאריך",
+    "השתלמות",
+    "השתלמויות",
+    "יעד",
+    "פרקליטים",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "b288cf2c-2bd0-4bba-bcd1-493458435edc",
+      "title": "המכון להשתלמות פרקליטים ויועצים משפטיים – תכנית השתלמויות שנתית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג השתלמות",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "כותרת",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קהל יעד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 416
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

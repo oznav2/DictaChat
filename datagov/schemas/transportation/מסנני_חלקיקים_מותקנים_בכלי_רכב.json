@@ -1,0 +1,58 @@
+{
+  "dataset_id": "06f7899c-e774-423a-b905-87478de436e8",
+  "title": "מסנני חלקיקים מותקנים בכלי רכב",
+  "organization": "המשרד להגנת הסביבה",
+  "tags": [
+    "זיהום אויר",
+    "כלי רכב",
+    "סביבה"
+  ],
+  "categories": [
+    "transportation",
+    "finance",
+    "environment"
+  ],
+  "keywords": [
+    "בכלי",
+    "הסביבה",
+    "המשרד",
+    "רכב",
+    "להגנת",
+    "כלי",
+    "מותקנים",
+    "אויר",
+    "זיהום",
+    "חלקיקים",
+    "סביבה",
+    "מסנני"
+  ],
+  "resources": [
+    {
+      "resource_id": "14c0c07b-69e9-4eaf-affc-ff01b2d0def4",
+      "title": "מסנני חלקיקים מותקנים -13.11.2018",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 0
+    },
+    {
+      "resource_id": "610887e5-6887-4f94-b5d6-e09a76285b28",
+      "title": "מסנני חלקיקים מותקנים 13.11.2018",
+      "format": "CSV",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

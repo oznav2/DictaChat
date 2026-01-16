@@ -1,0 +1,56 @@
+{
+  "dataset_id": "634bf1ca-344e-4038-a139-9553bd0805a6",
+  "title": "רשימת משרד חקירות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "רשימת משרד חקירות"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "פרטי",
+    "משרד",
+    "חקירות",
+    "משפחה",
+    "המשפטים",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "dcf4d85b-66ab-47b8-bd16-7cc79360fc96",
+      "title": "רשימת משרד חקירות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר רישיון",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 606
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

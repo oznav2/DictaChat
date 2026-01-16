@@ -1,0 +1,72 @@
+{
+  "dataset_id": "6cd898c4-9d8a-4947-8eda-02ef8cfe4612",
+  "title": "רמזורים",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "lon",
+    "באר",
+    "תחבורה",
+    "lat",
+    "עיריית",
+    "lightnumbe",
+    "שבע",
+    "רמזורים"
+  ],
+  "resources": [
+    {
+      "resource_id": "289eb9f6-93c9-4add-b96f-99ffa88c5a55",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "LightNumbe",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 447
+    },
+    {
+      "resource_id": "28b41ea1-e9e9-4296-a081-feb5e8ffbc85",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "639be52d-9793-457a-b25e-bfb1926b2518",
+      "title": "SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

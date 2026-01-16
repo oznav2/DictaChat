@@ -1,0 +1,49 @@
+{
+  "dataset_id": "e13cae3e-d64c-41d2-896a-3c9bb166361a",
+  "title": "קובץ המכיל רשימת הכיתות במוסדות החינוך בפיקוח משרד החינוך",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "חינוך ותרבות",
+    "כיתות",
+    "מוסדות"
+  ],
+  "categories": [
+    "education",
+    "culture"
+  ],
+  "keywords": [
+    "בפיקוח",
+    "חינוך",
+    "החינוך",
+    "משרד",
+    "המכיל",
+    "ותרבות",
+    "מוסדות",
+    "כיתות",
+    "במוסדות",
+    "הכיתות"
+  ],
+  "resources": [
+    {
+      "resource_id": "7e854745-89c5-4d74-85a1-f430b8f8c8f3",
+      "title": "קובץ המכיל רשימת הכיתות במוסדות החינוך בפיקוח משרד החינוך",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 0
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

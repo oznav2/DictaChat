@@ -1,0 +1,50 @@
+{
+  "dataset_id": "54aab399-5db0-4a4b-b02b-f31d18b1eafe",
+  "title": "שיעור דמי הביטוח כאחוז מההכנסה - עצמאי בגיל הביטוח",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "אוצר וכלכלה",
+    "ביטוח לאומי",
+    "בריאות ורווחה",
+    "עצמאי"
+  ],
+  "categories": [
+    "health",
+    "finance",
+    "welfare",
+    "economy"
+  ],
+  "keywords": [
+    "ביטוח",
+    "וכלכלה",
+    "לאומי",
+    "מההכנסה",
+    "עצמאי",
+    "לביטוח",
+    "בגיל",
+    "הביטוח",
+    "אוצר",
+    "דמי",
+    "שיעור",
+    "ורווחה",
+    "כאחוז",
+    "המוסד",
+    "בריאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "537b01ef-bf5a-402c-a9ca-de031b7624d8",
+      "title": "שיעור דמי הביטוח כאחוז מההכנסה - עצמאי בגיל הביטוח",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

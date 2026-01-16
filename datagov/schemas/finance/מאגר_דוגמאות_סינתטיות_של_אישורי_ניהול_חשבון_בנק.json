@@ -1,0 +1,54 @@
+{
+  "dataset_id": "f8d04dc1-1931-4c56-9381-9ef01a7fd222",
+  "title": "מאגר דוגמאות סינתטיות של אישורי ניהול חשבון בנק",
+  "organization": "מידע סינתטי ממשלתי",
+  "tags": [
+    "אישור בנק",
+    "בנק"
+  ],
+  "categories": [
+    "finance",
+    "water"
+  ],
+  "keywords": [
+    "אישורי",
+    "אישור",
+    "ממשלתי",
+    "סינתטי",
+    "דוגמאות",
+    "חשבון",
+    "סינתטיות",
+    "בנק",
+    "ניהול"
+  ],
+  "resources": [
+    {
+      "resource_id": "2f1641fb-61c8-4425-bd75-72d67d1280a0",
+      "title": "סוג בנק ראשון - קבצי PDF",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "bc0e15df-bb84-4f76-8d52-65d74c622620",
+      "title": "סוג בנק ראשון - קבצי PNG",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "909bbf9a-7aa9-481c-9232-bdbf7ec3b48b",
+      "title": "סוג בנק שני - קבצי PNG",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "dataset_id": "b254557b-57e8-42d5-8b49-088315899bcc",
+  "title": "תמונה חינוכית מחוזות תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "מחוז",
+    "תמונה_חינוכית"
+  ],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "מחוז",
+    "מחוזות",
+    "חינוך",
+    "משרד",
+    "החינוך",
+    "תמונה",
+    "חינוכית",
+    "תשע"
+  ],
+  "resources": [
+    {
+      "resource_id": "39bde925-f1e2-4a55-86a9-32383fce03e2",
+      "title": "תמונה חינוכית מחוזות תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "d589b9e8-66af-4555-93d7-8712a1712a4d",
+      "title": "מתונה חינוכית מחוזות תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

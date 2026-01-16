@@ -1,0 +1,124 @@
+{
+  "dataset_id": "95c0735b-57ac-4e59-acc5-6085369b5bb0",
+  "title": "אוגדן ארגונים ועמותות מתחום הבריאות בישראל",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "עמותות"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "colleague",
+    "מתחום",
+    "health",
+    "עמותות",
+    "contact",
+    "sub",
+    "ועמותות",
+    "character",
+    "ארגונים",
+    "exper",
+    "הבריאות",
+    "אוגדן",
+    "משרד",
+    "type",
+    "terget",
+    "url",
+    "num",
+    "exp",
+    "title",
+    "desc",
+    "location",
+    "בישראל",
+    "organization"
+  ],
+  "resources": [
+    {
+      "resource_id": "422972e3-f68f-4d26-bed2-e6b4fb0282a2",
+      "title": "אוגדן ארגונים ועמותות מתחום הבריאות בישראל",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "health_organization_title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "health_organization_num",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "health_organization_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "health_organization_exper",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "health_organization_sub_exp",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "health_organization_character",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "health_organization_location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "health_organization_colleague",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "health_organization_terget",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "health_organization_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "health_organization_url",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "health_organization_contact_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "health_organization_contact_url",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 197
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

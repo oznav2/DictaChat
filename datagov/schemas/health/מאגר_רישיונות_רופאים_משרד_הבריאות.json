@@ -1,0 +1,85 @@
+{
+  "dataset_id": "2721d62d-d0da-45fd-93ac-5e7809849222",
+  "title": "מאגר רישיונות רופאים משרד הבריאות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "מקצועות הרפואה"
+  ],
+  "categories": [
+    "health",
+    "water"
+  ],
+  "keywords": [
+    "רישום",
+    "התמחות",
+    "משרד",
+    "פרטי",
+    "רופאים",
+    "מקצועות",
+    "הרפואה",
+    "תעודת",
+    "הבריאות",
+    "רופא",
+    "משפחה",
+    "רישיונות",
+    "תאריך",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "9c64c522-bbc2-48fe-96fb-3b2a8626f59e",
+      "title": "מאגר רישיונות רופאים משרד הבריאות ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר רישיון רופא",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך רישום רישיון",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "מספר תעודת התמחות",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך רישום התמחות",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "שם התמחות",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 61876
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

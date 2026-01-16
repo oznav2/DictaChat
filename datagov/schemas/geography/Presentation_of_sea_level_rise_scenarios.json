@@ -1,0 +1,48 @@
+{
+  "dataset_id": "c6772b77-95ee-4603-8488-d193514a42d7",
+  "title": "Presentation of sea level rise scenarios",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "SHP",
+    "מפלס הים"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "presentation",
+    "ישראל",
+    "rise",
+    "shp",
+    "scenarios",
+    "level",
+    "מפלס",
+    "המרכז",
+    "הים",
+    "sea"
+  ],
+  "resources": [
+    {
+      "resource_id": "0af9ce40-8eca-466c-82d4-fa7162f3a9ec",
+      "title": "הצגת תרחישי עליית מפלס הים",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "61c165e3-7dfb-4e59-918f-e4ef60484099",
+      "title": "דוח המכון לחקר ימים ואגמים",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

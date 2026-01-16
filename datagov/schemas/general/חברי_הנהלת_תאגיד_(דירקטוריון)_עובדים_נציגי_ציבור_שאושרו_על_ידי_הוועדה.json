@@ -1,0 +1,102 @@
+{
+  "dataset_id": "6b7c7138-0061-4166-96c0-5174cd54510f",
+  "title": "חברי הנהלת תאגיד (דירקטוריון) עובדים נציגי ציבור שאושרו על ידי הוועדה",
+  "organization": "משרד הפנים",
+  "tags": [],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "הנהלת",
+    "עובדים",
+    "הפנים",
+    "הוועדה",
+    "ידי",
+    "date",
+    "ציבור",
+    "first",
+    "תאגיד",
+    "supervisor",
+    "משרד",
+    "נציגי",
+    "שאושרו",
+    "member",
+    "corporation",
+    "chairman",
+    "דירקטוריון",
+    "last",
+    "חברי"
+  ],
+  "resources": [
+    {
+      "resource_id": "c4c7f2ee-d4eb-47da-9f92-b6934dd035f6",
+      "title": "חברי הנהלת תאגיד",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "corporation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "supervisor",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "first",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "last",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "member",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "date1",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "date2",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "date3",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "date4",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "chairman",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 4258
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "dataset_id": "deb6c4df-2076-4aaf-87a7-745d1ba0d0d4",
+  "title": "שאילתות",
+  "organization": "הכנסת",
+  "tags": [
+    "חברי כנסת",
+    "יושב ראש הכנסת",
+    "כנסת",
+    "שאילתות",
+    "שרים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "הכנסת",
+    "יושב",
+    "שרים",
+    "כנסת",
+    "שאילתות",
+    "ראש",
+    "חברי"
+  ],
+  "resources": [
+    {
+      "resource_id": "b6d8aa0c-2268-40b5-b45b-e68c304ac68d",
+      "title": "Questions.aspx",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

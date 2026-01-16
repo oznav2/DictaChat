@@ -1,0 +1,120 @@
+{
+  "dataset_id": "e9771200-8aba-48fd-8a15-7fe65540b06d",
+  "title": "קידוחים מטוייבים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "borehole",
+    "water",
+    "טיוב",
+    "מים",
+    "קידוח",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "borehole",
+    "סוג",
+    "רשות",
+    "התחלת",
+    "הממשלתית",
+    "מים",
+    "צרכן",
+    "קידוח",
+    "סטאטוס",
+    "מטוייבים",
+    "טיוב",
+    "פסילה",
+    "water",
+    "גורמי",
+    "תקופת",
+    "למים",
+    "מתקן",
+    "סיום",
+    "טיפול",
+    "הרשות",
+    "שיטת",
+    "ההכרה",
+    "ולביוב",
+    "קידוחים",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "6b1c032a-fdc1-4f92-bee1-14d6bf6af910",
+      "title": "קידוחים מטוייבים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר צרכן",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם צרכן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר מתקן",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם מתקן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סטאטוס מתקן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גורמי פסילה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג ההכרה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "התחלת תקופת ההכרה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סיום תקופת ההכרה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "שיטת טיפול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת התחלת טיוב",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 102
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

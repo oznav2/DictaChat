@@ -1,0 +1,56 @@
+{
+  "dataset_id": "810fbb64-86f8-47f3-afd9-6649f446d1b4",
+  "title": "לוח מרחקי הדרך הרשמי עפ\"י תכם",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "מפות",
+    "מרחק בין יישובים",
+    "מרחקי דרך",
+    "מרכז למיפוי ישראל",
+    "סביבה"
+  ],
+  "categories": [
+    "transportation",
+    "environment",
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "יישובים",
+    "דרך",
+    "מרחקי",
+    "בין",
+    "הדרך",
+    "לוח",
+    "ישראל",
+    "מרחק",
+    "תכם",
+    "מרכז",
+    "מפות",
+    "המרכז",
+    "הרשמי",
+    "סביבה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d9e0d816-6fb5-49a6-8b8c-9a7e76eef06b",
+      "title": "לוח מרחקי הדרך הרשמי עפ\"י תכם",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 0
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

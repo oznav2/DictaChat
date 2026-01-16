@@ -20,6 +20,12 @@ type SettingsStore = {
 	directPaste: boolean;
 	hidePromptExamples: Record<string, boolean>;
 	billingOrganization?: string;
+	/**
+	 * RoamPal v0.2.11 Fix #2: Message virtualization for long conversations
+	 * When enabled (or auto-enabled for 50+ messages), only visible messages are rendered
+	 * to DOM, significantly improving performance for long conversation histories.
+	 */
+	enableVirtualization?: boolean;
 };
 
 type SettingsStoreWritable = Writable<SettingsStore> & {

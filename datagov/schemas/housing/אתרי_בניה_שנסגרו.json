@@ -1,0 +1,61 @@
+{
+  "dataset_id": "2fe07949-9538-4891-9de7-50a352bcbd80",
+  "title": "אתרי בניה שנסגרו",
+  "organization": "משרד העבודה",
+  "tags": [
+    "אתרי בנייה",
+    "אתרי בנייה שנסגרו",
+    "משרד העבודה"
+  ],
+  "categories": [
+    "housing"
+  ],
+  "keywords": [
+    "שנסגרו",
+    "העבודה",
+    "אתרי",
+    "בניה",
+    "משרד",
+    "executorname",
+    "fromdate",
+    "workname",
+    "בנייה"
+  ],
+  "resources": [
+    {
+      "resource_id": "b9257d8f-f93a-4c7d-84dd-e4b0838eadaa",
+      "title": "אתרי בניה שנסגרו",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "workName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "executorName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "fromDate",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 739
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "dataset_id": "bd731d1b-aab6-4a13-a4a3-e3102a320fd4",
+  "title": "אזורי עדיפות לאומית ואזורי פיתוח",
+  "organization": "משרד הכלכלה והתעשייה",
+  "tags": [],
+  "categories": [
+    "economy",
+    "technology"
+  ],
+  "keywords": [
+    "name",
+    "לאומית",
+    "status",
+    "gaza",
+    "city",
+    "industrial",
+    "history",
+    "והתעשייה",
+    "עדיפות",
+    "subdistrict",
+    "ואזורי",
+    "program",
+    "date",
+    "פיתוח",
+    "datasource",
+    "הכלכלה",
+    "from",
+    "surrounding",
+    "class",
+    "משרד",
+    "town",
+    "priority",
+    "area",
+    "אזורי"
+  ],
+  "resources": [
+    {
+      "resource_id": "d0cfa550-51a5-438c-9336-7b117ed174f6",
+      "title": "אזורי פיתוח כולל היסטוריה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "town",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "datasource_city_name",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "priority_class",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "from_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "to_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "program_status",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "SubDistrict",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "is_history",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "is_surrounding_Gaza",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "is_industrial_area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 9627
+    },
+    {
+      "resource_id": "1277353c-25aa-43ac-86b7-08dc1dfe9d71",
+      "title": "אזורי פיתוח א",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "town",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "datasource_city_name",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "priority_class",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "from_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "to_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "program_status",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "SubDistrict",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "is_history",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "is_surrounding_Gaza",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "is_industrial_area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 701
+    },
+    {
+      "resource_id": "a118ea44-f5a4-4f1b-92e5-e37359983274",
+      "title": "אזורי עדיפות לאומית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "town",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "datasource_city_name",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "priority_class",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "from_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "to_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "program_status",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "SubDistrict",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "is_history",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "is_surrounding_Gaza",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "is_industrial_area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 847
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

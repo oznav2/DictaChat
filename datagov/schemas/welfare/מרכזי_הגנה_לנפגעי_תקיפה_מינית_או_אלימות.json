@@ -1,0 +1,89 @@
+{
+  "dataset_id": "b1e5bd44-b6a1-4274-b71f-e475b5ee1919",
+  "title": "מרכזי הגנה לנפגעי תקיפה מינית או אלימות",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "אלימות",
+    "משרד הרווחה",
+    "פגיעה מינית",
+    "תקיפה מינית"
+  ],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "כתובת",
+    "פגיעה",
+    "איש",
+    "המרכז",
+    "טלפון",
+    "אלימות",
+    "מנהל",
+    "מינית",
+    "קשר",
+    "והביטחון",
+    "משרד",
+    "יישוב",
+    "תקיפה",
+    "החברתי",
+    "לנפגעי",
+    "מייל",
+    "הגנה",
+    "מרכזי",
+    "הרווחה"
+  ],
+  "resources": [
+    {
+      "resource_id": "288c4eeb-7883-4941-9265-714c2feb2d66",
+      "title": "מרכזי הגנה לנפגעי תקיפה מינית או אלימות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המרכז יישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "מייל",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "שם מנהל או איש קשר",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 8
+    },
+    {
+      "resource_id": "f8456707-7186-499a-a0fa-3eab60ab21ca",
+      "title": "מרכזי הגנה לנפגעי תקיפה מינית או אלימות",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

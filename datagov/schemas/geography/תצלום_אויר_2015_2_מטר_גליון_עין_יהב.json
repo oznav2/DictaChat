@@ -1,0 +1,36 @@
+{
+  "dataset_id": "f61381c6-b159-4b52-bd21-cd68999ed35f",
+  "title": "תצלום אויר 2015 2 מטר - גליון עין יהב",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "יהב",
+    "המרכז",
+    "למיפוי",
+    "מטר",
+    "ישראל",
+    "עין",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "77a0732d-839e-4999-9e6a-9132a2639249",
+      "title": "תצלום אויר 2015 2 מטר - גליון עין יהב",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

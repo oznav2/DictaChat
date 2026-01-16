@@ -1,0 +1,39 @@
+{
+  "dataset_id": "2cc7e4e2-4864-4e7a-a177-fc9fae99d989",
+  "title": "בעלות על אתרים היסטוריים בעיר פתח תקווה",
+  "organization": "עיריית פתח תקוה",
+  "tags": [
+    "אוכלוסיה",
+    "אתרים היסטוריים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "בעיר",
+    "אוכלוסיה",
+    "עיריית",
+    "היסטוריים",
+    "פתח",
+    "אתרים",
+    "בעלות",
+    "תקווה",
+    "תקוה"
+  ],
+  "resources": [
+    {
+      "resource_id": "3c58afc8-4d0a-43f8-8a48-2ee5bcc0acb5",
+      "title": "בעלות על אתרים היסטוריים בעיר",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

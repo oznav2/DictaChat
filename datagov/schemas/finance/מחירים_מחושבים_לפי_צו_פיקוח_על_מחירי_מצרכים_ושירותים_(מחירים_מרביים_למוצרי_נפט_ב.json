@@ -1,0 +1,80 @@
+{
+  "dataset_id": "4dd3bb28-a4ef-4ab5-bb57-fd0bd0b79f8f",
+  "title": "מחירים מחושבים לפי צו פיקוח על מחירי מצרכים ושירותים (מחירים מרביים למוצרי נפט בשער בית זיקוק)",
+  "organization": "משרד האנרגיה ",
+  "tags": [
+    "דלק",
+    "מחירי הדלק",
+    "מחירים מחושבים",
+    "מחירים תיאורטיים"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "מרביים",
+    "מחיר",
+    "מידה",
+    "בשער",
+    "למוצרי",
+    "תיאורטיים",
+    "מוצר",
+    "מחושבים",
+    "משרד",
+    "פיקוח",
+    "יחידת",
+    "מחירים",
+    "מצרכים",
+    "תאריך",
+    "זיקוק",
+    "בית",
+    "דלק",
+    "ושירותים",
+    "האנרגיה",
+    "מחירי",
+    "הדלק",
+    "נפט"
+  ],
+  "resources": [
+    {
+      "resource_id": "aaa40832-ac82-4c86-bac6-0d05c83f576f",
+      "title": "מחירים מחושבים. החל מיום 1.4.2028 ייקראו בשם מחירים תיאורטיים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מוצר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "יחידת מידה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מחיר",
+          "type": "numeric",
+          "semantic": "price"
+        }
+      ],
+      "total_records": 108
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

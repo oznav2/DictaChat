@@ -1,0 +1,95 @@
+{
+  "dataset_id": "9b0286dd-aaa4-4dc6-9878-9c65abbee66e",
+  "title": "מעיינות - נפחים חודשיים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "spring",
+    "volume",
+    "water",
+    "מים",
+    "מעיין",
+    "נפח",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "עברית",
+    "למעיין",
+    "רשות",
+    "חודשיים",
+    "הממשלתית",
+    "מים",
+    "נפח",
+    "volume",
+    "חודשי",
+    "הידרולוגית",
+    "water",
+    "spring",
+    "למים",
+    "נפחים",
+    "חודש",
+    "אנגלית",
+    "הרשות",
+    "אלמ",
+    "מעיין",
+    "שנה",
+    "מעיינות",
+    "ולביוב",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "b09e2524-daa4-4ba6-8658-d76860d7bc60",
+      "title": "מעיינות - נפחים חודשיים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר זיהוי",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם עברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם אנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנה הידרולוגית",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "חודש שנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "נפח חודשי למעיין (אלמ''ק)",
+          "type": "numeric",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 303297
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

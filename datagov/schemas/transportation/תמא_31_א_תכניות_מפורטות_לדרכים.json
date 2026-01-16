@@ -1,0 +1,212 @@
+{
+  "dataset_id": "4c83a990-2e99-425b-86c5-0cb929cbbc83",
+  "title": "תמא 31_א - תכניות מפורטות לדרכים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "דרכים",
+    "ממג",
+    "תמא"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "תמא",
+    "ממג",
+    "objectid",
+    "tochnit",
+    "status",
+    "gis",
+    "תכניות",
+    "relevance",
+    "דרכים",
+    "resu",
+    "לדרכים",
+    "ground",
+    "בדרכים",
+    "keta",
+    "והבטיחות",
+    "מפורטות",
+    "scale",
+    "code",
+    "משרד",
+    "type",
+    "shape",
+    "digitation",
+    "road",
+    "notes",
+    "area",
+    "planed",
+    "tra",
+    "tasrit",
+    "question",
+    "length",
+    "typeroadtx",
+    "yeud",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "6e423957-8cf9-439d-a27d-f5caade5f4c2",
+      "title": "TMA_3_PLANS_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "185d554b-9766-4916-937f-a6f6bb2626e3",
+      "title": "TMA_3_PLANS_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "fc05dee5-d30a-4915-bfba-b828f91b7f63",
+      "title": "TMA_3_PLANS_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Keta",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Tochnit_Nu",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YP_Resu_Da",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ROAD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Planed_Tra",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "Tasrit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Scale",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Relevance",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Digitation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Question_N",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEUD",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YP_Resu_Nu",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Ground_TY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TypeRoadtx",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Type_Road",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Yeud_code",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Yeud1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ET_ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3394
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "dataset_id": "61f14c26-6580-44b3-a7e2-d2e89d29e198",
+  "title": "ביצוע תקציב על שינוייו  31 במרץ 2020 -  לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "תקציב"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "תקציב",
+    "ביצוע",
+    "מבוקר",
+    "משרד",
+    "שינוייו",
+    "האוצר",
+    "במרץ"
+  ],
+  "resources": [
+    {
+      "resource_id": "f02581e1-7d0b-491e-a705-c618d76f5b51",
+      "title": "עותק של אומדן ביצוע תקציב ליום 31 במרץ 2020 - לא מבוקר.xlsx",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

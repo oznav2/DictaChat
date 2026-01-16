@@ -1,0 +1,113 @@
+{
+  "dataset_id": "2cddad98-bec2-4fa9-8e76-6c17be3865d2",
+  "title": "הריבית הממוצעת על משכנתאות צמודות למדד ומחשבון לחישוב עמלת פירעון מוקדם",
+  "organization": "בנק ישראל",
+  "tags": [
+    "אוצר וכלכלה",
+    "בנק ישראל",
+    "הצמדה למדד",
+    "משכנתאות",
+    "עמלת פרעון מוקדם",
+    "ריבית ממוצעת"
+  ],
+  "categories": [
+    "finance",
+    "housing",
+    "economy"
+  ],
+  "keywords": [
+    "עמלת",
+    "וכלכלה",
+    "לחישוב",
+    "תקופה",
+    "פרעון",
+    "משכנתאות",
+    "הממוצעת",
+    "הריבית",
+    "ועד",
+    "ומחשבון",
+    "תוקף",
+    "שנים",
+    "בנק",
+    "אוצר",
+    "הצמדה",
+    "ריבית",
+    "למדד",
+    "החל",
+    "ישראל",
+    "מעל",
+    "ממוצע",
+    "פירעון",
+    "לפרעון",
+    "צמודות",
+    "מוקדם",
+    "ממוצעת"
+  ],
+  "resources": [
+    {
+      "resource_id": "96ba107d-cc15-41cf-b223-5bb592e14666",
+      "title": "הריבית הממוצעת על משכנתאות צמודות למדד ומחשבון לחישוב עמלת פירעון מוקדם",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ממוצע",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מעל 20",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מ 17 ועד 20",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מעל 15 ועד 17",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מ 12 ועד 15",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מעל 5 ועד 12",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עד 5 שנים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תוקף הריבית החל מ-",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקופה לפרעון",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 259
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

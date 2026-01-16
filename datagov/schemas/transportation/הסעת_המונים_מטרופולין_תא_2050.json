@@ -1,0 +1,112 @@
+{
+  "dataset_id": "88010ff2-2d5e-4436-b735-bbd597ae649f",
+  "title": "הסעת המונים מטרופולין ת\"א - 2050",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "דרכים בין עירוניות",
+    "הסעת המונים",
+    "חצב",
+    "ממג",
+    "תחבורה ציברית",
+    "תכנית אסטרטגית",
+    "תנועה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "הסעת",
+    "ממג",
+    "תחבורה",
+    "עירוניות",
+    "gis",
+    "דרכים",
+    "ציברית",
+    "בדרכים",
+    "מטרופולין",
+    "והבטיחות",
+    "המונים",
+    "תנועה",
+    "משרד",
+    "type",
+    "length",
+    "חצב",
+    "line",
+    "shape",
+    "oid",
+    "בין",
+    "תכנית",
+    "year",
+    "אסטרטגית",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d3c3bf16-317c-4d8b-9188-16a65d895607",
+      "title": "MATAAN_TLV_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e1ce0334-8394-47e1-b3f1-ec056a8a056c",
+      "title": "MATAAN_TLV_KML",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "bd11e899-65c0-43aa-8264-c07434da22aa",
+      "title": "MATAAN_TLV_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LINE_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YEAR",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 32
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

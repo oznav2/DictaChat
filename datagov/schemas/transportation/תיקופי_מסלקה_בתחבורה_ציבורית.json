@@ -1,0 +1,488 @@
+{
+  "dataset_id": "ab746a13-c7e9-442d-a524-e4ffd1a041b0",
+  "title": "תיקופי מסלקה בתחבורה ציבורית",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משרד התחבורה",
+    "תחבורה",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation",
+    "finance"
+  ],
+  "keywords": [
+    "operatorlineid",
+    "תחבורה",
+    "מסלקה",
+    "officelineid",
+    "operator",
+    "בדרכים",
+    "month",
+    "בתחבורה",
+    "והבטיחות",
+    "hour",
+    "cluster",
+    "direction",
+    "משרד",
+    "תיקופי",
+    "key",
+    "operatorid",
+    "ציבורית",
+    "year",
+    "clusterid",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "24a821a1-4497-4edb-9575-784a6a6a62f1",
+      "title": "גילוי נאות לגבי רמת הדיוק של נתוני הרב קו",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e72b10f3-4458-42c1-ba34-9b232feb8bc7",
+      "title": "מאגר תיקופי מסלקה בתחבורה ציבורית 2025",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OperatorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "operator_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ClusterId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "cluster_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OperatorLineId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "OfficeLineId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Direction",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hour_a",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "year_key",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "month_key",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "D1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D5",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D6",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D7",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D8",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D9",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D10",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D11",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D12",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D13",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D14",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D15",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D16",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D17",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D18",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D19",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D20",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D21",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D22",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D23",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D24",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D25",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D26",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D27",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D28",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D29",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D30",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D31",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 825143
+    },
+    {
+      "resource_id": "a948204a-2b04-4698-916e-80cdda430e7c",
+      "title": "מאגר תיקופי מסלקה בתחבורה ציבורית 2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OperatorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "operator_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ClusterId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "cluster_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OperatorLineId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "OfficeLineId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Direction",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hour_a",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "year_key",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "month_key",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "D1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D4",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D5",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D6",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D7",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D8",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D9",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D10",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D11",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D12",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D13",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D14",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D15",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D16",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D17",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D18",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D19",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D20",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D21",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D22",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D23",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D24",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D25",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D26",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D27",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D28",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D29",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D30",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "D31",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 904847
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "dataset_id": "e9e65529-06e3-4cd0-8455-8b5af30832e2",
+  "title": "דו''ח שיוך רחובות לאזורים עיריית פתח תקווה",
+  "organization": "עיריית פתח תקוה",
+  "tags": [
+    "אוכלוסיה",
+    "אזורים",
+    "רחובות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "בית",
+    "לאזורים",
+    "שיוך",
+    "אוכלוסיה",
+    "סוג",
+    "אזורים",
+    "עיריית",
+    "פתח",
+    "סמל",
+    "ממספר",
+    "תקווה",
+    "אזור",
+    "תקוה",
+    "רחובות",
+    "רחוב"
+  ],
+  "resources": [
+    {
+      "resource_id": "4cfb39a3-9124-4af3-8719-777e8abc945c",
+      "title": "דו''ח שיוך רחובות לאזורים",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "שם רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "סוג מספר בית",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "ממספר",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "עד מספר",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "אזור",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 1156
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

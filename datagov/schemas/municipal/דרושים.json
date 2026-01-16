@@ -1,0 +1,116 @@
+{
+  "dataset_id": "0a03a2a8-a146-4711-9bd8-63f44a8d1975",
+  "title": "דרושים",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "עירייה"
+  ],
+  "categories": [
+    "municipal"
+  ],
+  "keywords": [
+    "באר",
+    "עירייה",
+    "מכרז",
+    "להגשה",
+    "עיריית",
+    "שבע",
+    "עדכון",
+    "אחרון",
+    "דרושים",
+    "url",
+    "תאריך"
+  ],
+  "resources": [
+    {
+      "resource_id": "77bd2813-62a0-4c1e-921a-b9646a39b7aa",
+      "title": "JSON",
+      "format": "JSON",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "1afa2973-2d77-480b-855f-7703f94a783c",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מכרז",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר מכרז",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך אחרון להגשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך עדכון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 1079
+    },
+    {
+      "resource_id": "5351ddc4-ca10-4aec-b2d5-e01262083fe8",
+      "title": "XLSX",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מכרז",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר מכרז",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך אחרון להגשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך עדכון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 1079
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

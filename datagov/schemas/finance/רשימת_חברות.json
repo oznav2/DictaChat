@@ -1,0 +1,44 @@
+{
+  "dataset_id": "43dfa803-0cf0-4e31-8c98-2776a1588519",
+  "title": "רשימת חברות",
+  "organization": "רשות ניירות ערך",
+  "tags": [
+    "אוצר וכלכלה",
+    "חברות ציבוריות",
+    "תאגידים מדווחים בישראל",
+    "תאגידים ציבוריים"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "חברות",
+    "ערך",
+    "תאגידים",
+    "וכלכלה",
+    "ציבוריות",
+    "ניירות",
+    "ציבוריים",
+    "רשות",
+    "אוצר",
+    "מדווחים",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "43caca1a-2bb3-47e2-b5cb-bd193979aa00",
+      "title": "רשימת חברות ",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

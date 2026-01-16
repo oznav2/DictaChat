@@ -1,0 +1,221 @@
+{
+  "dataset_id": "bff9b8b5-0e09-47f5-8b84-c1a853a7ebc5",
+  "title": "מאגר תעודות זהות פירות וירקות",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [
+    "חקלאות",
+    "ירקות",
+    "מזון",
+    "משרד החקלאות",
+    "פירות",
+    "פירות וירקות"
+  ],
+  "categories": [
+    "water",
+    "agriculture"
+  ],
+  "keywords": [
+    "סיבים",
+    "סוג",
+    "איכות",
+    "תעודות",
+    "פירות",
+    "כרטיס",
+    "אנרגיה",
+    "יבוא",
+    "בסידן",
+    "בסיבים",
+    "החקלאות",
+    "שומנים",
+    "פולית",
+    "עיקריים",
+    "חודשי",
+    "שיווק",
+    "תכונות",
+    "ירקות",
+    "חלבונים",
+    "מדריך",
+    "צמח",
+    "יתרונות",
+    "תקן",
+    "בארץ",
+    "הנחיות",
+    "מוצא",
+    "פחמימות",
+    "משרד",
+    "בולטים",
+    "גידול",
+    "זנים",
+    "ירק",
+    "במגנזיום",
+    "בטונות",
+    "פרי",
+    "מזון",
+    "בברזל",
+    "ובטחון",
+    "בויטמין",
+    "המזון",
+    "בחומצה",
+    "בולטות",
+    "תזונתיים",
+    "זהות",
+    "וירקות",
+    "עשיר",
+    "משפחה",
+    "אזורי",
+    "באשלגן",
+    "חקלאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "f3697dd1-77dd-4628-9c3c-79e5cb84b32e",
+      "title": "מאגר תעודות זהות פירות וירקות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ירק/פרי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כרטיס צמח, מדריך תקן איכות, הנחיות ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "משפחה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "זנים בולטים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אזורי גידול עיקריים",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "שיווק בארץ בטונות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "יבוא בטונות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חודשי שיווק עיקריים",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תכונות בולטות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מוצא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אנרגיה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חלבונים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שומנים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "פחמימות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סיבים תזונתיים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "יתרונות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עשיר בויטמין A",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עשיר בויטמין C",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עשיר בחומצה פולית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עשיר בויטמין K",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עשיר באשלגן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עשיר בסידן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עשיר בברזל",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עשיר במגנזיום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עשיר בסיבים תזונתיים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 101
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

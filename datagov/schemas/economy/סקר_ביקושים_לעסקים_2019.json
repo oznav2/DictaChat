@@ -1,0 +1,196 @@
+{
+  "dataset_id": "965c2334-6af6-42a2-b0e0-99d9226abd93",
+  "title": "סקר ביקושים לעסקים 2019",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "כלכלה עסקים ויזמות"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "gender",
+    "ביקושים",
+    "children",
+    "ויזמות",
+    "סקר",
+    "status",
+    "vehicle",
+    "city",
+    "שבע",
+    "age",
+    "choices",
+    "עסקים",
+    "date",
+    "category",
+    "כלכלה",
+    "choise",
+    "open",
+    "student",
+    "family",
+    "neighborhood",
+    "באר",
+    "notes",
+    "לעסקים",
+    "user",
+    "עיריית",
+    "selection"
+  ],
+  "resources": [
+    {
+      "resource_id": "9557b298-8daa-41e7-8864-aadd5485063d",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a44272eb-86bb-448d-82ee-fdb34d4c054a",
+      "title": "JSON",
+      "format": "JSON",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "d245414c-5231-4e86-a9d9-d2cf724b4be0",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "user_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "selection",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "neighborhood",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "gender",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "student",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "children",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "vehicle",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "family_status",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "age",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "category_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "choices",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "open notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "choise_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "choise_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "choise_3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "choise_4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "choise_5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "choise_6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "choise_7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "choise_8",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "choise_9",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "choise_10",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 5012
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

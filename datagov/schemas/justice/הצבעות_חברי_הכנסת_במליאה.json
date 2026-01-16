@@ -1,0 +1,32 @@
+{
+  "dataset_id": "01dfe05c-49d9-4d4c-b629-9d3bbc3b839b",
+  "title": "הצבעות חברי הכנסת במליאה",
+  "organization": "הכנסת",
+  "tags": [
+    "הכנסת",
+    "הצבעות",
+    "חברי כנסת",
+    "מליאה",
+    "משפט"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "מליאה",
+    "משפט",
+    "הצבעות",
+    "הכנסת",
+    "במליאה",
+    "כנסת",
+    "חברי"
+  ],
+  "resources": [],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

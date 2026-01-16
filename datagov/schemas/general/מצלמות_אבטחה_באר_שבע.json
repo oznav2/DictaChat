@@ -1,0 +1,158 @@
+{
+  "dataset_id": "209fad5c-de35-49c4-a6f4-164a0c79632c",
+  "title": "מצלמות אבטחה באר-שבע",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "ביטחון ותשתיות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "ביטחון",
+    "lon",
+    "באר",
+    "מצלמות",
+    "lat",
+    "ותשתיות",
+    "עיריית",
+    "address",
+    "שבע",
+    "אבטחה",
+    "angle",
+    "location",
+    "amount"
+  ],
+  "resources": [
+    {
+      "resource_id": "3c7e0a98-312e-476a-8083-877773400137",
+      "title": "XLSX",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "amount",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "angle",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 953
+    },
+    {
+      "resource_id": "992f1b92-9f27-4e77-ac0e-6fb4070fcbc0",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "amount",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "angle",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 953
+    },
+    {
+      "resource_id": "db1888ef-e8c7-4e69-86e8-0d203c5821c1",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

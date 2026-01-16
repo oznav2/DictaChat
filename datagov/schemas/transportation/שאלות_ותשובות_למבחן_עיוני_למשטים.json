@@ -1,0 +1,120 @@
+{
+  "dataset_id": "5848d14d-29da-4ca7-886d-20b986d25670",
+  "title": "שאלות ותשובות למבחן עיוני למשטים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משטים",
+    "משרד התחבורה",
+    "ספנות",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "status",
+    "תחבורה",
+    "types",
+    "disqualification",
+    "answers",
+    "משטים",
+    "בדרכים",
+    "שאלות",
+    "category",
+    "והבטיחות",
+    "answer",
+    "number",
+    "description",
+    "משרד",
+    "ספנות",
+    "למבחן",
+    "עיוני",
+    "num",
+    "exam",
+    "למשטים",
+    "questions",
+    "ותשובות",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d99b5fcb-b906-461e-a386-dcaffa13f9ac",
+      "title": "מאגר שאלות ותשובות למבחן עיוני למשטים",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Disqualification_Answer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Answer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Answers_Num",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Questions",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Category",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Exam_Types",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Status",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "Number",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 7090
+    },
+    {
+      "resource_id": "b130d6dd-aa56-47ba-951a-183664988cb3",
+      "title": "זיהוי אורות",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a2c807dc-662e-42e0-a130-d044617d59b0",
+      "title": "מעגל מצבים",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

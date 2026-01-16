@@ -1,0 +1,134 @@
+{
+  "dataset_id": "606c6ab9-a46e-401b-85d0-1d6167a93720",
+  "title": "Вопросы и ответы квалификационного экзамена на знание Правил Дорожного Движения",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "מבחן נהיגה עיוני",
+    "משרד התחבורה",
+    "שאלות תאוריה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "language",
+    "מבחן",
+    "author",
+    "התחבורה",
+    "guid",
+    "בדרכים",
+    "שאלות",
+    "category",
+    "והבטיחות",
+    "description",
+    "תאוריה",
+    "משרד",
+    "pubdate",
+    "עיוני",
+    "lastbuilddate",
+    "version",
+    "title",
+    "נהיגה",
+    "generator",
+    "link"
+  ],
+  "resources": [
+    {
+      "resource_id": "015277d8-e3d7-4de0-b62b-d3e7eb1fea03",
+      "title": "TheoryExamRU_DATA.xml",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "ca264280-1669-45ce-a96f-a4c9ed71e812",
+      "title": "TheoryExamRU_DATA.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "version",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "link",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "lastBuildDate",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "generator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "language",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "title2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "link3",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "guid",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "description4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "author",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "category",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "pubDate",
+          "type": "timestamp",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 1802
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

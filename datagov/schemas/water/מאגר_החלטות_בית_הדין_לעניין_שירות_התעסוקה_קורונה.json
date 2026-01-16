@@ -1,0 +1,94 @@
+{
+  "dataset_id": "3b97b738-8d2d-4e37-a2e0-c62a5db7e477",
+  "title": "מאגר החלטות בית הדין לעניין שירות התעסוקה-קורונה",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "בתי דין",
+    "השפעות קורונה",
+    "משפטים"
+  ],
+  "categories": [
+    "water",
+    "justice",
+    "economy"
+  ],
+  "keywords": [
+    "התעסוקה",
+    "החלטה",
+    "לעניין",
+    "סוג",
+    "קורונה",
+    "הדין",
+    "נושא",
+    "החלטות",
+    "משרד",
+    "השפעות",
+    "שירות",
+    "דין",
+    "תאריך",
+    "המשפטים",
+    "בקשה",
+    "בית",
+    "דיין",
+    "בתי",
+    "תיק",
+    "משפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "e987099e-ac4d-4b9e-8317-4829a8c205f2",
+      "title": "מאגר החלטות בית הדין לעניין שירות התעסוקה-קורונה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר תיק",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "בית דין",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם דיין",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך החלטה",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "סוג בקשה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "נושא",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 334
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

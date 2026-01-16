@@ -1,0 +1,34 @@
+{
+  "dataset_id": "c73bd984-a9ed-4ce0-b7ef-1e4078b1bcba",
+  "title": "תמיכה מצפים ציבוריים 2018",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "ציבוריים",
+    "משרד",
+    "מצפים",
+    "המדע",
+    "תמיכה",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "1c8d179a-ad38-40dc-bbe0-32754cfdfe8f",
+      "title": "תמיכה מצפים ציבוריים 2018",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

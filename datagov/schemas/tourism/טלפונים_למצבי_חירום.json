@@ -1,0 +1,116 @@
+{
+  "dataset_id": "cb01744c-8fbe-4122-92f9-27e533860de1",
+  "title": "טלפונים למצבי חירום",
+  "organization": "משרד התיירות",
+  "tags": [],
+  "categories": [
+    "tourism"
+  ],
+  "keywords": [
+    "contact",
+    "office",
+    "phone",
+    "משרד",
+    "התיירות",
+    "למצבי",
+    "טלפונים",
+    "region",
+    "חירום",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "d0f0a13e-7e92-4baf-9293-e8db6d5caf81",
+      "title": "טלפונים למצבי חירום",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "office",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "contact",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "phone1",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "phone2",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 11
+    },
+    {
+      "resource_id": "a5cb1ec6-8b78-4ff0-8b86-b6a6b3b48419",
+      "title": "Emergency Phones",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "office",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "contact",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "phone1",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "phone2",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 11
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

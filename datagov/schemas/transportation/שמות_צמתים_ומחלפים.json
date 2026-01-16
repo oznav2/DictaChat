@@ -1,0 +1,151 @@
+{
+  "dataset_id": "edd190b6-e9da-4c68-9b0e-cae1ae2ba14b",
+  "title": "שמות צמתים ומחלפים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "ארצי",
+    "דרכים בין עירוניות",
+    "חצב",
+    "מפות רחובות",
+    "מפת דרכים",
+    "תנועה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "status",
+    "raods",
+    "עירוניות",
+    "דרכים",
+    "ארצי",
+    "latin",
+    "בדרכים",
+    "והבטיחות",
+    "מפות",
+    "תנועה",
+    "yalkutpir",
+    "ומחלפים",
+    "current",
+    "משרד",
+    "vaada",
+    "שמות",
+    "חצב",
+    "רחובות",
+    "num",
+    "צמתים",
+    "oid",
+    "בין",
+    "מפת",
+    "hebrew",
+    "arabic",
+    "התחבורה",
+    "future"
+  ],
+  "resources": [
+    {
+      "resource_id": "51502a99-fe5a-4579-aff3-2d59b3e7cd81",
+      "title": "ZMT_NAMES_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "26c84d33-4588-43f2-a3a9-5eb900e937f6",
+      "title": "ZMT_NAMES_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "09bbc3b7-7289-4beb-97c7-a10ebc4973c6",
+      "title": "ZMT_NAMES_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "NUM",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "HEBREW",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ARABIC",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LATIN",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RAODS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CURRENT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "VAADA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FUTURE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YALKUTPIR",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Num_",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 468
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

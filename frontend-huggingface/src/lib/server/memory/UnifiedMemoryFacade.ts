@@ -78,9 +78,63 @@ export interface PrefetchService {
 	prefetchContext(params: PrefetchContextParams): Promise<PrefetchContextResult>;
 }
 
+/**
+ * Parameters for getting a memory by ID
+ * Phase 1: Consolidate Memory Collections
+ */
+export interface GetByIdParams {
+	userId: string;
+	memoryId: string;
+}
+
+/**
+ * Parameters for updating a memory
+ * Phase 1: Consolidate Memory Collections
+ */
+export interface UpdateParams {
+	userId: string;
+	memoryId: string;
+	text?: string;
+	tags?: string[];
+	status?: "active" | "archived";
+	archivedReason?: string;
+}
+
+/**
+ * Parameters for deleting a memory
+ * Phase 1: Consolidate Memory Collections
+ */
+export interface DeleteParams {
+	userId: string;
+	memoryId: string;
+}
+
+/**
+ * Memory item returned by getById
+ * Phase 1: Consolidate Memory Collections
+ */
+export interface MemoryItemResult {
+	memory_id: string;
+	text: string;
+	tags: string[];
+	status: string;
+	tier: MemoryTier;
+	score: number;
+	created_at: Date;
+	updated_at: Date;
+	archived_at?: Date;
+	archived_reason?: string;
+}
+
 export interface StoreService {
 	store(params: StoreParams): Promise<StoreResult>;
 	removeBook(params: RemoveBookParams): Promise<void>;
+	/** Get a memory by ID - Phase 1 */
+	getById?(params: GetByIdParams): Promise<MemoryItemResult | null>;
+	/** Update a memory - Phase 1 */
+	update?(params: UpdateParams): Promise<MemoryItemResult | null>;
+	/** Delete a memory - Phase 1 */
+	delete?(params: DeleteParams): Promise<boolean>;
 }
 
 export interface OutcomeService {
@@ -98,6 +152,33 @@ export interface ActionKgService {
 export interface ContextService {
 	getColdStartContext(params: GetColdStartContextParams): Promise<GetColdStartContextResult>;
 	getContextInsights(params: GetContextInsightsParams): Promise<ContextInsights>;
+	/**
+	 * Extract entities from text and store them in the Content KG
+	 * Phase 3 Gap 7: Content KG Entity Extraction
+	 */
+	extractAndStoreEntities?(
+		params: ExtractAndStoreEntitiesParams
+	): Promise<ExtractAndStoreEntitiesResult>;
+}
+
+/**
+ * Parameters for extracting and storing entities to Content KG
+ */
+export interface ExtractAndStoreEntitiesParams {
+	userId: string;
+	memoryId: string;
+	text: string;
+	importance?: number;
+	confidence?: number;
+}
+
+/**
+ * Result of entity extraction and storage
+ */
+export interface ExtractAndStoreEntitiesResult {
+	entitiesExtracted: number;
+	entitiesStored: number;
+	entities: string[];
 }
 
 export interface OpsService {
@@ -108,6 +189,14 @@ export interface OpsService {
 	consistencyCheck(params: ConsistencyCheckParams): Promise<ConsistencyCheckResult>;
 	exportBackup(params: ExportBackupParams): Promise<ExportBackupResult>;
 	importBackup(params: ImportBackupParams): Promise<ImportBackupResult>;
+	clearBooksTier(userId: string): Promise<{
+		success: boolean;
+		mongoDeleted: number;
+		qdrantDeleted: number;
+		ghostsCleared: number;
+		actionKgCleared: number;
+		errors: string[];
+	}>;
 	getStats(userId: string): Promise<StatsSnapshot>;
 }
 
@@ -129,6 +218,10 @@ export interface PrefetchContextParams {
 	hasDocuments: boolean;
 	limit?: number;
 	signal?: AbortSignal;
+	/** Include DataGov tiers in search (Phase 25) - set by detectDataGovIntent() */
+	includeDataGov?: boolean;
+	/** Phase 9.3: Token budget for context window management (default: 2000) */
+	tokenBudget?: number;
 }
 
 export interface PrefetchContextResult {
@@ -183,6 +276,8 @@ export interface StoreParams {
 
 export interface StoreResult {
 	memory_id: string;
+	tier?: MemoryTier;
+	preview?: string | null;
 }
 
 export interface RecordOutcomeParams {
@@ -324,6 +419,20 @@ function createNoopStatsSnapshot(userId: string): StatsSnapshot {
 				uses_total: 0,
 				success_rate: 0.5,
 			},
+			datagov_schema: {
+				active_count: 0,
+				archived_count: 0,
+				deleted_count: 0,
+				uses_total: 0,
+				success_rate: 0.5,
+			},
+			datagov_expansion: {
+				active_count: 0,
+				archived_count: 0,
+				deleted_count: 0,
+				uses_total: 0,
+				success_rate: 0.5,
+			},
 		},
 		action_effectiveness: [],
 	};
@@ -434,6 +543,14 @@ function createNoopServices(): ResolvedServices {
 				},
 				errors: [],
 			}),
+			clearBooksTier: async () => ({
+				success: true,
+				mongoDeleted: 0,
+				qdrantDeleted: 0,
+				ghostsCleared: 0,
+				actionKgCleared: 0,
+				errors: [],
+			}),
 			getStats: async (userId: string) => createNoopStatsSnapshot(userId),
 		},
 	};
@@ -526,7 +643,9 @@ export class UnifiedMemoryFacade {
 
 	static getInstance(): UnifiedMemoryFacade {
 		if (!UnifiedMemoryFacade.instance) {
-			logger.warn("UnifiedMemoryFacade.getInstance() called before initialization - creating NoOp instance");
+			logger.warn(
+				"UnifiedMemoryFacade.getInstance() called before initialization - creating NoOp instance"
+			);
 			UnifiedMemoryFacade.instance = new UnifiedMemoryFacade();
 		}
 		return UnifiedMemoryFacade.instance;
@@ -582,6 +701,42 @@ export class UnifiedMemoryFacade {
 		return this.services.store.store(params);
 	}
 
+	/**
+	 * Get a memory by ID
+	 * Phase 1: Consolidate Memory Collections
+	 */
+	async getById(params: GetByIdParams): Promise<MemoryItemResult | null> {
+		if (this.services.store.getById) {
+			return this.services.store.getById(params);
+		}
+		logger.warn("getById not implemented on store service");
+		return null;
+	}
+
+	/**
+	 * Update a memory
+	 * Phase 1: Consolidate Memory Collections
+	 */
+	async update(params: UpdateParams): Promise<MemoryItemResult | null> {
+		if (this.services.store.update) {
+			return this.services.store.update(params);
+		}
+		logger.warn("update not implemented on store service");
+		return null;
+	}
+
+	/**
+	 * Delete a memory (hard delete)
+	 * Phase 1: Consolidate Memory Collections
+	 */
+	async deleteMemory(params: DeleteParams): Promise<boolean> {
+		if (this.services.store.delete) {
+			return this.services.store.delete(params);
+		}
+		logger.warn("delete not implemented on store service");
+		return false;
+	}
+
 	async recordOutcome(params: RecordOutcomeParams): Promise<void> {
 		return this.services.outcomes.recordOutcome(params);
 	}
@@ -602,6 +757,21 @@ export class UnifiedMemoryFacade {
 
 	async getContextInsights(params: GetContextInsightsParams): Promise<ContextInsights> {
 		return this.services.context.getContextInsights(params);
+	}
+
+	/**
+	 * Extract entities from text and store them in the Content KG
+	 * Phase 3 Gap 7: Content KG Entity Extraction
+	 */
+	async extractAndStoreEntities(
+		params: ExtractAndStoreEntitiesParams
+	): Promise<ExtractAndStoreEntitiesResult> {
+		// Check if the context service supports entity extraction
+		if (this.services.context.extractAndStoreEntities) {
+			return this.services.context.extractAndStoreEntities(params);
+		}
+		// Return empty result if not supported
+		return { entitiesExtracted: 0, entitiesStored: 0, entities: [] };
 	}
 
 	async recordResponse(params: RecordResponseParams): Promise<void> {
@@ -1030,5 +1200,16 @@ export class UnifiedMemoryFacade {
 			logger.warn({ err, userId, query }, "Failed to retrieve from books");
 			return [];
 		}
+	}
+
+	async clearBooksTier(userId: string): Promise<{
+		success: boolean;
+		mongoDeleted: number;
+		qdrantDeleted: number;
+		ghostsCleared: number;
+		actionKgCleared: number;
+		errors: string[];
+	}> {
+		return this.services.ops.clearBooksTier(userId);
 	}
 }

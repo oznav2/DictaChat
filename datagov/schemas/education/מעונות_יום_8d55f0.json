@@ -1,0 +1,76 @@
+{
+  "dataset_id": "8d55f03e-de9c-4dac-8084-c4b6da87c732",
+  "title": "מעונות יום",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "חינוך",
+    "מעונות יום",
+    "רווחה"
+  ],
+  "categories": [
+    "education",
+    "water",
+    "welfare"
+  ],
+  "keywords": [
+    "name",
+    "רווחה",
+    "objectid",
+    "חינוך",
+    "אדומים",
+    "מעונות",
+    "עיריית",
+    "mikum",
+    "telefon",
+    "ktovet",
+    "יום",
+    "מעלה"
+  ],
+  "resources": [
+    {
+      "resource_id": "93b07b08-9234-4502-bee0-a054110dd0a3",
+      "title": "רשימת מעונות יום",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "mikum",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ktovet",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "telefon",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 11
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

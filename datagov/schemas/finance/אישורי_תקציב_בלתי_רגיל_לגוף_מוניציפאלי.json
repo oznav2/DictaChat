@@ -1,0 +1,95 @@
+{
+  "dataset_id": "3e00adf7-c6a6-4958-8a42-98f914d0e060",
+  "title": "אישורי תקציב בלתי רגיל לגוף מוניציפאלי",
+  "organization": "משרד הפנים",
+  "tags": [
+    "רשויות מקומיות",
+    "שלטון מקומי",
+    "תבר",
+    "תקציב",
+    "תקציב בלתי רגיל"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "ישיבה",
+    "סוג",
+    "ברשות",
+    "הפנים",
+    "מקומיות",
+    "אישורי",
+    "תקציב",
+    "לגוף",
+    "מוניציפלי",
+    "תבר",
+    "מחוז",
+    "רגיל",
+    "מוניציפאלי",
+    "מאושר",
+    "משרד",
+    "בלתי",
+    "רשויות",
+    "בקשה",
+    "שלטון",
+    "מקומי",
+    "גוף"
+  ],
+  "resources": [
+    {
+      "resource_id": "9a830f1b-543d-4f5d-9302-787885b36624",
+      "title": "תברים מאושרים - מחוז ירושלים 2107",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "גוף מוניציפלי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מספר תקציב בלתי רגיל ברשות",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "תת סוג בקשה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סך תקציב מאושר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מספר ישיבה",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 1127
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

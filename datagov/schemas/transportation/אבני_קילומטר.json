@@ -1,0 +1,105 @@
+{
+  "dataset_id": "12723fc3-635a-4065-9554-9b3d7fbaa4a7",
+  "title": "אבני קילומטר",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "MILEPOST",
+    "כביש",
+    "ממג",
+    "ציון דרך"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "דרך",
+    "road",
+    "ממג",
+    "objectid",
+    "milepost",
+    "אבני",
+    "בדרכים",
+    "משרד",
+    "type",
+    "fid",
+    "ציון",
+    "כביש",
+    "gis",
+    "והבטיחות",
+    "התחבורה",
+    "קילומטר"
+  ],
+  "resources": [
+    {
+      "resource_id": "62cf77f4-51bb-4ca3-9771-99ba8ef44f97",
+      "title": "MILE_POST_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "559089de-ddf7-4b29-a9c8-b1d1994f9cfa",
+      "title": "MILE_POST_KML",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "29511ef7-59ba-45bf-aed4-4be1f71ad834",
+      "title": "MILE_POST_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "KM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "TYPE_ROAD",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ROAD",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 6504
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

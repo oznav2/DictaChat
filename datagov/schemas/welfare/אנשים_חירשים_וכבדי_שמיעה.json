@@ -1,0 +1,79 @@
+{
+  "dataset_id": "02931dbc-de54-4142-bace-9135d34133b0",
+  "title": "אנשים חירשים וכבדי שמיעה",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "כתובת",
+    "טלפון",
+    "ישוב",
+    "משרד",
+    "שמיעה",
+    "וכבדי",
+    "אנשים",
+    "חירשים",
+    "הרווחה",
+    "החברתי",
+    "והביטחון",
+    "התחנה"
+  ],
+  "resources": [
+    {
+      "resource_id": "bbad2bde-b741-4c25-8a4e-80ced0ffe2fb",
+      "title": "סל תקשורת לאנשים עם מוגבלות שמיעה.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "75e4fbf9-3b58-4c06-9c8d-3b3e20a312e9",
+      "title": "תחנות מידע לאנשים כבדי שמיעה.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "8ba2c9c0-94a5-46d0-a707-5b0bcad29567",
+      "title": "תחנות מידע לכבדי שמיעה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם התחנה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 5
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "dataset_id": "868c78fa-edd3-4fea-acdf-382f600ef19e",
+  "title": "בתי דיור מוגן بيوت الإسكان المحمي",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare",
+    "housing"
+  ],
+  "keywords": [
+    "name",
+    "company",
+    "internet",
+    "בתי",
+    "מוגן",
+    "settlement",
+    "משרד",
+    "telephone",
+    "site",
+    "religion",
+    "attitude",
+    "הרווחה",
+    "החברתי",
+    "דיור",
+    "והביטחון",
+    "treatment",
+    "protected",
+    "house"
+  ],
+  "resources": [
+    {
+      "resource_id": "7f3b5887-bacd-4f49-b220-4cae2a417cdb",
+      "title": "بيوت الإسكان المحمي בתי דיור מוגן ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "protected_house_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "company",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "settlement",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "treatment",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "religion_attitude",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "internet_site",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 97
+    },
+    {
+      "resource_id": "eed0f68d-9dae-4347-8e32-3ccc09eaf2b1",
+      "title": "הסבר מבנה הנתונים בקובץ בתי דיור מוגן ",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

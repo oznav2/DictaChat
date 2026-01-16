@@ -1,0 +1,51 @@
+{
+  "dataset_id": "0deb6589-30d2-44e3-a91c-192aab96f69b",
+  "title": "אזורי גשם לתכנון",
+  "organization": "מינהל התכנון ",
+  "tags": [
+    "גשם",
+    "הצפות",
+    "מים",
+    "מסמך ניהול נגר",
+    "נגר",
+    "נגר עילי",
+    "ניהול נגר",
+    "ניקוז",
+    "תכנון"
+  ],
+  "categories": [
+    "finance",
+    "water"
+  ],
+  "keywords": [
+    "עילי",
+    "הצפות",
+    "מינהל",
+    "ניקוז",
+    "תכנון",
+    "מסמך",
+    "לתכנון",
+    "נגר",
+    "התכנון",
+    "ניהול",
+    "מים",
+    "גשם",
+    "אזורי"
+  ],
+  "resources": [
+    {
+      "resource_id": "1a7e51e7-c4f1-42ac-a9fb-128d8edff1c9",
+      "title": "אזורי גשם לתכנון.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

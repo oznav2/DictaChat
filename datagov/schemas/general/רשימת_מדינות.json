@@ -1,0 +1,130 @@
+{
+  "dataset_id": "b4c540e2-76b8-4bf1-9e14-47774ebe4d33",
+  "title": "רשימת מדינות",
+  "organization": "משרד החוץ",
+  "tags": [
+    "מדינות",
+    "משרד החוץ",
+    "סטטוס יחסים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "כינון",
+    "סוג",
+    "מדינות",
+    "יבשת",
+    "החוץ",
+    "ייצוג",
+    "במאגר",
+    "לעניינים",
+    "שרות",
+    "מדינה",
+    "מאומנת",
+    "עיר",
+    "אנגלי",
+    "קונסולריים",
+    "משרד",
+    "מטפלת",
+    "בירה",
+    "נציגות",
+    "תאריך",
+    "קשת",
+    "סטטוס",
+    "רשמי",
+    "יחסים"
+  ],
+  "resources": [
+    {
+      "resource_id": "b1fdc757-07e3-4875-a023-99e59ac44f24",
+      "title": "גליון רשימת מדינות ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_מדינה_רשמי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם_מדינה_רשמי_אנגלי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם_מדינה_במאגר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם_מדינה_אנגלי_במאגר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "יבשת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטטוס_יחסים",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "שם_עיר_בירה",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם_עיר_בירה_אנגלי",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "תאריך_כינון_יחסים",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "סוג_ייצוג_מדינה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "נציגות_מאומנת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נציגות_מאומנת_לעניינים_קונסולריים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נציגות_מטפלת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מדינה_קשת_שרות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 175
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

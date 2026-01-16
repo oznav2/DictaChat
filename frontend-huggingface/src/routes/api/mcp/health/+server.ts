@@ -26,6 +26,16 @@ interface HealthCheckResponse {
 export const POST: RequestHandler = async ({ request, locals }) => {
 	let client: Client | undefined;
 
+	if (!locals.isAdmin) {
+		return new Response(
+			JSON.stringify({ ready: false, error: "Admin only" } satisfies HealthCheckResponse),
+			{
+				status: 403,
+				headers: { "Content-Type": "application/json" },
+			}
+		);
+	}
+
 	try {
 		const body: HealthCheckRequest = await request.json();
 		const { url, headers } = body;

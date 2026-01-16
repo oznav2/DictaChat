@@ -1,0 +1,54 @@
+{
+  "dataset_id": "c1116292-0887-480a-bb55-715e4f3a993f",
+  "title": "ארגונים ומוסדות הפועלים בישראל לקידום נשים במדע ובטכנולוגיה",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "משרד המדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "במדע",
+    "ומוסדות",
+    "ובטכנולוגיה",
+    "נשים",
+    "משרד",
+    "ארגונים",
+    "ומהוסד",
+    "לקידום",
+    "המדע",
+    "האירגון",
+    "הפועלים",
+    "בישראל",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "22b2ebf5-7316-47d0-a617-892b3ad3e9f6",
+      "title": "most.DB.54.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם האירגון ומהוסד",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 2
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

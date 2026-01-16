@@ -5,8 +5,14 @@ import { Database } from "$lib/server/database";
 import { config } from "$lib/server/config";
 import { ADMIN_USER_ID } from "$lib/server/constants";
 import { MEMORY_COLLECTIONS } from "$lib/server/memory";
-import { isEntityBlocklistedLabel, normalizeEntityLabel } from "$lib/server/memory/kg/entityHygiene";
-import { findEnglishTranslation, findHebrewTranslation } from "$lib/server/memory/seed/bilingualEntities";
+import {
+	isEntityBlocklistedLabel,
+	normalizeEntityLabel,
+} from "$lib/server/memory/kg/entityHygiene";
+import {
+	findEnglishTranslation,
+	findHebrewTranslation,
+} from "$lib/server/memory/seed/bilingualEntities";
 
 function generateNodeId(label: string): string {
 	return label.toLowerCase().replace(/\s+/g, "_").slice(0, 50);

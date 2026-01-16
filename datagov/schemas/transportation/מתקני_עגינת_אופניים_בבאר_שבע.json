@@ -1,0 +1,87 @@
+{
+  "dataset_id": "9c0950ed-9e28-43f7-9e5e-2df80b83b054",
+  "title": "מתקני עגינת אופניים בבאר-שבע",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "עגינת",
+    "lon",
+    "באר",
+    "תחבורה",
+    "בבאר",
+    "nosign",
+    "lat",
+    "עיריית",
+    "sign",
+    "address",
+    "אופניים",
+    "שבע",
+    "מתקני"
+  ],
+  "resources": [
+    {
+      "resource_id": "ad5acd2d-2ac0-468b-8527-2b97cb810f4a",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "bbfc918c-21d5-4084-860f-3f01f31bb9d4",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "sign",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NoSign",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 242
+    },
+    {
+      "resource_id": "d67ad431-dd50-4616-8611-ea813474545b",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

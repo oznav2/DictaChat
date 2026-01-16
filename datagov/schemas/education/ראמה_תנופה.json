@@ -1,0 +1,3715 @@
+{
+  "dataset_id": "27feda04-0165-448b-8ba6-0b29ebf90586",
+  "title": "ראמ\"ה תנופה",
+  "organization": "משרד החינוך",
+  "tags": [],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "important",
+    "srl",
+    "soc",
+    "lowest",
+    "tscore",
+    "תנופה",
+    "count",
+    "teamworkm",
+    "able",
+    "class",
+    "משרד",
+    "tested",
+    "educat",
+    "rmfeedback",
+    "cil",
+    "learning",
+    "teaching",
+    "pikuach",
+    "satisfactionm",
+    "cohen",
+    "mosad",
+    "collectiveefficacy",
+    "yishuv",
+    "sel",
+    "mivchan",
+    "stu",
+    "tea",
+    "only",
+    "relevance",
+    "grp",
+    "selskills",
+    "belonging",
+    "vetek",
+    "החינוך",
+    "parentsharing",
+    "divuach",
+    "rng",
+    "moredu",
+    "interest",
+    "total",
+    "prac",
+    "behave",
+    "avg",
+    "tamtzit",
+    "machoz",
+    "semel",
+    "percent",
+    "self",
+    "activities",
+    "hanam",
+    "kita",
+    "hav",
+    "resilience",
+    "good",
+    "ראמ",
+    "love",
+    "break",
+    "staff",
+    "infrastructure",
+    "shichva",
+    "shem",
+    "cat",
+    "shiluv",
+    "neg",
+    "trend",
+    "chinuch",
+    "skills",
+    "sharedlifeeffort",
+    "participatoryleadership",
+    "sharedlife",
+    "socinvolve",
+    "pos",
+    "safa",
+    "protectiont",
+    "mor",
+    "relations",
+    "life",
+    "male",
+    "tal",
+    "educators",
+    "hes",
+    "pin",
+    "leadership",
+    "educ",
+    "highest",
+    "teur",
+    "envrmnt",
+    "olim",
+    "learn",
+    "ses",
+    "efforts",
+    "social",
+    "environment",
+    "facilities",
+    "enjoy",
+    "students",
+    "safety",
+    "advanced",
+    "inv",
+    "sek",
+    "rashut",
+    "bitzua",
+    "change",
+    "with",
+    "healthy",
+    "migzar"
+  ],
+  "resources": [
+    {
+      "resource_id": "6f0e211c-7385-4d45-8cbe-4cb3d9bf6776",
+      "title": "נתוני הישגים ברמה בית ספרית -  תשפ\"ג",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "semel_mosad",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "shem_mosad",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mivchan_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mivchan_safa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "pikuach_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "migzar_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "migzar_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shem_yishuv",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "rashut_chinuch",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "rashut_chinuch_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "machoz_divuach",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "vetek_mosad_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ses_mosad_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "n_tal_mosad",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "n_tal_mosad_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "n_tal_hanam_mosad_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "n_tal_shichva",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "n_tal_shichva_tested",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "p_tal_shichva_tested",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "n_tal_shichva_shiluv_olim",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "n_tal_shichva_divuach",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tamtzit_mosad_cat",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tamtzit_mosad_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tscore_avg_cat",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tscore_avg_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tscore_300_rng1090_CAT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tscore_300_rng1090_CAT_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tscore_300_rng1090_CAT_teur_male",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tscore_trend_cat",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tscore_trend_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "p_lowest_bitzua_hav_cat",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "p_lowest_bitzua_hav_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "p_highest_bitzua_hav_cat",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "p_highest_bitzua_hav_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_able",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_able_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_enjoy_interest",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_enjoy_interest_teur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_love_activities",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_love_activities_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_important",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_important_teur",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3068
+    },
+    {
+      "resource_id": "ba6f0794-6713-406c-800e-0bc98c2afbea",
+      "title": "נתוני הסקר הבית ספרי - תשפ\"ג",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "semel_mosad",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "shem_mosad",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shichva_grp",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "pikuach_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "migzar_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "R_MIGZAR_GRP_TEUR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHEM_YISHUV",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RASHUT_CHINUCH",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "RASHUT_CHINUCH_TEUR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "r_MACHOZ_DIVUACH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "vetek_mosad_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ses_mosad_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "n_tal_mosad",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "n_tal_mosad_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "avg_tal_kita_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "n_tal_hanam_mosad_cat_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "n_break_nu_ with_hanam",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "n_break_pin_with_hanam",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "n_break_nu",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "n_break_pin",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "n_break_nu_only_hanam",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "n_break_pin_only_hanam",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "n_break_nu_mor",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "n_break_pin_mor",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "d_t_CIL_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "d_t_CIL_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_CIL22_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_CIL22_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_t_SRL_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "d_t_SRL_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_SEL_Skills22_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_SEL_Skills22_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_self_Learn22_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_self_Learn22_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_Resilience_r22_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_Resilience_r22_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_t_social_Skills_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "d_t_social_Skills_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_students_Relations22_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_t_students_Relations22_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_t_sharedLife23_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_sharedLife23_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_t_belonging_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "d_t_belonging_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "i_t_belonging22_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "i_t_belonging22_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "i_t_tea_Stu_Relations22_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_t_tea_Stu_Relations22_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "d_t_safety_tal_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "d_t_safety_tal_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_t_ProtectionT2023_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_ProtectionT2023_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_t_class_learning_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "d_t_class_learning_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_good_Behave_r22_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_good_Behave_r22_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_advanced_Prac23_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_advanced_Prac23_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_teaching_Relevance23_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_teaching_Relevance23_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_m_staff_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "d_m_staff_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_m_SatisfactionM2023_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_m_SatisfactionM2023_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_m_TeamWorkM2023_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_m_TeamWorkM2023_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_m_CollectiveEfficacy2023_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_m_CollectiveEfficacy2023_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_m_safety_envrmnt2023_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_m_safety_envrmnt2023_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "d_m_leadership_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "d_m_leadership_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_m_ParticipatoryLeadership2023_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_m_ParticipatoryLeadership2023_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_m_RMFeedback2023_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_m_RMFeedback2023_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_m_ParentSharing2023_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_m_ParentSharing2023_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_m_t_skills_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "d_m_t_skills_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_healthy_Life22_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_t_healthy_Life22_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_m_SELSkills2023_mor_Cohen_d_grp\ni_m_SELSkills2023_educators_C",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_m_SELSkills2023_mor_Cohen_d_grp_teur\ni_m_SELSkills2023_educat",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_sharedLifeEffort23_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_sharedLifeEffort23_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_m_t_soc_Inv_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "d_m_t_soc_Inv_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_social_Efforts22_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_social_Efforts22_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_m_SocInvolve2023_mor_Cohen_d_grp\ni_m_SocInvolve2023_educators",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_m_SocInvolve2023_mor_Cohen_d_grp_teur\ni_m_SocInvolve2023_educ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "d_m_t_infrastructure_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "d_m_t_infrastructure_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_Environment23_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_Environment23_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_m_Facilities2023_Cohen_d_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_m_Facilities2023_Cohen_d_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "pos_change1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "pos_change2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "pos_change3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "neg_change1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "neg_change2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "neg_change3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_CIL22_trend_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_CIL22_trend_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_SEL_Skills22_trend_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_SEL_Skills22_trend_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_self_Learn22_trend_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_self_Learn22_trend_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_Resilience_r22_trend_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_Resilience_r22_trend_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_students_Relations22_trend_grp",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_t_students_Relations22_trend_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_t_belonging22_trend_grp",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "i_t_belonging22_trend_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "i_t_tea_Stu_Relations22_trend_grp",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_t_tea_Stu_Relations22_trend_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_t_ProtectionT2023_trend_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_ProtectionT2023_trend_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_good_Behave_r22_trend_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_good_Behave_r22_trend_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_advanced_Prac23_trend_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_advanced_Prac23_trend_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_teaching_Relevance23_trend_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_teaching_Relevance23_trend_grp_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "i_t_healthy_Life22_trend_grp",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_t_healthy_Life22_trend_grp_teur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "i_t_social_Efforts22_trend_grp",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "i_t_social_Efforts22_trend_grp_teur",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1259
+    },
+    {
+      "resource_id": "3826a335-ce2b-464e-acfd-e8f93dd0a033",
+      "title": "נתוני רשויות - תשפ\"ג",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "rashut_chinuch",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "rashut_chinuch_teur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "total_count_hes",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "count_tscore_avg_cat_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_avg_cat_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_avg_cat_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_avg_cat_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_avg_cat_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_avg_cat_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_avg_cat_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_avg_cat_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_avg_cat_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_avg_cat_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_000_rng1090_CAT_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_000_rng1090_CAT_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_000_rng1090_CAT_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_000_rng1090_CAT_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_000_rng1090_CAT_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_000_rng1090_CAT_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_000_rng1090_CAT_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_000_rng1090_CAT_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_000_rng1090_CAT_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_000_rng1090_CAT_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_trend_cat_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_trend_cat_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_trend_cat_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_trend_cat_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_trend_cat_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_trend_cat_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_trend_cat_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_trend_cat_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_tscore_trend_cat_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_tscore_trend_cat_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_p_highest_bitzua_hav_cat_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_p_highest_bitzua_hav_cat_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_p_highest_bitzua_hav_cat_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_p_highest_bitzua_hav_cat_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_p_highest_bitzua_hav_cat_3",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_p_highest_bitzua_hav_cat_3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_p_highest_bitzua_hav_cat_4",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_p_highest_bitzua_hav_cat_4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_p_lowest_bitzua_hav_cat_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_p_lowest_bitzua_hav_cat_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_p_lowest_bitzua_hav_cat_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_p_lowest_bitzua_hav_cat_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_p_lowest_bitzua_hav_cat_3",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_p_lowest_bitzua_hav_cat_3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_p_lowest_bitzua_hav_cat_4",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_p_lowest_bitzua_hav_cat_4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_able_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_able_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_able_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_able_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_able_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_able_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_able_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_able_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_able_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_able_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_enjoy_interest_-2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_enjoy_interest_-2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_enjoy_interest_-1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_enjoy_interest_-1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_enjoy_interest_0",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_enjoy_interest_0",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_enjoy_interest_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_enjoy_interest_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_enjoy_interest_2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_enjoy_interest_2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_important_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_important_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_important_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_important_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_important_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_important_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_important_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_important_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_important_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_important_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_love_activities_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_love_activities_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_love_activities_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_love_activities_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_love_activities_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_love_activities_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_love_activities_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_love_activities_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_love_activities_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_love_activities_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "total_count_sek",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "count_d_t_CIL_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_CIL_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_CIL_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_CIL_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_CIL_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_CIL_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_CIL_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_CIL_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_CIL_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_CIL_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_CIL22_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_CIL22_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_CIL22_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_CIL22_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_CIL22_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_CIL22_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_CIL22_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_CIL22_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_CIL22_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_CIL22_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_SRL_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_SRL_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_SRL_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_SRL_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_SRL_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_SRL_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_SRL_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_SRL_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_SRL_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_SRL_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_SEL_Skills22_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_SEL_Skills22_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_SEL_Skills22_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_SEL_Skills22_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_SEL_Skills22_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_SEL_Skills22_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_SEL_Skills22_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_SEL_Skills22_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_SEL_Skills22_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_SEL_Skills22_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_self_Learn22_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_self_Learn22_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_self_Learn22_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_self_Learn22_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_self_Learn22_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_self_Learn22_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_self_Learn22_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_self_Learn22_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_self_Learn22_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_self_Learn22_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Resilience_r22_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Resilience_r22_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Resilience_r22_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Resilience_r22_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Resilience_r22_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Resilience_r22_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Resilience_r22_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Resilience_r22_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Resilience_r22_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Resilience_r22_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_social_Skills_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_social_Skills_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_social_Skills_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_social_Skills_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_social_Skills_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_social_Skills_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_social_Skills_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_social_Skills_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_social_Skills_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_social_Skills_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_students_Relations22_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_students_Relations22_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_students_Relations22_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_students_Relations22_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_students_Relations22_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_students_Relations22_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_students_Relations22_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_students_Relations22_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_students_Relations22_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_students_Relations22_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_sharedLife23_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_sharedLife23_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_sharedLife23_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_sharedLife23_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_sharedLife23_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_sharedLife23_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_sharedLife23_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_sharedLife23_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_sharedLife23_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_sharedLife23_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_belonging_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_d_t_belonging_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_d_t_belonging_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_d_t_belonging_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_d_t_belonging_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_d_t_belonging_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_d_t_belonging_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_d_t_belonging_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_d_t_belonging_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_d_t_belonging_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_i_t_belonging22_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_i_t_belonging22_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_i_t_belonging22_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_i_t_belonging22_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_i_t_belonging22_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_i_t_belonging22_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_i_t_belonging22_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_i_t_belonging22_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_i_t_belonging22_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_i_t_belonging22_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_i_t_tea_Stu_Relations22_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_tea_Stu_Relations22_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_tea_Stu_Relations22_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_tea_Stu_Relations22_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_tea_Stu_Relations22_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_tea_Stu_Relations22_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_tea_Stu_Relations22_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_tea_Stu_Relations22_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_tea_Stu_Relations22_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_tea_Stu_Relations22_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_d_t_safety_tal_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_d_t_safety_tal_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_d_t_safety_tal_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_d_t_safety_tal_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_d_t_safety_tal_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_d_t_safety_tal_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_d_t_safety_tal_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_d_t_safety_tal_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_d_t_safety_tal_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_d_t_safety_tal_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_ProtectionT2023_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_ProtectionT2023_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_ProtectionT2023_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_ProtectionT2023_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_ProtectionT2023_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_ProtectionT2023_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_ProtectionT2023_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_ProtectionT2023_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_ProtectionT2023_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_ProtectionT2023_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_class_learning_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_class_learning_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_class_learning_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_class_learning_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_class_learning_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_class_learning_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_class_learning_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_class_learning_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_t_class_learning_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_t_class_learning_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_good_Behave_r22_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_good_Behave_r22_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_good_Behave_r22_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_good_Behave_r22_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_good_Behave_r22_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_good_Behave_r22_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_good_Behave_r22_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_good_Behave_r22_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_good_Behave_r22_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_good_Behave_r22_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_advanced_Prac23_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_advanced_Prac23_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_advanced_Prac23_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_advanced_Prac23_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_advanced_Prac23_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_advanced_Prac23_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_advanced_Prac23_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_advanced_Prac23_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_advanced_Prac23_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_advanced_Prac23_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_teaching_Relevance23_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_teaching_Relevance23_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_teaching_Relevance23_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_teaching_Relevance23_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_teaching_Relevance23_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_teaching_Relevance23_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_teaching_Relevance23_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_teaching_Relevance23_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_teaching_Relevance23_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_teaching_Relevance23_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_staff_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_staff_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_staff_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_staff_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_staff_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_staff_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_staff_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_staff_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_staff_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_staff_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SatisfactionM2023_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SatisfactionM2023_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SatisfactionM2023_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SatisfactionM2023_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SatisfactionM2023_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SatisfactionM2023_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SatisfactionM2023_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SatisfactionM2023_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SatisfactionM2023_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SatisfactionM2023_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_TeamWorkM2023_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_TeamWorkM2023_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_TeamWorkM2023_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_TeamWorkM2023_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_TeamWorkM2023_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_TeamWorkM2023_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_TeamWorkM2023_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_TeamWorkM2023_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_TeamWorkM2023_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_TeamWorkM2023_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_CollectiveEfficacy2023_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_CollectiveEfficacy2023_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_CollectiveEfficacy2023_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_CollectiveEfficacy2023_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_CollectiveEfficacy2023_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_CollectiveEfficacy2023_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_CollectiveEfficacy2023_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_CollectiveEfficacy2023_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_CollectiveEfficacy2023_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_CollectiveEfficacy2023_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_safety_envrmnt2023_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_safety_envrmnt2023_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_safety_envrmnt2023_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_safety_envrmnt2023_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_safety_envrmnt2023_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_safety_envrmnt2023_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_safety_envrmnt2023_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_safety_envrmnt2023_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_safety_envrmnt2023_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_safety_envrmnt2023_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_d_m_leadership_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_leadership_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_leadership_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_leadership_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_leadership_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_leadership_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_leadership_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_leadership_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_leadership_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_leadership_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_ParticipatoryLeadership2023_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_ParticipatoryLeadership2023_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_ParticipatoryLeadership2023_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_ParticipatoryLeadership2023_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_ParticipatoryLeadership2023_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_ParticipatoryLeadership2023_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_ParticipatoryLeadership2023_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_ParticipatoryLeadership2023_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_ParticipatoryLeadership2023_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_m_ParticipatoryLeadership2023_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_RMFeedback2023_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_RMFeedback2023_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_RMFeedback2023_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_RMFeedback2023_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_RMFeedback2023_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_RMFeedback2023_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_RMFeedback2023_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_RMFeedback2023_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_RMFeedback2023_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_RMFeedback2023_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_ParentSharing2023_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_ParentSharing2023_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_ParentSharing2023_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_ParentSharing2023_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_ParentSharing2023_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_ParentSharing2023_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_ParentSharing2023_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_ParentSharing2023_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_ParentSharing2023_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_ParentSharing2023_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_skills_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_skills_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_skills_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_skills_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_skills_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_skills_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_skills_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_skills_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_skills_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_skills_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_healthy_Life22_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_healthy_Life22_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_healthy_Life22_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_healthy_Life22_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_healthy_Life22_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_healthy_Life22_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_healthy_Life22_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_healthy_Life22_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_healthy_Life22_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_healthy_Life22_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_m_SELSkills2023_moredu_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SELSkills2023_moredu_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SELSkills2023_moredu_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SELSkills2023_moredu_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SELSkills2023_moredu_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SELSkills2023_moredu_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SELSkills2023_moredu_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SELSkills2023_moredu_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SELSkills2023_moredu_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SELSkills2023_moredu_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_sharedLifeEffort23_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_sharedLifeEffort23_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_sharedLifeEffort23_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_sharedLifeEffort23_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_sharedLifeEffort23_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_sharedLifeEffort23_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_sharedLifeEffort23_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_sharedLifeEffort23_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_sharedLifeEffort23_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_sharedLifeEffort23_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_soc_Inv_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_soc_Inv_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_soc_Inv_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_soc_Inv_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_soc_Inv_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_soc_Inv_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_soc_Inv_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_soc_Inv_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_soc_Inv_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_soc_Inv_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_social_Efforts22_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_social_Efforts22_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_social_Efforts22_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_social_Efforts22_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_social_Efforts22_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_social_Efforts22_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_social_Efforts22_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_social_Efforts22_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_social_Efforts22_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_social_Efforts22_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SocInvolve2023_moredu_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SocInvolve2023_moredu_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SocInvolve2023_moredu_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SocInvolve2023_moredu_Cohen_d_grp_--1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SocInvolve2023_moredu_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SocInvolve2023_moredu_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SocInvolve2023_moredu_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SocInvolve2023_moredu_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_SocInvolve2023_moredu_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_SocInvolve2023_moredu_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_infrastructure_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_infrastructure_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_infrastructure_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_infrastructure_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_infrastructure_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_infrastructure_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_infrastructure_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_infrastructure_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_d_m_t_infrastructure_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_d_m_t_infrastructure_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Environment23_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Environment23_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Environment23_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Environment23_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Environment23_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Environment23_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Environment23_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Environment23_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Environment23_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Environment23_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_Facilities2023_Cohen_d_grp_-2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_Facilities2023_Cohen_d_grp_-2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_Facilities2023_Cohen_d_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_Facilities2023_Cohen_d_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_Facilities2023_Cohen_d_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_Facilities2023_Cohen_d_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_Facilities2023_Cohen_d_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_Facilities2023_Cohen_d_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_m_Facilities2023_Cohen_d_grp_2",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_m_Facilities2023_Cohen_d_grp_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_CIL22_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_CIL22_trend_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_CIL22_trend_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_CIL22_trend_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_CIL22_trend_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_CIL22_trend_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_SEL_Skills22_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_SEL_Skills22_trend_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_SEL_Skills22_trend_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_SEL_Skills22_trend_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_SEL_Skills22_trend_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_SEL_Skills22_trend_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_self_Learn22_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_self_Learn22_trend_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_self_Learn22_trend_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_self_Learn22_trend_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_self_Learn22_trend_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_self_Learn22_trend_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Resilience_r22_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Resilience_r22_trend_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Resilience_r22_trend_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Resilience_r22_trend_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_Resilience_r22_trend_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_Resilience_r22_trend_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_students_Relations22_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_students_Relations22_trend_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_students_Relations22_trend_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_students_Relations22_trend_grp_0",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_students_Relations22_trend_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_students_Relations22_trend_grp_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_belonging22_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_i_t_belonging22_trend_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_i_t_belonging22_trend_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_i_t_belonging22_trend_grp_0",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_i_t_belonging22_trend_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "percent_i_t_belonging22_trend_grp_1",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "count_i_t_tea_Stu_Relations22_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_tea_Stu_Relations22_trend_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_tea_Stu_Relations22_trend_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_tea_Stu_Relations22_trend_grp_0",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_tea_Stu_Relations22_trend_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_tea_Stu_Relations22_trend_grp_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_ProtectionT2023_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_ProtectionT2023_trend_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_ProtectionT2023_trend_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_ProtectionT2023_trend_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_ProtectionT2023_trend_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_ProtectionT2023_trend_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_good_Behave_r22_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_good_Behave_r22_trend_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_good_Behave_r22_trend_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_good_Behave_r22_trend_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_good_Behave_r22_trend_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_good_Behave_r22_trend_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_advanced_Prac23_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_advanced_Prac23_trend_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_advanced_Prac23_trend_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_advanced_Prac23_trend_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_advanced_Prac23_trend_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_advanced_Prac23_trend_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_teaching_Relevance23_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_teaching_Relevance23_trend_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_teaching_Relevance23_trend_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_teaching_Relevance23_trend_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_teaching_Relevance23_trend_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_teaching_Relevance23_trend_grp_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_healthy_Life22_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_healthy_Life22_trend_grp_-1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_healthy_Life22_trend_grp_0",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_healthy_Life22_trend_grp_0",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_healthy_Life22_trend_grp_1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "percent_i_t_healthy_Life22_trend_grp_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "count_i_t_social_Efforts22_trend_grp_-1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_social_Efforts22_trend_grp_-1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_social_Efforts22_trend_grp_0",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_social_Efforts22_trend_grp_0",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "count_i_t_social_Efforts22_trend_grp_1",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "percent_i_t_social_Efforts22_trend_grp_1",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 244
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

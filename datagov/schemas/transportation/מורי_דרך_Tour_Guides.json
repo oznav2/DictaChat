@@ -1,0 +1,156 @@
+{
+  "dataset_id": "aa55c19d-afdd-4ff4-8b1e-1cb0d59d2b26",
+  "title": "מורי דרך - Tour Guides",
+  "organization": "משרד התיירות",
+  "tags": [
+    "אוכלוסיה",
+    "מורי דרך",
+    "משרד התיירות",
+    "תיירות"
+  ],
+  "categories": [
+    "transportation",
+    "tourism"
+  ],
+  "keywords": [
+    "tour",
+    "tgname",
+    "מורי",
+    "דרך",
+    "phone",
+    "name",
+    "אוכלוסיה",
+    "echkol",
+    "התיירות",
+    "תיירות",
+    "guides",
+    "tglicense",
+    "guide",
+    "lang",
+    "tglanguage",
+    "new",
+    "משרד",
+    "rechev",
+    "car",
+    "tourguide",
+    "telephone",
+    "eng",
+    "full",
+    "emailaddress"
+  ],
+  "resources": [
+    {
+      "resource_id": "8c1775ab-ca3c-4891-85f7-43ee24c585df",
+      "title": "מורי דרך - עברית",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "TGLicense",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TGName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TGLanguage",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "new_tour_guide_rechev_echkol",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "EmailAddress",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "new_tour_guide_phone_1",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "new_tour_guide_phone_2",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "new_tourguide_telephone3",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 7796
+    },
+    {
+      "resource_id": "64adebdb-b385-4d7f-857c-02075f81ee5e",
+      "title": "Tour Guides (English)",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "TGLicense",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tour_guide_full_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "lang",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Car_Eng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "EmailAddress",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "phone_1",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "phone_2",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "telephone_3",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 7796
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

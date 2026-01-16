@@ -1,0 +1,103 @@
+{
+  "dataset_id": "68d9a6bf-3750-4f30-8154-0ffc60671e47",
+  "title": "بنك الأسئلة والأجوبة الرسمي للاختبار النظري المخصص لراكبي الدراجات الكهربائية (A3)",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "מבחן נהיגה",
+    "משרד התחבורה",
+    "שאלות תאוריה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "description",
+    "version",
+    "language",
+    "בדרכים",
+    "title",
+    "משרד",
+    "lastbuilddate",
+    "pubdate",
+    "נהיגה",
+    "שאלות",
+    "מבחן",
+    "והבטיחות",
+    "category",
+    "generator",
+    "התחבורה",
+    "תאוריה"
+  ],
+  "resources": [
+    {
+      "resource_id": "5364b173-851a-4722-9c1f-563bbd919f48",
+      "title": "بنك الأسئلة والأجوبة الرسمي للاختبار النظري المخصص لراكبي الدراجات الكهربائية  A3",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "version",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lastBuildDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "generator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "language",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "title2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "description4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "category",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "pubDate",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 40
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

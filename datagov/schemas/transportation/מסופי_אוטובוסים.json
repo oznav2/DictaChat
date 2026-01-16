@@ -1,0 +1,123 @@
+{
+  "dataset_id": "95ddb117-f0a4-4284-a502-92fe38120f99",
+  "title": "מסופי אוטובוסים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "אוטובוסים",
+    "חצב",
+    "ממג",
+    "מסוף",
+    "מסופים",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation",
+    "finance",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "objectid",
+    "תחבורה",
+    "fclid",
+    "city",
+    "gis",
+    "בדרכים",
+    "והבטיחות",
+    "אוטובוסים",
+    "משרד",
+    "type",
+    "מסופים",
+    "terminalty",
+    "חצב",
+    "ציבורית",
+    "מסופי",
+    "yearmonth",
+    "מסוף",
+    "address",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "e591de8d-db5e-4265-80d0-160438cf089c",
+      "title": "BUS_TERMINAL_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1a7f9c56-7f73-41d5-b49a-59c442992601",
+      "title": "BUS_TERMINAL_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "680dfd9f-42a0-45b1-a418-a1cd6cff7417",
+      "title": "BUS_TERMINAL_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "fclID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "ADDRESS",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "TerminalTy",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 112
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

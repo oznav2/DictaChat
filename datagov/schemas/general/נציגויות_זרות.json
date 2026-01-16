@@ -1,0 +1,133 @@
+{
+  "dataset_id": "bae5a627-f1bd-4da7-8b08-664cf626df47",
+  "title": "נציגויות זרות",
+  "organization": "משרד החוץ",
+  "tags": [
+    "משרד החוץ",
+    "נציגויות זרות",
+    "קונסוליות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "זרות",
+    "נציגויות",
+    "fax",
+    "החוץ",
+    "shem",
+    "קונסוליות",
+    "משרד",
+    "ntz",
+    "maamad",
+    "address",
+    "mdn",
+    "tel",
+    "addrs"
+  ],
+  "resources": [
+    {
+      "resource_id": "95ce3d91-34fb-42d2-bcb7-fefdf54cee42",
+      "title": "נציגויות זרות בישראל - עברית CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "k_ntz",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shem_mdn",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shem_ntz",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "maamad",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "tel",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 150
+    },
+    {
+      "resource_id": "dffd4e30-2330-4c1c-893c-e2df910fe1d4",
+      "title": "נציגויות זרות בישראל - אנגלית CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "k_ntz",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shem_mdn_a",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shem_ntz_a",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "maamad_a",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "addrs",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tel",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 150
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

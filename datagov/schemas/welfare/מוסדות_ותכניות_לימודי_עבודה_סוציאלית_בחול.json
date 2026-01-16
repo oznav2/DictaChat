@@ -1,0 +1,182 @@
+{
+  "dataset_id": "47949b80-f345-4417-8a45-ff674cc37793",
+  "title": "מוסדות ותכניות לימודי עבודה סוציאלית בחו\"ל",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "והביטחון",
+    "סוציאלית",
+    "notes",
+    "program",
+    "start",
+    "state",
+    "sort",
+    "degree",
+    "משרד",
+    "הרווחה",
+    "date",
+    "מוסדות",
+    "institute",
+    "לימודי",
+    "החברתי",
+    "ותכניות",
+    "בחו",
+    "עבודה"
+  ],
+  "resources": [
+    {
+      "resource_id": "5be1db4c-7fe8-4d07-9bd3-57d34901f2b2",
+      "title": "מוסדות ותכניות עבודה סוציאלית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "institute",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "date_program",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "start_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "state",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "institute_sort",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degree",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 267
+    },
+    {
+      "resource_id": "4be50246-da1d-4603-ba90-0f0d678cc021",
+      "title": " מוסדות ותכניות לימודי עבודה סוציאלית בחו\"ל - נכון ל-30.03.2023",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "institute",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "date_program",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "start_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "state",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "institute_sort",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degree",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 247
+    },
+    {
+      "resource_id": "88176aac-c4cc-4e9d-8e91-40337965cd70",
+      "title": "מוסדות ותכניות לימודי עבודה סוציאלית בחו\"ל",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "institute",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "date_program",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "start_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "state",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "institute_sort",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degree",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 244
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "dataset_id": "94a9cdb6-0c34-4c86-b3d4-fcf9b8a7131e",
+  "title": "שותפים לדרך - השתתפות במימון פרויקטי תחבורה ברשויות מקומיות",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "gis",
+    "חצב",
+    "ממג",
+    "פרויקטים",
+    "רשויות מקומיות",
+    "שותפים לדרך",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "ממג",
+    "תחבורה",
+    "פרויקטי",
+    "gis",
+    "author",
+    "מקומיות",
+    "השתתפות",
+    "לדרך",
+    "ברשויות",
+    "בדרכים",
+    "והבטיחות",
+    "אגף",
+    "משרד",
+    "שותפים",
+    "חצב",
+    "במימון",
+    "רשויות",
+    "במשרד",
+    "התחבורה",
+    "פרויקטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "b3192505-5175-4a5a-abfb-d1beb2febeaa",
+      "title": "מטאדאטה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Author",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אגף רשויות מקומיות במשרד התחבורה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 43
+    },
+    {
+      "resource_id": "6ac8ceb0-d3db-41c1-81fb-cb591033ece6",
+      "title": "WPLAN_MUNI_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a2a6bf5c-2f15-4427-8abc-2923a0d24b2e",
+      "title": "WPLAN_MUNI_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

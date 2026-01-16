@@ -1,0 +1,152 @@
+{
+  "dataset_id": "6135c7a7-d4f2-4588-9ace-d4409a9d60fe",
+  "title": "מעקב אחר ביצוע תוכניות העבודה הממשלתיות לשנת 2023",
+  "organization": "משרד ראש הממשלה ",
+  "tags": [
+    "אגף תכנון",
+    "אסטרטגיה",
+    "דיווח",
+    "חשיבה תוצאתית",
+    "יישום",
+    "מדדים",
+    "מדיניות",
+    "ממשלה",
+    "מעקב",
+    "תוכניות עבודה",
+    "תכנון"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "חשיבה",
+    "העבודה",
+    "אחר",
+    "תוצאתית",
+    "עבודה",
+    "מדיניות",
+    "מעקב",
+    "הממשלה",
+    "דיווח",
+    "אסטרטגיה",
+    "explanation",
+    "ראש",
+    "ממשלה",
+    "value",
+    "הממשלתיות",
+    "מדדים",
+    "אגף",
+    "office",
+    "תכנון",
+    "משרד",
+    "יישום",
+    "base",
+    "ביצוע",
+    "index",
+    "actual",
+    "תוכניות",
+    "wanted"
+  ],
+  "resources": [
+    {
+      "resource_id": "513e540a-4e16-4f32-b44a-e4c71545e87f",
+      "title": "מדדים מרכזיים - נתוני הביצוע 2023.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Office",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Index",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Base Value",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Wanted Value 2023",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Actual Value 2023",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Explanation",
+          "type": "text",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 349
+    },
+    {
+      "resource_id": "1aa03320-7e2b-4839-9611-004421e8dfbe",
+      "title": "משימות במיקוד ומדדי הצלחה - נתוני הביצוע 2023.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Office",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Index",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Base Value",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Wanted Value 2023",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Actual Value 2023",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Explanation",
+          "type": "text",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 566
+    },
+    {
+      "resource_id": "14483c64-4f0a-4e9f-8ce7-3e4929ae8a54",
+      "title": "דוח סיכום שיעורי הביצוע - תוכניות עבודה לשנת 2023.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

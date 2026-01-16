@@ -4,7 +4,10 @@ import { Database } from "$lib/server/database";
 import { config } from "$lib/server/config";
 import { ADMIN_USER_ID } from "$lib/server/constants";
 import { MEMORY_COLLECTIONS } from "$lib/server/memory";
-import { isEntityBlocklistedLabel, normalizeEntityLabel } from "$lib/server/memory/kg/entityHygiene";
+import {
+	isEntityBlocklistedLabel,
+	normalizeEntityLabel,
+} from "$lib/server/memory/kg/entityHygiene";
 
 function normalizeConceptId(raw: string): string {
 	if (raw.startsWith("content_")) return raw.slice("content_".length);
@@ -52,7 +55,9 @@ export const GET: RequestHandler = async ({ params }) => {
 			return json({ success: false, error: "Concept not found" }, { status: 404 });
 		}
 
-		const rawLabel = String(contentNode?.label ?? routingNode?.label ?? actionNode?.action ?? conceptId);
+		const rawLabel = String(
+			contentNode?.label ?? routingNode?.label ?? actionNode?.action ?? conceptId
+		);
 		const rawAliases = contentNode?.aliases;
 		const labelBase = normalizeEntityLabel(rawLabel);
 		const aliases = Array.isArray(rawAliases)
@@ -100,7 +105,9 @@ export const GET: RequestHandler = async ({ params }) => {
 						.toArray();
 					const allowed = new Set(
 						otherNodes
-							.filter((n: any) => !isEntityBlocklistedLabel(normalizeEntityLabel(String(n.label ?? ""))))
+							.filter(
+								(n: any) => !isEntityBlocklistedLabel(normalizeEntityLabel(String(n.label ?? "")))
+							)
 							.map((n: any) => String(n.node_id))
 					);
 					allowed.add(conceptId);

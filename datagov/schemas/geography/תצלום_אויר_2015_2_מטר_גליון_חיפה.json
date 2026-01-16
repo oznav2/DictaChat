@@ -1,0 +1,35 @@
+{
+  "dataset_id": "2a1ebde3-4ca2-4806-a81f-153a9ecdf52f",
+  "title": "תצלום אויר 2015 2 מטר - גליון חיפה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "חיפה",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "e8bf30ef-dfcb-4ccc-834c-ce0cc9962688",
+      "title": "תצלום אויר 2015 2 מטר - גליון חיפה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

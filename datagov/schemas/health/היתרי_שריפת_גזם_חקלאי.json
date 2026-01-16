@@ -1,0 +1,235 @@
+{
+  "dataset_id": "890bd883-bc9c-45c8-9a99-7b32bcdeb1f7",
+  "title": "היתרי שריפת גזם חקלאי",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [
+    "איכות הסביבה",
+    "בריאות",
+    "גזם חקלאי",
+    "חקלאות",
+    "סביבה",
+    "שריפת גזם"
+  ],
+  "categories": [
+    "health",
+    "environment",
+    "agriculture"
+  ],
+  "keywords": [
+    "gidul",
+    "shlishit",
+    "tchilat",
+    "שני",
+    "איכות",
+    "ishuv",
+    "ראשונה",
+    "sheot",
+    "sheni",
+    "rishon",
+    "חקלאות",
+    "גוש",
+    "שעות",
+    "mispar",
+    "החקלאות",
+    "tokef",
+    "גזם",
+    "שלישית",
+    "תוקף",
+    "בריאות",
+    "siyum",
+    "מחוז",
+    "שניה",
+    "היתרי",
+    "שריפת",
+    "משרד",
+    "גידול",
+    "חלקה",
+    "שלישי",
+    "machoz",
+    "היתר",
+    "סיום",
+    "ראשון",
+    "תאריך",
+    "סביבה",
+    "ובטחון",
+    "srefa",
+    "הסביבה",
+    "המזון",
+    "rishona",
+    "shnia",
+    "heter",
+    "ישוב",
+    "שריפה",
+    "gush",
+    "taarich",
+    "חקלאי",
+    "תחילת",
+    "shlishi",
+    "chelka"
+  ],
+  "resources": [
+    {
+      "resource_id": "7cfee2aa-1ab3-41f6-aedb-e0eb92f5ad3b",
+      "title": "היתרי שריפת גזם חקלאי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "תאריך תחילת תוקף",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך סיום תוקף",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מס היתר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "גידול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שעות שריפה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גוש ראשון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "חלקה ראשונה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גוש שני",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "חלקה שניה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גוש שלישי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "חלקה שלישית",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 5505
+    },
+    {
+      "resource_id": "c84d51d8-af63-4f5d-92c8-1419337b9378",
+      "title": "היתרי שריפת גזם חקלאי- אנגלית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ishuv",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "taarich_tchilat_tokef",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "taarich_siyum_tokef",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "mispar_heter",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "machoz",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "gidul",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "sheot_srefa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "gush_rishon",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "chelka_rishona",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "gush_sheni",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "chelka_shnia",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "gush_shlishi",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "chelka_shlishit",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 5505
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

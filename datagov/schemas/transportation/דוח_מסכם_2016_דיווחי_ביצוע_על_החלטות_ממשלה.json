@@ -1,0 +1,157 @@
+{
+  "dataset_id": "185d994b-8817-40b0-ba4a-50b5477c7b1f",
+  "title": "דוח מסכם 2016 - דיווחי ביצוע על החלטות ממשלה",
+  "organization": "משרד ראש הממשלה ",
+  "tags": [
+    "אוכלוסיה",
+    "אוצר וכלכלה",
+    "אנרגיה ומים",
+    "ביצוע",
+    "בקרה",
+    "בריאות ורווחה",
+    "דוחות ביקורת",
+    "דיווח",
+    "דיור",
+    "החלטות ממשלה",
+    "חינוך ותרבות",
+    "מעקב",
+    "משפט",
+    "סביבה",
+    "שקיפות",
+    "תחבורה",
+    "תיירות"
+  ],
+  "categories": [
+    "transportation",
+    "health",
+    "education",
+    "finance",
+    "environment",
+    "water",
+    "justice",
+    "welfare",
+    "housing",
+    "tourism",
+    "culture",
+    "economy"
+  ],
+  "keywords": [
+    "וכלכלה",
+    "תחבורה",
+    "אוכלוסיה",
+    "קבלת",
+    "ביקורת",
+    "גורם",
+    "אנרגיה",
+    "דוחות",
+    "דיור",
+    "שקיפות",
+    "תיירות",
+    "דוח",
+    "ביאור",
+    "מעקב",
+    "חינוך",
+    "דיווח",
+    "הממשלה",
+    "החלטת",
+    "ההחלטה",
+    "סעיף",
+    "מסכם",
+    "ותרבות",
+    "ראש",
+    "ממשלה",
+    "בריאות",
+    "החלטות",
+    "משפט",
+    "בהחלטת",
+    "משרד",
+    "בקרה",
+    "אוצר",
+    "ורווחה",
+    "אחראי",
+    "דיווחי",
+    "תוכן",
+    "סביבה",
+    "תאריך",
+    "ראשון",
+    "הביצוע",
+    "למעקב",
+    "ביצוע",
+    "מועד",
+    "במעקב",
+    "בוצע",
+    "ומים"
+  ],
+  "resources": [
+    {
+      "resource_id": "51cedc53-c8ac-4e96-88f4-8a18db0bdebf",
+      "title": "דוח מסכם 2016 - דיווחי ביצוע על החלטות ממשלה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר החלטת ממשלה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "תאריך קבלת ההחלטה",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "מספר סעיף בהחלטת הממשלה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תוכן סעיף במעקב",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שר אחראי למעקב",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גורם אחראי על דיווח הביצוע",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מועד דיווח ראשון",
+          "type": "timestamp",
+          "semantic": null
+        },
+        {
+          "name": "בוצע",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביאור",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1055
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

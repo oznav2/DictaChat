@@ -54,7 +54,7 @@ const mockHybridSearch = {
 // Mock Qdrant adapter
 const mockQdrantAdapter = {
 	isCircuitOpen: vi.fn().mockReturnValue(false),
-	scroll: vi.fn().mockResolvedValue([]),
+	search: vi.fn().mockResolvedValue([]),
 };
 
 vi.mock("$lib/server/logger", () => ({
@@ -159,13 +159,14 @@ describe("TestAlwaysInjectMemories", () => {
 		const testName = "test_fetches_identity_memories";
 		try {
 			// Mock identity memories
-			mockQdrantAdapter.scroll.mockResolvedValueOnce([
+			mockQdrantAdapter.search.mockResolvedValueOnce([
 				{
 					id: "mem_1",
 					payload: {
 						content: "User prefers Hebrew responses",
 						tier: "memory_bank",
 						tags: ["identity"],
+						always_inject: true,
 					},
 				},
 				{
@@ -174,6 +175,7 @@ describe("TestAlwaysInjectMemories", () => {
 						content: "User is a software developer",
 						tier: "memory_bank",
 						tags: ["identity", "profession"],
+						always_inject: true,
 					},
 				},
 			]);
@@ -185,7 +187,7 @@ describe("TestAlwaysInjectMemories", () => {
 				hasDocuments: false,
 			});
 
-			expect(mockQdrantAdapter.scroll).toHaveBeenCalled();
+			expect(mockQdrantAdapter.search).toHaveBeenCalled();
 			expect(result.memoryContextInjection).toContain("User Identity");
 
 			recordResult(testName, true, "Identity memories fetched");
@@ -213,7 +215,7 @@ describe("TestAlwaysInjectMemories", () => {
 			});
 
 			// Should not call scroll when circuit is open
-			expect(mockQdrantAdapter.scroll).not.toHaveBeenCalled();
+			expect(mockQdrantAdapter.search).not.toHaveBeenCalled();
 
 			recordResult(testName, true, "Circuit breaker handled correctly");
 		} catch (error) {
@@ -230,7 +232,7 @@ describe("TestAlwaysInjectMemories", () => {
 	it("should handle scroll errors gracefully", async () => {
 		const testName = "test_scroll_error";
 		try {
-			mockQdrantAdapter.scroll.mockRejectedValueOnce(new Error("Qdrant unavailable"));
+			mockQdrantAdapter.search.mockRejectedValueOnce(new Error("Qdrant unavailable"));
 
 			// Should not throw
 			const result = await service.prefetchContext({
@@ -499,13 +501,14 @@ describe("TestContextFormatting", () => {
 	it("should format identity section", async () => {
 		const testName = "test_identity_section";
 		try {
-			mockQdrantAdapter.scroll.mockResolvedValueOnce([
+			mockQdrantAdapter.search.mockResolvedValueOnce([
 				{
 					id: "mem_1",
 					payload: {
 						content: "User speaks Hebrew",
 						tier: "memory_bank",
 						tags: ["identity"],
+						always_inject: true,
 					},
 				},
 			]);
@@ -568,8 +571,8 @@ describe("TestContextFormatting", () => {
 			expect(result.memoryContextInjection).toContain("Relevant Context");
 			expect(result.memoryContextInjection).toContain("[1]");
 			expect(result.memoryContextInjection).toContain("[2]");
-			expect(result.memoryContextInjection).toContain("(working)");
-			expect(result.memoryContextInjection).toContain("(patterns)");
+			expect(result.memoryContextInjection).toContain("[working:mem_1]");
+			expect(result.memoryContextInjection).toContain("[patterns:mem_2]");
 
 			recordResult(testName, true, "Search results formatted with positions");
 		} catch (error) {
@@ -616,7 +619,7 @@ describe("TestContextFormatting", () => {
 	it("should return empty string when no context", async () => {
 		const testName = "test_empty_context";
 		try {
-			mockQdrantAdapter.scroll.mockResolvedValueOnce([]);
+			mockQdrantAdapter.search.mockResolvedValueOnce([]);
 			mockHybridSearch.search.mockResolvedValueOnce({
 				results: [],
 				debug: {
@@ -670,14 +673,24 @@ describe("TestConfidenceCalculation", () => {
 		const testName = "test_high_confidence";
 		try {
 			// Mock good identity context
-			mockQdrantAdapter.scroll.mockResolvedValueOnce([
+			mockQdrantAdapter.search.mockResolvedValueOnce([
 				{
 					id: "mem_1",
-					payload: { content: "Identity 1", tier: "memory_bank", tags: ["identity"] },
+					payload: {
+						content: "Identity 1",
+						tier: "memory_bank",
+						tags: ["identity"],
+						always_inject: true,
+					},
 				},
 				{
 					id: "mem_2",
-					payload: { content: "Identity 2", tier: "memory_bank", tags: ["identity"] },
+					payload: {
+						content: "Identity 2",
+						tier: "memory_bank",
+						tags: ["identity"],
+						always_inject: true,
+					},
 				},
 			]);
 
@@ -721,10 +734,15 @@ describe("TestConfidenceCalculation", () => {
 		const testName = "test_medium_confidence";
 		try {
 			// Mock some identity context
-			mockQdrantAdapter.scroll.mockResolvedValueOnce([
+			mockQdrantAdapter.search.mockResolvedValueOnce([
 				{
 					id: "mem_1",
-					payload: { content: "Identity 1", tier: "memory_bank", tags: ["identity"] },
+					payload: {
+						content: "Identity 1",
+						tier: "memory_bank",
+						tags: ["identity"],
+						always_inject: true,
+					},
 				},
 			]);
 
@@ -763,7 +781,7 @@ describe("TestConfidenceCalculation", () => {
 	it("should return low confidence with no context", async () => {
 		const testName = "test_low_confidence";
 		try {
-			mockQdrantAdapter.scroll.mockResolvedValueOnce([]);
+			mockQdrantAdapter.search.mockResolvedValueOnce([]);
 			mockHybridSearch.search.mockResolvedValueOnce({
 				results: [],
 				debug: {
@@ -838,7 +856,8 @@ describe("TestDebugInformation", () => {
 
 			expect(result.retrievalDebug).toBeDefined();
 			expect(result.retrievalDebug.stage_timings_ms).toBeDefined();
-			expect(result.retrievalDebug.stage_timings_ms.total_ms).toBeDefined();
+			expect(result.retrievalDebug.stage_timings_ms.parallel_prefetch_ms).toBeDefined();
+			expect(result.retrievalDebug.stage_timings_ms.format_ms).toBeDefined();
 
 			recordResult(testName, true, "Timing info included");
 		} catch (error) {
@@ -863,9 +882,8 @@ describe("TestDebugInformation", () => {
 			});
 
 			const timings = result.retrievalDebug.stage_timings_ms;
-			expect(timings).toHaveProperty("always_inject_ms");
-			expect(timings).toHaveProperty("search_ms");
 			expect(timings).toHaveProperty("format_ms");
+			expect(timings).toHaveProperty("parallel_prefetch_ms");
 
 			recordResult(testName, true, `Stages: ${Object.keys(timings).join(", ")}`);
 		} catch (error) {
@@ -900,13 +918,14 @@ describe("TestHebrewContent", () => {
 	it("should handle Hebrew identity content", async () => {
 		const testName = "test_hebrew_identity";
 		try {
-			mockQdrantAdapter.scroll.mockResolvedValueOnce([
+			mockQdrantAdapter.search.mockResolvedValueOnce([
 				{
 					id: "mem_1",
 					payload: {
 						content: "המשתמש מדבר עברית",
 						tier: "memory_bank",
 						tags: ["identity"],
+						always_inject: true,
 					},
 				},
 			]);

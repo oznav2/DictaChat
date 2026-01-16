@@ -1,0 +1,33 @@
+{
+  "dataset_id": "f8eb6d25-687a-4eea-b915-d77d99a90a1b",
+  "title": "אומדן ביצוע ליום 30 בספטמבר 2021 - לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "ביצוע",
+    "משרד",
+    "מבוקר",
+    "אומדן",
+    "בספטמבר",
+    "האוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "46eb26eb-eaa2-4e11-864e-f6c6a3107a03",
+      "title": "אומדן ביצוע ליום 30 בספטמבר 2021 - לא מבוקר",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

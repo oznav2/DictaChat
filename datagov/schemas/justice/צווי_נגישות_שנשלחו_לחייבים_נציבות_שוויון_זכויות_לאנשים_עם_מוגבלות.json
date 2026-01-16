@@ -1,0 +1,143 @@
+{
+  "dataset_id": "03bf114c-73cc-452c-a3d1-58520d6dc506",
+  "title": "צווי נגישות שנשלחו לחייבים - נציבות שוויון זכויות לאנשים עם מוגבלות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "צווי נגישות"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "סוג",
+    "גורם",
+    "שנשלחו",
+    "רחוב",
+    "ושעת",
+    "שוויון",
+    "חייב",
+    "לחייבים",
+    "ישות",
+    "מסמך",
+    "צווי",
+    "משנה",
+    "זכויות",
+    "נציבות",
+    "משלוח",
+    "מוגבלות",
+    "משרד",
+    "פיקוח",
+    "רכיב",
+    "בקרה",
+    "נגישות",
+    "תאריך",
+    "המשפטים",
+    "מפוקחת",
+    "בית",
+    "לקוי",
+    "ישוב",
+    "תיק",
+    "נוסף",
+    "לאנשים"
+  ],
+  "resources": [
+    {
+      "resource_id": "d5f96487-c776-4382-8498-bfb81aa38c05",
+      "title": "צווי נגישות שנשלחו לחייבים - נציבות שוויון זכויות לאנשים עם מוגבלות ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר תיק בקרה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "גורם חייב",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך  משלוח צו",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך משלוח נוסף",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סוג מסמך",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "ישות מפוקחת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג ישות מפוקחת",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "תאריך ושעת פיקוח",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מספר בית",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "רכיב נגישות לקוי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תת רכיב נגישות לקוי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רכיב נגישות  משנה לקוי",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 7930
+    },
+    {
+      "resource_id": "3592896c-a28e-449f-ae04-2e9e1563c3cb",
+      "title": "פתיחת קובץ המאגר בתוכנת excel.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

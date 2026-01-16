@@ -1,0 +1,260 @@
+{
+  "dataset_id": "7a338622-63bb-4cfd-b3f7-0d2e8cf71033",
+  "title": "מספרי רישוי של כלי רכב פרטיים ומסחריים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "רישוי",
+    "תחבורה",
+    "misgeret",
+    "mivchan",
+    "tzeva",
+    "ומסחריים",
+    "lakvish",
+    "sug",
+    "ramat",
+    "degem",
+    "kvutzat",
+    "eivzur",
+    "ahori",
+    "aliya",
+    "kod",
+    "horaat",
+    "mispar",
+    "moed",
+    "בדרכים",
+    "tokef",
+    "grira",
+    "רכב",
+    "gimur",
+    "והבטיחות",
+    "כלי",
+    "shnat",
+    "acharon",
+    "zmig",
+    "baalut",
+    "kinuy",
+    "משרד",
+    "zihum",
+    "delek",
+    "מספרי",
+    "mishari",
+    "kidmi",
+    "betihuty",
+    "rechev",
+    "yitzur",
+    "mehirut",
+    "rishum",
+    "omes",
+    "tzmig",
+    "tozeret",
+    "פרטיים",
+    "manoa",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "053cea08-09bc-40ec-8f7a-156f0677aff3",
+      "title": "מאגר מספרי רישוי של כלי רכב",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_degem",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ramat_gimur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ramat_eivzur_betihuty",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kvutzat_zihum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "degem_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mivchan_acharon_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tokef_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "baalut",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "misgeret",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tzeva_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tzeva_rechev",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "zmig_kidmi",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "zmig_ahori",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_delek_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "horaat_rishum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "moed_aliya_lakvish",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kinuy_mishari",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 4051922
+    },
+    {
+      "resource_id": "0866573c-40cd-4ca8-91d2-9dd2d7a492e5",
+      "title": "מספרי רישוי של כלי רכב פרטיים ומסחריים - המשך",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_degem",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kod_omes_tzmig_kidmi",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "kod_omes_tzmig_ahori",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kod_mehirut_tzmig_kidmi",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "kod_mehirut_tzmig_ahori",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "grira_nm",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 4051922
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

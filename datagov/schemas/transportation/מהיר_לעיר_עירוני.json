@@ -1,0 +1,267 @@
+{
+  "dataset_id": "a0644744-f352-46f2-a082-b133a4f299b6",
+  "title": "מהיר לעיר עירוני",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "אוטובוס",
+    "מהיר לעיר",
+    "ממג",
+    "נתיבי העדפה",
+    "עירוני"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "ממג",
+    "status",
+    "ptldir",
+    "lat",
+    "bycicle",
+    "streetname",
+    "אוטובוס",
+    "city",
+    "העדפה",
+    "gis",
+    "destnation",
+    "trafcode",
+    "typ",
+    "lon",
+    "roadname",
+    "לעיר",
+    "עירוני",
+    "בדרכים",
+    "end",
+    "ptltype",
+    "segment",
+    "והבטיחות",
+    "urbantype",
+    "authority",
+    "משרד",
+    "stop",
+    "ptl",
+    "lengt",
+    "נתיבי",
+    "bus",
+    "numlother",
+    "bicycle",
+    "yearmonth",
+    "shape",
+    "optype",
+    "oid",
+    "ptlcode",
+    "origin",
+    "natatz",
+    "trafauth",
+    "numlanes",
+    "authcode",
+    "junctions",
+    "length",
+    "מהיר",
+    "התחבורה",
+    "ptlname"
+  ],
+  "resources": [
+    {
+      "resource_id": "fa75d57c-1170-42f6-ba38-c44b0bed4652",
+      "title": "MAHIRLAIR_CITY_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "f3929936-8299-4fd7-9153-d7b712cb5262",
+      "title": "MAHIRLAIR_CITY_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "aefa18aa-e4fb-4356-b484-4706c7bd4f81",
+      "title": "MAHIRLAIR_CITY_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PTLCODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "PTLNAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "AUTHORITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AUTHCODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "TRAFAUTH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TRAFCODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "STREETNAME",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "ROADNAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ORIGIN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LAT_ORIGIN",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LON_ORIGIN",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "DESTNATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LAT_END",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LON_END",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "PTLDIR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NUMLANES",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NUMLOTHER",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "PTL_KM",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "KM_BYCICLE",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "BUS_STOP",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "JUNCTIONS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SEGMENT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NATATZ_TYP",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "URBANTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PTLTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "OPTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "BICYCLE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 170
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

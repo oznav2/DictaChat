@@ -448,7 +448,9 @@
 					</div>
 				{:else if view === "active"}
 					{#if selectedIds.size > 0}
-						<div class="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-gray-600 bg-gray-700/70 p-2">
+						<div
+							class="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-gray-600 bg-gray-700/70 p-2"
+						>
 							<div class="text-xs text-gray-300">
 								נבחרו <span class="font-semibold">{selectedIds.size}</span>
 							</div>
@@ -526,24 +528,24 @@
 												aria-label="בחר זיכרון"
 											/>
 											<div class="flex-1">
-											<!-- Phase 10: Personality badge for non-default personalities -->
-											{#if memory.sourcePersonalityName && memory.sourcePersonalityName !== "Default"}
-												<span
-													class="mb-1 inline-block rounded bg-purple-600/20 px-2 py-0.5 text-xs text-purple-400"
-												>
-													מ-{memory.sourcePersonalityName}
-												</span>
-											{/if}
-											<p class="mb-2 line-clamp-3 text-sm text-gray-200">{memory.text}</p>
-											{#if memory.tags.length > 0}
-												<div class="flex flex-wrap gap-1.5">
-													{#each memory.tags as tag}
-														<span class="rounded bg-gray-600 px-2 py-0.5 text-xs text-gray-400"
-															>#{tag}</span
-														>
-													{/each}
-												</div>
-											{/if}
+												<!-- Phase 10: Personality badge for non-default personalities -->
+												{#if memory.sourcePersonalityName && memory.sourcePersonalityName !== "Default"}
+													<span
+														class="mb-1 inline-block rounded bg-purple-600/20 px-2 py-0.5 text-xs text-purple-400"
+													>
+														מ-{memory.sourcePersonalityName}
+													</span>
+												{/if}
+												<p class="mb-2 line-clamp-3 text-sm text-gray-200">{memory.text}</p>
+												{#if memory.tags.length > 0}
+													<div class="flex flex-wrap gap-1.5">
+														{#each memory.tags as tag}
+															<span class="rounded bg-gray-600 px-2 py-0.5 text-xs text-gray-400"
+																>#{tag}</span
+															>
+														{/each}
+													</div>
+												{/if}
 											</div>
 										</div>
 										<div class="mr-3 flex flex-shrink-0 gap-1">
@@ -615,7 +617,9 @@
 					<GrowthTimeline />
 				{:else if view === "archived"}
 					{#if selectedIds.size > 0}
-						<div class="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-gray-700/50 bg-gray-700/60 p-2">
+						<div
+							class="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-gray-700/50 bg-gray-700/60 p-2"
+						>
 							<div class="text-xs text-gray-300">
 								נבחרו <span class="font-semibold">{selectedIds.size}</span>
 							</div>

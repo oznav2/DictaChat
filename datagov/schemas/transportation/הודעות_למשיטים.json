@@ -1,0 +1,43 @@
+{
+  "dataset_id": "7f0367f2-e9fb-497e-9a46-8ec53ac9a3ff",
+  "title": "הודעות למשיטים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משיטים וימאים",
+    "משרד התחבורה",
+    "ספנות ונמלים",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "הודעות",
+    "תחבורה",
+    "וימאים",
+    "בדרכים",
+    "משרד",
+    "ספנות",
+    "משיטים",
+    "ונמלים",
+    "והבטיחות",
+    "התחבורה",
+    "למשיטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "35c001a7-64f7-49d4-8ba4-15e68b9bd335",
+      "title": "הודעות למשיטים",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

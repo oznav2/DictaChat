@@ -1,0 +1,36 @@
+{
+  "dataset_id": "6c355dc2-b51f-48df-afbd-e0c5ab68c689",
+  "title": "תצלום אויר 2015 2 מטר - גליון כפר סבא",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "כפר",
+    "תצלום",
+    "אויר",
+    "סבא",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "53ecf1e0-9f5f-4bd9-a60e-76033d45edb7",
+      "title": "תצלום אויר 2015 2 מטר - גליון כפר סבא",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -55,6 +55,8 @@
 			patterns: createEmptyTierMetric("patterns"),
 			books: createEmptyTierMetric("books"),
 			memory_bank: createEmptyTierMetric("memory_bank"),
+			datagov_schema: createEmptyTierMetric("datagov_schema"),
+			datagov_expansion: createEmptyTierMetric("datagov_expansion"),
 		},
 		overall: {
 			p50: 0,
@@ -182,6 +184,8 @@
 				patterns: createEmptyTierMetric("patterns"),
 				books: createEmptyTierMetric("books"),
 				memory_bank: createEmptyTierMetric("memory_bank"),
+				datagov_schema: createEmptyTierMetric("datagov_schema"),
+				datagov_expansion: createEmptyTierMetric("datagov_expansion"),
 			},
 			overall: {
 				p50: 0,

@@ -1,0 +1,312 @@
+{
+  "dataset_id": "fdf06a98-0fe3-47df-8c3e-18ee582d1445",
+  "title": "מאגר לאומי לנוכחות נגעים בישראל",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [
+    "מזיקים",
+    "מחלות צמחים",
+    "נגעים"
+  ],
+  "categories": [
+    "water",
+    "agriculture"
+  ],
+  "keywords": [
+    "לנוכחות",
+    "name",
+    "links",
+    "botanic",
+    "status",
+    "acronyms",
+    "describer",
+    "parts",
+    "order",
+    "host",
+    "transfer",
+    "symptoms",
+    "החקלאות",
+    "information",
+    "scientific",
+    "מחלות",
+    "date",
+    "kingdom",
+    "מזיקים",
+    "casual",
+    "kishur",
+    "damage",
+    "literature",
+    "plant",
+    "phylum",
+    "pesticides",
+    "לאומי",
+    "eppo",
+    "class",
+    "code",
+    "משרד",
+    "species",
+    "suborder",
+    "names",
+    "genus",
+    "family",
+    "ובטחון",
+    "המזון",
+    "נגעים",
+    "synonymes",
+    "comments",
+    "israel",
+    "nega",
+    "affected",
+    "צמחים",
+    "and",
+    "biology",
+    "common",
+    "english",
+    "hebrew",
+    "additional",
+    "agent",
+    "subphylum",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "8f890276-e5e3-478e-a772-17553d2cb10f",
+      "title": "Database of plant pests in Israel",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CODE_EPPO",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "CASUAL_AGENT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CASUAL_AGENT_IN_ENGLISH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SCIENTIFIC_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "COMMON_NAMES_IN_HEBREW",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "COMMON_NAMES_IN_ENGLISH",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "FAMILY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CLASS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ORDER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PHYLUM",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SUBPHYLUM",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "GENUS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SPECIES",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SUBORDER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "KINGDOM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SYNONYMES",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ACRONYMS",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "NEGA_IN_ISRAEL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "COMMENTS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "SYMPTOMS",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SYMPTOMS_E",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PLANT_PARTS_AFFECTED",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PLANT_PARTS_AFFECTED_E",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DAMAGE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DAMAGE_E",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BIOLOGY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "BIOLOGY_E",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ADDITIONAL_INFORMATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ADDITIONAL_INFORMATION_E",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LITERATURE_AND_LINKS",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "LITERATURE_AND_LINKS_E",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "KISHUR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "KISHUR_SYMPTOMS",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "KISHUR_PLANT_PARTS_AFFECTED",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "KISHUR_DAMAGE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "KISHUR_BIOLOGY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PESTICIDES_CODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "HOST_HEBREW_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "HOST_COMMON_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "HOST_BOTANIC_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "CODE_NEGA",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "NEGA_DESCRIBER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TRANSFER_DATE",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 1965
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

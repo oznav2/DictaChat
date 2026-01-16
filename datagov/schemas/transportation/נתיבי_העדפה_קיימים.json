@@ -1,0 +1,449 @@
+{
+  "dataset_id": "4bee0109-501e-4ae0-aa9e-a70f713b84d0",
+  "title": "נתיבי העדפה קיימים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "אוטובוס",
+    "ממג",
+    "נתיבי העדפה",
+    "נתצ"
+  ],
+  "categories": [
+    "transportation",
+    "water",
+    "geography"
+  ],
+  "keywords": [
+    "קיימים",
+    "ממג",
+    "נתצ",
+    "ptldir",
+    "lat",
+    "streetname",
+    "start",
+    "status",
+    "taxi",
+    "divisionl",
+    "אוטובוס",
+    "העדפה",
+    "gis",
+    "hot",
+    "metro",
+    "van",
+    "paint",
+    "servlines",
+    "division",
+    "lon",
+    "roadname",
+    "בדרכים",
+    "end",
+    "otherbuses",
+    "parking",
+    "sat",
+    "ptltype",
+    "והבטיחות",
+    "hov",
+    "lastchange",
+    "urbantype",
+    "finish",
+    "authority",
+    "ptlseg",
+    "tohr",
+    "disabled",
+    "brt",
+    "משרד",
+    "frhr",
+    "lengt",
+    "נתיבי",
+    "startdate",
+    "numlother",
+    "enforcment",
+    "shape",
+    "optype",
+    "oid",
+    "ptlcode",
+    "enddate",
+    "lightrail",
+    "trafauth",
+    "numlanes",
+    "authcode",
+    "fri",
+    "motorcycle",
+    "length",
+    "pgl",
+    "התחבורה",
+    "ptlname"
+  ],
+  "resources": [
+    {
+      "resource_id": "fa793198-ad02-46c5-bf17-be08fdb912b0",
+      "title": "NATAZ_KAYAM_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1cada8da-a4ae-4bff-aff7-9facbcbf5e34",
+      "title": "NATAZ_KAYAM_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a853e465-b435-445c-b38b-26fadd795df5",
+      "title": "NATAZ_KAYAM_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "LENGTH",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PTLCODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "PTLNAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "PTLSEG",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PTLDIR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STREETNAME",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "AUTHORITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AUTHCODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "TRAFAUTH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ROADNAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LAT_START",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LON_START",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FINISH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LAT_END",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LON_END",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "METRO_PGL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "METRO",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NUMLANES",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NUMLOTHER",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "HOV",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "HOT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FRHR_WK",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TOHR_WK",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FRHR_WK_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TOHR_WK_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FRHR_FRI",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TOHR_FRI",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FRHR_FRI_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TOHR_FRI_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FRHR_SAT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TOHR_SAT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STARTDATE",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "ENDDATE",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "LASTCHANGE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "URBANTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PTLTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "OPTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "BRT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SERVLINES",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OTHERBUSES",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TAXI",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "MOTORCYCLE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "EV",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AV",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DISABLED",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LIGHTRAIL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PARKING",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PAINT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DIVISION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DIVISIONL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ENFORCMENT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "VAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FRHR_WK_F",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TOHR_WK_F",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FRHR_WK_2_F",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TOHR_WK_2_F",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FRHR_FRI_F",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TOHR_FRI_F",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FRHR_FRI_2_F",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TOHR_FRI_2_F",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FRHR_SAT_F",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TOHR_SAT_F",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "START_",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 941
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

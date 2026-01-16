@@ -1,0 +1,92 @@
+{
+  "dataset_id": "da426b40-21c8-4b64-81b7-d6ecfd23d99a",
+  "title": "חרבות ברזל - הקלות והתאמות ברגולציה ממשרדי הממשלה",
+  "organization": "רשות האסדרה",
+  "tags": [
+    "האסדרה",
+    "הקלות רגולציה",
+    "התאמות רגולציה",
+    "רגולציה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "ministry",
+    "update",
+    "רשות",
+    "information",
+    "הממשלה",
+    "האסדרה",
+    "unit",
+    "והתאמות",
+    "התאמות",
+    "רגולציה",
+    "ברגולציה",
+    "הקלות",
+    "tags",
+    "חרבות",
+    "ברזל",
+    "ממשרדי",
+    "title",
+    "additional",
+    "details"
+  ],
+  "resources": [
+    {
+      "resource_id": "5e228e05-59bf-4153-8ae8-20bec420c575",
+      "title": "הקלות והתאמות ברגולציה ממשרדי הממשלה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ministry",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "unit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "details",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "additional_information",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tags",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "update",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 192
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

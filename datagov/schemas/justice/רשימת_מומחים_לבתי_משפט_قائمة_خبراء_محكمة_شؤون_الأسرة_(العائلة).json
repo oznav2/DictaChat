@@ -1,0 +1,120 @@
+{
+  "dataset_id": "409c1d81-feea-4729-b37d-796fba3f8658",
+  "title": "רשימת מומחים לבתי משפט قائمة خبراء محكمة شؤون الأسرة (العائلة)",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "justice",
+    "welfare"
+  ],
+  "keywords": [
+    "phone",
+    "adress",
+    "cell",
+    "והביטחון",
+    "לבתי",
+    "languages",
+    "משפט",
+    "authority",
+    "משרד",
+    "opinion",
+    "expert",
+    "district",
+    "מומחים",
+    "החברתי",
+    "notes",
+    "profession",
+    "employer",
+    "הרווחה",
+    "payment"
+  ],
+  "resources": [
+    {
+      "resource_id": "cffc8d26-38f8-41d3-8705-d1f1f16212de",
+      "title": "רשימת מומחים בית משפט",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "employer",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "expert",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "authority",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "profession",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "opinion",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "cell_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "payment",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "languages",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 126
+    },
+    {
+      "resource_id": "b3aeece9-dc04-483c-b850-61aa9b64ad0b",
+      "title": "קובץ הסבר למאגר מומחים לבית משפט - ערבית",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

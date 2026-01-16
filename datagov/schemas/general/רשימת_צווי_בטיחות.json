@@ -1,0 +1,109 @@
+{
+  "dataset_id": "c0beab05-9061-4dad-868c-40142260d35f",
+  "title": "רשימת צווי בטיחות",
+  "organization": "משרד העבודה",
+  "tags": [
+    "משד העבודה",
+    "צווי בטיחות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "felony",
+    "בטיחות",
+    "משד",
+    "work",
+    "העבודה",
+    "send",
+    "משרד",
+    "date",
+    "clause",
+    "city",
+    "category",
+    "warrent",
+    "צווי",
+    "law",
+    "executor"
+  ],
+  "resources": [
+    {
+      "resource_id": "264cec97-c8f8-496f-84e5-052a63fdea3f",
+      "title": "רשימת צווי בטיחות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "send_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "warrent_id",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "work_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "work_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "city_name",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "executor_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "category_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "felony_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "law_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "clause_name",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 44224
+    },
+    {
+      "resource_id": "7f9ceb99-e025-42b0-8b8e-2e6be22b2a63",
+      "title": "מבנה נתונים - צווי בטיחות",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

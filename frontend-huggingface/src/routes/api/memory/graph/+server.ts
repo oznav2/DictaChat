@@ -3,7 +3,10 @@ import type { RequestHandler } from "./$types";
 import { Database } from "$lib/server/database";
 import { config } from "$lib/server/config";
 import { ADMIN_USER_ID } from "$lib/server/constants";
-import { isEntityBlocklistedLabel, normalizeEntityLabel } from "$lib/server/memory/kg/entityHygiene";
+import {
+	isEntityBlocklistedLabel,
+	normalizeEntityLabel,
+} from "$lib/server/memory/kg/entityHygiene";
 
 interface GraphNode {
 	id: string;
@@ -11,6 +14,11 @@ interface GraphNode {
 	type: "routing" | "content" | "action";
 	score: number;
 	usage: number;
+	/**
+	 * RoamPal v0.2.11 Fix #3: Pre-indexed relationship counts for O(1) lookups
+	 * Number of edges connected to this node (cached in-memory during query)
+	 */
+	connectionCount?: number;
 }
 
 interface GraphEdge {
@@ -24,9 +32,7 @@ type GraphMode = "routing" | "content" | "both";
 function formatBilingualLabel(labelRaw: string, aliasesRaw: unknown): string {
 	const label = normalizeEntityLabel(labelRaw);
 	const aliases = Array.isArray(aliasesRaw)
-		? aliasesRaw
-				.map((a) => normalizeEntityLabel(String(a)))
-				.filter((a) => a.length > 0)
+		? aliasesRaw.map((a) => normalizeEntityLabel(String(a))).filter((a) => a.length > 0)
 		: [];
 	const hasHebrew = /[\u0590-\u05FF]/.test(label);
 	const aliasHeb = aliases.find((a) => /[\u0590-\u05FF]/.test(a));
@@ -43,7 +49,8 @@ export const GET: RequestHandler = async ({ url }) => {
 	const edgesByKey = new Map<string, GraphEdge>();
 	const startedAt = Date.now();
 	const modeRaw = String(url.searchParams.get("mode") ?? "both");
-	const mode: GraphMode = modeRaw === "routing" || modeRaw === "content" || modeRaw === "both" ? modeRaw : "both";
+	const mode: GraphMode =
+		modeRaw === "routing" || modeRaw === "content" || modeRaw === "both" ? modeRaw : "both";
 
 	try {
 		const database = await Database.getInstance();
@@ -75,7 +82,9 @@ export const GET: RequestHandler = async ({ url }) => {
 				for (const concept of routingConcepts) {
 					const conceptId = String(concept.concept_id ?? concept.label ?? "").trim();
 					if (!conceptId) continue;
-					const label = normalizeEntityLabel(String(concept.label || concept.concept_id || "Unknown"));
+					const label = normalizeEntityLabel(
+						String(concept.label || concept.concept_id || "Unknown")
+					);
 					if (isEntityBlocklistedLabel(label)) continue;
 
 					const stats = statsByConcept.get(conceptId);
@@ -138,7 +147,10 @@ export const GET: RequestHandler = async ({ url }) => {
 					.toArray();
 
 				for (const node of contentNodes) {
-					const label = formatBilingualLabel(String(node.label || node.node_id || "Unknown"), node.aliases);
+					const label = formatBilingualLabel(
+						String(node.label || node.node_id || "Unknown"),
+						node.aliases
+					);
 					if (isEntityBlocklistedLabel(label)) continue;
 					nodes.push({
 						id: `content_${node.node_id || node.label}`,
@@ -210,12 +222,28 @@ export const GET: RequestHandler = async ({ url }) => {
 		.sort((a, b) => b.weight - a.weight)
 		.slice(0, 2000);
 
+	// RoamPal v0.2.11 Fix #3: Pre-indexed relationship counts
+	// Build connection counts map for O(1) lookups
+	const connectionCounts = new Map<string, number>();
+	for (const edge of edges) {
+		connectionCounts.set(edge.source, (connectionCounts.get(edge.source) ?? 0) + 1);
+		connectionCounts.set(edge.target, (connectionCounts.get(edge.target) ?? 0) + 1);
+	}
+
+	// Annotate nodes with their connection counts
+	for (const node of nodes) {
+		node.connectionCount = connectionCounts.get(node.id) ?? 0;
+	}
+
 	return json({
 		success: true,
 		nodes,
 		edges,
 		meta: {
 			built_ms: Date.now() - startedAt,
+			// RoamPal v0.2.11: Include counts in response
+			node_count: nodes.length,
+			edge_count: edges.length,
 		},
 	});
 };

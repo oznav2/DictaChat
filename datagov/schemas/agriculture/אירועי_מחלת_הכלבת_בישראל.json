@@ -1,0 +1,166 @@
+{
+  "dataset_id": "83cdc927-2bcf-4db2-b9d6-9f674cd52222",
+  "title": "אירועי מחלת הכלבת בישראל",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [],
+  "categories": [
+    "agriculture"
+  ],
+  "keywords": [
+    "objectid",
+    "event",
+    "speciesnameeng",
+    "regioneng",
+    "החקלאות",
+    "מחלת",
+    "locationnotsettlementheb",
+    "date",
+    "הכלבת",
+    "regionheb",
+    "lab",
+    "openlink",
+    "משרד",
+    "species",
+    "linktotest",
+    "speciesnameheb",
+    "ובטחון",
+    "אירועי",
+    "linkmoreopen",
+    "המזון",
+    "globalid",
+    "linktomre",
+    "year",
+    "animal",
+    "settlementeng",
+    "locationnotsettlementeng",
+    "בישראל",
+    "settlementheb"
+  ],
+  "resources": [
+    {
+      "resource_id": "85cd1c27-7824-45ff-9982-22da0285fafb",
+      "title": "אירועי כלבת בישראל",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Animal_Lab_ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Event",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "LinkToTest",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "OpenLink",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "LinkToMre",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "LinkMoreOpen",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "SpeciesNameEng",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "RegionEng",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "RegionHeb",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "SpeciesNameHeb",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Species",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SettlementHeb",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SettlementEng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LocationNotSettlementEng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LocationNotSettlementHeb",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GlobalID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "x",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "y",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 786
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "dataset_id": "0f16b39a-6016-408d-805d-31f40d5a0990",
+  "title": "מספרי רישוי של כלי רכב דו גלגליים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "finance"
+  ],
+  "keywords": [
+    "רישוי",
+    "nefach",
+    "תחבורה",
+    "misgeret",
+    "mida",
+    "lakvish",
+    "sug",
+    "ahori",
+    "degem",
+    "kod",
+    "aliya",
+    "horaat",
+    "mispar",
+    "moed",
+    "בדרכים",
+    "רכב",
+    "והבטיחות",
+    "כלי",
+    "shnat",
+    "mkoriut",
+    "nahag",
+    "zmig",
+    "baalut",
+    "משרד",
+    "delek",
+    "מספרי",
+    "mekomot",
+    "kidmi",
+    "yitzur",
+    "rechev",
+    "kolel",
+    "mehirut",
+    "rishum",
+    "omes",
+    "eretz",
+    "tozeret",
+    "mishkal",
+    "leyd",
+    "גלגליים",
+    "hespek",
+    "manoa",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "bf9df4e2-d90d-4c0a-a400-19e15af8e95f",
+      "title": "מספרי רישוי של כלי רכב דו גלגליים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_eretz_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "sug_delek_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_delek_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_kolel",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mida_zmig_kidmi",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "mida_zmig_ahori",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "kod_omes_zmig_kidmi",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "kod_omes_zmig_ahori",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kod_mehirut_zmig_kidmi",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "kod_mehirut_zmig_ahori",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "nefach_manoa",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hespek",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "misgeret",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "moed_aliya_lakvish",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "sug_rechev_EU_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mispar_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "horaat_rishum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "baalut",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mkoriut_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mispar_mekomot_leyd_nahag",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "mispar_mekomot",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 183069
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

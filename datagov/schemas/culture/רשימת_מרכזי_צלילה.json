@@ -1,0 +1,81 @@
+{
+  "dataset_id": "80706737-d25f-41fb-8770-580e4d9a0992",
+  "title": "רשימת מרכזי צלילה",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "הכשרה",
+    "מרכזי צלילה",
+    "ספורט",
+    "צלילה"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "צלילה",
+    "מייל",
+    "הכשרה",
+    "טלפון",
+    "התרבות",
+    "מרכזי",
+    "משרד",
+    "מיקום",
+    "מנהל",
+    "מקצועי",
+    "והספורט",
+    "מועדון",
+    "ספורט"
+  ],
+  "resources": [
+    {
+      "resource_id": "c2093eeb-6139-4ad3-9f9f-26d11d708549",
+      "title": "most.DB.651.xlsx",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מס'",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם מועדון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מנהל מקצועי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מיקום",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "אי מייל",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 57
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

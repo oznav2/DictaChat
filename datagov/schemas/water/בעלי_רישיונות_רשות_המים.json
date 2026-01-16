@@ -1,0 +1,104 @@
+{
+  "dataset_id": "91077f7c-93b0-4b82-ac99-cc85ca60baed",
+  "title": "בעלי רישיונות רשות המים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "consumer",
+    "supplier",
+    "water",
+    "מים",
+    "מפיק",
+    "ספק",
+    "ספקי מים",
+    "צרכן",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "אדמיניסטרטיבי",
+    "הספקה",
+    "רישוי",
+    "רשות",
+    "הממשלתית",
+    "מים",
+    "צרכן",
+    "התיישבות",
+    "ספק",
+    "בעל",
+    "supplier",
+    "מפיק",
+    "אזור",
+    "צורת",
+    "water",
+    "ספקי",
+    "הרישיון",
+    "בעלי",
+    "למים",
+    "רישיונות",
+    "הרשות",
+    "consumer",
+    "הפקה",
+    "ולביוב",
+    "המים",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "6e9f0bfa-5e87-4fb1-9fe4-1e523bf93fa8",
+      "title": "רשימת בעלי רישיונות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר רישיון",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם בעל הרישיון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "צורת התיישבות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אזור רישוי",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "אזור אדמיניסטרטיבי",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "רישיון הפקה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רישיון הספקה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1417
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

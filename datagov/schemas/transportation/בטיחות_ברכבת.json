@@ -1,0 +1,73 @@
+{
+  "dataset_id": "88e3e258-0cf0-4c10-b172-3d8fb8c4ad20",
+  "title": "בטיחות ברכבת",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "בטיחות",
+    "משרד התחבורה",
+    "רכבת",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "רכבת",
+    "בטיחות",
+    "תחבורה",
+    "בדרכים",
+    "משרד",
+    "ברכבת",
+    "shana",
+    "rashi",
+    "sivug",
+    "והבטיחות",
+    "count",
+    "ציבורית",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "5e57b0f2-60ce-4c69-9312-9aba3a56a52a",
+      "title": "בטיחות ברכבת",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "shana",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sivug_rashi",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sivug_rashi_count",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 108
+    },
+    {
+      "resource_id": "4c454d9a-e7e7-40f6-b4fd-971fa602bed9",
+      "title": "מבנה הנתונים במאגר",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

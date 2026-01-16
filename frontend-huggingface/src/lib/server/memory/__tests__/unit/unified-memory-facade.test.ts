@@ -1087,12 +1087,12 @@ describe("UnifiedMemoryFacade", () => {
 
 			const result: TestResult = {
 				name: "record_positive_feedback",
-				passed: callArgs.outcome === "positive" && callArgs.relatedMemoryIds.includes("mem_456"),
+				passed: callArgs.outcome === "worked" && callArgs.relatedMemoryIds.includes("mem_456"),
 				duration: Date.now() - startTime,
 			};
 
 			harness.recordResult(result);
-			expect(callArgs.outcome).toBe("positive");
+			expect(callArgs.outcome).toBe("worked");
 			expect(callArgs.relatedMemoryIds).toContain("mem_456");
 		});
 
@@ -1120,12 +1120,12 @@ describe("UnifiedMemoryFacade", () => {
 
 			const result: TestResult = {
 				name: "record_negative_feedback",
-				passed: callArgs.outcome === "negative",
+				passed: callArgs.outcome === "failed",
 				duration: Date.now() - startTime,
 			};
 
 			harness.recordResult(result);
-			expect(callArgs.outcome).toBe("negative");
+			expect(callArgs.outcome).toBe("failed");
 		});
 
 		it("should record response feedback", async () => {

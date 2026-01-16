@@ -1,0 +1,92 @@
+{
+  "dataset_id": "00044967-eda3-4942-b87c-a796b5768526",
+  "title": "תקנות הירושה – בתי הדין השרעיים – בשפה הערבית",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "name",
+    "השרעיים",
+    "court",
+    "request",
+    "תקנות",
+    "deaceased",
+    "published",
+    "הדין",
+    "date",
+    "file",
+    "number",
+    "בשפה",
+    "הירושה",
+    "משרד",
+    "הערבית",
+    "המשפטים",
+    "בתי",
+    "address",
+    "deceased"
+  ],
+  "resources": [
+    {
+      "resource_id": "6a629020-760c-4015-9f27-ebaa896c9794",
+      "title": "Sharai_Inheritance.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "court_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "file_number",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "request_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "deceased_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "deaceased_id",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "deaceased_address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "deaceased_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "published_date",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 3099
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

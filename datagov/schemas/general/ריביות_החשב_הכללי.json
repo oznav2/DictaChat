@@ -1,0 +1,72 @@
+{
+  "dataset_id": "2db3210b-1803-4854-84e9-e77e8a1bbe50",
+  "title": "ריביות החשב הכללי",
+  "organization": "משרד האוצר",
+  "tags": [
+    "Interest Rates",
+    "גבייה ואשראי",
+    "החשב הכללי",
+    "חובות מדינה",
+    "ריביות חשכל",
+    "ריבית פיגורים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "גבייה",
+    "מדינה",
+    "ואשראי",
+    "חשכל",
+    "ריביות",
+    "משרד",
+    "ineffecfrom",
+    "חובות",
+    "rates",
+    "ריבית",
+    "interestname",
+    "annual",
+    "הכללי",
+    "האוצר",
+    "interest",
+    "החשב",
+    "פיגורים"
+  ],
+  "resources": [
+    {
+      "resource_id": "d1cdadd7-f6b6-40a2-aab9-73230d5fe294",
+      "title": "ריביות החשב הכללי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "interestname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ineffecfrom",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "annual",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 13
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

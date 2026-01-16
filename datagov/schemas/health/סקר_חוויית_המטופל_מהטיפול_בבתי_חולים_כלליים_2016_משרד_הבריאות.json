@@ -1,0 +1,60 @@
+{
+  "dataset_id": "261c7669-4e68-43ee-b02f-0c79a81a1b5a",
+  "title": "סקר חוויית המטופל מהטיפול בבתי חולים כלליים 2016 - משרד הבריאות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות",
+    "בריאות ורווחה",
+    "בתי חולים",
+    "משרד הבריאות",
+    "סקרים"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "בבתי",
+    "variable",
+    "values",
+    "סקר",
+    "מהטיפול",
+    "בתי",
+    "כלליים",
+    "משרד",
+    "חוויית",
+    "חולים",
+    "ורווחה",
+    "הבריאות",
+    "סקרים",
+    "בריאות",
+    "המטופל"
+  ],
+  "resources": [
+    {
+      "resource_id": "ac080ca8-48d0-41c5-a9c5-6f46023ef56e",
+      "title": "סקר חוויית המטופל מהטיפול בבתי חולים כלליים - 2016",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Variable Values",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 509
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

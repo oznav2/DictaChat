@@ -1,0 +1,606 @@
+{
+  "dataset_id": "ed17a05e-5e86-49cc-994c-009a61362cd3",
+  "title": "היחידה לחופש המידע - דוח שנתי 2021",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "דוח",
+    "משרד",
+    "שנתי",
+    "היחידה",
+    "לחופש",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "b1cd57b3-e176-47bc-b3d8-4b57932fb60c",
+      "title": "היחידה לחופש המידע - דוח שנתי 2021",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "5",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "6",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "7",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "8",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "9",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "10",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "11",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "12",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "13",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "14",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "15",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "16",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "17",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "18",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "19",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "20",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "21",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "22",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "23",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "24",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "25",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "26",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "27",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "28",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "29",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "30",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "31",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "32",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "33",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "34",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "35",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "36",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "37",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "38",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "39",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "40",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "41",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "42",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "43",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "44",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "45",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "46",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "47",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "48",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "49",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "50",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "51",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "52",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "53",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "54",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "55",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "56",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "57",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "58",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "59",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "60",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "61",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "62",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "63",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "64",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "65",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "66",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "67",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "68",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "69",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "70",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "71",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "72",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "73",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "74",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "75",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "76",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "77",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "78",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "79",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "80",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "81",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "82",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "83",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "84",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "85",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "86",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "87",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "88",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "89",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "90",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "91",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "92",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "93",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "94",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "95",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "96",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "97",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "98",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "99",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "100",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "101",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "102",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "103",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "104",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "105",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "106",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "107",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "108",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "109",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "110",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "111",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "112",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 82
+    },
+    {
+      "resource_id": "e3edc062-1599-47c2-b310-302e55ce9a89",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת אקסל.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

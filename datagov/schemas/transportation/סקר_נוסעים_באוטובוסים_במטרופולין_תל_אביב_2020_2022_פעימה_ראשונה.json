@@ -1,0 +1,63 @@
+{
+  "dataset_id": "2b8063c1-b9ea-4041-90d5-6aa8abce6780",
+  "title": "סקר נוסעים באוטובוסים במטרופולין תל אביב 2020-2022– פעימה ראשונה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אוטובוס",
+    "נפחי נוסעים",
+    "ספירות נוסעים",
+    "ספירות עולים יורדים",
+    "עמידה בלוח זמנים",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation",
+    "immigration"
+  ],
+  "keywords": [
+    "סקר",
+    "תחבורה",
+    "עולים",
+    "אוטובוס",
+    "ראשונה",
+    "באוטובוסים",
+    "אביב",
+    "בדרכים",
+    "עמידה",
+    "והבטיחות",
+    "במטרופולין",
+    "פעימה",
+    "משרד",
+    "יורדים",
+    "ציבורית",
+    "ספירות",
+    "זמנים",
+    "נוסעים",
+    "בלוח",
+    "נפחי",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c8159b9c-c450-40da-8bd8-e7b764084e4f",
+      "title": "onboard_tlvm_peima_1.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "b6fb8a2f-53e2-4292-9fa4-34a6c64683c0",
+      "title": "מטאדאטה.pdf",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

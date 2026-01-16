@@ -1,0 +1,89 @@
+{
+  "dataset_id": "64cd3ffa-d698-4b7a-9ce1-99616d726cc7",
+  "title": "רמת מינוע לשנת 2040",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2040",
+    "GIS",
+    "אזורי תנועה",
+    "ממג",
+    "רמת מינוע"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "shape",
+    "area",
+    "motorate",
+    "ממג",
+    "רמת",
+    "בדרכים",
+    "משרד",
+    "fid",
+    "leng",
+    "והבטיחות",
+    "gis",
+    "אזורי",
+    "התחבורה",
+    "מינוע",
+    "תנועה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c3275dd7-278d-4b0c-af3b-a8c332b0fc26",
+      "title": "TAZ_MOT_RATE_2040_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "bb904926-f799-42c7-af3f-85791fc31c48",
+      "title": "TAZ_MOT_RATE_2040_KML",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1f935a0b-fa66-42c3-9415-5ec0afeb6506",
+      "title": "TAZ_MOT_RATE_2040_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "MOTORATE40",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Leng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 585
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

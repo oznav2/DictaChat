@@ -1,0 +1,74 @@
+{
+  "dataset_id": "040da86d-25fd-4f28-bc8f-5e786f3025d3",
+  "title": "אומדן ביצוע ליום 31-3-2025 לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "תקציב",
+    "תקציב וביצוע"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "תוכנית",
+    "ברוטו",
+    "תקציב",
+    "מיועדת",
+    "ביצוע",
+    "מבוקר",
+    "משרד",
+    "אומדן",
+    "וביצוע",
+    "השתתפויות",
+    "שינוייו",
+    "האוצר",
+    "הכנסה"
+  ],
+  "resources": [
+    {
+      "resource_id": "404fdbfd-9df7-476f-91be-13a81fdf5bd1",
+      "title": "אומדן ביצוע ליום 31-3-2025 לא מבוקר",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תוכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו על שינוייו",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע ברוטו כולל השתתפויות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 456
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

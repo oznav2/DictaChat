@@ -1,0 +1,119 @@
+{
+  "dataset_id": "de0eb6f7-a315-416c-8ed2-9aeeb90b3e4f",
+  "title": "מרכזי אבחון לאנשים עם מוגבלות שכלית התפתחותית مراكز التشخيص للأشخاص ذوي الإعاقة العقلية والتطورية",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "phone",
+    "coordinator",
+    "age",
+    "secretary",
+    "operator",
+    "אבחון",
+    "fax",
+    "locality",
+    "adress",
+    "שכלית",
+    "והביטחון",
+    "mail",
+    "מוגבלות",
+    "משרד",
+    "החברתי",
+    "מרכזי",
+    "התפתחותית",
+    "districr",
+    "center",
+    "הרווחה",
+    "לאנשים"
+  ],
+  "resources": [
+    {
+      "resource_id": "d27652b3-ef30-44f8-811d-8f720ebfa00b",
+      "title": "مراكز التشخيص للأشخاص ذوي الإعاقة العقلية والتطورية",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "operator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "center",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "coordinator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "coordinator_mail",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "secretary",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "secretary_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "center_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "secretary_mail",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "locality",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "age",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "districr",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 12
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

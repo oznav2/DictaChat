@@ -1,0 +1,138 @@
+{
+  "dataset_id": "d1034fa8-9a8b-4e36-840b-d1af51522d82",
+  "title": "נתונים חזויים- טמפרטורות מינימום ומקסימום",
+  "organization": "השירות המטאורולוגי",
+  "tags": [
+    "השירות המטאורולוגי"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "טמפרטורות",
+    "tmin",
+    "מינימום",
+    "day",
+    "השירות",
+    "tmax",
+    "year",
+    "month",
+    "חזויים",
+    "model",
+    "המטאורולוגי",
+    "ומקסימום",
+    "scenario"
+  ],
+  "resources": [
+    {
+      "resource_id": "3bce3a86-480e-4543-b9cc-70935ccc617f",
+      "title": "פורמט נתונים חזויים - טמפרטורות מקסימום ומינימום",
+      "format": "DOCX",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "25fdc3df-fa72-4fe2-80f7-05ca0f35611e",
+      "title": "AFULA_tmin_tmax_12models_rcp45_rcp85_QDM.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "day",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "tmin",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tmax",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "model",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "scenario",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 829000
+    },
+    {
+      "resource_id": "5a3ca0be-4e9e-4d54-ae1b-37dd7a0150bf",
+      "title": "AKKO_tmin_tmax_12models_rcp45_rcp85_QDM.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "day",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "tmin",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tmax",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "model",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "scenario",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 829000
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

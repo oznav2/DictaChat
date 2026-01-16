@@ -1,0 +1,80 @@
+{
+  "dataset_id": "995973fb-dcf8-4adf-9cc7-a7ab3337cfb0",
+  "title": "אומדן תקציב וביצוע ליום 30-6-2022 לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "תקציב",
+    "תקציב וביצוע"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "תוכנית",
+    "ברוטו",
+    "תקציב",
+    "מיועדת",
+    "ביצוע",
+    "משרד",
+    "מבוקר",
+    "אומדן",
+    "וביצוע",
+    "מקורי",
+    "השתתפויות",
+    "שינוייו",
+    "האוצר",
+    "הכנסה"
+  ],
+  "resources": [
+    {
+      "resource_id": "2abb4d0f-2e27-4ef3-876c-ef828c34ef78",
+      "title": "תקציב וביצוע לפי תכניות 1-6.2022",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תוכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו מקורי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו על שינוייו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע ברוטו כולל השתתפויות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 485
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

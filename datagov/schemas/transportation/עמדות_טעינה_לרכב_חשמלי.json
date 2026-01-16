@@ -1,0 +1,111 @@
+{
+  "dataset_id": "6910f861-4a90-4c40-a2c6-09dbc4bcd4a7",
+  "title": "עמדות טעינה לרכב חשמלי",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "היברידי",
+    "חצב",
+    "כלי רכב",
+    "עמדות טעינה",
+    "עמדות שירות עצמי",
+    "רכב חשמלי"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "name",
+    "operator",
+    "בדרכים",
+    "טעינה",
+    "slow",
+    "fast",
+    "רכב",
+    "והבטיחות",
+    "כלי",
+    "עמדות",
+    "cnt",
+    "משרד",
+    "היברידי",
+    "עצמי",
+    "שירות",
+    "חצב",
+    "num",
+    "oid",
+    "address",
+    "לרכב",
+    "חשמלי",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d2433ac8-98b4-4934-a805-4ceafc871165",
+      "title": "AGG_CHARGE_STATIONS_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "027822f8-86d6-4866-9659-89bd1483b37e",
+      "title": "AGG_CHARGE_STATIONS_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "528482f2-d410-4d62-8b17-566ab23a1c52",
+      "title": "AGG_CHARGE_STATIONS_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "cnt_fast",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "cnt_slow",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "OPERATOR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "cnt_num",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 2083
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

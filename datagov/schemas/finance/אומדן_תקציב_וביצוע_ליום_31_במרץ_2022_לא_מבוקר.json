@@ -1,0 +1,86 @@
+{
+  "dataset_id": "284590f5-0140-455c-bbf9-05467ef619e5",
+  "title": "אומדן תקציב וביצוע ליום 31 במרץ 2022 - לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "תקציב",
+    "תקציב וביצוע"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "ברוטו",
+    "תקציב",
+    "מיועדת",
+    "ביצוע",
+    "מבוקר",
+    "משרד",
+    "הכנסה",
+    "אומדן",
+    "וביצוע",
+    "מקורי",
+    "השתתפויות",
+    "שינוייו",
+    "האוצר",
+    "במרץ",
+    "התוכנית"
+  ],
+  "resources": [
+    {
+      "resource_id": "ea213c4e-a3a2-4704-8567-297c8c251868",
+      "title": "תקציב וביצוע מרץ 2022 לא מבוקר",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר התוכנית",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "שם התוכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תקציב ברוטו מקורי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו על שינוייו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע ברוטו כולל השתתפויות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 484
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

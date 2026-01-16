@@ -1,0 +1,69 @@
+{
+  "dataset_id": "b37b28ae-d465-482b-b47e-7cc844f45adb",
+  "title": "תוצרים של כלי הרכב הפעילים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תוצרים",
+    "בדרכים",
+    "משרד",
+    "הרכב",
+    "eretz",
+    "רכב",
+    "tozeret",
+    "הפעילים",
+    "והבטיחות",
+    "כלי",
+    "tozar",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d00812f4-58c5-4ce8-b16c-ac13ae52f9d8",
+      "title": "קובץ תוצרים של כלי הרכב הפעילים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozar",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_eretz_nm",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1297
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

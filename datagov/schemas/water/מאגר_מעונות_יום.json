@@ -1,0 +1,179 @@
+{
+  "dataset_id": "f680a42f-b30e-408d-bea0-bc57b3aa9ca3",
+  "title": "מאגר מעונות יום",
+  "organization": "משרד העבודה",
+  "tags": [],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "מיקוד",
+    "תיאור",
+    "העבודה",
+    "מעונות",
+    "סוג",
+    "קבלת",
+    "רחוב",
+    "טלפון",
+    "פעוטות",
+    "פתיחה",
+    "מנהל",
+    "עברי",
+    "מחוז",
+    "עיר",
+    "משרד",
+    "סמל",
+    "תינוקות",
+    "קוד",
+    "יום",
+    "תאריך",
+    "תפוסת",
+    "בוגרים",
+    "בית",
+    "ארגון",
+    "מעון",
+    "לימוד"
+  ],
+  "resources": [
+    {
+      "resource_id": "0f67a263-d9f4-44d4-9816-c96e9dfbc7e5",
+      "title": "מאגר מעונות יום",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל מעון",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מעון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנת לימוד",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנת לימוד עברי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד סוג מעון",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "תיאור סוג מעון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד מחוז",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "תיאור מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "תאריך פתיחה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך קבלת סמל מעון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סמל ארגון",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם ארגון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ח.פ. ארגון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם מנהל",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד עיר",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "שם עיר",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "קוד רחוב",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "שם רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מספר בית",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מיקוד",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "תפוסת תינוקות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תפוסת פעוטות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תפוסת בוגרים",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 12295
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

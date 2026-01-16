@@ -1,0 +1,105 @@
+{
+  "dataset_id": "2d90b8a6-36df-476a-8a0e-4e5f81ef4cec",
+  "title": "יחידות של משרד ראש הממשלה - נתיב",
+  "organization": "משרד ראש הממשלה, \"נתיב\"",
+  "tags": [
+    "חוק השבות",
+    "לשכת הקשר",
+    "מחלקת עלייה",
+    "מרכז תרבות",
+    "נתיב",
+    "קונסולר"
+  ],
+  "categories": [
+    "justice",
+    "culture",
+    "immigration"
+  ],
+  "keywords": [
+    "קונסולר",
+    "חוק",
+    "כתובת",
+    "באינטרנט",
+    "סוג",
+    "טלפונים",
+    "היחידה",
+    "נתיב",
+    "דואר",
+    "יחידות",
+    "הממשלה",
+    "מחלקת",
+    "השבות",
+    "ראש",
+    "מדינה",
+    "עלייה",
+    "לשכת",
+    "עיר",
+    "משרד",
+    "הקשר",
+    "מרכז",
+    "אלקטרוני",
+    "תרבות"
+  ],
+  "resources": [
+    {
+      "resource_id": "14e40280-fea8-421c-96f7-e3f1a6949dbf",
+      "title": "Nativ-Units-All.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מדינה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עיר",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "סוג היחידה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שם היחידה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "טלפונים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כתובת באינטרנט",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 23
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

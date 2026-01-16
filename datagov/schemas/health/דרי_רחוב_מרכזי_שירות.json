@@ -1,0 +1,147 @@
+{
+  "dataset_id": "5d64707d-7f66-4e27-9f99-512a7eac608e",
+  "title": "דרי רחוב - מרכזי שירות",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "בריאות ורווחה",
+    "דרי רחוב",
+    "הומלסים",
+    "חסרי בית",
+    "מרכזי שירות",
+    "קהילה"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "gender",
+    "identification",
+    "phone",
+    "manager",
+    "age",
+    "frame",
+    "רחוב",
+    "operator",
+    "חסרי",
+    "outerhome",
+    "adress",
+    "spreading",
+    "והביטחון",
+    "בריאות",
+    "settlement",
+    "הומלסים",
+    "משרד",
+    "type",
+    "דרי",
+    "ורווחה",
+    "allocation",
+    "שירות",
+    "החברתי",
+    "בית",
+    "מרכזי",
+    "population",
+    "הרווחה",
+    "קהילה",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "03166af6-23f3-4491-8ec0-cbd13bea84dd",
+      "title": "מרכזי שירות לדרי רחוב",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OuterHome",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "identification",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "settlement",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "allocation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "operator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "population",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "frame_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "age",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "spreading",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "gender",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 23
+    },
+    {
+      "resource_id": "d074d30f-2bb1-41f0-9225-b74b2c68206c",
+      "title": "מבנה הנתונים במאגר מרכזי שירות לדרי רחוב",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

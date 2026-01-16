@@ -38,11 +38,7 @@ export const GET: RequestHandler = async ({ url }) => {
 		if (contextType) filter.context_type = String(contextType);
 		if (!includeTiers) filter.tier_key = "*";
 
-		const docs = await col
-			.find(filter)
-			.sort({ wilson_score: -1, uses: -1 })
-			.limit(limit)
-			.toArray();
+		const docs = await col.find(filter).sort({ wilson_score: -1, uses: -1 }).limit(limit).toArray();
 
 		const rollups: RollupRow[] = docs.map((d: any) => {
 			const action = String(d.action ?? "unknown");
@@ -84,4 +80,3 @@ export const GET: RequestHandler = async ({ url }) => {
 		);
 	}
 };
-

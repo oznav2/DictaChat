@@ -1,0 +1,38 @@
+{
+  "dataset_id": "1950e30f-56f3-465a-b4b3-09317ad9d18e",
+  "title": "התאחדויות נהיגה ספורטיבית",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "התאחדות תאגיד נהיגה ספורטיבית"
+  ],
+  "categories": [
+    "transportation",
+    "culture"
+  ],
+  "keywords": [
+    "התרבות",
+    "משרד",
+    "נהיגה",
+    "התאחדויות",
+    "התאחדות",
+    "והספורט",
+    "ספורטיבית",
+    "תאגיד"
+  ],
+  "resources": [
+    {
+      "resource_id": "26b08072-4441-4047-aaf2-613e34db01e0",
+      "title": "",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

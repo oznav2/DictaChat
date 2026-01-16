@@ -114,9 +114,7 @@ export class DocumentRAGService {
 		);
 		this.traceEmitter.stepDone(runId, TRACE_STEPS.CHUNKING_CONTENT.id);
 
-		// Step 3: Generate embeddings
 		this.traceEmitter.stepStart(runId, TRACE_STEPS.GENERATING_EMBEDDINGS, traceLang);
-		const embeddings = await this.embedder.embedBatch(chunks.map((c) => c.content));
 		this.traceEmitter.stepDone(runId, TRACE_STEPS.GENERATING_EMBEDDINGS.id);
 
 		// Step 4: Extract metadata
@@ -150,11 +148,18 @@ export class DocumentRAGService {
 				tokenCount: chunk.tokenCount,
 				sectionTitle: chunk.sectionTitle,
 				chunkType: chunk.type,
-				embedding: embeddings[idx],
+				embedding: [],
 			}))
 		);
 
 		this.traceEmitter.stepDone(runId, TRACE_STEPS.STORING_CONTEXT.id);
+
+		this.embedder.submitEmbedBatch(
+			chunks.map((c) => c.content),
+			async (embeddings) => {
+				await this.store.updateChunkEmbeddings(docContext._id, embeddings);
+			}
+		);
 
 		return docContext;
 	}
@@ -175,6 +180,19 @@ export class DocumentRAGService {
 		const docContext = await this.store.getDocumentContext(conversationId);
 		if (!docContext) {
 			return { hasContext: false, chunks: [], needsToolCall: true };
+		}
+
+		const existingChunks = await this.store.getChunks(conversationId);
+		const hasEmbeddings = existingChunks.some(
+			(c) => Array.isArray(c.embedding) && c.embedding.length > 0
+		);
+		if (!hasEmbeddings) {
+			return {
+				hasContext: false,
+				chunks: [],
+				needsToolCall: true,
+				userContext: docContext.userContext,
+			};
 		}
 
 		// TIER 1: Semantic search + reranking
@@ -277,7 +295,7 @@ export class DocumentRAGService {
 
 		// Chunk and embed new content
 		const newChunks = await this.chunker.chunk(additionalText);
-		const newEmbeddings = await this.embedder.embedBatch(newChunks.map((c) => c.content));
+		const baseChunkIndex = docContext.chunkCount;
 
 		// Append new chunks
 		await this.store.appendChunks(
@@ -286,12 +304,19 @@ export class DocumentRAGService {
 				documentId: docContext._id,
 				conversationId,
 				content: chunk.content,
-				chunkIndex: docContext.chunkCount + idx,
+				chunkIndex: baseChunkIndex + idx,
 				tokenCount: chunk.tokenCount,
 				sectionTitle: chunk.sectionTitle,
 				chunkType: chunk.type,
-				embedding: newEmbeddings[idx],
+				embedding: [],
 			}))
+		);
+
+		this.embedder.submitEmbedBatch(
+			newChunks.map((c) => c.content),
+			async (embeddings) => {
+				await this.store.updateChunkEmbeddings(docContext._id, embeddings, baseChunkIndex);
+			}
 		);
 
 		// Record augmentation

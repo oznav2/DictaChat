@@ -1,0 +1,93 @@
+{
+  "dataset_id": "d6b5032b-122f-47f2-af45-029d2d06ae8d",
+  "title": "תאונות דרכים עם נפגעים - 2022 - PUF מקוצר",
+  "organization": "הלשכה המרכזית לסטטיסטיקה",
+  "tags": [
+    "נתוני הלמס",
+    "תאונות דרכים",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "finance"
+  ],
+  "keywords": [
+    "מקוצר",
+    "הלמס",
+    "תחבורה",
+    "teur",
+    "מסמך",
+    "נפגעים",
+    "הלשכה",
+    "המרכזית",
+    "לסטטיסטיקה",
+    "puf",
+    "tavla",
+    "מילון",
+    "תאונות",
+    "kod",
+    "דרכים"
+  ],
+  "resources": [
+    {
+      "resource_id": "47b2443b-e423-41d6-acda-5f729d1a7018",
+      "title": "Dictionary",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "MS_TAVLA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "KOD",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TEUR",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 780
+    },
+    {
+      "resource_id": "c807d474-210e-4ecb-8ed2-24cfdff3bed6",
+      "title": "Data dictionary document - accidents.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מסמך מילון נתונים – תאונות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 201
+    },
+    {
+      "resource_id": "c158221b-6bbb-4f82-8028-918066fdf8ea",
+      "title": "introduction",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

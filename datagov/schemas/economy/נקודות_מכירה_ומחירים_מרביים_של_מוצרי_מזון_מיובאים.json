@@ -1,0 +1,108 @@
+{
+  "dataset_id": "013bf5b9-c7ff-4282-b402-73ed20deeacc",
+  "title": "נקודות מכירה ומחירים מרביים של מוצרי מזון מיובאים",
+  "organization": "משרד הכלכלה והתעשייה",
+  "tags": [
+    "יבוא",
+    "כלכלה",
+    "מוצרי מזון",
+    "מכסות"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "מרביים",
+    "point",
+    "name",
+    "update",
+    "city",
+    "product",
+    "והתעשייה",
+    "מכסות",
+    "יבוא",
+    "ומחירים",
+    "מכירה",
+    "מיובאים",
+    "הכלכלה",
+    "כלכלה",
+    "price",
+    "נקודות",
+    "משרד",
+    "pic",
+    "מזון",
+    "importer",
+    "max",
+    "address",
+    "last",
+    "weight",
+    "מוצרי"
+  ],
+  "resources": [
+    {
+      "resource_id": "ef2bc38d-321a-4162-a4d2-ce806cf3f298",
+      "title": "נקודות מכירה ומחירים מרביים של מוצרי מזון מיובאים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "point_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "product",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "max_price",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "weight",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "importer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "pic",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "last_update",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 675
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

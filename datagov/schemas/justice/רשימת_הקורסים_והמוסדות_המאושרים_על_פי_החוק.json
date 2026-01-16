@@ -1,0 +1,109 @@
+{
+  "dataset_id": "c0b3e10d-876e-4994-ac97-13b8868f70fd",
+  "title": "רשימת הקורסים והמוסדות המאושרים על פי החוק",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "הכשר",
+    "מאושרים",
+    "מאמנים",
+    "מוסדו",
+    "קורסים"
+  ],
+  "categories": [
+    "justice",
+    "culture"
+  ],
+  "keywords": [
+    "בתוקף",
+    "מוסדו",
+    "קורסים",
+    "המאושרים",
+    "התרבות",
+    "הכשר",
+    "תוקף",
+    "מאמנים",
+    "דרגה",
+    "הרישיון",
+    "משרד",
+    "מעשי",
+    "ענף",
+    "החוק",
+    "המוסד",
+    "קהל",
+    "מתקן",
+    "עיוני",
+    "והספורט",
+    "סימוכין",
+    "מאושרים",
+    "והמוסדות",
+    "יעד",
+    "הקורסים"
+  ],
+  "resources": [
+    {
+      "resource_id": "d879e91b-419a-4e63-8e20-2ff798a234c1",
+      "title": "most.DB.517.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המוסד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ענף",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "דרגה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קהל יעד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מתקן מעשי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מתקן עיוני",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מס' סימוכין",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תוקף הרישיון",
+          "type": "timestamp",
+          "semantic": null
+        },
+        {
+          "name": "בתוקף / לא בתוקף",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 544
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

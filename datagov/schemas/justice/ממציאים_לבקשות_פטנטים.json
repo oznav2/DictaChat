@@ -1,0 +1,91 @@
+{
+  "dataset_id": "247efc75-31f2-4b19-bd4e-e670b1bf2783",
+  "title": "ממציאים לבקשות פטנטים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "ממציאים לבקשות פטנט",
+    "משרד המשפטים",
+    "פטנטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "פטנט",
+    "בקשה",
+    "כתובת",
+    "באנגלית",
+    "לבקשות",
+    "משרד",
+    "ממציאים",
+    "פטנטים",
+    "ממציא",
+    "האמצאה",
+    "בעברית",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "abd0e8c3-0b0d-4581-9166-923a3b21bdda",
+      "title": "ממציאים לבקשות פטנטים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם האמצאה בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם האמצאה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם ממציא בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם ממציא באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "כתובת ממציא באנגלית",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "כתובת ממציא בעברית",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 145883
+    },
+    {
+      "resource_id": "87c60529-e17e-41bf-ba0b-031b0d977d3a",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

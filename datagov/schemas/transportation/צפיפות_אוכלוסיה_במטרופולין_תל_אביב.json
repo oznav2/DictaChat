@@ -1,0 +1,96 @@
+{
+  "dataset_id": "445c75e1-02ed-47be-9086-4f0d058e43e3",
+  "title": "צפיפות אוכלוסיה במטרופולין תל אביב",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2017",
+    "GIS",
+    "מטרופולין תל אביב",
+    "ממג",
+    "צפיפות אוכלוסיה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "צפיפות",
+    "shape",
+    "pop",
+    "אביב",
+    "ממג",
+    "area",
+    "אוכלוסיה",
+    "בדרכים",
+    "משרד",
+    "מטרופולין",
+    "dens",
+    "fid",
+    "leng",
+    "והבטיחות",
+    "gis",
+    "במטרופולין",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d124dea7-813e-4ad7-b5b7-199c929034b0",
+      "title": "TAZ_TA_POPDENS_2017_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "fba0b2a8-e12b-42c6-9b96-ea8c555d8c4a",
+      "title": "TAZ_TA_POPDENS_2017_KML",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "98d177d7-d34d-4f8b-a9b6-358199869ba1",
+      "title": "TAZ_TA_POPDENS_2017_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "SHAPE_LENG",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "POP_DENS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Le_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1219
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

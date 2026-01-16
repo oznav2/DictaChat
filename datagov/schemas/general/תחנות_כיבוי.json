@@ -1,0 +1,295 @@
+{
+  "dataset_id": "51227f7b-26fe-4a79-ba70-5468add8b1a4",
+  "title": "תחנות כיבוי",
+  "organization": "כבאות והצלה לישראל",
+  "tags": [
+    "כיבוי",
+    "מיקום",
+    "מיקומי",
+    "תחנה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "כבאות",
+    "תחנה",
+    "לישראל",
+    "city",
+    "regional",
+    "מיקומי",
+    "geo",
+    "districtmail",
+    "והצלה",
+    "כיבוי",
+    "מיקום",
+    "street",
+    "emergencyphonenumber",
+    "station",
+    "code",
+    "type",
+    "district",
+    "תחנות",
+    "address",
+    "phonenumber",
+    "location"
+  ],
+  "resources": [
+    {
+      "resource_id": "7f3009dd-b299-462c-8a6d-9c645b68059f",
+      "title": "תחנות כיבוי והצלה בישראל - 2025",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "District",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Regional_Station",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Station",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Station_Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PhoneNumber",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Geo_X",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Geo_Y",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "City_Code",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "Street_Code",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "EmergencyPhoneNumber",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "DistrictMail",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 141
+    },
+    {
+      "resource_id": "9c4ff2f3-4596-41a7-9e04-36f22c5556f3",
+      "title": "תחנות כיבוי והצלה בישראל - 2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "District",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Regional_Station",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Station",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Station_Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PhoneNumber",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Geo_X",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Geo_Y",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "City_Code",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Street_Code",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "EmergencyPhoneNumber",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "DistrictMail",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 137
+    },
+    {
+      "resource_id": "230fcb10-b032-43e8-bb0b-6ed143253daa",
+      "title": "תחנות כיבוי והצלה בישראל - 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "District",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Regional_Station",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Station",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Station_Type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PhoneNumber",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Geo_X",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Geo_Y",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "City_Code",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Street_Code",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "EmergencyPhoneNumber",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "DistrictMail",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 132
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

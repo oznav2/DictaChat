@@ -1,0 +1,59 @@
+{
+  "dataset_id": "90723376-9db7-4bde-90c0-6f3d5b5cdf9d",
+  "title": "מערכת בטיחות ברכב",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "mispar",
+    "בטיחות",
+    "תחבורה",
+    "ברכב",
+    "בדרכים",
+    "משרד",
+    "רכב",
+    "מערכת",
+    "והבטיחות",
+    "updated",
+    "rechev",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "83bfb278-7be1-4dab-ae2d-40125a923da1",
+      "title": "רכבים זכאים להנחה לאחר התקנת מערכות בטיחות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "updated_dt",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 1267375
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

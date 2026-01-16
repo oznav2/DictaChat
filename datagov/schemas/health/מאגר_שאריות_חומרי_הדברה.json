@@ -1,0 +1,91 @@
+{
+  "dataset_id": "a11eddd8-8288-4a10-a991-76d65df3e6eb",
+  "title": "מאגר שאריות חומרי הדברה",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [
+    "בריאות",
+    "חומרי הדברה",
+    "חקלאות",
+    "מזון",
+    "סביבה"
+  ],
+  "categories": [
+    "health",
+    "environment",
+    "water",
+    "agriculture"
+  ],
+  "keywords": [
+    "בהמתנה",
+    "mrl",
+    "שאריות",
+    "חומרי",
+    "החקלאות",
+    "חומר",
+    "בריאות",
+    "אנגלי",
+    "משרד",
+    "גידול",
+    "מזון",
+    "תאריך",
+    "סביבה",
+    "ובטחון",
+    "המזון",
+    "פעיל",
+    "עדכון",
+    "הדברה",
+    "חקלאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "3ee1cd66-6176-4c1f-8d38-8f36a1461426",
+      "title": "מאגר שאריות חומרי הדברה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "חומר_פעיל",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "גידול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גידול_אנגלי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MRL",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תאריך_עדכון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "MRL_בהמתנה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3697
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

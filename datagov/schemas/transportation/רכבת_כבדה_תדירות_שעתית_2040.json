@@ -1,0 +1,91 @@
+{
+  "dataset_id": "a0f669c1-6531-45a7-893e-e44a8feb6b7c",
+  "title": "רכבת כבדה - תדירות שעתית 2040",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2040",
+    "GIS",
+    "חצב",
+    "ממג",
+    "רכבת",
+    "רכבת כבדה",
+    "תדירות"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "shape",
+    "רכבת",
+    "ממג",
+    "בדרכים",
+    "freq",
+    "משרד",
+    "fid",
+    "שעתית",
+    "והבטיחות",
+    "gis",
+    "leng",
+    "חצב",
+    "כבדה",
+    "תדירות",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "78ede376-8637-4284-bdb4-1f25a2de5cf8",
+      "title": "RAIL_FREQ_2040_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "3cf7e963-59ef-433f-86b8-a69c86df7a47",
+      "title": "RAIL_FREQ_2040_KML",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "9b389932-b81b-4cfc-9449-aa9dd267454b",
+      "title": "RAIL_FREQ_2040_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Shape_Leng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Le_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AB_FREQ",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 217
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

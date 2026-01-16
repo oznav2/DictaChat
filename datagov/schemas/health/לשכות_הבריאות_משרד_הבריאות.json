@@ -1,0 +1,81 @@
+{
+  "dataset_id": "47a42d57-ee3c-410f-8247-41a4d67914e4",
+  "title": "לשכות הבריאות - משרד הבריאות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות",
+    "בריאות ורווחה",
+    "לשכות בריאות",
+    "משרד הבריאות"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "כתובת",
+    "טלפון",
+    "פקס",
+    "משרד",
+    "דואר",
+    "הלשכה",
+    "ורווחה",
+    "הבריאות",
+    "אלקטרוני",
+    "הערות",
+    "בריאות",
+    "לשכות"
+  ],
+  "resources": [
+    {
+      "resource_id": "e01d86f2-e89f-4305-90e8-74cb88866092",
+      "title": "לשכות בריאות מחוזיות ונפתיות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הלשכה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "הערות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 19
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": true,
+    "has_date": false
+  }
+}

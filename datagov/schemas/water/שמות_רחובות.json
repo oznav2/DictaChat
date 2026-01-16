@@ -1,0 +1,56 @@
+{
+  "dataset_id": "82fd39ec-a528-431f-998c-04196ca0296e",
+  "title": "שמות רחובות",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "עירייה",
+    "רחובות",
+    "שמות רחובות"
+  ],
+  "categories": [
+    "water",
+    "municipal"
+  ],
+  "keywords": [
+    "עירייה",
+    "objectid",
+    "street",
+    "אדומים",
+    "עיריית",
+    "שמות",
+    "מעלה",
+    "רחובות"
+  ],
+  "resources": [
+    {
+      "resource_id": "6656e423-84b0-4f1e-923d-62c2c096cda0",
+      "title": "שמות רחובות בעיר מעלה אדומים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "STREET_N_1",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 286
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

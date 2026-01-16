@@ -1,0 +1,127 @@
+{
+  "dataset_id": "5fa008ee-eaec-4d3b-b6b9-2ca3a3a50270",
+  "title": "מטרונית",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "מטרונית",
+    "ממג",
+    "קווים",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "status",
+    "תחבורה",
+    "start",
+    "freq",
+    "gis",
+    "destnation",
+    "בדרכים",
+    "קווים",
+    "והבטיחות",
+    "number",
+    "משרד",
+    "lengt",
+    "חצב",
+    "ציבורית",
+    "yearmonth",
+    "shape",
+    "מטרונית",
+    "oid",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d9247cc9-d019-4a0b-a425-eec0fb8b1cfe",
+      "title": "METRONIT_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "f56c608d-f622-49e4-a52d-67be041198f2",
+      "title": "METRONIT_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "94cf10b7-6f84-4563-b917-e42ab8e94472",
+      "title": "METRONIT_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "START_",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DESTNATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FREQ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NUMBER_",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 9
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -40,8 +40,7 @@ describe("preprocessMessages (Docling path)", () => {
 		} satisfies MessageFile & { type: "base64" });
 
 		const convId = "6964e6b2f0e3e53e32dad255" as unknown as { toString(): string };
-		const sha =
-			"e4df048be5522d4c3fe61bd2a2cf1684375193443fee68db4ded0a42dcb4cf4d";
+		const sha = "e4df048be5522d4c3fe61bd2a2cf1684375193443fee68db4ded0a42dcb4cf4d";
 		const storedPath = `/app/uploads/${convId.toString()}/e4df048b_בגצ_בן_חמו.pdf`;
 
 		const messages: Message[] = [
@@ -74,4 +73,3 @@ describe("preprocessMessages (Docling path)", () => {
 		expect(mkdirMock).not.toHaveBeenCalled();
 	});
 });
-

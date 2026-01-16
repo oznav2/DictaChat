@@ -1,0 +1,183 @@
+{
+  "dataset_id": "048a0cfe-09be-452f-8c2a-4d7a5ec1d535",
+  "title": "מאגר נסיעות עובדים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "נסיעות"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "בדולרים",
+    "משרד",
+    "יעד",
+    "מתאריך",
+    "עובדים",
+    "מטרת",
+    "ארץ",
+    "משך",
+    "הכל",
+    "בשקלים",
+    "מימון",
+    "נסיעות",
+    "הנסיעה",
+    "תאריך",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "483e6415-0ff8-460a-a9c8-63c0faf3a639",
+      "title": "נסיעות עובדים 2015",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מטרת הנסיעה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ארץ יעד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מתאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עד תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "משך הנסיעה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סך הכל בשקלים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מימון הנסיעה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 243
+    },
+    {
+      "resource_id": "7fb09266-b1ea-41af-8324-dd944c61a2d7",
+      "title": "נסיעות עובדים 2016",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מטרת הנסיעה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ארץ יעד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מתאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עד תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "משך הנסיעה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סך הכל בשקלים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מימון הנסיעה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 291
+    },
+    {
+      "resource_id": "8c8e1644-ceb5-41c7-a447-defe7158f723",
+      "title": "נסיעות עובדים 2017",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מטרת הנסיעה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ארץ יעד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מתאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עד תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "משך הנסיעה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סך הכל בדולרים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מימון הנסיעה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 398
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "dataset_id": "3edcd023-f7ca-43eb-928f-6fdda479c172",
+  "title": "מסופים ומתקני תשתית תח\"צ",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "אוטובוסים",
+    "חצב",
+    "מסופים",
+    "משרד התחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "finance",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ravkav",
+    "matan",
+    "passserv",
+    "daypark",
+    "gis",
+    "makat",
+    "operator",
+    "בדרכים",
+    "off",
+    "parking",
+    "והבטיחות",
+    "אוטובוסים",
+    "activity",
+    "authority",
+    "משרד",
+    "fclarea",
+    "מסופים",
+    "district",
+    "חצב",
+    "תשתית",
+    "zihuy",
+    "yearmonth",
+    "shape",
+    "driver",
+    "market",
+    "area",
+    "oid",
+    "onoff",
+    "nightpark",
+    "ומתקני",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "2dcd861a-d605-4fc9-b59c-87c1523491e2",
+      "title": "BUS_TERMINAL_FCL_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "13df27e2-caed-47cd-895c-2997716b0ede",
+      "title": "BUS_TERMINAL_FCL_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "15e4d0e2-f961-4083-adbd-f93dcb14dde7",
+      "title": "BUS_TERMINAL_FCL_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ZIHUY",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MAKAT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "DISTRICT",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "AUTHORITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PASSSERV",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DAYPARK",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "NIGHTPARK",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MATAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FCLAREA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ACTIVITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "OFF",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ONOFF",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PARKING",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "DRIVER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "RAVKAV",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MARKET",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OPERATOR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "ON_",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 287
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

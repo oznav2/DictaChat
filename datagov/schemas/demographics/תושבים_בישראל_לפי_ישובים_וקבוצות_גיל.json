@@ -1,0 +1,234 @@
+{
+  "dataset_id": "00172ee8-4433-4d5d-8fd4-11f0f08ce5c4",
+  "title": "תושבים בישראל לפי ישובים וקבוצות גיל",
+  "organization": "רשות האוכלוסין וההגירה",
+  "tags": [
+    "אוכלוסיה",
+    "אוכלוסין",
+    "ישובים",
+    "מרשם",
+    "סטטיסטיקה",
+    "תושבים",
+    "תושבים לפי גיל"
+  ],
+  "categories": [
+    "demographics",
+    "immigration"
+  ],
+  "keywords": [
+    "מנא",
+    "אוכלוסיה",
+    "רשות",
+    "אזורית",
+    "סטטיסטיקה",
+    "גיל",
+    "וקבוצות",
+    "אוכלוסין",
+    "מרשם",
+    "מועצה",
+    "האוכלוסין",
+    "נפה",
+    "לשכת",
+    "סהכ",
+    "סמל",
+    "ישובים",
+    "קוד",
+    "וההגירה",
+    "פלוס",
+    "ישוב",
+    "תושבים",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "64edd0ee-3d5d-43ce-8562-c336c24dbc1f",
+      "title": "תושבים בישראל לפי ישובים וקבוצות גיל - מתעדכן",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל_ישוב",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_ישוב",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סמל_נפה",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "נפה",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "קוד_לשכת_מנא",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "לשכת_מנא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד_מועצה_אזורית",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "מועצה_אזורית",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סהכ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל_0_5",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל_6_18",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל_19_45",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל_46_55",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל_56_64",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל_65_פלוס",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1275
+    },
+    {
+      "resource_id": "254c8c50-9ae0-4559-a140-af54abe03f3f",
+      "title": "תושבים בישראל לפי ישובים וקבוצות גיל - מתעדכן",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a5e7080d-3c37-49c2-8cd0-cb2724809216",
+      "title": "תושבים בישראל לפי ישובים וקבוצות גיל ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל_ישוב",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_ישוב",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סמל_נפה",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "נפה",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "קוד_לשכת_מנא",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "לשכת_מנא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד_מועצה_אזורית",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "מועצה_אזורית",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סהכ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל_0_6",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל_6_18",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל_19_45",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל_46_55",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל_56_64",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גיל_65_פלוס",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1268
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

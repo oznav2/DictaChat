@@ -1,0 +1,163 @@
+{
+  "dataset_id": "23dbaf64-b284-4c59-8b11-b7fc6f1a9ecf",
+  "title": "מאגר פנקס מאגרי המידע",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "פנקס מאגרי מידע"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "מיקוד",
+    "דרך",
+    "קבע",
+    "קבלת",
+    "פנקס",
+    "מטרות",
+    "רחוב",
+    "בעל",
+    "רישום",
+    "המאגר",
+    "במאגר",
+    "העברת",
+    "מחזיקים",
+    "משרד",
+    "מזהה",
+    "תאריך",
+    "המשפטים",
+    "מגוף",
+    "סטטוס",
+    "מלא",
+    "בית",
+    "לחול",
+    "ישוב",
+    "סוגי",
+    "ציבורי",
+    "מאגרי",
+    "ארץ"
+  ],
+  "resources": [
+    {
+      "resource_id": "fd56bf5b-7918-4906-99e4-b0e5102ae268",
+      "title": "קובץ רשימת מאגרים לחופש המידע",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר מאגר",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מזהה בעל המאגר",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מלא",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם המאגר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מספר בית",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "ת.ד",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מיקוד",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ארץ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "העברת מידע לחול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטטוס מאגר",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך רישום המאגר",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סוגי מידע",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מטרות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קבלת מידע דרך קבע מגוף ציבורי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מחזיקים במאגר",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 31629
+    },
+    {
+      "resource_id": "d48af0f2-f70a-46ed-9a79-6297e6ce9e9e",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "2d1ada4d-0795-41c3-9a07-7586c975e8b4",
+      "title": "הוראות להצגה גרפית של מאגר.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

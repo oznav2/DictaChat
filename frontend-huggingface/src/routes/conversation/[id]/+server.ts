@@ -499,12 +499,10 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 					);
 				}
 
-				// Avoid remote keylogging attack executed by watching packet lengths
-				// by padding the text with null chars to a fixed length
-				// https://cdn.arstechnica.net/wp-content/uploads/2024/03/LLM-Side-Channel.pdf
-				if (event.type === MessageUpdateType.Stream) {
-					event = { ...event, token: event.token.padEnd(16, "\0") };
-				}
+				// NOTE: Null padding for keylogging prevention has been REMOVED
+				// The original approach (.padEnd(16, "\0")) broke Hebrew/UTF-8 encoding
+				// and caused JSON parsing failures on the frontend.
+				// For proper side-channel protection, use transport-layer padding instead.
 
 				messageToWriteTo.updatedAt = new Date();
 
@@ -517,9 +515,14 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 						}
 					} catch (err) {
 						clientDetached = true;
-						logger.info(
-							{ conversationId: convId.toString() },
-							"Client detached during message streaming"
+						// ENTERPRISE: Log detailed error context for debugging
+						logger.error(
+							{
+								conversationId: convId.toString(),
+								errorMessage: err instanceof Error ? err.message : String(err),
+								eventType: event.type,
+							},
+							"Client detached during message streaming - enqueue failed"
 						);
 					}
 				};

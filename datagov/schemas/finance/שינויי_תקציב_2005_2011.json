@@ -1,0 +1,153 @@
+{
+  "dataset_id": "2af98b26-56d4-4bd0-a41c-0f7fc6c058c7",
+  "title": "שינויי תקציב 2005-2011",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אוצר וכלכלה",
+    "שינויי תקציב",
+    "שינויים תקציב",
+    "תקציב"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "הוצאה",
+    "תיאור",
+    "אישור",
+    "שיא",
+    "וכלכלה",
+    "מיועדת",
+    "שינוי",
+    "סוג",
+    "הוצאות",
+    "מוביל",
+    "הכנסה",
+    "תקציב",
+    "שינויי",
+    "בהכנסה",
+    "שינויים",
+    "סעיף",
+    "נטו",
+    "וועדה",
+    "הרשאה",
+    "האוצר",
+    "להתחייב",
+    "תוכנית",
+    "משרד",
+    "אוצר",
+    "קוד",
+    "תאריך",
+    "בקשה",
+    "שנה",
+    "מותנית"
+  ],
+  "resources": [
+    {
+      "resource_id": "20facf80-a166-46c9-812a-10c7c65e94cf",
+      "title": "שינויי תקציב 2005-2011",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "סעיף מוביל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תיאור בקשה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד שינוי",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם שינוי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד סוג בקשה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם סוג בקשה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר וועדה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "קוד תוכנית",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תוכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "הוצאות נטו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הוצאה מותנית בהכנסה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הרשאה להתחייב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שיא כא",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תאריך אישור",
+          "type": "timestamp",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 49477
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

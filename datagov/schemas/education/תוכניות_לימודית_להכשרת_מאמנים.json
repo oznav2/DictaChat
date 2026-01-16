@@ -1,0 +1,59 @@
+{
+  "dataset_id": "2fdb049b-ac1e-45e8-92df-698457c333f9",
+  "title": "תוכניות לימודית להכשרת מאמנים",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "תוכניות לימודים הכשרת מאמנים ענף ספורט"
+  ],
+  "categories": [
+    "education",
+    "culture"
+  ],
+  "keywords": [
+    "תוכנית",
+    "להכשרת",
+    "מאמנים",
+    "התרבות",
+    "קישור",
+    "משרד",
+    "לימודית",
+    "ענף",
+    "לימודים",
+    "והספורט",
+    "הכשרת",
+    "תוכניות",
+    "ספורט"
+  ],
+  "resources": [
+    {
+      "resource_id": "5212bf7c-e866-48b7-9357-8f6e51d273c1",
+      "title": "תוכניות לימודית להכשרת מאמנים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תוכנית לימודים",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קישור",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 42
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

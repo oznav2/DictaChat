@@ -1,0 +1,98 @@
+{
+  "dataset_id": "b792e8c8-0d5f-4538-a3ec-c2cfb04b87b0",
+  "title": "מודל איגודים מאושר לשנת 2024 – קובץ לפרסום להערות הציבור",
+  "organization": "משרד התרבות והספורט",
+  "tags": [],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "מודל",
+    "ניקוד",
+    "איגודים",
+    "ספק",
+    "תקציב",
+    "התרבות",
+    "מבוקש",
+    "לענף",
+    "הענף",
+    "באיגודים",
+    "להערות",
+    "מאושר",
+    "מגב",
+    "משרד",
+    "לתמיכה",
+    "סופי",
+    "והספורט",
+    "לפרסום",
+    "הציבור",
+    "תחום",
+    "בקשה",
+    "סכום",
+    "מצטבר",
+    "לאחר",
+    "תמיכה"
+  ],
+  "resources": [
+    {
+      "resource_id": "851a1e2c-0e74-485a-a70d-9d6dd001a9f9",
+      "title": "מודל איגודים מאושר לשנת 2024 – קובץ לפרסום להערות הציבור",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תחום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מס' ספק",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם הענף",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סה''כ תקציב סופי לתמיכה באיגודים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סכום מבוקש",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך תמיכה מאושר לאחר מגב סכום מבוקש",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "ניקוד מצטבר לענף",
+          "type": "text",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 93
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

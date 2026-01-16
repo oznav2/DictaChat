@@ -1,0 +1,592 @@
+{
+  "dataset_id": "cb3b66dd-b840-44a4-97e6-38ff239c3040",
+  "title": "נושמים לרווחה",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "בריאות ורווחה",
+    "משרד הרווחה"
+  ],
+  "categories": [
+    "health",
+    "water",
+    "welfare"
+  ],
+  "keywords": [
+    "לרווחה",
+    "איבזור",
+    "הוצאה",
+    "והשכלה",
+    "כספ",
+    "תחבורה",
+    "כספיים",
+    "רשות",
+    "עבור",
+    "חשמל",
+    "והנ",
+    "חריגים",
+    "פעילות",
+    "רשותית",
+    "הסעה",
+    "נושמים",
+    "חינוך",
+    "ביגוד",
+    "סיוע",
+    "והביטחון",
+    "בריאות",
+    "חובות",
+    "המענים",
+    "מחוז",
+    "ריהוט",
+    "כמות",
+    "משרד",
+    "והתק",
+    "משפחות",
+    "חשמ",
+    "עבו",
+    "ורווחה",
+    "החברתי",
+    "הכל",
+    "שימושים",
+    "מוצרים",
+    "והש",
+    "הבית",
+    "תעסוקה",
+    "בסוג",
+    "שנה",
+    "מקבלות",
+    "בשח",
+    "שונות",
+    "מוצרי",
+    "הרווחה",
+    "חוגים",
+    "והנעלה"
+  ],
+  "resources": [
+    {
+      "resource_id": "b3c04a17-173e-47ff-9014-40301c5ef29f",
+      "title": "נושמים לרווחה 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "רשות",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "שם רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "כמות משפחות מקבלות סיוע",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל שימושים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  איבזור הב",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור איבזור הבית והתק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  ביגוד והנ",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור ביגוד והנעלה בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  הוצאה עבו",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור בריאות בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  חובות כספ",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור חובות כספיים בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  חוגים",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור חוגים בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  חינוך והש",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור חינוך והשכלה בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  מוצרי חשמ",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור מוצרי חשמל בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  מוצרים חר",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור מוצרים חריגים בש",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  ריהוט",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור ריהוט בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  שונות",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור שונות בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  תעסוקה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור תעסוקה בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  תחבורה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה הסעה בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  פעילות רש",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה פעילות רשותית בשח",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 89
+    },
+    {
+      "resource_id": "aa0512f9-ffda-4b33-8db7-d6faf1760f98",
+      "title": "נושמים לרווחה 2022",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "כמות משפחות מקבלות סיוע",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל שימושים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  איבזור הב",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור איבזור הבית והתק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  ביגוד והנ",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור ביגוד והנעלה בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  הוצאה עבו",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור בריאות בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  חובות כספ",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור חובות כספיים בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  חוגים",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור חוגים בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  חינוך והש",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור חינוך והשכלה בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  מוצרי חשמ",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור מוצרי חשמל בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  מוצרים חר",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור מוצרים חריגים בש",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  ריהוט",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור ריהוט בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  שונות",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור שונות בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  תעסוקה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור תעסוקה בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  תחבורה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה הסעה בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  פעילות רש",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה פעילות רשותית בשח",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 89
+    },
+    {
+      "resource_id": "a5d0eeed-55c2-478c-87a1-6bc7858748be",
+      "title": "נושמים לרווחה 2021",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "כמות משפחות מקבלות סיוע",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל שימושים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  איבזור הב",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור איבזור הבית והתק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  ביגוד והנ",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור ביגוד והנעלה בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  הוצאה עבו",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור בריאות בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  חובות כספ",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור חובות כספיים בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  חוגים",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור חוגים בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  חינוך והש",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור חינוך והשכלה בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  מוצרי חשמ",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור מוצרי חשמל בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  מוצרים חר",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור מוצרים חריגים בש",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  ריהוט",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור ריהוט בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  שונות",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור שונות בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  תעסוקה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה עבור תעסוקה בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  תחבורה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה הסעה בשח",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כמות סל המענים בסוג סיוע  פעילות רש",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סך הכל הוצאה פעילות רשותית בשח",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 90
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

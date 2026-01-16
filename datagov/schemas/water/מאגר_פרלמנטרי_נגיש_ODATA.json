@@ -1,0 +1,55 @@
+{
+  "dataset_id": "7c1f2185-dc05-40b2-a752-82a28b46e0f9",
+  "title": "מאגר פרלמנטרי נגיש - ODATA",
+  "organization": "הכנסת",
+  "tags": [
+    "ODATA",
+    "odata",
+    "הכנסת",
+    "הצעות חוק",
+    "ועדות הכנסת",
+    "חוקים",
+    "כנסת",
+    "מידע על חקיקה",
+    "מידע פרלמנטרי",
+    "מליאת הכנסת",
+    "סיעות וחברי הכנסת",
+    "שאילתות"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "נגיש",
+    "מליאת",
+    "הצעות",
+    "הכנסת",
+    "חוק",
+    "חקיקה",
+    "ועדות",
+    "כנסת",
+    "חוקים",
+    "וחברי",
+    "שאילתות",
+    "סיעות",
+    "odata",
+    "פרלמנטרי"
+  ],
+  "resources": [
+    {
+      "resource_id": "e91faa28-61ec-43a3-878f-efc5672efbb1",
+      "title": "ParliamentInfo.svc",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

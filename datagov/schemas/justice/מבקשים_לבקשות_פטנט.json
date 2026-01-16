@@ -1,0 +1,89 @@
+{
+  "dataset_id": "ebf84395-4784-4438-b9ca-08caf263beaf",
+  "title": "מבקשים לבקשות פטנט",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משפטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "פטנט",
+    "בקשה",
+    "כתובת",
+    "באנגלית",
+    "לבקשות",
+    "משרד",
+    "בעברית",
+    "מבקש",
+    "האמצאה",
+    "משפטים",
+    "מבקשים",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "b2b87f6c-832c-410d-a753-c52ec15cd793",
+      "title": "מבקשים לבקשות פטנט",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם האמצאה בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם האמצאה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם מבקש בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "כתובת מבקש בעברית",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "שם מבקש באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "כתובת מבקש באנגלית",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 281808
+    },
+    {
+      "resource_id": "db75261c-c98c-4e80-ae6c-c3dc4a3763c8",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

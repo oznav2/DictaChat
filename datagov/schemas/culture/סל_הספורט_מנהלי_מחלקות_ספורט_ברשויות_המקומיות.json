@@ -1,0 +1,120 @@
+{
+  "dataset_id": "0721250c-68ad-49ba-8b99-6bff0166ebf4",
+  "title": "סל הספורט - מנהלי מחלקות ספורט ברשויות המקומיות",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "מנהלי מחלקות ספורט רשויות מקומיות"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "כתובת",
+    "אינטרנט",
+    "מקומיות",
+    "טלפון",
+    "התרבות",
+    "פקס",
+    "ברשויות",
+    "מחלקת",
+    "מנהל",
+    "ראש",
+    "ספורט",
+    "מחוז",
+    "המקומיות",
+    "מנהלי",
+    "נייד",
+    "משרד",
+    "אתר",
+    "והספורט",
+    "מייל",
+    "רשויות",
+    "הרשות",
+    "בלשכה",
+    "מחלקות",
+    "הספורט",
+    "הערות"
+  ],
+  "resources": [
+    {
+      "resource_id": "3b653afb-3348-4ac3-aaba-6deadab9a262",
+      "title": "מנהלי מחלקות ספורט ברשויות המקומיות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הרשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "ראש הרשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מנהל מחלקת ספורט",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון נייד",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "מייל",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "אתר אינטרנט",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "מייל בלשכה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הערות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 253
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

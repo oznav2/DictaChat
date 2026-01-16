@@ -1,0 +1,45 @@
+{
+  "dataset_id": "e0e4efdb-cd29-48cd-861e-875d5f102775",
+  "title": "מאגר דוחות חקירה בטיחותיים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "בטיחות",
+    "דוחות חקירה בטיחותיים",
+    "טיסה",
+    "טיסות",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "water"
+  ],
+  "keywords": [
+    "חקירה",
+    "בטיחות",
+    "תחבורה",
+    "בדרכים",
+    "משרד",
+    "טיסות",
+    "והבטיחות",
+    "דוחות",
+    "טיסה",
+    "בטיחותיים",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c4c74af1-107e-4cb1-a207-3b492f2aa924",
+      "title": "מאגר דוחות חקירה בטיחותיים",
+      "format": "RSS",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

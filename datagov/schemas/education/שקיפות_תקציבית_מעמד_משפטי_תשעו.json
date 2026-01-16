@@ -1,0 +1,42 @@
+{
+  "dataset_id": "d52b9c76-0553-4027-980c-c254fb37a01e",
+  "title": "שקיפות תקציבית מעמד משפטי תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "מעמד_משפטי",
+    "תקציב"
+  ],
+  "categories": [
+    "education",
+    "finance",
+    "justice"
+  ],
+  "keywords": [
+    "תקציב",
+    "חינוך",
+    "משרד",
+    "החינוך",
+    "מעמד",
+    "משפטי",
+    "שקיפות",
+    "תקציבית",
+    "תשע"
+  ],
+  "resources": [
+    {
+      "resource_id": "27da4ac2-5eec-4ca6-ad6d-12aafe7c7b3d",
+      "title": "שקיפות תקציבית מעמד משפטי תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

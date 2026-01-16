@@ -1,0 +1,105 @@
+{
+  "dataset_id": "c27919df-83d8-4aba-8297-f307fa1737fd",
+  "title": "רופאים וטרינריים רשותיים",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [
+    "חקלאות",
+    "רופאים וטרינריים"
+  ],
+  "categories": [
+    "health",
+    "agriculture"
+  ],
+  "keywords": [
+    "המזון",
+    "טלפון",
+    "החקלאות",
+    "פקס",
+    "וטרינריים",
+    "אימייל",
+    "ישוב",
+    "משרד",
+    "רשותיים",
+    "רופאים",
+    "סמל",
+    "רשיון",
+    "לשכה",
+    "אזור",
+    "url",
+    "חקלאות",
+    "ובטחון",
+    "רופא"
+  ],
+  "resources": [
+    {
+      "resource_id": "4ea86e61-2b54-4a01-81e4-27dc6cd2c00c",
+      "title": "רופאים וטרינריים רשותיים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל_ישוב",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "אזור",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "רופא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר_רשיון_רופא",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "אימייל",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "לשכה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 1502
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "dataset_id": "5877dcf0-1895-4f35-b87b-c85a0b286318",
+  "title": "כלי רכב המחויבים בהתקנת נקודות עיגון לאבטחת מטענים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "mispar",
+    "עיגון",
+    "תחבורה",
+    "נקודות",
+    "בדרכים",
+    "המחויבים",
+    "לאבטחת",
+    "משרד",
+    "רכב",
+    "mishkal",
+    "מטענים",
+    "והבטיחות",
+    "בהתקנת",
+    "כלי",
+    "sug",
+    "rechev",
+    "התחבורה",
+    "kolel"
+  ],
+  "resources": [
+    {
+      "resource_id": "786b33b5-75c4-42a3-a241-b1af3c9ca487",
+      "title": "מאגר כלי רכב המחויבים בהתקנת נקודות עיגון לאבטחת מטענים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_EU_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_kolel",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 123870
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

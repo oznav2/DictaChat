@@ -1,0 +1,38 @@
+{
+  "dataset_id": "5aefc655-b7ac-4f67-b354-478b32d874a2",
+  "title": "נתוני אוכלוסיה בישובים בהם מעל 2000 תושבים",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "אוכלוסיה"
+  ],
+  "categories": [
+    "welfare",
+    "demographics"
+  ],
+  "keywords": [
+    "לאומי",
+    "אוכלוסיה",
+    "מעל",
+    "בישובים",
+    "לביטוח",
+    "בהם",
+    "תושבים",
+    "המוסד"
+  ],
+  "resources": [
+    {
+      "resource_id": "a3cf286a-2f80-4e8e-9357-83de6fb5b246",
+      "title": "נתוני אוכלוסיה",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

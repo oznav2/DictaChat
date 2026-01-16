@@ -1,0 +1,66 @@
+{
+  "dataset_id": "08eb735a-f3e2-405f-a452-f704598a9e7d",
+  "title": "בתי מלון בחיפה",
+  "organization": "עיריית חיפה",
+  "tags": [
+    "בתי מלון",
+    "חיפה",
+    "תיירות"
+  ],
+  "categories": [
+    "tourism"
+  ],
+  "keywords": [
+    "טלפון",
+    "בית",
+    "בתי",
+    "מלון",
+    "עיריית",
+    "בחיפה",
+    "חיפה",
+    "רחוב",
+    "תיירות"
+  ],
+  "resources": [
+    {
+      "resource_id": "cd63d130-fcd5-470d-8b86-a39ac1b66bd6",
+      "title": "בתי מלון בחיפה",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "בית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 14
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

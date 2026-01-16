@@ -1,0 +1,100 @@
+{
+  "dataset_id": "12ac3fa6-ac57-41d6-8519-17a3435754a7",
+  "title": "חקירות ילדים",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "חוקר ילדים",
+    "חקירות",
+    "חקירת ילדים"
+  ],
+  "categories": [
+    "justice",
+    "welfare"
+  ],
+  "keywords": [
+    "חוקר",
+    "עבירה",
+    "הנחקר",
+    "סוג",
+    "משרד",
+    "חקירות",
+    "מעמד",
+    "הרווחה",
+    "החברתי",
+    "והביטחון",
+    "ילדים",
+    "חקירת"
+  ],
+  "resources": [
+    {
+      "resource_id": "47c4c100-c549-4882-8021-8f36541893d7",
+      "title": "חקירות ילדים 2022",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג עבירה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מעמד הנחקר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סך חקירות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 30
+    },
+    {
+      "resource_id": "a879688d-444a-428c-9561-d97060a6025a",
+      "title": "חקירות ילדים 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג עבירה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מעמד הנחקר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סך חקירות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 42
+    },
+    {
+      "resource_id": "5691183f-70e9-4c58-ba10-3c3bad33fba5",
+      "title": "הסבר - חקירות ילדים",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

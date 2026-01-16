@@ -1,0 +1,107 @@
+{
+  "dataset_id": "bc0e0381-2fdf-4c5d-af37-4d34f3c60857",
+  "title": "רשימת קבלני שירות - שמירה, אבטחה וניקיון",
+  "organization": "משרד העבודה",
+  "tags": [
+    "אבטחה",
+    "ניקיון",
+    "רישוי קבלני שירות",
+    "שמירה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "רישוי",
+    "status",
+    "העבודה",
+    "identitynumber",
+    "אבטחה",
+    "companyceo",
+    "companyowner",
+    "משרד",
+    "town",
+    "licensenumber",
+    "שירות",
+    "ניקיון",
+    "קבלני",
+    "fieldfactivity",
+    "validuntil",
+    "address",
+    "שמירה",
+    "companyname",
+    "וניקיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "8d13ebff-f4f2-41e6-a39d-663f1c96c196",
+      "title": "רשימת קבלני שירות - שמירה, אבטחה וניקיון",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "identitynumber",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "companyname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "fieldfactivity",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "licensenumber",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "companyowner",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "companyceo",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "town",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "validuntil",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 3399
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

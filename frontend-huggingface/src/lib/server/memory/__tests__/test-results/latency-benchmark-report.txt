@@ -1,7 +1,7 @@
 ================================================================================
 MEMORY SYSTEM LATENCY BENCHMARK REPORT
 ================================================================================
-Timestamp: 2026-01-11T16:08:10.596Z
+Timestamp: 2026-01-15T12:55:33.804Z
 Iterations: 100
 Warmup: 10
 
@@ -16,45 +16,45 @@ RESULTS BY OPERATION:
 
 [PASS] embedding
   Samples: 100
-  Min: 0.00ms | Max: 0.17ms
-  Mean: 0.00ms | Std: 0.02ms
-  P50: 0.00ms | P95: 0.00ms | P99: 0.02ms
+  Min: 0.00ms | Max: 0.10ms
+  Mean: 0.00ms | Std: 0.01ms
+  P50: 0.00ms | P95: 0.00ms | P99: 0.01ms
 
 [PASS] vector_search
   Samples: 100
-  Min: 0.13ms | Max: 6.97ms
-  Mean: 0.36ms | Std: 0.95ms
-  P50: 0.18ms | P95: 0.41ms | P99: 6.82ms
+  Min: 0.09ms | Max: 0.50ms
+  Mean: 0.16ms | Std: 0.07ms
+  P50: 0.16ms | P95: 0.29ms | P99: 0.33ms
 
 [PASS] store_memory
   Samples: 100
-  Min: 0.03ms | Max: 8.48ms
-  Mean: 0.44ms | Std: 1.12ms
-  P50: 0.20ms | P95: 1.20ms | P99: 5.75ms
+  Min: 0.04ms | Max: 1.58ms
+  Mean: 0.09ms | Std: 0.15ms
+  P50: 0.08ms | P95: 0.15ms | P99: 0.20ms
 
 [PASS] llm_generation
   Samples: 100
-  Min: 0.00ms | Max: 0.00ms
+  Min: 0.00ms | Max: 0.05ms
   Mean: 0.00ms | Std: 0.00ms
-  P50: 0.00ms | P95: 0.00ms | P99: 0.00ms
+  P50: 0.00ms | P95: 0.00ms | P99: 0.02ms
 
 [PASS] embed_search_pipeline
   Samples: 100
-  Min: 0.21ms | Max: 5.84ms
-  Mean: 0.61ms | Std: 0.75ms
-  P50: 0.42ms | P95: 1.95ms | P99: 3.57ms
+  Min: 0.24ms | Max: 8.55ms
+  Mean: 0.64ms | Std: 0.86ms
+  P50: 0.49ms | P95: 1.07ms | P99: 2.89ms
 
 [PASS] full_retrieval_flow
   Samples: 50
-  Min: 0.19ms | Max: 1.88ms
-  Mean: 0.51ms | Std: 0.31ms
-  P50: 0.46ms | P95: 1.36ms | P99: 1.88ms
+  Min: 0.46ms | Max: 3.81ms
+  Mean: 0.63ms | Std: 0.47ms
+  P50: 0.54ms | P95: 0.72ms | P99: 3.81ms
 
 [PASS] concurrent_operations
   Samples: 5
-  Min: 4.08ms | Max: 6.22ms
-  Mean: 5.13ms | Std: 0.69ms
-  P50: 5.25ms | P95: 6.22ms | P99: 6.22ms
+  Min: 4.73ms | Max: 15.79ms
+  Mean: 7.22ms | Std: 4.29ms
+  P50: 5.07ms | P95: 15.79ms | P99: 15.79ms
 
 --------------------------------------------------------------------------------
 SUMMARY:

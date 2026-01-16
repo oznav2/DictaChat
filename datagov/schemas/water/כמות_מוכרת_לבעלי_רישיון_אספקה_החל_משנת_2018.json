@@ -1,0 +1,128 @@
+{
+  "dataset_id": "4f047e6f-bfca-4abd-81a2-15e22493efb5",
+  "title": "כמות מוכרת לבעלי רישיון אספקה החל משנת 2018",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "water",
+    "כמות מוכרת",
+    "מים",
+    "ספקי מים",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "מפורט",
+    "מטר",
+    "רשות",
+    "הממשלתית",
+    "מים",
+    "צרכן",
+    "מטויב",
+    "ספק",
+    "שפיר",
+    "לבעלי",
+    "קידוח",
+    "water",
+    "עילי",
+    "ספקי",
+    "כמות",
+    "משנת",
+    "מוכרת",
+    "למים",
+    "הרשות",
+    "החל",
+    "שנה",
+    "מליח",
+    "מקורות",
+    "ראשי",
+    "ולביוב",
+    "קוב",
+    "אספקה",
+    "המים",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "f6cbfff2-a7ba-4639-bd5d-b284651274e7",
+      "title": "כמות מוכרת",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר צרכן ראשי",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם צרכן ראשי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר צרכן מפורט",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם צרכן מפורט",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר ספק",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם ספק",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "מקורות שפיר (מטר קוב)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מקורות מליח (מטר קוב)",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קידוח שפיר(מטר קוב)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עילי שפיר (מטר קוב)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קידוח מטויב שפיר (מטר קוב)",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 11217
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

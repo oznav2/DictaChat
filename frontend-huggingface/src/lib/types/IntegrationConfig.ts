@@ -9,4 +9,3 @@ export interface IntegrationConfig {
 	createdAt: Date;
 	updatedAt?: Date;
 }
-

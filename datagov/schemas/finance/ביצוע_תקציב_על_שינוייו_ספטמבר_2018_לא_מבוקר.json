@@ -1,0 +1,84 @@
+{
+  "dataset_id": "37b2195c-dc1e-47d6-ad63-1c0b19010155",
+  "title": "ביצוע תקציב על שינוייו ספטמבר 2018 לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "שינויים ב"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "תוכנית",
+    "ברוטו",
+    "תקציב",
+    "מיועדת",
+    "ביצוע",
+    "שינויים",
+    "מבוקר",
+    "משרד",
+    "הכנסה",
+    "מקורי",
+    "ספטמבר",
+    "שינוייו",
+    "האוצר",
+    "התוכנית"
+  ],
+  "resources": [
+    {
+      "resource_id": "c69a69e6-cb44-4c4b-8157-bcad8b3a11b7",
+      "title": "אומדן ביצוע תקציב 30 בספטמבר 2018 לא מבוקר.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תוכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם התוכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תקציב ברוטו מקורי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו על שינוייו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע ברוטו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 588
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

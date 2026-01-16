@@ -1,0 +1,44 @@
+{
+  "dataset_id": "70776368-bef1-4153-9d8f-b720c05b1251",
+  "title": "שערי חליפין בקובץ XML",
+  "organization": "בנק ישראל",
+  "tags": [
+    "אוצר וכלכלה",
+    "בנק ישראל",
+    "מטבע חוץ",
+    "שערי חליפין"
+  ],
+  "categories": [
+    "finance",
+    "environment",
+    "economy"
+  ],
+  "keywords": [
+    "חליפין",
+    "וכלכלה",
+    "ישראל",
+    "מטבע",
+    "שערי",
+    "בנק",
+    "xml",
+    "אוצר",
+    "חוץ",
+    "בקובץ"
+  ],
+  "resources": [
+    {
+      "resource_id": "8429a584-ca05-441a-ab90-0758a9ebabea",
+      "title": "שערי חליפין בקובץ XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

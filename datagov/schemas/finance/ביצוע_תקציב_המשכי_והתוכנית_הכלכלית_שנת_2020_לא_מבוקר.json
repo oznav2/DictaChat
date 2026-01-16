@@ -1,0 +1,42 @@
+{
+  "dataset_id": "dab1177d-72a6-4dfc-b19c-60072908417d",
+  "title": "ביצוע תקציב המשכי והתוכנית הכלכלית - שנת 2020 - לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "שינויים בתקציב",
+    "תקציב",
+    "תקציב וביצוע"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "תקציב",
+    "ביצוע",
+    "שינויים",
+    "מבוקר",
+    "משרד",
+    "המשכי",
+    "והתוכנית",
+    "וביצוע",
+    "הכלכלית",
+    "האוצר",
+    "בתקציב"
+  ],
+  "resources": [
+    {
+      "resource_id": "23a13842-3119-4df7-b339-a5da6a63158a",
+      "title": "ביצוע תקציב המשכי והתוכנית הכלכלית - שנת 2020 - לא מבוקר",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

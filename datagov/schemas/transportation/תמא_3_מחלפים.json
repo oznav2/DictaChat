@@ -1,0 +1,179 @@
+{
+  "dataset_id": "8a2361f6-9518-457a-8bf1-e8c4cbb301fc",
+  "title": "תמ\"א 3 - מחלפים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "מחלפים",
+    "ממג",
+    "תחבורה",
+    "תמא",
+    "תמא 3"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "תמא",
+    "תחבורה",
+    "objectid",
+    "status",
+    "typeroad",
+    "gis",
+    "relevance",
+    "resu",
+    "בדרכים",
+    "keta",
+    "והבטיחות",
+    "scale",
+    "מחלפים",
+    "class",
+    "משרד",
+    "type",
+    "חצב",
+    "digitation",
+    "road",
+    "notes",
+    "planed",
+    "tra",
+    "tasrit",
+    "question",
+    "descrption",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "eac66038-3830-4fb9-9b4d-739147e7a49b",
+      "title": "TMA_3_POINTS_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "6302c07e-dea7-4561-b92d-dc2db12e9278",
+      "title": "TMA_3_POINTS_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "cc777f34-02cd-4ff8-b28a-944fd072117c",
+      "title": "TMA_3_POINTS_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Keta",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DESCRPTION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YP_Resu_Nu",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YP_Resu_Da",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ROAD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Planed_Tra",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "Tasrit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Scale",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Relevance",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Digitation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NOTES",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Question_N",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CLASS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Type_Road",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "typeRoad_1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 725
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

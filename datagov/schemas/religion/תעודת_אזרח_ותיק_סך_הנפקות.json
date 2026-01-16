@@ -1,0 +1,102 @@
+{
+  "dataset_id": "5e18e676-9848-46d0-bd0b-0041232a33fe",
+  "title": "תעודת אזרח ותיק - סך הנפקות",
+  "organization": "המשרד לשוויון חברתי",
+  "tags": [
+    "62",
+    "67",
+    "אזרח",
+    "גברים",
+    "המשרד",
+    "המשרד לשוויון חברתי",
+    "הנפקת תעודה",
+    "ותיק",
+    "חברתי",
+    "כרטיס",
+    "לשוויון חברתי",
+    "נשים",
+    "שוויון",
+    "תעודת",
+    "תעודת אזרח ותיק"
+  ],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "אזרח",
+    "לשוויון",
+    "חברתי",
+    "האוכלסין",
+    "מסד",
+    "גברים",
+    "נשים",
+    "ישוב",
+    "מרשם",
+    "שוויון",
+    "המשרד",
+    "הנפקות",
+    "כרטיס",
+    "תעודה",
+    "תעודת",
+    "קוד",
+    "הנפקת",
+    "ותיק"
+  ],
+  "resources": [
+    {
+      "resource_id": "bca8d6bb-09bb-486e-a494-593c83071ec9",
+      "title": "Senior_Card.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מסד",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קוד ישוב מרשם האוכלסין",
+          "type": "numeric",
+          "semantic": "name"
+        },
+        {
+          "name": "שם ישוב",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סך הנפקות 2015",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סך הנפקות 2016",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סך הנפקות 2017",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סך הנפקות 11.2018",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1215
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}
