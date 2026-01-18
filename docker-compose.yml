@@ -248,6 +248,8 @@ services:
       - PUBLIC_APP_DATA_SHARING=1
       - PUBLIC_APP_DISCLAIMER=0
       - MONGODB_URL=mongodb://mongo:27017/chat-ui
+      - MONGODB_DB_NAME=chat-ui
+      - MONGODB_DIRECT_CONNECTION=false
       - HF_TOKEN=${HF_TOKEN:-}
       - DOCKER_ENV=true
       - OPENAI_BASE_URL=http://bricksllm:8002/api/custom/providers/llama-cpp-root
@@ -271,7 +273,8 @@ services:
       - MEMORY_UI_ENABLED=${MEMORY_UI_ENABLED:-true}
       - MEMORY_QDRANT_ENABLED=${MEMORY_QDRANT_ENABLED:-true}
       - MEMORY_BM25_ENABLED=${MEMORY_BM25_ENABLED:-true}
-      - MEMORY_RERANK_ENABLED=${MEMORY_RERANK_ENABLED:-true}
+      # Default false - enable after verifying dicta-retrieval reranker is stable
+      - MEMORY_RERANK_ENABLED=${MEMORY_RERANK_ENABLED:-false}
       - MEMORY_OUTCOME_ENABLED=${MEMORY_OUTCOME_ENABLED:-true}
       - MEMORY_PROMOTION_ENABLED=${MEMORY_PROMOTION_ENABLED:-true}
       - QDRANT_HOST=qdrant
@@ -291,6 +294,8 @@ services:
       - ./frontend-huggingface:/app
       - /app/node_modules
       - mcp_uploads:/app/uploads
+      # DataGov schemas for memory system ingestion
+      - ./datagov:/app/datagov:ro
     depends_on:
       - mongo
       - mcp-sse-proxy
@@ -410,13 +415,16 @@ services:
       - RERANKER_MODEL_NAME=${RERANKER_MODEL_NAME:-/app/models/reranking/bge-reranker-v2-m3-q8_0.gguf}
       - EMBEDDINGS_MODEL_CTX_SIZE=${EMBEDDINGS_MODEL_CTX_SIZE:-8192}
       - EMBEDDINGS_MODEL_BATCH_SIZE=${EMBEDDINGS_MODEL_BATCH_SIZE:-512}
-      - EMBEDDINGS_MODEL_UBATCH_SIZE=${EMBEDDINGS_MODEL_UBATCH_SIZE:-128}
+      # Increased to handle document chunks up to 2000 chars (~500 tokens)
+      - EMBEDDINGS_MODEL_UBATCH_SIZE=${EMBEDDINGS_MODEL_UBATCH_SIZE:-1024}
       - EMBEDDINGS_MODEL_THREADS=${EMBEDDINGS_MODEL_THREADS:-8}
       - EMBEDDINGS_MODEL_N_GPU_LAYERS=${EMBEDDINGS_MODEL_N_GPU_LAYERS:--1}
       - EMBEDDINGS_MODEL_MAIN_GPU=${EMBEDDINGS_MODEL_MAIN_GPU:-0}
       - RERANKER_MODEL_CTX_SIZE=${RERANKER_MODEL_CTX_SIZE:-8192}
       - RERANKER_MODEL_BATCH_SIZE=${RERANKER_MODEL_BATCH_SIZE:-512}
-      - RERANKER_MODEL_UBATCH_SIZE=${RERANKER_MODEL_UBATCH_SIZE:-128}
+      # CRITICAL FIX: ubatch must be >= n_tokens for reranker encoder
+      # Set to 4096 to handle documents up to ~10k chars (rerank_max_input_chars)
+      - RERANKER_MODEL_UBATCH_SIZE=${RERANKER_MODEL_UBATCH_SIZE:-4096}
       - RERANKER_MODEL_THREADS=${RERANKER_MODEL_THREADS:-8}
       - RERANKER_MODEL_N_GPU_LAYERS=${RERANKER_MODEL_N_GPU_LAYERS:--1}
       - RERANKER_MODEL_MAIN_GPU=${RERANKER_MODEL_MAIN_GPU:-0}
@@ -453,6 +461,50 @@ services:
     runtime: nvidia
     networks:
       - bricksllm-network
+
+  # DictaBERT-NER Service - Hebrew Named Entity Recognition
+  ner-service:
+    build:
+      context: ./ner-service
+      dockerfile: Dockerfile
+    container_name: dicta-ner
+    hostname: dicta-ner
+    environment:
+      - PORT=5007
+      - MODEL_NAME=dicta-il/dictabert-ner
+      - DEVICE=cuda
+      - MAX_BATCH_SIZE=32
+      - MAX_SEQUENCE_LENGTH=512
+      - TIMEOUT_SECONDS=2
+      - NER_MIN_CONFIDENCE=0.85
+      - LOG_LEVEL=INFO
+      # Performance tuning
+      - TORCH_NUM_THREADS=4
+      - OMP_NUM_THREADS=4
+    ports:
+      - "5007:5007"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5007/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - bricksllm-network
+    # CRITICAL: Start after dicta-retrieval to avoid GPU memory contention
+    depends_on:
+      dicta-retrieval:
+        condition: service_healthy
 
 networks:
   bricksllm-network:

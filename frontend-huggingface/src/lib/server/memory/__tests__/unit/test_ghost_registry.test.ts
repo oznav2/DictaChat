@@ -652,7 +652,7 @@ describe("TestQdrantStatusFiltering", () => {
 				vector: [0.1, 0.2, 0.3],
 				payload: {
 					user_id: userId,
-					tier: "books",
+					tier: "documents",
 					status: "active" as const,
 					content: "Active book content 1",
 					tags: ["book"],
@@ -663,7 +663,7 @@ describe("TestQdrantStatusFiltering", () => {
 				vector: [0.2, 0.3, 0.4],
 				payload: {
 					user_id: userId,
-					tier: "books",
+					tier: "documents",
 					status: "active" as const,
 					content: "Active book content 2",
 					tags: ["book"],
@@ -674,7 +674,7 @@ describe("TestQdrantStatusFiltering", () => {
 				vector: [0.3, 0.4, 0.5],
 				payload: {
 					user_id: userId,
-					tier: "books",
+					tier: "documents",
 					status: "archived" as const,
 					content: "Archived (ghost) content 1",
 					tags: ["book"],
@@ -685,7 +685,7 @@ describe("TestQdrantStatusFiltering", () => {
 				vector: [0.4, 0.5, 0.6],
 				payload: {
 					user_id: userId,
-					tier: "books",
+					tier: "documents",
 					status: "archived" as const,
 					content: "Archived (ghost) content 2",
 					tags: ["book"],
@@ -875,7 +875,7 @@ describe("TestBookRemovalGhostBehavior", () => {
 				vector: [0.1, 0.2, 0.3],
 				payload: {
 					user_id: userId,
-					tier: "books",
+					tier: "documents",
 					status: "active" as const,
 					content: "Book chapter 1 content",
 					tags: ["book_123"],
@@ -886,7 +886,7 @@ describe("TestBookRemovalGhostBehavior", () => {
 				vector: [0.2, 0.3, 0.4],
 				payload: {
 					user_id: userId,
-					tier: "books",
+					tier: "documents",
 					status: "active" as const,
 					content: "Book chapter 2 content",
 					tags: ["book_123"],
@@ -897,7 +897,7 @@ describe("TestBookRemovalGhostBehavior", () => {
 				vector: [0.3, 0.4, 0.5],
 				payload: {
 					user_id: userId,
-					tier: "books",
+					tier: "documents",
 					status: "active" as const,
 					content: "Different book content",
 					tags: ["book_456"],
@@ -930,7 +930,7 @@ describe("TestBookRemovalGhostBehavior", () => {
 		// Simulate removeBook: archive in MongoDB, update status in Qdrant
 		const bookMemories = await mockMongoStore.query({
 			userId,
-			tier: "books",
+			tier: "documents",
 			metadata: { book_id: "book_123" },
 		});
 
@@ -974,7 +974,7 @@ describe("TestBookRemovalGhostBehavior", () => {
 
 		const bookMemories = await mockMongoStore.query({
 			userId,
-			tier: "books",
+			tier: "documents",
 			metadata: { book_id: "book_123" },
 		});
 

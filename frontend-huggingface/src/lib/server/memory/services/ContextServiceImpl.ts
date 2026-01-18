@@ -8,6 +8,7 @@
 import { logger } from "$lib/server/logger";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
+import { getMemoryFeatureFlags } from "../featureFlags";
 import type { ContextInsights, SearchDebug } from "../types";
 import type {
 	ContextService,
@@ -49,11 +50,13 @@ export class ContextServiceImpl implements ContextService {
 			const limit = params.limit ?? coldStartConfig.limit;
 
 			// Search for high-value memories using cold-start query
+			// Respect the MEMORY_RERANK_ENABLED feature flag for graceful degradation
+			const flags = getMemoryFeatureFlags();
 			const searchResult = await this.searchService.search({
 				userId: params.userId,
 				query: coldStartConfig.query,
 				limit,
-				enableRerank: true,
+				enableRerank: flags.rerankEnabled,
 			});
 
 			if (searchResult.results.length === 0) {

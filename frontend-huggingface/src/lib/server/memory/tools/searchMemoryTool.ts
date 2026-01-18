@@ -26,7 +26,7 @@ The memory system has 5 tiers:
 - working: Recent cross-conversation insights
 - history: Session-specific memories
 - patterns: Learned behavioral patterns
-- books: Uploaded document content
+- documents: Uploaded document content
 - memory_bank: Permanent user knowledge
 
 Results are numbered [1], [2], etc. Use these numbers in record_response to score which memories were helpful.`,
@@ -41,7 +41,7 @@ Results are numbered [1], [2], etc. Use these numbers in record_response to scor
 				type: "array",
 				items: {
 					type: "string",
-					enum: ["working", "history", "patterns", "books", "memory_bank", "all"],
+					enum: ["working", "history", "patterns", "documents", "memory_bank", "all"],
 				},
 				description:
 					"Which memory tiers to search. Defaults to all. Use specific tiers for faster, focused results.",
@@ -188,7 +188,7 @@ function resolveCollections(collections?: string[]): MemoryTier[] | "all" {
 	}
 
 	const validTiers: MemoryTier[] = [];
-	const tierSet = new Set(["working", "history", "patterns", "books", "memory_bank"]);
+	const tierSet = new Set(["working", "history", "patterns", "documents", "memory_bank"]);
 
 	for (const c of collections) {
 		if (tierSet.has(c)) {

@@ -96,10 +96,15 @@ export const runs = writable<Map<string, RunState>>(new Map());
 /**
  * Create a new run
  */
-export function createRun(runId: string, language: "he" | "en" = "en"): void {
+export function createRun(
+	runId: string,
+	language: "he" | "en" = "en",
+	runType?: "memory_prefetch" | "tool_execution" | "document_rag"
+): void {
 	runs.update((map) => {
 		map.set(runId, {
 			runId,
+			runType,
 			steps: new Map(),
 			stepOrder: [],
 			childrenByParent: new Map(),
@@ -180,13 +185,10 @@ export function completeRun(runId: string): void {
 		return new Map(map);
 	});
 
-	// Auto-collapse after 2 seconds
+	// Auto-remove after 2 seconds (panel disappears)
 	setTimeout(() => {
 		runs.update((map) => {
-			const run = map.get(runId);
-			if (run) {
-				run.expanded = false;
-			}
+			map.delete(runId);
 			return new Map(map);
 		});
 	}, 2000);
@@ -359,7 +361,7 @@ export function handleMessageTraceUpdate(update: MessageTraceUpdate): void {
 
 	switch (update.subtype) {
 		case MessageTraceUpdateType.RunCreated:
-			createRun(update.runId, "en");
+			createRun(update.runId, "en", update.runType as "memory_prefetch" | "tool_execution" | "document_rag" | undefined);
 			break;
 
 		case MessageTraceUpdateType.StepCreated:

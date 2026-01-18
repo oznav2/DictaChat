@@ -112,7 +112,7 @@
 	}
 </script>
 
-{#if (hasKnownContext || hasCitations) && !isStreaming}
+{#if (hasKnownContext || hasCitations || isFeedbackEligible) && !isStreaming}
 	<div
 		class="memory-context-indicator mt-3 space-y-2"
 		dir={isRTL ? "rtl" : "ltr"}
@@ -161,7 +161,7 @@
 								{@const itemConfidence = item.wilson_score ?? item.confidence ?? 0.5}
 								<div
 									class="flex items-start gap-2 rounded border-l-2 bg-white/60 p-2 dark:bg-gray-900/40 {item.tier ===
-									'books'
+									'documents'
 										? 'border-purple-400'
 										: item.tier === 'patterns'
 											? 'border-green-400'

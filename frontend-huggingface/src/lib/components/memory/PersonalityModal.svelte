@@ -4,6 +4,8 @@
 	import { base } from "$app/paths";
 	import Modal from "$lib/components/Modal.svelte";
 	import { memoryUi } from "$lib/stores/memoryUi";
+	// Phase: Wire remaining 64 - PersonalitySelector integration
+	import PersonalitySelector from "$lib/components/personality/PersonalitySelector.svelte";
 
 	interface Preset {
 		id: string;
@@ -90,6 +92,28 @@
 		{ value: "medium", label: "בינוני" },
 		{ value: "high", label: "גבוה" },
 	];
+
+	// Phase: Wire remaining 64 - Color mapping for PersonalitySelector badges
+	const presetColors: Record<string, string> = {
+		default: "bg-gray-500",
+		friendly: "bg-blue-500",
+		professional: "bg-indigo-600",
+		casual: "bg-green-500",
+		formal: "bg-purple-600",
+		creative: "bg-pink-500",
+		technical: "bg-cyan-600",
+		hebrew: "bg-amber-500",
+	};
+
+	// Transform presets for PersonalitySelector
+	let selectorPersonalities = $derived(
+		presets.map((p) => ({
+			id: p.id,
+			name: p.name,
+			color: presetColors[p.id] ?? "bg-gray-500",
+			isActive: p.id === selectedPresetId,
+		}))
+	);
 
 	function handleClose() {
 		memoryUi.closePersonality();
@@ -302,6 +326,16 @@ custom_instructions: "${data.custom_instructions}"
 				התאם את אופי התגובות והסגנון של העוזר
 			</p>
 		</div>
+
+		<!-- Quick Preset Selection Badges -->
+		{#if selectorPersonalities.length > 0}
+			<div class="mb-4">
+				<PersonalitySelector
+					personalities={selectorPersonalities}
+					onselect={(id) => loadPreset(id)}
+				/>
+			</div>
+		{/if}
 
 		<!-- Mode Tabs -->
 		<div class="mb-4 flex gap-2">

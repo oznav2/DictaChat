@@ -147,6 +147,7 @@ export interface MemoryConfig {
 		reranker: CircuitBreakerConfig;
 		embeddings: CircuitBreakerConfig;
 		contextual_prefix: CircuitBreakerConfig;
+		ner: CircuitBreakerConfig;
 	};
 	cold_start: ColdStartConfig;
 	recency: RecencyConfig;
@@ -165,7 +166,7 @@ export const defaultMemoryConfig: MemoryConfig = {
 		qdrant_query_ms: 10_000, // 10s for first-use model loading, SQLite locks, HNSW scenarios
 		mongo_text_query_ms: 1_500,
 		mongo_aggregate_ms: 1_500,
-		reranker_ms: 4_000,
+		reranker_ms: 2_000, // Reduced from 4s to 2s for better UX - skip reranking if slow
 		embeddings_ms: 3_000,
 		contextual_prefix_ms: 5_000,
 		book_conversion_ms: 30_000,
@@ -227,9 +228,9 @@ export const defaultMemoryConfig: MemoryConfig = {
 			half_open_max_concurrency: 1,
 		},
 		reranker: {
-			failure_threshold: 2,
+			failure_threshold: 3, // Increased from 2 to match qdrant/bm25 - less aggressive circuit opening
 			success_threshold: 2,
-			open_duration_ms: 60_000,
+			open_duration_ms: 30_000, // Reduced from 60s to 30s for faster recovery
 			half_open_max_concurrency: 1,
 		},
 		embeddings: {
@@ -242,6 +243,12 @@ export const defaultMemoryConfig: MemoryConfig = {
 			failure_threshold: 2,
 			success_threshold: 2,
 			open_duration_ms: 60_000,
+			half_open_max_concurrency: 1,
+		},
+		ner: {
+			failure_threshold: 3,
+			success_threshold: 2,
+			open_duration_ms: 30_000,
 			half_open_max_concurrency: 1,
 		},
 	},

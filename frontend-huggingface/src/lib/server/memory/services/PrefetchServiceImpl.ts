@@ -15,6 +15,7 @@ import { logger } from "$lib/server/logger";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
 import { memoryMetrics } from "../observability";
+import { getMemoryFeatureFlags } from "../featureFlags";
 import type { SearchDebug, RetrievalConfidence, MemoryTier } from "../types";
 import { MEMORY_TIER_GROUPS } from "../types";
 import type { SearchService as HybridSearchService } from "../search/SearchService";
@@ -79,6 +80,8 @@ export class PrefetchServiceImpl implements PrefetchService {
 			const tiers = this.determineTierPlan(params.hasDocuments, params.includeDataGov);
 
 			const parallelStart = Date.now();
+			// Respect the MEMORY_RERANK_ENABLED feature flag for graceful degradation
+			const flags = getMemoryFeatureFlags();
 			const [alwaysInjectMemories, searchResponse] = await Promise.all([
 				this.fetchAlwaysInjectMemories(params.userId),
 				this.hybridSearch.search({
@@ -86,7 +89,7 @@ export class PrefetchServiceImpl implements PrefetchService {
 					query: params.query,
 					tiers,
 					limit,
-					enableRerank: true,
+					enableRerank: flags.rerankEnabled,
 				}),
 			]);
 			timings.parallel_prefetch_ms = Date.now() - parallelStart;
@@ -194,14 +197,22 @@ export class PrefetchServiceImpl implements PrefetchService {
 	/**
 	 * Determine which tiers to search based on context
 	 * Phase 25: Now supports DataGov tiers when includeDataGov is true
+	 *
+	 * CRITICAL FIX: Documents tier is ALWAYS included because uploaded documents
+	 * are persistent RAG sources. Users expect to query their documents anytime,
+	 * not just when the document is currently attached to the message.
+	 * The hasDocuments flag now only affects search priority, not inclusion.
 	 */
 	private determineTierPlan(hasDocuments: boolean, includeDataGov?: boolean): MemoryTier[] {
 		// Always include working (cross-conversation) and memory_bank (permanent)
 		const tiers: MemoryTier[] = ["working", "memory_bank"];
 
-		// Include books if documents are attached
+		// CRITICAL FIX: Always include documents tier for persistent RAG
+		// Uploaded documents should be searchable regardless of current attachments
+		// hasDocuments flag indicates if current message has attachments (for logging/priority)
+		tiers.push("documents");
 		if (hasDocuments) {
-			tiers.push("books");
+			logger.debug("[PrefetchService] Current message has document attachments - prioritizing documents tier");
 		}
 
 		// Include patterns for learned behaviors

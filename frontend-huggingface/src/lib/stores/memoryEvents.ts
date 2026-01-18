@@ -3,8 +3,8 @@ import { writable } from "svelte/store";
 
 export type MemoryEventType =
 	| "memory_updated"
-	| "book_ingested"
-	| "book_deleted"
+	| "document_ingested"
+	| "document_deleted"
 	| "kg_updated"
 	| "action_completed";
 

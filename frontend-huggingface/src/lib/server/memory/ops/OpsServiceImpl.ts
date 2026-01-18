@@ -739,7 +739,7 @@ export class OpsServiceImpl {
 	/**
 	 * Get memory system stats snapshot
 	 *
-	 * Note: Books are stored in a separate 'books' collection, so we need to
+	 * Note: Documents are stored in a separate 'documents' collection, so we need to
 	 * count them separately and merge into the stats.
 	 */
 	async getStats(userId: string): Promise<StatsSnapshot> {
@@ -748,7 +748,7 @@ export class OpsServiceImpl {
 			"working",
 			"history",
 			"patterns",
-			"books",
+			"documents",
 			"memory_bank",
 			"datagov_schema",
 			"datagov_expansion",
@@ -782,14 +782,14 @@ export class OpsServiceImpl {
 			])
 			.toArray();
 
-		// Also count books from the dedicated books collection
-		// Books are stored separately from memory_items for document management
-		let booksActiveCount = 0;
-		let booksArchivedCount = 0;
-		let booksTotalChunks = 0;
+		// Also count documents from the dedicated documents collection
+		// Documents are stored separately from memory_items for document management
+		let documentsActiveCount = 0;
+		let documentsArchivedCount = 0;
+		let documentsTotalChunks = 0;
 		try {
-			const booksCollection = this.db.collection("books");
-			const booksAgg = await booksCollection
+			const documentsCollection = this.db.collection("documents");
+			const documentsAgg = await documentsCollection
 				.aggregate<{
 					_id: string | null;
 					count: number;
@@ -808,16 +808,16 @@ export class OpsServiceImpl {
 				])
 				.toArray();
 
-			for (const agg of booksAgg) {
+			for (const agg of documentsAgg) {
 				if (agg._id === "completed" || agg._id === "active" || !agg._id) {
-					booksActiveCount += agg.count;
-					booksTotalChunks += agg.totalChunks;
+					documentsActiveCount += agg.count;
+					documentsTotalChunks += agg.totalChunks;
 				} else if (agg._id === "archived") {
-					booksArchivedCount += agg.count;
+					documentsArchivedCount += agg.count;
 				}
 			}
 		} catch (err) {
-			logger.warn({ err }, "Failed to get books stats from books collection");
+			logger.warn({ err }, "Failed to get documents stats from documents collection");
 		}
 
 		// Also count items from the dedicated memoryBank collection
@@ -860,16 +860,16 @@ export class OpsServiceImpl {
 				const failed = agg?.failed_total ?? 0;
 				const denom = worked + failed;
 
-				// For books tier, merge counts from both memory_items AND books collection
-				if (tier === "books") {
+				// For documents tier, merge counts from both memory_items AND documents collection
+				if (tier === "documents") {
 					const memoryItemsActive = agg?.active_count ?? 0;
 					const memoryItemsArchived = agg?.archived_count ?? 0;
 					return [
 						tier,
 						{
-							// Books chunks in memory_items PLUS books count from books collection
-							active_count: memoryItemsActive + booksTotalChunks + booksActiveCount,
-							archived_count: memoryItemsArchived + booksArchivedCount,
+							// Document chunks in memory_items PLUS documents count from documents collection
+							active_count: memoryItemsActive + documentsTotalChunks + documentsActiveCount,
+							archived_count: memoryItemsArchived + documentsArchivedCount,
 							deleted_count: agg?.deleted_count ?? 0,
 							uses_total: agg?.uses_total ?? 0,
 							success_rate: denom > 0 ? worked / denom : 0.5,
@@ -955,13 +955,13 @@ export class OpsServiceImpl {
 	}
 
 	/**
-	 * Clear all books for a user (v0.2.9 "Clear Books" functionality)
+	 * Clear all documents for a user (v0.2.9 "Clear Documents" functionality)
 	 *
 	 * This is the "nuke" operation that:
-	 * 1. Deletes all books from MongoDB
-	 * 2. Deletes all books vectors from Qdrant
-	 * 3. Clears ghost registry for books tier
-	 * 4. Clears Action KG entries for books
+	 * 1. Deletes all documents from MongoDB
+	 * 2. Deletes all documents vectors from Qdrant
+	 * 3. Clears ghost registry for documents tier
+	 * 4. Clears Action KG entries for documents
 	 *
 	 * RoamPal Parity: delete_collection() + create_collection() rebuilt HNSW
 	 * DictaChat: Uses filter deletion (Qdrant supports this efficiently)
@@ -969,7 +969,7 @@ export class OpsServiceImpl {
 	 * @param userId - User identifier
 	 * @returns Clear result with counts
 	 */
-	async clearBooksTier(userId: string): Promise<{
+	async clearDocumentsTier(userId: string): Promise<{
 		success: boolean;
 		mongoDeleted: number;
 		qdrantDeleted: number;
@@ -986,32 +986,32 @@ export class OpsServiceImpl {
 			errors: [] as string[],
 		};
 
-		logger.info({ userId }, "OpsService: Clearing books tier (nuke)");
+		logger.info({ userId }, "OpsService: Clearing documents tier (nuke)");
 		const startTime = Date.now();
 
-		// Step 1: Get book memory IDs before deletion (for Action KG cleanup)
+		// Step 1: Get document memory IDs before deletion (for Action KG cleanup)
 		const { items } = this.mongo.getCollections();
-		let bookMemoryIds: string[] = [];
+		let documentMemoryIds: string[] = [];
 		try {
-			const bookDocs = await items
-				.find({ user_id: userId, tier: "books" })
+			const documentDocs = await items
+				.find({ user_id: userId, tier: "documents" })
 				.project({ memory_id: 1 })
 				.toArray();
-			bookMemoryIds = bookDocs.map((d) => d.memory_id);
+			documentMemoryIds = documentDocs.map((d) => d.memory_id);
 		} catch (err) {
 			result.errors.push(
-				`Failed to get book IDs: ${err instanceof Error ? err.message : String(err)}`
+				`Failed to get document IDs: ${err instanceof Error ? err.message : String(err)}`
 			);
 		}
 
-		// Step 2: Delete all books from MongoDB
+		// Step 2: Delete all documents from MongoDB
 		try {
 			const mongoResult = await items.deleteMany({
 				user_id: userId,
-				tier: "books",
+				tier: "documents",
 			});
 			result.mongoDeleted = mongoResult.deletedCount;
-			logger.debug({ userId, deleted: result.mongoDeleted }, "Books deleted from MongoDB");
+			logger.debug({ userId, deleted: result.mongoDeleted }, "Documents deleted from MongoDB");
 		} catch (err) {
 			result.success = false;
 			result.errors.push(
@@ -1019,17 +1019,17 @@ export class OpsServiceImpl {
 			);
 		}
 
-		// Step 3: Delete all books vectors from Qdrant
+		// Step 3: Delete all documents vectors from Qdrant
 		try {
 			const qdrantResult = await this.qdrant.deleteByFilter({
 				userId,
-				tier: "books",
+				tier: "documents",
 			});
 			result.qdrantDeleted = qdrantResult.deleted;
 			if (!qdrantResult.success) {
 				result.errors.push("Qdrant deletion may have failed");
 			}
-			logger.debug({ userId, deleted: result.qdrantDeleted }, "Books deleted from Qdrant");
+			logger.debug({ userId, deleted: result.qdrantDeleted }, "Documents deleted from Qdrant");
 		} catch (err) {
 			result.success = false;
 			result.errors.push(
@@ -1037,28 +1037,28 @@ export class OpsServiceImpl {
 			);
 		}
 
-		// Step 4: Clear ghost registry for books tier
+		// Step 4: Clear ghost registry for documents tier
 		try {
 			const { getGhostRegistry } = await import("../services/GhostRegistry");
 			const ghostRegistry = getGhostRegistry();
-			result.ghostsCleared = await ghostRegistry.clearByTier(userId, "books");
-			logger.debug({ userId, cleared: result.ghostsCleared }, "Book ghosts cleared");
+			result.ghostsCleared = await ghostRegistry.clearByTier(userId, "documents");
+			logger.debug({ userId, cleared: result.ghostsCleared }, "Document ghosts cleared");
 		} catch (err) {
 			result.errors.push(
 				`Ghost registry clear failed: ${err instanceof Error ? err.message : String(err)}`
 			);
 		}
 
-		// Step 5: Clear Action KG entries for deleted books (v0.2.9 requirement)
-		if (bookMemoryIds.length > 0) {
+		// Step 5: Clear Action KG entries for deleted documents (v0.2.9 requirement)
+		if (documentMemoryIds.length > 0) {
 			try {
 				const actionOutcomes = this.db.collection("memory_action_outcomes");
 				const actionResult = await actionOutcomes.deleteMany({
 					user_id: userId,
-					memory_id: { $in: bookMemoryIds },
+					memory_id: { $in: documentMemoryIds },
 				});
 				result.actionKgCleared = actionResult.deletedCount;
-				logger.debug({ userId, cleared: result.actionKgCleared }, "Book action outcomes cleared");
+				logger.debug({ userId, cleared: result.actionKgCleared }, "Document action outcomes cleared");
 			} catch (err) {
 				result.errors.push(
 					`Action KG clear failed: ${err instanceof Error ? err.message : String(err)}`
@@ -1085,7 +1085,7 @@ export class OpsServiceImpl {
 				...result,
 				latencyMs,
 			},
-			"OpsService: Books tier cleared"
+			"OpsService: Documents tier cleared"
 		);
 
 		return result;

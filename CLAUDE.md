@@ -4,6 +4,9 @@
 
 **BricksLLM** is an enterprise-grade AI gateway and chat interface optimized for **DictaLM-3.0 (24B)**. It orchestrates a local Docker stack to provide a robust, secure, and "Reasoning-First" experience with full Hebrew (RTL) support and Model Context Protocol (MCP) integration.
 
+the project utilize service-oriented memory system with 
+  UnifiedMemoryFacade, memoryIntegration.ts, and enterprise-grade patterns
+
 ### Core Stack
 
 | Container Name | Purpose | Host Port | Internal Port |

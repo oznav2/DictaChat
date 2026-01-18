@@ -71,6 +71,14 @@ export interface QdrantSearchParams {
 	status?: MemoryStatus[];
 	tags?: string[];
 	minScore?: number;
+	/** NER Integration: Pre-filter to only these memory IDs */
+	filterIds?: string[];
+}
+
+export interface EntityFilterParams {
+	userId: string;
+	entityWords: string[];
+	limit?: number;
 }
 
 export interface QdrantHealthStatus {
@@ -506,7 +514,7 @@ export class QdrantAdapter {
 	 * 1. Simple object: { userId, tier, status }
 	 * 2. Qdrant-native filter: { must: [{ key, match: { value } }] }
 	 *
-	 * v0.2.9 Parity: Used by clearBooksTier for "True Collection Nuke"
+	 * v0.2.9 Parity: Used by clearDocumentsTier for "True Collection Nuke"
 	 */
 	async deleteByFilter(filter: {
 		userId?: string;
@@ -597,6 +605,11 @@ export class QdrantAdapter {
 			must.push({ key: "tags", match: { any: params.tags } });
 		}
 
+		// NER Integration: Add ID filter for entity pre-filtering
+		if (params.filterIds?.length) {
+			must.push({ has_id: params.filterIds });
+		}
+
 		const body = {
 			vector: { name: this.vectorName, vector: params.vector },
 			filter: { must },
@@ -643,6 +656,59 @@ export class QdrantAdapter {
 			score: 1, // No score for direct lookups
 			payload: r.payload,
 		}));
+	}
+
+	/**
+	 * Filter by entities (NER Integration)
+	 *
+	 * Finds memory IDs that have matching entities in their payload.
+	 * Uses Qdrant scroll API with payload filtering for efficiency.
+	 *
+	 * @param params - Entity filter parameters
+	 * @returns Array of matching memory IDs
+	 */
+	async filterByEntities(params: EntityFilterParams): Promise<string[]> {
+		if (!params.entityWords || params.entityWords.length === 0) {
+			return [];
+		}
+
+		const limit = params.limit ?? 500;
+
+		// Build filter: user_id match AND entities array contains any of the query words
+		// Qdrant supports "match any" for array fields
+		const filter = {
+			must: [
+				{ key: "user_id", match: { value: params.userId } },
+				{ key: "status", match: { value: "active" } },
+			],
+			should: params.entityWords.map(word => ({
+				key: "entities",
+				match: { value: word.toLowerCase() }
+			})),
+			min_should: { conditions: 1 } // At least one entity must match
+		};
+
+		try {
+			const body = {
+				filter,
+				limit,
+				with_payload: false, // We only need IDs
+				with_vector: false,
+			};
+
+			const result = await this.request<{
+				result: { points: Array<{ id: string }> };
+			}>("POST", `/collections/${this.collectionName}/points/scroll`, body);
+
+			if (!result?.result?.points) {
+				return [];
+			}
+
+			return result.result.points.map(p => p.id);
+		} catch (err) {
+			logger.warn({ err, entityCount: params.entityWords.length }, "[qdrant] filterByEntities failed");
+			return [];
+		}
 	}
 
 	/**

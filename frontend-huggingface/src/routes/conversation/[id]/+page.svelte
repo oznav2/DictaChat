@@ -439,6 +439,43 @@
 						memoryUi.setProcessingSearching(update.query);
 					} else if (update.subtype === MessageMemoryUpdateType.Found) {
 						memoryUi.setProcessingFound(update.count);
+						// Phase 4 Latency Fix: Handle early memoryMeta for immediate UI feedback
+						// Use requestIdleCallback to avoid blocking the UI thread
+						if (update.memoryMeta) {
+							const meta = update.memoryMeta;
+							const convId = page.params.id;
+							const msgId = messageToWriteTo.id;
+							// Defer heavy processing to avoid browser freeze
+							if (typeof requestIdleCallback !== "undefined") {
+								requestIdleCallback(() => {
+									memoryUi.memoryMetaUpdated({
+										conversationId: convId,
+										messageId: msgId,
+										meta,
+									});
+								});
+							} else {
+								// Fallback for browsers without requestIdleCallback
+								setTimeout(() => {
+									memoryUi.memoryMetaUpdated({
+										conversationId: convId,
+										messageId: msgId,
+										meta,
+									});
+								}, 0);
+							}
+						}
+						// Dispatch event to refresh MemoryPanel immediately
+						// Use valid MemoryEventType: "memory_updated"
+						dispatchMemoryEvent({
+							type: "memory_updated",
+							userId: "admin",
+							detail: {
+								source: "memory_search",
+								count: update.count,
+								conversationId: page.params.id,
+							},
+						});
 					} else if (update.subtype === MessageMemoryUpdateType.Storing) {
 						memoryUi.setProcessingStatus("storing");
 					} else if (update.subtype === MessageMemoryUpdateType.Stored) {

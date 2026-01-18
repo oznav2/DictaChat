@@ -74,7 +74,7 @@ const ALL_TIERS: MemoryTier[] = [
 	"working",
 	"history",
 	"patterns",
-	"books",
+	"documents",
 	"memory_bank",
 	"datagov_schema",
 	"datagov_expansion",
@@ -83,7 +83,7 @@ const ALL_TIERS: MemoryTier[] = [
 /**
  * Core memory tiers (excludes DataGov - for routing and promotion logic)
  */
-const CORE_TIERS: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+const CORE_TIERS: MemoryTier[] = ["working", "history", "patterns", "documents", "memory_bank"];
 
 /**
  * Max examples to keep per action (bounded growth)

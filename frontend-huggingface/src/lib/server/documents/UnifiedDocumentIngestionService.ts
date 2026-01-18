@@ -9,7 +9,7 @@
  * - Document hash for deduplication and cross-chat recognition
  * - Semantic chunking with token-aware boundaries
  * - Embedding generation via dicta-retrieval
- * - Memory system integration (books tier)
+ * - Memory system integration (documents tier)
  * - Progress streaming via callbacks
  * - Docling extraction for complex formats
  *
@@ -567,7 +567,7 @@ export class UnifiedDocumentIngestionService {
 
 			await facade.store({
 				userId: params.userId,
-				tier: "books",
+				tier: "documents",
 				text: chunk.content,
 				metadata: {
 					book_id: bookId,

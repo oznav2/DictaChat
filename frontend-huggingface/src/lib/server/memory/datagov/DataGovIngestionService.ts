@@ -215,13 +215,22 @@ export class DataGovIngestionService {
 		if (!force) {
 			const checkpoint = await this.loadCheckpoint();
 			if (checkpoint?.completed_at) {
-				logger.info(
-					{ completedAt: checkpoint.completed_at },
-					"[DataGov] Ingestion already completed, skipping"
-				);
-				result.skipped = true;
-				result.durationMs = Date.now() - startTime;
-				return result;
+				// Verify memories actually exist (handle case where memories were deleted but checkpoint remains)
+				const memoriesExist = await this.verifyMemoriesExist();
+				if (memoriesExist) {
+					logger.info(
+						{ completedAt: checkpoint.completed_at },
+						"[DataGov] Ingestion already completed, skipping"
+					);
+					result.skipped = true;
+					result.durationMs = Date.now() - startTime;
+					return result;
+				} else {
+					logger.warn(
+						"[DataGov] Checkpoint exists but memories missing - clearing checkpoint and re-ingesting"
+					);
+					await this.clearCheckpoint();
+				}
 			}
 		}
 
@@ -317,7 +326,7 @@ export class DataGovIngestionService {
 				// Store via facade (async embedding pattern)
 				await this.memoryFacade.store({
 					userId: ADMIN_USER_ID,
-					tier: "memory_bank", // Using memory_bank tier for now (datagov_schema later)
+					tier: "datagov_schema", // Categories are part of the schema tier
 					text: content,
 					tags: ["datagov", "category", category],
 					importance: 0.9, // Categories are high importance
@@ -422,7 +431,7 @@ Source: data.gov.il
 				// Store via facade
 				await this.memoryFacade.store({
 					userId: ADMIN_USER_ID,
-					tier: "memory_bank", // Using memory_bank for now
+					tier: "datagov_expansion", // Expansions use dedicated tier
 					text: content,
 					tags: ["datagov", "expansion", domain.toLowerCase(), relatedCategory].filter(Boolean),
 					importance: 0.85, // Expansions are high importance for search
@@ -615,7 +624,7 @@ This domain maps bidirectional Hebrew↔English terms for ${domain.toLowerCase()
 						// Store via facade
 						await this.memoryFacade.store({
 							userId: ADMIN_USER_ID,
-							tier: "memory_bank", // Using memory_bank for compatibility
+							tier: "datagov_schema", // Dataset schemas use dedicated tier
 							text: content,
 							tags: ["datagov", "schema", entry.category, entry.format.toLowerCase()].filter(
 								Boolean
@@ -976,6 +985,41 @@ Source: data.gov.il
 			);
 		} catch (err) {
 			logger.warn({ err }, "[DataGov] Failed to save completion checkpoint");
+		}
+	}
+
+	/**
+	 * Clear ingestion checkpoint (for re-ingestion after memory reset)
+	 */
+	private async clearCheckpoint(): Promise<void> {
+		try {
+			const checkpoints = this.db.collection(CHECKPOINT_COLLECTION);
+			await checkpoints.deleteOne({ _id: "main" as any });
+			logger.info("[DataGov] Checkpoint cleared");
+		} catch (err) {
+			logger.warn({ err }, "[DataGov] Failed to clear checkpoint");
+		}
+	}
+
+	/**
+	 * Verify that DataGov memories actually exist in the database
+	 * Used to detect when memories were deleted but checkpoint remains
+	 */
+	private async verifyMemoriesExist(): Promise<boolean> {
+		try {
+			// Check for DataGov memories in the correct tiers (datagov_schema, datagov_expansion)
+			const memoryItems = this.db.collection("memory_items");
+			const count = await memoryItems.countDocuments({
+				user_id: ADMIN_USER_ID,
+				tier: { $in: ["datagov_schema", "datagov_expansion"] },
+				status: "active",
+			});
+			const hasMemories = count > 0;
+			logger.debug({ hasMemories, count }, "[DataGov] Verified memories exist in datagov tiers");
+			return hasMemories;
+		} catch (err) {
+			logger.warn({ err }, "[DataGov] Failed to verify memories exist");
+			return false;
 		}
 	}
 

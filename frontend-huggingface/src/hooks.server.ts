@@ -47,6 +47,10 @@ import { ServiceFactory } from "$lib/server/memory/ServiceFactory";
 import { getDataGovIngestionService } from "$lib/server/memory/datagov";
 import { ActionKgServiceImpl } from "$lib/server/memory/services/ActionKgServiceImpl";
 import { ContextServiceImpl } from "$lib/server/memory/services/ContextServiceImpl";
+import { runAllSeeders } from "$lib/server/memory/seed";
+import { getPromptEngine } from "$lib/server/memory/PromptEngine";
+import { getUnifiedAIClient } from "$lib/server/memory/ai/UnifiedAIClient";
+import { join } from "path";
 
 let memoryInitPromise: Promise<void> | null = null;
 
@@ -96,9 +100,11 @@ async function initializeMemoryFacadeOnce(): Promise<void> {
 		const embeddingEndpoint =
 			env.EMBEDDING_SERVICE_URL ??
 			(isDocker ? "http://dicta-retrieval:5005" : "http://localhost:5005");
+		// CRITICAL FIX: The reranker endpoint must use /v1/rerank path
+		// The dicta-retrieval service exposes /v1/rerank per OpenAPI spec (not /rerank)
 		const rerankerEndpoint =
 			env.RERANKER_SERVICE_URL ??
-			(isDocker ? "http://dicta-retrieval:5006" : "http://localhost:5006");
+			(isDocker ? "http://dicta-retrieval:5006/v1/rerank" : "http://localhost:5006/v1/rerank");
 		const embeddingClient = new DictaEmbeddingClient({
 			endpoint: embeddingEndpoint,
 			config: memoryConfig,
@@ -134,10 +140,14 @@ async function initializeMemoryFacadeOnce(): Promise<void> {
 			config: memoryConfig,
 		});
 
+		// Create UnifiedAIClient for parallel NER + Embedding
+		const unifiedAIClient = getUnifiedAIClient(embeddingClient, memoryConfig);
+
 		const storeService = new StoreServiceImpl({
 			mongoStore,
 			qdrantAdapter,
 			embeddingClient,
+			unifiedAIClient,
 			config: memoryConfig,
 		});
 
@@ -216,6 +226,22 @@ async function initializeMemoryFacadeOnce(): Promise<void> {
 
 		UnifiedMemoryFacade.setInstance(facade);
 		await facade.initialize();
+
+		// Seed knowledge graph with initial concepts for D3 visualization
+		await runAllSeeders();
+
+		// Initialize PromptEngine for template-based prompts
+		try {
+			const templatesDir = join(process.cwd(), "src/lib/server/memory/templates");
+			const promptEngine = getPromptEngine({ templatesDir });
+			await promptEngine.initialize();
+			logger.info(
+				{ templateCount: promptEngine.listTemplates().length },
+				"[Memory] PromptEngine initialized"
+			);
+		} catch (err) {
+			logger.warn({ err }, "[Memory] PromptEngine initialization failed, using inline prompts");
+		}
 
 		// Phase 25.7: DataGov Knowledge Pre-Ingestion
 		// Runs once on first startup (if enabled via DATAGOV_PRELOAD_ENABLED=true)

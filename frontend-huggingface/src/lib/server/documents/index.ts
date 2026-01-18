@@ -8,7 +8,7 @@
  * - Document hash for cross-chat recognition
  * - Semantic chunking with token-aware boundaries
  * - Embedding generation via dicta-retrieval
- * - Memory system integration (books tier)
+ * - Memory system integration (documents tier)
  * - Docling extraction for complex formats
  */
 

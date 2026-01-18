@@ -53,6 +53,10 @@ export interface HybridSearchParams {
 	includeAllPersonalities?: boolean;
 	/** Specific personality IDs to include in search */
 	includePersonalityIds?: string[] | null;
+	/** Extracted entities from query for pre-filtering (NER Integration) */
+	queryEntities?: Array<{ entityGroup: string; word: string; score: number }>;
+	/** Enable entity pre-filtering (default: true if entities provided) */
+	enableEntityPreFilter?: boolean;
 }
 
 interface CandidateResult {
@@ -94,7 +98,13 @@ export class SearchService {
 		this.qdrant = params.qdrantAdapter;
 		this.bm25 = params.bm25Adapter;
 		this.embedding = params.embeddingClient;
-		this.rerankerEndpoint = params.rerankerEndpoint;
+		// Normalize reranker endpoint to include /v1/rerank path if not present
+		// The dicta-retrieval service exposes /v1/rerank per OpenAPI spec
+		if (params.rerankerEndpoint) {
+			this.rerankerEndpoint = params.rerankerEndpoint.endsWith("/v1/rerank")
+				? params.rerankerEndpoint
+				: `${params.rerankerEndpoint.replace(/\/+$/, "")}/v1/rerank`;
+		}
 		this.config = params.config ?? defaultMemoryConfig;
 	}
 
@@ -188,9 +198,15 @@ export class SearchService {
 			fallbacksUsed.push("lexical_only");
 		}
 
+		// Step 1.5 (NER Integration): Entity pre-filtering if entities provided
+		let entityFilteredIds: Set<string> | null = null;
+		if (params.queryEntities && params.queryEntities.length > 0 && params.enableEntityPreFilter !== false) {
+			entityFilteredIds = await this.entityPreFilter(params.queryEntities, params.userId, timings);
+		}
+
 		// Step 2: Execute vector and lexical search in parallel
 		const [vectorResults, lexicalResults] = await Promise.all([
-			this.vectorSearch(params, queryVector, candidateLimit, timings, errors),
+			this.vectorSearch(params, queryVector, candidateLimit, timings, errors, entityFilteredIds),
 			this.lexicalSearch(params, candidateLimit, timings, errors),
 		]);
 
@@ -254,6 +270,66 @@ export class SearchService {
 	}
 
 	/**
+	 * Entity-based pre-filtering stage (NER Integration)
+	 *
+	 * Reduces candidate set by filtering to documents with entity overlap.
+	 * This can dramatically improve search speed for large datasets.
+	 *
+	 * @param queryEntities - Entities extracted from user query
+	 * @param userId - User ID for filtering
+	 * @param timings - Stage timings object
+	 * @returns Set of memory IDs that have entity overlap, or null to skip filtering
+	 */
+	private async entityPreFilter(
+		queryEntities: Array<{ entityGroup: string; word: string; score: number }>,
+		userId: string,
+		timings: StageTimingsMs
+	): Promise<Set<string> | null> {
+		if (!queryEntities || queryEntities.length === 0) {
+			return null; // No filtering - use full search
+		}
+
+		const start = Date.now();
+
+		try {
+			// Extract entity words for matching
+			const queryEntityWords = queryEntities.map(e => e.word.toLowerCase().trim());
+
+			// Query Qdrant for documents with matching entities in payload
+			const matchingIds = await this.qdrant.filterByEntities({
+				userId,
+				entityWords: queryEntityWords,
+				limit: 500, // Max candidates after entity filtering
+			});
+
+			timings.entity_prefilter_ms = Date.now() - start;
+
+			if (matchingIds.length === 0) {
+				logger.debug(
+					{ queryEntityCount: queryEntities.length },
+					"[search] Entity pre-filter returned 0 matches, falling back to full search"
+				);
+				return null; // Fallback to full search
+			}
+
+			logger.info(
+				{
+					queryEntityCount: queryEntities.length,
+					matchedCount: matchingIds.length,
+					entities: queryEntities.map(e => e.word).slice(0, 5),
+				},
+				"[search] Entity pre-filter reduced candidates"
+			);
+
+			return new Set(matchingIds);
+		} catch (err) {
+			logger.warn({ err }, "[search] Entity pre-filter failed, falling back to full search");
+			timings.entity_prefilter_ms = Date.now() - start;
+			return null;
+		}
+	}
+
+	/**
 	 * Vector search using Qdrant
 	 */
 	private async vectorSearch(
@@ -261,7 +337,8 @@ export class SearchService {
 		queryVector: number[] | null,
 		limit: number,
 		timings: StageTimingsMs,
-		errors: Array<{ stage: string; message: string }>
+		errors: Array<{ stage: string; message: string }>,
+		entityFilteredIds?: Set<string> | null
 	): Promise<QdrantSearchResult[]> {
 		if (!queryVector) {
 			return [];
@@ -281,6 +358,7 @@ export class SearchService {
 				limit,
 				tiers: params.tiers,
 				status: params.status,
+				filterIds: entityFilteredIds ? Array.from(entityFilteredIds) : undefined,
 			});
 
 			timings.qdrant_query_ms = Date.now() - start;

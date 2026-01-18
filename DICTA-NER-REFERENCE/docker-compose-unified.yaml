@@ -1,0 +1,161 @@
+version: '3.8'
+
+# ============================================================
+# Complete Deployment: NER + Semantic Search + Your App
+# ============================================================
+
+services:
+  # ============================================================
+  # NER Service (Python) - Entity Extraction
+  # ============================================================
+  ner-service:
+    build:
+      context: ./hebrew-ner-service
+      dockerfile: Dockerfile
+    container_name: hebrew-ner
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_NAME=dicta-il/dictabert-ner
+      - SERVICE_PORT=8000
+      - LOG_LEVEL=info
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ner-cache:/root/.cache/huggingface
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - ai-network
+
+  # ============================================================
+  # Semantic Search Service (TypeScript) - Embeddings
+  # ============================================================
+  semantic-service:
+    build:
+      context: ./hebrew-semantic-search-ts
+      dockerfile: Dockerfile
+    container_name: hebrew-semantic
+    ports:
+      - "8001:8001"
+    environment:
+      - NODE_ENV=production
+      - PORT=8001
+      - HOST=0.0.0.0
+      - LOG_LEVEL=info
+      - LOG_PRETTY=false
+      
+      # Model Configuration
+      - MODEL_PROVIDER=huggingface
+      - MODEL_NAME=dicta-il/neodictabert-bilingual
+      
+      # HuggingFace API (REQUIRED)
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
+      - HUGGINGFACE_API_TIMEOUT=30000
+      
+      # Performance
+      - BATCH_SIZE=8
+      - MAX_CONCURRENT_REQUESTS=10
+      
+      # Caching
+      - ENABLE_EMBEDDING_CACHE=true
+      - CACHE_TTL_MS=3600000
+      - CACHE_MAX_SIZE=1000
+      
+      # Rate Limiting
+      - RATE_LIMIT_MAX=100
+      - RATE_LIMIT_WINDOW=1 minute
+      
+      # CORS
+      - CORS_ORIGIN=*
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8001/health').then(r => r.ok ? process.exit(0) : process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - ai-network
+    depends_on:
+      - ner-service
+
+  # ============================================================
+  # Your Chat Application (Example)
+  # ============================================================
+  # chat-app:
+  #   build:
+  #     context: ./your-chat-app
+  #     dockerfile: Dockerfile
+  #   container_name: chat-app
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     # Service URLs
+  #     - NER_SERVICE_URL=http://ner-service:8000
+  #     - SEMANTIC_SERVICE_URL=http://semantic-service:8001
+  #     
+  #     # Database
+  #     - DATABASE_URL=${DATABASE_URL}
+  #     
+  #     # Other config...
+  #   networks:
+  #     - ai-network
+  #   depends_on:
+  #     - ner-service
+  #     - semantic-service
+
+volumes:
+  ner-cache:
+    driver: local
+
+networks:
+  ai-network:
+    driver: bridge
+
+# ============================================================
+# Usage Instructions:
+# ============================================================
+# 
+# 1. Set environment variable:
+#    export HUGGINGFACE_API_KEY=your_key_here
+#    (Get free key: https://huggingface.co/settings/tokens)
+#
+# 2. Start all services:
+#    docker-compose up -d
+#
+# 3. Check health:
+#    curl http://localhost:8000/health  # NER service
+#    curl http://localhost:8001/health  # Semantic service
+#
+# 4. Use both services from your app:
+#    NER_SERVICE_URL=http://ner-service:8000
+#    SEMANTIC_SERVICE_URL=http://semantic-service:8001
+#
+# 5. View logs:
+#    docker-compose logs -f
+#
+# 6. Stop all:
+#    docker-compose down
+#
+# ============================================================

@@ -748,7 +748,7 @@ describe("TestAPIEndpointShapes", () => {
 					working: 50,
 					history: 30,
 					patterns: 15,
-					books: 5,
+					documents: 5,
 				},
 				avg_score: 0.65,
 			});

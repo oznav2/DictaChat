@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { base } from "$app/paths";
+	import { browser } from "$app/environment";
 	import type { MemoryTier } from "$lib/types/MemoryMeta";
 	import { apiRequest } from "$lib/utils/apiClient";
 
@@ -149,6 +150,9 @@
 	let autoRefreshInterval: ReturnType<typeof setInterval> | null = null;
 	let extendedRefreshAt = $state<number>(0);
 	let systemRefreshAt = $state<number>(0);
+	let isVisible = $state(false);
+	let panelRef: HTMLDivElement | null = null;
+	let observer: IntersectionObserver | null = null;
 	let decayForceStatus = $state<string | null>(null);
 	let backfillStatus = $state<string | null>(null);
 
@@ -156,7 +160,7 @@
 		working: { name: "זיכרון עבודה", color: "bg-blue-500" },
 		history: { name: "היסטוריה", color: "bg-purple-500" },
 		patterns: { name: "דפוסים", color: "bg-green-500" },
-		books: { name: "ספרים", color: "bg-amber-500" },
+		documents: { name: "מסמכים", color: "bg-amber-500" },
 		memory_bank: { name: "בנק זיכרון", color: "bg-pink-500" },
 		datagov_schema: { name: "DataGov סכמות", color: "bg-slate-500" },
 		datagov_expansion: { name: "DataGov הרחבות", color: "bg-slate-500" },
@@ -280,12 +284,40 @@
 	}
 
 	onMount(() => {
+		// Initial load
 		loadHealth(true);
-		autoRefreshInterval = setInterval(() => loadHealth(false), 5000);
+	});
+
+	// Set up visibility-based polling using IntersectionObserver
+	$effect(() => {
+		if (!browser || !panelRef) return;
+
+		observer = new IntersectionObserver(
+			(entries) => {
+				const entry = entries[0];
+				isVisible = entry?.isIntersecting ?? false;
+
+				if (isVisible && !autoRefreshInterval) {
+					// Start polling when visible
+					autoRefreshInterval = setInterval(() => loadHealth(false), 5000);
+				} else if (!isVisible && autoRefreshInterval) {
+					// Stop polling when not visible
+					clearInterval(autoRefreshInterval);
+					autoRefreshInterval = null;
+				}
+			},
+			{ threshold: 0.1 }
+		);
+		observer.observe(panelRef);
 
 		return () => {
 			if (autoRefreshInterval) {
 				clearInterval(autoRefreshInterval);
+				autoRefreshInterval = null;
+			}
+			if (observer) {
+				observer.disconnect();
+				observer = null;
 			}
 		};
 	});
@@ -321,7 +353,7 @@
 	}
 </script>
 
-<div class="flex h-full flex-col gap-3 overflow-y-auto p-3" dir="rtl">
+<div bind:this={panelRef} class="flex h-full flex-col gap-3 overflow-y-auto p-3" dir="rtl">
 	<!-- Header -->
 	<div class="flex items-center justify-between">
 		<h3 class="text-sm font-medium text-gray-700 dark:text-gray-200">בריאות מערכת הזיכרון</h3>

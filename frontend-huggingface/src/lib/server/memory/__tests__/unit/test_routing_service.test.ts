@@ -120,7 +120,7 @@ const ALL_TIERS: MemoryTier[] = [
 	"working",
 	"history",
 	"patterns",
-	"books",
+	"documents",
 	"memory_bank",
 	"datagov_schema",
 	"datagov_expansion",
@@ -300,7 +300,7 @@ describe("TestTierScoreCalculation", () => {
 								partial: 1,
 								unknown: 0,
 							},
-							books: { wilson_score: 0.6, uses: 4, worked: 2, failed: 1, partial: 1, unknown: 0 },
+							documents: { wilson_score: 0.6, uses: 4, worked: 2, failed: 1, partial: 1, unknown: 0 },
 							memory_bank: {
 								wilson_score: 0.2,
 								uses: 2,
@@ -356,7 +356,7 @@ describe("TestTierScoreCalculation", () => {
 								partial: 0,
 								unknown: 0,
 							},
-							books: { wilson_score: 0.4, uses: 2, worked: 1, failed: 1, partial: 0, unknown: 0 },
+							documents: { wilson_score: 0.4, uses: 2, worked: 1, failed: 1, partial: 0, unknown: 0 },
 							memory_bank: {
 								wilson_score: 0.2,
 								uses: 1,
@@ -381,7 +381,7 @@ describe("TestTierScoreCalculation", () => {
 								partial: 0,
 								unknown: 0,
 							},
-							books: { wilson_score: 0.3, uses: 1, worked: 0, failed: 1, partial: 0, unknown: 0 },
+							documents: { wilson_score: 0.3, uses: 1, worked: 0, failed: 1, partial: 0, unknown: 0 },
 							memory_bank: {
 								wilson_score: 0.1,
 								uses: 1,
@@ -506,7 +506,7 @@ describe("TestQueryRouting", () => {
 								partial: 0,
 								unknown: 0,
 							},
-							books: { wilson_score: 0.1, uses: 0, worked: 0, failed: 0, partial: 0, unknown: 0 },
+							documents: { wilson_score: 0.1, uses: 0, worked: 0, failed: 0, partial: 0, unknown: 0 },
 							memory_bank: {
 								wilson_score: 0.1,
 								uses: 0,
@@ -558,7 +558,7 @@ describe("TestQueryRouting", () => {
 								partial: 0,
 								unknown: 0,
 							},
-							books: { wilson_score: 0.55, uses: 4, worked: 3, failed: 1, partial: 0, unknown: 0 },
+							documents: { wilson_score: 0.55, uses: 4, worked: 3, failed: 1, partial: 0, unknown: 0 },
 							memory_bank: {
 								wilson_score: 0.2,
 								uses: 2,
@@ -613,7 +613,7 @@ describe("TestQueryRouting", () => {
 								partial: 1,
 								unknown: 0,
 							},
-							books: { wilson_score: 0.15, uses: 2, worked: 0, failed: 1, partial: 1, unknown: 0 },
+							documents: { wilson_score: 0.15, uses: 2, worked: 0, failed: 1, partial: 1, unknown: 0 },
 							memory_bank: {
 								wilson_score: 0.1,
 								uses: 1,
@@ -710,7 +710,7 @@ describe("TestRoutingStatsUpdate", () => {
 			await service.updateRoutingStats(
 				testUserId,
 				["python", "django", "web"],
-				["history", "books"],
+				["history", "documents"],
 				"worked"
 			);
 
@@ -743,7 +743,7 @@ describe("TestRoutingStatsUpdate", () => {
 						last_used_at: null,
 					},
 					patterns: { wilson_score: 0.3, uses: 3, worked: 1, failed: 2, partial: 0, unknown: 0 },
-					books: { wilson_score: 0.4, uses: 2, worked: 1, failed: 1, partial: 0, unknown: 0 },
+					documents: { wilson_score: 0.4, uses: 2, worked: 1, failed: 1, partial: 0, unknown: 0 },
 					memory_bank: { wilson_score: 0.2, uses: 1, worked: 0, failed: 1, partial: 0, unknown: 0 },
 				},
 				best_tiers_cached: ["history"],

@@ -36,6 +36,18 @@ export type {
 export { defaultMemoryConfig } from "./memory_config";
 export type { MemoryConfig } from "./memory_config";
 export type * from "./types";
+
+// NER Integration: Unified AI Client for parallel NER + Embedding
+export {
+	UnifiedAIClient,
+	getUnifiedAIClient,
+	resetUnifiedAIClient,
+} from "./ai/UnifiedAIClient";
+export type {
+	ExtractedEntity as NERExtractedEntity,
+	EnrichmentResult,
+	UnifiedAIClientConfig,
+} from "./ai/UnifiedAIClient";
 // Phase 25: Export tier group constants for consistent tier usage
 export { MEMORY_TIER_GROUPS } from "./types";
 

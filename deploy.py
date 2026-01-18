@@ -635,6 +635,51 @@ def deploy_retrieval_verbose():
     except Exception as e:
         console.print(f"[warning]⚠ Could not monitor retrieval logs: {e}[/]")
 
+def deploy_ner_verbose():
+    """Deploy DictaBERT-NER service with verbose logging."""
+    console.print("\n[info]Initializing NER Service (DictaBERT-NER)...[/]")
+
+    # 1. Check if container is already running and healthy
+    inspect = subprocess.run(
+        RUNTIME_CMD + ["inspect", "--format", "{{.State.Status}}", "dicta-ner"],
+        capture_output=True,
+        text=True
+    )
+    if inspect.returncode == 0 and inspect.stdout.strip() == "running":
+        console.print("[success]✔ NER service is already running[/]")
+        return
+
+    # 2. Start NER service specifically (depends on dicta-retrieval)
+    subprocess.run(COMPOSE_CMD + ["up", "-d", "ner-service"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    # 3. Wait for NER service to be healthy
+    console.print("[dim]Waiting for NER service to initialize...[/]")
+    try:
+        import requests
+    except ImportError:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "requests"])
+        import requests
+
+    ner_health_url = "http://localhost:5007/health"
+    start_time = time.time()
+    max_wait = 90  # 90 seconds max (model loading can take time)
+
+    while time.time() - start_time < max_wait:
+        try:
+            response = requests.get(ner_health_url, timeout=2)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("model_loaded", False):
+                    console.print("[success]✔ NER service ready![/]")
+                    console.print(f"[dim]  Model: {data.get('model_name', 'unknown')}[/]")
+                    console.print(f"[dim]  Device: {data.get('device', 'unknown')}[/]")
+                    return
+        except requests.RequestException:
+            pass
+        time.sleep(2)
+
+    console.print("[warning]⚠ NER service startup timed out (service might still be loading)[/]")
+
 def deploy_qdrant_verbose():
     console.print("\n[info]Initializing Qdrant Vector Database (Memory System)...[/]")
 
@@ -684,6 +729,9 @@ def deploy_services():
 
     # Deploy Retrieval second with verbose logs
     deploy_retrieval_verbose()
+
+    # Deploy NER service (depends on Retrieval)
+    deploy_ner_verbose()
 
     # Deploy Qdrant for Memory System
     deploy_qdrant_verbose()

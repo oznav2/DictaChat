@@ -53,7 +53,8 @@ export type MemoryOperation =
 	| "decay"
 	| "ingest"
 	| "health_check"
-	| "diagnose";
+	| "diagnose"
+	| "ai_enrichment";
 
 export type LogLevel = "debug" | "info" | "warn" | "error";
 

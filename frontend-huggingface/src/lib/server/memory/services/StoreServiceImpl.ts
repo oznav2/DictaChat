@@ -13,6 +13,7 @@ import type { MemoryTier, MemoryStatus, MemorySource } from "../types";
 import type { MemoryMongoStore } from "../stores/MemoryMongoStore";
 import type { QdrantAdapter } from "../adapters/QdrantAdapter";
 import type { DictaEmbeddingClient } from "../embedding/DictaEmbeddingClient";
+import type { UnifiedAIClient, ExtractedEntity } from "../ai/UnifiedAIClient";
 import type {
 	StoreService,
 	StoreParams,
@@ -64,6 +65,7 @@ export interface StoreServiceImplConfig {
 	mongoStore: MemoryMongoStore;
 	qdrantAdapter: QdrantAdapter;
 	embeddingClient: DictaEmbeddingClient;
+	unifiedAIClient?: UnifiedAIClient;
 	config?: MemoryConfig;
 }
 
@@ -71,6 +73,7 @@ export class StoreServiceImpl implements StoreService {
 	private mongo: MemoryMongoStore;
 	private qdrant: QdrantAdapter;
 	private embedding: DictaEmbeddingClient;
+	private unifiedAI: UnifiedAIClient | null;
 	private config: MemoryConfig;
 	private embeddingQueue: Array<() => Promise<void>> = [];
 	private embeddingInFlight = 0;
@@ -80,6 +83,7 @@ export class StoreServiceImpl implements StoreService {
 		this.mongo = params.mongoStore;
 		this.qdrant = params.qdrantAdapter;
 		this.embedding = params.embeddingClient;
+		this.unifiedAI = params.unifiedAIClient ?? null;
 		this.config = params.config ?? defaultMemoryConfig;
 	}
 
@@ -102,40 +106,40 @@ export class StoreServiceImpl implements StoreService {
 		try {
 			const meta = params.metadata ?? {};
 			const bookId =
-				params.tier === "books" && typeof (meta as any).book_id === "string"
+				params.tier === "documents" && typeof (meta as any).book_id === "string"
 					? String((meta as any).book_id)
 					: null;
 			const bookChunkIndex =
-				params.tier === "books" && Number.isFinite(Number((meta as any).chunk_index))
+				params.tier === "documents" && Number.isFinite(Number((meta as any).chunk_index))
 					? Number((meta as any).chunk_index)
 					: null;
 			const bookTitle =
-				params.tier === "books" && typeof (meta as any).title === "string"
+				params.tier === "documents" && typeof (meta as any).title === "string"
 					? String((meta as any).title)
 					: null;
 			const bookAuthor =
-				params.tier === "books" && typeof (meta as any).author === "string"
+				params.tier === "documents" && typeof (meta as any).author === "string"
 					? String((meta as any).author)
 					: null;
 			const uploadTimestamp =
-				params.tier === "books" && typeof (meta as any).upload_timestamp === "string"
+				params.tier === "documents" && typeof (meta as any).upload_timestamp === "string"
 					? String((meta as any).upload_timestamp)
 					: null;
 			const fileType =
-				params.tier === "books" && typeof (meta as any).file_type === "string"
+				params.tier === "documents" && typeof (meta as any).file_type === "string"
 					? String((meta as any).file_type)
 					: null;
 			const mimeType =
-				params.tier === "books" && typeof (meta as any).mime_type === "string"
+				params.tier === "documents" && typeof (meta as any).mime_type === "string"
 					? String((meta as any).mime_type)
 					: null;
 			const documentHash =
-				params.tier === "books" && typeof (meta as any).document_hash === "string"
+				params.tier === "documents" && typeof (meta as any).document_hash === "string"
 					? String((meta as any).document_hash)
 					: null;
 
 			const computedSource: MemorySource =
-				params.tier === "books" && bookId && bookChunkIndex !== null
+				params.tier === "documents" && bookId && bookChunkIndex !== null
 					? {
 							type: "document",
 							conversation_id: null,
@@ -251,10 +255,10 @@ export class StoreServiceImpl implements StoreService {
 
 		const { items, versions, outcomes, kgNodes } = this.mongo.getCollections();
 
-		// Step 1: Find all memory IDs for this book
+		// Step 1: Find all memory IDs for this document
 		const filter = {
 			user_id: userId,
-			tier: "books",
+			tier: "documents",
 			"source.book.book_id": bookId,
 		} as const;
 
@@ -532,15 +536,44 @@ export class StoreServiceImpl implements StoreService {
 		const { items } = this.mongo.getCollections();
 
 		let vector: number[] | null = null;
-		try {
-			vector = await this.embedding.embed(params.text);
-		} catch (err) {
-			const msg = err instanceof Error ? err.message : String(err);
-			await items.updateOne(
-				{ memory_id: params.memoryId, user_id: params.userId },
-				{ $set: { embedding_status: "failed", embedding_error: msg } }
-			);
-			return;
+		let entities: ExtractedEntity[] = [];
+
+		// Use UnifiedAIClient for parallel NER + Embedding when available
+		if (this.unifiedAI) {
+			try {
+				const enrichment = await this.unifiedAI.processTextFull(
+					params.text,
+					`store-${params.memoryId}`
+				);
+				vector = enrichment.embedding;
+				entities = enrichment.entities;
+
+				if (enrichment.metadata.nerDegraded) {
+					logger.debug(
+						{ memoryId: params.memoryId },
+						"NER degraded during enrichment, entities may be incomplete"
+					);
+				}
+			} catch (err) {
+				const msg = err instanceof Error ? err.message : String(err);
+				await items.updateOne(
+					{ memory_id: params.memoryId, user_id: params.userId },
+					{ $set: { embedding_status: "failed", embedding_error: msg } }
+				);
+				return;
+			}
+		} else {
+			// Fallback: embedding only (no NER)
+			try {
+				vector = await this.embedding.embed(params.text);
+			} catch (err) {
+				const msg = err instanceof Error ? err.message : String(err);
+				await items.updateOne(
+					{ memory_id: params.memoryId, user_id: params.userId },
+					{ $set: { embedding_status: "failed", embedding_error: msg } }
+				);
+				return;
+			}
 		}
 
 		if (!vector || vector.length === 0) {
@@ -550,6 +583,9 @@ export class StoreServiceImpl implements StoreService {
 			);
 			return;
 		}
+
+		// Convert entities to string array for Qdrant payload
+		const entityStrings = entities.map((e) => `${e.entityGroup}:${e.word}`);
 
 		try {
 			await this.qdrant.upsert({
@@ -561,7 +597,7 @@ export class StoreServiceImpl implements StoreService {
 					status: "active" as MemoryStatus,
 					content: params.text,
 					tags: params.tags,
-					entities: [],
+					entities: entityStrings,
 					composite_score: params.qualityScore,
 					always_inject: params.alwaysInject,
 					timestamp: Date.now(),
@@ -580,6 +616,7 @@ export class StoreServiceImpl implements StoreService {
 			return;
 		}
 
+		// Update MongoDB with entities and indexed status
 		await items.updateOne(
 			{ memory_id: params.memoryId, user_id: params.userId },
 			{
@@ -592,6 +629,7 @@ export class StoreServiceImpl implements StoreService {
 				$set: {
 					embedding_status: "indexed",
 					last_reindexed_at: new Date(),
+					entities: entityStrings,
 				},
 			}
 		);

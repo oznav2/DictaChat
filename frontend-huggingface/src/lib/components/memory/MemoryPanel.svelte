@@ -69,8 +69,8 @@
 			name: "דפוסים",
 			desc: "תבניות שלמדתי מהשימוש שלך",
 		},
-		books: {
-			name: "ספרים",
+		documents: {
+			name: "מסמכים",
 			desc: "מסמכים וקבצים שהעלית",
 		},
 		memory_bank: {
@@ -93,7 +93,7 @@
 			working: "bg-blue-500",
 			history: "bg-purple-500",
 			patterns: "bg-green-500",
-			books: "bg-amber-500",
+			documents: "bg-amber-500",
 			memory_bank: "bg-pink-500",
 			// Phase 25: DataGov tier colors
 			datagov_schema: "bg-cyan-500",

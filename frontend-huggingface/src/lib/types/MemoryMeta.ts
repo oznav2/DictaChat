@@ -2,7 +2,7 @@ export type MemoryTier =
 	| "working"
 	| "history"
 	| "patterns"
-	| "books"
+	| "documents"
 	| "memory_bank"
 	| "datagov_schema"
 	| "datagov_expansion";

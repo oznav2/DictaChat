@@ -123,7 +123,7 @@ async function bridgeRAGToMemory(
 			const chunk = chunks[i];
 			await facade.store({
 				userId: ADMIN_USER_ID,
-				tier: "books",
+				tier: "documents",
 				text: chunk.content,
 				metadata: {
 					book_id: documentId,
@@ -210,7 +210,7 @@ async function loadStoredBookChunks(params: {
 		.find(
 			{
 				user_id: params.userId,
-				tier: "books",
+				tier: "documents",
 				status: "active",
 				"source.book.book_id": params.bookId,
 			},
@@ -711,7 +711,7 @@ export async function* streamRAGPipeline(
 			const searchResponse = await facade.search({
 				userId: ADMIN_USER_ID,
 				query: userQuery,
-				collections: ["books"],
+				collections: ["documents"],
 				limit: 16,
 			});
 
@@ -732,7 +732,7 @@ export async function* streamRAGPipeline(
 				.join("\n\n---\n\n");
 
 			const contextInjection = `<document_context>
-Document: "${title}" (books tier)
+Document: "${title}" (documents tier)
 
 IMPORTANT:
 The document has already been extracted and chunked.

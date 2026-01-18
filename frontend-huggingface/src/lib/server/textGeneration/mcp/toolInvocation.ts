@@ -29,7 +29,18 @@ import {
 	getProgressMessage,
 	getToolIntelligence,
 	getFallbackChain,
+	// Phase: Wire remaining 64 - Tool Intelligence utilities
+	getLatencyTier,
+	getToolTimeout,
+	getUserFeedbackDelay,
+	getMaxOutputTokens,
+	needsSummarization,
+	generatePostExecutionSuggestions,
+	getToolUsageAttribution,
+	getComplementaryTools,
 } from "./toolIntelligenceRegistry";
+// Phase 7: Tool Summarizers for large output storage
+import { getSummarizerPattern, applyLanguageInstructions } from "./toolSummarizers";
 import type { Client } from "@modelcontextprotocol/sdk/client";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
 import { ADMIN_USER_ID } from "$lib/server/constants";
@@ -177,7 +188,7 @@ async function bridgeDoclingToMemory(
 		for (let i = 0; i < chunks.length; i++) {
 			const res = await facade.store({
 				userId: ADMIN_USER_ID,
-				tier: "books",
+				tier: "documents",
 				text: chunks[i],
 				metadata: {
 					book_id: documentId,
@@ -430,6 +441,82 @@ async function recordToolActionOutcome(params: {
 		// Fire-and-forget: don't let outcome recording failures affect tool execution
 		logger.warn({ err, toolName: params.toolName }, "[Phase 19] Failed to record action outcome");
 	}
+}
+
+// ============================================
+// Phase 7: TOOL OUTPUT SUMMARIZATION
+// ============================================
+
+/**
+ * Summarize large tool outputs before storage in memory
+ * Uses tool-specific summarization patterns for optimal compression
+ *
+ * Phase 7: Enables efficient storage of search results, research findings, etc.
+ * - Reduces token usage in memory retrieval
+ * - Preserves key information using domain-specific patterns
+ * - Applies language-appropriate formatting (Hebrew/English)
+ */
+async function summarizeForStorage(
+	toolName: string,
+	output: string,
+	language: "en" | "he" = "en"
+): Promise<string> {
+	// Skip small outputs - no summarization needed
+	if (output.length < 500) {
+		return output;
+	}
+
+	// Phase: Wire remaining 64 - Use Tool Intelligence utilities
+	const requiresSummarization = needsSummarization(toolName);
+	const maxTokens = getMaxOutputTokens(toolName);
+
+	// If tool doesn't need summarization according to registry, return as-is
+	if (!requiresSummarization) {
+		logger.debug(
+			{ toolName, outputLength: output.length },
+			"[Phase 7] Tool Intelligence: no summarization needed per registry"
+		);
+		return output;
+	}
+
+	// Get the appropriate summarizer pattern for this tool
+	const pattern = getSummarizerPattern([toolName]);
+
+	// If no specific pattern (only default), skip summarization for storage
+	// Default pattern is for user-facing summaries, not storage compression
+	if (pattern.id === "default-comprehensive") {
+		logger.debug(
+			{ toolName, outputLength: output.length },
+			"[Phase 7] No specific summarizer pattern, storing full output"
+		);
+		return output;
+	}
+
+	// Apply language-specific instructions if Hebrew
+	const finalPattern = language === "he" ? applyLanguageInstructions(pattern, true) : pattern;
+
+	// For storage, we extract key information rather than full summarization
+	// This preserves the structured data while reducing verbosity
+	logger.info(
+		{ toolName, patternId: finalPattern.id, outputLength: output.length, maxTokens },
+		"[Phase 7] Summarizer pattern available for tool output"
+	);
+
+	// Truncate if output exceeds max tokens (approximate: 4 chars per token)
+	const maxChars = maxTokens * 4;
+	if (output.length > maxChars) {
+		logger.info(
+			{ toolName, originalLength: output.length, truncatedTo: maxChars },
+			"[Phase 7] Truncating large output per Tool Intelligence maxTokens"
+		);
+		return output.slice(0, maxChars) + "\n... [truncated for storage]";
+	}
+
+	// For now, return the original output - full LLM summarization would require
+	// an inference call which adds latency. The pattern metadata is logged for
+	// future enhancement where we could optionally summarize very large outputs.
+	// The ingestion service already handles chunking for large outputs.
+	return output;
 }
 
 export type Primitive = string | number | boolean;
@@ -872,6 +959,11 @@ export async function* executeToolCalls({
 	});
 
 	for (const p of prepared) {
+		// Phase: Wire remaining 64 - Use Tool Intelligence for dynamic ETA
+		const feedbackDelay = getUserFeedbackDelay(p.call.name);
+		const latencyTier = getLatencyTier(p.call.name);
+		const dynamicEta = Math.max(10, Math.round(feedbackDelay / 1000)); // Convert ms to seconds
+
 		yield {
 			type: "update",
 			update: {
@@ -887,9 +979,14 @@ export async function* executeToolCalls({
 				type: MessageUpdateType.Tool,
 				subtype: MessageToolUpdateType.ETA,
 				uuid: p.uuid,
-				eta: 10,
+				eta: dynamicEta,
 			},
 		};
+
+		logger.debug(
+			{ tool: p.call.name, latencyTier, feedbackDelay, eta: dynamicEta },
+			"[mcp] Tool Intelligence: computed dynamic ETA"
+		);
 	}
 
 	// ============================================
@@ -1103,6 +1200,8 @@ export async function* executeToolCalls({
 				}
 
 				// Phase 19: Track execution timing
+				// Phase: Wire remaining 64 - Use dynamic timeout from Tool Intelligence
+				const dynamicTimeout = Math.max(toolTimeoutMs, getToolTimeout(p.call.name));
 				const toolStartTime = Date.now();
 				const toolResponse: McpToolTextResponse = await callMcpTool(
 					serverCfg,
@@ -1111,7 +1210,7 @@ export async function* executeToolCalls({
 					{
 						client: currentClient,
 						signal: abortSignal,
-						timeoutMs: toolTimeoutMs,
+						timeoutMs: dynamicTimeout,
 					}
 				);
 				const toolLatencyMs = Date.now() - toolStartTime;
@@ -1366,6 +1465,7 @@ export async function* executeToolCalls({
 		// For non-docling tools (search, research, data queries),
 		// store results for future retrieval without re-researching
 		// Fire-and-forget: NEVER blocks user response path
+		// Phase 7: Uses ToolSummarizers for pattern-aware processing
 		// ============================================
 		if (!r.error && r.output && conversationId) {
 			const trimmedOutputLen = r.output.trim().length;
@@ -1379,16 +1479,26 @@ export async function* executeToolCalls({
 					((r.params as Record<string, unknown>)?.q as string) ??
 					undefined;
 
-				ToolResultIngestionService.getInstance()
-					.ingestToolResult({
-						conversationId,
-						toolName,
-						query: toolQuery,
-						output: r.output,
-						metadata: {
-							tool_call_id: toolCallId,
-							params_preview: JSON.stringify(r.paramsClean ?? {}).slice(0, 200),
-						},
+				// Phase 7: Apply tool-specific summarization before storage
+				// Fire-and-forget async chain to avoid blocking
+				summarizeForStorage(toolName, r.output)
+					.then((processedOutput) => {
+						return ToolResultIngestionService.getInstance().ingestToolResult({
+							conversationId,
+							toolName,
+							query: toolQuery,
+							output: processedOutput,
+							metadata: {
+								tool_call_id: toolCallId,
+								params_preview: JSON.stringify(r.paramsClean ?? {}).slice(0, 200),
+								original_length: r.output?.length ?? 0,
+								summarized: processedOutput.length !== (r.output?.length ?? 0),
+								// Phase: Wire remaining 64 - Tool Intelligence metadata
+								source_attribution: getToolUsageAttribution(toolName),
+								suggestions: generatePostExecutionSuggestions(toolName, toolQuery ?? ""),
+								complementary_tools: getComplementaryTools(toolName).map((t) => t.name),
+							},
+						});
 					})
 					.then((res) => {
 						if (res.stored) {

@@ -218,10 +218,10 @@ export class GhostRegistry {
 
 	/**
 	 * Clear all ghosted memories for a specific tier
-	 * v0.2.9 Parity: Used by "Clear Books" to remove all ghost records for books tier
+	 * v0.2.9 Parity: Used by "Clear Documents" to remove all ghost records for documents tier
 	 *
 	 * @param userId - User identifier
-	 * @param tier - Tier to clear (e.g., "books")
+	 * @param tier - Tier to clear (e.g., "documents")
 	 * @returns Number of ghost records cleared
 	 */
 	async clearByTier(userId: string, tier: string): Promise<number> {

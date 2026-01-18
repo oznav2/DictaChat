@@ -20,7 +20,7 @@
 		| "working"
 		| "history"
 		| "patterns"
-		| "books"
+		| "documents"
 		| "sessions"
 		| "knowledge-graph"
 		| null;
@@ -30,7 +30,7 @@
 		working: { count: number };
 		history: { count: number };
 		patterns: { count: number };
-		books: { count: number };
+		documents: { count: number };
 		sessions: { count: number };
 		knowledge_graph: { nodes: number; edges: number };
 	}
@@ -70,8 +70,8 @@
 				return dataStats.history.count;
 			case "patterns":
 				return dataStats.patterns.count;
-			case "books":
-				return dataStats.books.count;
+			case "documents":
+				return dataStats.documents.count;
 			case "sessions":
 				return dataStats.sessions.count;
 			case "knowledge-graph":
@@ -91,8 +91,8 @@
 				return "זה ימחק היסטוריית שיחות קודמות (שמירה של 30 יום).";
 			case "patterns":
 				return "זה יסיר את כל דפוסי הפתרון המוכחים שה-AI למד.";
-			case "books":
-				return "זה ימחק את כל הספרים והמסמכים שהועלו. כולל וקטורים וגרף ידע.";
+			case "documents":
+				return "זה ימחק את כל המסמכים שהועלו. כולל וקטורים וגרף ידע.";
 			case "sessions":
 				return "זה ימחק את כל קבצי השיחות.";
 			case "knowledge-graph":
@@ -112,8 +112,8 @@
 				return "היסטוריה";
 			case "patterns":
 				return "דפוסים";
-			case "books":
-				return "ספרים";
+			case "documents":
+				return "מסמכים";
 			case "sessions":
 				return "שיחות";
 			case "knowledge-graph":
@@ -224,7 +224,7 @@
 		},
 		{ key: "history", label: "היסטוריה", labelEn: "History", desc: "שיחות קודמות (30 יום)" },
 		{ key: "patterns", label: "דפוסים", labelEn: "Patterns", desc: "פתרונות מוכחים" },
-		{ key: "books", label: "ספרים", labelEn: "Books", desc: "מסמכי עיון" },
+		{ key: "documents", label: "מסמכים", labelEn: "Documents", desc: "מסמכי עיון" },
 		{ key: "sessions", label: "שיחות", labelEn: "Sessions", desc: "קבצי שיחות" },
 		{ key: "knowledge-graph", label: "גרף ידע", labelEn: "Knowledge Graph", desc: "יחסי מושגים" },
 	];
@@ -236,7 +236,7 @@
 			dataStats.working.count +
 			dataStats.history.count +
 			dataStats.patterns.count +
-			dataStats.books.count +
+			dataStats.documents.count +
 			dataStats.sessions.count +
 			dataStats.knowledge_graph.nodes +
 			dataStats.knowledge_graph.edges

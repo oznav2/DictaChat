@@ -915,7 +915,7 @@ describe("TestCountByTier", () => {
 			expect(counts.working).toBe(10);
 			expect(counts.history).toBe(25);
 			expect(counts.patterns).toBe(5);
-			expect(counts.books).toBe(0);
+			expect(counts.documents).toBe(0);
 			expect(counts.memory_bank).toBe(0);
 
 			recordResult(testName, true, `Counts: working=${counts.working}, history=${counts.history}`);
@@ -943,7 +943,7 @@ describe("TestCountByTier", () => {
 			expect(counts.working).toBe(0);
 			expect(counts.history).toBe(0);
 			expect(counts.patterns).toBe(0);
-			expect(counts.books).toBe(0);
+			expect(counts.documents).toBe(0);
 			expect(counts.memory_bank).toBe(0);
 
 			recordResult(testName, true, "Returns zeros for new user");

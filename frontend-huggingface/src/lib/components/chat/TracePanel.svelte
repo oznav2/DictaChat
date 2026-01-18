@@ -7,6 +7,7 @@
 	import CarbonCheckmark from "~icons/carbon/checkmark";
 	import CarbonClose from "~icons/carbon/close";
 	import CarbonDocument from "~icons/carbon/document";
+	import CarbonDataBase from "~icons/carbon/data-base";
 	import CarbonCheckmarkFilled from "~icons/carbon/checkmark-filled";
 
 	// Props
@@ -54,10 +55,27 @@
 		return getLocalizedLabel(step, language);
 	}
 
-	// Localized strings
-	$: heading = language === "he" ? "מעבד את המסמך המצורף" : "Processing the attached document";
+	// Localized strings based on run type
+	// CRITICAL FIX: TracePanel must display appropriate messages based on runType
+	// - memory_prefetch: Memory search messages
+	// - document_rag: Document processing messages
+	$: isMemoryRun = run?.runType === "memory_prefetch";
 
-	$: successMessage = language === "he" ? "המסמך עובד בהצלחה" : "Document processed successfully";
+	$: heading = isMemoryRun
+		? language === "he"
+			? "מחפש בזיכרון..."
+			: "Searching memory..."
+		: language === "he"
+			? "מעבד את המסמך המצורף"
+			: "Processing the attached document";
+
+	$: successMessage = isMemoryRun
+		? language === "he"
+			? "חיפוש זיכרון הושלם"
+			: "Memory search complete"
+		: language === "he"
+			? "המסמך עובד בהצלחה"
+			: "Document processed successfully";
 
 	// Check if step should be visible
 	function isStepVisible(step: TraceStep, _index: number): boolean {
@@ -103,7 +121,11 @@
 				<div
 					class="trace-icon flex h-6 w-6 items-center justify-center rounded-lg bg-gray-100 text-gray-600 transition-all duration-300 dark:bg-gray-700/70 dark:text-gray-400"
 				>
-					<CarbonDocument class="h-4 w-4 transition-transform duration-200" />
+					{#if isMemoryRun}
+						<CarbonDataBase class="h-4 w-4 transition-transform duration-200" />
+					{:else}
+						<CarbonDocument class="h-4 w-4 transition-transform duration-200" />
+					{/if}
 				</div>
 				<span class="flex-grow {language === 'he' ? 'text-right' : ''}">
 					{heading}

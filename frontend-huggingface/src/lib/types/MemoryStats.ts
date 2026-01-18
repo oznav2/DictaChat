@@ -10,7 +10,7 @@ export interface MemoryStats {
 	_id: ObjectId;
 	userId: string;
 	memoryId: string;
-	tier: string; // working, history, patterns, books, memory_bank
+	tier: string; // working, history, patterns, documents, memory_bank
 	hits: number; // Positive interactions (relevant, helpful)
 	misses: number; // Negative interactions (not relevant, not helpful)
 	accessCount: number; // Total access count

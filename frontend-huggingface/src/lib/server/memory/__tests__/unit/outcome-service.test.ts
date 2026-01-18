@@ -362,7 +362,7 @@ describe("OutcomeServiceImpl", () => {
 	// ========================================================================
 
 	describe("Protected Tiers", () => {
-		it("should not score books tier", async () => {
+		it("should not score documents tier", async () => {
 			const startTime = Date.now();
 
 			const { OutcomeServiceImpl } = await import("../../services/OutcomeServiceImpl");
@@ -373,7 +373,7 @@ describe("OutcomeServiceImpl", () => {
 
 			mockMongo.getById.mockResolvedValue({
 				id: "mem_book_1",
-				tier: "books",
+				tier: "documents",
 				wilson_score: 0.5,
 			});
 
@@ -390,7 +390,7 @@ describe("OutcomeServiceImpl", () => {
 			});
 
 			const result: TestResult = {
-				name: "skip_books_tier",
+				name: "skip_documents_tier",
 				passed: mockMongo.recordOutcome.mock.calls.length === 0,
 				duration: Date.now() - startTime,
 			};
@@ -522,7 +522,7 @@ describe("OutcomeServiceImpl", () => {
 			mockMongo.getById.mockImplementation((id: string) => {
 				const tiers: Record<string, string> = {
 					mem_1: "working",
-					mem_2: "books",
+					mem_2: "documents",
 					mem_3: "patterns",
 					mem_4: "memory_bank",
 				};

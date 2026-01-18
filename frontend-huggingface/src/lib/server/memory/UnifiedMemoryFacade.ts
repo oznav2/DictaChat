@@ -189,7 +189,7 @@ export interface OpsService {
 	consistencyCheck(params: ConsistencyCheckParams): Promise<ConsistencyCheckResult>;
 	exportBackup(params: ExportBackupParams): Promise<ExportBackupResult>;
 	importBackup(params: ImportBackupParams): Promise<ImportBackupResult>;
-	clearBooksTier(userId: string): Promise<{
+	clearDocumentsTier(userId: string): Promise<{
 		success: boolean;
 		mongoDeleted: number;
 		qdrantDeleted: number;
@@ -244,6 +244,8 @@ export interface SearchParams {
 	includeAllPersonalities?: boolean;
 	/** Specific personality IDs to include in search */
 	includePersonalityIds?: string[] | null;
+	/** Recent messages for contextual embedding (optional) */
+	recentMessages?: Array<{ from: string; content: string }>;
 }
 
 /** Source attribution for memory items (Phase 9.9) */
@@ -405,7 +407,7 @@ function createNoopStatsSnapshot(userId: string): StatsSnapshot {
 				uses_total: 0,
 				success_rate: 0.5,
 			},
-			books: {
+			documents: {
 				active_count: 0,
 				archived_count: 0,
 				deleted_count: 0,
@@ -543,7 +545,7 @@ function createNoopServices(): ResolvedServices {
 				},
 				errors: [],
 			}),
-			clearBooksTier: async () => ({
+			clearDocumentsTier: async () => ({
 				success: true,
 				mongoDeleted: 0,
 				qdrantDeleted: 0,
@@ -1134,49 +1136,49 @@ export class UnifiedMemoryFacade {
 	}
 
 	// ============================================
-	// Books Management (Core Interface Parity)
+	// Documents Management (Core Interface Parity)
 	// ============================================
 
 	/**
-	 * List all books uploaded by a user
+	 * List all documents uploaded by a user
 	 * @param userId - The user ID
-	 * @returns Array of book metadata
+	 * @returns Array of document metadata
 	 */
-	async listBooks(userId: string): Promise<BookListItem[]> {
+	async listDocuments(userId: string): Promise<BookListItem[]> {
 		try {
 			const { Database } = await import("$lib/server/database");
 			const db = await Database.getInstance();
 			const client = db.getClient();
-			const booksCollection = client.db().collection("books");
+			const documentsCollection = client.db().collection("documents");
 
-			const books = await booksCollection.find({ userId }).sort({ uploadTimestamp: -1 }).toArray();
+			const documents = await documentsCollection.find({ userId }).sort({ uploadTimestamp: -1 }).toArray();
 
-			return books.map((book) => ({
-				id: (book._id as { toString(): string }).toString(),
-				title: book.title as string,
-				uploadedAt: book.uploadTimestamp as Date,
+			return documents.map((doc) => ({
+				id: (doc._id as { toString(): string }).toString(),
+				title: doc.title as string,
+				uploadedAt: doc.uploadTimestamp as Date,
 			}));
 		} catch (err) {
-			logger.warn({ err, userId }, "Failed to list books");
+			logger.warn({ err, userId }, "Failed to list documents");
 			return [];
 		}
 	}
 
 	/**
-	 * Retrieve relevant chunks from user's books based on a query
-	 * Uses the memory search system to find relevant book content
+	 * Retrieve relevant chunks from user's documents based on a query
+	 * Uses the memory search system to find relevant document content
 	 * @param userId - The user ID
 	 * @param query - The search query
 	 * @param limit - Maximum number of chunks to return (default: 5)
-	 * @returns Array of matching book chunks
+	 * @returns Array of matching document chunks
 	 */
-	async retrieveFromBooks(userId: string, query: string, limit = 5): Promise<BookChunk[]> {
+	async retrieveFromDocuments(userId: string, query: string, limit = 5): Promise<BookChunk[]> {
 		try {
-			// Use the existing search service with books tier filter
+			// Use the existing search service with documents tier filter
 			const searchResults = await this.search({
 				userId,
 				query,
-				collections: ["books"],
+				collections: ["documents"],
 				limit,
 			});
 
@@ -1197,12 +1199,12 @@ export class UnifiedMemoryFacade {
 				};
 			});
 		} catch (err) {
-			logger.warn({ err, userId, query }, "Failed to retrieve from books");
+			logger.warn({ err, userId, query }, "Failed to retrieve from documents");
 			return [];
 		}
 	}
 
-	async clearBooksTier(userId: string): Promise<{
+	async clearDocumentsTier(userId: string): Promise<{
 		success: boolean;
 		mongoDeleted: number;
 		qdrantDeleted: number;
@@ -1210,6 +1212,6 @@ export class UnifiedMemoryFacade {
 		actionKgCleared: number;
 		errors: string[];
 	}> {
-		return this.services.ops.clearBooksTier(userId);
+		return this.services.ops.clearDocumentsTier(userId);
 	}
 }

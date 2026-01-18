@@ -19,6 +19,11 @@ import type { SearchService as HybridSearchService } from "../search/SearchServi
 import type { SearchParams } from "../UnifiedMemoryFacade";
 import { findHebrewTranslation, findEnglishTranslation } from "../seed/bilingualEntities";
 import { buildProblemHash } from "../utils/problemSignature";
+import { getMemoryFeatureFlags } from "../featureFlags";
+import {
+	ContextualEmbeddingService,
+	createContextualEmbeddingService,
+} from "../ContextualEmbeddingService";
 
 export interface SearchServiceImplConfig {
 	hybridSearch: HybridSearchService;
@@ -34,6 +39,8 @@ export interface SearchServiceImplConfig {
 			memoryIds: string[]
 		) => Promise<Array<{ memory_id: string; boost: number; matched_entities: string[] }>>;
 	};
+	/** Optional contextual embedding service for LLM-enhanced retrieval */
+	contextualEmbeddingService?: ContextualEmbeddingService;
 }
 
 /**
@@ -68,6 +75,7 @@ export class SearchServiceImpl implements ISearchService {
 	private config: MemoryConfig;
 	private mongoStore: SearchServiceImplConfig["mongoStore"];
 	private kgService: SearchServiceImplConfig["kgService"];
+	private contextualEmbeddingService: ContextualEmbeddingService | null = null;
 
 	// Per-turn tracking for record_response
 	private searchPositionMap: Map<number, string> = new Map();
@@ -80,6 +88,19 @@ export class SearchServiceImpl implements ISearchService {
 		this.config = params.config ?? defaultMemoryConfig;
 		this.mongoStore = params.mongoStore;
 		this.kgService = params.kgService;
+
+		// Initialize contextual embedding if enabled via feature flag
+		const flags = getMemoryFeatureFlags();
+		if (flags.contextualEmbeddingEnabled) {
+			this.contextualEmbeddingService =
+				params.contextualEmbeddingService ??
+				createContextualEmbeddingService({
+					enabled: true,
+					timeout_ms: 5000,
+					cache_ttl_hours: 24,
+				});
+			logger.info("[SearchServiceImpl] ContextualEmbeddingService enabled");
+		}
 	}
 
 	/**
@@ -207,6 +228,47 @@ export class SearchServiceImpl implements ISearchService {
 	}
 
 	/**
+	 * Enhance query with contextual prefix for better embedding similarity
+	 * Uses LLM to generate context that helps retrieval understand references
+	 * like "that thing we discussed" or "the approach that worked"
+	 */
+	private async enhanceQueryWithContext(
+		query: string,
+		conversationContext?: string
+	): Promise<string> {
+		if (!this.contextualEmbeddingService || !this.contextualEmbeddingService.isEnabled()) {
+			return query;
+		}
+
+		if (this.contextualEmbeddingService.isCircuitOpen()) {
+			logger.debug("[SearchServiceImpl] ContextualEmbedding circuit breaker open, using raw query");
+			return query;
+		}
+
+		try {
+			const enhanced = await this.contextualEmbeddingService.prepareForEmbedding(
+				query,
+				conversationContext
+			);
+
+			if (enhanced.context_prefix) {
+				logger.debug(
+					{
+						originalLength: query.length,
+						prefixLength: enhanced.context_prefix.length,
+					},
+					"[SearchServiceImpl] Query enhanced with contextual prefix"
+				);
+				return enhanced.combined_text;
+			}
+		} catch (err) {
+			logger.warn({ err }, "[SearchServiceImpl] Contextual embedding enhancement failed, using raw query");
+		}
+
+		return query;
+	}
+
+	/**
 	 * Search memories with hybrid retrieval
 	 */
 	async search(params: SearchParams): Promise<SearchResponse> {
@@ -240,11 +302,21 @@ export class SearchServiceImpl implements ISearchService {
 			// Step 1: Determine tiers to search
 			const tiers = this.resolveTiers(params.collections);
 
+			// Step 1b: Enhance query with contextual embedding if enabled
+			let searchQuery = params.query;
+			if (this.contextualEmbeddingService && params.recentMessages?.length) {
+				const conversationContext = params.recentMessages
+					.slice(-3)
+					.map((m) => `${m.from}: ${m.content.slice(0, 200)}`)
+					.join("\n");
+				searchQuery = await this.enhanceQueryWithContext(params.query, conversationContext);
+			}
+
 			// Step 2: Detect sort mode
-			const sortBy = params.sortBy ?? this.detectSortMode(params.query);
+			const sortBy = params.sortBy ?? this.detectSortMode(searchQuery);
 
 			// Step 3: Expand query with bilingual translations
-			const expandedQueries = this.expandQueryBilingual(params.query);
+			const expandedQueries = this.expandQueryBilingual(searchQuery);
 			const isBilingual = expandedQueries.length > 1;
 
 			if (isBilingual) {
@@ -252,13 +324,15 @@ export class SearchServiceImpl implements ISearchService {
 			}
 
 			// Step 4: Execute hybrid search(es) with cross-personality support
+			// Respect the MEMORY_RERANK_ENABLED feature flag for graceful degradation
+			const flags = getMemoryFeatureFlags();
 			const searchPromises = expandedQueries.map((query) =>
 				this.hybridSearch.search({
 					userId: params.userId,
 					query,
 					tiers,
 					limit: params.limit ?? this.config.caps.search_limit_default,
-					enableRerank: true,
+					enableRerank: flags.rerankEnabled,
 					// Cross-personality search - include memories from other personalities
 					personalityId: params.personalityId,
 					includeAllPersonalities: params.includeAllPersonalities ?? true,
@@ -402,7 +476,7 @@ export class SearchServiceImpl implements ISearchService {
 	 */
 	private resolveTiers(collections?: MemoryTier[] | "all"): MemoryTier[] {
 		if (!collections || collections === "all") {
-			return ["working", "history", "patterns", "books", "memory_bank"];
+			return ["working", "history", "patterns", "documents", "memory_bank"];
 		}
 		return collections;
 	}

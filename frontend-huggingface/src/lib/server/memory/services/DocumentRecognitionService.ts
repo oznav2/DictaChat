@@ -137,7 +137,7 @@ export class DocumentRecognitionService {
 	): Promise<DocumentMemoryRetrievalResult> {
 		try {
 			const memories = await this.mongoStore.findByDocumentHash(userId, documentHash, {
-				tier: "books",
+				tier: "documents",
 				status: ["active"],
 				limit,
 			});

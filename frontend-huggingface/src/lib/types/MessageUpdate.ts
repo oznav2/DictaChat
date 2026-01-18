@@ -219,6 +219,8 @@ export interface MessageMemoryFoundUpdate
 	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.Found> {
 	count: number;
 	confidence?: number;
+	/** Early memoryMeta for immediate UI feedback (Phase 4 - Latency Fix) */
+	memoryMeta?: import("./MemoryMeta").MemoryMetaV1;
 }
 
 export interface MessageMemoryStoringUpdate

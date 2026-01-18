@@ -5,7 +5,7 @@ export type Outcome = "worked" | "failed" | "partial" | "unknown";
  * - working: Short-term working memory (TTL: 24h)
  * - history: Medium-term conversation history (TTL: 7d)
  * - patterns: Learned patterns and preferences (TTL: 30d)
- * - books: Document and book chunks (permanent)
+ * - documents: Document chunks from uploaded PDFs/files (permanent)
  * - memory_bank: Long-term permanent storage
  * - datagov_schema: Israeli government data schemas (Phase 25)
  * - datagov_expansion: Hebrew/English term expansions (Phase 25)
@@ -14,7 +14,7 @@ export type MemoryTier =
 	| "working"
 	| "history"
 	| "patterns"
-	| "books"
+	| "documents"
 	| "memory_bank"
 	| "datagov_schema"
 	| "datagov_expansion";
@@ -24,7 +24,7 @@ export type MemoryTier =
  */
 export const MEMORY_TIER_GROUPS = {
 	/** Core tiers for normal user memories (subject to TTL and promotion) */
-	CORE: ["working", "history", "patterns", "books", "memory_bank"] as const,
+	CORE: ["working", "history", "patterns", "documents", "memory_bank"] as const,
 	/** DataGov tiers - static, pre-loaded government data (Phase 25) */
 	DATAGOV: ["datagov_schema", "datagov_expansion"] as const,
 	/** All searchable tiers */
@@ -32,7 +32,7 @@ export const MEMORY_TIER_GROUPS = {
 		"working",
 		"history",
 		"patterns",
-		"books",
+		"documents",
 		"memory_bank",
 		"datagov_schema",
 		"datagov_expansion",
@@ -216,6 +216,8 @@ export interface StageTimingsMs {
 	kg_insights_ms?: number;
 	known_solution_lookup?: number;
 	entity_boost_ms?: number;
+	/** NER Integration: Entity pre-filtering stage timing */
+	entity_prefilter_ms?: number;
 }
 
 export interface SearchScoreSummary {

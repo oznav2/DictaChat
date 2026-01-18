@@ -33,8 +33,6 @@ import { config as serverConfig } from "$lib/server/config";
 
 export const CONVERSATION_STATS_COLLECTION = "conversations.stats";
 
-let didWarnDeprecatedMemoryBankCollection = false;
-
 export class Database {
 	private client?: MongoClient;
 	private mongoServer?: MongoMemoryServer;
@@ -145,10 +143,9 @@ export class Database {
 		const tools = db.collection("tools");
 		const configCollection = db.collection<ConfigKey>("config");
 		const books = db.collection<Book>("books");
-		if (!didWarnDeprecatedMemoryBankCollection) {
-			logger.warn("[memory-bank] Accessing deprecated collection memoryBank");
-			didWarnDeprecatedMemoryBankCollection = true;
-		}
+		// Legacy memoryBank collection - kept for backwards compatibility during migration
+		// The warning has been removed as MEMORY_CONSOLIDATION_ENABLED defaults to true
+		// and the unified memory_items collection (tier=memory_bank) is the primary store
 		const memoryBank = db.collection<MemoryBankItem>("memoryBank");
 		const userPersonality = db.collection<UserPersonality>("userPersonality");
 		const memoryOutcomes = db.collection<MemoryOutcome>("memoryOutcomes");

@@ -9,6 +9,7 @@ import { Database } from "$lib/server/database";
 import { config } from "$lib/server/config";
 import { ADMIN_USER_ID } from "$lib/server/constants";
 import { logger } from "$lib/server/logger";
+import { v5 as uuidv5 } from "uuid";
 
 interface RoutingConcept {
 	concept_id: string;
@@ -36,6 +37,7 @@ interface KgNode {
 }
 
 interface KgEdge {
+	edge_id: string;
 	source_id: string;
 	target_id: string;
 	relation: string;
@@ -50,7 +52,7 @@ interface KgEdge {
 const ROUTING_CONCEPTS: Array<{ id: string; label: string; label_he: string; tier: string }> = [
 	// Tools
 	{ id: "web_search", label: "Web Search", label_he: "חיפוש באינטרנט", tier: "memory_bank" },
-	{ id: "document_analysis", label: "Document Analysis", label_he: "ניתוח מסמכים", tier: "books" },
+	{ id: "document_analysis", label: "Document Analysis", label_he: "ניתוח מסמכים", tier: "documents" },
 	{ id: "data_lookup", label: "Data Lookup", label_he: "חיפוש נתונים", tier: "memory_bank" },
 
 	// Topics
@@ -187,9 +189,16 @@ export async function seedKnowledgeGraph(): Promise<void> {
 		}
 
 		// Seed edges
+		// UUID v5 namespace for deterministic edge IDs
+		const KG_EDGE_NAMESPACE = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
 		const edgesCollection = db.collection("kg_edges");
 		for (const edge of EDGES) {
+			// Generate deterministic edge_id from source+target+relation
+			const edgeKey = `${edge.source}:${edge.target}:${edge.relation}`;
+			const edgeId = uuidv5(edgeKey, KG_EDGE_NAMESPACE);
+
 			const doc: KgEdge = {
+				edge_id: edgeId,
 				source_id: edge.source,
 				target_id: edge.target,
 				relation: edge.relation,

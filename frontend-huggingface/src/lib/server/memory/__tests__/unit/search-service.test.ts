@@ -214,7 +214,7 @@ describe("SearchServiceImpl", () => {
 			});
 
 			const callArgs = mockHybridSearch.search.mock.calls[0][0];
-			const expectedTiers = ["working", "history", "patterns", "books", "memory_bank"];
+			const expectedTiers = ["working", "history", "patterns", "documents", "memory_bank"];
 
 			const result: TestResult = {
 				name: "search_all_tiers_default",
@@ -877,7 +877,7 @@ describe("SearchServiceImpl", () => {
 			expect(callArgs.tiers).toHaveLength(5);
 		});
 
-		it("should search only books tier", async () => {
+		it("should search only documents tier", async () => {
 			const startTime = Date.now();
 
 			const { ServiceFactory } = await import("../../ServiceFactory");
@@ -897,19 +897,19 @@ describe("SearchServiceImpl", () => {
 			await service.search({
 				userId: "user_123",
 				query: "book content",
-				collections: ["books"],
+				collections: ["documents"],
 			});
 
 			const callArgs = mockHybridSearch.search.mock.calls[0][0];
 
 			const result: TestResult = {
-				name: "resolve_books_only",
-				passed: callArgs.tiers.length === 1 && callArgs.tiers[0] === "books",
+				name: "resolve_documents_only",
+				passed: callArgs.tiers.length === 1 && callArgs.tiers[0] === "documents",
 				duration: Date.now() - startTime,
 			};
 
 			harness.recordResult(result);
-			expect(callArgs.tiers).toEqual(["books"]);
+			expect(callArgs.tiers).toEqual(["documents"]);
 		});
 
 		it("should search memory_bank tier", async () => {

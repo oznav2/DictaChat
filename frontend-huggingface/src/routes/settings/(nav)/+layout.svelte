@@ -12,6 +12,7 @@
 	import CarbonTerminal from "~icons/carbon/terminal";
 	import CarbonPlug from "~icons/carbon/plug";
 	import CarbonDataBase from "~icons/carbon/data-base";
+	import CarbonDocument from "~icons/carbon/document";
 	import LucideImage from "~icons/lucide/image";
 	import LucideHammer from "~icons/lucide/hammer";
 	import IconGear from "~icons/bi/gear-fill";
@@ -278,6 +279,18 @@
 			>
 				<CarbonDataBase class="mr-0.5 text-xxs" />
 				ניהול נתונים
+			</button>
+			<button
+				type="button"
+				onclick={() => goto(`${base}/settings/documents`)}
+				class="group sticky bottom-[90px] mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
+					.url.pathname === `${base}/settings/documents`
+					? '!bg-gray-100 !text-gray-800 dark:!bg-gray-700 dark:!text-gray-200'
+					: 'bg-white dark:bg-gray-800'}"
+				aria-label="Document Library"
+			>
+				<CarbonDocument class="mr-0.5 text-xxs" />
+				ספריית מסמכים
 			</button>
 			<button
 				type="button"

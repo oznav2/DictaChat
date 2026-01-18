@@ -165,7 +165,10 @@ function parseMemoryContextForUi(contextText: string): {
 
 	const lines = contextText.split("\n");
 	for (const line of lines) {
-		const marker = line.match(/\[(working|history|patterns|books|memory_bank):([^\]]+)\]/);
+		// Match all valid memory tiers including DataGov tiers (Phase 25)
+		const marker = line.match(
+			/\[(working|history|patterns|documents|memory_bank|datagov_schema|datagov_expansion):([^\]]+)\]/
+		);
 		if (!marker) continue;
 
 		const tier = marker[1] as MemoryTier;
@@ -708,12 +711,28 @@ export async function* runMcpFlow({
 
 			// ============================================
 			// PARALLEL MEMORY OPERATIONS (Performance Optimization)
-			// Start memory prefetch and contextual guidance in parallel to reduce total latency
-			// This reduces 15-25 second sequential delays to ~6-8 seconds parallel
-			// Note: Tool guidance stays sequential since it depends on toolsToUse (computed later)
+			// Start ALL memory operations in parallel for ms-level response time
+			// Phase 4.1: Added getToolGuidance to parallel batch (was sequential bottleneck)
 			// ============================================
+
+			// Pre-compute context type for tool guidance (sync - just string matching)
+			const queryLower = userQuery.toLowerCase();
+			let contextType = "general";
+			if (queryLower.includes("docker") || queryLower.includes("container")) {
+				contextType = "docker";
+			} else if (queryLower.includes("debug") || queryLower.includes("error") || queryLower.includes("bug")) {
+				contextType = "debugging";
+			} else if (queryLower.includes("code") || queryLower.includes("implement") || queryLower.includes("function")) {
+				contextType = "coding_help";
+			} else if (queryLower.includes("memory") || queryLower.includes("remember") || queryLower.includes("זכור")) {
+				contextType = "memory_test";
+			}
+
+			// Pre-compute available tool names for tool guidance (sync - just mapping)
+			const availableToolNames = toolsToUse.map((t) => t.function.name);
+
 			const parallelMemoryStart = Date.now();
-			const [memoryResultSettled, contextualGuidanceSettled] = await Promise.allSettled([
+			const [memoryResultSettled, contextualGuidanceSettled, toolGuidanceSettled] = await Promise.allSettled([
 				prefetchMemoryContext(userId, userQuery, {
 					conversationId,
 					recentMessages,
@@ -725,13 +744,20 @@ export async function* runMcpFlow({
 					recentMessages,
 					signal: abortSignal,
 				}),
+				// Phase 4.1: Tool guidance now runs in parallel (was ~100-500ms sequential)
+				getToolGuidance(userId, contextType, availableToolNames),
 			]);
 
 			logger.info("[mcp] Parallel memory operations completed", {
 				totalMs: Date.now() - parallelMemoryStart,
 				memoryStatus: memoryResultSettled.status,
 				guidanceStatus: contextualGuidanceSettled.status,
+				toolGuidanceStatus: toolGuidanceSettled.status,
 			});
+
+			// Extract tool guidance result for later use
+			const parallelToolGuidance: ToolGuidanceResult | null =
+				toolGuidanceSettled.status === "fulfilled" ? toolGuidanceSettled.value : null;
 
 			// Extract results with graceful fallbacks
 			memoryResult =
@@ -823,7 +849,7 @@ export async function* runMcpFlow({
 						normalized_query: null,
 						limit: parsedContext.citations.length,
 						sort_by: null,
-						tiers_considered: ["working", "history", "patterns", "books", "memory_bank"],
+						tiers_considered: ["working", "history", "patterns", "documents", "memory_bank"],
 						tiers_used: tiersUsed,
 						search_position_map: {
 							by_position: byPosition,
@@ -862,9 +888,59 @@ export async function* runMcpFlow({
 						vector_stage_status: null,
 					},
 					feedback: {
-						eligible: parsedContext.citations.length > 0,
+						// ALWAYS enable feedback when memory system is operational
+						// The memory system learns from ALL conversations:
+						// - Retrieved memories (citations)
+						// - User and assistant text
+						// - MCP tool results
+						// This enables cross-chat persistent knowledge that constantly evolves
+						eligible: true,
 						interrupted: false,
-						eligible_reason: parsedContext.citations.length > 0 ? null : "no_citations",
+						eligible_reason: null,
+					},
+				};
+			} else if (memoryResult.isOperational) {
+				// Memory system is operational but no context was retrieved
+				// Still enable feedback for learning from this conversation
+				memoryMeta = {
+					schema_version: "v1",
+					conversation_id: conversationId,
+					assistant_message_id: "",
+					user_id: userId,
+					created_at: new Date().toISOString(),
+					retrieval: {
+						query: userQuery,
+						normalized_query: null,
+						limit: 0,
+						sort_by: null,
+						tiers_considered: ["working", "history", "patterns", "documents", "memory_bank"],
+						tiers_used: [],
+						search_position_map: { by_position: [], by_memory_id: {} },
+					},
+					known_context: {
+						known_context_text: "",
+						known_context_items: [],
+					},
+					citations: [],
+					context_insights: {
+						matched_concepts: [],
+						active_concepts: [],
+						tier_recommendations: null,
+						you_already_know: null,
+						directives: null,
+					},
+					debug: {
+						retrieval_confidence: memoryResult.retrievalConfidence,
+						fallbacks_used: [],
+						stage_timings_ms: {},
+						errors: [],
+						vector_stage_status: null,
+					},
+					feedback: {
+						// ALWAYS enable feedback - memory learns from ALL conversations
+						eligible: true,
+						interrupted: false,
+						eligible_reason: null,
 					},
 				};
 			}
@@ -903,6 +979,10 @@ export async function* runMcpFlow({
 			}
 
 			// Emit Memory Found event for real-time UI feedback
+			// Phase 4 Latency Fix: Dispatch full memoryMeta - the memory system has already
+			// done intelligent selection via RRF fusion, cross-encoder reranking, Wilson blending,
+			// and dynamic weighting. The memoryMeta IS the result of that intelligence (in ms).
+			// No arbitrary trimming - trust the system's sophisticated relevance computation.
 			yield {
 				type: MessageUpdateType.Memory,
 				subtype: MessageMemoryUpdateType.Found,
@@ -913,6 +993,7 @@ export async function* runMcpFlow({
 						: memoryResult.retrievalConfidence === "medium"
 							? 0.7
 							: 0.5,
+				memoryMeta: memoryMeta ?? undefined,
 			};
 
 			// Prepend memory sections (personality first, then memory context with confidence hint)
@@ -989,69 +1070,36 @@ export async function* runMcpFlow({
 			// Format: ✓ search_memory() → 87% success (42 uses)
 			//         ✗ create_memory() → 5% success - AVOID
 			// ============================================
-			let toolGuidanceResult: ToolGuidanceResult | null = null;
-			try {
-				// Detect context type from query (docker, debugging, coding_help, etc.)
-				const queryLower = userQuery.toLowerCase();
-				let contextType = "general";
-				if (queryLower.includes("docker") || queryLower.includes("container")) {
-					contextType = "docker";
-				} else if (
-					queryLower.includes("debug") ||
-					queryLower.includes("error") ||
-					queryLower.includes("bug")
-				) {
-					contextType = "debugging";
-				} else if (
-					queryLower.includes("code") ||
-					queryLower.includes("implement") ||
-					queryLower.includes("function")
-				) {
-					contextType = "coding_help";
-				} else if (
-					queryLower.includes("memory") ||
-					queryLower.includes("remember") ||
-					queryLower.includes("זכור")
-				) {
-					contextType = "memory_test";
-				}
+			// Phase 4.1: Use pre-fetched tool guidance from parallel batch (no longer sequential)
+			const toolGuidanceResult = parallelToolGuidance;
+			if (toolGuidanceResult?.hasGuidance && toolGuidanceResult.guidanceText) {
+				prepromptPieces.push(toolGuidanceResult.guidanceText);
 
-				// Get tool guidance from Action KG
-				const availableToolNames = toolsToUse.map((t) => t.function.name);
-				toolGuidanceResult = await getToolGuidance(userId, contextType, availableToolNames);
-
-				if (toolGuidanceResult.hasGuidance && toolGuidanceResult.guidanceText) {
-					prepromptPieces.push(toolGuidanceResult.guidanceText);
-
-					// Emit trace step for tool guidance
-					const toolGuidanceStepId = `${TRACE_STEPS.MEMORY_SEARCH.id}-tool-guidance-${Date.now()}`;
-					yield {
-						type: MessageUpdateType.Trace,
-						subtype: MessageTraceUpdateType.StepCreated,
-						runId: memoryTraceRunId,
-						runType: "memory_prefetch",
-						step: {
-							id: toolGuidanceStepId,
-							parentId: null,
-							label: {
-								he: "נטענה הדרכת כלים (למידה סיבתית)",
-								en: "Tool guidance loaded (causal learning)",
-							},
-							status: "done",
-							timestamp: Date.now(),
+				// Emit trace step for tool guidance
+				const toolGuidanceStepId = `${TRACE_STEPS.MEMORY_SEARCH.id}-tool-guidance-${Date.now()}`;
+				yield {
+					type: MessageUpdateType.Trace,
+					subtype: MessageTraceUpdateType.StepCreated,
+					runId: memoryTraceRunId,
+					runType: "memory_prefetch",
+					step: {
+						id: toolGuidanceStepId,
+						parentId: null,
+						label: {
+							he: "נטענה הדרכת כלים (למידה סיבתית)",
+							en: "Tool guidance loaded (causal learning)",
 						},
-					};
+						status: "done",
+						timestamp: Date.now(),
+					},
+				};
 
-					logger.debug("[mcp] v0.2.10 Tool guidance injected", {
-						contextType,
-						preferredTools: toolGuidanceResult.preferredTools,
-						avoidTools: toolGuidanceResult.avoidTools,
-						timingMs: toolGuidanceResult.timingMs,
-					});
-				}
-			} catch (err) {
-				// Tool guidance must never block - fail silently
-				logger.debug("[mcp] Tool guidance failed, continuing", { error: String(err) });
+				logger.debug("[mcp] v0.2.10 Tool guidance injected (parallel batch)", {
+					contextType,
+					preferredTools: toolGuidanceResult.preferredTools,
+					avoidTools: toolGuidanceResult.avoidTools,
+					timingMs: toolGuidanceResult.timingMs,
+				});
 			}
 
 			// ============================================

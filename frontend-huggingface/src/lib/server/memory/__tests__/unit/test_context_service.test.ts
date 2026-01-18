@@ -296,12 +296,12 @@ describe("TestTierPlanDetermination", () => {
 	});
 
 	/**
-	 * test_includes_books_with_documents
+	 * test_includes_documents_with_documents
 	 *
-	 * Should include books tier when documents are attached.
+	 * Should include documents tier when documents are attached.
 	 */
-	it("should include books tier when documents attached", async () => {
-		const testName = "test_books_with_documents";
+	it("should include documents tier when documents attached", async () => {
+		const testName = "test_documents_with_documents";
 		try {
 			await service.prefetchContext({
 				userId: "user_123",
@@ -311,7 +311,7 @@ describe("TestTierPlanDetermination", () => {
 			});
 
 			const searchCall = mockHybridSearch.search.mock.calls[0][0];
-			expect(searchCall.tiers).toContain("books");
+			expect(searchCall.tiers).toContain("documents");
 
 			recordResult(testName, true, "Books tier included with documents");
 		} catch (error) {

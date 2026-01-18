@@ -27,7 +27,7 @@ describe("StoreServiceImpl (embedding fallback)", () => {
 
 		const res = await service.store({
 			userId: "admin",
-			tier: "books",
+			tier: "documents",
 			text: "some extracted document text",
 			metadata: { book_id: "doc1", chunk_index: 0, title: "T" },
 		});

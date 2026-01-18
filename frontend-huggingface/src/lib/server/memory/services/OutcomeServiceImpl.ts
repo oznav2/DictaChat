@@ -51,7 +51,7 @@ const OUTCOME_SCORES: Record<Outcome, number> = {
 /**
  * Tiers that should NOT have their scores updated (protected)
  */
-const PROTECTED_TIERS = new Set(["books", "memory_bank"]);
+const PROTECTED_TIERS = new Set(["documents", "memory_bank"]);
 
 export class OutcomeServiceImpl implements OutcomeService {
 	private mongo: MemoryMongoStore;
@@ -111,7 +111,7 @@ export class OutcomeServiceImpl implements OutcomeService {
 					continue;
 				}
 
-				// Skip protected tiers (books, memory_bank don't get scored)
+				// Skip protected tiers (documents, memory_bank don't get scored)
 				// But KG routing was still updated above
 				if (PROTECTED_TIERS.has(memory.tier)) {
 					logger.debug(

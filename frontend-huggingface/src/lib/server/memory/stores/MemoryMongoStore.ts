@@ -825,7 +825,7 @@ export class MemoryMongoStore {
 					working: 0,
 					history: 0,
 					patterns: 0,
-					books: 0,
+					documents: 0,
 					memory_bank: 0,
 					datagov_schema: 0,
 					datagov_expansion: 0,
@@ -846,7 +846,7 @@ export class MemoryMongoStore {
 				working: 0,
 				history: 0,
 				patterns: 0,
-				books: 0,
+				documents: 0,
 				memory_bank: 0,
 				datagov_schema: 0,
 				datagov_expansion: 0,
@@ -940,9 +940,32 @@ export class MemoryMongoStore {
 				}
 
 				// Phase 23.2 & 23.4: Recalculate Wilson from cumulative stats
-				const stats = updated.stats;
+				let stats = updated.stats;
+				if (!stats) {
+					// Phase 23.5: Initialize stats for legacy memories missing this field
+					logger.info(
+						{ memoryId: params.memoryId },
+						"[Phase 23.5] Initializing missing stats field for legacy memory"
+					);
+					const defaultStats = {
+						uses: 1,
+						last_used_at: now,
+						worked_count: params.outcome === "worked" ? 1 : 0,
+						failed_count: params.outcome === "failed" ? 1 : 0,
+						partial_count: params.outcome === "partial" ? 1 : 0,
+						unknown_count: params.outcome === "unknown" ? 1 : 0,
+						success_count: successDelta,
+						success_rate: 0.5,
+						wilson_score: 0.5,
+					};
+					await this.items.updateOne(
+						{ memory_id: params.memoryId },
+						{ $set: { stats: defaultStats } }
+					);
+					stats = defaultStats;
+				}
 				const wilsonScore = calculateWilsonFromStats({
-					uses: stats.uses,
+					uses: stats.uses ?? 0,
 					success_count: (stats as Record<string, unknown>).success_count as number | undefined,
 					worked_count: stats.worked_count,
 					partial_count: stats.partial_count,

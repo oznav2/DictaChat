@@ -658,26 +658,26 @@ describe("UnifiedMemoryFacade", () => {
 	// ========================================================================
 
 	describe("Books Management", () => {
-		it("should list empty books for new user", async () => {
+		it("should list empty documents for new user", async () => {
 			const startTime = Date.now();
 
 			const { UnifiedMemoryFacade } = await import("../../UnifiedMemoryFacade");
 
 			const facade = new UnifiedMemoryFacade();
 
-			const books = await facade.listBooks("new_user");
+			const documents = await facade.listDocuments("new_user");
 
 			const result: TestResult = {
-				name: "list_empty_books",
-				passed: Array.isArray(books) && books.length === 0,
+				name: "list_empty_documents",
+				passed: Array.isArray(documents) && documents.length === 0,
 				duration: Date.now() - startTime,
 			};
 
 			harness.recordResult(result);
-			expect(books).toEqual([]);
+			expect(documents).toEqual([]);
 		});
 
-		it("should retrieve from books using search", async () => {
+		it("should retrieve from documents using search", async () => {
 			const startTime = Date.now();
 
 			const { UnifiedMemoryFacade } = await import("../../UnifiedMemoryFacade");
@@ -709,10 +709,10 @@ describe("UnifiedMemoryFacade", () => {
 				services: { search: mockSearchService },
 			});
 
-			const chunks = await facade.retrieveFromBooks("user_123", "TypeScript basics", 5);
+			const chunks = await facade.retrieveFromDocuments("user_123", "TypeScript basics", 5);
 
 			const result: TestResult = {
-				name: "retrieve_from_books",
+				name: "retrieve_from_documents",
 				passed: chunks.length === 1 && chunks[0].title === "TypeScript Guide",
 				duration: Date.now() - startTime,
 			};
@@ -936,7 +936,7 @@ describe("UnifiedMemoryFacade", () => {
 
 			const backup = await facade.exportBackup({
 				userId: "user_123",
-				includeTiers: ["books"],
+				includeTiers: ["documents"],
 			});
 
 			const result: TestResult = {

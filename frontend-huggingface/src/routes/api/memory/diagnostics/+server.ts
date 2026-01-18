@@ -101,7 +101,7 @@ async function getMongoStats(userId: string): Promise<{
 		"working",
 		"history",
 		"patterns",
-		"books",
+		"documents",
 		"memory_bank",
 		"datagov_schema",
 		"datagov_expansion",
@@ -176,7 +176,8 @@ async function getQdrantStats(userId: string): Promise<{
 	healthy: boolean;
 	circuitOpen: boolean;
 }> {
-	const tiers: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+	// Include all tiers including DataGov (Phase 25)
+	const tiers: MemoryTier[] = ["working", "history", "patterns", "documents", "memory_bank", "datagov_schema", "datagov_expansion"];
 	const byTier = new Map<MemoryTier, number>();
 
 	try {
@@ -339,7 +340,8 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 		}
 
 		const userId = ADMIN_USER_ID;
-		const tiers: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+		// Include all tiers including DataGov (Phase 25)
+		const tiers: MemoryTier[] = ["working", "history", "patterns", "documents", "memory_bank", "datagov_schema", "datagov_expansion"];
 
 		// Gather stats in parallel
 		const [mongoStats, qdrantStats, embeddingStatus] = await Promise.all([

@@ -1,7 +1,7 @@
 {
-    "last_successful_deployment": 1768523294.9865363,
-    "env_hash": "4de444ab0d8f86e637f642671828d60c",
-    "compose_hash": "4b69de3189044dccbaf7dc13cd530709",
-    "frontend_hash": "bcb6f70d849bc99413484f5ad2bf0ba3",
+    "last_successful_deployment": 1768775607.067928,
+    "env_hash": "19294768ce55f23df757d042b29f1ca5",
+    "compose_hash": "2430e5a2e108189e7fe56994838110cc",
+    "frontend_hash": "689f71a76fd31563b9ca64a7833bc0a5",
     "mcp_proxy_hash": "1eeffea636377ad3e75a37f1377d6341"
 }

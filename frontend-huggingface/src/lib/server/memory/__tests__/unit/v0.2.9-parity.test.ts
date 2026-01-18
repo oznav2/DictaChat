@@ -4,7 +4,7 @@
  * Tests the following v0.2.9 features:
  * - Ghost Registry clearByTier and clearAll
  * - BM25 cache invalidation (count-based rebuild trigger)
- * - clearBooksTier (True Collection Nuke)
+ * - clearDocumentsTier (True Collection Nuke)
  * - QdrantAdapter deleteByFilter enhanced signature
  *
  * Adapted from: roampal v0.2.9 release notes
@@ -79,8 +79,8 @@ describe("GhostRegistry v0.2.9 Methods", () => {
 
 	it("clearByTier removes ghosts for specific tier only", async () => {
 		// Setup: ghost some memories in different tiers
-		await registry.ghostMemory({ userId, memoryId: "book_1", tier: "books", reason: "deleted" });
-		await registry.ghostMemory({ userId, memoryId: "book_2", tier: "books", reason: "deleted" });
+		await registry.ghostMemory({ userId, memoryId: "book_1", tier: "documents", reason: "deleted" });
+		await registry.ghostMemory({ userId, memoryId: "book_2", tier: "documents", reason: "deleted" });
 		await registry.ghostMemory({
 			userId,
 			memoryId: "pattern_1",
@@ -88,24 +88,24 @@ describe("GhostRegistry v0.2.9 Methods", () => {
 			reason: "archived",
 		});
 
-		// Clear books tier
-		const cleared = await registry.clearByTier(userId, "books");
+		// Clear documents tier
+		const cleared = await registry.clearByTier(userId, "documents");
 
 		// Verify
 		expect(cleared).toBe(2);
 		const counts = await registry.countByTier(userId);
-		expect(counts.books).toBeUndefined();
+		expect(counts.documents).toBeUndefined();
 		expect(counts.patterns).toBe(1);
 	});
 
 	it("clearByTier returns 0 for empty tier", async () => {
-		const cleared = await registry.clearByTier(userId, "books");
+		const cleared = await registry.clearByTier(userId, "documents");
 		expect(cleared).toBe(0);
 	});
 
 	it("clearAll removes all ghosts for user", async () => {
 		// Setup: ghost memories across tiers
-		await registry.ghostMemory({ userId, memoryId: "book_1", tier: "books", reason: "deleted" });
+		await registry.ghostMemory({ userId, memoryId: "book_1", tier: "documents", reason: "deleted" });
 		await registry.ghostMemory({ userId, memoryId: "pattern_1", tier: "patterns", reason: "test" });
 		await registry.ghostMemory({ userId, memoryId: "working_1", tier: "working", reason: "test" });
 
@@ -123,13 +123,13 @@ describe("GhostRegistry v0.2.9 Methods", () => {
 		await registry.ghostMemory({
 			userId: "user_a",
 			memoryId: "book_1",
-			tier: "books",
+			tier: "documents",
 			reason: "test",
 		});
 		await registry.ghostMemory({
 			userId: "user_b",
 			memoryId: "book_2",
-			tier: "books",
+			tier: "documents",
 			reason: "test",
 		});
 
@@ -140,7 +140,7 @@ describe("GhostRegistry v0.2.9 Methods", () => {
 		const countsA = await registry.countByTier("user_a");
 		const countsB = await registry.countByTier("user_b");
 		expect(Object.keys(countsA)).toHaveLength(0);
-		expect(countsB.books).toBe(1);
+		expect(countsB.documents).toBe(1);
 	});
 });
 
@@ -382,16 +382,16 @@ describe("QdrantAdapter deleteByFilter v0.2.9", () => {
 		qdrant = new MockQdrantAdapter();
 
 		// Setup test data
-		qdrant.addPoint("book_1", { user_id: "user_a", tier: "books", status: "active" });
-		qdrant.addPoint("book_2", { user_id: "user_a", tier: "books", status: "active" });
+		qdrant.addPoint("book_1", { user_id: "user_a", tier: "documents", status: "active" });
+		qdrant.addPoint("book_2", { user_id: "user_a", tier: "documents", status: "active" });
 		qdrant.addPoint("pattern_1", { user_id: "user_a", tier: "patterns", status: "active" });
-		qdrant.addPoint("book_3", { user_id: "user_b", tier: "books", status: "active" });
+		qdrant.addPoint("book_3", { user_id: "user_b", tier: "documents", status: "active" });
 	});
 
 	it("deleteByFilter with simple object format works", async () => {
 		const result = await qdrant.deleteByFilter({
 			userId: "user_a",
-			tier: "books",
+			tier: "documents",
 		});
 
 		expect(result.deleted).toBe(2);
@@ -403,7 +403,7 @@ describe("QdrantAdapter deleteByFilter v0.2.9", () => {
 		const result = await qdrant.deleteByFilter({
 			must: [
 				{ key: "user_id", match: { value: "user_a" } },
-				{ key: "tier", match: { value: "books" } },
+				{ key: "tier", match: { value: "documents" } },
 			],
 		});
 
@@ -439,10 +439,10 @@ describe("QdrantAdapter deleteByFilter v0.2.9", () => {
 });
 
 // ==============================================================================
-// Test: clearBooksTier Integration (v0.2.9 True Collection Nuke)
+// Test: clearDocumentsTier Integration (v0.2.9 True Collection Nuke)
 // ==============================================================================
 
-describe("clearBooksTier v0.2.9", () => {
+describe("clearDocumentsTier v0.2.9", () => {
 	interface ClearBooksResult {
 		success: boolean;
 		mongoDeleted: number;
@@ -454,7 +454,7 @@ describe("clearBooksTier v0.2.9", () => {
 	}
 
 	/**
-	 * Mock OpsService with clearBooksTier
+	 * Mock OpsService with clearDocumentsTier
 	 */
 	class MockOpsService {
 		private mongoBooks = new Map<string, { user_id: string; tier: string }>();
@@ -464,11 +464,11 @@ describe("clearBooksTier v0.2.9", () => {
 		private bm25Invalidated = false;
 
 		addMongoBook(memoryId: string, userId: string): void {
-			this.mongoBooks.set(memoryId, { user_id: userId, tier: "books" });
+			this.mongoBooks.set(memoryId, { user_id: userId, tier: "documents" });
 		}
 
 		addQdrantPoint(memoryId: string, userId: string): void {
-			this.qdrantPoints.set(memoryId, { user_id: userId, tier: "books" });
+			this.qdrantPoints.set(memoryId, { user_id: userId, tier: "documents" });
 		}
 
 		addGhost(userId: string, memoryId: string): void {
@@ -482,7 +482,7 @@ describe("clearBooksTier v0.2.9", () => {
 			this.actionKg.set(userId, memoryIds);
 		}
 
-		async clearBooksTier(userId: string): Promise<ClearBooksResult> {
+		async clearDocumentsTier(userId: string): Promise<ClearBooksResult> {
 			const result: ClearBooksResult = {
 				success: true,
 				mongoDeleted: 0,
@@ -496,7 +496,7 @@ describe("clearBooksTier v0.2.9", () => {
 			// Step 1: Get book IDs
 			const bookIds: string[] = [];
 			for (const [id, data] of this.mongoBooks.entries()) {
-				if (data.user_id === userId && data.tier === "books") {
+				if (data.user_id === userId && data.tier === "documents") {
 					bookIds.push(id);
 				}
 			}
@@ -558,47 +558,47 @@ describe("clearBooksTier v0.2.9", () => {
 		opsService.addActionKg(userId, ["action_1", "action_2", "action_3"]);
 	});
 
-	it("clearBooksTier deletes all books from MongoDB", async () => {
-		const result = await opsService.clearBooksTier(userId);
+	it("clearDocumentsTier deletes all documents from MongoDB", async () => {
+		const result = await opsService.clearDocumentsTier(userId);
 
 		expect(result.mongoDeleted).toBe(2);
 	});
 
-	it("clearBooksTier deletes all books from Qdrant", async () => {
-		const result = await opsService.clearBooksTier(userId);
+	it("clearDocumentsTier deletes all documents from Qdrant", async () => {
+		const result = await opsService.clearDocumentsTier(userId);
 
 		expect(result.qdrantDeleted).toBe(2);
 	});
 
-	it("clearBooksTier clears ghost registry", async () => {
-		const result = await opsService.clearBooksTier(userId);
+	it("clearDocumentsTier clears ghost registry", async () => {
+		const result = await opsService.clearDocumentsTier(userId);
 
 		expect(result.ghostsCleared).toBe(2);
 	});
 
-	it("clearBooksTier clears Action KG entries", async () => {
-		const result = await opsService.clearBooksTier(userId);
+	it("clearDocumentsTier clears Action KG entries", async () => {
+		const result = await opsService.clearDocumentsTier(userId);
 
 		expect(result.actionKgCleared).toBe(3);
 	});
 
-	it("clearBooksTier invalidates BM25 cache", async () => {
+	it("clearDocumentsTier invalidates BM25 cache", async () => {
 		expect(opsService.wasBm25Invalidated()).toBe(false);
 
-		await opsService.clearBooksTier(userId);
+		await opsService.clearDocumentsTier(userId);
 
 		expect(opsService.wasBm25Invalidated()).toBe(true);
 	});
 
-	it("clearBooksTier does not affect other users", async () => {
-		const result = await opsService.clearBooksTier(userId);
+	it("clearDocumentsTier does not affect other users", async () => {
+		const result = await opsService.clearDocumentsTier(userId);
 
 		// other_user's book should still exist
-		expect(result.mongoDeleted).toBe(2); // Only userId's books
+		expect(result.mongoDeleted).toBe(2); // Only userId's documents
 	});
 
-	it("clearBooksTier returns success even with empty data", async () => {
-		const result = await opsService.clearBooksTier("non_existent_user");
+	it("clearDocumentsTier returns success even with empty data", async () => {
+		const result = await opsService.clearDocumentsTier("non_existent_user");
 
 		expect(result.success).toBe(true);
 		expect(result.mongoDeleted).toBe(0);
@@ -763,7 +763,7 @@ describe("v0.2.9 Parity Test Summary", () => {
 			"BM25 invalidateUserCache",
 			"BM25 invalidateAllCaches",
 			"QdrantAdapter deleteByFilter enhanced",
-			"clearBooksTier (True Collection Nuke)",
+			"clearDocumentsTier (True Collection Nuke)",
 			"SortBy type and implementation",
 			"Recency keyword detection",
 		];

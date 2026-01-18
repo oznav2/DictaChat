@@ -21,6 +21,8 @@ import {
 	getMemoryEnvConfig,
 } from "$lib/server/memory/featureFlags";
 import { UnifiedMemoryFacade } from "$lib/server/memory/UnifiedMemoryFacade";
+// Phase: Wire remaining 64 - PromptEngine integration
+import { getPromptEngine, type RenderContext, type PromptEngine } from "$lib/server/memory/PromptEngine";
 import type {
 	RetrievalConfidence,
 	SearchDebug,
@@ -31,6 +33,18 @@ import type {
 	ContextType,
 } from "$lib/server/memory/types";
 import type { SourceAttribution } from "$lib/server/memory/services/SourceDescriptionService";
+import {
+	getBilingualPrompt,
+	buildFailureWarning,
+	buildGoalReminder,
+	buildMemoryContextHeader,
+	buildErrorMessage,
+	wrapWithDirection,
+	mergeBilingualPrompts,
+	renderPrompt,
+	detectLanguage,
+	type SupportedLanguage,
+} from "$lib/server/memory/BilingualPrompts";
 
 // ============================================
 // TYPES
@@ -189,6 +203,41 @@ export function buildSearchPositionMap(results: SearchResult[]): SearchPositionM
 }
 
 /**
+ * Parse search position map from formatted memory context text
+ * Fallback when debug results aren't available
+ * Parses lines like: [1] [documents:abc123] content
+ */
+export function parseSearchPositionMapFromContext(contextText: string): SearchPositionMap {
+	const positionMap: SearchPositionMap = {};
+
+	const lines = contextText.split("\n");
+	for (const line of lines) {
+		// Match pattern: [position] [tier:memoryId] content
+		// All valid memory tiers including DataGov tiers
+		const match = line.match(
+			/\[(\d+)\]\s*\[(working|history|patterns|documents|memory_bank|datagov_schema|datagov_expansion):([^\]]+)\]/
+		);
+		if (!match) continue;
+
+		const position = parseInt(match[1], 10);
+		const tier = match[2] as MemoryTier;
+		const memoryId = match[3].trim();
+
+		if (!memoryId || isNaN(position)) continue;
+
+		positionMap[memoryId] = {
+			position,
+			tier,
+			score: 0.5, // Default score when parsing from text
+			originalScore: 0.5,
+			alwaysInjected: false,
+		};
+	}
+
+	return positionMap;
+}
+
+/**
  * Determine if a tool should be allowed based on confidence and memory context
  */
 export function shouldAllowTool(
@@ -239,10 +288,12 @@ export function filterToolsByConfidence<T extends { function: { name: string } }
 /**
  * Get prompt hint based on retrieval confidence
  * Guides the model on whether to use tools or answer from memory
+ * Now uses centralized BilingualPrompts for consistent Hebrew/English support
  */
 export function getConfidencePromptHint(
 	retrievalConfidence: RetrievalConfidence,
-	hasMemoryContext: boolean
+	hasMemoryContext: boolean,
+	language: SupportedLanguage = "en"
 ): string {
 	if (!hasMemoryContext) {
 		return "";
@@ -250,22 +301,11 @@ export function getConfidencePromptHint(
 
 	switch (retrievalConfidence) {
 		case "high":
-			return `**MEMORY CONTEXT AVAILABLE (HIGH CONFIDENCE)**
-The memory context above contains highly relevant information for this query.
-You SHOULD be able to answer directly from memory without calling external tools.
-Only use tools if the memory context is clearly insufficient or outdated.`;
-
+			return getBilingualPrompt("confidence_high", language);
 		case "medium":
-			return `**MEMORY CONTEXT AVAILABLE (MEDIUM CONFIDENCE)**
-The memory context above may contain relevant information.
-Check the memory context first before deciding to use external tools.
-If memory provides a partial answer, consider supplementing with tools.`;
-
+			return getBilingualPrompt("confidence_medium", language);
 		case "low":
-			return `**MEMORY CONTEXT AVAILABLE (LOW CONFIDENCE)**
-The memory context above has limited relevance to this query.
-You may need to use tools to gather additional information.`;
-
+			return getBilingualPrompt("confidence_low", language);
 		default:
 			return "";
 	}
@@ -371,6 +411,17 @@ export async function prefetchMemoryContext(
 			if (debugWithResults.results) {
 				result.searchPositionMap = buildSearchPositionMap(debugWithResults.results);
 			}
+		}
+
+		// Fallback: Parse searchPositionMap from memoryContext text if not built from debug
+		// This ensures feedback buttons work even when debug doesn't include results
+		if (
+			Object.keys(result.searchPositionMap).length === 0 &&
+			prefetchResult.memoryContextInjection
+		) {
+			result.searchPositionMap = parseSearchPositionMapFromContext(
+				prefetchResult.memoryContextInjection
+			);
 		}
 	} catch (err) {
 		// Check if aborted
@@ -869,12 +920,15 @@ export async function getContextualGuidance(
 			}
 		}
 
-		// Past failures to avoid
+		// Past failures to avoid - using BilingualPrompts helper
 		if (insights.past_outcomes && insights.past_outcomes.length > 0) {
-			guidanceParts.push("⚠️ **Past Failures to Avoid**:");
-			for (const failure of insights.past_outcomes.slice(0, 3)) {
-				const reason = failure.reason ? `: ${failure.reason}` : "";
-				guidanceParts.push(`  - ${failure.content}${reason}`);
+			const failures = insights.past_outcomes.slice(0, 3).map((f) => ({
+				approach: f.content,
+				reason: f.reason ?? "",
+			}));
+			const failureWarning = buildFailureWarning(failures, "en");
+			if (failureWarning) {
+				guidanceParts.push(failureWarning);
 			}
 		}
 
@@ -929,18 +983,24 @@ export async function getContextualGuidance(
 
 /**
  * Format contextual guidance for injection into preprompt
+ * Now uses centralized BilingualPrompts for consistent Hebrew/English support
  */
-export function formatContextualGuidancePrompt(guidance: ContextualGuidanceResult): string | null {
+export function formatContextualGuidancePrompt(
+	guidance: ContextualGuidanceResult,
+	language: SupportedLanguage = "en"
+): string | null {
 	if (!guidance.hasGuidance || !guidance.guidanceText) {
 		return null;
 	}
 
-	return `**CONTEXTUAL GUIDANCE FROM MEMORY SYSTEM**
-The following insights are derived from past interactions and should inform your response:
+	const header = getBilingualPrompt("contextual_guidance_header", language);
+	const mightHelp = getBilingualPrompt("this_might_help", language);
+
+	return `${header}
 
 ${guidance.guidanceText}
 
-Use this guidance to provide a more relevant and informed response.`;
+${mightHelp}`;
 }
 
 // ============================================
@@ -1176,40 +1236,19 @@ export interface ParseMemoryMarksResult {
  * When memories are injected, we ask the LLM to mark which ones were helpful
  * using a hidden comment at the end of the response.
  */
-export const MEMORY_ATTRIBUTION_INSTRUCTION = `
-IMPORTANT: When using information from the memory context above, at the END of your response,
-add a hidden attribution comment in this exact format on its own line:
-<!-- MEM: 1👍 2👎 3➖ -->
-
-Where numbers correspond to memory positions from the context:
-- 👍 = memory was helpful and used in your response
-- 👎 = memory was unhelpful, irrelevant, or wrong
-- ➖ = memory was not used in your response
-
-Example: If memories 1 and 3 helped, memory 2 was wrong, and 4-5 weren't used:
-<!-- MEM: 1👍 3👍 2👎 4➖ 5➖ -->
-
-This helps improve memory quality for future conversations. Include ALL memory positions.
-`;
+/**
+ * Memory attribution instruction (English)
+ * @deprecated Use getBilingualPrompt("memory_attribution_instruction", "en") instead
+ * Kept for backward compatibility with existing tests
+ */
+export const MEMORY_ATTRIBUTION_INSTRUCTION = getBilingualPrompt("memory_attribution_instruction", "en");
 
 /**
  * Hebrew version of the attribution instruction
+ * @deprecated Use getBilingualPrompt("memory_attribution_instruction", "he") instead
+ * Kept for backward compatibility with existing tests
  */
-export const MEMORY_ATTRIBUTION_INSTRUCTION_HE = `
-חשוב: כאשר אתה משתמש במידע מהקשר הזיכרון לעיל, בסוף התשובה שלך,
-הוסף הערת ייחוס מוסתרת בפורמט הזה בדיוק בשורה נפרדת:
-<!-- MEM: 1👍 2👎 3➖ -->
-
-כאשר המספרים מתאימים למיקומי הזיכרונות מההקשר:
-- 👍 = הזיכרון היה שימושי ונעשה בו שימוש בתשובתך
-- 👎 = הזיכרון היה לא רלוונטי או שגוי
-- ➖ = לא נעשה שימוש בזיכרון בתשובתך
-
-דוגמה: אם זיכרונות 1 ו-3 עזרו, זיכרון 2 היה שגוי, ו-4-5 לא נעשה בהם שימוש:
-<!-- MEM: 1👍 3👍 2👎 4➖ 5➖ -->
-
-זה עוזר לשפר את איכות הזיכרון לשיחות עתידיות. כלול את כל מיקומי הזיכרון.
-`;
+export const MEMORY_ATTRIBUTION_INSTRUCTION_HE = getBilingualPrompt("memory_attribution_instruction", "he");
 
 /**
  * Parse memory marks from LLM response
@@ -1485,15 +1524,14 @@ export async function processResponseWithAttribution(params: {
 
 /**
  * Get the appropriate attribution instruction based on language
+ * Now uses centralized BilingualPrompts for consistent Hebrew/English support
  *
  * @param language - Language code ('he' | 'en' | 'mixed')
  * @returns Attribution instruction string
  */
 export function getAttributionInstruction(language?: "he" | "en" | "mixed"): string {
-	if (language === "he") {
-		return MEMORY_ATTRIBUTION_INSTRUCTION_HE;
-	}
-	return MEMORY_ATTRIBUTION_INSTRUCTION;
+	const lang: SupportedLanguage = language === "he" ? "he" : "en";
+	return getBilingualPrompt("memory_attribution_instruction", lang);
 }
 
 // ============================================
@@ -2087,4 +2125,254 @@ export function hasMemoryBankTool(tools: Array<{ function: { name: string } }>):
 			t.function.name === "create_memory" ||
 			t.function.name === "store_memory"
 	);
+}
+
+// ============================================
+// BILINGUAL PROMPT HELPERS (Wire remaining functions)
+// Phase: Wire remaining 64 elements
+// ============================================
+
+/**
+ * Format memory context with proper header using BilingualPrompts
+ * Uses buildMemoryContextHeader for consistent formatting
+ *
+ * @param memories - Array of memory items with content and confidence
+ * @param language - Target language
+ * @returns Formatted memory context string
+ */
+export function formatMemoryContext(
+	memories: Array<{ content: string; confidence?: number }>,
+	language: SupportedLanguage = "en"
+): string {
+	return buildMemoryContextHeader(memories, language);
+}
+
+/**
+ * Format goal reminder section using BilingualPrompts
+ * Uses buildGoalReminder for consistent formatting
+ *
+ * @param goals - Array of goals with descriptions and optional progress
+ * @param language - Target language
+ * @returns Formatted goal reminder string
+ */
+export function formatGoalReminder(
+	goals: Array<{ description: string; progress?: number }>,
+	language: SupportedLanguage = "en"
+): string {
+	return buildGoalReminder(goals, language);
+}
+
+/**
+ * Format error message using BilingualPrompts
+ * Uses buildErrorMessage for consistent, user-friendly errors
+ *
+ * @param errorType - Type of error (e.g., "memory_retrieval", "tool_execution")
+ * @param language - Target language
+ * @param details - Optional error details
+ * @returns Formatted error message
+ */
+export function formatMemoryError(
+	errorType: string,
+	language: SupportedLanguage = "en",
+	details?: string
+): string {
+	return buildErrorMessage(errorType, language, details);
+}
+
+/**
+ * Wrap text with appropriate RTL/LTR direction
+ * Uses wrapWithDirection for proper Hebrew text handling
+ *
+ * @param text - Text to wrap
+ * @param language - Language to determine direction
+ * @returns Text wrapped with direction span
+ */
+export function wrapTextWithDirection(text: string, language: SupportedLanguage): string {
+	return wrapWithDirection(text, language);
+}
+
+/**
+ * Auto-detect language from text and format accordingly
+ * Uses detectLanguage for automatic language detection
+ *
+ * @param text - Text to analyze
+ * @returns Detected language code
+ */
+export function detectTextLanguage(text: string): SupportedLanguage {
+	return detectLanguage(text);
+}
+
+/**
+ * Merge multiple prompt sections into a bilingual prompt
+ * Uses mergeBilingualPrompts for combining sections
+ *
+ * @param sections - Array of bilingual prompt sections
+ * @param separator - Separator between sections (default: newline)
+ * @returns Merged bilingual prompt
+ */
+export function mergePromptSections(
+	sections: Array<{ en: string; he: string }>,
+	separator: string = "\n\n"
+): { en: string; he: string } {
+	return mergeBilingualPrompts(sections, separator);
+}
+
+/**
+ * Render a prompt template with variables
+ * Uses renderPrompt for template interpolation
+ *
+ * @param key - Prompt key from BILINGUAL_PROMPTS
+ * @param language - Target language
+ * @param vars - Variables to interpolate
+ * @returns Rendered prompt string
+ */
+export function renderMemoryPrompt(
+	key: string,
+	language: SupportedLanguage,
+	vars: Record<string, unknown> = {}
+): string {
+	return renderPrompt(key, language, vars);
+}
+
+// ============================================
+// PROMPT ENGINE INTEGRATION (Wire remaining 64)
+// Phase: Wire PromptEngine for template-based rendering
+// ============================================
+
+/** Cached PromptEngine instance */
+let _promptEngine: PromptEngine | null = null;
+
+/**
+ * Get or initialize the PromptEngine instance
+ * Lazy initialization to avoid startup overhead
+ */
+async function getOrInitPromptEngine(): Promise<PromptEngine | null> {
+	if (_promptEngine) {
+		return _promptEngine;
+	}
+
+	try {
+		const templatesDir = new URL("../../memory/templates", import.meta.url).pathname;
+		const engine = getPromptEngine({ templatesDir, defaultLanguage: "he" });
+		await engine.initialize();
+		_promptEngine = engine;
+		logger.info({ templateCount: engine.listTemplates().length }, "[memoryIntegration] PromptEngine initialized");
+		return engine;
+	} catch (err) {
+		logger.warn({ err }, "[memoryIntegration] PromptEngine init failed, using fallback");
+		return null;
+	}
+}
+
+/**
+ * Render a template using the PromptEngine
+ * Falls back to simple variable replacement if engine unavailable
+ *
+ * @param templateId - Template ID (e.g., "memory-injection", "failure-prevention")
+ * @param context - Variables to pass to the template
+ * @returns Rendered template string
+ */
+export async function renderTemplatePrompt(
+	templateId: string,
+	context: RenderContext = {}
+): Promise<string> {
+	const engine = await getOrInitPromptEngine();
+
+	if (engine && engine.hasTemplate(templateId)) {
+		try {
+			return engine.render(templateId, context);
+		} catch (err) {
+			logger.warn({ err, templateId }, "[memoryIntegration] Template render failed");
+		}
+	}
+
+	// Fallback: return empty or context-based message
+	return context.fallbackMessage?.toString() ?? "";
+}
+
+/**
+ * Render a bilingual template (returns both English and Hebrew versions)
+ *
+ * @param templateId - Template ID
+ * @param context - Variables to pass to the template
+ * @returns Object with 'en' and 'he' rendered strings
+ */
+export async function renderBilingualTemplate(
+	templateId: string,
+	context: RenderContext = {}
+): Promise<{ en: string; he: string }> {
+	const engine = await getOrInitPromptEngine();
+
+	if (engine && engine.hasTemplate(templateId)) {
+		try {
+			return engine.renderBilingual(templateId, context);
+		} catch (err) {
+			logger.warn({ err, templateId }, "[memoryIntegration] Bilingual render failed");
+		}
+	}
+
+	// Fallback
+	const fallback = context.fallbackMessage?.toString() ?? "";
+	return { en: fallback, he: fallback };
+}
+
+/**
+ * Render memory injection template with memories and confidence
+ *
+ * @param memories - Array of memory items to inject
+ * @param confidence - Retrieval confidence level ("high" | "medium" | "low")
+ * @param language - Target language
+ * @returns Formatted memory injection prompt
+ */
+export async function renderMemoryInjection(
+	memories: Array<{ content: string; tier?: string; score?: number }>,
+	confidence: RetrievalConfidence,
+	language: SupportedLanguage = "he"
+): Promise<string> {
+	return renderTemplatePrompt("memory-injection", {
+		memories,
+		confidence,
+		language,
+		hasMemories: memories.length > 0,
+		memoryCount: memories.length,
+	});
+}
+
+/**
+ * Render failure prevention template with past failures
+ *
+ * @param failures - Array of past failures to warn about
+ * @param language - Target language
+ * @returns Formatted failure prevention prompt
+ */
+export async function renderFailurePrevention(
+	failures: Array<{ approach: string; reason: string }>,
+	language: SupportedLanguage = "he"
+): Promise<string> {
+	return renderTemplatePrompt("failure-prevention", {
+		failures,
+		language,
+		hasFailures: failures.length > 0,
+		failureCount: failures.length,
+	});
+}
+
+/**
+ * List all available prompt templates
+ * Useful for admin/debug views
+ *
+ * @returns Array of template metadata or empty array
+ */
+export async function listAvailableTemplates(): Promise<
+	Array<{ id: string; name: string; language: string; category?: string }>
+> {
+	const engine = await getOrInitPromptEngine();
+	if (!engine) return [];
+
+	return engine.listTemplates().map((t) => ({
+		id: t.id,
+		name: t.name,
+		language: t.language,
+		category: t.category,
+	}));
 }

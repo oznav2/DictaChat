@@ -31,6 +31,10 @@ export interface MemoryFeatureFlags {
 	memoryConsolidationEnabled: boolean;
 	toolResultIngestionEnabled: boolean;
 	memoryFirstLogicEnabled: boolean;
+
+	// Experimental features
+	/** Enable contextual embedding with LLM-generated prefixes for improved retrieval */
+	contextualEmbeddingEnabled: boolean;
 }
 
 export interface MemoryEnvConfig {
@@ -99,7 +103,9 @@ export function getMemoryFeatureFlags(): MemoryFeatureFlags {
 		// Component flags
 		qdrantEnabled: parseBoolean(env.MEMORY_QDRANT_ENABLED, true),
 		bm25Enabled: parseBoolean(env.MEMORY_BM25_ENABLED, true),
-		rerankEnabled: parseBoolean(env.MEMORY_RERANK_ENABLED, true),
+		// Default to false until dicta-retrieval reranker batch size issue is fixed
+		// The reranker crashes with "n_ubatch >= n_tokens" assertion when processing documents
+		rerankEnabled: parseBoolean(env.MEMORY_RERANK_ENABLED, false),
 		outcomeEnabled: parseBoolean(env.MEMORY_OUTCOME_ENABLED, true),
 		promotionEnabled: parseBoolean(env.MEMORY_PROMOTION_ENABLED, true),
 
@@ -113,6 +119,9 @@ export function getMemoryFeatureFlags(): MemoryFeatureFlags {
 		memoryConsolidationEnabled: parseBoolean(env.MEMORY_CONSOLIDATION_ENABLED, true),
 		toolResultIngestionEnabled: parseBoolean(env.TOOL_RESULT_INGESTION_ENABLED, true),
 		memoryFirstLogicEnabled: parseBoolean(env.MEMORY_FIRST_LOGIC_ENABLED, true),
+
+		// Experimental features (default: off)
+		contextualEmbeddingEnabled: parseBoolean(env.CONTEXTUAL_EMBEDDING_ENABLED, false),
 	};
 }
 

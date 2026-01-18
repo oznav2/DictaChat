@@ -1,7 +1,410 @@
-<!-- Updated: v0.2.31 TIER 8 COMPLETE - January 15, 2026 -->
+<!-- Updated: v0.2.42 MEMORY PERFORMANCE FIX - January 18, 2026 -->
 # Project Status
 
-**Last Updated**: January 15, 2026 (v0.2.31 - ALL TIERS 1-8 FULLY COMPLETE!)
+**Last Updated**: January 18, 2026 (v0.2.42 - Memory Performance Fix)
+
+---
+
+## ⚡ MEMORY PERFORMANCE & UI FIX (v0.2.42)
+
+**Issues Fixed**:
+1. **TracePanel showing wrong message** - "Document processed successfully" shown for memory searches
+2. **Feedback buttons not appearing** - Condition too restrictive
+3. **Cold-start taking 2+ seconds** - Reranker endpoint returning 404
+
+### Root Causes & Fixes
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| TracePanel wrong message | `runType` not propagated from backend to frontend store | Added `runType` to `RunState`, updated `createRun()` and `handleMessageTraceUpdate()` |
+| Feedback buttons hidden | Outer `{#if}` required `hasKnownContext \|\| hasCitations` | Changed to `hasKnownContext \|\| hasCitations \|\| isFeedbackEligible` |
+| Reranker 404 → slow cold-start | Endpoint was `/rerank` but service exposes `/v1/rerank` | Fixed path in `hooks.server.ts` |
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `Trace.ts:39` | Added `runType?: "memory_prefetch" \| "tool_execution" \| "document_rag"` to `RunState` |
+| `traceStore.ts:99-117` | Updated `createRun()` to accept and store `runType` |
+| `traceStore.ts:366-367` | Updated `handleMessageTraceUpdate()` to pass `runType` |
+| `MemoryContextIndicator.svelte:115` | Added `isFeedbackEligible` to outer condition |
+| `hooks.server.ts:103-107` | Fixed reranker endpoint from `/rerank` to `/v1/rerank` |
+
+### Performance Impact
+
+- Reranker now responds correctly (~433ms vs timeout/fallback)
+- Cold-start should drop from 2.3s to ~500ms
+- Memory retrieval end-to-end: embedding 87ms + search 131ms = ~220ms
+
+---
+
+## 🧠 MEMORY FEEDBACK PERSISTENCE FIX (v0.2.41)
+
+**Issue**: Memory feedback buttons (👍/👎) were not persisting after the assistant finished generating responses, preventing the memory system from learning from user feedback.
+
+**Root Causes**:
+1. `feedback.eligible` was only `true` when citations were extracted
+2. `parseMemoryContextForUi` regex didn't include DataGov tiers
+3. `searchPositionMap` wasn't populated (missing fallback parser)
+4. `memoryMeta` was only set when `memoryContext` had content
+
+**Philosophy Change**: Memory system should learn from ALL conversations, not just when memories are retrieved. Feedback includes user text, assistant text, and MCP tool results - enabling cross-chat persistent knowledge that constantly evolves.
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `runMcpFlow.ts:168-171` | Updated regex to include `datagov_schema` and `datagov_expansion` tiers |
+| `runMcpFlow.ts:867-877` | `feedback.eligible` now ALWAYS `true` when memory operational |
+| `runMcpFlow.ts:879-923` | Added else block to set `memoryMeta` even when no context retrieved |
+| `memoryIntegration.ts:205-238` | Added `parseSearchPositionMapFromContext()` fallback helper |
+| `memoryIntegration.ts:381-390` | Added fallback to parse searchPositionMap from context text |
+
+### Impact
+
+- Feedback buttons now persist after response completes
+- Memory system learns from every conversation (not just memory-retrieval turns)
+- DataGov tier citations now properly parsed
+- `searchPositionMap` populated even when debug results unavailable
+- Cross-chat knowledge continuously evolves through user feedback
+
+---
+
+## 🐛 CRITICAL MEMORY BUG FIXES (January 18, 2026)
+
+**Root cause analysis** of memory retrieval failures found THREE critical issues:
+
+### Issues Identified & Fixed
+
+| Issue | Root Cause | Fix |
+|-------|------------|-----|
+| **Documents not searched** | `determineTierPlan()` only included `documents` tier when `hasDocuments=true` (current message has attachments), NOT when user has stored documents | FIXED: Always include `documents` tier for persistent RAG |
+| **Reranker 404 errors** | Endpoint was `http://dicta-retrieval:5006` but should be `http://dicta-retrieval:5006/rerank` - causing circuit breaker to open | FIXED: Added `/rerank` path |
+| **NER not integrated** | `UnifiedAIClient` with NER exists but is never instantiated or called in memory flow | DOCUMENTED: Needs future wiring |
+| **TracePanel wrong messages** | TracePanel showed "Document processed successfully" for ALL trace runs including memory searches | FIXED: Check `runType` and display appropriate messages |
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `PrefetchServiceImpl.ts:203-213` | Always include `documents` tier in search |
+| `hooks.server.ts:102-106` | Fixed reranker endpoint to include `/rerank` path |
+| `TracePanel.svelte:57-77` | Display run-type-specific messages (memory vs document) |
+| `TracePanel.svelte:124-128` | Show database icon for memory runs, document icon for RAG |
+
+### Impact
+
+Before fix:
+- `memoryHits: 0` even with 69 indexed vectors
+- Reranker circuit breaker always open (404 errors)
+- Documents tier never searched unless current message had attachments
+- TracePanel always showed "Document processed successfully" even for memory searches
+- Model called fetch tools unnecessarily because memory returned empty
+
+After fix:
+- All stored documents searchable anytime
+- Reranker properly called for result ranking
+- Memory context should now be populated correctly
+- TracePanel shows "Memory search complete" for memory runs
+- Model should use memory context instead of calling fetch tools
+
+### ✅ NER Integration COMPLETE (v0.2.40)
+
+The NER service (`dicta-ner:5007`) is now fully integrated into the memory storage pipeline:
+
+| File | Change |
+|------|--------|
+| `StoreServiceImpl.ts:64-70` | Added `unifiedAIClient` to config interface |
+| `StoreServiceImpl.ts:76,86` | Added property and constructor wiring |
+| `StoreServiceImpl.ts:541-588` | `embedAndIndex` now uses `processTextFull()` for parallel NER + embedding |
+| `hooks.server.ts:52` | Import `getUnifiedAIClient` factory |
+| `hooks.server.ts:143-151` | Create and pass `UnifiedAIClient` to `StoreServiceImpl` |
+
+**How it works**:
+1. When `store()` is called, it queues an `embedAndIndex` task
+2. `embedAndIndex` calls `unifiedAI.processTextFull(text, traceId)`
+3. `processTextFull` executes NER + Embedding in **parallel** via `Promise.allSettled`
+4. Extracted entities stored as `"ENTITY_GROUP:word"` strings in both Qdrant payload and MongoDB
+5. Falls back to embedding-only if `UnifiedAIClient` unavailable
+
+**Benefits**:
+- Entities extracted from all stored memories (working, documents, memory_bank)
+- Knowledge graph can now be enriched with real NER entities
+- Entity-based retrieval enabled for future use
+- NER failures gracefully degraded (memories still stored with empty entities)
+
+---
+
+## 🔌 WIRE REMAINING 64: COMPLETE (January 18, 2026)
+
+Executed comprehensive wiring of all remaining 64 unwired elements from `unwired_elements.md`.
+
+### Batch Summary
+
+| Batch | Description | Status |
+|-------|-------------|--------|
+| 1 | BilingualPrompts helpers → memoryIntegration | ✅ 8 wrapper functions |
+| 2 | Tool Intelligence utilities (11 functions) | ✅ Dynamic ETA/timeouts |
+| 3 | PromptEngine active rendering | ✅ Template functions added |
+| 4 | UI Components | ✅ PersonalitySelector + Pagination |
+| 5 | Admin Dashboard augmentation | ✅ Circuit breaker + perf panels |
+| 6 | API endpoints UI exposure | ✅ KG stats + maintenance ops |
+
+### Key Files Modified
+
+| File | Change |
+|------|--------|
+| `memoryIntegration.ts` | +BilingualPrompts helpers, +PromptEngine rendering |
+| `toolInvocation.ts` | +Tool Intelligence (ETA, timeouts, metadata) |
+| `PersonalityModal.svelte` | +PersonalitySelector integration |
+| `DocumentLibrary.svelte` | +Pagination with local state |
+| `/settings/dev/+page.svelte` | +6 new admin panels |
+
+### New Admin Dashboard Panels
+
+- MCP Circuit Breakers (view/reset)
+- Embedding Service Circuit Breaker (status badges)
+- MCP Performance Monitor (view/clear)
+- Knowledge Graph Stats (view/backfill)
+- Pattern Performance (view)
+- Memory Maintenance (sanitize/cleanup)
+
+### Deleted
+
+- `DataManagementModal.svelte` (duplicate of /settings/data page)
+
+---
+
+## 🔌 WIRE THE GAP: COMPLETE (January 18, 2026)
+
+Executed full 7-phase plan to integrate all "unwired" capabilities from the memory system.
+
+### Phase Summary
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| 1 | Cleanup unused components | ✅ 4 files deleted |
+| 2 | BilingualPrompts integration | ✅ 6 new prompt keys |
+| 3 | PromptEngine initialization | ✅ Wired in hooks.server.ts |
+| 4 | ContextualEmbeddingService | ✅ Feature flag + SearchService wire |
+| 5 | Admin API endpoints | ✅ circuit-breakers + performance |
+| 6 | UI component wiring | ✅ Documents settings page + nav |
+| 7 | ToolSummarizers | ✅ Integrated into toolInvocation.ts |
+
+### Key Files Modified
+
+| File | Change |
+|------|--------|
+| `BilingualPrompts.ts` | +6 bilingual prompt keys (attribution, confidence, guidance) |
+| `memoryIntegration.ts` | Refactored to use BilingualPrompts |
+| `hooks.server.ts` | PromptEngine initialization after seeders |
+| `featureFlags.ts` | Added `contextualEmbeddingEnabled` (default: false) |
+| `SearchServiceImpl.ts` | ContextualEmbeddingService integration |
+| `toolInvocation.ts` | ToolSummarizers + `summarizeForStorage()` |
+| `+layout.svelte` (settings) | Documents nav button added |
+
+### New Endpoints
+
+- `GET/POST /api/admin/circuit-breakers` - View/reset circuit breaker stats
+- `GET/POST /api/admin/performance` - View/clear MCP performance metrics
+
+### New Pages
+
+- `/settings/documents` - Document library management UI
+
+### Deleted (Unused)
+
+- `IconPaperclip.svelte`, `LogoHuggingFaceBorderless.svelte`
+- `ModelCardMetadata.svelte`, `HoverTooltip.svelte`
+
+---
+
+## 📊 KNOWLEDGE GRAPH SEEDER FIX (January 18, 2026)
+
+Fixed KnowledgeGraph3D visualization not showing entities/nodes.
+
+### Root Cause
+The `runAllSeeders()` function that populates initial KG data was never called during memory system initialization.
+
+### Fix Applied
+- Added `import { runAllSeeders } from "$lib/server/memory/seed"` to `hooks.server.ts`
+- Added `await runAllSeeders()` call after `facade.initialize()` in memory initialization
+
+### Files Modified
+| File | Change |
+|------|--------|
+| `src/hooks.server.ts` | Added seeder import and call |
+
+---
+
+## 📝 TIER RENAME: "books" → "documents" (January 18, 2026)
+
+Renamed the "books" memory tier to "documents" for clarity (1 PDF = multiple document chunks, not "books").
+
+### Changes Summary
+- Updated `MemoryTier` type in both frontend (`MemoryMeta.ts`) and backend (`types.ts`)
+- Updated all tier arrays (ALL_TIERS, CORE_TIERS, VALID_TIERS)
+- Renamed `clearBooksTier()` → `clearDocumentsTier()` in UnifiedMemoryFacade
+- Updated UI labels to Hebrew "מסמכים" with amber color
+- Created migration script: `scripts/migrate-books-to-documents.ts`
+
+### Migration Required
+```bash
+npx tsx scripts/migrate-books-to-documents.ts --dry-run  # Preview
+npx tsx scripts/migrate-books-to-documents.ts            # Apply
+```
+
+---
+
+## 🚀 NER INTEGRATION: PHASE 1 INFRASTRUCTURE COMPLETE (January 18, 2026)
+
+DictaBERT-NER Hebrew Named Entity Recognition service infrastructure deployed.
+
+### Phase 1 Summary (Infrastructure)
+
+| Step | Description | Status |
+|------|-------------|--------|
+| 1.1 | Create ner-service/ directory | ✅ COMPLETE |
+| 1.2 | Create Dockerfile | ✅ COMPLETE |
+| 1.3 | Create requirements.txt | ✅ COMPLETE |
+| 1.4 | Create main.py (FastAPI NER service) | ✅ COMPLETE |
+| 1.5 | Update docker-compose.yml | ✅ COMPLETE |
+| 1.6 | Update .env with NER config | ✅ COMPLETE |
+| 1.7 | Update deploy.py (deploy_ner_verbose) | ✅ COMPLETE |
+| 1.8 | Update start.sh | ✅ N/A (delegates to deploy.py) |
+| 1.9 | Update STATUS.md | ✅ COMPLETE |
+
+### Files Created/Modified
+
+| File | Action | Description |
+|------|--------|-------------|
+| `ner-service/Dockerfile` | CREATE | Python 3.11-slim with curl, healthcheck |
+| `ner-service/requirements.txt` | CREATE | FastAPI, uvicorn, transformers, torch |
+| `ner-service/main.py` | CREATE | DictaBERT-NER service with /health, /extract endpoints |
+| `docker-compose.yml` | MODIFY | Added ner-service container (port 5007, GPU, healthcheck) |
+| `.env` | MODIFY | Added 15+ NER config vars (circuit breaker, cache, prefilter) |
+| `deploy.py` | MODIFY | Added deploy_ner_verbose() function |
+
+### NER Service Specification
+
+- **Port**: 5007
+- **Model**: dicta-il/dictabert-ner
+- **Entity Types**: PER, ORG, LOC, DATE, MISC
+- **Endpoints**: GET /health, POST /extract, POST /extract/single
+- **GPU**: CUDA with FP16 inference optimization
+- **Dependencies**: dicta-retrieval (starts after retrieval is healthy)
+
+### Phase 2 Summary (UnifiedAIClient Implementation)
+
+| Step | Description | Status |
+|------|-------------|--------|
+| 2.1 | Create ai/ directory | ✅ COMPLETE |
+| 2.2 | Create UnifiedAIClient.ts | ✅ COMPLETE |
+| 2.3 | Add NER config to memory_config.ts | ✅ COMPLETE |
+| 2.4 | Create EntityCache class (LRU, 5K) | ✅ COMPLETE |
+| 2.5 | Create NERCircuitBreaker | ✅ COMPLETE |
+| 2.6 | Export from memory/index.ts | ✅ COMPLETE |
+| 2.7 | Update STATUS.md | ✅ COMPLETE |
+
+### UnifiedAIClient Key Features
+
+- **Parallel Processing**: `Promise.allSettled` for NER + Embedding
+- **Circuit Breaker**: Independent NER circuit breaker (3 failures → open)
+- **LRU Cache**: 5,000 entry entity cache with MD5 hashing
+- **Graceful Degradation**: Fallback to empty entities if NER fails
+- **Factory Pattern**: `getUnifiedAIClient()` singleton
+
+### Files Created/Modified (Phase 2)
+
+| File | Action | Description |
+|------|--------|-------------|
+| `memory/ai/UnifiedAIClient.ts` | CREATE | 450 lines, parallel NER+embedding client |
+| `memory/memory_config.ts` | MODIFY | Added `ner` to circuit_breakers interface |
+| `memory/observability/MemoryLogger.ts` | MODIFY | Added `ai_enrichment` to MemoryOperation |
+| `memory/index.ts` | MODIFY | Export UnifiedAIClient and types |
+
+### Phase 3 Summary (SearchService Entity Pre-filtering)
+
+| Step | Description | Status |
+|------|-------------|--------|
+| 3.1 | Add queryEntities to HybridSearchParams | ✅ COMPLETE |
+| 3.2 | Add entity_prefilter_ms to StageTimingsMs | ✅ COMPLETE |
+| 3.3 | Implement entityPreFilter() method | ✅ COMPLETE |
+| 3.4 | Update _executeSearch() for Step 1.5 | ✅ COMPLETE |
+| 3.5 | Update vectorSearch() with filterIds param | ✅ COMPLETE |
+| 3.6 | Add filterByEntities() to QdrantAdapter | ✅ COMPLETE |
+| 3.7 | Add filterIds to QdrantSearchParams | ✅ COMPLETE |
+
+### Entity Pre-filtering Key Features
+
+- **Step 1.5 Integration**: Entity pre-filter runs after embedding, before vector search
+- **Qdrant Scroll API**: Uses scroll with payload filtering for efficient ID retrieval
+- **Graceful Fallback**: Returns null on failure, search continues without filtering
+- **Candidate Reduction**: Limits to 500 candidates before vector search
+- **Timing Tracked**: `entity_prefilter_ms` in stage timings
+
+### Files Modified (Phase 3)
+
+| File | Changes |
+|------|---------|
+| `search/SearchService.ts` | Added `queryEntities`/`enableEntityPreFilter` to params, `entityPreFilter()` method, updated `_executeSearch()` and `vectorSearch()` |
+| `adapters/QdrantAdapter.ts` | Added `filterIds` to search params, `EntityFilterParams` interface, `filterByEntities()` method |
+| `types.ts` | Added `entity_prefilter_ms` to StageTimingsMs |
+
+### Phase 4 Summary (Validation)
+
+| Step | Description | Status |
+|------|-------------|--------|
+| 4.1 | Create validation script | ✅ COMPLETE |
+| 4.2 | Document test commands | ✅ COMPLETE |
+| 4.3 | Document circuit breaker test | ✅ COMPLETE |
+
+### Validation Script
+
+**Location**: `scripts/validate-ner-integration.sh`
+
+**Usage**:
+```bash
+# After starting the stack
+./stop.sh && ./start.sh
+
+# Run validation
+./scripts/validate-ner-integration.sh
+```
+
+### Manual Validation Commands
+
+```bash
+# 1. Check NER health
+curl http://localhost:5007/health
+
+# 2. Test Hebrew entity extraction
+curl -X POST http://localhost:5007/extract \
+  -H "Content-Type: application/json" \
+  -d '{"texts": ["דני אבדיה משחק בוושינגטון"], "min_confidence": 0.85}'
+
+# 3. Test single extraction
+curl -X POST "http://localhost:5007/extract/single?text=ירושלים%20בירת%20ישראל&min_confidence=0.7"
+
+# 4. Monitor NER logs
+docker logs -f dicta-ner
+```
+
+### Circuit Breaker Test Procedure
+
+1. Stop NER: `docker stop dicta-ner`
+2. Perform memory search in UI → should still work (graceful degradation)
+3. Check logs for "NER circuit breaker opened"
+4. Restart NER: `docker start dicta-ner`
+5. Perform searches → circuit breaker should close after 2 successes
+
+### NER Integration Complete
+
+All 4 phases of NER integration are now complete:
+- **Phase 1**: Infrastructure (Dockerfile, docker-compose, .env, deploy.py)
+- **Phase 2**: UnifiedAIClient (parallel NER+embedding, circuit breaker, caching)
+- **Phase 3**: SearchService (entity pre-filtering, Qdrant filterByEntities)
+- **Phase 4**: Validation (test script, documentation)
 
 ---
 

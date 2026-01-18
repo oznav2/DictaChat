@@ -14,7 +14,7 @@ interface DataStats {
 	working: { count: number };
 	history: { count: number };
 	patterns: { count: number };
-	books: { count: number };
+	documents: { count: number };
 	sessions: { count: number };
 	knowledge_graph: { nodes: number; edges: number };
 }
@@ -68,9 +68,9 @@ export const GET: RequestHandler = async ({ locals }) => {
 			...userFilter,
 			tier: "patterns",
 		});
-		const booksCount = await memoryBank.countDocuments({
+		const documentsCount = await memoryBank.countDocuments({
 			...userFilter,
-			tier: "books",
+			tier: "documents",
 		});
 
 		// Sessions count (conversations)
@@ -91,7 +91,7 @@ export const GET: RequestHandler = async ({ locals }) => {
 			working: { count: workingCount },
 			history: { count: historyCount },
 			patterns: { count: patternsCount },
-			books: { count: booksCount },
+			documents: { count: documentsCount },
 			sessions: { count: sessionsCount },
 			knowledge_graph: {
 				nodes: nodesCount,

@@ -390,7 +390,7 @@ async function processBookInBackground(
 		for (let i = 0; i < chunks.length; i++) {
 			await facade.store({
 				userId,
-				tier: "books",
+				tier: "documents",
 				text: chunks[i],
 				metadata: {
 					book_id: bookId,

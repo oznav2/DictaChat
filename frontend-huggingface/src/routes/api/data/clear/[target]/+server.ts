@@ -2,7 +2,7 @@
  * POST /api/data/clear/[target] - Clear specific data collections
  *
  * RoamPal parity: /api/data/clear/${target}
- * Supports clearing: memory_bank, working, history, patterns, books, sessions, knowledge-graph
+ * Supports clearing: memory_bank, working, history, patterns, documents, sessions, knowledge-graph
  */
 import { json, error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
@@ -15,7 +15,7 @@ type ClearTarget =
 	| "working"
 	| "history"
 	| "patterns"
-	| "books"
+	| "documents"
 	| "sessions"
 	| "knowledge-graph";
 
@@ -24,7 +24,7 @@ const TIER_MAP: Record<string, MemoryTier> = {
 	working: "working",
 	history: "history",
 	patterns: "patterns",
-	books: "books",
+	documents: "documents",
 };
 
 export const POST: RequestHandler = async ({ params, locals }) => {
@@ -39,7 +39,7 @@ export const POST: RequestHandler = async ({ params, locals }) => {
 		"working",
 		"history",
 		"patterns",
-		"books",
+		"documents",
 		"sessions",
 		"knowledge-graph",
 	];
@@ -89,11 +89,11 @@ export const POST: RequestHandler = async ({ params, locals }) => {
 				routingRes.deletedCount +
 				statsRes.deletedCount +
 				actionRes.deletedCount;
-		} else if (target === "books") {
-			// Use the clearBooksTier method from OpsServiceImpl for proper cleanup
+		} else if (target === "documents") {
+			// Use the clearDocumentsTier method from OpsServiceImpl for proper cleanup
 			// This handles: MongoDB, Qdrant vectors, Ghost Registry, Action KG, BM25 cache
 			const facade = UnifiedMemoryFacade.getInstance();
-			const result = await facade.clearBooksTier(ADMIN_USER_ID);
+			const result = await facade.clearDocumentsTier(ADMIN_USER_ID);
 			deletedCount = result.mongoDeleted + result.qdrantDeleted;
 		} else {
 			// Clear specific memory tier

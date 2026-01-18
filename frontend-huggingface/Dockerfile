@@ -1,4 +1,5 @@
-# syntax=docker/dockerfile:1
+# syntax directive removed - was causing BuildKit credential issues in WSL2
+# # syntax=docker/dockerfile:1
 ARG INCLUDE_DB=false
 
 FROM node:24-slim AS base
@@ -32,7 +33,8 @@ RUN mkdir -p /app/uploads && chown -R 1000:1000 /app/uploads
 USER user
 
 
-COPY --chown=1000 .env /app/.env
+# .env is passed via docker-compose environment section, not copied
+# All config consolidated in root .env file
 COPY --chown=1000 entrypoint.sh /app/entrypoint.sh
 COPY --chown=1000 package.json /app/package.json
 COPY --chown=1000 package-lock.json /app/package-lock.json
