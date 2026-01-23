@@ -4,7 +4,7 @@
  * Responsibilities:
  * - Collection creation and management
  * - Vector upsert, delete, query operations
- * - 768d vector dimension validation
+ * - 1024d vector dimension validation (BGE-M3)
  * - Fail-open behavior with timeouts
  *
  * Key design principles:
@@ -126,7 +126,8 @@ export class QdrantAdapter {
 
 		this.collectionName = this.config.qdrant.collection_name;
 		this.vectorName = this.config.qdrant.vector_name;
-		this.expectedDims = this.config.qdrant.expected_embedding_dims ?? 768;
+		// BGE-M3 produces 1024-dim vectors - must match DictaEmbeddingClient default
+		this.expectedDims = this.config.qdrant.expected_embedding_dims ?? 1024;
 		this.distance = this.config.qdrant.distance;
 	}
 
@@ -681,11 +682,11 @@ export class QdrantAdapter {
 				{ key: "user_id", match: { value: params.userId } },
 				{ key: "status", match: { value: "active" } },
 			],
-			should: params.entityWords.map(word => ({
+			should: params.entityWords.map((word) => ({
 				key: "entities",
-				match: { value: word.toLowerCase() }
+				match: { value: word.toLowerCase() },
 			})),
-			min_should: { conditions: 1 } // At least one entity must match
+			min_should: { conditions: 1 }, // At least one entity must match
 		};
 
 		try {
@@ -704,9 +705,12 @@ export class QdrantAdapter {
 				return [];
 			}
 
-			return result.result.points.map(p => p.id);
+			return result.result.points.map((p) => p.id);
 		} catch (err) {
-			logger.warn({ err, entityCount: params.entityWords.length }, "[qdrant] filterByEntities failed");
+			logger.warn(
+				{ err, entityCount: params.entityWords.length },
+				"[qdrant] filterByEntities failed"
+			);
 			return [];
 		}
 	}

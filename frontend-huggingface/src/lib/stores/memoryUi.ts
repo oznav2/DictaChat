@@ -62,6 +62,16 @@ export interface MemoryUiState {
 			}>
 		>;
 		lastMemoryMetaByMessageId: Record<string, MemoryMetaV1>;
+		/** Processing steps history per message - for persistent collapsible display */
+		memoryProcessingHistoryByMessageId: Record<
+			string,
+			Array<{
+				status: MemoryUiState["processing"]["status"];
+				count?: number;
+				query?: string;
+				timestamp: number;
+			}>
+		>;
 	};
 	ui: {
 		expandedKnownContextByMessageId: Record<string, boolean>;
@@ -70,7 +80,15 @@ export interface MemoryUiState {
 		selectedMemoryId: string | null;
 	};
 	processing: {
-		status: "idle" | "searching" | "found" | "storing" | "learning" | "degraded" | "ingesting";
+		status:
+			| "idle"
+			| "searching"
+			| "found"
+			| "storing"
+			| "learning"
+			| "degraded"
+			| "ingesting"
+			| "tool_ingesting";
 		foundCount: number;
 		lastQuery: string | null;
 		documentName: string | null;
@@ -85,6 +103,13 @@ export interface MemoryUiState {
 			| null;
 		chunksProcessed: number;
 		totalChunks: number;
+		// Tool ingestion tracking
+		toolIngestion: {
+			toolName: string | null;
+			stage: "summarizing" | "extracting" | "linking" | "storing" | "completed" | null;
+			entitiesExtracted: number;
+			linkedDocuments: number;
+		};
 	};
 }
 
@@ -140,6 +165,7 @@ const initialState: MemoryUiState = {
 		lastKnownContextTextByMessageId: {},
 		lastCitationsByMessageId: {},
 		lastMemoryMetaByMessageId: {},
+		memoryProcessingHistoryByMessageId: {},
 	},
 	ui: {
 		expandedKnownContextByMessageId: {},
@@ -155,6 +181,12 @@ const initialState: MemoryUiState = {
 		documentStage: null,
 		chunksProcessed: 0,
 		totalChunks: 0,
+		toolIngestion: {
+			toolName: null,
+			stage: null,
+			entitiesExtracted: 0,
+			linkedDocuments: 0,
+		},
 	},
 };
 
@@ -451,25 +483,57 @@ function createMemoryUiStore() {
 	}
 
 	function setProcessingFound(count: number) {
-		store.update((s) => ({
-			...s,
-			processing: {
-				...s.processing,
-				status: "found",
-				foundCount: count,
-			},
-		}));
+		store.update((s) => {
+			const messageId = s.session.activeAssistantMessageId;
+			const historyEntry = { status: "found" as const, count, timestamp: Date.now() };
+			return {
+				...s,
+				processing: {
+					...s.processing,
+					status: "found",
+					foundCount: count,
+				},
+				data: {
+					...s.data,
+					memoryProcessingHistoryByMessageId: messageId
+						? {
+								...s.data.memoryProcessingHistoryByMessageId,
+								[messageId]: [
+									...(s.data.memoryProcessingHistoryByMessageId[messageId] ?? []),
+									historyEntry,
+								],
+							}
+						: s.data.memoryProcessingHistoryByMessageId,
+				},
+			};
+		});
 	}
 
 	function setProcessingSearching(query: string) {
-		store.update((s) => ({
-			...s,
-			processing: {
-				...s.processing,
-				status: "searching",
-				lastQuery: query,
-			},
-		}));
+		store.update((s) => {
+			const messageId = s.session.activeAssistantMessageId;
+			const historyEntry = { status: "searching" as const, query, timestamp: Date.now() };
+			return {
+				...s,
+				processing: {
+					...s.processing,
+					status: "searching",
+					lastQuery: query,
+				},
+				data: {
+					...s.data,
+					memoryProcessingHistoryByMessageId: messageId
+						? {
+								...s.data.memoryProcessingHistoryByMessageId,
+								[messageId]: [
+									...(s.data.memoryProcessingHistoryByMessageId[messageId] ?? []),
+									historyEntry,
+								],
+							}
+						: s.data.memoryProcessingHistoryByMessageId,
+				},
+			};
+		});
 	}
 
 	function resetProcessing() {
@@ -483,6 +547,12 @@ function createMemoryUiStore() {
 				documentStage: null,
 				chunksProcessed: 0,
 				totalChunks: 0,
+				toolIngestion: {
+					toolName: null,
+					stage: null,
+					entitiesExtracted: 0,
+					linkedDocuments: 0,
+				},
 			},
 		}));
 	}
@@ -504,6 +574,27 @@ function createMemoryUiStore() {
 				chunksProcessed: params.chunksProcessed ?? s.processing.chunksProcessed,
 				totalChunks: params.totalChunks ?? s.processing.totalChunks,
 				foundCount: params.recognized ? (params.totalChunks ?? 0) : s.processing.foundCount,
+			},
+		}));
+	}
+
+	function setToolIngestion(params: {
+		toolName: string;
+		stage: MemoryUiState["processing"]["toolIngestion"]["stage"];
+		entitiesExtracted?: number;
+		linkedDocuments?: number;
+	}) {
+		store.update((s) => ({
+			...s,
+			processing: {
+				...s.processing,
+				status: params.stage === "completed" ? "idle" : "tool_ingesting",
+				toolIngestion: {
+					toolName: params.toolName,
+					stage: params.stage,
+					entitiesExtracted: params.entitiesExtracted ?? s.processing.toolIngestion.entitiesExtracted,
+					linkedDocuments: params.linkedDocuments ?? s.processing.toolIngestion.linkedDocuments,
+				},
 			},
 		}));
 	}
@@ -627,6 +718,7 @@ function createMemoryUiStore() {
 		setProcessingSearching,
 		resetProcessing,
 		setDocumentProcessing,
+		setToolIngestion,
 		dispatch,
 		installEventListeners,
 		getState: () => get(store),

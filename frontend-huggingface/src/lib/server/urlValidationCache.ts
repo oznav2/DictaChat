@@ -6,6 +6,7 @@
 import type { UrlValidationOptions, UrlValidationResult } from "./urlSafetyEnhanced";
 import { validateUrlDetailed } from "./urlSafetyEnhanced";
 import { startTimer } from "./textGeneration/mcp/performanceMonitor";
+import { env } from "$env/dynamic/private";
 
 interface CacheEntry {
 	result: UrlValidationResult;
@@ -192,11 +193,27 @@ export function validateUrlCached(urlString: string): UrlValidationResult {
 	return urlValidationCache.validateUrl(urlString);
 }
 
+// Debug flag for MCP env logging (logs once per startup)
+let _mcpEnvDebugLogged = false;
+
 export function validateMcpServerUrlCached(urlString: string): UrlValidationResult {
-	const allowLocalhost = process.env.MCP_ALLOW_LOCALHOST_URLS === "true";
-	const allowPrivateIp = process.env.MCP_ALLOW_PRIVATE_URLS === "true";
-	const allowReservedRange = process.env.MCP_ALLOW_RESERVED_URLS === "true";
-	const allowedHosts = (process.env.MCP_ALLOWED_HOSTS || "")
+	// CRITICAL: Use SvelteKit's $env/dynamic/private instead of process.env
+	// SvelteKit doesn't populate process.env from .env files in dev mode
+	const allowLocalhost = env.MCP_ALLOW_LOCALHOST_URLS === "true";
+	const allowPrivateIp = env.MCP_ALLOW_PRIVATE_URLS === "true";
+	const allowReservedRange = env.MCP_ALLOW_RESERVED_URLS === "true";
+
+	// Debug: Log env values on first call to diagnose localhost rejection issue
+	if (!_mcpEnvDebugLogged) {
+		console.log("[urlValidationCache] MCP env values:", {
+			MCP_ALLOW_LOCALHOST_URLS: env.MCP_ALLOW_LOCALHOST_URLS,
+			MCP_ALLOW_PRIVATE_URLS: env.MCP_ALLOW_PRIVATE_URLS,
+			allowLocalhost,
+			allowPrivateIp,
+		});
+		_mcpEnvDebugLogged = true;
+	}
+	const allowedHosts = (env.MCP_ALLOWED_HOSTS || "")
 		.split(",")
 		.map((h) => h.trim())
 		.filter(Boolean);

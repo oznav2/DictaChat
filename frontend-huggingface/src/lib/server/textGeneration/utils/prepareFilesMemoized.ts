@@ -3,17 +3,11 @@
  * Caches processed messages to avoid repeated image processing and file preparation
  */
 
-import type { MessageFile } from "$lib/types/Message";
 import type { EndpointMessage } from "$lib/server/endpoints/endpoints";
 import type { OpenAI } from "openai";
-import { TEXT_MIME_ALLOWLIST } from "$lib/constants/mime";
 import type { makeImageProcessor } from "$lib/server/endpoints/images";
 import { prepareMessagesWithFiles } from "./prepareFiles";
-
-interface CacheKey {
-	messages: EndpointMessage[];
-	isMultimodal: boolean;
-}
+import { createHash } from "crypto";
 
 interface CacheEntry {
 	result: OpenAI.Chat.Completions.ChatCompletionMessageParam[];
@@ -26,25 +20,40 @@ class MessagePreparationCache {
 
 	/**
 	 * Generate cache key from messages and multimodal flag
+	 * Phase 2.5: Uses hash instead of full JSON.stringify for performance
+	 * With large conversations, JSON.stringify can take 10-50ms
 	 */
 	private generateKey(messages: EndpointMessage[], isMultimodal: boolean): string {
-		// Create a deterministic key based on message content and files
-		const keyData = {
-			messages: messages.map((msg) => ({
-				from: msg.from,
-				content: msg.content,
-				files:
-					msg.files?.map((file) => ({
-						name: file.name,
-						mime: file.mime,
-						path: file.path ?? null,
-						size: file.value?.length || 0,
-						type: file.type,
-					})) || [],
-			})),
-			isMultimodal,
-		};
-		return JSON.stringify(keyData);
+		const hash = createHash("sha256");
+
+		// Hash essential fields only (not full content)
+		hash.update(isMultimodal ? "1" : "0");
+		hash.update(String(messages.length));
+
+		for (const msg of messages) {
+			hash.update(msg.from);
+			// Hash content length + first/last 100 chars (deterministic, fast)
+			const content = msg.content;
+			hash.update(String(content.length));
+			if (content.length > 200) {
+				hash.update(content.slice(0, 100));
+				hash.update(content.slice(-100));
+			} else {
+				hash.update(content);
+			}
+
+			// Hash file metadata (not content)
+			if (msg.files?.length) {
+				hash.update(String(msg.files.length));
+				for (const file of msg.files) {
+					hash.update(file.name ?? "");
+					hash.update(file.mime ?? "");
+					hash.update(String(file.value?.length ?? 0));
+				}
+			}
+		}
+
+		return hash.digest("hex").slice(0, 32); // 32 char hex = 128 bits
 	}
 
 	/**

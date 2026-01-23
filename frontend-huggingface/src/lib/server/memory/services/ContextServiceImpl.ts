@@ -64,7 +64,9 @@ export class ContextServiceImpl implements ContextService {
 			}
 
 			// Format results into context injection string
-			const contextLines = searchResult.results.map((r, i) => `${i + 1}. ${r.preview}`);
+			// CRITICAL FIX: Use r.content (full text) instead of r.preview (200 char truncated)
+			// The preview truncation was cutting off the actual answers from document chunks
+			const contextLines = searchResult.results.map((r, i) => `${i + 1}. ${r.content}`);
 			const contextText = [coldStartConfig.header, ...contextLines, coldStartConfig.footer].join(
 				"\n"
 			);

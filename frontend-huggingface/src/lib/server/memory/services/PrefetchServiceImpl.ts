@@ -15,11 +15,11 @@ import { logger } from "$lib/server/logger";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
 import { memoryMetrics } from "../observability";
-import { getMemoryFeatureFlags } from "../featureFlags";
 import type { SearchDebug, RetrievalConfidence, MemoryTier } from "../types";
 import { MEMORY_TIER_GROUPS } from "../types";
 import type { SearchService as HybridSearchService } from "../search/SearchService";
 import type { QdrantAdapter } from "../adapters/QdrantAdapter";
+import type { MemoryMongoStore } from "../stores/MemoryMongoStore";
 import type {
 	PrefetchService,
 	PrefetchContextParams,
@@ -29,6 +29,8 @@ import type {
 export interface PrefetchServiceImplConfig {
 	hybridSearch: HybridSearchService;
 	qdrantAdapter: QdrantAdapter;
+	/** Phase 1.1: MongoDB store for efficient always_inject lookup */
+	mongoStore?: MemoryMongoStore;
 	config?: MemoryConfig;
 }
 
@@ -42,11 +44,13 @@ interface AlwaysInjectMemory {
 export class PrefetchServiceImpl implements PrefetchService {
 	private hybridSearch: HybridSearchService;
 	private qdrant: QdrantAdapter;
+	private mongoStore?: MemoryMongoStore;
 	private config: MemoryConfig;
 
 	constructor(params: PrefetchServiceImplConfig) {
 		this.hybridSearch = params.hybridSearch;
 		this.qdrant = params.qdrantAdapter;
+		this.mongoStore = params.mongoStore;
 		this.config = params.config ?? defaultMemoryConfig;
 	}
 
@@ -63,6 +67,11 @@ export class PrefetchServiceImpl implements PrefetchService {
 	private static readonly TOKENS_PER_CHAR = 0.35;
 
 	/**
+	 * Finding 14: Maximum time for prefetch operations to prevent indefinite hangs
+	 */
+	private static readonly PREFETCH_TIMEOUT_MS = 10000;
+
+	/**
 	 * Prefetch context for prompt injection
 	 *
 	 * Phase 9.1: Uses Promise.all() for parallel always-inject + hybrid search
@@ -74,24 +83,64 @@ export class PrefetchServiceImpl implements PrefetchService {
 		const timings: Record<string, number> = {};
 
 		try {
+			// Check if already aborted before starting
+			if (params.signal?.aborted) {
+				throw new Error("Prefetch aborted before start");
+			}
+
 			// Phase 9.1: Execute always-inject fetch AND hybrid search in PARALLEL
 			// This reduces total prefetch time by ~30-50% compared to sequential execution
 			const limit = params.limit ?? this.estimateContextLimit(params.query, params.hasDocuments);
 			const tiers = this.determineTierPlan(params.hasDocuments, params.includeDataGov);
 
 			const parallelStart = Date.now();
-			// Respect the MEMORY_RERANK_ENABLED feature flag for graceful degradation
-			const flags = getMemoryFeatureFlags();
-			const [alwaysInjectMemories, searchResponse] = await Promise.all([
+			// Phase 1.3: Skip reranking in prefetch for faster TTFT
+			// Prefetch's job is to provide relevant context, not perfect ordering.
+			// Reranking adds 100-300ms latency which is not worth it for prefetch.
+			// The RRF fusion from hybrid search is sufficient for context injection.
+
+			// Wrap Promise.all with abort signal support
+			const prefetchPromise = Promise.all([
 				this.fetchAlwaysInjectMemories(params.userId),
 				this.hybridSearch.search({
 					userId: params.userId,
 					query: params.query,
 					tiers,
 					limit,
-					enableRerank: flags.rerankEnabled,
+					enableRerank: false, // Phase 1.3: Disabled for prefetch speed
 				}),
 			]);
+
+			// Finding 14: Always include timeout to prevent indefinite hangs
+			let alwaysInjectMemories: Awaited<ReturnType<typeof this.fetchAlwaysInjectMemories>>;
+			let searchResponse: Awaited<ReturnType<typeof this.hybridSearch.search>>;
+
+			// Create timeout promise that always fires
+			const timeoutPromise = new Promise<never>((_, reject) => {
+				setTimeout(() => {
+					reject(new Error("Prefetch timeout exceeded"));
+				}, PrefetchServiceImpl.PREFETCH_TIMEOUT_MS);
+			});
+
+			// Build race promises array - always includes timeout
+			const racePromises: Promise<never>[] = [timeoutPromise];
+
+			// Add abort signal promise if provided
+			if (params.signal) {
+				const abortPromise = new Promise<never>((_, reject) => {
+					params.signal!.addEventListener("abort", () => {
+						reject(new Error("Prefetch aborted by signal"));
+					});
+				});
+				racePromises.push(abortPromise);
+			}
+
+			// Race prefetch against timeout (and optional abort signal)
+			[alwaysInjectMemories, searchResponse] = await Promise.race([
+				prefetchPromise,
+				...racePromises,
+			]);
+
 			timings.parallel_prefetch_ms = Date.now() - parallelStart;
 
 			// Record individual timings from search response
@@ -161,16 +210,32 @@ export class PrefetchServiceImpl implements PrefetchService {
 
 	/**
 	 * Fetch memories marked as always_inject (identity, core preferences)
+	 *
+	 * Phase 1.1 Optimization: Uses MongoDB indexed query instead of Qdrant similarity search.
+	 * This removes an expensive vector search from the critical TTFT path.
+	 * - Before: Qdrant search with zero vector + client-side filter (~50-100ms)
+	 * - After: MongoDB indexed query on {user_id, always_inject, status} (~10-20ms)
 	 */
 	private async fetchAlwaysInjectMemories(userId: string): Promise<AlwaysInjectMemory[]> {
-		if (this.qdrant.isCircuitOpen()) {
-			return [];
-		}
-
 		try {
-			// Use search with a filter for always_inject memories
-			// Note: scroll doesn't support custom filters, so we use search with zero vector
-			const dims = this.config.qdrant.expected_embedding_dims ?? 768;
+			// Phase 1.1: Use MongoDB for always_inject lookup (fast indexed query)
+			if (this.mongoStore) {
+				const items = await this.mongoStore.getAlwaysInject(userId);
+				return items.map((item) => ({
+					memoryId: item.memory_id,
+					content: item.text,
+					tier: item.tier,
+					tags: item.tags ?? [],
+				}));
+			}
+
+			// Fallback to Qdrant if mongoStore not provided (backwards compatibility)
+			if (this.qdrant.isCircuitOpen()) {
+				return [];
+			}
+
+			// BGE-M3 produces 1024-dim vectors - must match DictaEmbeddingClient default
+			const dims = this.config.qdrant.expected_embedding_dims ?? 1024;
 			const zeroVector = new Array(dims).fill(0);
 			const results = await this.qdrant.search({
 				userId,
@@ -179,7 +244,6 @@ export class PrefetchServiceImpl implements PrefetchService {
 				status: ["active"],
 			});
 
-			// Filter for always_inject in client-side (since Qdrant search doesn't support custom filters)
 			return results
 				.filter((r) => r.payload.always_inject === true)
 				.map((r) => ({
@@ -212,7 +276,9 @@ export class PrefetchServiceImpl implements PrefetchService {
 		// hasDocuments flag indicates if current message has attachments (for logging/priority)
 		tiers.push("documents");
 		if (hasDocuments) {
-			logger.debug("[PrefetchService] Current message has document attachments - prioritizing documents tier");
+			logger.debug(
+				"[PrefetchService] Current message has document attachments - prioritizing documents tier"
+			);
 		}
 
 		// Include patterns for learned behaviors
@@ -418,23 +484,34 @@ export class PrefetchServiceImpl implements PrefetchService {
 
 	/**
 	 * Calculate retrieval confidence
+	 *
+	 * CRITICAL FIX: Document results alone should yield high confidence
+	 * Previous logic required 2+ always-inject memories, which prevented
+	 * high confidence even when we had perfect document matches.
 	 */
 	private calculateConfidence(
 		alwaysInjectCount: number,
 		searchResultCount: number,
 		searchDebug: SearchDebug
 	): RetrievalConfidence {
-		// High: good identity context + good search results
-		if (alwaysInjectCount >= 2 && searchResultCount >= 3) {
-			const topScore = searchDebug.stage_timings_ms ? 0.7 : 0; // Placeholder
-			if (searchDebug.confidence === "high" || searchDebug.errors.length === 0) {
-				return "high";
-			}
+		const noErrors = searchDebug.errors.length === 0;
+		const minimalFallbacks = searchDebug.fallbacks_used.length <= 1;
+
+		// High confidence conditions (any of these):
+		// 1. Good identity context (2+) AND good search results (3+)
+		// 2. Strong search results (3+) with no errors - document content is sufficient
+		if (alwaysInjectCount >= 2 && searchResultCount >= 3 && noErrors) {
+			return "high";
+		}
+		if (searchResultCount >= 3 && noErrors && minimalFallbacks) {
+			// Document content alone can provide high confidence
+			// This enables tool gating when we have relevant stored content
+			return "high";
 		}
 
 		// Medium: some context available
 		if (alwaysInjectCount > 0 || searchResultCount > 0) {
-			if (searchDebug.fallbacks_used.length <= 1) {
+			if (minimalFallbacks) {
 				return "medium";
 			}
 		}

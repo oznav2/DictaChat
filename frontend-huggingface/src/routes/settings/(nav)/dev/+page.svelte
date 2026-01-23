@@ -580,9 +580,7 @@
 			class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
 		>
 			<div class="flex items-center justify-between">
-				<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-					MCP Circuit Breakers
-				</h2>
+				<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">MCP Circuit Breakers</h2>
 				<div class="flex gap-2">
 					<button
 						type="button"
@@ -636,7 +634,9 @@
 				<div class="mt-2 flex flex-wrap gap-2">
 					<span
 						class="rounded-full px-2 py-0.5 text-xs font-medium
-							{embeddingCircuitBreaker.isOperational ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}"
+							{embeddingCircuitBreaker.isOperational
+							? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+							: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}"
 					>
 						{embeddingCircuitBreaker.isOperational ? "Operational" : "Down"}
 					</span>
@@ -728,9 +728,7 @@
 			class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
 		>
 			<div class="flex items-center justify-between">
-				<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-					Pattern Performance
-				</h2>
+				<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Pattern Performance</h2>
 				<button
 					type="button"
 					class="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-700"
@@ -750,9 +748,7 @@
 			class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
 		>
 			<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Memory Maintenance</h2>
-			<p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-				פעולות תחזוקה למערכת הזיכרון
-			</p>
+			<p class="mt-1 text-xs text-gray-500 dark:text-gray-400">פעולות תחזוקה למערכת הזיכרון</p>
 			<div class="mt-3 flex flex-wrap gap-2">
 				<button
 					class="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"

@@ -141,7 +141,7 @@ export class DictaEmbeddingClient {
 	private healthCheckInterval: ReturnType<typeof setInterval> | null = null;
 	private lastHealthCheck: number = 0;
 	private healthCheckPending = false;
-	private readonly HEALTH_CHECK_INTERVAL_MS = 10000; // Check every 10 seconds when open
+	private readonly HEALTH_CHECK_INTERVAL_MS = 30000; // Check every 30 seconds when open
 
 	// In-memory cache (Redis is optional enhancement)
 	private memoryCache: Map<string, number[]> = new Map();

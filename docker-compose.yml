@@ -12,7 +12,7 @@ services:
       - bricksllm-network
     healthcheck:
       test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
-      interval: 10s
+      interval: 60s
       timeout: 3s
       retries: 5
     deploy:
@@ -34,7 +34,7 @@ services:
       - bricksllm-network
     healthcheck:
       test: ["CMD", "mongosh", "--eval", 'db.adminCommand("ping")']
-      interval: 10s
+      interval: 60s
       timeout: 5s
       retries: 5
       start_period: 10s
@@ -60,7 +60,7 @@ services:
           "CMD-SHELL",
           "bash -c 'exec 3<>/dev/tcp/127.0.0.1/6333 && echo -e \"GET /readyz HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n\" >&3 && cat <&3 | grep \"200 OK\" || exit 1'",
         ]
-      interval: 10s
+      interval: 60s
       timeout: 5s
       retries: 5
       start_period: 10s
@@ -92,7 +92,7 @@ services:
           "CMD-SHELL",
           "pg_isready -U ${POSTGRESQL_USERNAME:-postgres} -d ${POSTGRESQL_DB:-bricksllm}",
         ]
-      interval: 5s
+      interval: 60s
       timeout: 5s
       retries: 5
       start_period: 10s
@@ -148,7 +148,7 @@ services:
       - "${NUM_PREDICT:-2048}"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
-      interval: 30s
+      interval: 60s
       timeout: 10s
       retries: 10
       start_period: 60s
@@ -209,7 +209,7 @@ services:
           "--spider",
           "http://localhost:8001/api/health",
         ]
-      interval: 15s
+      interval: 60s
       timeout: 5s
       retries: 3
       start_period: 30s
@@ -263,7 +263,7 @@ services:
       # RAG Pipeline Configuration
       - DOCUMENT_RAG_ENABLED=true
       - EMBEDDING_SERVICE_URL=http://dicta-retrieval:5005
-      - RERANKER_SERVICE_URL=http://dicta-retrieval:5006
+      - RERANKER_SERVICE_URL=http://dicta-retrieval:5006/v1/rerank
       - DOCLING_SERVER_URL=http://docling:5001
       - RERANKER_THRESHOLD=0.7
       - MAX_CONTEXT_CHUNKS=10
@@ -340,7 +340,7 @@ services:
       - DATAGOV_PROXY_URL=${DATAGOV_PROXY_URL:-}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3100/health"]
-      interval: 30s
+      interval: 60s
       timeout: 10s
       retries: 3
       start_period: 20s
@@ -351,7 +351,7 @@ services:
     env_file: .env
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
-      interval: 30s
+      interval: 60s
       timeout: 5s
       retries: 5
       start_period: 10s
@@ -440,7 +440,7 @@ services:
           "-c",
           "curl -f http://localhost:5005/health && curl -f http://localhost:5006/health",
         ]
-      interval: 30s
+      interval: 60s
       timeout: 10s
       retries: 3
       start_period: 90s
@@ -486,7 +486,7 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5007/health"]
-      interval: 30s
+      interval: 60s
       timeout: 5s
       retries: 3
       start_period: 60s

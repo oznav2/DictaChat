@@ -177,7 +177,15 @@ async function getQdrantStats(userId: string): Promise<{
 	circuitOpen: boolean;
 }> {
 	// Include all tiers including DataGov (Phase 25)
-	const tiers: MemoryTier[] = ["working", "history", "patterns", "documents", "memory_bank", "datagov_schema", "datagov_expansion"];
+	const tiers: MemoryTier[] = [
+		"working",
+		"history",
+		"patterns",
+		"documents",
+		"memory_bank",
+		"datagov_schema",
+		"datagov_expansion",
+	];
 	const byTier = new Map<MemoryTier, number>();
 
 	try {
@@ -341,7 +349,15 @@ export const GET: RequestHandler = async ({ url, locals }) => {
 
 		const userId = ADMIN_USER_ID;
 		// Include all tiers including DataGov (Phase 25)
-		const tiers: MemoryTier[] = ["working", "history", "patterns", "documents", "memory_bank", "datagov_schema", "datagov_expansion"];
+		const tiers: MemoryTier[] = [
+			"working",
+			"history",
+			"patterns",
+			"documents",
+			"memory_bank",
+			"datagov_schema",
+			"datagov_expansion",
+		];
 
 		// Gather stats in parallel
 		const [mongoStats, qdrantStats, embeddingStatus] = await Promise.all([

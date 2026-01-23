@@ -1,23 +1,23 @@
 ============================= test session starts =============================
 platform: node v20.18.1
 test framework: vitest
-timestamp: 2026-01-15T12:55:35.671Z
+timestamp: 2026-01-21T22:00:09.932Z
 rootdir: /home/ilan/BricksLLM/frontend-huggingface
 
 collecting ... collected 13 items
 
-test_semantic_confusion::test_english_homonyms PASSED (6ms) [finance_search_correct=1.000, nature_search_correct=1.000, total_homonyms_tested=2.000] [  8%]
-test_semantic_confusion::test_hebrew_homonyms PASSED (2ms) [pet_results=2.000, opportunity_results=2.000, hebrew_homonyms_tested=2.000] [ 15%]
-test_semantic_confusion::test_synonym_grouping PASSED (2ms) [total_positive_stored=3.000, positive_found=3.000, synonym_recall_rate=100.000] [ 23%]
-test_semantic_confusion::test_hebrew_synonyms PASSED (1ms) [large_items_stored=2.000, large_items_found=2.000, hebrew_synonym_recall=100.000] [ 31%]
+test_semantic_confusion::test_english_homonyms PASSED (11ms) [finance_search_correct=1.000, nature_search_correct=1.000, total_homonyms_tested=2.000] [  8%]
+test_semantic_confusion::test_hebrew_homonyms PASSED (3ms) [pet_results=2.000, opportunity_results=2.000, hebrew_homonyms_tested=2.000] [ 15%]
+test_semantic_confusion::test_synonym_grouping PASSED (4ms) [total_positive_stored=3.000, positive_found=3.000, synonym_recall_rate=100.000] [ 23%]
+test_semantic_confusion::test_hebrew_synonyms PASSED (4ms) [large_items_stored=2.000, large_items_found=2.000, hebrew_synonym_recall=100.000] [ 31%]
 test_semantic_confusion::test_subtle_differences PASSED (1ms) [total_meetings=3.000, monday_meetings_found=2.000, near_duplicate_similarity=60.000, distinguished_correctly=1.000] [ 38%]
 test_semantic_confusion::test_hebrew_near_duplicates PASSED (0ms) [total_results=3.000, tel_aviv_specific=2.000, distinguished_locations=1.000] [ 46%]
-test_semantic_confusion::test_context_disambiguation PASSED (0ms) [tech_search_tech_results=2.000, nature_search_nature_results=1.000, context_precision=1.000] [ 54%]
+test_semantic_confusion::test_context_disambiguation PASSED (1ms) [tech_search_tech_results=2.000, nature_search_nature_results=1.000, context_precision=1.000] [ 54%]
 test_semantic_confusion::test_hebrew_context_disambiguation PASSED (0ms) [home_results=4.000, reading_results=4.000, hebrew_disambiguation_tested=2.000] [ 62%]
-test_semantic_confusion::test_person_disambiguation PASSED (1ms) [work_search_work_context=1.000, college_search_college_context=1.000, entity_disambiguation_success=1.000] [ 69%]
-test_semantic_confusion::test_hebrew_person_disambiguation PASSED (1ms) [doctor_search_results=3.000, health_context_found=1.000, hebrew_entity_disambiguation=1.000] [ 77%]
+test_semantic_confusion::test_person_disambiguation PASSED (0ms) [work_search_work_context=1.000, college_search_college_context=1.000, entity_disambiguation_success=1.000] [ 69%]
+test_semantic_confusion::test_hebrew_person_disambiguation PASSED (0ms) [doctor_search_results=3.000, health_context_found=1.000, hebrew_entity_disambiguation=1.000] [ 77%]
 test_semantic_confusion::test_bilingual_concept_matching PASSED (0ms) [en_birthday_search_results=4.000, he_work_search_results=4.000, birthday_concept_found=2.000, work_concept_found=2.000, cross_language_success=1.000] [ 85%]
-test_semantic_confusion::test_meaning_evolution PASSED (2ms) [tech_search_tech_domain=1.000, social_search_social_domain=1.000, semantic_drift_handled=1.000] [ 92%]
+test_semantic_confusion::test_meaning_evolution PASSED (3ms) [tech_search_tech_domain=1.000, social_search_social_domain=1.000, semantic_drift_handled=1.000] [ 92%]
 test_semantic_confusion::test_semantic_confusion PASSED (1ms) [total_items=10.000, total_searches=5.000, correct_domain_matches=4.000, semantic_precision=80.000] [100%]
 
 ============================== benchmark summary ==============================
@@ -68,5 +68,5 @@ Metrics Summary:
   semantic_precision: avg=80.000, min=80.000, max=80.000
 
 ============================== test results ===================================
-13 passed, 0 failed in 0.04s
+13 passed, 0 failed in 0.07s
 ===============================================================================

@@ -79,8 +79,18 @@ describe("GhostRegistry v0.2.9 Methods", () => {
 
 	it("clearByTier removes ghosts for specific tier only", async () => {
 		// Setup: ghost some memories in different tiers
-		await registry.ghostMemory({ userId, memoryId: "book_1", tier: "documents", reason: "deleted" });
-		await registry.ghostMemory({ userId, memoryId: "book_2", tier: "documents", reason: "deleted" });
+		await registry.ghostMemory({
+			userId,
+			memoryId: "book_1",
+			tier: "documents",
+			reason: "deleted",
+		});
+		await registry.ghostMemory({
+			userId,
+			memoryId: "book_2",
+			tier: "documents",
+			reason: "deleted",
+		});
 		await registry.ghostMemory({
 			userId,
 			memoryId: "pattern_1",
@@ -105,7 +115,12 @@ describe("GhostRegistry v0.2.9 Methods", () => {
 
 	it("clearAll removes all ghosts for user", async () => {
 		// Setup: ghost memories across tiers
-		await registry.ghostMemory({ userId, memoryId: "book_1", tier: "documents", reason: "deleted" });
+		await registry.ghostMemory({
+			userId,
+			memoryId: "book_1",
+			tier: "documents",
+			reason: "deleted",
+		});
 		await registry.ghostMemory({ userId, memoryId: "pattern_1", tier: "patterns", reason: "test" });
 		await registry.ghostMemory({ userId, memoryId: "working_1", tier: "working", reason: "test" });
 

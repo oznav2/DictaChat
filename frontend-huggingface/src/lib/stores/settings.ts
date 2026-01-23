@@ -56,14 +56,27 @@ export function createSettingsStore(initialValue: Omit<SettingsStore, "recentlyS
 		if (browser) {
 			showSavedOnNextSync = true; // User edit, should show "Saved"
 			clearTimeout(timeoutId);
-			timeoutId = setTimeout(async () => {
-				await fetch(`${base}/settings`, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(get(baseStore)),
-				});
+			timeoutId = setTimeout(() => {
+				(async () => {
+					try {
+						await fetch(`${base}/settings`, {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify(get(baseStore)),
+						});
+					} catch (err) {
+						const message = err instanceof Error ? err.message : String(err);
+						const isAbort =
+							message.includes("AbortError") ||
+							message.includes("aborted") ||
+							message.includes("ERR_ABORTED");
+						if (!isAbort) {
+							console.warn("[settings] Failed to persist settings", { error: message });
+						}
+					}
+				})();
 
 				invalidate(UrlDependency.ConversationList);
 
@@ -114,14 +127,27 @@ export function createSettingsStore(initialValue: Omit<SettingsStore, "recentlyS
 		// Save to server (debounced) - note: we don't set showSavedOnNextSync
 		if (browser) {
 			clearTimeout(timeoutId);
-			timeoutId = setTimeout(async () => {
-				await fetch(`${base}/settings`, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(get(baseStore)),
-				});
+			timeoutId = setTimeout(() => {
+				(async () => {
+					try {
+						await fetch(`${base}/settings`, {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify(get(baseStore)),
+						});
+					} catch (err) {
+						const message = err instanceof Error ? err.message : String(err);
+						const isAbort =
+							message.includes("AbortError") ||
+							message.includes("aborted") ||
+							message.includes("ERR_ABORTED");
+						if (!isAbort) {
+							console.warn("[settings] Failed to persist settings", { error: message });
+						}
+					}
+				})();
 
 				invalidate(UrlDependency.ConversationList);
 

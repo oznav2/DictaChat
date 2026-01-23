@@ -1151,7 +1151,10 @@ export class UnifiedMemoryFacade {
 			const client = db.getClient();
 			const documentsCollection = client.db().collection("documents");
 
-			const documents = await documentsCollection.find({ userId }).sort({ uploadTimestamp: -1 }).toArray();
+			const documents = await documentsCollection
+				.find({ userId })
+				.sort({ uploadTimestamp: -1 })
+				.toArray();
 
 			return documents.map((doc) => ({
 				id: (doc._id as { toString(): string }).toString(),

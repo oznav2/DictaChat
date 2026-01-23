@@ -13,6 +13,12 @@
  * - Store-then-embed: Items stored immediately with needs_reindex=true
  * - Quality filtering: Only ingest substantial, valuable results
  *
+ * Enhanced Features (Tool Result Ingestion Enhancement):
+ * - Tool-specific summary strategies with heuristic extraction
+ * - Entity extraction for KG integration (200ms timeout)
+ * - Document linking for related document discovery
+ * - UI event emission for processing progress
+ *
  * Reference: codespace_gaps_enhanced.md Phase 2, codespace_priorities.md TIER 3
  */
 
@@ -22,6 +28,12 @@ import { UnifiedMemoryFacade } from "../UnifiedMemoryFacade";
 import { getMemoryFeatureFlags } from "../featureFlags";
 import type { MemoryTier } from "../types";
 import { ADMIN_USER_ID } from "$lib/server/constants";
+import {
+	MessageUpdateType,
+	MessageMemoryUpdateType,
+	type MessageUpdate,
+	type MessageMemoryToolIngestingUpdate,
+} from "$lib/types/MessageUpdate";
 
 // ============================================
 // Tool Categories for Ingestion Eligibility
@@ -96,6 +108,40 @@ const NON_INGESTIBLE_TOOLS = new Set([
 ]);
 
 // ============================================
+// Tool-Specific Summary Configuration
+// ============================================
+
+/**
+ * Configuration for tool-specific summary extraction.
+ * Each tool type has optimized settings for content extraction.
+ */
+interface ToolSummaryConfig {
+	/** Maximum summary length in characters */
+	maxLen: number;
+	/** Whether to extract headline-style content (** or # prefixed) */
+	extractHeadlines: boolean;
+	/** Maximum number of sentences to extract */
+	maxSentences: number;
+}
+
+const TOOL_SUMMARY_CONFIG: Record<string, ToolSummaryConfig> = {
+	perplexity: { maxLen: 500, extractHeadlines: true, maxSentences: 5 },
+	tavily: { maxLen: 500, extractHeadlines: true, maxSentences: 5 },
+	datagov: { maxLen: 300, extractHeadlines: false, maxSentences: 3 },
+	youtube: { maxLen: 400, extractHeadlines: true, maxSentences: 4 },
+	fetch: { maxLen: 400, extractHeadlines: true, maxSentences: 4 },
+	brave: { maxLen: 400, extractHeadlines: true, maxSentences: 4 },
+	duckduckgo: { maxLen: 400, extractHeadlines: true, maxSentences: 4 },
+	search: { maxLen: 400, extractHeadlines: true, maxSentences: 4 },
+};
+
+const DEFAULT_SUMMARY_CONFIG: ToolSummaryConfig = {
+	maxLen: 400,
+	extractHeadlines: true,
+	maxSentences: 4,
+};
+
+// ============================================
 // Types
 // ============================================
 
@@ -110,6 +156,8 @@ export interface ToolResultIngestionParams {
 	output: string;
 	/** Additional metadata about the tool call */
 	metadata?: Record<string, unknown>;
+	/** Optional callback for UI event emission */
+	emitUpdate?: (update: MessageUpdate) => void;
 }
 
 export interface IngestionResult {
@@ -121,6 +169,17 @@ export interface IngestionResult {
 	memoryId?: string;
 	/** Reason if not stored */
 	reason?: string;
+}
+
+export interface EnhancedIngestionResult extends IngestionResult {
+	/** Heuristic summary of the tool output */
+	summary?: string;
+	/** Number of entities extracted */
+	entitiesExtracted?: number;
+	/** IDs of linked documents */
+	linkedDocuments?: string[];
+	/** Total latency in milliseconds */
+	latencyMs?: number;
 }
 
 // ============================================
@@ -387,6 +446,506 @@ export class ToolResultIngestionService {
 
 		return "unknown";
 	}
+
+	// ============================================
+	// Enhanced Ingestion Methods (Tool Result Enhancement)
+	// ============================================
+
+	/**
+	 * Get tool-specific summary configuration.
+	 */
+	private getToolConfig(toolName: string): ToolSummaryConfig {
+		const normalized = toolName.toLowerCase();
+
+		// Match by prefix to handle variants like perplexity-ask, tavily-search
+		for (const [key, config] of Object.entries(TOOL_SUMMARY_CONFIG)) {
+			if (normalized.includes(key)) {
+				return config;
+			}
+		}
+
+		return DEFAULT_SUMMARY_CONFIG;
+	}
+
+	/**
+	 * Extract a heuristic summary from tool output.
+	 * Uses regex-based extraction (no LLM) for speed (<50ms).
+	 *
+	 * Strategy:
+	 * 1. Extract headlines (** or # prefixed lines) if configured
+	 * 2. Extract first N sentences
+	 * 3. Truncate to maxLen
+	 */
+	extractHeuristicSummary(toolName: string, output: string): string {
+		const config = this.getToolConfig(toolName);
+		const lines = output.split("\n").filter((l) => l.trim().length > 0);
+		const parts: string[] = [];
+
+		// Extract headlines if configured
+		if (config.extractHeadlines) {
+			for (const line of lines) {
+				const trimmed = line.trim();
+				// Match markdown headers or bold text
+				if (
+					trimmed.startsWith("# ") ||
+					trimmed.startsWith("## ") ||
+					trimmed.startsWith("**") ||
+					trimmed.startsWith("- **")
+				) {
+					// Clean up the headline
+					const cleaned = trimmed
+						.replace(/^#+\s*/, "")
+						.replace(/^\*\*/, "")
+						.replace(/\*\*$/, "")
+						.replace(/^-\s*\*\*/, "")
+						.trim();
+					if (cleaned.length > 5 && cleaned.length < 200) {
+						parts.push(cleaned);
+					}
+				}
+				// Stop after 5 headlines
+				if (parts.length >= 5) break;
+			}
+		}
+
+		// Extract first N sentences from non-headline content
+		const textContent = lines
+			.filter((l) => !l.trim().startsWith("#") && !l.trim().startsWith("**"))
+			.join(" ");
+
+		// Simple sentence extraction (split on . ! ?)
+		const sentences = textContent.match(/[^.!?]+[.!?]+/g) ?? [];
+		const sentencesToAdd = config.maxSentences - parts.length;
+		if (sentencesToAdd > 0) {
+			for (let i = 0; i < Math.min(sentencesToAdd, sentences.length); i++) {
+				const sentence = sentences[i].trim();
+				if (sentence.length > 10 && sentence.length < 300) {
+					parts.push(sentence);
+				}
+			}
+		}
+
+		// Join and truncate
+		let summary = parts.join(" ").trim();
+		if (summary.length > config.maxLen) {
+			summary = summary.slice(0, config.maxLen - 3) + "...";
+		}
+
+		// Fallback: first N chars of output if no summary extracted
+		if (summary.length < 20) {
+			summary = output.slice(0, config.maxLen).trim();
+			if (output.length > config.maxLen) {
+				summary = summary.slice(0, config.maxLen - 3) + "...";
+			}
+		}
+
+		return summary;
+	}
+
+	/**
+	 * Extract entities from text with timeout protection.
+	 * Uses heuristic extraction (same pattern as KnowledgeGraphService).
+	 *
+	 * @param text - Text to extract entities from
+	 * @param timeoutMs - Maximum time to wait (default 200ms)
+	 * @returns Array of entity labels (empty on timeout/error)
+	 */
+	async extractEntitiesWithTimeout(text: string, timeoutMs: number = 200): Promise<string[]> {
+		const flags = getMemoryFeatureFlags();
+		if (!flags.enableKg) {
+			return [];
+		}
+
+		try {
+			// Race between extraction and timeout
+			const extractionPromise = Promise.resolve().then(() => {
+				return this.extractEntitiesHeuristic(text);
+			});
+
+			const timeoutPromise = new Promise<string[]>((resolve) => {
+				setTimeout(() => resolve([]), timeoutMs);
+			});
+
+			return await Promise.race([extractionPromise, timeoutPromise]);
+		} catch (err) {
+			logger.warn({ err }, "[toolIngestion] Entity extraction failed (graceful skip)");
+			return [];
+		}
+	}
+
+	/**
+	 * Heuristic entity extraction (same pattern as KnowledgeGraphService.extractEntities).
+	 * Extracts capitalized words and Hebrew terms.
+	 */
+	private extractEntitiesHeuristic(text: string): string[] {
+		const entities: string[] = [];
+		const seen = new Set<string>();
+
+		// Common words to exclude
+		const commonWords = new Set([
+			"The",
+			"This",
+			"That",
+			"These",
+			"Those",
+			"What",
+			"When",
+			"Where",
+			"Which",
+			"Who",
+			"Why",
+			"How",
+			"And",
+			"But",
+			"For",
+			"With",
+			"From",
+			"About",
+			"Into",
+			"Through",
+			"During",
+			"Before",
+			"After",
+			"Above",
+			"Below",
+			"Between",
+			"Under",
+			"Again",
+			"Further",
+			"Then",
+			"Once",
+			"Here",
+			"There",
+			"All",
+			"Each",
+			"Few",
+			"More",
+			"Most",
+			"Other",
+			"Some",
+			"Such",
+			"Only",
+			"Same",
+			"Than",
+			"Too",
+			"Very",
+			"Just",
+			"Also",
+			"Now",
+			"New",
+			"First",
+			"Last",
+			"Long",
+			"Great",
+			"Little",
+			"Own",
+			"Next",
+			"Right",
+			"Big",
+			"High",
+			"Different",
+			"Small",
+			"Large",
+			"Early",
+			"Young",
+			"Important",
+			"Public",
+			"Bad",
+			"Good",
+		]);
+
+		// Word-based extraction: split on whitespace and extract individual capitalized words
+		const words = text.split(/\s+/);
+		for (const word of words) {
+			// Clean punctuation from word edges
+			const cleanWord = word.replace(/^[^\w\u0590-\u05FF]+|[^\w\u0590-\u05FF]+$/g, "");
+			if (cleanWord.length <= 2) continue;
+
+			// Check for English capitalized words (including CamelCase like TypeScript, JavaScript)
+			if (
+				/^[A-Z][a-zA-Z]*$/.test(cleanWord) &&
+				!commonWords.has(cleanWord) &&
+				!seen.has(cleanWord)
+			) {
+				seen.add(cleanWord);
+				entities.push(cleanWord);
+			}
+		}
+
+		// Extract Hebrew words (individual words, not phrases)
+		const hebrewPattern = /[\u0590-\u05FF]+/g;
+		const hebrewMatches = text.match(hebrewPattern) ?? [];
+
+		for (const match of hebrewMatches) {
+			const clean = match.replace(/^[^\u0590-\u05FF]+|[^\u0590-\u05FF]+$/g, "");
+			if (clean.length > 2 && !commonWords.has(clean) && !seen.has(clean)) {
+				seen.add(clean);
+				entities.push(clean);
+			}
+		}
+
+		return entities.slice(0, 10); // Limit to 10 entities
+	}
+
+	/**
+	 * Link tool result to related documents in memory.
+	 * Queries documents tier for entity overlap.
+	 *
+	 * @param entities - Entities extracted from tool result
+	 * @param timeoutMs - Maximum time to wait (default 50ms)
+	 * @returns Array of linked document IDs
+	 */
+	async linkToRelatedDocuments(entities: string[], timeoutMs: number = 50): Promise<string[]> {
+		if (entities.length === 0) {
+			return [];
+		}
+
+		try {
+			const { Database } = await import("$lib/server/database");
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const kgEdges = client.db("chat-ui").collection("kg_edges");
+
+			// Query for documents that share entities with this tool result
+			const linkPromise = kgEdges
+				.find(
+					{
+						user_id: ADMIN_USER_ID,
+						source_label: { $in: entities },
+						target_type: "memory",
+					},
+					{ projection: { target_id: 1 }, limit: 5 }
+				)
+				.toArray()
+				.then((edges) => edges.map((e) => e.target_id as string).filter(Boolean));
+
+			const timeoutPromise = new Promise<string[]>((resolve) => {
+				setTimeout(() => resolve([]), timeoutMs);
+			});
+
+			return await Promise.race([linkPromise, timeoutPromise]);
+		} catch (err) {
+			logger.warn({ err }, "[toolIngestion] Document linking failed (graceful skip)");
+			return [];
+		}
+	}
+
+	/**
+	 * Enhanced ingestion with summary, entity extraction, and document linking.
+	 * Emits UI events for progress tracking.
+	 *
+	 * Performance budget:
+	 * - Summary extraction: 50ms (heuristic, no LLM)
+	 * - Entity extraction: 200ms (with timeout)
+	 * - Document linking: 50ms (with timeout)
+	 * - Storage: 100ms
+	 * - Total: <500ms
+	 */
+	async ingestToolResultEnhanced(
+		params: ToolResultIngestionParams
+	): Promise<EnhancedIngestionResult> {
+		const startTime = Date.now();
+		const { conversationId, toolName, query, output, metadata, emitUpdate } = params;
+
+		const flags = getMemoryFeatureFlags();
+		if (!flags.toolResultIngestionEnabled) {
+			return {
+				attempted: false,
+				stored: false,
+				reason: "Tool result ingestion is disabled by feature flag",
+			};
+		}
+
+		// Enhanced ingestion requires the enhanced flag
+		if (!flags.toolResultEnhancedIngestionEnabled) {
+			// Fall back to basic ingestion
+			return this.ingestToolResult(params);
+		}
+
+		// Validate tool eligibility
+		if (!this.shouldIngest(toolName)) {
+			return {
+				attempted: false,
+				stored: false,
+				reason: `Tool ${toolName} is not eligible for ingestion`,
+			};
+		}
+
+		// Validate output quality
+		if (!output || output.trim().length < CONFIG.minOutputLength) {
+			return {
+				attempted: false,
+				stored: false,
+				reason: "Output too short or empty",
+			};
+		}
+
+		// Get facade instance
+		const facade = UnifiedMemoryFacade.getInstance();
+		if (!facade.isInitialized()) {
+			return {
+				attempted: false,
+				stored: false,
+				reason: "Memory system not initialized",
+			};
+		}
+
+		// Helper to emit tool ingestion updates
+		const emitToolIngestion = (
+			stage: MessageMemoryToolIngestingUpdate["stage"],
+			extras?: { entitiesExtracted?: number; linkedDocuments?: number }
+		) => {
+			if (!emitUpdate) return;
+			const update: MessageMemoryToolIngestingUpdate = {
+				type: MessageUpdateType.Memory,
+				subtype: MessageMemoryUpdateType.ToolIngesting,
+				toolName,
+				stage,
+				...extras,
+			};
+			emitUpdate(update);
+		};
+
+		try {
+			const normalizedToolName = toolName.toLowerCase();
+			const toolCategory = this.getToolCategory(normalizedToolName);
+
+			// Emit: summarizing stage
+			emitToolIngestion("summarizing");
+
+			// Step 1: Generate heuristic summary (sync, <50ms)
+			const sanitizedOutput = sanitizeToolOutput(output);
+			const summary = this.extractHeuristicSummary(normalizedToolName, sanitizedOutput);
+
+			// Emit: extracting stage
+			emitToolIngestion("extracting");
+
+			// Step 2: Extract entities with timeout (200ms max)
+			const entities = await this.extractEntitiesWithTimeout(sanitizedOutput, 200);
+
+			// Emit: linking stage
+			emitToolIngestion("linking", { entitiesExtracted: entities.length });
+
+			// Step 3: Link to related documents (50ms max)
+			const linkedDocuments = await this.linkToRelatedDocuments(entities, 50);
+
+			// Check for duplicates
+			const contentForHash = sanitizedOutput.trim().slice(0, CONFIG.hashContentLength);
+			const contentHash = createHash("sha256").update(contentForHash).digest("hex");
+			const shortHash = contentHash.slice(0, CONFIG.shortHashLength);
+
+			const isDuplicate = await this.checkDuplicate({
+				toolName: normalizedToolName,
+				shortHash,
+			});
+
+			if (isDuplicate) {
+				emitToolIngestion("completed", {
+					entitiesExtracted: entities.length,
+					linkedDocuments: linkedDocuments.length,
+				});
+
+				return {
+					attempted: true,
+					stored: false,
+					reason: "Duplicate content already in memory",
+					summary,
+					entitiesExtracted: entities.length,
+					linkedDocuments,
+					latencyMs: Date.now() - startTime,
+				};
+			}
+
+			// Emit: storing stage
+			emitToolIngestion("storing", {
+				entitiesExtracted: entities.length,
+				linkedDocuments: linkedDocuments.length,
+			});
+
+			// Step 4: Store with summary and entity tags
+			const textToStore = sanitizedOutput.trim().slice(0, CONFIG.maxOutputLength);
+			const title = query
+				? `${toolName}: ${query.slice(0, 100)}${query.length > 100 ? "..." : ""}`
+				: `Result from ${toolName}`;
+
+			// Build tags including entities
+			const tags = buildToolTags({
+				toolName: normalizedToolName,
+				category: toolCategory,
+				shortHash,
+				conversationId,
+			});
+
+			// Add entity tags (limit to 5 to avoid tag bloat)
+			for (const entity of entities.slice(0, 5)) {
+				tags.push(`entity:${entity.toLowerCase()}`);
+			}
+
+			// Add linked document tags
+			for (const docId of linkedDocuments.slice(0, 3)) {
+				tags.push(`linked_doc:${docId}`);
+			}
+
+			// Build description with summary for better searchability
+			const enhancedDescription = summary
+				? `${title} | Summary: ${summary.slice(0, 150)}`
+				: title;
+
+			const result = await facade.store({
+				userId: ADMIN_USER_ID,
+				tier: "working" as MemoryTier,
+				text: textToStore,
+				tags,
+				importance: 0.6,
+				confidence: 0.7,
+				source: {
+					type: "tool",
+					tool_name: toolName,
+					conversation_id: conversationId,
+					description:
+						typeof metadata?.description === "string" ? metadata.description : enhancedDescription,
+					collected_at: new Date(),
+				},
+			});
+
+			// Emit: completed stage
+			emitToolIngestion("completed", {
+				entitiesExtracted: entities.length,
+				linkedDocuments: linkedDocuments.length,
+			});
+
+			logger.info("[toolIngestion] Enhanced ingestion completed", {
+				toolName,
+				memoryId: result.memory_id,
+				summaryLen: summary.length,
+				entitiesExtracted: entities.length,
+				linkedDocuments: linkedDocuments.length,
+				latencyMs: Date.now() - startTime,
+			});
+
+			return {
+				attempted: true,
+				stored: true,
+				memoryId: result.memory_id,
+				summary,
+				entitiesExtracted: entities.length,
+				linkedDocuments,
+				latencyMs: Date.now() - startTime,
+			};
+		} catch (err) {
+			logger.error("[toolIngestion] Enhanced ingestion failed (non-blocking)", {
+				err,
+				toolName,
+				conversationId,
+			});
+			return {
+				attempted: true,
+				stored: false,
+				reason: `Ingestion error: ${String(err)}`,
+				latencyMs: Date.now() - startTime,
+			};
+		}
+	}
 }
 
 // ============================================
@@ -396,19 +955,26 @@ export class ToolResultIngestionService {
 /**
  * Fire-and-forget ingestion of tool result.
  * Use this from toolInvocation.ts for non-blocking ingestion.
+ * Automatically uses enhanced ingestion when feature flag is enabled.
  *
  * @param params - Ingestion parameters
  */
 export function ingestToolResult(params: ToolResultIngestionParams): void {
+	const flags = getMemoryFeatureFlags();
+	const service = ToolResultIngestionService.getInstance();
+
+	// Use enhanced ingestion when flag is enabled
+	const ingestionPromise = flags.toolResultEnhancedIngestionEnabled
+		? service.ingestToolResultEnhanced(params)
+		: service.ingestToolResult(params);
+
 	// Truly fire-and-forget: don't await, catch errors
-	ToolResultIngestionService.getInstance()
-		.ingestToolResult(params)
-		.catch((err) => {
-			logger.error("[toolIngestion] Fire-and-forget ingestion failed", {
-				err,
-				toolName: params.toolName,
-			});
+	ingestionPromise.catch((err) => {
+		logger.error("[toolIngestion] Fire-and-forget ingestion failed", {
+			err,
+			toolName: params.toolName,
 		});
+	});
 }
 
 function buildToolTags(params: {

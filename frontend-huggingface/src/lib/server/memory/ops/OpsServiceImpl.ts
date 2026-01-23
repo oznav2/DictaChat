@@ -1058,7 +1058,10 @@ export class OpsServiceImpl {
 					memory_id: { $in: documentMemoryIds },
 				});
 				result.actionKgCleared = actionResult.deletedCount;
-				logger.debug({ userId, cleared: result.actionKgCleared }, "Document action outcomes cleared");
+				logger.debug(
+					{ userId, cleared: result.actionKgCleared },
+					"Document action outcomes cleared"
+				);
 			} catch (err) {
 				result.errors.push(
 					`Action KG clear failed: ${err instanceof Error ? err.message : String(err)}`

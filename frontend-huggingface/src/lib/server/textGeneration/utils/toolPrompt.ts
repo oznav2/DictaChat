@@ -14,7 +14,9 @@ import { generateToolCapabilityManifest } from "$lib/server/textGeneration/mcp/t
 export function buildToolPreprompt(tools: OpenAiTool[], intentHint?: string): string {
 	if (!Array.isArray(tools) || tools.length === 0) return "";
 
-	const toolDefs = JSON.stringify(tools, null, 2);
+	// Phase 2.2: Compact JSON (no pretty-print) to reduce prompt tokens and prefill time
+	// With 80+ tools, pretty-printing adds ~2-3KB of whitespace to every request
+	const toolDefs = JSON.stringify(tools);
 	const currentDate = new Date().toLocaleDateString("en-US", {
 		year: "numeric",
 		month: "long",
@@ -61,7 +63,21 @@ Your task is to analyze the user's request and determine if a tool is needed.
    - If the user asks in Hebrew, you can use Hebrew arguments (e.g., search queries). / אם המשתמש שואל בעברית, ניתן להשתמש בפרמטרים בעברית.
    - Ensure arguments match the tool's schema exactly.
    - NEVER say "I cannot search" - USE A TOOL if information is missing.
-   - If a tool generates an image, you can inline it directly: ![alt text](image_url)${sequentialThinkingConstraint}
+   - If a tool generates an image, you can inline it directly: ![alt text](image_url)
+   - **HONESTY WHEN TOOLS FAIL** (CRITICAL - prevents hallucination):
+     * If a tool returns an error, "robots disallow", "access denied", or empty results - ADMIT IT
+     * Say "לא הצלחתי למצוא מידע על כך" / "I couldn't find information about this"
+     * Do NOT invent or hallucinate facts when tools fail to provide evidence
+     * Suggest trying a different tool (e.g., "אנסה עם Perplexity במקום" / "Let me try Perplexity instead")
+   - **EVIDENCE REQUIRED FOR FACTUAL CLAIMS** (CRITICAL - prevents hallucination):
+     * For specific factual queries (legal cases, statistics, news, people, dates, prices) - you MUST cite tool results
+     * If you have NO tool evidence, state clearly: "אין לי מידע מאומת על כך" / "I don't have verified information"
+     * NEVER generate specific names, numbers, dates, or facts without tool evidence
+     * When uncertain, prefer "I don't know" over a confident-sounding guess
+   - **FORMAT REQUIREMENTS** (CRITICAL):
+     * Do NOT wrap tool calls in XML tags like <tool_call>...</tool_call>
+     * Do NOT wrap URLs or argument values in backticks (e.g., write "https://..." not "\`https://...\`")
+     * Output clean JSON only, no markdown formatting around tool calls${sequentialThinkingConstraint}
 
 4. **Tool Transparency & Capability Awareness / שקיפות וידע על יכולות**:
    - When a user asks "מה אתה יכול לעשות?" or "what can you do?", describe your available tools using the capability list above.

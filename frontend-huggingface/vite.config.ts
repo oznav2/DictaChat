@@ -22,6 +22,7 @@ function loadTTFAsArrayBuffer() {
 	};
 }
 export default defineConfig({
+	cacheDir: ".vite",
 	plugins: [
 		sveltekit(),
 		Icons({
@@ -51,8 +52,9 @@ export default defineConfig({
 		},
 	},
 	optimizeDeps: {
-		include: ["uuid", "sharp", "clsx", "@braintree/sanitize-url"],
-		exclude: ["mermaid", "dayjs"],
+		include: ["uuid", "clsx", "@braintree/sanitize-url"],
+		exclude: ["mermaid", "dayjs", "sharp"],
+		holdUntilCrawlEnd: true,
 	},
 	build: {
 		rollupOptions: {

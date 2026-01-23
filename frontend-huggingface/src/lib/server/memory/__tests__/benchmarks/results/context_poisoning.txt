@@ -1,19 +1,19 @@
 ============================= test session starts =============================
 platform: node v20.18.1
 test framework: vitest
-timestamp: 2026-01-15T12:55:36.139Z
+timestamp: 2026-01-21T22:00:09.871Z
 rootdir: /home/ilan/BricksLLM/frontend-huggingface
 
 collecting ... collected 10 items
 
-test_context_poisoning::test_exact_duplicate_poisoning PASSED (13ms) [duplicate_count=10.000, results_returned=5.000, unique_contents=1.000, score_variance=0.000] [ 10%]
-test_context_poisoning::test_hebrew_duplicate_poisoning PASSED (3ms) [duplicate_count=10.000, results_returned=5.000, unique_contents=1.000] [ 20%]
-test_context_poisoning::test_near_duplicate_confusion PASSED (13ms) [variations_stored=5.000, results_returned=3.000, avg_result_similarity=0.583] [ 30%]
-test_context_poisoning::test_entity_confusion PASSED (6ms) [entities_stored=4.000, correct_entity_first=1.000, top_result_score=0.894] [ 40%]
-test_context_poisoning::test_hebrew_entity_confusion PASSED (7ms) [entities_stored=3.000, correct_entity_first=1.000] [ 50%]
-test_context_poisoning::test_temporal_confusion PASSED (2ms) [found_old_fact=1.000, found_new_fact=1.000, results_count=2.000] [ 60%]
+test_context_poisoning::test_exact_duplicate_poisoning PASSED (6ms) [duplicate_count=10.000, results_returned=5.000, unique_contents=1.000, score_variance=0.000] [ 10%]
+test_context_poisoning::test_hebrew_duplicate_poisoning PASSED (2ms) [duplicate_count=10.000, results_returned=5.000, unique_contents=1.000] [ 20%]
+test_context_poisoning::test_near_duplicate_confusion PASSED (6ms) [variations_stored=5.000, results_returned=3.000, avg_result_similarity=0.583] [ 30%]
+test_context_poisoning::test_entity_confusion PASSED (3ms) [entities_stored=4.000, correct_entity_first=1.000, top_result_score=0.894] [ 40%]
+test_context_poisoning::test_hebrew_entity_confusion PASSED (3ms) [entities_stored=3.000, correct_entity_first=1.000] [ 50%]
+test_context_poisoning::test_temporal_confusion PASSED (1ms) [found_old_fact=1.000, found_new_fact=1.000, results_count=2.000] [ 60%]
 test_context_poisoning::test_negation_poisoning PASSED (1ms) [coffee_positive_first=1.000, tea_negation_found=1.000] [ 70%]
-test_context_poisoning::test_hebrew_negation_poisoning PASSED (0ms) [hebrew_positive_first=1.000] [ 80%]
+test_context_poisoning::test_hebrew_negation_poisoning PASSED (1ms) [hebrew_positive_first=1.000] [ 80%]
 test_context_poisoning::test_cross_language_confusion PASSED (1ms) [english_content_first_for_en_query=1.000, hebrew_content_first_for_he_query=1.000] [ 90%]
 test_context_poisoning::test_context_poisoning PASSED (1ms) [poisoned_entries=10.000, queries_run=5.000, total_results=15.000, avg_results_per_query=3.000] [100%]
 
@@ -43,5 +43,5 @@ Metrics Summary:
   avg_results_per_query: avg=3.000, min=3.000, max=3.000
 
 ============================== test results ===================================
-10 passed, 0 failed in 0.09s
+10 passed, 0 failed in 0.06s
 ===============================================================================

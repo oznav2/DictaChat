@@ -82,6 +82,34 @@ interface CandidateResult {
  */
 const RRF_K = 60;
 
+/**
+ * Tier-based boost multipliers for RAG prioritization
+ * Documents tier gets highest boost to prioritize PDF/uploaded content over conversation history
+ * Working tier gets penalty to deprioritize conversation snippets
+ */
+const TIER_BOOST: Record<string, number> = {
+	documents: 1.5, // 50% boost for uploaded documents (PDF, etc.)
+	memory_bank: 1.3, // 30% boost for user-curated facts
+	patterns: 1.2, // 20% boost for proven patterns
+	history: 1.0, // Neutral for validated history
+	working: 0.7, // 30% penalty for working memory (conversation snippets)
+	datagov_schema: 1.1, // 10% boost for DataGov schemas
+	datagov_expansion: 1.0, // Neutral for DataGov expansions
+};
+
+/**
+ * Patterns that indicate conversation history (should be filtered from working tier)
+ * These patterns help identify items that are conversation snippets rather than actual knowledge
+ */
+const CONVERSATION_PATTERNS = [
+	/^User:\s/i,
+	/^Assistant:\s/i,
+	/<think>/i,
+	/<\/think>/i,
+	/^Detailed Results:/i,
+	/^\[Tool Result\]/i,
+];
+
 export class SearchService {
 	private qdrant: QdrantAdapter;
 	private bm25: Bm25Adapter;
@@ -200,7 +228,11 @@ export class SearchService {
 
 		// Step 1.5 (NER Integration): Entity pre-filtering if entities provided
 		let entityFilteredIds: Set<string> | null = null;
-		if (params.queryEntities && params.queryEntities.length > 0 && params.enableEntityPreFilter !== false) {
+		if (
+			params.queryEntities &&
+			params.queryEntities.length > 0 &&
+			params.enableEntityPreFilter !== false
+		) {
 			entityFilteredIds = await this.entityPreFilter(params.queryEntities, params.userId, timings);
 		}
 
@@ -293,7 +325,7 @@ export class SearchService {
 
 		try {
 			// Extract entity words for matching
-			const queryEntityWords = queryEntities.map(e => e.word.toLowerCase().trim());
+			const queryEntityWords = queryEntities.map((e) => e.word.toLowerCase().trim());
 
 			// Query Qdrant for documents with matching entities in payload
 			const matchingIds = await this.qdrant.filterByEntities({
@@ -316,7 +348,7 @@ export class SearchService {
 				{
 					queryEntityCount: queryEntities.length,
 					matchedCount: matchingIds.length,
-					entities: queryEntities.map(e => e.word).slice(0, 5),
+					entities: queryEntities.map((e) => e.word).slice(0, 5),
 				},
 				"[search] Entity pre-filter reduced candidates"
 			);
@@ -407,7 +439,26 @@ export class SearchService {
 	}
 
 	/**
+	 * Check if content appears to be conversation history rather than actual knowledge
+	 * Option B: Filter conversation snippets from working tier
+	 */
+	private isConversationSnippet(content: string): boolean {
+		return CONVERSATION_PATTERNS.some((pattern) => pattern.test(content));
+	}
+
+	/**
+	 * Get tier boost multiplier
+	 * Option A: Prioritize documents tier over working tier
+	 */
+	private getTierBoost(tier: MemoryTier): number {
+		return TIER_BOOST[tier] ?? 1.0;
+	}
+
+	/**
 	 * Fuse vector and lexical results using RRF
+	 * Enhanced with:
+	 * - Option A: Tier-based boost (documents > working)
+	 * - Option B: Conversation snippet filtering for working tier
 	 */
 	private fuseResults(
 		vectorResults: QdrantSearchResult[],
@@ -415,12 +466,24 @@ export class SearchService {
 	): CandidateResult[] {
 		const candidates = new Map<string, CandidateResult>();
 		const weights = this.config.weights.embedding_blend;
+		let filteredConversationCount = 0;
 
 		// Process vector results
 		for (let i = 0; i < vectorResults.length; i++) {
 			const vr = vectorResults[i];
+
+			// Option B: Filter conversation snippets from working tier
+			if (vr.payload.tier === "working" && this.isConversationSnippet(vr.payload.content)) {
+				filteredConversationCount++;
+				continue;
+			}
+
 			const vectorRank = i + 1;
 			const vectorRrfScore = rankToRrfScore(vectorRank, RRF_K);
+
+			// Option A: Apply tier boost
+			const tierBoost = this.getTierBoost(vr.payload.tier);
+			const boostedScore = vectorRrfScore * weights.dense_weight * tierBoost;
 
 			candidates.set(vr.id, {
 				memoryId: vr.id,
@@ -428,8 +491,8 @@ export class SearchService {
 				tier: vr.payload.tier,
 				vectorScore: vr.score,
 				vectorRank,
-				rrfScore: vectorRrfScore * weights.dense_weight,
-				finalScore: vectorRrfScore * weights.dense_weight,
+				rrfScore: boostedScore,
+				finalScore: boostedScore,
 				wilsonScore: vr.payload.composite_score,
 				uses: vr.payload.uses,
 			});
@@ -438,29 +501,48 @@ export class SearchService {
 		// Process lexical results and merge
 		for (let i = 0; i < lexicalResults.length; i++) {
 			const lr = lexicalResults[i];
+
+			// Option B: Filter conversation snippets from working tier
+			if (lr.tier === "working" && this.isConversationSnippet(lr.content)) {
+				filteredConversationCount++;
+				continue;
+			}
+
 			const textRank = i + 1;
 			const textRrfScore = rankToRrfScore(textRank, RRF_K);
+
+			// Option A: Apply tier boost
+			const tierBoost = this.getTierBoost(lr.tier);
 
 			const existing = candidates.get(lr.memoryId);
 
 			if (existing) {
-				// Merge scores
+				// Merge scores (tier boost already applied to existing)
 				existing.textScore = lr.textScore;
 				existing.textRank = textRank;
-				existing.rrfScore += textRrfScore * weights.text_weight;
+				existing.rrfScore += textRrfScore * weights.text_weight * tierBoost;
 				existing.finalScore = existing.rrfScore;
 			} else {
 				// New candidate from lexical only
+				const boostedScore = textRrfScore * weights.text_weight * tierBoost;
 				candidates.set(lr.memoryId, {
 					memoryId: lr.memoryId,
 					content: lr.content,
 					tier: lr.tier,
 					textScore: lr.textScore,
 					textRank,
-					rrfScore: textRrfScore * weights.text_weight,
-					finalScore: textRrfScore * weights.text_weight,
+					rrfScore: boostedScore,
+					finalScore: boostedScore,
 				});
 			}
+		}
+
+		// Log filtering stats
+		if (filteredConversationCount > 0) {
+			logger.debug(
+				{ filtered: filteredConversationCount },
+				"[Option B] Filtered conversation snippets from working tier"
+			);
 		}
 
 		return Array.from(candidates.values());
@@ -511,7 +593,10 @@ export class SearchService {
 				throw new Error(`Reranker returned ${response.status}`);
 			}
 
-			const data = (await response.json()) as { results: Array<{ index: number; score: number }> };
+			// Handle both 'score' and 'relevance_score' field names from different reranker APIs
+			const data = (await response.json()) as {
+				results: Array<{ index: number; score?: number; relevance_score?: number }>;
+			};
 
 			// Apply CE scores
 			const ceWeights = this.config.weights.cross_encoder_blend;
@@ -519,12 +604,14 @@ export class SearchService {
 			for (const result of data.results) {
 				const candidate = toRerank[result.index];
 				if (candidate) {
-					candidate.ceScore = result.score;
+					// Support both field names: dicta-retrieval uses 'relevance_score'
+					const ceScore = result.relevance_score ?? result.score ?? 0;
+					candidate.ceScore = ceScore;
 					candidate.ceRank = data.results.findIndex((r) => r.index === result.index) + 1;
 
 					// Blend original RRF score with CE score
 					let finalScore =
-						candidate.rrfScore * ceWeights.original_weight + result.score * ceWeights.ce_weight;
+						candidate.rrfScore * ceWeights.original_weight + ceScore * ceWeights.ce_weight;
 
 					// Phase 22.8: Apply quality boost for memory_bank items with Wilson
 					// Only applies to established items (uses >= 3) with cold-start protection
@@ -544,8 +631,7 @@ export class SearchService {
 								wilsonScore,
 								qualityBoost,
 								preBoostScore:
-									candidate.rrfScore * ceWeights.original_weight +
-									result.score * ceWeights.ce_weight,
+									candidate.rrfScore * ceWeights.original_weight + ceScore * ceWeights.ce_weight,
 								postBoostScore: finalScore,
 							},
 							"[Phase 22.8] Applied CE + Wilson quality boost"

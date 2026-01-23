@@ -116,6 +116,7 @@
 		messageId?: ReturnType<typeof v4>;
 		isRetry?: boolean;
 	}): Promise<void> {
+	let messageToWriteToId: Message["id"] | undefined = undefined;
 		try {
 			$isAborted = false;
 			$loading = true;
@@ -130,9 +131,6 @@
 					}))
 				)
 			);
-
-			let messageToWriteToId: Message["id"] | undefined = undefined;
-			// used for building the prompt, subtree of the conversation that goes from the latest message to the root
 
 			if (isRetry && messageId) {
 				// two cases, if we're retrying a user message with a newPrompt set,
@@ -219,6 +217,12 @@
 			if (!messageToWriteTo) {
 				throw new Error("Message to write to not found");
 			}
+
+			// Set active message ID for memory processing history capture
+			memoryUi.assistantStreamStarted({
+				conversationId: page.params.id,
+				messageId: messageToWriteTo.id,
+			});
 
 			const messageUpdatesAbortController = new AbortController();
 
@@ -438,44 +442,17 @@
 					if (update.subtype === MessageMemoryUpdateType.Searching) {
 						memoryUi.setProcessingSearching(update.query);
 					} else if (update.subtype === MessageMemoryUpdateType.Found) {
+						// Update processing status with count
 						memoryUi.setProcessingFound(update.count);
-						// Phase 4 Latency Fix: Handle early memoryMeta for immediate UI feedback
-						// Use requestIdleCallback to avoid blocking the UI thread
+						// Process memoryMeta early for immediate display of known context and citations
+						// This shows the user what memories are being used BEFORE the final answer
 						if (update.memoryMeta) {
-							const meta = update.memoryMeta;
-							const convId = page.params.id;
-							const msgId = messageToWriteTo.id;
-							// Defer heavy processing to avoid browser freeze
-							if (typeof requestIdleCallback !== "undefined") {
-								requestIdleCallback(() => {
-									memoryUi.memoryMetaUpdated({
-										conversationId: convId,
-										messageId: msgId,
-										meta,
-									});
-								});
-							} else {
-								// Fallback for browsers without requestIdleCallback
-								setTimeout(() => {
-									memoryUi.memoryMetaUpdated({
-										conversationId: convId,
-										messageId: msgId,
-										meta,
-									});
-								}, 0);
-							}
-						}
-						// Dispatch event to refresh MemoryPanel immediately
-						// Use valid MemoryEventType: "memory_updated"
-						dispatchMemoryEvent({
-							type: "memory_updated",
-							userId: "admin",
-							detail: {
-								source: "memory_search",
-								count: update.count,
+							memoryUi.memoryMetaUpdated({
 								conversationId: page.params.id,
-							},
-						});
+								messageId: messageToWriteTo.id,
+								meta: update.memoryMeta,
+							});
+						}
 					} else if (update.subtype === MessageMemoryUpdateType.Storing) {
 						memoryUi.setProcessingStatus("storing");
 					} else if (update.subtype === MessageMemoryUpdateType.Stored) {
@@ -492,30 +469,37 @@
 								...existing,
 							].slice(0, 100)
 						);
-						dispatchMemoryEvent({
-							type: "memory_updated",
-							userId: "admin",
-							detail: {
-								source: "memory_stored",
-								memoryId: update.memoryId,
-								tier: update.tier,
-								conversationId: page.params.id,
-							},
-						});
+						// Skip dispatching event for pending IDs - prevents unnecessary panel refreshes
+						// Actual memory ID will be available on next conversation load
+						if (update.memoryId && update.memoryId !== "pending") {
+							dispatchMemoryEvent({
+								type: "memory_updated",
+								userId: "admin",
+								detail: {
+									source: "memory_stored",
+									memoryId: update.memoryId,
+									tier: update.tier,
+									conversationId: page.params.id,
+								},
+							});
+						}
 						setTimeout(() => memoryUi.resetProcessing(), 1500);
 					} else if (update.subtype === MessageMemoryUpdateType.Outcome) {
 						memoryUi.setProcessingStatus("learning");
-						// Dispatch memoryUpdated event to trigger UI refresh in memory panels
-						// This is the Phase 1 P0 fix for Gap 4 (Memory Update Events)
-						dispatchMemoryEvent({
-							type: "memory_updated",
-							userId: "admin",
-							detail: {
-								source: "response_outcome",
-								memoryIds: update.memoryIds ?? [],
-								conversationId: page.params.id,
-							},
-						});
+						// Skip dispatching if no actual memory IDs to update
+						// Prevents expensive panel refreshes for empty outcome events
+						const memoryIds = update.memoryIds ?? [];
+						if (memoryIds.length > 0) {
+							dispatchMemoryEvent({
+								type: "memory_updated",
+								userId: "admin",
+								detail: {
+									source: "response_outcome",
+									memoryIds,
+									conversationId: page.params.id,
+								},
+							});
+						}
 						// Clear status after a short delay
 						setTimeout(() => memoryUi.resetProcessing(), 2000);
 					} else if (update.subtype === MessageMemoryUpdateType.Degraded) {
@@ -538,6 +522,18 @@
 						if (update.stage === "completed" || update.stage === "recognized") {
 							setTimeout(() => memoryUi.resetProcessing(), 3000);
 						}
+					} else if (update.subtype === MessageMemoryUpdateType.ToolIngesting) {
+						// Tool result ingestion progress (enhanced ingestion)
+						memoryUi.setToolIngestion({
+							toolName: update.toolName,
+							stage: update.stage,
+							entitiesExtracted: update.entitiesExtracted,
+							linkedDocuments: update.linkedDocuments,
+						});
+						// If completed, reset after delay
+						if (update.stage === "completed") {
+							setTimeout(() => memoryUi.resetProcessing(), 2000);
+						}
 					}
 				}
 			}
@@ -556,7 +552,24 @@
 			$loading = false;
 			pending = false;
 			memoryUi.resetProcessing();
-			await invalidateAll();
+			// Mark stream finished to preserve memory processing history
+			if (messageToWriteToId) {
+				memoryUi.assistantStreamFinished({
+					conversationId: page.params.id,
+					messageId: messageToWriteToId,
+				});
+			}
+			// Phase 23.8 P1.4: Defer invalidateAll() to avoid overlapping with heavy post-processing
+			// Wait for browser idle time before refreshing data to reduce jank spikes
+			// This prevents invalidateAll from competing with citation enhancement and markdown rendering
+			const deferredInvalidate = () => {
+				invalidateAll().catch((err) => console.warn("Background invalidateAll failed:", err));
+			};
+			if (typeof requestIdleCallback !== "undefined") {
+				requestIdleCallback(deferredInvalidate, { timeout: 500 });
+			} else {
+				setTimeout(deferredInvalidate, 100);
+			}
 		}
 	}
 

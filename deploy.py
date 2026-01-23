@@ -10,6 +10,19 @@ import hashlib
 import json
 from pathlib import Path
 
+def install_package(package_name):
+    """Install a Python package using pip, handling externally managed environments."""
+    print(f"Installing {package_name}...")
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+    except subprocess.CalledProcessError:
+        print(f"Standard install failed for {package_name}. Trying with --break-system-packages...")
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name, "--break-system-packages"])
+        except subprocess.CalledProcessError:
+             print(f"Failed to install {package_name}. Please install it manually.")
+             pass
+
 # Ensure rich is installed before importing
 try:
     from rich.console import Console
@@ -20,7 +33,7 @@ try:
     from rich import print as rprint
 except ImportError:
     print("Rich library not found. Installing...")
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "rich"])
+    install_package("rich")
     from rich.console import Console
     from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
     from rich.panel import Panel
@@ -307,7 +320,7 @@ def download_file(url, dest_path):
         import requests
         from rich.progress import DownloadColumn, TransferSpeedColumn
     except ImportError:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "requests"])
+        install_package("requests")
         import requests
         from rich.progress import DownloadColumn, TransferSpeedColumn
 
@@ -369,13 +382,16 @@ def check_baai_models():
                 console.print(f"[error]✘ Cannot proceed without {model['name']}.[/]")
                 sys.exit(1)
 
-def check_docker_images():
+def check_docker_images(skip_frontend=False):
     console.print("\n[step]Step 4: Verifying Docker Images...[/]")
     
     services = [
         {"name": "frontend-ui", "path": "./frontend-huggingface"},
         {"name": "mcp-sse-proxy", "path": "./mcp-sse-proxy", "no_cache": True}
     ]
+    
+    if skip_frontend:
+        services = [s for s in services if s["name"] != "frontend-ui"]
     
     for service in services:
         img_name = service["name"]
@@ -388,6 +404,8 @@ def check_docker_images():
         
         if result.returncode != 0:
             console.print(f"[warning]⚠ Image {img_name} not found. Building...[/]")
+            # Add --progress=plain to avoid TTY errors when running in non-interactive environments (like via start-dev.sh)
+            # However, this conflicts if COMPOSE_ANSI is forced. Since we force ANSI in start-dev.sh, we drop this flag.
             cmd = ["docker", "compose", "build", img_name]
             if service.get("no_cache"):
                 cmd.append("--no-cache")
@@ -408,7 +426,7 @@ def wait_for_model_loading():
     try:
         import requests
     except ImportError:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "requests"])
+        install_package("requests")
         import requests
 
     llama_health_url = "http://localhost:5002/health"
@@ -721,7 +739,7 @@ def deploy_qdrant_verbose():
 
     console.print("[warning]⚠ Qdrant startup monitoring timed out (service might still be loading)[/]")
 
-def deploy_services():
+def deploy_services(skip_frontend=False):
     console.print("\n[step]Step 5: Deploying Services...[/]")
 
     # Deploy Docling first with verbose logs
@@ -737,8 +755,25 @@ def deploy_services():
     deploy_qdrant_verbose()
 
     with console.status("[bold green]Starting remaining services with Compose...[/]"):
-        if subprocess.run(COMPOSE_CMD + ["up", "-d"]).returncode == 0:
+        cmd = COMPOSE_CMD + ["up", "-d"]
+        if skip_frontend:
+            # Get all services except frontend-ui
+            try:
+                # Run 'docker compose config --services' to get list
+                proc = subprocess.run(COMPOSE_CMD + ["config", "--services"], capture_output=True, text=True, check=True)
+                services = proc.stdout.strip().split('\n')
+                services = [s.strip() for s in services if s.strip() and s.strip() != 'frontend-ui']
+                cmd.extend(services)
+                console.print("[info]Skipping frontend-ui container deployment[/]")
+            except subprocess.CalledProcessError:
+                console.print("[warning]⚠ Could not list services, attempting full deploy then stop...[/]")
+                # Fallback: deploy all then stop frontend
+                pass
+        
+        if subprocess.run(cmd).returncode == 0:
             console.print("[success]✔ Services started successfully[/]")
+            if skip_frontend and len(cmd) == len(COMPOSE_CMD) + 2: # If we fell back to full deploy
+                 subprocess.run(COMPOSE_CMD + ["stop", "frontend-ui"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         else:
             console.print("[error]✘ Failed to start services[/]")
             sys.exit(1)
@@ -753,7 +788,7 @@ def deploy_services():
     }
     save_state(state)
 
-def fast_track_deploy():
+def fast_track_deploy(skip_frontend=False):
     console.print("\n[bold green]⚡ Fast-Track Mode Activated[/]")
     console.print("[dim]Skipping redundant checks based on previous successful state.[/]")
     
@@ -764,10 +799,27 @@ def fast_track_deploy():
 
     with console.status("[bold green]🚀 Fast-tracking deployment...[/]"):
         # We still need to make sure the containers are up
-        result = subprocess.run(COMPOSE_CMD + ["up", "-d"], capture_output=True)
+        cmd = COMPOSE_CMD + ["up", "-d"]
+        if skip_frontend:
+            # Get all services except frontend-ui
+            try:
+                # Run 'docker compose config --services' to get list
+                proc = subprocess.run(COMPOSE_CMD + ["config", "--services"], capture_output=True, text=True, check=True)
+                services = proc.stdout.strip().split('\n')
+                services = [s.strip() for s in services if s.strip() and s.strip() != 'frontend-ui']
+                cmd.extend(services)
+                console.print("[info]Skipping frontend-ui container deployment[/]")
+            except subprocess.CalledProcessError:
+                console.print("[warning]⚠ Could not list services, attempting full deploy then stop...[/]")
+                # Fallback: deploy all then stop frontend
+                pass
+
+        result = subprocess.run(cmd, capture_output=True)
         
         if result.returncode == 0:
             console.print("[success]✔ Services started successfully (Fast-Track)[/]")
+            if skip_frontend and len(cmd) == len(COMPOSE_CMD) + 2: # If we fell back to full deploy
+                 subprocess.run(COMPOSE_CMD + ["stop", "frontend-ui"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             return True
         else:
             console.print("[warning]⚠ Fast-track deployment encountered an issue. Falling back to full checks.[/]")
@@ -779,6 +831,7 @@ def main():
     parser = argparse.ArgumentParser(description="BricksLLM Deployment Script")
     parser.add_argument("--force", action="store_true", help="Force full checks, bypassing fast-track mode")
     parser.add_argument("--podman", action="store_true", help="Use Podman instead of Docker")
+    parser.add_argument("--no-frontend", action="store_true", help="Skip deploying the frontend-ui container")
     args = parser.parse_args()
 
     if args.podman:
@@ -800,7 +853,7 @@ def main():
 
     deployed = False
     if is_eligible:
-        if fast_track_deploy():
+        if fast_track_deploy(skip_frontend=args.no_frontend):
             deployed = True
         else:
             console.print("\n[bold yellow]Falling back to standard deployment flow...[/]")
@@ -808,8 +861,8 @@ def main():
             env_vars = check_env_configuration()
             check_model_files(env_vars)
             check_baai_models()
-            check_docker_images()
-            deploy_services()
+            check_docker_images(skip_frontend=args.no_frontend)
+            deploy_services(skip_frontend=args.no_frontend)
             deployed = True
     else:
         if not args.force:
@@ -820,7 +873,7 @@ def main():
         check_model_files(env_vars)
         check_baai_models()
         check_docker_images()
-        deploy_services()
+        deploy_services(skip_frontend=args.no_frontend)
         deployed = True
     
     if deployed:

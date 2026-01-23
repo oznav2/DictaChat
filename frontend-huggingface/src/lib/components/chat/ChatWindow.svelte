@@ -490,7 +490,7 @@
 	}}
 />
 
-<div class="relative h-full w-full min-h-0 min-w-0" dir={isRTL ? "rtl" : "ltr"}>
+<div class="relative h-full min-h-0 w-full min-w-0" dir={isRTL ? "rtl" : "ltr"}>
 	{#if shareModalOpen}
 		<ShareConversationModal open={shareModalOpen} onclose={() => shareModal.close()} />
 	{/if}

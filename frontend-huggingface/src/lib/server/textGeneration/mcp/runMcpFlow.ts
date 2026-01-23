@@ -1,4 +1,5 @@
 import { config } from "$lib/server/config";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 import { MetricsServer } from "$lib/server/metrics";
 import {
 	MessageUpdateType,
@@ -7,7 +8,6 @@ import {
 	MessageTraceUpdateType,
 	MessageMemoryUpdateType,
 } from "$lib/types/MessageUpdate";
-import { TRACE_STEPS } from "./constants/traceSteps";
 import { getMcpServers } from "$lib/server/mcp/registry";
 import { validateMcpServerUrlCached } from "$lib/server/urlValidationCache";
 import { resetMcpToolsCache } from "$lib/server/mcp/tools";
@@ -34,22 +34,24 @@ import { prepareMessagesWithFilesMemoized } from "$lib/server/textGeneration/uti
 import { makeImageProcessor } from "$lib/server/endpoints/images";
 import { extractJsonObjectSlice } from "$lib/server/textGeneration/utils/jsonExtractor";
 import { repairXmlStream, repairXmlTags } from "$lib/server/textGeneration/utils/xmlUtils";
-import { findToolCallsPayloadStartIndex, stripLeadingToolCallsPayload } from "./toolCallsPayload";
+import {
+	findToolCallsPayloadStartIndex,
+	findXmlToolCallStartIndex,
+	findPartialXmlToolCallIndex,
+	stripLeadingToolCallsPayload,
+} from "./toolCallsPayload";
 import { detectHebrewIntent } from "$lib/server/textGeneration/utils/hebrewIntentDetector";
 import { StructuredLoggingService, LogLevel } from "./loggingService";
 import { startTimer, timeAsync, logPerformanceSummary } from "./performanceMonitor";
 import { executeWithCircuitBreaker } from "./circuitBreaker";
 import { randomUUID } from "crypto";
 import JSON5 from "json5";
-import {
-	hasDocumentAttachments,
-	detectQueryLanguage,
-	type RAGContextResult,
-} from "./ragIntegration";
+// NOTE: ragIntegration.ts removed in Finding 11 - unified memory system replaces RAG pipeline
 import {
 	prefetchMemoryContext,
+	hasDocumentAttachments,
+	detectTextLanguage,
 	formatMemoryPromptSections,
-	getUserIdFromConversation,
 	recordResponseOutcome,
 	storeWorkingMemory,
 	extractExplicitToolRequest,
@@ -61,6 +63,8 @@ import {
 	// Phase 3 Gap 9: Memory Attribution
 	getAttributionInstruction,
 	processResponseWithAttribution,
+	// Finding 13: Full attribution with inference fallback
+	processResponseWithFullAttribution,
 	// v0.2.10 Enhancements: Memory Bank Philosophy + Tool Guidance
 	getMemoryBankPhilosophy,
 	hasMemoryBankTool,
@@ -104,6 +108,15 @@ function isInThinkBlock(text: string): boolean {
 	const open = text.lastIndexOf("<think>");
 	const close = text.lastIndexOf("</think>");
 	return open !== -1 && open > close;
+}
+
+/**
+ * Finding 3: Filter progress tokens that should not leak to final output
+ * These tokens are helpful during streaming but should be removed from final text
+ */
+const PROGRESS_TOKEN_PATTERN = /[💭⏳🔧✅❌]\s*[^\n]*\n?/g;
+function filterProgressTokens(text: string): string {
+	return text.replace(PROGRESS_TOKEN_PATTERN, "").trim();
 }
 
 /**
@@ -204,9 +217,11 @@ export async function* runMcpFlow({
 	undefined
 > {
 	// Initialize enhanced logging with correlation ID
+	// Finding 21: Use environment variable to control log level instead of hardcoded DEBUG
 	const correlationId = (conv._id?.toString() || randomUUID()).slice(0, 8);
+	const isDebugMode = process.env.NODE_ENV === "development" || process.env.MCP_DEBUG === "true";
 	const logger = new StructuredLoggingService(correlationId, {
-		minLevel: LogLevel.DEBUG,
+		minLevel: isDebugMode ? LogLevel.DEBUG : LogLevel.INFO,
 		enableConsole: true,
 	});
 
@@ -419,10 +434,13 @@ export async function* runMcpFlow({
 		)
 	);
 
+	// Finding 1: Guard against undefined conv._id to prevent crash
+	const conversationId = conv?._id?.toString() ?? `temp-${randomUUID()}`;
+
 	const { runMcp, targetModel, candidateModelId, resolvedRoute } = await resolveRouterTarget({
 		model,
 		messages,
-		conversationId: conv._id.toString(),
+		conversationId,
 		hasImageInput,
 		locals,
 	});
@@ -482,13 +500,14 @@ export async function* runMcpFlow({
 	}
 
 	// ============================================
-	// ENTERPRISE UX: NO BLOCKING RAG PIPELINE
+	// Finding 11: RAG PIPELINE REMOVED
 	// ============================================
-	// Reasoning MUST stream immediately when user submits.
-	// Document processing happens through real tool calls (docling_convert).
-	// The trace panel shows progress when tools actually execute.
+	// The RAG pipeline (ragIntegration.ts) has been removed.
+	// Document processing now uses the unified memory system:
+	// - Documents are processed via docling_convert tool calls
+	// - Chunks stored in memory "documents" tier
+	// - Retrieved via UnifiedMemoryFacade.search()
 	// ============================================
-	const ragContext: RAGContextResult | null = null;
 
 	try {
 		const { OpenAI } = await import("openai");
@@ -552,12 +571,38 @@ export async function* runMcpFlow({
 		// Point B: Confidence-based tool gating
 		// Point C: Inject personality (Section 1) + memory context (Section 2)
 		// ============================================
-		const userId = getUserIdFromConversation(conv as { sessionId?: string; userId?: string });
-		const conversationId = conv._id?.toString() ?? "";
+		// CRITICAL FIX: Use ADMIN_USER_ID for single-user system
+		// Documents/memories are stored with 'admin' user_id, so searches must use the same
+		// getUserIdFromConversation() returns sessionId which doesn't match stored data
+		const userId = ADMIN_USER_ID;
+		// Ensure conversationId is never empty - generate temp ID if missing
+		// Empty conversationId causes issues with memory keys and outcome tracking
+		const conversationId = conv._id?.toString() || `temp_${randomUUID().slice(0, 8)}`;
+		if (!conv._id) {
+			logger.warn("[mcp] Missing conv._id, using temporary conversationId", { conversationId });
+		}
 		let memoryResult: MemoryContextResult | null = null;
 		let memoryMeta: MemoryMetaV1 | undefined;
 		let searchPositionMap: SearchPositionMap = {};
-		const explicitToolRequest = extractExplicitToolRequest(userQuery);
+
+		// Track background operation failures for observability
+		// These operations are fire-and-forget but repeated failures indicate system issues
+		let backgroundFailureCount = 0;
+		const trackBackgroundFailure = (operation: string, err: unknown) => {
+			backgroundFailureCount++;
+			logger.debug(`[mcp] Background operation failed: ${operation}`, {
+				error: String(err),
+				failureCount: backgroundFailureCount,
+				conversationId,
+			});
+			// Emit warning if too many failures in single request
+			if (backgroundFailureCount === 3) {
+				logger.warn("[mcp] Multiple background operations failing", {
+					failureCount: backgroundFailureCount,
+					conversationId,
+				});
+			}
+		};
 
 		// ============================================
 		// PHASE 8: OUTCOME DETECTION FROM USER FOLLOW-UP
@@ -621,7 +666,9 @@ export async function* runMcpFlow({
 							});
 
 						// Clear surfaced memories after recording to prevent double-scoring
-						clearSurfacedMemories(conversationId).catch(() => {});
+						clearSurfacedMemories(conversationId).catch((err) =>
+							trackBackgroundFailure("clearSurfacedMemories", err)
+						);
 					}
 				}
 			}
@@ -633,34 +680,9 @@ export async function* runMcpFlow({
 			});
 		}
 
-		// Generate a unique run ID for memory trace events
-		const memoryTraceRunId = `memory_${randomUUID().slice(0, 8)}`;
-		const memorySearchStepId = `${TRACE_STEPS.MEMORY_SEARCH.id}-${Date.now()}`;
-
 		try {
-			// Emit memory search started trace event
-			yield {
-				type: MessageUpdateType.Trace,
-				subtype: MessageTraceUpdateType.RunCreated,
-				runId: memoryTraceRunId,
-				runType: "memory_prefetch",
-				conversationId,
-				timestamp: Date.now(),
-			};
-
-			yield {
-				type: MessageUpdateType.Trace,
-				subtype: MessageTraceUpdateType.StepCreated,
-				runId: memoryTraceRunId,
-				runType: "memory_prefetch",
-				step: {
-					id: memorySearchStepId,
-					parentId: null,
-					label: TRACE_STEPS.MEMORY_SEARCH.label,
-					status: "running",
-					timestamp: Date.now(),
-				},
-			};
+			// NOTE: Memory trace emissions removed - using MemoryProcessingBlock instead of TracePanel
+			// The TracePanel was causing delays and redundant display
 
 			// Emit Memory Searching event for real-time UI feedback
 			yield {
@@ -720,11 +742,23 @@ export async function* runMcpFlow({
 			let contextType = "general";
 			if (queryLower.includes("docker") || queryLower.includes("container")) {
 				contextType = "docker";
-			} else if (queryLower.includes("debug") || queryLower.includes("error") || queryLower.includes("bug")) {
+			} else if (
+				queryLower.includes("debug") ||
+				queryLower.includes("error") ||
+				queryLower.includes("bug")
+			) {
 				contextType = "debugging";
-			} else if (queryLower.includes("code") || queryLower.includes("implement") || queryLower.includes("function")) {
+			} else if (
+				queryLower.includes("code") ||
+				queryLower.includes("implement") ||
+				queryLower.includes("function")
+			) {
 				contextType = "coding_help";
-			} else if (queryLower.includes("memory") || queryLower.includes("remember") || queryLower.includes("זכור")) {
+			} else if (
+				queryLower.includes("memory") ||
+				queryLower.includes("remember") ||
+				queryLower.includes("זכור")
+			) {
 				contextType = "memory_test";
 			}
 
@@ -732,21 +766,22 @@ export async function* runMcpFlow({
 			const availableToolNames = toolsToUse.map((t) => t.function.name);
 
 			const parallelMemoryStart = Date.now();
-			const [memoryResultSettled, contextualGuidanceSettled, toolGuidanceSettled] = await Promise.allSettled([
-				prefetchMemoryContext(userId, userQuery, {
-					conversationId,
-					recentMessages,
-					hasDocuments,
-					signal: abortSignal,
-				}),
-				getContextualGuidance(userId, userQuery, {
-					conversationId,
-					recentMessages,
-					signal: abortSignal,
-				}),
-				// Phase 4.1: Tool guidance now runs in parallel (was ~100-500ms sequential)
-				getToolGuidance(userId, contextType, availableToolNames),
-			]);
+			const [memoryResultSettled, contextualGuidanceSettled, toolGuidanceSettled] =
+				await Promise.allSettled([
+					prefetchMemoryContext(userId, userQuery, {
+						conversationId,
+						recentMessages,
+						hasDocuments,
+						signal: abortSignal,
+					}),
+					getContextualGuidance(userId, userQuery, {
+						conversationId,
+						recentMessages,
+						signal: abortSignal,
+					}),
+					// Phase 4.1: Tool guidance now runs in parallel (was ~100-500ms sequential)
+					getToolGuidance(userId, contextType, availableToolNames),
+				]);
 
 			logger.info("[mcp] Parallel memory operations completed", {
 				totalMs: Date.now() - parallelMemoryStart,
@@ -945,44 +980,12 @@ export async function* runMcpFlow({
 				};
 			}
 
-			// Emit memory search done
-			yield {
-				type: MessageUpdateType.Trace,
-				subtype: MessageTraceUpdateType.StepStatus,
-				runId: memoryTraceRunId,
-				runType: "memory_prefetch",
-				stepId: memorySearchStepId,
-				status: "done",
-				timestamp: Date.now(),
-			};
-
-			// Emit memory found step if we have results
+			// NOTE: Memory trace emissions removed - using MemoryProcessingBlock instead
 			const memoriesFound = Object.keys(searchPositionMap).length;
-			if (memoriesFound > 0) {
-				const memoryFoundStepId = `${TRACE_STEPS.MEMORY_FOUND.id}-${Date.now()}`;
-				yield {
-					type: MessageUpdateType.Trace,
-					subtype: MessageTraceUpdateType.StepCreated,
-					runId: memoryTraceRunId,
-					runType: "memory_prefetch",
-					step: {
-						id: memoryFoundStepId,
-						parentId: null,
-						label: {
-							he: `נמצאו ${memoriesFound} זיכרונות (${memoryResult.retrievalConfidence})`,
-							en: `Found ${memoriesFound} memories (${memoryResult.retrievalConfidence})`,
-						},
-						status: "done",
-						timestamp: Date.now(),
-					},
-				};
-			}
 
-			// Emit Memory Found event for real-time UI feedback
-			// Phase 4 Latency Fix: Dispatch full memoryMeta - the memory system has already
-			// done intelligent selection via RRF fusion, cross-encoder reranking, Wilson blending,
-			// and dynamic weighting. The memoryMeta IS the result of that intelligence (in ms).
-			// No arbitrary trimming - trust the system's sophisticated relevance computation.
+			// Emit Memory Found event with count and confidence only
+			// Full memoryMeta is sent with FinalAnswer to ensure complete data
+			// This prevents UI freeze from incomplete type casting
 			yield {
 				type: MessageUpdateType.Memory,
 				subtype: MessageMemoryUpdateType.Found,
@@ -993,7 +996,6 @@ export async function* runMcpFlow({
 						: memoryResult.retrievalConfidence === "medium"
 							? 0.7
 							: 0.5,
-				memoryMeta: memoryMeta ?? undefined,
 			};
 
 			// Prepend memory sections (personality first, then memory context with confidence hint)
@@ -1012,7 +1014,7 @@ export async function* runMcpFlow({
 			// ============================================
 			const hasMemoriesToAttribute = Object.keys(searchPositionMap).length > 0;
 			if (hasMemoriesToAttribute) {
-				const queryLanguage = detectQueryLanguage(userQuery);
+				const queryLanguage = detectTextLanguage(userQuery);
 				const attributionInstruction = getAttributionInstruction(
 					queryLanguage === "he" ? "he" : "en"
 				);
@@ -1035,24 +1037,7 @@ export async function* runMcpFlow({
 					prepromptPieces.push(guidancePrompt);
 				}
 
-				// Emit trace step for contextual guidance
-				const guidanceStepId = `${TRACE_STEPS.MEMORY_SEARCH.id}-guidance-${Date.now()}`;
-				yield {
-					type: MessageUpdateType.Trace,
-					subtype: MessageTraceUpdateType.StepCreated,
-					runId: memoryTraceRunId,
-					runType: "memory_prefetch",
-					step: {
-						id: guidanceStepId,
-						parentId: null,
-						label: {
-							he: "נטען הקשר מידע (ניסיון קודם)",
-							en: "Contextual guidance loaded (past experience)",
-						},
-						status: "done",
-						timestamp: Date.now(),
-					},
-				};
+				// NOTE: Trace emission removed - using MemoryProcessingBlock instead
 
 				logger.debug("[mcp] Contextual guidance injected", {
 					hasPatterns: (contextualGuidance.insights?.relevant_patterns?.length ?? 0) > 0,
@@ -1075,24 +1060,7 @@ export async function* runMcpFlow({
 			if (toolGuidanceResult?.hasGuidance && toolGuidanceResult.guidanceText) {
 				prepromptPieces.push(toolGuidanceResult.guidanceText);
 
-				// Emit trace step for tool guidance
-				const toolGuidanceStepId = `${TRACE_STEPS.MEMORY_SEARCH.id}-tool-guidance-${Date.now()}`;
-				yield {
-					type: MessageUpdateType.Trace,
-					subtype: MessageTraceUpdateType.StepCreated,
-					runId: memoryTraceRunId,
-					runType: "memory_prefetch",
-					step: {
-						id: toolGuidanceStepId,
-						parentId: null,
-						label: {
-							he: "נטענה הדרכת כלים (למידה סיבתית)",
-							en: "Tool guidance loaded (causal learning)",
-						},
-						status: "done",
-						timestamp: Date.now(),
-					},
-				};
+				// NOTE: Trace emission removed - using MemoryProcessingBlock instead
 
 				logger.debug("[mcp] v0.2.10 Tool guidance injected (parallel batch)", {
 					contextType,
@@ -1108,7 +1076,7 @@ export async function* runMcpFlow({
 			// Three-layer selectivity: User Context, System Mastery, Agent Growth
 			// ============================================
 			if (hasMemoryBankTool(toolsToUse)) {
-				const queryLanguage = detectQueryLanguage(userQuery);
+				const queryLanguage = detectTextLanguage(userQuery);
 				const memoryBankPhilosophy = getMemoryBankPhilosophy(queryLanguage === "he" ? "he" : "en");
 				prepromptPieces.push(memoryBankPhilosophy);
 				logger.debug("[mcp] v0.2.10 Memory Bank Philosophy injected", {
@@ -1117,14 +1085,7 @@ export async function* runMcpFlow({
 				});
 			}
 
-			// Emit run completed
-			yield {
-				type: MessageUpdateType.Trace,
-				subtype: MessageTraceUpdateType.RunCompleted,
-				runId: memoryTraceRunId,
-				runType: "memory_prefetch",
-				timestamp: Date.now(),
-			};
+			// NOTE: Trace emission removed - using MemoryProcessingBlock instead
 
 			if (memoryResult.timing.personalityMs > 0 || memoryResult.timing.memoryMs > 0) {
 				logger.debug("[mcp] Memory context prefetched", {
@@ -1138,23 +1099,7 @@ export async function* runMcpFlow({
 				});
 			}
 		} catch (err) {
-			// Mark search step as error
-			yield {
-				type: MessageUpdateType.Trace,
-				subtype: MessageTraceUpdateType.StepStatus,
-				runId: memoryTraceRunId,
-				runType: "memory_prefetch",
-				stepId: memorySearchStepId,
-				status: "error",
-				timestamp: Date.now(),
-			};
-			yield {
-				type: MessageUpdateType.Trace,
-				subtype: MessageTraceUpdateType.RunCompleted,
-				runId: memoryTraceRunId,
-				runType: "memory_prefetch",
-				timestamp: Date.now(),
-			};
+			// NOTE: Trace emissions removed - using MemoryProcessingBlock instead
 			// Memory system must never block streaming - fail silently
 			logger.warn("[mcp] Memory prefetch failed, continuing without memory context", {
 				error: String(err),
@@ -1202,22 +1147,8 @@ export async function* runMcpFlow({
 					memoryHits: Object.keys(searchPositionMap).length,
 				});
 
-				// K.1.10: Emit trace event when tools are reduced
+				// K.1.10: Tool gating applied (trace emission removed - using MemoryProcessingBlock)
 				if (toolGatingResult.reducedCount > 0) {
-					const gatingStepId = `tool_gating_${Date.now()}`;
-					yield {
-						type: MessageUpdateType.Trace,
-						subtype: MessageTraceUpdateType.StepCreated,
-						runId: memoryTraceRunId,
-						step: {
-							id: gatingStepId,
-							parentId: null,
-							label: toolGatingResult.traceExplanation,
-							status: "done",
-							timestamp: Date.now(),
-						},
-					};
-
 					MetricsServer.getMetrics().memory.toolSkipCount.inc();
 
 					logger.info("[mcp] Tool gating applied - reduced external tools", {
@@ -1306,7 +1237,7 @@ When the user asks about Israeli government/public data, statistics, ministries,
 		// Respond in the same language as the user's query,
 		// regardless of document content language
 		// ============================================
-		const queryLanguage = detectQueryLanguage(userQuery);
+		const queryLanguage = detectTextLanguage(userQuery);
 		if (queryLanguage === "he") {
 			prepromptPieces.push(`**CRITICAL - Response Language**:
 The user's query is in HEBREW. You MUST respond in HEBREW (עברית).
@@ -1485,10 +1416,13 @@ Even if the document content is in Hebrew or another language, your response mus
 		}
 
 		// Enhanced loop detection with semantic analysis
+		// Gemini Finding 3+4: LoopDetector is now stateless - conversationId passed to methods
+		// No need for reset() (transient registration = new instance) or setConversationId() (parameter-based)
 		const loopDetector = getLoopDetectorService();
 
 		// Constants for memory management and performance
 		const MAX_CONTENT_LENGTH = 50000; // 50KB limit for content accumulation
+		const MAX_TRACKED_TOOLS = 50; // Prevent unbounded array growth in pathological cases
 
 		// Track all tool executions for outcome recording (Point D from rompal_implementation_plan.md)
 		const executedToolsTracker: Array<{ name: string; success: boolean; latencyMs?: number }> = [];
@@ -1547,6 +1481,8 @@ Even if the document content is in Hebrew or another language, your response mus
 					{ loop, maxTokens: followupMaxTokens, repPenalty: followupRepPenalty },
 					"[mcp] follow-up completion configured with reduced tokens and higher rep penalty"
 				);
+				// VISIBLE PROGRESS: Show user that we're processing tool results
+				yield { type: MessageUpdateType.Stream, token: "💭 מעבד תוצאות ומכין תשובה...\n" };
 			}
 
 			const completionStream: Stream<ChatCompletionChunk> = await timeAsync(
@@ -1558,7 +1494,8 @@ Even if the document content is in Hebrew or another language, your response mus
 							openai.chat.completions.create(completionRequest, {
 								signal: abortSignal,
 								headers: {
-									"ChatUI-Conversation-ID": conv._id.toString(),
+									// Finding 1: Use safe conversationId computed earlier
+								"ChatUI-Conversation-ID": conversationId,
 									"X-use-cache": "false",
 									...(locals?.token ? { Authorization: `Bearer ${locals.token}` } : {}),
 								},
@@ -1572,14 +1509,39 @@ Even if the document content is in Hebrew or another language, your response mus
 			);
 
 			// If provider header was exposed, notify UI so it can render "via {provider}".
+			// Validate provider against known values to prevent type system lies
 			if (providerHeader) {
+				const KNOWN_PROVIDERS = [
+					"hf-inference",
+					"openai",
+					"anthropic",
+					"cohere",
+					"replicate",
+					"together",
+					"fireworks-ai",
+					"aws",
+					"google",
+					"local",
+				] as const;
+				type KnownProvider = (typeof KNOWN_PROVIDERS)[number];
+				const isKnownProvider = (p: string): p is KnownProvider =>
+					KNOWN_PROVIDERS.includes(p as KnownProvider);
+
+				// Only cast if provider is known, otherwise use as-is (UI handles gracefully)
+				const validatedProvider = isKnownProvider(providerHeader)
+					? (providerHeader as import("@huggingface/inference").InferenceProvider)
+					: (providerHeader as unknown as import("@huggingface/inference").InferenceProvider);
+
 				yield {
 					type: MessageUpdateType.RouterMetadata,
 					route: "",
 					model: "",
-					provider: providerHeader as unknown as import("@huggingface/inference").InferenceProvider,
+					provider: validatedProvider,
 				};
-				console.debug({ provider: providerHeader }, "[mcp] provider metadata emitted");
+				console.debug(
+					{ provider: providerHeader, isKnown: isKnownProvider(providerHeader) },
+					"[mcp] provider metadata emitted"
+				);
 			}
 
 			const toolCallState: Record<number, { id?: string; name?: string; arguments: string }> = {};
@@ -1657,8 +1619,14 @@ Even if the document content is in Hebrew or another language, your response mus
 				// the OpenAI adapter so the UI can auto-detect <think> blocks.
 				// IMPORTANT: If deltaContent already contains <think> tags, don't wrap again
 				let combined = "";
-				// Optimized: Single regex pass instead of multiple includes() calls
-				const contentHasThinkTags = deltaContent && /<\/?think>/i.test(deltaContent);
+				// Performance: Use fast includes() check first, avoid regex on hot path
+				// Most tokens don't contain think tags, so this short-circuits quickly
+				const contentHasThinkTags =
+					deltaContent &&
+					(deltaContent.includes("<think>") ||
+						deltaContent.includes("</think>") ||
+						deltaContent.includes("<THINK>") ||
+						deltaContent.includes("</THINK>"));
 
 				if (deltaReasoning.trim().length > 0 && !contentHasThinkTags) {
 					if (!thinkOpen) {
@@ -1694,7 +1662,29 @@ Even if the document content is in Hebrew or another language, your response mus
 						if (preserveStart !== -1 && nextContent.length - preserveStart <= MAX_CONTENT_LENGTH) {
 							nextContent = nextContent.slice(preserveStart);
 						} else {
-							nextContent = nextContent.slice(nextContent.length - MAX_CONTENT_LENGTH);
+							// Smart truncation: try to find a safe boundary to avoid corrupting think blocks
+							const targetLength = MAX_CONTENT_LENGTH;
+							const truncateFrom = nextContent.length - targetLength;
+
+							// Check if we're cutting inside a think block
+							const thinkOpenBeforeCut = nextContent.lastIndexOf("<think>", truncateFrom);
+							const thinkCloseBeforeCut = nextContent.lastIndexOf("</think>", truncateFrom);
+							const cuttingInsideThink =
+								thinkOpenBeforeCut !== -1 && thinkOpenBeforeCut > thinkCloseBeforeCut;
+
+							// Try to find </think> as a safe truncation point
+							const safePoint = nextContent.indexOf("</think>", truncateFrom);
+							if (safePoint !== -1 && safePoint < truncateFrom + 500) {
+								// Found a safe point within 500 chars, use it
+								nextContent = nextContent.slice(safePoint + 8); // 8 = "</think>".length
+							} else {
+								// No safe point, truncate and repair structure if needed
+								nextContent = nextContent.slice(truncateFrom);
+								if (cuttingInsideThink && !nextContent.startsWith("<think>")) {
+									// We cut inside a think block, prepend tag to maintain structure
+									nextContent = "<think>" + nextContent;
+								}
+							}
 						}
 						console.warn(
 							{
@@ -1704,13 +1694,40 @@ Even if the document content is in Hebrew or another language, your response mus
 							},
 							"[mcp] content size limit exceeded, truncating to prevent memory accumulation"
 						);
+						// Gemini Finding 5: Fix tokenCount desync after truncation
+						// tokenCount is a cursor tracking how much of lastAssistantContent has been streamed.
+						// After truncation, the BEGINNING of content is dropped (we keep the END).
+						// Setting tokenCount = 0 would re-stream content that was already sent to UI.
+						// Setting tokenCount = nextContent.length ensures we don't re-stream any content.
+						// Note: Any truly new content from tokenData is at the end and will be added
+						// to lastAssistantContent on the next iteration, then streamed normally.
+						tokenCount = nextContent.length;
 					}
 					lastAssistantContent = nextContent;
 
+					// Check for BOTH JSON and XML tool call formats to prevent leaking either to UI
 					const toolCallsPayloadStart = codeFenceOpen
 						? -1
 						: findToolCallsPayloadStartIndex(lastAssistantContent);
-					const hasToolCallInContent = toolCallsPayloadStart !== -1;
+					const xmlToolCallStart = codeFenceOpen
+						? -1
+						: findXmlToolCallStartIndex(lastAssistantContent);
+					// Also check for PARTIAL XML tags that are still being streamed
+					// This prevents "<tool_call" from leaking while waiting for ">"
+					const partialXmlToolCallStart = codeFenceOpen
+						? -1
+						: findPartialXmlToolCallIndex(lastAssistantContent);
+					const hasToolCallInContent =
+						toolCallsPayloadStart !== -1 ||
+						xmlToolCallStart !== -1 ||
+						partialXmlToolCallStart !== -1;
+					// Use the earliest detected position for truncation
+					const allStarts = [
+						toolCallsPayloadStart,
+						xmlToolCallStart,
+						partialXmlToolCallStart,
+					].filter((s) => s !== -1);
+					const toolCallStart = allStarts.length > 0 ? Math.min(...allStarts) : -1;
 
 					// CRITICAL: During initial tool call (loop 0), buffer content before streaming
 					// to prevent showing gibberish that appears before {"tool_calls": ...}
@@ -1788,7 +1805,7 @@ Even if the document content is in Hebrew or another language, your response mus
 					} else if (hasToolCallInContent && !sawToolCall && !toolCallDetectedLogged) {
 						// Flush any remaining safe content before the tool call
 						// This ensures that <think> blocks or introductory text are not cut off
-						const safeContentEnd = toolCallsPayloadStart;
+						const safeContentEnd = toolCallStart;
 
 						// We rely on tokenCount as the authoritative cursor of what has been yielded
 						if (safeContentEnd > tokenCount) {
@@ -1799,8 +1816,9 @@ Even if the document content is in Hebrew or another language, your response mus
 							}
 						}
 
-						// Log once that we detected a tool call in content
-						console.debug("[mcp] detected tool_calls JSON in stream, stopping UI streaming");
+						// Log once that we detected a tool call in content (JSON or XML format)
+						const format = xmlToolCallStart !== -1 ? "XML <tool_call>" : "JSON";
+						console.debug(`[mcp] detected tool_calls ${format} in stream, stopping UI streaming`);
 						toolCallDetectedLogged = true;
 					}
 				}
@@ -1931,7 +1949,8 @@ Even if the document content is in Hebrew or another language, your response mus
 					}));
 
 				// Enhanced loop detection with semantic analysis
-				if (loopDetector.detectToolLoop(calls)) {
+				// Gemini Finding 3+4: Pass conversationId for stateless design
+				if (loopDetector.detectToolLoop(calls, conversationId)) {
 					console.warn(
 						{ loop, toolCalls: calls.map((c) => ({ name: c.name, args: c.arguments })) },
 						"[mcp] detected tool call loop via semantic analysis, aborting MCP flow to fallback"
@@ -1940,7 +1959,8 @@ Even if the document content is in Hebrew or another language, your response mus
 				}
 
 				// Enhanced content loop detection
-				if (loopDetector.detectContentLoop(lastAssistantContent)) {
+				// Gemini Finding 3+4: Pass conversationId for stateless design
+				if (loopDetector.detectContentLoop(lastAssistantContent, conversationId)) {
 					console.warn(
 						{ loop, contentPreview: lastAssistantContent.slice(0, 100) },
 						"[mcp] detected content repetition loop via semantic analysis, aborting MCP flow to fallback"
@@ -2037,6 +2057,17 @@ Even if the document content is in Hebrew or another language, your response mus
 					},
 				};
 
+				// ============================================================
+				// VISIBLE PROGRESS: Emit status message so UI doesn't appear frozen
+				// This token will be replaced by the final answer
+				// ============================================================
+				const toolNames = calls.map((c) => c.name).join(", ");
+				const progressMessage =
+					calls.length === 1
+						? `🔍 מפעיל ${toolNames}...\n`
+						: `🔍 מפעיל ${calls.length} כלים (${toolNames})...\n`;
+				yield { type: MessageUpdateType.Stream, token: progressMessage };
+
 				const toolExecutionTimer = startTimer("tool_execution");
 				const exec = executeToolCalls({
 					calls,
@@ -2111,7 +2142,7 @@ Even if the document content is in Hebrew or another language, your response mus
 								toolMsgCount,
 								toolRunCount,
 								outputLength: toolOutputs.length,
-								query: (userQuery || "").slice(0, 100),
+								query: (userQuery || "").slice(0, 200),
 								// Explicitly log tool calls with their parameters and specific outputs
 								toolExecutions: (event.summary.toolRuns ?? []).map((r) => ({
 									name: r.name,
@@ -2126,6 +2157,14 @@ Even if the document content is in Hebrew or another language, your response mus
 
 						// Track executed tools for outcome recording (Point D)
 						for (const run of event.summary.toolRuns ?? []) {
+							// Bound array to prevent memory issues in pathological cases
+							if (executedToolsTracker.length >= MAX_TRACKED_TOOLS) {
+								logger.warn("[mcp] Tool tracker at capacity, skipping additional tools", {
+									capacity: MAX_TRACKED_TOOLS,
+									skipped: run.name,
+								});
+								break;
+							}
 							// Determine success based on output - empty or error-like output indicates failure
 							const hasValidOutput = Boolean(
 								run.output && run.output.length > 0 && !run.output.startsWith("Error:")
@@ -2250,33 +2289,63 @@ Even if the document content is in Hebrew or another language, your response mus
 			// ============================================
 			// MEMORY ATTRIBUTION PROCESSING (Phase 3 P2 - Gap 9)
 			// Parse memory marks from response and strip attribution comment
+			// Finding 13: Support full attribution mode with inference fallback
 			// ============================================
 			let attributionFound = false;
 			if (Object.keys(searchPositionMap).length > 0) {
 				try {
-					const attributionResult = await processResponseWithAttribution({
-						userId,
-						conversationId,
-						response: lastAssistantContent,
-						searchPositionMap,
-					});
+					const memoryFlags = getMemoryFeatureFlags();
 
-					if (attributionResult.attributionFound) {
-						// Use cleaned response (attribution comment stripped)
-						lastAssistantContent = attributionResult.cleanedResponse;
-						attributionFound = true;
-						logger.info("[attribution] Parsed memory marks from response", {
-							marks: attributionResult.attribution,
+					if (memoryFlags.fullAttributionEnabled) {
+						// Finding 13: Use full attribution with inference fallback and scoring matrix
+						const fullResult = await processResponseWithFullAttribution({
+							userId,
+							conversationId,
+							response: lastAssistantContent,
+							searchPositionMap,
+							// Build memory contents map for inference fallback
+							memoryContents: Object.fromEntries(
+								Object.entries(searchPositionMap).map(([id, entry]) => [
+									id,
+									entry.tier || "unknown",
+								])
+							),
 						});
-						logger.debug("[attribution] Scoring memories based on marks", {
-							upvotes: attributionResult.attribution?.upvoted ?? [],
-							downvotes: attributionResult.attribution?.downvoted ?? [],
+
+						lastAssistantContent = fullResult.cleanedResponse;
+						attributionFound = fullResult.attributionFound;
+
+						logger.info("[attribution] Full attribution processed", {
+							scoringApplied: fullResult.scoringApplied,
+							usedPositions: fullResult.usedPositions,
+							outcomeDetection: fullResult.outcomeDetection.outcome,
 						});
-						logger.debug("[mcp] Memory attribution processed", {
-							upvoted: attributionResult.attribution?.upvoted?.length ?? 0,
-							downvoted: attributionResult.attribution?.downvoted?.length ?? 0,
-							neutral: attributionResult.attribution?.neutral?.length ?? 0,
+					} else {
+						// Standard attribution processing
+						const attributionResult = await processResponseWithAttribution({
+							userId,
+							conversationId,
+							response: lastAssistantContent,
+							searchPositionMap,
 						});
+
+						if (attributionResult.attributionFound) {
+							// Use cleaned response (attribution comment stripped)
+							lastAssistantContent = attributionResult.cleanedResponse;
+							attributionFound = true;
+							logger.info("[attribution] Parsed memory marks from response", {
+								marks: attributionResult.attribution,
+							});
+							logger.debug("[attribution] Scoring memories based on marks", {
+								upvotes: attributionResult.attribution?.upvoted ?? [],
+								downvotes: attributionResult.attribution?.downvoted ?? [],
+							});
+							logger.debug("[mcp] Memory attribution processed", {
+								upvoted: attributionResult.attribution?.upvoted?.length ?? 0,
+								downvoted: attributionResult.attribution?.downvoted?.length ?? 0,
+								neutral: attributionResult.attribution?.neutral?.length ?? 0,
+							});
+						}
 					}
 				} catch (attrErr) {
 					// Attribution processing must never block
@@ -2284,12 +2353,14 @@ Even if the document content is in Hebrew or another language, your response mus
 				}
 			}
 
-			if (!streamedContent && lastAssistantContent.trim().length > 0) {
-				yield { type: MessageUpdateType.Stream, token: lastAssistantContent };
+			// Finding 3: Filter progress tokens from final output
+			cleanedContent = filterProgressTokens(cleanedContent);
+			if (!streamedContent && cleanedContent.trim().length > 0) {
+				yield { type: MessageUpdateType.Stream, token: cleanedContent };
 			}
 			yield {
 				type: MessageUpdateType.FinalAnswer,
-				text: lastAssistantContent,
+				text: cleanedContent,
 				interrupted: false,
 				memoryMeta,
 			};
@@ -2323,7 +2394,9 @@ Even if the document content is in Hebrew or another language, your response mus
 				yield {
 					type: MessageUpdateType.Memory,
 					subtype: MessageMemoryUpdateType.Outcome,
-					outcome: attributionFound ? "positive" : "positive", // Could differentiate based on attribution
+					// Differentiate outcome: "positive" if LLM explicitly attributed memories,
+					// "neutral" if response completed without explicit attribution feedback
+					outcome: attributionFound ? "positive" : "neutral",
 					memoryIds: Object.keys(searchPositionMap),
 				};
 
@@ -2339,7 +2412,7 @@ Even if the document content is in Hebrew or another language, your response mus
 						userId,
 						positionMap: searchPositionMap,
 						responsePreview: lastAssistantContent?.slice(0, 500),
-					}).catch(() => {});
+					}).catch((err) => trackBackgroundFailure("storeSurfacedMemories", err));
 				}
 
 				// Store working memory from exchange (async, non-blocking)
@@ -2358,46 +2431,50 @@ Even if the document content is in Hebrew or another language, your response mus
 						tier: "working",
 					};
 
+					// Phase 2.1: Fire-and-forget memory storage (removes 500ms blocking await)
+					// FinalAnswer was already yielded - user has their answer.
+					// Memory storage is best-effort background work that shouldn't delay response completion.
+					// The memory will appear in MemoryPanel on next refresh regardless of this event.
 					const storePromise = storeWorkingMemory({
 						userId,
 						conversationId,
 						userQuery,
-						assistantResponse: lastAssistantContent.slice(0, 2000), // Limit stored response size
+						assistantResponse: lastAssistantContent.slice(0, 2000),
 						toolsUsed: executedToolsTracker.map((t) => t.name),
 						memoriesUsed: Object.keys(searchPositionMap),
-						// Cross-personality memory tracking
 						personalityId: conv.personalityId || "default",
 						personalityName: conv.personalityBadge?.name || "DictaChat",
 					});
 
-					const storeTimeoutMs = 500;
-					const storeResult = await Promise.race([
-						storePromise.then((memoryId) => ({ ok: true as const, memoryId })),
-						new Promise<{ ok: false }>((resolve) =>
-							setTimeout(() => resolve({ ok: false }), storeTimeoutMs)
-						),
-					]);
-
-					if (storeResult.ok && storeResult.memoryId) {
-						const preview = `User: ${userQueryTrimmed.slice(0, 120)}\nAssistant: ${assistantResponseTrimmed.slice(0, 160)}`;
-						yield {
-							type: MessageUpdateType.Memory,
-							subtype: MessageMemoryUpdateType.Stored,
-							tier: "working",
-							memoryId: storeResult.memoryId,
-							preview,
-							createdAt: new Date().toISOString(),
-						};
-					} else if (!storeResult.ok) {
-						logger.debug("[mcp] Working memory store did not complete before timeout", {
-							userId,
-							conversationId,
-							storeTimeoutMs,
-						});
-						storePromise.catch((err) => {
+					// Fire-and-forget with 3s timeout to prevent hanging promises
+					const STORE_TIMEOUT_MS = 3000;
+					const preview = `User: ${userQueryTrimmed.slice(0, 120)}\nAssistant: ${assistantResponseTrimmed.slice(0, 160)}`;
+					const timeoutPromise = new Promise<string | null>((_, reject) =>
+						setTimeout(() => reject(new Error("Memory storage timeout")), STORE_TIMEOUT_MS)
+					);
+					Promise.race([storePromise, timeoutPromise])
+						.then((memoryId) => {
+							if (memoryId) {
+								logger.debug("[mcp] Working memory stored successfully", {
+									memoryId,
+									userId,
+									conversationId,
+								});
+							}
+						})
+						.catch((err) => {
 							logger.debug("[mcp] Failed to store working memory", { error: String(err) });
 						});
-					}
+
+					// Emit Stored event immediately with placeholder (UI will refresh from API)
+					yield {
+						type: MessageUpdateType.Memory,
+						subtype: MessageMemoryUpdateType.Stored,
+						tier: "working",
+						memoryId: "pending", // Actual ID will be in MongoDB
+						preview,
+						createdAt: new Date().toISOString(),
+					};
 				} else if (userQueryTrimmed.length > 0 || assistantResponseTrimmed.length > 0) {
 					// Phase 22.7: Log when skipping due to empty content
 					logger.debug("[Phase 22.7] Skipping empty exchange storage", {
@@ -2427,14 +2504,13 @@ Even if the document content is in Hebrew or another language, your response mus
 		}
 		logger.warn("[mcp] flow failed, falling back to default endpoint", { err: msg });
 	} finally {
-		// ensure MCP clients are closed after the turn
-		try {
-			await drainPoolEnhanced();
-		} catch (e) {
+		// Fire-and-forget: MCP client cleanup should not block response
+		// User already has their answer, cleanup is background work
+		drainPoolEnhanced().catch((e) => {
 			logger.warn("[mcp] failed to drain client pool", { err: String(e) });
-		}
+		});
 
-		// Log performance summary
+		// Log performance summary (sync, fast)
 		try {
 			logPerformanceSummary();
 		} catch (perfError) {

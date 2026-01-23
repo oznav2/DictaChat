@@ -87,6 +87,9 @@ export class Database {
 
 		// Disconnect DB on exit
 		onExit(async () => {
+			const { stopConversationStatsRefresh } = await import("$lib/jobs/refresh-conversation-stats");
+			stopConversationStatsRefresh();
+
 			logger.info("Closing database connection");
 			await this.client?.close(true);
 			await this.mongoServer?.stop();

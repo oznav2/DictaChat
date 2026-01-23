@@ -1,7 +1,7 @@
 ============================= test session starts =============================
 platform: node v20.18.1
 test framework: vitest
-timestamp: 2026-01-15T12:55:36.178Z
+timestamp: 2026-01-21T22:00:10.755Z
 rootdir: /home/ilan/BricksLLM/frontend-huggingface
 
 collecting ... collected 13 items
@@ -11,10 +11,10 @@ test_token_efficiency::test_hebrew_token_estimation PASSED (0ms) [hebrew_texts_t
 test_token_efficiency::test_bilingual_token_estimation PASSED (0ms) [mixed_texts_tested=4.000, avg_mixed_tokens=7.000, avg_text_length=22.000, tokens_per_char=0.330] [ 23%]
 test_token_efficiency::test_memory_compression_ratio PASSED (0ms) [original_tokens=117.000, compressed_tokens=36.000, compression_ratio=3.250, tokens_saved=81.000, savings_percent=69.000] [ 31%]
 test_token_efficiency::test_hebrew_compression_ratio PASSED (0ms) [hebrew_original_tokens=74.000, hebrew_compressed_tokens=30.000, hebrew_compression_ratio=2.470, hebrew_savings_percent=59.000] [ 38%]
-test_token_efficiency::test_budget_allocation PASSED (1ms) [total_items=8.000, total_tokens=73.000, small_budget_items=8.000, small_budget_utilization=4.000, medium_budget_items=8.000, medium_budget_utilization=1.000, high_priority_preserved=1.000] [ 46%]
+test_token_efficiency::test_budget_allocation PASSED (0ms) [total_items=8.000, total_tokens=73.000, small_budget_items=8.000, small_budget_utilization=4.000, medium_budget_items=8.000, medium_budget_utilization=1.000, high_priority_preserved=1.000] [ 46%]
 test_token_efficiency::test_hebrew_budget_allocation PASSED (0ms) [hebrew_items=5.000, hebrew_total_tokens=57.000, english_equivalent_tokens=41.000, hebrew_token_efficiency=0.720] [ 54%]
 test_token_efficiency::test_deduplication_efficiency PASSED (0ms) [original_items=6.000, unique_items=4.000, duplicates_removed=2.000, original_tokens=35.000, deduplicated_tokens=25.000, tokens_saved=10.000, savings_percent=29.000] [ 62%]
-test_token_efficiency::test_hebrew_deduplication PASSED (0ms) [hebrew_original_items=5.000, hebrew_unique_items=3.000, hebrew_duplicates_removed=2.000, hebrew_tokens_saved=12.000] [ 69%]
+test_token_efficiency::test_hebrew_deduplication PASSED (1ms) [hebrew_original_items=5.000, hebrew_unique_items=3.000, hebrew_duplicates_removed=2.000, hebrew_tokens_saved=12.000] [ 69%]
 test_token_efficiency::test_multi_memory_summarization PASSED (0ms) [original_memories=5.000, original_tokens=58.000, summarized_tokens=25.000, compression_ratio=2.320, information_density=0.200, tokens_saved=33.000] [ 77%]
 test_token_efficiency::test_hebrew_summarization PASSED (0ms) [hebrew_original_memories=4.000, hebrew_original_tokens=53.000, hebrew_summarized_tokens=24.000, hebrew_compression_ratio=2.210] [ 85%]
 test_token_efficiency::test_optimal_context_packing PASSED (0ms) [context_budget=8192.000, total_available_tokens=57.000, used_tokens=57.000, utilization_percent=1.000, wasted_tokens=8135.000, items_packed=8.000] [ 92%]

@@ -203,6 +203,7 @@ export enum MessageMemoryUpdateType {
 	Outcome = "outcome",
 	Degraded = "degraded", // Circuit breaker open - memory system temporarily unavailable
 	DocumentIngesting = "document_ingesting", // Document upload progress
+	ToolIngesting = "tool_ingesting", // Tool result ingestion progress
 }
 
 interface MessageMemoryUpdateBase<TSubtype extends MessageMemoryUpdateType> {
@@ -265,6 +266,14 @@ export interface MessageMemoryDocumentIngestingUpdate
 	message?: string;
 }
 
+export interface MessageMemoryToolIngestingUpdate
+	extends MessageMemoryUpdateBase<MessageMemoryUpdateType.ToolIngesting> {
+	toolName: string;
+	stage: "summarizing" | "extracting" | "linking" | "storing" | "completed";
+	entitiesExtracted?: number;
+	linkedDocuments?: number;
+}
+
 export type MessageMemoryUpdate =
 	| MessageMemorySearchingUpdate
 	| MessageMemoryFoundUpdate
@@ -272,4 +281,5 @@ export type MessageMemoryUpdate =
 	| MessageMemoryStoredUpdate
 	| MessageMemoryOutcomeUpdate
 	| MessageMemoryDegradedUpdate
-	| MessageMemoryDocumentIngestingUpdate;
+	| MessageMemoryDocumentIngestingUpdate
+	| MessageMemoryToolIngestingUpdate;

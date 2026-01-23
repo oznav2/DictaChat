@@ -1,5 +1,6 @@
 import { json, error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
+import { env } from "$env/dynamic/private";
 import { collections, Database } from "$lib/server/database";
 import { ObjectId } from "mongodb";
 import { ADMIN_USER_ID } from "$lib/server/constants";
@@ -13,7 +14,13 @@ import { join } from "path";
 import { createHash } from "crypto";
 import { MemoryMongoStore } from "$lib/server/memory/stores/MemoryMongoStore";
 
-const BOOK_UPLOADS_DIR = "/app/uploads/books";
+function resolveUploadsDir(): string {
+	if (env.UPLOADS_DIR) return env.UPLOADS_DIR;
+	if (env.DOCKER_ENV === "true") return "/app/uploads";
+	return join(process.cwd(), ".uploads");
+}
+
+const BOOK_UPLOADS_DIR = join(resolveUploadsDir(), "books");
 
 /**
  * Check if a document already exists in the memory system by its content hash

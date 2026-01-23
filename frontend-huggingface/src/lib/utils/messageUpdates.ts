@@ -147,25 +147,38 @@ function parseMessageUpdates(value: string): {
 	messageUpdates: MessageUpdate[];
 	remainingText: string;
 } {
-	const inputs = value.split("\n");
 	const messageUpdates: MessageUpdate[] = [];
-	for (const input of inputs) {
+	const inputs = value.split("\n");
+
+	// Treat the last split item as a potentially-incomplete tail (no trailing newline)
+	const hasTrailingNewline = value.endsWith("\n");
+	const lastIndex = Math.max(0, inputs.length - 1);
+	const tail = inputs[lastIndex] ?? "";
+
+	// Parse all complete lines, skipping empty/whitespace-only keepalive lines
+	for (let i = 0; i < lastIndex; i++) {
+		const input = inputs[i] ?? "";
+		if (input.trim().length === 0) continue;
+
 		try {
 			messageUpdates.push(JSON.parse(input) as MessageUpdate);
 		} catch (error) {
-			// in case of parsing error, we return what we were able to parse
-			// Handle ALL error types to prevent silent failures
+			const remainingText = inputs.slice(i).join("\n");
 			console.error("[parseMessageUpdates] Error parsing:", {
 				error: error instanceof Error ? error.message : String(error),
 				inputPreview: input.slice(0, 100),
 			});
-			return {
-				messageUpdates,
-				remainingText: inputs.at(-1) ?? "",
-			};
+			return { messageUpdates, remainingText };
 		}
 	}
-	return { messageUpdates, remainingText: "" };
+
+	// If the stream chunk ended with a newline, tail is complete (often empty) and can be dropped
+	if (hasTrailingNewline) {
+		return { messageUpdates, remainingText: "" };
+	}
+
+	// Keep an incomplete tail for the next chunk, unless it's just whitespace
+	return { messageUpdates, remainingText: tail.trim().length > 0 ? tail : "" };
 }
 
 /**

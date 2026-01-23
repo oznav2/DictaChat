@@ -7,9 +7,9 @@ import type { Semaphore } from "$lib/types/Semaphore";
 import { Semaphores } from "$lib/types/Semaphore";
 
 export type PublicConfigKey = keyof typeof publicEnv;
-const keysFromEnv = { ...publicEnv, ...serverEnv };
+const keysFromEnv = { ...publicEnv, ...serverEnv } as Record<string, string | undefined>;
 console.log("DEBUG: keysFromEnv.PUBLIC_APP_ASSETS =", keysFromEnv.PUBLIC_APP_ASSETS);
-export type ConfigKey = keyof typeof keysFromEnv;
+export type ConfigKey = string;
 
 class ConfigManager {
 	private keysFromDB: Partial<Record<ConfigKey, string>> = {};

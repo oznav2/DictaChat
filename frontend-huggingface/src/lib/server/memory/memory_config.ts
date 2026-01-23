@@ -175,8 +175,12 @@ export const defaultMemoryConfig: MemoryConfig = {
 		search_limit_default: 5,
 		search_limit_max: 20,
 		candidate_fetch_multiplier_per_tier: 3,
-		rerank_k: 30,
-		rerank_max_input_chars: 10_000,
+		// Option C Safety: Reduced from 30 to 10 to prevent dicta-retrieval batch size crashes
+		// The reranker works better with fewer, high-quality candidates anyway
+		rerank_k: 10,
+		// Option C Safety: Reduced from 10k to 2k chars to prevent token overflow
+		// Legal/formal documents are often longer but 2k chars captures the key content
+		rerank_max_input_chars: 2_000,
 		max_memory_bank_items: 1_000,
 		max_action_examples_per_key: 5,
 		max_entities_per_memory: 32,

@@ -6,6 +6,7 @@
  */
 
 import { env } from "$env/dynamic/private";
+import { MetricsServer } from "$lib/server/metrics";
 
 export interface MemoryFeatureFlags {
 	// Master switches
@@ -30,11 +31,16 @@ export interface MemoryFeatureFlags {
 	// Emergency feature flags (runtime kill switches)
 	memoryConsolidationEnabled: boolean;
 	toolResultIngestionEnabled: boolean;
+	toolResultEnhancedIngestionEnabled: boolean;
 	memoryFirstLogicEnabled: boolean;
 
 	// Experimental features
 	/** Enable contextual embedding with LLM-generated prefixes for improved retrieval */
 	contextualEmbeddingEnabled: boolean;
+
+	// Finding 13: Full attribution mode for comprehensive memory scoring
+	/** Enable full attribution mode with inference fallback and scoring matrix */
+	fullAttributionEnabled: boolean;
 }
 
 export interface MemoryEnvConfig {
@@ -103,9 +109,10 @@ export function getMemoryFeatureFlags(): MemoryFeatureFlags {
 		// Component flags
 		qdrantEnabled: parseBoolean(env.MEMORY_QDRANT_ENABLED, true),
 		bm25Enabled: parseBoolean(env.MEMORY_BM25_ENABLED, true),
-		// Default to false until dicta-retrieval reranker batch size issue is fixed
-		// The reranker crashes with "n_ubatch >= n_tokens" assertion when processing documents
-		rerankEnabled: parseBoolean(env.MEMORY_RERANK_ENABLED, false),
+		// Option C: Enable reranking by default for better document vs conversation ranking
+		// The cross-encoder helps distinguish actual document content from conversation snippets
+		// Note: If dicta-retrieval crashes with batch size issues, set MEMORY_RERANK_ENABLED=false
+		rerankEnabled: parseBoolean(env.MEMORY_RERANK_ENABLED, true),
 		outcomeEnabled: parseBoolean(env.MEMORY_OUTCOME_ENABLED, true),
 		promotionEnabled: parseBoolean(env.MEMORY_PROMOTION_ENABLED, true),
 
@@ -118,10 +125,14 @@ export function getMemoryFeatureFlags(): MemoryFeatureFlags {
 
 		memoryConsolidationEnabled: parseBoolean(env.MEMORY_CONSOLIDATION_ENABLED, true),
 		toolResultIngestionEnabled: parseBoolean(env.TOOL_RESULT_INGESTION_ENABLED, true),
+		toolResultEnhancedIngestionEnabled: parseBoolean(env.TOOL_RESULT_ENHANCED_INGESTION_ENABLED, true),
 		memoryFirstLogicEnabled: parseBoolean(env.MEMORY_FIRST_LOGIC_ENABLED, true),
 
 		// Experimental features (default: off)
 		contextualEmbeddingEnabled: parseBoolean(env.CONTEXTUAL_EMBEDDING_ENABLED, false),
+
+		// Finding 13: Full attribution mode (default: off, enable for comprehensive scoring)
+		fullAttributionEnabled: parseBoolean(env.MEMORY_FULL_ATTRIBUTION_ENABLED, false),
 	};
 }
 
@@ -138,7 +149,8 @@ export function getMemoryEnvConfig(): MemoryEnvConfig {
 		qdrantPort: parseNumber(env.QDRANT_PORT, 6333),
 		qdrantHttps: parseBoolean(env.QDRANT_HTTPS, false),
 		qdrantCollection: parseString(env.QDRANT_COLLECTION, "memories_v1"),
-		qdrantVectorSize: parseNumber(env.QDRANT_VECTOR_SIZE, 768),
+		// BGE-M3 produces 1024-dim vectors - must match DictaEmbeddingClient default
+		qdrantVectorSize: parseNumber(env.QDRANT_VECTOR_SIZE, 1024),
 
 		// Scoring
 		initialScore: parseNumber(env.MEMORY_INITIAL_SCORE, 0.5),
@@ -150,7 +162,9 @@ export function getMemoryEnvConfig(): MemoryEnvConfig {
 		// Search
 		searchLimit: parseNumber(env.MEMORY_SEARCH_LIMIT, 20),
 		searchMinScore: parseNumber(env.MEMORY_SEARCH_MIN_SCORE, 0.0),
-		prefetchTimeoutMs: parseNumber(env.MEMORY_PREFETCH_TIMEOUT_MS, 6000),
+		// Phase 1.2: Reduced from 6000ms to 800ms to cap TTFT impact
+		// Memory prefetch should be fast; if it exceeds this, proceed without memory
+		prefetchTimeoutMs: parseNumber(env.MEMORY_PREFETCH_TIMEOUT_MS, 800),
 		searchTimeoutMs: parseNumber(env.MEMORY_SEARCH_TIMEOUT_MS, 15000),
 
 		// Safety
@@ -195,10 +209,31 @@ export function validateFeatureFlags(flags: MemoryFeatureFlags): string[] {
 
 /**
  * Check if memory system is operational
+ * Phase 2.3: Enhanced to check circuit breaker status for faster skip
  */
 export function isMemorySystemOperational(): boolean {
 	const flags = getMemoryFeatureFlags();
-	return flags.systemEnabled;
+	if (!flags.systemEnabled) {
+		return false;
+	}
+
+	// Phase 2.3: Check if embedding circuit breaker is open
+	// If open, skip memory operations entirely (instant return vs 800ms timeout)
+	try {
+		const metrics = MetricsServer.getMetrics();
+		// Gauge.get() returns { value: number } - circuit breaker open = 1
+		const cbMetric = metrics.memory.circuitBreakerOpen;
+		type GaugeInternal = { hashMap?: Record<string, { value: number }> };
+		const internal = cbMetric as unknown as GaugeInternal;
+		const rawValue = internal.hashMap?.[""]?.value;
+		if (rawValue === 1) {
+			return false;
+		}
+	} catch {
+		// Metrics not available, assume operational
+	}
+
+	return true;
 }
 
 /**

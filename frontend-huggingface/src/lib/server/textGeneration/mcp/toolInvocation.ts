@@ -3,6 +3,7 @@ import { logger } from "../../logger";
 import { existsSync } from "fs";
 import { readdir } from "fs/promises";
 import { join } from "path";
+import { env } from "$env/dynamic/private";
 import type { MessageUpdate, MessageTraceUpdate } from "$lib/types/MessageUpdate";
 import {
 	MessageToolUpdateType,
@@ -71,7 +72,13 @@ function isDoclingTool(toolName: string): boolean {
 	return DOCLING_TOOL_NAMES.has(nameLower) || nameLower.includes("docling");
 }
 
-const UPLOADS_DIR = "/app/uploads";
+function resolveUploadsDir(): string {
+	if (env.UPLOADS_DIR) return env.UPLOADS_DIR;
+	if (env.DOCKER_ENV === "true") return "/app/uploads";
+	return join(process.cwd(), ".uploads");
+}
+
+const UPLOADS_DIR = resolveUploadsDir();
 
 function extractShaCandidate(input: string): string | null {
 	if (!input) return null;
@@ -356,6 +363,68 @@ function classifyToolOutcome(result: { error?: string; output?: string }): {
 	}
 
 	return { outcome: "worked", toolStatus: "ok" };
+}
+
+/**
+ * Detect if tool output indicates blocking (robots.txt, captcha, unusual traffic)
+ * These are "successful" HTTP responses but contain no useful content
+ * Used specifically for fetch tool to trigger fallback to search APIs
+ */
+function isFetchBlockedResponse(output: string): boolean {
+	if (!output || output.length === 0) return false;
+
+	const outputLower = output.toLowerCase();
+
+	// Robots.txt and crawling restrictions
+	if (
+		outputLower.includes("robots.txt") ||
+		outputLower.includes("disallowed by robots") ||
+		outputLower.includes("blocked by robots") ||
+		outputLower.includes("crawling not allowed")
+	) {
+		return true;
+	}
+
+	// CAPTCHA and verification challenges
+	if (
+		outputLower.includes("captcha") ||
+		outputLower.includes("verify you are human") ||
+		outputLower.includes("are you a robot") ||
+		outputLower.includes("prove you're not a robot") ||
+		outputLower.includes("human verification")
+	) {
+		return true;
+	}
+
+	// Google-specific blocking
+	if (
+		outputLower.includes("unusual traffic") ||
+		outputLower.includes("automated requests") ||
+		outputLower.includes("our systems have detected")
+	) {
+		return true;
+	}
+
+	// Rate limiting and access denied
+	if (
+		outputLower.includes("rate limit") ||
+		outputLower.includes("too many requests") ||
+		outputLower.includes("access denied") ||
+		outputLower.includes("403 forbidden")
+	) {
+		return true;
+	}
+
+	// JavaScript-only pages (fetch gets empty shell)
+	if (
+		outputLower.includes("enable javascript") ||
+		outputLower.includes("javascript required") ||
+		outputLower.includes("please enable javascript")
+	) {
+		return true;
+	}
+
+	return false;
 }
 
 /**
@@ -955,7 +1024,8 @@ export async function* executeToolCalls({
 		// arguments (e.g. "image_1") while the full data: URLs or image blobs are
 		// only sent to the MCP tool server.
 		attachFileRefsToArgs(argsObj, resolveFileRef);
-		return { call, argsObj, paramsClean, uuid: randomUUID(), parseError: parsedArgs.error };
+		// Finding 2: Preserve call.id when present to maintain UI tracking consistency
+		return { call, argsObj, paramsClean, uuid: call.id ?? randomUUID(), parseError: parsedArgs.error };
 	});
 
 	for (const p of prepared) {
@@ -1219,6 +1289,89 @@ export async function* executeToolCalls({
 					{ server: mappingEntry.server, tool: mappingEntry.tool, latencyMs: toolLatencyMs },
 					"[mcp] tool call completed"
 				);
+
+				// ============================================================
+				// FETCH BLOCKED RESPONSE DETECTION: Check for robots/captcha
+				// If fetch got blocked, trigger fallback to search APIs
+				// ============================================================
+				const isFetchTool = p.call.name.toLowerCase() === "fetch";
+				if (isFetchTool && isFetchBlockedResponse(annotated)) {
+					logger.warn(
+						{ tool: p.call.name, contentPreview: annotated.slice(0, 100) },
+						"[mcp] fetch returned blocked response (robots/captcha), triggering fallback"
+					);
+
+					// Try fallback chain for blocked fetch
+					const fallbackChain = getFallbackChain(p.call.name);
+					let fallbackSucceeded = false;
+
+					for (const fallbackToolName of fallbackChain) {
+						const fallbackNormalized = normalizeToolName(fallbackToolName, mapping);
+						const fallbackMapping = mapping[fallbackNormalized];
+
+						if (!fallbackMapping) continue;
+
+						const fallbackServerCfg = serverLookup.get(fallbackMapping.server);
+						if (!fallbackServerCfg) continue;
+
+						let fallbackClient = clientMap.get(fallbackMapping.server);
+						if (!fallbackClient) {
+							try {
+								fallbackClient = await getClientEnhanced(fallbackServerCfg, abortSignal);
+								clientMap.set(fallbackMapping.server, fallbackClient);
+							} catch {
+								continue;
+							}
+						}
+
+						try {
+							const fallbackResponse = await callMcpTool(
+								fallbackServerCfg,
+								fallbackMapping.tool,
+								p.argsObj,
+								{ client: fallbackClient, signal: abortSignal, timeoutMs: toolTimeoutMs }
+							);
+							const { annotated: fallbackAnnotated } = processToolOutput(
+								fallbackResponse.text ?? ""
+							);
+
+							logger.info(
+								{ originalTool: p.call.name, fallbackTool: fallbackToolName },
+								"[mcp] fallback succeeded after fetch block"
+							);
+
+							q.push({
+								index,
+								output: fallbackAnnotated,
+								structured: fallbackResponse.structured,
+								blocks: fallbackResponse.content,
+								uuid: p.uuid,
+								paramsClean: p.paramsClean,
+								latencyMs: toolLatencyMs,
+								params: p.argsObj,
+							});
+							fallbackSucceeded = true;
+							break;
+						} catch {
+							continue;
+						}
+					}
+
+					if (fallbackSucceeded) return;
+
+					// No fallback worked - return graceful error
+					q.push({
+						index,
+						error: toGracefulError(
+							p.call.name,
+							"האתר חסם את הגישה (robots/captcha). נסה להשתמש בכלי חיפוש כמו Perplexity או Tavily."
+						),
+						uuid: p.uuid,
+						paramsClean: p.paramsClean,
+					});
+					return;
+				}
+
 				q.push({
 					index,
 					output: annotated,
@@ -1525,12 +1678,15 @@ export async function* executeToolCalls({
 		// Track tool execution success/failure for future optimization
 		// Fire-and-forget: NEVER blocks user response path
 		// ============================================
+		// Gemini Finding 6: Log errors instead of silently ignoring
 		recordToolActionOutcome({
 			toolName,
 			result: { error: r.error, output: r.output },
 			conversationId,
 			latencyMs: r.latencyMs,
-		}).catch(() => {}); // Silently ignore failures
+		}).catch((err) => {
+			logger.warn({ err, toolName }, "[mcp] recordToolActionOutcome failed (non-blocking)");
+		});
 
 		// ============================================
 		// EMIT TRACE STEP COMPLETION FOR REAL TOOL CALLS
@@ -1608,6 +1764,12 @@ export async function* executeToolCalls({
 				{ toolName: name, error: r.error },
 				"[mcp] individual tool call failed but continuing with successful tools"
 			);
+			// CRITICAL FIX (Gemini Finding 1): OpenAI API requires a tool message for EVERY tool_call
+			// Missing tool messages cause "Invalid conversation history" 400 errors
+			// Include error message so the model knows the tool failed and can adapt
+			const errorContent = `Error executing tool "${name}": ${r.error}`;
+			toolRuns.push({ name, parameters: r.paramsClean, output: errorContent });
+			toolMessages.push({ role: "tool", tool_call_id: id, content: errorContent });
 		}
 	}
 

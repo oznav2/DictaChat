@@ -262,7 +262,10 @@ export class SearchServiceImpl implements ISearchService {
 				return enhanced.combined_text;
 			}
 		} catch (err) {
-			logger.warn({ err }, "[SearchServiceImpl] Contextual embedding enhancement failed, using raw query");
+			logger.warn(
+				{ err },
+				"[SearchServiceImpl] Contextual embedding enhancement failed, using raw query"
+			);
 		}
 
 		return query;

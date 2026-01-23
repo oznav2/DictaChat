@@ -8,8 +8,8 @@
 
 	let isVisible = $state(false);
 	let serverVersion = $state<string | null>(null);
-	let lastError = $state<string | null>(null);
 	let timer: ReturnType<typeof setInterval> | null = null;
+	let abortController: AbortController | null = null;
 
 	function toKeyPart(s: string | undefined): string {
 		return (s || "").toLowerCase().replace(/[^a-z0-9_-]+/g, "-");
@@ -27,15 +27,23 @@
 
 	async function checkVersion() {
 		try {
+			if (!browser) return;
+			if (document.visibilityState !== "visible") return;
+
+			if (abortController) {
+				abortController.abort();
+			}
+			abortController = new AbortController();
+
 			const data = await apiRequest<VersionResponse>(`${base}/api/system/version`, {
 				retries: 0,
-				timeoutMs: 4000,
+				timeoutMs: 0,
+				signal: abortController.signal,
 			});
 			const nextVersion = typeof data.version === "string" ? data.version : null;
 			serverVersion = nextVersion;
-			lastError = null;
 
-			if (!browser || !nextVersion) return;
+			if (!nextVersion) return;
 			const prev = localStorage.getItem(STORAGE_KEY);
 
 			if (prev && prev !== nextVersion) {
@@ -44,7 +52,15 @@
 				localStorage.setItem(STORAGE_KEY, nextVersion);
 			}
 		} catch (err) {
-			lastError = err instanceof Error ? err.message : "Failed to check version";
+			const message = err instanceof Error ? err.message : String(err);
+			const isAbort =
+				(err instanceof Error && err.name === "AbortError") ||
+				message.includes("AbortError") ||
+				message.includes("aborted") ||
+				message.includes("ERR_ABORTED");
+			if (!isAbort) {
+				void message;
+			}
 		}
 	}
 
@@ -64,6 +80,8 @@
 
 	onDestroy(() => {
 		if (timer) clearInterval(timer);
+		if (abortController) abortController.abort();
+		abortController = null;
 	});
 </script>
 

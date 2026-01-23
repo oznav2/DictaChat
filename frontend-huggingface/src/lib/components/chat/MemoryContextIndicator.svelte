@@ -89,7 +89,7 @@
 			working: isRTL ? "זיכרון עבודה" : "Working Memory",
 			history: isRTL ? "היסטוריה" : "History",
 			patterns: isRTL ? "תבניות" : "Patterns",
-			books: isRTL ? "ספרים" : "Books",
+			documents: isRTL ? "מסמכים" : "Documents",
 			memory_bank: isRTL ? "בנק זיכרון" : "Memory Bank",
 		};
 		return labels[tier] ?? tier;
@@ -110,25 +110,43 @@
 		if (text.length <= maxLen) return text;
 		return text.slice(0, maxLen) + "...";
 	}
+
+	/**
+	 * Get display text for citation with proper fallback
+	 * Prevents gibberish like raw memory_ids or HTML from showing
+	 */
+	function getCitationDisplayText(citation: {
+		content?: string;
+		memory_id: string;
+		tier: string;
+	}): string {
+		// Prefer content if it's a meaningful string
+		if (citation.content && citation.content.length > 0) {
+			return citation.content;
+		}
+		// If no content, use a friendly tier-based description
+		const tierName = getTierLabel(citation.tier);
+		return isRTL ? `תוכן מ${tierName}` : `Content from ${tierName}`;
+	}
 </script>
 
-{#if (hasKnownContext || hasCitations || isFeedbackEligible) && !isStreaming}
+{#if hasKnownContext || hasCitations || (isFeedbackEligible && !isStreaming)}
 	<div
 		class="memory-context-indicator mt-3 space-y-2"
 		dir={isRTL ? "rtl" : "ltr"}
 		in:fade={{ duration: 300 }}
 		out:fade={{ duration: 150 }}
 	>
-		<!-- Known Context Badge -->
+		<!-- Known Context Badge - uses gray to match reasoning block -->
 		{#if hasKnownContext}
 			<div class="known-context-section">
 				<button
 					type="button"
-					class="flex w-full items-center gap-2 rounded-lg border border-blue-200 bg-gradient-to-br from-blue-50/80 to-white/60 px-3 py-2 text-sm transition-colors hover:from-blue-100/80 dark:border-blue-800/50 dark:from-blue-950/40 dark:to-gray-900/40 dark:hover:from-blue-900/50"
+					class="flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm transition-colors hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700/50"
 					onclick={toggleKnownContext}
 				>
-					<CarbonBook class="h-4 w-4 flex-shrink-0 text-blue-600 dark:text-blue-400" />
-					<span class="flex-grow text-start font-medium text-blue-700 dark:text-blue-300">
+					<CarbonBook class="h-4 w-4 flex-shrink-0 text-gray-500 dark:text-gray-400" />
+					<span class="flex-grow text-start font-medium text-gray-600 dark:text-gray-300">
 						{isRTL ? "הקשר ידוע" : "Known Context"}
 					</span>
 					<span
@@ -206,16 +224,16 @@
 			</div>
 		{/if}
 
-		<!-- Citations Section -->
+		<!-- Citations Section - uses gray to match reasoning block -->
 		{#if hasCitations}
 			<div class="citations-section">
 				<button
 					type="button"
-					class="flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-gradient-to-br from-gray-50/80 to-white/60 px-3 py-2 text-sm transition-colors hover:from-gray-100/80 dark:border-gray-700/50 dark:from-gray-800/40 dark:to-gray-900/40 dark:hover:from-gray-700/50"
+					class="flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm transition-colors hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700/50"
 					onclick={toggleCitations}
 				>
-					<CarbonDocument class="h-4 w-4 flex-shrink-0 text-gray-600 dark:text-gray-400" />
-					<span class="flex-grow text-start font-medium text-gray-700 dark:text-gray-300">
+					<CarbonDocument class="h-4 w-4 flex-shrink-0 text-gray-500 dark:text-gray-400" />
+					<span class="flex-grow text-start font-medium text-gray-600 dark:text-gray-300">
 						{citations.length}
 						{isRTL
 							? citations.length === 1
@@ -262,7 +280,7 @@
 								</span>
 								<!-- Content excerpt -->
 								<span class="flex-grow truncate text-gray-600 dark:text-gray-400">
-									{truncateText(citation.content ?? citation.memory_id, 40)}
+									{truncateText(getCitationDisplayText(citation), 40)}
 								</span>
 								<!-- Confidence percentage -->
 								<span class="{getConfidenceColor(confidence)} text-[10px] font-medium">
@@ -280,10 +298,10 @@
 			</div>
 		{/if}
 
-		<!-- Feedback Buttons -->
-		{#if isFeedbackEligible && !feedbackSubmitted}
+		<!-- Feedback Buttons (only shown after streaming completes) -->
+		{#if isFeedbackEligible && !feedbackSubmitted && !isStreaming}
 			<div
-				class="feedback-section flex items-center gap-2 rounded-lg border border-gray-200 bg-gradient-to-br from-gray-50/80 to-white/60 px-3 py-2 dark:border-gray-700/50 dark:from-gray-800/40 dark:to-gray-900/40"
+				class="feedback-section flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 dark:border-gray-700 dark:bg-gray-800"
 				transition:fade={{ duration: 200 }}
 			>
 				<span class="flex-grow text-xs text-gray-500 dark:text-gray-400">

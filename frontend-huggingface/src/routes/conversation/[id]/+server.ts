@@ -510,9 +510,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 					if (clientDetached) return;
 					try {
 						controller.enqueue(JSON.stringify(event) + "\n");
-						if (event.type === MessageUpdateType.FinalAnswer) {
-							controller.enqueue(" ".repeat(4096));
-						}
+						// Note: Removed 4KB padding that was blocking stream closure
+						// FinalAnswer already includes all necessary data; padding was causing UI sluggishness
 					} catch (err) {
 						clientDetached = true;
 						// ENTERPRISE: Log detailed error context for debugging
@@ -645,7 +644,6 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 				}
 			}
 
-			await persistConversation();
 			abortRegistry.unregister(conversationKey, ctrl);
 
 			// used to detect if cancel() is called bc of interrupt or just because the connection closes
@@ -653,11 +651,23 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 			if (!clientDetached) {
 				controller.close();
 			}
+
+			// Fire-and-forget: Persist AFTER closing stream to prevent UI sluggishness
+			// User already has their answer, persistence is best-effort background work
+			persistConversation().catch((err) => {
+				logger.error({ err, conversationId: conversationKey }, "Background persist failed");
+			});
 		},
 		async cancel() {
 			if (doneStreaming) return;
 			clientDetached = true;
-			await persistConversation();
+			// Fire-and-forget persistence on cancel too
+			persistConversation().catch((err) => {
+				logger.error(
+					{ err, conversationId: convId.toString() },
+					"Background persist failed on cancel"
+				);
+			});
 		},
 	});
 

@@ -262,7 +262,13 @@ describe("TestSearchBehavior", () => {
 
 		const { UnifiedMemoryFacade } = await import("../../UnifiedMemoryFacade");
 
-		const collections: MemoryTier[] = ["memory_bank", "working", "history", "patterns", "documents"];
+		const collections: MemoryTier[] = [
+			"memory_bank",
+			"working",
+			"history",
+			"patterns",
+			"documents",
+		];
 
 		for (const coll of collections) {
 			const mockSearchService = {

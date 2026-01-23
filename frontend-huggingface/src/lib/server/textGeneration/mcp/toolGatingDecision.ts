@@ -1,6 +1,19 @@
 /**
  * Tool Gating Decision Service
  *
+ * ╔════════════════════════════════════════════════════════════════════════════╗
+ * ║  SINGLE SOURCE OF TRUTH FOR TOOL GATING                                    ║
+ * ║                                                                            ║
+ * ║  Finding 12: This module is the ONLY authoritative implementation for      ║
+ * ║  tool gating decisions. Do NOT create parallel gating logic elsewhere.     ║
+ * ║                                                                            ║
+ * ║  All tool filtering must flow through decideToolGating() to ensure:        ║
+ * ║  - Consistent behavior across the codebase                                 ║
+ * ║  - Proper fail-open semantics when memory is degraded                      ║
+ * ║  - Hebrew intent awareness for research/search queries                     ║
+ * ║  - Auditable reason codes for debugging and metrics                        ║
+ * ╚════════════════════════════════════════════════════════════════════════════╝
+ *
  * Phase 3 (+13): Memory-First Tool Gating
  * Kimi Enterprise Requirement K.1: Enforceable Tool Gating
  *
@@ -101,27 +114,76 @@ export type ToolGatingReasonCode =
 // ============================================
 
 /**
+ * Normalize tool name to handle MCP server inconsistency.
+ * Some MCP servers use hyphens (tavily-search), others use underscores (perplexity_ask).
+ * This function converts to lowercase with underscores for consistent matching.
+ */
+function normalizeToolName(name: string): string {
+	return name.toLowerCase().replace(/-/g, "_");
+}
+
+/**
+ * Check if a tool name is in a set (handles hyphen/underscore variants).
+ */
+function toolNameInSet(toolName: string, toolSet: Set<string>): boolean {
+	const normalized = normalizeToolName(toolName);
+	for (const name of toolSet) {
+		if (normalizeToolName(name) === normalized) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
  * Tools that should ALWAYS be available regardless of confidence.
  * These are memory system tools or critical infrastructure.
+ *
+ * Consolidated from Finding 12: includes tools from both original implementations.
  */
 const ALWAYS_ALLOWED_TOOLS = new Set([
+	// Memory system tools
 	"add_to_memory_bank", // Memory storage
 	"search_memory", // Memory retrieval
 	"recall_memory", // Memory recall
+	"get_context_insights", // Context analysis (from memoryIntegration)
+	"record_response", // Response recording (from memoryIntegration)
+	// Document processing tools
 	"docling_convert", // Document processing (might be needed for context)
 	"docling_ocr", // OCR processing
 ]);
 
 /**
  * Tools that should be reduced when memory confidence is high.
- * These are external search/research tools.
+ * These are external search/research tools that may be redundant
+ * when memory already has high-confidence answers.
+ *
+ * Consolidated from Finding 12: includes tools from both original implementations.
  */
 const REDUCIBLE_TOOLS = new Set([
+	// Web search tools
 	"tavily_search", // External web search
 	"web_search", // Generic web search
 	"perplexity_ask", // Research tool
 	"brave_search", // Brave search
 	"duckduckgo_search", // DuckDuckGo search
+	// Data query tools (from memoryIntegration)
+	"datagov_query", // Israeli government data
+]);
+
+/**
+ * Tools that require explicit user request to enable.
+ * These are potentially dangerous or have side effects.
+ *
+ * NOTE: Currently not enforced in decideToolGating() but defined here
+ * for future use and documentation. These tools should only be allowed
+ * if the user explicitly requests them in their query.
+ */
+export const RESTRICTED_TOOLS = new Set([
+	"code_execution", // Runs arbitrary code
+	"file_write", // Modifies filesystem
+	"database_query", // Direct DB access
+	"system_command", // Shell commands
 ]);
 
 // ============================================
@@ -223,24 +285,30 @@ export function decideToolGating(input: ToolGatingInput): ToolGatingOutput {
 	}
 
 	// ============================================
-	// K.1.7: Rule 4 - Reduce tools when retrievalConfidence='high' + 3+ results
+	// K.1.7: Rule 4 - Reduce tools when memory has relevant results
+	// Fix: Lowered threshold from "high + 3" to "(high OR medium) + 1"
+	// Rationale: A single relevant document result should prevent redundant web searches
+	// The previous threshold was too conservative - it required 3+ results for tool reduction
 	// ============================================
-	if (retrievalConfidence === "high" && memoryResultCount >= 3) {
+	if (
+		(retrievalConfidence === "high" || retrievalConfidence === "medium") &&
+		memoryResultCount >= 1
+	) {
 		logger.info(
-			{ confidence: "high", toolCount: availableTools.length },
-			"[filter] HIGH confidence - filtering search tools"
+			{ confidence: retrievalConfidence, toolCount: availableTools.length, memoryResultCount },
+			"[filter] Memory confidence sufficient - filtering search tools"
 		);
 
 		const filteredTools = availableTools.filter((tool) => {
 			const toolName = tool.function.name;
 
-			// Always keep memory/document tools
-			if (ALWAYS_ALLOWED_TOOLS.has(toolName)) {
+			// Always keep memory/document tools (normalized matching for hyphen/underscore variants)
+			if (toolNameInSet(toolName, ALWAYS_ALLOWED_TOOLS)) {
 				return true;
 			}
 
-			// Remove reducible external search tools
-			if (REDUCIBLE_TOOLS.has(toolName)) {
+			// Remove reducible external search tools (normalized matching for hyphen/underscore variants)
+			if (toolNameInSet(toolName, REDUCIBLE_TOOLS)) {
 				return false;
 			}
 
@@ -255,8 +323,8 @@ export function decideToolGating(input: ToolGatingInput): ToolGatingOutput {
 			logger.debug({ skippedTools }, "[tool-gate] Skipped redundant search tools");
 		}
 		logger.info(
-			{ confidence: "high", filteredCount: filteredTools.length },
-			"[tool-gate] Tools filtered by confidence"
+			{ confidence: retrievalConfidence, filteredCount: filteredTools.length },
+			"[tool-gate] Tools filtered by memory confidence"
 		);
 
 		const reducedCount = availableTools.length - filteredTools.length;
@@ -272,16 +340,17 @@ export function decideToolGating(input: ToolGatingInput): ToolGatingOutput {
 						.filter((t) => !filteredTools.includes(t))
 						.map((t) => t.function.name),
 				},
-				"[toolGating] High confidence from memory, reducing external tools"
+				"[toolGating] Memory has relevant results, reducing external tools"
 			);
 
+			const confidenceLabel = retrievalConfidence === "high" ? "גבוה" : "בינוני";
 			return {
 				allowedTools: filteredTools,
 				reducedCount,
 				reasonCode: "HIGH_CONFIDENCE_REDUCTION",
 				traceExplanation: {
-					he: `ביטחון גבוה מהזיכרון (${memoryResultCount} תוצאות) - הופחתו ${reducedCount} כלי חיפוש חיצוניים`,
-					en: `High confidence from memory (${memoryResultCount} results) - reduced ${reducedCount} external search tools`,
+					he: `ביטחון ${confidenceLabel} מהזיכרון (${memoryResultCount} תוצאות) - הופחתו ${reducedCount} כלי חיפוש חיצוניים`,
+					en: `${retrievalConfidence} confidence from memory (${memoryResultCount} results) - reduced ${reducedCount} external search tools`,
 				},
 			};
 		}

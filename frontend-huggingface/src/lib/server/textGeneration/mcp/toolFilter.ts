@@ -19,6 +19,46 @@ import {
 const MAX_TOOLS = parseInt(process.env.MCP_MAX_TOOLS || "4", 10);
 
 /**
+ * Normalize tool name to handle MCP server inconsistency.
+ * Some MCP servers use hyphens (tavily-search), others use underscores (perplexity_ask).
+ * This function converts to lowercase with underscores for consistent matching.
+ */
+function normalizeToolName(name: string): string {
+	return name.toLowerCase().replace(/-/g, "_");
+}
+
+/**
+ * Check if a tool name matches any in the relevant set (handles hyphen/underscore variants).
+ */
+function toolNameMatches(toolName: string, relevantNames: Set<string>): boolean {
+	const normalized = normalizeToolName(toolName);
+	for (const name of relevantNames) {
+		if (normalizeToolName(name) === normalized) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * Get priority score for a tool (handles hyphen/underscore variants).
+ */
+function getToolPriority(toolName: string, priorities: Record<string, number>): number {
+	// Try exact match first
+	if (priorities[toolName] !== undefined) {
+		return priorities[toolName];
+	}
+	// Try normalized match
+	const normalized = normalizeToolName(toolName);
+	for (const [key, value] of Object.entries(priorities)) {
+		if (normalizeToolName(key) === normalized) {
+			return value;
+		}
+	}
+	return 0;
+}
+
+/**
  * Cache for tool filtering results to improve performance
  */
 interface ToolFilterCacheEntry {
@@ -124,29 +164,40 @@ const TOOL_CATEGORIES: Record<string, { keywords: RegExp; tools: string[] }> = {
 	},
 	// DEEP RESEARCH: Perplexity-only (מחקר, research, deep dive)
 	// Tavily is explicitly EXCLUDED for research intent
+	// NOTE: Tool names use UNDERSCORES to match actual MCP tool names
 	deepResearch: {
 		keywords: /\b(research|deep dive|in-depth|comprehensive|analyze)\b|מחקר|לחקור|ניתוח מעמיק/i,
-		tools: ["perplexity-ask", "perplexity-search", "perplexity-research", "perplexity-reason"],
+		tools: ["perplexity_ask", "perplexity_search", "perplexity_research", "perplexity_reason"],
 	},
 	// SIMPLE SEARCH: Tavily (חפש, search, find)
+	// NOTE: fetch is NOT included - it should only be used for direct URL retrieval
+	// NOTE: Tool names use UNDERSCORES to match actual MCP tool names
 	simpleSearch: {
 		keywords: /\b(search|find|look up|what is|who is)\b|חפש|חיפוש|מצא/i,
-		tools: ["tavily-search", "tavily-extract", "tavily-map", "fetch"],
+		tools: ["tavily_search", "tavily_extract", "tavily_map"],
 	},
 	// GENERAL INFO: Perplexity preferred (info, news, explain, etc.)
 	// NOTE: Tavily is NOT included here - use simpleSearch category for Tavily
+	// NOTE: fetch is NOT included - it should only be used for direct URL retrieval
+	// NOTE: Tool names use UNDERSCORES to match actual MCP tool names
 	research: {
 		// English + Hebrew: information, news, buy, price, compare, recommend, best
 		keywords:
 			/\b(how to|why|explain|information|news|article|latest|current|today|buy|purchase|price|compare|review|market|recommend|best|top|popular)\b|מידע|חדשות|מאמר|עדכני|היום|קנה|לקנות|מחיר|השווה|השוואה|ביקורת|שוק|המלצה|הטוב ביותר|פופולרי|מה זה|מי זה|איך|למה|הסבר/i,
 		tools: [
-			"perplexity-ask",
-			"perplexity-search",
-			"perplexity-research",
-			"perplexity-reason",
+			"perplexity_ask",
+			"perplexity_search",
+			"perplexity_research",
+			"perplexity_reason",
 			"search", // Context7
-			"fetch",
 		],
+	},
+	// DIRECT URL FETCH: Only for explicit URL retrieval (not web search)
+	// Use when user provides a specific URL to fetch content from
+	directUrl: {
+		keywords:
+			/\b(fetch|get|retrieve|download|url|link|page|website)\b.*\b(https?:\/\/|www\.)|https?:\/\/[^\s]+|הבא.*מ|משוך.*מ|הורד.*מ|קישור|אתר/i,
+		tools: ["fetch"],
 	},
 	reasoning: {
 		// English + Hebrew: think, reason, plan, solve, analyze, step by step
@@ -285,15 +336,15 @@ const TOOL_CATEGORIES: Record<string, { keywords: RegExp; tools: string[] }> = {
  */
 const TOOL_PRIORITIES: Record<string, number> = {
 	sequentialthinking: 95,
-	// Perplexity tools (hyphen format - MCP standard)
-	"perplexity-ask": 100,
-	"perplexity-search": 100,
-	"perplexity-research": 100,
-	"perplexity-reason": 100,
-	// Tavily tools (hyphen format - MCP standard)
-	"tavily-search": 90,
-	"tavily-extract": 90,
-	"tavily-map": 85,
+	// Perplexity tools (underscore format - matches actual MCP tool names)
+	perplexity_ask: 100,
+	perplexity_search: 100,
+	perplexity_research: 100,
+	perplexity_reason: 100,
+	// Tavily tools (underscore format - matches actual MCP tool names)
+	tavily_search: 90,
+	tavily_extract: 90,
+	tavily_map: 85,
 	"get-video-info-for-summary-from-url": 90,
 	// DataGov tools - datagov_query is PRIMARY (highest priority)
 	datagov_query: 95,
@@ -465,12 +516,23 @@ export function filterToolsByIntent(
 	}
 
 	// Filter available tools to only those in our relevant set
-	let filtered = allTools.filter((tool) => relevantToolNames.has(tool.function.name));
+	// Uses normalized matching to handle MCP server inconsistency (hyphens vs underscores)
+	console.log("[tool-filter] DEBUG: relevantToolNames =", Array.from(relevantToolNames));
+	console.log("[tool-filter] DEBUG: allTools sample =", allTools.slice(0, 10).map((t) => t.function.name));
+
+	let filtered = allTools.filter((tool) => {
+		const matches = toolNameMatches(tool.function.name, relevantToolNames);
+		if (matches) {
+			console.log(`[tool-filter] DEBUG: matched tool "${tool.function.name}"`);
+		}
+		return matches;
+	});
 
 	// Sort filtered tools by Best-in-Class priority score (Descending)
+	// Uses normalized matching for priority lookup
 	filtered.sort((a, b) => {
-		const scoreA = TOOL_PRIORITIES[a.function.name] || 0;
-		const scoreB = TOOL_PRIORITIES[b.function.name] || 0;
+		const scoreA = getToolPriority(a.function.name, TOOL_PRIORITIES);
+		const scoreB = getToolPriority(b.function.name, TOOL_PRIORITIES);
 		return scoreB - scoreA;
 	});
 
@@ -522,8 +584,9 @@ export function filterToolsByIntent(
 
 	// If we still have no tools after filtering, take the first MAX_TOOLS from research
 	if (filtered.length === 0) {
+		const researchToolSet = new Set(TOOL_CATEGORIES.research.tools);
 		filtered = allTools
-			.filter((t) => TOOL_CATEGORIES.research.tools.includes(t.function.name))
+			.filter((t) => toolNameMatches(t.function.name, researchToolSet))
 			.slice(0, MAX_TOOLS);
 	}
 
@@ -550,7 +613,8 @@ export function filterToolsByIntent(
  */
 export function extractUserQuery(messages: Array<{ from?: string; content?: string }>): string {
 	const lastUserMsg = [...messages].reverse().find((m) => m.from === "user");
-	return lastUserMsg?.content?.toLowerCase() || "";
+	// Finding 7: Ensure query is normalized (lowercase + trimmed) for consistent intent matching
+	return lastUserMsg?.content?.toLowerCase().trim() || "";
 }
 
 export function clearToolFilterCache(): void {

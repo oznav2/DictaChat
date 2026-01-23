@@ -38,11 +38,7 @@ export type { MemoryConfig } from "./memory_config";
 export type * from "./types";
 
 // NER Integration: Unified AI Client for parallel NER + Embedding
-export {
-	UnifiedAIClient,
-	getUnifiedAIClient,
-	resetUnifiedAIClient,
-} from "./ai/UnifiedAIClient";
+export { UnifiedAIClient, getUnifiedAIClient, resetUnifiedAIClient } from "./ai/UnifiedAIClient";
 export type {
 	ExtractedEntity as NERExtractedEntity,
 	EnrichmentResult,

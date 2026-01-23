@@ -1,5 +1,69 @@
 import { extractJsonObjectSlice } from "$lib/server/textGeneration/utils/jsonExtractor";
 
+/**
+ * Find the start index of an XML <tool_call> tag in the text.
+ * Returns -1 if not found or if inside a code fence.
+ * Enhanced to handle whitespace variations and partial tags.
+ */
+export function findXmlToolCallStartIndex(text: string): number {
+	const thinkClose = text.lastIndexOf("</think>");
+	const base = thinkClose === -1 ? 0 : thinkClose + "</think>".length;
+	const after = text.slice(base);
+
+	// Enhanced regex: handles whitespace variations like <tool_call >, < tool_call>, <tool_call\n>
+	// Also matches partial tags at end of string for early detection during streaming
+	const toolCallMatch = after.match(/<\s*tool_call\s*>/i);
+	if (!toolCallMatch || toolCallMatch.index === undefined) return -1;
+
+	const start = base + toolCallMatch.index;
+
+	// Ensure we're not inside a code fence
+	const fenceCount = (text.slice(0, start).match(/```/g) ?? []).length;
+	if (fenceCount % 2 === 1) return -1;
+
+	return start;
+}
+
+/**
+ * Check if text ends with a partial <tool_call tag that's still being streamed.
+ * Used to prevent streaming content that might become a tool call tag.
+ * Returns the index where the partial tag starts, or -1 if no partial tag.
+ */
+export function findPartialXmlToolCallIndex(text: string): number {
+	const thinkClose = text.lastIndexOf("</think>");
+	const base = thinkClose === -1 ? 0 : thinkClose + "</think>".length;
+	const after = text.slice(base);
+
+	// Check for partial tags at end of string:
+	// "<", "<t", "<to", "<too", "<tool", "<tool_", "<tool_c", "<tool_ca", "<tool_cal", "<tool_call"
+	// Also handle with spaces: "< ", "< t", etc.
+	const partialPatterns = [
+		/<\s*tool_call$/i, // Almost complete, just missing >
+		/<\s*tool_cal$/i,
+		/<\s*tool_ca$/i,
+		/<\s*tool_c$/i,
+		/<\s*tool_$/i,
+		/<\s*tool$/i,
+		/<\s*too$/i,
+		/<\s*to$/i,
+		/<\s*t$/i,
+	];
+
+	for (const pattern of partialPatterns) {
+		const match = after.match(pattern);
+		if (match && match.index !== undefined) {
+			const start = base + match.index;
+			// Ensure we're not inside a code fence
+			const fenceCount = (text.slice(0, start).match(/```/g) ?? []).length;
+			if (fenceCount % 2 === 0) {
+				return start;
+			}
+		}
+	}
+
+	return -1;
+}
+
 export function findToolCallsPayloadStartIndex(text: string): number {
 	const thinkClose = text.lastIndexOf("</think>");
 	const base = thinkClose === -1 ? 0 : thinkClose + "</think>".length;

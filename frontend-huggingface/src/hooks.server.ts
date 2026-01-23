@@ -134,9 +134,11 @@ async function initializeMemoryFacadeOnce(): Promise<void> {
 			},
 		});
 
+		// Phase 1.1: Pass mongoStore for fast always_inject lookup (removes Qdrant zero-vector hack)
 		const prefetchService = new PrefetchServiceImpl({
 			hybridSearch,
 			qdrantAdapter,
+			mongoStore,
 			config: memoryConfig,
 		});
 

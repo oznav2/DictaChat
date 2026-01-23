@@ -242,7 +242,9 @@ function parseMemoryContext(contextText: string): {
 	// - [n] [tier:memory_id] content
 	const lines = contextText.split("\n");
 	for (const line of lines) {
-		const match = line.match(/\[(working|history|patterns|documents|memory_bank):([^\]]+)\]\s*(.*)$/);
+		const match = line.match(
+			/\[(working|history|patterns|documents|memory_bank):([^\]]+)\]\s*(.*)$/
+		);
 		if (!match) continue;
 		const [, tierCandidate, memoryIdRaw, contentRaw] = match;
 		const memoryId = memoryIdRaw.trim();

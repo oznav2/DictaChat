@@ -17,18 +17,20 @@ export const GET: RequestHandler = async () => {
 				success: false,
 				error: "Memory system disabled",
 				reason: "MEMORY_SYSTEM_ENABLED is not set to true",
-				flags: { systemEnabled: flags.systemEnabled }
+				flags: { systemEnabled: flags.systemEnabled },
 			});
 		}
 
 		const facade = UnifiedMemoryFacade.getInstance();
 		if (!facade.isInitialized()) {
-			logger.warn("[API] Memory facade not initialized - possible race condition or initialization failure");
+			logger.warn(
+				"[API] Memory facade not initialized - possible race condition or initialization failure"
+			);
 			return json({
 				success: false,
 				error: "System not ready",
 				reason: "Memory facade exists but initialize() was not called - check server startup logs",
-				flags: { systemEnabled: flags.systemEnabled }
+				flags: { systemEnabled: flags.systemEnabled },
 			});
 		}
 

@@ -2,7 +2,6 @@
 	import { base } from "$app/paths";
 	import { afterNavigate, goto } from "$app/navigation";
 	import { useSettingsStore } from "$lib/stores/settings";
-	import { canPopSettingsStack, popSettingsStack } from "$lib/stores/settingsStack";
 	import CarbonCheckmark from "~icons/carbon/checkmark";
 
 	import Modal from "$lib/components/Modal.svelte";

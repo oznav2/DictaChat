@@ -96,6 +96,7 @@ export type IngestionStage =
 	| "queued"
 	| "reading"
 	| "extracting"
+	| "summarizing"
 	| "checking_duplicate"
 	| "chunking"
 	| "embedding"
@@ -135,6 +136,7 @@ const PROGRESS_MESSAGES: Record<IngestionStage, { en: string; he: string }> = {
 	queued: { en: "Queued for processing", he: "ממתין לעיבוד" },
 	reading: { en: "Reading file...", he: "קורא קובץ..." },
 	extracting: { en: "Extracting text via Docling...", he: "מחלץ טקסט באמצעות Docling..." },
+	summarizing: { en: "Generating document summary...", he: "מייצר תקציר מסמך..." },
 	checking_duplicate: { en: "Checking for existing document...", he: "בודק אם המסמך כבר קיים..." },
 	chunking: { en: "Chunking document...", he: "מחלק את המסמך לקטעים..." },
 	embedding: { en: "Generating embeddings...", he: "מייצר embeddings..." },
@@ -239,6 +241,13 @@ export class UnifiedDocumentIngestionService {
 				};
 			}
 
+			// Step 1.5: Generate document summary for better retrieval and display
+			this.emitProgress("summarizing");
+			const documentSummary = await this.generateDocumentSummary(
+				extractedText,
+				params.title || params.fileName
+			);
+
 			// Step 2: Generate document hash for deduplication
 			const documentHash = this.hashContent(extractedText);
 
@@ -290,6 +299,7 @@ export class UnifiedDocumentIngestionService {
 				title: params.title || params.fileName.replace(/\.[^/.]+$/, ""),
 				author: params.author,
 				mimeType: params.mimeType,
+				summary: documentSummary,
 			});
 			stats.storageMs = Date.now() - storageStart;
 
@@ -480,6 +490,88 @@ export class UnifiedDocumentIngestionService {
 	}
 
 	/**
+	 * Generate a concise document summary using LLM
+	 * This summary enables better retrieval and display in citations
+	 *
+	 * @param extractedText - Full extracted text from document
+	 * @param title - Document title (if available)
+	 * @returns 1-2 sentence summary describing the document's subject and key content
+	 */
+	private async generateDocumentSummary(
+		extractedText: string,
+		title?: string
+	): Promise<string | null> {
+		try {
+			const { getMemoryEnvConfig } = await import("$lib/server/memory/featureFlags");
+			const config = getMemoryEnvConfig();
+
+			// Use first 3000 chars for summary generation (enough context, not too expensive)
+			const textSample = extractedText.slice(0, 3000);
+			const titleContext = title ? `Document title: "${title}"\n\n` : "";
+
+			const prompt = `${titleContext}Based on the following document excerpt, provide a single concise sentence (max 100 words) that describes:
+1. What this document is about (subject/topic)
+2. Key entities involved (people, organizations, dates if relevant)
+3. The type of document (court ruling, article, report, etc.)
+
+The summary should help someone quickly understand what information this document contains.
+
+Document excerpt:
+${textSample}
+
+Summary:`;
+
+			const controller = new AbortController();
+			const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
+			const response = await fetch(`${config.llmBaseUrl}/chat/completions`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					model: config.llmModel,
+					messages: [
+						{
+							role: "system",
+							content:
+								"You are a document analyst. Generate concise, informative summaries that capture the essence of documents. Respond in the same language as the document. Be factual and specific.",
+						},
+						{ role: "user", content: prompt },
+					],
+					max_tokens: 150,
+					temperature: 0.3,
+					stream: false,
+				}),
+				signal: controller.signal,
+			});
+
+			clearTimeout(timeoutId);
+
+			if (!response.ok) {
+				console.warn("[UnifiedIngestion] Summary generation failed:", response.status);
+				return null;
+			}
+
+			const data = (await response.json()) as {
+				choices?: Array<{ message?: { content?: string } }>;
+			};
+
+			const summary = data.choices?.[0]?.message?.content?.trim();
+			if (summary && summary.length > 10) {
+				console.info("[UnifiedIngestion] Generated document summary:", summary.slice(0, 100));
+				return summary;
+			}
+			return null;
+		} catch (error) {
+			if (error instanceof Error && error.name === "AbortError") {
+				console.warn("[UnifiedIngestion] Summary generation timed out");
+			} else {
+				console.warn("[UnifiedIngestion] Summary generation error:", error);
+			}
+			return null;
+		}
+	}
+
+	/**
 	 * Check if document already exists in memory system
 	 */
 	private async checkExistingDocument(
@@ -530,6 +622,7 @@ export class UnifiedDocumentIngestionService {
 		title: string;
 		author?: string;
 		mimeType: string;
+		summary?: string | null;
 	}): Promise<{ documentId: string; bookId: string }> {
 		const { UnifiedMemoryFacade } = await import("$lib/server/memory");
 		const { collections } = await import("$lib/server/database");
@@ -539,12 +632,13 @@ export class UnifiedDocumentIngestionService {
 		const bookId = new ObjectId().toString();
 		const documentId = `book:${bookId}`;
 
-		// Create book record
+		// Create book record with summary for better retrieval and display
 		await collections.books.insertOne({
 			_id: new ObjectId(bookId),
 			userId: params.userId,
 			title: params.title,
 			author: params.author || "Unknown",
+			summary: params.summary || undefined,
 			uploadTimestamp: new Date(),
 			status: "completed",
 			taskId: bookId,
@@ -574,6 +668,8 @@ export class UnifiedDocumentIngestionService {
 					chunk_index: chunk.chunkIndex,
 					title: params.title,
 					author: params.author,
+					// Include document summary in first chunk for retrieval context
+					document_summary: chunk.chunkIndex === 0 ? (params.summary || null) : null,
 					upload_timestamp: new Date().toISOString(),
 					file_type: params.mimeType,
 					document_hash: params.documentHash,

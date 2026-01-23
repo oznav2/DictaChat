@@ -1,7 +1,77 @@
-<!-- Updated: v0.2.42 MEMORY PERFORMANCE FIX - January 18, 2026 -->
+<!-- Updated: v0.2.45 QUIET HEALTHCHECKS + SLOWER LOCK/CIRCUIT PROBES - January 21, 2026 -->
 # Project Status
 
-**Last Updated**: January 18, 2026 (v0.2.42 - Memory Performance Fix)
+**Last Updated**: January 21, 2026 (v0.2.45 - Quiet Healthchecks + Slower Lock/Circuit Probes)
+
+---
+
+## 📄 UPLOAD PATH FIX FOR LOCAL DEV (January 23, 2026)
+
+**Goal**: Fix document upload failures when running `start-dev.sh` locally.
+
+**Root Cause**: Upload code wrote to `/app/uploads`, which is not writable outside Docker.
+
+**Fix**:
+1. Added a dynamic uploads directory resolver that uses `/app/uploads` in Docker and a local `.uploads` directory in dev.
+2. Normalized legacy `/app/uploads` paths to the local uploads directory when running outside Docker.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/files/uploadFile.ts`
+- `frontend-huggingface/src/lib/server/endpoints/preprocessMessages.ts`
+- `frontend-huggingface/src/routes/api/memory/books/+server.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/toolInvocation.ts`
+
+---
+
+## 🧘 QUIET HEALTHCHECKS + SLOWER LOCK/CIRCUIT PROBES (v0.2.45)
+
+**Goal**: Reduce log pollution from health probes and slow down maintenance loops for local Docker.
+
+**Changes**:
+1. **Docker healthchecks slowed down**: Most service health probes now run every 60s (instead of 5–30s).
+2. **Filtered health endpoints from consolidated logs**: `start-dev.sh` filters `/health`, `/readyz`, and `/api/health` access lines from buffered logs.
+3. **Lock maintenance reduced**: Migration lock refresh reduced from 10s to 60s (lock TTL is 3 minutes).
+4. **Circuit breaker checks reduced**: Embedding circuit breaker health monitoring changed from 10s to 30s.
+
+**Files Modified**:
+- `docker-compose.yml`, `start-dev.sh`
+- `frontend-huggingface/src/lib/migrations/migrations.ts`
+- `frontend-huggingface/src/lib/server/memory/embedding/DictaEmbeddingClient.ts`
+
+---
+
+## 🧹 REMOVE CONVERSATION STATS LOCK LOOP (v0.2.44)
+
+**Goal**: Remove the semaphores-based distributed lock loop (HF multi-tenant artifact) from the local Docker stack.
+
+**Changes**:
+1. **Removed lock maintenance loop**: `refresh-conversation-stats.ts` no longer acquires/refreshes a MongoDB semaphore every 10 seconds; it now computes on startup (if stale) and re-checks once per day.
+2. **Clean shutdown**: Added `stopConversationStatsRefresh()` and wired it into DB shutdown to prevent Mongo operations after disconnect.
+
+**Typecheck/Test Fixes (required to keep CI green)**:
+- Widened config key typing to support arbitrary env keys used across server code.
+- Defaulted `OPENID_NAME_CLAIM` to `"name"` to prevent OIDC parsing failures when unset.
+
+**Files Modified**:
+- `refresh-conversation-stats.ts`, `database.ts`, `config.ts`, `auth.ts`
+
+---
+
+## 🛠️ START-DEV REFACTOR (v0.2.43)
+
+**Goal**: Refactor `start-dev.sh` to align with `deploy.py` methods for starting stack containers, while running the UI locally with `npm run dev`.
+
+**Changes**:
+1.  **Modified `deploy.py`**: Added `--no-frontend` flag to allow deploying backend services without the `frontend-ui` container.
+2.  **Refactored `start-dev.sh`**:
+    *   Replaced manual Docker startup logic with `python3 deploy.py --no-frontend`.
+    *   Added virtual environment (`.venv`) setup and usage, aligning with `start.sh`.
+    *   Removed browser opening logic.
+    *   Kept `npm run dev` for local frontend execution.
+    *   **Optimization**: Removed automatic deletion of `node_modules/.vite` to prevent dependency rebuilds, while retaining `.svelte-kit` cleanup.
+**Files Modified**:
+*   `deploy.py`: Added `--no-frontend` argument and logic to skip `frontend-ui`.
+*   `start-dev.sh`: Updated to use `deploy.py`, added venv support, removed browser opening, and optimized cache cleaning.
 
 ---
 

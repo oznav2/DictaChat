@@ -52,7 +52,12 @@ interface KgEdge {
 const ROUTING_CONCEPTS: Array<{ id: string; label: string; label_he: string; tier: string }> = [
 	// Tools
 	{ id: "web_search", label: "Web Search", label_he: "חיפוש באינטרנט", tier: "memory_bank" },
-	{ id: "document_analysis", label: "Document Analysis", label_he: "ניתוח מסמכים", tier: "documents" },
+	{
+		id: "document_analysis",
+		label: "Document Analysis",
+		label_he: "ניתוח מסמכים",
+		tier: "documents",
+	},
 	{ id: "data_lookup", label: "Data Lookup", label_he: "חיפוש נתונים", tier: "memory_bank" },
 
 	// Topics

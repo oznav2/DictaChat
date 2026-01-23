@@ -3,6 +3,7 @@ target
 .DS_STORE
 .vscode/launch.json
 .env
+frontend-huggingface/.env
 .trae
 .logs
 blog/

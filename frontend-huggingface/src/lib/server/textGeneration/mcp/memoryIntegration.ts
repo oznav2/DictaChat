@@ -22,7 +22,11 @@ import {
 } from "$lib/server/memory/featureFlags";
 import { UnifiedMemoryFacade } from "$lib/server/memory/UnifiedMemoryFacade";
 // Phase: Wire remaining 64 - PromptEngine integration
-import { getPromptEngine, type RenderContext, type PromptEngine } from "$lib/server/memory/PromptEngine";
+import {
+	getPromptEngine,
+	type RenderContext,
+	type PromptEngine,
+} from "$lib/server/memory/PromptEngine";
 import type {
 	RetrievalConfidence,
 	SearchDebug,
@@ -45,6 +49,35 @@ import {
 	detectLanguage,
 	type SupportedLanguage,
 } from "$lib/server/memory/BilingualPrompts";
+
+// ============================================
+// UTILITIES
+// ============================================
+
+/**
+ * Phase 4.4: Wrap a promise with a timeout to prevent indefinite hangs
+ * Used for fire-and-forget background operations that shouldn't block
+ *
+ * @param promise - The promise to wrap
+ * @param timeoutMs - Timeout in milliseconds (default 5000ms)
+ * @param operationName - Name for logging
+ * @returns Promise that resolves with result or rejects on timeout
+ */
+function withTimeout<T>(
+	promise: Promise<T>,
+	timeoutMs: number = 5000,
+	operationName: string = "operation"
+): Promise<T> {
+	return Promise.race([
+		promise,
+		new Promise<T>((_, reject) =>
+			setTimeout(
+				() => reject(new Error(`${operationName} timed out after ${timeoutMs}ms`)),
+				timeoutMs
+			)
+		),
+	]);
+}
 
 // ============================================
 // TYPES
@@ -92,17 +125,9 @@ export interface SearchPositionEntry {
 
 export type SearchPositionMap = Record<string, SearchPositionEntry>;
 
-/**
- * Tool gating configuration based on retrieval confidence
- */
-export interface ToolGatingConfig {
-	/** Tools always allowed regardless of confidence */
-	highConfidence: string[];
-	/** Tools that require memory match to be allowed */
-	mediumConfidence: string[];
-	/** Tools that are blocked without explicit user request */
-	lowConfidence: string[];
-}
+// NOTE: ToolGatingConfig removed in Finding 12 consolidation.
+// Tool gating is now handled exclusively by toolGatingDecision.ts
+// See: decideToolGating() for the single source of truth.
 
 /**
  * Outcome recording parameters
@@ -119,36 +144,35 @@ export interface RecordOutcomeParams {
 }
 
 // ============================================
-// DEFAULT CONFIGURATIONS
+// HELPER FUNCTIONS
 // ============================================
 
 /**
- * Default tool gating configuration
- * Based on rompal_implementation_plan.md Section 9 confidence-based gating
+ * Document MIME types supported for processing
+ * (Moved from ragIntegration.ts in Finding 11 consolidation)
  */
-const DEFAULT_TOOL_GATING: ToolGatingConfig = {
-	// Always allow - core functionality
-	highConfidence: [
-		"search_memory",
-		"get_context_insights",
-		"add_to_memory_bank",
-		"record_response",
-	],
-	// Allow if memory context suggests relevance
-	mediumConfidence: [
-		"tavily_search",
-		"perplexity_ask",
-		"datagov_query",
-		"web_search",
-		"docling_convert",
-	],
-	// Block unless explicitly requested by user or high-confidence memory match
-	lowConfidence: ["code_execution", "file_write", "database_query", "system_command"],
-};
+const DOCUMENT_MIMES = [
+	"application/pdf",
+	"application/msword",
+	"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+	"text/plain",
+	"text/markdown",
+	"application/rtf",
+];
 
-// ============================================
-// HELPER FUNCTIONS
-// ============================================
+/**
+ * Check if conversation has document files attached
+ * (Moved from ragIntegration.ts in Finding 11 consolidation)
+ */
+export function hasDocumentAttachments(
+	messages: Array<{ files?: Array<{ mime?: string }> }>
+): boolean {
+	return messages.some((msg) =>
+		(msg.files ?? []).some(
+			(file) => file?.mime && DOCUMENT_MIMES.some((m) => file.mime?.startsWith(m))
+		)
+	);
+}
 
 /**
  * Estimate context limit based on query complexity
@@ -237,53 +261,16 @@ export function parseSearchPositionMapFromContext(contextText: string): SearchPo
 	return positionMap;
 }
 
-/**
- * Determine if a tool should be allowed based on confidence and memory context
- */
-export function shouldAllowTool(
-	toolName: string,
-	retrievalConfidence: RetrievalConfidence,
-	explicitToolRequest: string | null = null,
-	config: ToolGatingConfig = DEFAULT_TOOL_GATING
-): boolean {
-	// Always allow high-confidence tools (memory system tools)
-	if (config.highConfidence.includes(toolName)) {
-		return true;
-	}
-
-	// Low confidence tools require explicit user request
-	if (config.lowConfidence.includes(toolName)) {
-		return explicitToolRequest === toolName;
-	}
-
-	// Medium confidence tools: allow if retrieval confidence is not high
-	// (if high confidence, we prefer answering from memory)
-	if (config.mediumConfidence.includes(toolName)) {
-		// If retrieval is high confidence, suggest NOT using external tools
-		// But don't block - the model can still choose to use them
-		return true; // Always allow, but the prompt will discourage use if confidence is high
-	}
-
-	// Unknown tools - allow by default
-	return true;
-}
-
-/**
- * Filter tools based on retrieval confidence
- * Returns tools that should be available for this request
- */
-export function filterToolsByConfidence<T extends { function: { name: string } }>(
-	tools: T[],
-	retrievalConfidence: RetrievalConfidence,
-	explicitToolRequest: string | null = null,
-	config: ToolGatingConfig = DEFAULT_TOOL_GATING
-): T[] {
-	// If confidence is high, we could potentially skip all external tools
-	// But for now, we just filter and let the prompt guide the model
-	return tools.filter((tool) =>
-		shouldAllowTool(tool.function.name, retrievalConfidence, explicitToolRequest, config)
-	);
-}
+// ============================================
+// TOOL GATING - REMOVED (Finding 12 Consolidation)
+// ============================================
+// The following functions were removed to eliminate divergence risk:
+// - shouldAllowTool()
+// - filterToolsByConfidence()
+//
+// Tool gating is now handled EXCLUSIVELY by toolGatingDecision.ts
+// Use: import { decideToolGating } from "./toolGatingDecision"
+// ============================================
 
 /**
  * Get prompt hint based on retrieval confidence
@@ -375,17 +362,31 @@ export async function prefetchMemoryContext(
 
 	// Prefetch memory context using UnifiedMemoryFacade
 	const memoryStart = Date.now();
+
+	// Finding 5: Always enforce timeout, even when external signal is provided
+	// This prevents indefinite hangs if caller's signal never fires
+	const timeoutMs = envConfig.prefetchTimeoutMs;
+	const internalController = new AbortController();
+	const timeoutId = setTimeout(() => internalController.abort(), timeoutMs);
+
+	// Combine external signal with internal timeout using AbortSignal.any if available
+	let signal: AbortSignal;
+	if (options.signal) {
+		// If external signal provided, abort on whichever fires first
+		if (typeof AbortSignal.any === "function") {
+			signal = AbortSignal.any([options.signal, internalController.signal]);
+		} else {
+			// Fallback for older Node versions: listen to external signal
+			options.signal.addEventListener("abort", () => internalController.abort());
+			signal = internalController.signal;
+		}
+	} else {
+		signal = internalController.signal;
+	}
+
 	try {
 		const facade = UnifiedMemoryFacade.getInstance();
 		const contextLimit = estimateContextLimit(query);
-
-		// Create AbortSignal with timeout if not provided
-		let signal = options.signal;
-		if (!signal) {
-			const controller = new AbortController();
-			setTimeout(() => controller.abort(), envConfig.prefetchTimeoutMs);
-			signal = controller.signal;
-		}
 
 		const prefetchResult = await facade.prefetchContext({
 			userId,
@@ -431,6 +432,9 @@ export async function prefetchMemoryContext(
 			logger.warn({ err }, "Failed to prefetch memory context");
 		}
 		// Continue without memory - graceful degradation
+	} finally {
+		// Finding 5: Always clear timeout to prevent memory leaks
+		clearTimeout(timeoutId);
 	}
 	result.timing.memoryMs = Date.now() - memoryStart;
 
@@ -445,25 +449,41 @@ export async function prefetchMemoryContext(
  * - Injects memory context as Section 2
  * - Adds confidence hint to guide tool usage
  *
+ * Finding 13: Enhanced to use bilingual formatting helpers
+ *
  * @param result - Memory context result from prefetchMemoryContext
+ * @param options - Optional configuration for language-aware rendering
  * @returns Array of prompt sections to prepend
  */
-export function formatMemoryPromptSections(result: MemoryContextResult): string[] {
+export function formatMemoryPromptSections(
+	result: MemoryContextResult,
+	options?: { language?: SupportedLanguage }
+): string[] {
 	const sections: string[] = [];
+	// Finding 13: Auto-detect language from memory content
+	const language = options?.language ?? detectLanguage(result.memoryContext ?? "");
 
 	// Section 1: Personality (if available)
 	if (result.personalityPrompt) {
-		sections.push(result.personalityPrompt);
+		// Finding 13: Apply RTL direction wrapping for Hebrew personality prompts
+		const wrappedPersonality =
+			language === "he" ? wrapWithDirection(result.personalityPrompt, "he") : result.personalityPrompt;
+		sections.push(wrappedPersonality);
 	}
 
 	// Section 2: Memory context (if available)
 	if (result.memoryContext) {
-		sections.push(result.memoryContext);
+		// Finding 13: Apply direction wrapping based on detected language
+		const wrappedContext =
+			language === "he" ? wrapWithDirection(result.memoryContext, "he") : result.memoryContext;
+		sections.push(wrappedContext);
 
 		// Add confidence hint after memory context
+		// Finding 13: Use bilingual prompt hint based on detected language
 		const confidenceHint = getConfidencePromptHint(
 			result.retrievalConfidence,
-			!!result.memoryContext
+			!!result.memoryContext,
+			language
 		);
 		if (confidenceHint) {
 			sections.push(confidenceHint);
@@ -642,16 +662,20 @@ export async function storeWorkingMemory(params: {
 		// ============================================
 		// CONTENT KG ENTITY EXTRACTION (Phase 3 P2 - Gap 7)
 		// Extract entities from the stored memory and add to Content Graph
+		// Phase 4.4: Wrapped with 3s timeout to prevent hangs
 		// ============================================
 		if (storeResult.memory_id) {
-			void facade
-				.extractAndStoreEntities({
+			void withTimeout(
+				facade.extractAndStoreEntities({
 					userId: params.userId,
 					memoryId: storeResult.memory_id,
 					text,
 					importance: 0.5,
 					confidence: 0.6,
-				})
+				}),
+				3000,
+				"extractAndStoreEntities"
+			)
 				.then((entityResult) => {
 					if (entityResult.entitiesStored > 0) {
 						logger.debug(
@@ -667,13 +691,18 @@ export async function storeWorkingMemory(params: {
 					}
 				})
 				.catch((entityErr) => {
-					logger.debug({ err: entityErr }, "Entity extraction failed, continuing");
+					logger.debug({ err: entityErr }, "Entity extraction failed/timed out, continuing");
 				});
 		}
 
 		// Increment message count for auto-promotion (Roampal pattern)
 		// This triggers promotion every 20 messages
-		void facade.incrementMessageCount(params.userId).catch((err) => {
+		// Phase 4.4: Wrapped with 2s timeout
+		void withTimeout(
+			facade.incrementMessageCount(params.userId),
+			2000,
+			"incrementMessageCount"
+		).catch((err) => {
 			logger.debug({ err }, "Failed to increment message count");
 		});
 
@@ -1241,14 +1270,20 @@ export interface ParseMemoryMarksResult {
  * @deprecated Use getBilingualPrompt("memory_attribution_instruction", "en") instead
  * Kept for backward compatibility with existing tests
  */
-export const MEMORY_ATTRIBUTION_INSTRUCTION = getBilingualPrompt("memory_attribution_instruction", "en");
+export const MEMORY_ATTRIBUTION_INSTRUCTION = getBilingualPrompt(
+	"memory_attribution_instruction",
+	"en"
+);
 
 /**
  * Hebrew version of the attribution instruction
  * @deprecated Use getBilingualPrompt("memory_attribution_instruction", "he") instead
  * Kept for backward compatibility with existing tests
  */
-export const MEMORY_ATTRIBUTION_INSTRUCTION_HE = getBilingualPrompt("memory_attribution_instruction", "he");
+export const MEMORY_ATTRIBUTION_INSTRUCTION_HE = getBilingualPrompt(
+	"memory_attribution_instruction",
+	"he"
+);
 
 /**
  * Parse memory marks from LLM response
@@ -1393,6 +1428,16 @@ export async function recordSelectiveOutcomes(params: {
 	try {
 		const facade = UnifiedMemoryFacade.getInstance();
 
+		// Phase 4.2: Collect all outcome recording promises for parallel execution
+		// (was sequential - 5 memories × 100ms = 500ms, now ~100ms total)
+		const outcomePromises: Array<{
+			position: number;
+			memoryId: string;
+			action: ScoringAction;
+			delta: number;
+			promise: Promise<void>;
+		}> = [];
+
 		// v0.2.12: Apply scoring matrix for upvoted memories
 		for (const position of params.attribution.upvoted) {
 			const memoryId = getMemoryIdByPosition(params.searchPositionMap, position);
@@ -1402,21 +1447,17 @@ export async function recordSelectiveOutcomes(params: {
 
 				// Only record if action suggests score change
 				if (action === "upvote" || action === "slight_up") {
-					try {
-						await facade.recordOutcome({
+					outcomePromises.push({
+						position,
+						memoryId,
+						action,
+						delta,
+						promise: facade.recordOutcome({
 							userId: params.userId,
 							outcome: action === "upvote" ? "worked" : "partial",
 							relatedMemoryIds: [memoryId],
-						});
-						recorded++;
-						logger.debug(
-							{ memoryId, position, action, delta, detectedOutcome: outcome },
-							"Recorded selective outcome (upvoted)"
-						);
-					} catch (err) {
-						errors++;
-						logger.warn({ err, memoryId, position }, "Failed to record positive outcome");
-					}
+						}),
+					});
 				}
 			}
 		}
@@ -1430,22 +1471,35 @@ export async function recordSelectiveOutcomes(params: {
 
 				// Only record if action suggests score change
 				if (action === "downvote" || action === "slight_down") {
-					try {
-						await facade.recordOutcome({
+					outcomePromises.push({
+						position,
+						memoryId,
+						action,
+						delta,
+						promise: facade.recordOutcome({
 							userId: params.userId,
 							outcome: action === "downvote" ? "failed" : "partial",
 							relatedMemoryIds: [memoryId],
-						});
-						recorded++;
-						logger.debug(
-							{ memoryId, position, action, delta, detectedOutcome: outcome },
-							"Recorded selective outcome (downvoted)"
-						);
-					} catch (err) {
-						errors++;
-						logger.warn({ err, memoryId, position }, "Failed to record negative outcome");
-					}
+						}),
+					});
 				}
+			}
+		}
+
+		// Phase 4.2: Execute all outcome recordings in parallel
+		const results = await Promise.allSettled(outcomePromises.map((p) => p.promise));
+		for (let i = 0; i < results.length; i++) {
+			const result = results[i];
+			const { position, memoryId, action, delta } = outcomePromises[i];
+			if (result.status === "fulfilled") {
+				recorded++;
+				logger.debug(
+					{ memoryId, position, action, delta, detectedOutcome: outcome },
+					"Recorded selective outcome"
+				);
+			} else {
+				errors++;
+				logger.warn({ err: result.reason, memoryId, position }, "Failed to record outcome");
 			}
 		}
 
@@ -2256,7 +2310,10 @@ async function getOrInitPromptEngine(): Promise<PromptEngine | null> {
 		const engine = getPromptEngine({ templatesDir, defaultLanguage: "he" });
 		await engine.initialize();
 		_promptEngine = engine;
-		logger.info({ templateCount: engine.listTemplates().length }, "[memoryIntegration] PromptEngine initialized");
+		logger.info(
+			{ templateCount: engine.listTemplates().length },
+			"[memoryIntegration] PromptEngine initialized"
+		);
 		return engine;
 	} catch (err) {
 		logger.warn({ err }, "[memoryIntegration] PromptEngine init failed, using fallback");

@@ -361,7 +361,11 @@ export function handleMessageTraceUpdate(update: MessageTraceUpdate): void {
 
 	switch (update.subtype) {
 		case MessageTraceUpdateType.RunCreated:
-			createRun(update.runId, "en", update.runType as "memory_prefetch" | "tool_execution" | "document_rag" | undefined);
+			createRun(
+				update.runId,
+				"en",
+				update.runType as "memory_prefetch" | "tool_execution" | "document_rag" | undefined
+			);
 			break;
 
 		case MessageTraceUpdateType.StepCreated:

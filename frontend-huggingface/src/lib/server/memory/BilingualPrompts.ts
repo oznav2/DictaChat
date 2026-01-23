@@ -261,36 +261,55 @@ This helps improve memory quality for future conversations. Include ALL memory p
 זה עוזר לשפר את איכות הזיכרון לשיחות עתידיות. כלול את כל מיקומי הזיכרון.`,
 	},
 
-	// Confidence Hints
+	// Confidence Hints - MEMORY-FIRST ARCHITECTURE
+	// These instructions are CRITICAL for preventing unnecessary tool calls when memory has the answer
 	confidence_high: {
-		en: `**MEMORY CONTEXT AVAILABLE (HIGH CONFIDENCE)**
-The memory context above contains highly relevant information for this query.
-You SHOULD be able to answer directly from memory without calling external tools.
-Only use tools if the memory context is clearly insufficient or outdated.`,
-		he: `**הקשר זיכרון זמין (ודאות גבוהה)**
-הקשר הזיכרון למעלה מכיל מידע רלוונטי מאוד לשאילתה זו.
-אתה אמור להיות מסוגל לענות ישירות מהזיכרון ללא שימוש בכלים חיצוניים.
-השתמש בכלים רק אם הקשר הזיכרון אינו מספיק או מיושן.`,
+		en: `**⚠️ CRITICAL: MEMORY-FIRST RESPONSE REQUIRED (HIGH CONFIDENCE)**
+The memory context above contains DIRECTLY RELEVANT information for this query.
+YOU MUST:
+1. Answer FIRST from the memory context provided above
+2. Do NOT call external search tools (tavily, perplexity, web search) - the answer is already in memory
+3. Only use tools if the user explicitly requests NEW/UPDATED information not in memory
+
+The memory context may contain ingested documents, past conversations, or stored knowledge.
+Your FIRST response should come from this context. Tool calls are NOT needed.`,
+		he: `**⚠️ קריטי: נדרשת תשובה מבוססת זיכרון (ודאות גבוהה)**
+הקשר הזיכרון למעלה מכיל מידע רלוונטי ישירות לשאילתה זו.
+עליך:
+1. לענות תחילה מהקשר הזיכרון שסופק למעלה
+2. לא לקרוא לכלי חיפוש חיצוניים (tavily, perplexity, חיפוש אינטרנט) - התשובה כבר בזיכרון
+3. להשתמש בכלים רק אם המשתמש מבקש במפורש מידע חדש/מעודכן שאינו בזיכרון
+
+הקשר הזיכרון עשוי להכיל מסמכים שנקלטו, שיחות קודמות או ידע שנשמר.
+התשובה הראשונה שלך צריכה להגיע מהקשר הזה. אין צורך בקריאות לכלים.`,
 	},
 
 	confidence_medium: {
 		en: `**MEMORY CONTEXT AVAILABLE (MEDIUM CONFIDENCE)**
-The memory context above may contain relevant information.
-Check the memory context first before deciding to use external tools.
-If memory provides a partial answer, consider supplementing with tools.`,
+The memory context above contains potentially relevant information.
+IMPORTANT INSTRUCTIONS:
+1. Check the memory context FIRST - it may already contain the answer
+2. If memory provides a partial answer, START with what you know from memory
+3. You may supplement with tools AFTER providing the memory-based answer
+4. Do NOT skip memory and go straight to tools - that defeats the purpose of memory`,
 		he: `**הקשר זיכרון זמין (ודאות בינונית)**
 הקשר הזיכרון למעלה עשוי להכיל מידע רלוונטי.
-בדוק את הקשר הזיכרון לפני שתחליט להשתמש בכלים חיצוניים.
-אם הזיכרון מספק תשובה חלקית, שקול להשלים עם כלים.`,
+הנחיות חשובות:
+1. בדוק את הקשר הזיכרון תחילה - ייתכן שכבר מכיל את התשובה
+2. אם הזיכרון מספק תשובה חלקית, התחל במה שאתה יודע מהזיכרון
+3. אתה יכול להשלים עם כלים אחרי שסיפקת את התשובה מבוססת הזיכרון
+4. אל תדלג על הזיכרון ותעבור ישירות לכלים - זה מביס את מטרת הזיכרון`,
 	},
 
 	confidence_low: {
 		en: `**MEMORY CONTEXT AVAILABLE (LOW CONFIDENCE)**
 The memory context above has limited relevance to this query.
-You may need to use tools to gather additional information.`,
+You may need to use tools to gather additional information.
+However, still check if ANY part of your answer can come from memory first.`,
 		he: `**הקשר זיכרון זמין (ודאות נמוכה)**
 להקשר הזיכרון למעלה יש רלוונטיות מוגבלת לשאילתה זו.
-ייתכן שתצטרך להשתמש בכלים כדי לאסוף מידע נוסף.`,
+ייתכן שתצטרך להשתמש בכלים כדי לאסוף מידע נוסף.
+עם זאת, עדיין בדוק אם חלק כלשהו מהתשובה יכול להגיע מהזיכרון תחילה.`,
 	},
 
 	// Contextual Guidance
