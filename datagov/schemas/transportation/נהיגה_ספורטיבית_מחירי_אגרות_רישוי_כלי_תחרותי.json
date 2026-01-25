@@ -1,0 +1,47 @@
+{
+  "dataset_id": "5432f529-96e1-45d3-a343-fbeb1659b5f1",
+  "title": "נהיגה ספורטיבית - מחירי אגרות רישוי כלי תחרותי",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "אגרה",
+    "כלי תחרותי",
+    "נהיגה ספורטיבית",
+    "רישיון",
+    "רכב"
+  ],
+  "categories": [
+    "transportation",
+    "culture"
+  ],
+  "keywords": [
+    "רישוי",
+    "התרבות",
+    "תחרותי",
+    "משרד",
+    "נהיגה",
+    "רכב",
+    "אגרות",
+    "אגרה",
+    "כלי",
+    "מחירי",
+    "והספורט",
+    "ספורטיבית",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "2ea68222-1a99-4367-81c9-31511c9d3684",
+      "title": "most.DB.538-1.xlsx",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

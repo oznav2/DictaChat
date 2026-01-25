@@ -1,0 +1,40 @@
+{
+  "dataset_id": "3aa889fe-0baa-4204-93ec-bebaa41346ca",
+  "title": "סקר הרגלי נסיעה של תיירים 2016-2017",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "הרגלי נסיעה",
+    "תיירות"
+  ],
+  "categories": [
+    "transportation",
+    "tourism"
+  ],
+  "keywords": [
+    "נסיעה",
+    "סקר",
+    "בדרכים",
+    "תיירים",
+    "הרגלי",
+    "משרד",
+    "והבטיחות",
+    "התחבורה",
+    "תיירות"
+  ],
+  "resources": [
+    {
+      "resource_id": "933d0df8-1541-429b-bb47-e2d4e4aed1ff",
+      "title": "סקר הרגלי נסיעה של תיירים 2016-2017 ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

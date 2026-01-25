@@ -1,0 +1,137 @@
+{
+  "dataset_id": "0afa9b49-9d28-4348-95fa-75c7beb87483",
+  "title": "סנקציות על פי חוק כפיית ציות",
+  "organization": "בתי הדין הרבניים",
+  "tags": [
+    "דת",
+    "משפט"
+  ],
+  "categories": [
+    "justice",
+    "religion"
+  ],
+  "keywords": [
+    "משפט",
+    "כפיית",
+    "חוק",
+    "הרבניים",
+    "נתינת",
+    "בתי",
+    "סנקציות",
+    "ציות",
+    "הדין",
+    "הסנקציות"
+  ],
+  "resources": [
+    {
+      "resource_id": "a5986bdd-a920-408e-aef0-56d7b485f2e8",
+      "title": "סנקציות על פי חוק כפיית ציות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סנקציות/שנת נתינת הסנקציות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "2008",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2009",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2010",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2011",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2012",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2013",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2014",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2015",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2016",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2017",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2018",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2019",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2020",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2021",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2022",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2023",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2024",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 25
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

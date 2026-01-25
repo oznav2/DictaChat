@@ -1,0 +1,55 @@
+{
+  "dataset_id": "b4c32de1-627c-4b93-8d20-e58f6d44f733",
+  "title": "מאגר מחלות בעלי חיים",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [
+    "בקר",
+    "בריאות ורווחה",
+    "דגים",
+    "וטרינרים",
+    "חקלאות",
+    "מחלות בעלי חיים",
+    "סביבה",
+    "סוסים"
+  ],
+  "categories": [
+    "health",
+    "environment",
+    "water",
+    "welfare",
+    "agriculture"
+  ],
+  "keywords": [
+    "וטרינרים",
+    "המזון",
+    "סוסים",
+    "החקלאות",
+    "מחלות",
+    "בעלי",
+    "משרד",
+    "חיים",
+    "דגים",
+    "בקר",
+    "ורווחה",
+    "חקלאות",
+    "בריאות",
+    "סביבה",
+    "ובטחון"
+  ],
+  "resources": [
+    {
+      "resource_id": "08e21f2a-e635-4b17-92b6-72ef87e2ae72",
+      "title": "מחלות בעלי חיים",
+      "format": "CSV",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

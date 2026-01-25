@@ -1,0 +1,106 @@
+{
+  "dataset_id": "b08ed183-2c26-490f-aa13-f1a7529c3aca",
+  "title": "מרכזי חוסן",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "מרכזי חוסן"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "חוסן",
+    "cities",
+    "phone",
+    "other",
+    "מרכזי",
+    "code",
+    "משרד",
+    "citycode",
+    "city",
+    "address",
+    "institute",
+    "הבריאות",
+    "street",
+    "streetcode",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "457673b2-c3c4-4cb5-909c-03b29d8ce1ff",
+      "title": "מרכזי חוסן",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "institute_code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "institute_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "cityCode",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "streetCode",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "phone2",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "other_cities",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 16
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

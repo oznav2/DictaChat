@@ -1,0 +1,59 @@
+{
+  "dataset_id": "f96d0fb0-442c-4242-914e-38ae978a907b",
+  "title": "רשימת אקוויפרים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "water",
+    "אקוויפר",
+    "מים",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "הרשות",
+    "רשות",
+    "אקוויפר",
+    "למים",
+    "הממשלתית",
+    "המים",
+    "מים",
+    "ולביוב",
+    "קוד",
+    "אקוויפרים",
+    "water"
+  ],
+  "resources": [
+    {
+      "resource_id": "01dd3a60-b536-49e8-8cc7-dffae2933ab5",
+      "title": "רשימת אקוויפרים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד אקוויפר",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם אקוויפר",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 15
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

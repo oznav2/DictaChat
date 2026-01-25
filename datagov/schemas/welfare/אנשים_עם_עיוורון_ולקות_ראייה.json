@@ -1,0 +1,56 @@
+{
+  "dataset_id": "979a2d08-b427-400b-a7fa-a5bee02aaa95",
+  "title": "אנשים עם עיוורון ולקות ראייה",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "כלבי נחייה",
+    "לקות ראייה",
+    "עיוורון"
+  ],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "והביטחון",
+    "ראייה",
+    "נחייה",
+    "משרד",
+    "הרווחה",
+    "אנשים",
+    "כלבי",
+    "עיוורון",
+    "החברתי",
+    "לקות",
+    "ולקות"
+  ],
+  "resources": [
+    {
+      "resource_id": "bafe7f4a-0105-4713-b059-ab17f4dd53bb",
+      "title": "תעודות עיוור",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "9b26269b-a2d7-4321-99d1-a16dd6c8fe81",
+      "title": "דמי אחזקת כלב נחייה",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "f352b113-97ac-4a5f-b491-83bbd2614551",
+      "title": "מרכזים לשיקום אוכלוסיה עם ראייה ירודה",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "dataset_id": "65dafbb0-1fbe-4a4c-bd59-71eadcac3995",
+  "title": "גבולות תצ\"ר",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "גבולות",
+    "המרכז",
+    "ישראל",
+    "למיפוי"
+  ],
+  "resources": [
+    {
+      "resource_id": "128e1667-8423-4377-909e-c1a0451db76c",
+      "title": "tazarim15052024.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "4cfdb058-4943-4377-8199-ed6c26f4ad84",
+      "title": "פירוט שמות שדות בשכבת גבולות תצ\"ר",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

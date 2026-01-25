@@ -1,0 +1,49 @@
+{
+  "dataset_id": "12d269c0-6e11-4bea-91bc-a80f0f5b8096",
+  "title": "שערים ממוצעים לכל המטבעות היציגים - 2001",
+  "organization": "בנק ישראל",
+  "tags": [
+    "2001",
+    "אוצר וכלכלה",
+    "בנק ישראל",
+    "שער יציג",
+    "שערי מטבע",
+    "שערים ממוצעים"
+  ],
+  "categories": [
+    "finance",
+    "environment",
+    "economy"
+  ],
+  "keywords": [
+    "המטבעות",
+    "ממוצעים",
+    "וכלכלה",
+    "ישראל",
+    "מטבע",
+    "יציג",
+    "שערים",
+    "שערי",
+    "בנק",
+    "היציגים",
+    "אוצר",
+    "שער",
+    "לכל"
+  ],
+  "resources": [
+    {
+      "resource_id": "53948378-3b40-458a-856b-a7d05527fb68",
+      "title": "שערים ממוצעים לכל המטבעות היציגים - 2001",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

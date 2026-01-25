@@ -1,0 +1,77 @@
+{
+  "dataset_id": "a8f92cf8-761d-477f-9693-0d68bace794d",
+  "title": "רשימת יצרנים שקיבלו אישור לסימון של מזון ארוז מראש בקוד יצרן",
+  "organization": "משרד הכלכלה והתעשייה",
+  "tags": [
+    "כלכלה",
+    "תעשייה"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "אישור",
+    "תעשייה",
+    "name",
+    "ארוז",
+    "והתעשייה",
+    "producer",
+    "factory",
+    "company",
+    "יצרנים",
+    "בקוד",
+    "הכלכלה",
+    "יצרן",
+    "number",
+    "כלכלה",
+    "לסימון",
+    "code",
+    "משרד",
+    "מזון",
+    "מראש",
+    "address",
+    "שקיבלו"
+  ],
+  "resources": [
+    {
+      "resource_id": "40f7e258-86e3-4fce-b663-bde0645616b2",
+      "title": "קוד יצרן",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "producer_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "factory_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "company_number",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 131
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

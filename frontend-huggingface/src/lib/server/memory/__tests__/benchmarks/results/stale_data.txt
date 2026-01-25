@@ -1,23 +1,23 @@
 ============================= test session starts =============================
 platform: node v20.18.1
 test framework: vitest
-timestamp: 2026-01-11T16:08:11.242Z
+timestamp: 2026-01-21T22:00:10.380Z
 rootdir: /home/ilan/BricksLLM/frontend-huggingface
 
 collecting ... collected 12 items
 
-test_stale_data::test_ttl_expiration_detection PASSED (10ms) [total_items=3.000, expired_at_2_hours=1.000, expired_at_2_days=2.000, expired_at_60_days=3.000] [  8%]
-test_stale_data::test_hebrew_ttl_expiration PASSED (13ms) [hebrew_items_found=2.000, with_ttl=2.000] [ 17%]
-test_stale_data::test_freshness_score_calculation PASSED (10ms) [total_items=5.000, avg_freshness=0.500, fresh_count=1.000, aging_count=2.000, stale_count=1.000, expired_count=1.000] [ 25%]
+test_stale_data::test_ttl_expiration_detection PASSED (7ms) [total_items=3.000, expired_at_2_hours=1.000, expired_at_2_days=2.000, expired_at_60_days=3.000] [  8%]
+test_stale_data::test_hebrew_ttl_expiration PASSED (2ms) [hebrew_items_found=2.000, with_ttl=2.000] [ 17%]
+test_stale_data::test_freshness_score_calculation PASSED (2ms) [total_items=5.000, avg_freshness=0.500, fresh_count=1.000, aging_count=2.000, stale_count=1.000, expired_count=1.000] [ 25%]
 test_stale_data::test_freshness_weighted_search PASSED (1ms) [found_old=1.000, found_new=1.000, total_results=2.000] [ 33%]
-test_stale_data::test_auto_staleness_detection PASSED (7ms) [total_items=5.000, stale_after_2_days=3.000, ephemeral_items=2.000] [ 42%]
+test_stale_data::test_auto_staleness_detection PASSED (5ms) [total_items=5.000, stale_after_2_days=3.000, ephemeral_items=2.000] [ 42%]
 test_stale_data::test_hebrew_staleness_flagging PASSED (1ms) [hebrew_items=2.000, stale_hebrew=1.000] [ 50%]
-test_stale_data::test_update_vs_replace PASSED (0ms) [total_results=3.000, has_original=1.000, has_replacement=1.000, has_addition=1.000, replacement_count=1.000, addition_count=1.000] [ 58%]
-test_stale_data::test_bilingual_update_chain PASSED (0ms) [english_search_results=3.000, hebrew_search_results=3.000, total_versions=3.000] [ 67%]
+test_stale_data::test_update_vs_replace PASSED (1ms) [total_results=3.000, has_original=1.000, has_replacement=1.000, has_addition=1.000, replacement_count=1.000, addition_count=1.000] [ 58%]
+test_stale_data::test_bilingual_update_chain PASSED (1ms) [english_search_results=3.000, hebrew_search_results=3.000, total_versions=3.000] [ 67%]
 test_stale_data::test_tombstone_for_deleted_items PASSED (0ms) [total_results=3.000, active_items=2.000, tombstones=1.000] [ 75%]
-test_stale_data::test_hebrew_tombstone PASSED (1ms) [hebrew_results=2.000, hebrew_tombstones=1.000] [ 83%]
-test_stale_data::test_access_frequency_decay PASSED (0ms) [total_results=3.000, avg_decay_score=0.500, high_access_count=1.000, low_access_count=2.000] [ 92%]
-test_stale_data::test_stale_data PASSED (2ms) [total_items=8.000, retrieved=8.000, fresh_items=2.000, stale_items=4.000, tombstones=2.000, hebrew_items=4.000, freshness_detection_working=1.000] [100%]
+test_stale_data::test_hebrew_tombstone PASSED (0ms) [hebrew_results=2.000, hebrew_tombstones=1.000] [ 83%]
+test_stale_data::test_access_frequency_decay PASSED (1ms) [total_results=3.000, avg_decay_score=0.500, high_access_count=1.000, low_access_count=2.000] [ 92%]
+test_stale_data::test_stale_data PASSED (3ms) [total_items=8.000, retrieved=8.000, fresh_items=2.000, stale_items=4.000, tombstones=2.000, hebrew_items=4.000, freshness_detection_working=1.000] [100%]
 
 ============================== benchmark summary ==============================
 
@@ -61,5 +61,5 @@ Metrics Summary:
   freshness_detection_working: avg=1.000, min=1.000, max=1.000
 
 ============================== test results ===================================
-12 passed, 0 failed in 0.10s
+12 passed, 0 failed in 0.08s
 ===============================================================================

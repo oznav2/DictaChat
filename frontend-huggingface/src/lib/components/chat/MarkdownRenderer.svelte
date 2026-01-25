@@ -15,7 +15,13 @@
 
 	let { content, sources = [], loading = false }: Props = $props();
 
-	let blocks: BlockToken[] = $state(processBlocksSync(content, sources));
+	// Phase 23.8 P1.3: Skip sync processing for large content to prevent UI freeze
+	// Large content (>5000 chars) should go directly to async processing
+	// This prevents main thread blocking during initial render of long messages
+	const SYNC_SIZE_THRESHOLD = 5000;
+	const shouldSyncProcess = content.length <= SYNC_SIZE_THRESHOLD;
+
+	let blocks: BlockToken[] = $state(shouldSyncProcess ? processBlocksSync(content, sources) : []);
 	let worker: Worker | null = null;
 	let latestRequestId = 0;
 

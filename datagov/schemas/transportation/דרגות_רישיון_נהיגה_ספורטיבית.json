@@ -1,0 +1,92 @@
+{
+  "dataset_id": "3b460734-ecbf-422c-833b-11082288cd30",
+  "title": "דרגות רישיון נהיגה ספורטיבית",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "דרגות",
+    "נהיגה",
+    "נהיגה ספורטיבית",
+    "רישיון"
+  ],
+  "categories": [
+    "transportation",
+    "culture"
+  ],
+  "keywords": [
+    "פעימות",
+    "לפחות",
+    "סוג",
+    "מנוע",
+    "בסמק",
+    "גיל",
+    "התרבות",
+    "נפח",
+    "הכלי",
+    "בכוחות",
+    "ספורטיבית",
+    "סוס",
+    "מרבי",
+    "בשנים",
+    "תיוג",
+    "רישיון",
+    "התחרותי",
+    "משרד",
+    "והספורט",
+    "הספק",
+    "נהיגה",
+    "הנוהג",
+    "דרגות"
+  ],
+  "resources": [
+    {
+      "resource_id": "4b947b0a-811c-472e-9e16-637202a80f50",
+      "title": "most.DB.508.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג הכלי התחרותי",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "נפח מנוע מרבי בסמק -  2 פעימות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נפח מנוע מרבי בסמק -  4 פעימות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הספק\nמרבי\nבכוחות סוס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גיל הנוהג בשנים הוא\nלפחות -",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיוג",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 15
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

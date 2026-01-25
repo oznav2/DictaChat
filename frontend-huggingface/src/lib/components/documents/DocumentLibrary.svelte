@@ -37,19 +37,34 @@
 	let sourceTypeFilter = $state<string>("");
 	let languageFilter = $state<string>("");
 
-	async function loadDocuments() {
+	// Phase: Wire remaining 64 - Pagination state
+	const ITEMS_PER_PAGE = 12;
+	let currentPage = $state(0);
+	let totalItems = $state(0);
+	let totalPages = $derived(Math.ceil(totalItems / ITEMS_PER_PAGE));
+
+	async function loadDocuments(resetPage = false) {
 		loading = true;
 		error = null;
+
+		// Reset to first page when filters change
+		if (resetPage) {
+			currentPage = 0;
+		}
 
 		try {
 			const params = new URLSearchParams();
 			if (sourceTypeFilter) params.set("sourceType", sourceTypeFilter);
 			if (languageFilter) params.set("language", languageFilter);
+			// Phase: Wire remaining 64 - Add pagination params
+			params.set("limit", ITEMS_PER_PAGE.toString());
+			params.set("offset", (currentPage * ITEMS_PER_PAGE).toString());
 
 			const res = await fetch(`${base}/api/documents?${params.toString()}`);
 			if (res.ok) {
 				const data = await res.json();
 				documents = data.documents || [];
+				totalItems = data.total ?? documents.length;
 			} else {
 				error = "Failed to load documents";
 			}
@@ -57,6 +72,14 @@
 			error = err instanceof Error ? err.message : "Failed to load documents";
 		} finally {
 			loading = false;
+		}
+	}
+
+	// Phase: Wire remaining 64 - Pagination navigation
+	function goToPage(page: number) {
+		if (page >= 0 && page < totalPages) {
+			currentPage = page;
+			loadDocuments();
 		}
 	}
 
@@ -129,7 +152,7 @@
 			<select
 				bind:value={sourceTypeFilter}
 				class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800"
-				onchange={() => loadDocuments()}
+				onchange={() => loadDocuments(true)}
 			>
 				<option value="">כל המקורות</option>
 				<option value="upload">העלאות</option>
@@ -141,7 +164,7 @@
 			<select
 				bind:value={languageFilter}
 				class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-800"
-				onchange={() => loadDocuments()}
+				onchange={() => loadDocuments(true)}
 			>
 				<option value="">כל השפות</option>
 				<option value="he">עברית</option>
@@ -245,6 +268,56 @@
 					</button>
 				{/each}
 			</div>
+
+			<!-- Phase: Wire remaining 64 - Pagination controls -->
+			{#if totalPages > 1}
+				<nav class="mt-6 flex items-center justify-center gap-2" aria-label="Pagination">
+					<button
+						type="button"
+						onclick={() => goToPage(currentPage - 1)}
+						disabled={currentPage === 0}
+						class="rounded-lg border border-gray-300 px-3 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600"
+					>
+						הקודם
+					</button>
+
+					<div class="flex items-center gap-1">
+						{#each Array(Math.min(totalPages, 7)) as _, i}
+							{@const pageNum =
+								totalPages <= 7
+									? i
+									: currentPage < 3
+										? i
+										: currentPage > totalPages - 4
+											? totalPages - 7 + i
+											: currentPage - 3 + i}
+							<button
+								type="button"
+								onclick={() => goToPage(pageNum)}
+								class="rounded-lg px-3 py-1.5 text-sm transition-colors
+									{pageNum === currentPage
+									? 'bg-blue-500 text-white'
+									: 'border border-gray-300 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700'}"
+							>
+								{pageNum + 1}
+							</button>
+						{/each}
+					</div>
+
+					<button
+						type="button"
+						onclick={() => goToPage(currentPage + 1)}
+						disabled={currentPage >= totalPages - 1}
+						class="rounded-lg border border-gray-300 px-3 py-1.5 text-sm disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600"
+					>
+						הבא
+					</button>
+
+					<span class="mr-4 text-sm text-gray-500 dark:text-gray-400">
+						{totalItems} מסמכים
+					</span>
+				</nav>
+			{/if}
 		{/if}
 	</div>
 </div>

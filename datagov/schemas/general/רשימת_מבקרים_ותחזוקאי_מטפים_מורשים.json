@@ -1,0 +1,107 @@
+{
+  "dataset_id": "d0ebccda-eb09-49cb-b9d3-09bd2c50592a",
+  "title": "רשימת מבקרים ותחזוקאי מטפים מורשים",
+  "organization": "כבאות והצלה לישראל",
+  "tags": [
+    "מבקר",
+    "מטפים",
+    "תחזוקה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "כבאות",
+    "phone",
+    "status",
+    "simuchin",
+    "לישראל",
+    "ותחזוקאי",
+    "והצלה",
+    "company",
+    "adress",
+    "date",
+    "first",
+    "type",
+    "תחזוקה",
+    "מטפים",
+    "מורשים",
+    "last",
+    "מבקר",
+    "מבקרים",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "ea004fd2-251e-4ea1-9b03-0eefb51b8f74",
+      "title": "מבקרים ותחזוקאי מטפים מורשים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "company",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "first_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "last_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "simuchin",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1401
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "dataset_id": "9847774b-8872-4324-ac0c-c24e53c39b3d",
+  "title": "שערי חליפין יציגים ל- 24 מטבעות, כולל סל המטבעות (נתונים יומיים) 1997 - 2000",
+  "organization": "בנק ישראל",
+  "tags": [
+    "אוצר וכלכלה"
+  ],
+  "categories": [
+    "finance",
+    "environment",
+    "economy"
+  ],
+  "keywords": [
+    "מטבעות",
+    "המטבעות",
+    "חליפין",
+    "וכלכלה",
+    "ישראל",
+    "שערי",
+    "בנק",
+    "יומיים",
+    "אוצר",
+    "יציגים"
+  ],
+  "resources": [
+    {
+      "resource_id": "39cbad5c-cc51-4dc1-a273-82e8292605d0",
+      "title": "שערי חליפין יציגים ל- 24 מטבעות, כולל סל המטבעות (נתונים יומיים) 1997 - 2000",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

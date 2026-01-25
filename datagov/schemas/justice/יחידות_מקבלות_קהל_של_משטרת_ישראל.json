@@ -1,0 +1,106 @@
+{
+  "dataset_id": "6dfae256-ba57-469a-adad-66d0e72b53b1",
+  "title": "יחידות מקבלות קהל של משטרת ישראל",
+  "organization": "משטרת ישראל",
+  "tags": [
+    "מיקום",
+    "מיקומי",
+    "משטרה",
+    "משטרת ישראל",
+    "קהל"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "notes",
+    "יחידות",
+    "משטרה",
+    "itm",
+    "ישראל",
+    "sitetype",
+    "long",
+    "lat",
+    "מיקום",
+    "address",
+    "מקבלות",
+    "mahozname",
+    "קהל",
+    "מיקומי",
+    "merhavname",
+    "unitname",
+    "משטרת"
+  ],
+  "resources": [
+    {
+      "resource_id": "848b57bf-362f-4eda-993a-3c74b1feef44",
+      "title": "יחידות מקבלות קהל של משטרת ישראל",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "UnitName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "MahozName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "MerhavName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "SiteType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X_ITM",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Y_ITM",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Long_X_",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Lat_Y",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 212
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

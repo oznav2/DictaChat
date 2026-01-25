@@ -1,0 +1,75 @@
+{
+  "dataset_id": "d882fbbb-179b-475b-9d3b-edd82ec262c5",
+  "title": "בתי ספר ירוקים",
+  "organization": "המשרד להגנת הסביבה",
+  "tags": [
+    "הגנת הסביבה",
+    "מוסדות חינוך",
+    "עיר ירוקה"
+  ],
+  "categories": [
+    "education",
+    "environment"
+  ],
+  "keywords": [
+    "הסביבה",
+    "מחוז",
+    "ירוקה",
+    "בית",
+    "חינוך",
+    "בתי",
+    "עיר",
+    "הספר",
+    "המשרד",
+    "רשות",
+    "מוסדות",
+    "מעמד",
+    "הגנת",
+    "להגנת",
+    "ירוקים",
+    "מקומית",
+    "ספר"
+  ],
+  "resources": [
+    {
+      "resource_id": "08b04a94-8c4d-48a3-a2e4-64957adbfe3f",
+      "title": "greenschools2020.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם בית הספר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "רשות מקומית",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "מעמד",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 21
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "dataset_id": "b2f22645-5068-487b-82d3-78e3490ef49d",
+  "title": "מיסי הדלק (בלו)",
+  "organization": "משרד האנרגיה ",
+  "tags": [
+    "אנרגיה",
+    "בלו",
+    "דלק",
+    "משרד האנרגיה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "מחיר",
+    "מוצר",
+    "יחידות",
+    "משרד",
+    "דלק",
+    "בלו",
+    "אנרגיה",
+    "האנרגיה",
+    "תאריך",
+    "הדלק",
+    "מיסי"
+  ],
+  "resources": [
+    {
+      "resource_id": "bdce45e7-9fe9-473e-bd51-cef1d787a951",
+      "title": "בלו על מוצרי דלק בשקלים חדשים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מוצר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "יחידות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מחיר",
+          "type": "numeric",
+          "semantic": "price"
+        }
+      ],
+      "total_records": 1288
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

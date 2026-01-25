@@ -9,7 +9,7 @@ export interface Book {
 	status: "processing" | "completed" | "failed";
 	totalChunks: number;
 	chunksProcessed: number;
-	taskId: string;
+	taskId?: string;
 	processingStage?: string;
 	processingMessage?: string;
 	doclingStatus?: string;
@@ -34,6 +34,10 @@ export interface Book {
 	fileHash?: string; // Raw file bytes hash for upload dedup
 	fileName?: string; // Original file name
 	fileSize?: number; // File size in bytes
+	conversationId?: string | null;
+	source?: string;
+	recognizedFromPreviousChat?: boolean;
+	linkedToBookId?: string | null;
 	lastAccessedAt?: Date;
 	accessCount?: number;
 

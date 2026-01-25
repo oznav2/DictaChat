@@ -1,0 +1,133 @@
+{
+  "dataset_id": "54b65747-904e-42e1-9316-0575ebbc1216",
+  "title": "מאגר עסקים קולטי קהל",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "כלכלה עסקים ויזמות"
+  ],
+  "categories": [
+    "water",
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "באר",
+    "עסקים",
+    "ויזמות",
+    "קולטי",
+    "lat",
+    "business",
+    "kind",
+    "עיריית",
+    "address",
+    "שבע",
+    "קהל",
+    "full",
+    "location",
+    "lng",
+    "signs",
+    "כלכלה"
+  ],
+  "resources": [
+    {
+      "resource_id": "5f4f8927-b890-42ed-bb25-58d48b5f180f",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "location_lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "location_lng",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "business_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "full_address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "business_kind",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "signs",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3054
+    },
+    {
+      "resource_id": "5efb7171-fefe-4354-b913-b86a22af8140",
+      "title": "XLSX",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "location_lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "location_lng",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "business_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "full_address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "business_kind",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "signs",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3054
+    },
+    {
+      "resource_id": "8364f5ba-aa22-41cc-ac95-0dec6e8dc092",
+      "title": "JSON",
+      "format": "JSON",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

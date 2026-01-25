@@ -1,0 +1,51 @@
+{
+  "dataset_id": "72f84b9d-8714-4f9f-a0a9-12ca48642599",
+  "title": "נתוני סקרי פרויקט קו רציף (שילובים)",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "ארצי",
+    "משרד התחבורה",
+    "רכבת",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "ארצי",
+    "רכבת",
+    "תחבורה",
+    "בדרכים",
+    "משרד",
+    "רציף",
+    "והבטיחות",
+    "סקרי",
+    "פרויקט",
+    "שילובים",
+    "ציבורית",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c7511cf4-4093-4bee-95e0-905f648f41c4",
+      "title": "Kav_Ratzif_Surveys",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "7540c30c-de79-450a-a68e-18162b96c2d5",
+      "title": "Train_Stations_Survey_Data_Metadata",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

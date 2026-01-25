@@ -1,0 +1,143 @@
+{
+  "dataset_id": "e941665c-53df-48b0-8a1f-e5ae719cf695",
+  "title": "תחנות שי\"ל (שירות ייעוץ לאזרח)",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "ייעוץ",
+    "ייעוץ לאזרח",
+    "שיל"
+  ],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "כתובת",
+    "תחנה",
+    "קבלת",
+    "ייעוץ",
+    "רחוב",
+    "דואר",
+    "שעות",
+    "שיל",
+    "טלפון",
+    "פקס",
+    "מנהל",
+    "והביטחון",
+    "מחוז",
+    "הערות",
+    "עיר",
+    "משרד",
+    "קהל",
+    "שירות",
+    "החברתי",
+    "תחנות",
+    "קואורדינטות",
+    "תחומי",
+    "לאזרח",
+    "שפות",
+    "אלקטרוני",
+    "הרווחה"
+  ],
+  "resources": [
+    {
+      "resource_id": "1687655a-79ac-4858-bb35-dac71377b2e0",
+      "title": "תחנות שי\"ל (שירות ייעוץ לאזרח)",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תחנה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "מנהל",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מספר",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "עיר",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "שפות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שעות קבלת קהל",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תחומי ייעוץ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קואורדינטות X",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "קואורדינטות Y",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "הערות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 85
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

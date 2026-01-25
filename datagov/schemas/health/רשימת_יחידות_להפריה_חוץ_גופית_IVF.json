@@ -1,0 +1,71 @@
+{
+  "dataset_id": "e4b78889-ac98-46fe-bb9f-e34f5e3d0ed8",
+  "title": "רשימת יחידות להפריה חוץ גופית - IVF",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "IVF",
+    "הפריה חוץ גופי"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "להפריה",
+    "טלפון",
+    "יחידות",
+    "ivf",
+    "בית",
+    "ישוב",
+    "משרד",
+    "מנהל",
+    "החולים",
+    "גופי",
+    "חוץ",
+    "הבריאות",
+    "היחידה",
+    "גופית",
+    "הפריה"
+  ],
+  "resources": [
+    {
+      "resource_id": "4fb49082-e09e-456b-b40b-22b746bf8321",
+      "title": "יחידות החג.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "בית החולים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מנהל היחידה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 28
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

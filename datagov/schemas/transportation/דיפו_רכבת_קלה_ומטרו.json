@@ -1,0 +1,118 @@
+{
+  "dataset_id": "7cac04c9-d84d-4966-83a1-ef5839e522f0",
+  "title": "דיפו רכבת קלה ומטרו",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "דיפו",
+    "חצב",
+    "מטרו",
+    "ממג",
+    "רכבת קלה",
+    "רקל"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "objectid",
+    "status",
+    "gis",
+    "רכבת",
+    "מטרו",
+    "בדרכים",
+    "רקל",
+    "ומטרו",
+    "והבטיחות",
+    "משרד",
+    "type",
+    "קלה",
+    "חצב",
+    "yearmonth",
+    "shape",
+    "דיפו",
+    "area",
+    "length",
+    "dunam",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "fc97ea96-0e81-4221-bd91-b28a91395926",
+      "title": "DEPO_LRT_METRO_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "67188d1e-5ea2-45dc-be8f-8f4675edf309",
+      "title": "DEPO_LRT_METRO_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1373a7ca-3ef8-48d4-9e11-24c80755bdd9",
+      "title": "DEPO_LRT_METRO_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "SHAPE_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Area",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DUNAM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 16
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

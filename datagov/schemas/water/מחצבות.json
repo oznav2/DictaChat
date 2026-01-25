@@ -1,0 +1,74 @@
+{
+  "dataset_id": "9a6d3ca2-1f4e-4f2e-8865-e0086a581a8e",
+  "title": "מחצבות",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "אזורי תעשייה",
+    "מחצבות"
+  ],
+  "categories": [
+    "water",
+    "economy"
+  ],
+  "keywords": [
+    "תעשייה",
+    "name",
+    "area",
+    "objectid",
+    "מחצבות",
+    "status",
+    "אדומים",
+    "עיריית",
+    "length",
+    "אזורי",
+    "מעלה",
+    "shape"
+  ],
+  "resources": [
+    {
+      "resource_id": "688a5f1d-75d1-46a6-829d-57a3125ab97a",
+      "title": "רשימת מחצבות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "P_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "I_STATUS_D",
+          "type": "timestamp",
+          "semantic": "status"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 5
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

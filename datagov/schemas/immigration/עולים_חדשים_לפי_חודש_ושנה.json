@@ -1,0 +1,58 @@
+{
+  "dataset_id": "ee6fa2f7-e5c7-4268-9e8a-d23294ddacfe",
+  "title": "עולים חדשים לפי חודש ושנה",
+  "organization": "משרד העלייה והקליטה",
+  "tags": [],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "חודש",
+    "olim",
+    "משרד",
+    "והקליטה",
+    "עולים",
+    "year",
+    "month",
+    "חדשים",
+    "העלייה",
+    "ושנה"
+  ],
+  "resources": [
+    {
+      "resource_id": "99a3db09-aa88-4af1-81d2-ecf3c791002a",
+      "title": "עולים חדשים בין השנים 1989 ל - 2023, לפי חודשים בשנה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "olim",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 420
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

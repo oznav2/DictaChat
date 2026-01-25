@@ -1,0 +1,121 @@
+{
+  "dataset_id": "9acb0467-38c7-4c5b-8360-d076e8048fee",
+  "title": "היחידה לחופש המידע - מאגר עתירות",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "עתירות",
+    "העותר",
+    "היחידה",
+    "מענה",
+    "לחופש",
+    "בזמנים",
+    "בעתירה",
+    "בחוק",
+    "הגשת",
+    "הקבועים",
+    "מעמד",
+    "מחוז",
+    "העתירה",
+    "משרד",
+    "המבוקש",
+    "המשיב",
+    "מתן",
+    "תאריך",
+    "המשפטים",
+    "משיב"
+  ],
+  "resources": [
+    {
+      "resource_id": "28b9da01-bef5-4c89-bffd-ff79d85bf48f",
+      "title": "היחידה לחופש המידע - מאגר עתירות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר העתירה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך הגשת העתירה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "מעמד העותר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם המשיב 1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם המשיב 2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם המשיב 3",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מעמד משיב 1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מעמד משיב 2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מעמד משיב 3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "המידע המבוקש בעתירה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אי מתן מענה בזמנים הקבועים בחוק / א",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 976
+    },
+    {
+      "resource_id": "f9d151f4-2051-4e09-b057-1babbfabdc16",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

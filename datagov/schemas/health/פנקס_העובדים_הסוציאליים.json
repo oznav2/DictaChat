@@ -1,0 +1,88 @@
+{
+  "dataset_id": "4f361ce6-f30f-4629-b4ba-1ad19039e745",
+  "title": "פנקס העובדים הסוציאליים",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "בריאות ורווחה",
+    "עובדים סוציאליים",
+    "פנקס",
+    "רישום"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "הסוציאליים",
+    "רישום",
+    "ישוב",
+    "משרד",
+    "פרטי",
+    "פנקס",
+    "העובדים",
+    "מגורים",
+    "סוציאליים",
+    "עובדים",
+    "ורווחה",
+    "משפחה",
+    "הרווחה",
+    "החברתי",
+    "והביטחון",
+    "בריאות",
+    "תאריך"
+  ],
+  "resources": [
+    {
+      "resource_id": "629fcca1-67b0-49b9-b873-6e6a805c4e91",
+      "title": "הסבר נתונים בקובץ פנקס עובדים סוציאליים",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0f25d8f5-eecc-4d63-8914-38d59f19925b",
+      "title": "פנקס העובדים הסוציאליים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם-משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם-פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר רישום",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך רישום",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "ישוב מגורים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 47653
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

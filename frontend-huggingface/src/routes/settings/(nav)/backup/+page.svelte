@@ -12,7 +12,11 @@
 	let mergeStrategy = $state<MergeStrategy>("merge");
 	let lastImportResult = $state<Record<string, unknown> | null>(null);
 	let importError = $state<string | null>(null);
-	let preRestoreBackup = $state<{ exportedAt: string; size_bytes: number; payload: unknown } | null>(null);
+	let preRestoreBackup = $state<{
+		exportedAt: string;
+		size_bytes: number;
+		payload: unknown;
+	} | null>(null);
 
 	let exportFormat = $state<"json" | "zip">("zip");
 	let includeArchived = $state(true);
@@ -80,7 +84,9 @@
 			const res = await fetch(`${base}/api/memory/backup/estimate?${params.toString()}`);
 			const data = await res.json().catch(() => null);
 			if (!res.ok) {
-				throw new Error((data && (data.error || data.message)) || `Estimate failed (${res.status})`);
+				throw new Error(
+					(data && (data.error || data.message)) || `Estimate failed (${res.status})`
+				);
 			}
 			estimate = (data as { estimate?: BackupEstimate }).estimate ?? null;
 		} catch (err) {
@@ -147,7 +153,9 @@
 		importing = true;
 		try {
 			const payload = await readBackupFile(file);
-			const endpoint = importDryRun ? `${base}/api/memory/backup/import` : `${base}/api/memory/backup/restore`;
+			const endpoint = importDryRun
+				? `${base}/api/memory/backup/import`
+				: `${base}/api/memory/backup/restore`;
 			const body = importDryRun
 				? { payload, dryRun: true, mergeStrategy }
 				: { payload, mergeStrategy };
@@ -162,9 +170,13 @@
 				throw new Error((data && (data.error || data.message)) || `Import failed (${res.status})`);
 			}
 			if (!importDryRun && data && typeof data === "object") {
-				const d = data as { preRestore?: { exportedAt: string; size_bytes: number; payload: unknown }; import?: unknown };
+				const d = data as {
+					preRestore?: { exportedAt: string; size_bytes: number; payload: unknown };
+					import?: unknown;
+				};
 				preRestoreBackup = d.preRestore ?? null;
-				lastImportResult = (d.import as Record<string, unknown>) ?? (data as Record<string, unknown>);
+				lastImportResult =
+					(d.import as Record<string, unknown>) ?? (data as Record<string, unknown>);
 			} else {
 				lastImportResult = data as Record<string, unknown>;
 			}
@@ -230,7 +242,9 @@
 		>
 			<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">ייצוא גיבוי / Export</h2>
 
-			<div class="mt-2 rounded-lg border border-gray-200 bg-gray-50 p-3 text-xs text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+			<div
+				class="mt-2 rounded-lg border border-gray-200 bg-gray-50 p-3 text-xs text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+			>
 				<div class="flex items-center justify-between gap-2">
 					<div class="font-semibold">הערכת גודל / Size estimate</div>
 					<button
@@ -253,7 +267,9 @@
 						<span class="text-gray-500 dark:text-gray-400">•</span>
 						<span>{estimate.total_docs} מסמכים</span>
 						<span class="text-gray-500 dark:text-gray-400">•</span>
-						<span>Qdrant: {estimate.qdrant.ok ? "OK" : "DOWN"} ({estimate.qdrant.point_count} points)</span>
+						<span
+							>Qdrant: {estimate.qdrant.ok ? "OK" : "DOWN"} ({estimate.qdrant.point_count} points)</span
+						>
 					</div>
 				{/if}
 			</div>
@@ -379,7 +395,9 @@
 				</div>
 
 				{#if !importDryRun}
-					<div class="rounded-md border border-amber-200 bg-amber-50 p-2 text-xs text-amber-800 dark:border-amber-800/30 dark:bg-amber-900/10 dark:text-amber-200">
+					<div
+						class="rounded-md border border-amber-200 bg-amber-50 p-2 text-xs text-amber-800 dark:border-amber-800/30 dark:bg-amber-900/10 dark:text-amber-200"
+					>
 						שחזור אמיתי ייצור אוטומטית גיבוי “Pre-restore” לפני הייבוא.
 					</div>
 				{/if}
@@ -416,7 +434,9 @@
 				{/if}
 
 				{#if preRestoreBackup}
-					<div class="rounded-md border border-gray-200 bg-white p-3 text-xs dark:border-gray-700 dark:bg-gray-900">
+					<div
+						class="rounded-md border border-gray-200 bg-white p-3 text-xs dark:border-gray-700 dark:bg-gray-900"
+					>
 						<div class="flex items-center justify-between gap-2">
 							<div class="text-gray-700 dark:text-gray-200">
 								נוצר Pre-restore: <span class="font-mono">{preRestoreBackup.exportedAt}</span> •

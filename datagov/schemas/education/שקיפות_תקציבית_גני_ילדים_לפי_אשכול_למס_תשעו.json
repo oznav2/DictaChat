@@ -1,0 +1,43 @@
+{
+  "dataset_id": "73b0298b-6808-4a7a-bbf0-273178df914e",
+  "title": "שקיפות תקציבית גני ילדים לפי אשכול למ\"ס תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "גני ילדים",
+    "חינוך",
+    "תקציב"
+  ],
+  "categories": [
+    "education",
+    "finance",
+    "welfare"
+  ],
+  "keywords": [
+    "אשכול",
+    "תקציב",
+    "חינוך",
+    "משרד",
+    "החינוך",
+    "תקציבית",
+    "גני",
+    "שקיפות",
+    "ילדים",
+    "תשע"
+  ],
+  "resources": [
+    {
+      "resource_id": "8f85ffa4-a0c7-44a7-b2ee-5477ede26616",
+      "title": "שקיפות תקציבית גני ילדים לפי אשכול למ\"ס תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "dataset_id": "5de14d12-d5d7-475d-ade1-5dbd0ef9d086",
+  "title": "מדידות איכות במעיינות",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "quality",
+    "spring",
+    "water",
+    "water quality",
+    "איכות מים",
+    "דגימות",
+    "יונים ראשיים",
+    "מים",
+    "מעיין",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "פרמטר",
+    "ראשיים",
+    "עברית",
+    "מדידה",
+    "רשות",
+    "איכות",
+    "תאור",
+    "מעבדה",
+    "הממשלתית",
+    "מים",
+    "מדידות",
+    "תוצאה",
+    "הידרולוגית",
+    "דגימה",
+    "water",
+    "דגימות",
+    "spring",
+    "יחידת",
+    "סמל",
+    "למים",
+    "יונים",
+    "תאריך",
+    "במעיינות",
+    "אנגלית",
+    "הרשות",
+    "מוסד",
+    "דוגם",
+    "מקוצר",
+    "quality",
+    "מעיין",
+    "שנה",
+    "ולביוב",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "63e978d1-51e0-4f24-94cb-fc8396d961ab",
+      "title": "מדידות איכות במעיינות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר זיהוי",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם עברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם אנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מוסד דוגם",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם מעבדה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנה הידרולוגית",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך דגימה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סמל פרמטר",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "תאור מקוצר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תוצאה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "יחידת מדידה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 77202
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "dataset_id": "5220b44e-cb75-43f3-a2ba-63427cb13695",
+  "title": "רבני העדה האתיופית",
+  "organization": "המשרד לשירותי דת",
+  "tags": [],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "position",
+    "familyname",
+    "name",
+    "phone",
+    "המשרד",
+    "place",
+    "רבני",
+    "לשירותי",
+    "העדה",
+    "האתיופית"
+  ],
+  "resources": [
+    {
+      "resource_id": "cd9f47b3-e4fa-42c9-ad6b-97410c78725b",
+      "title": "רשימה ארצית רבנים וקייסים העדה האתיופית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Position",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FamilyName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Place",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Phone",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 75
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -22,9 +22,16 @@ export interface IToolFilterService {
 }
 
 export interface ILoopDetectorService {
-	detectToolLoop(toolCalls: any[]): boolean;
-	detectContentLoop(content: string): boolean;
-	reset(): void;
+	/**
+	 * Detect if tool calls are in a repetition loop
+	 * Gemini Finding 3+4: conversationId passed as parameter for stateless design
+	 */
+	detectToolLoop(toolCalls: any[], conversationId: string): boolean;
+	/**
+	 * Detect if content is being repeated
+	 * Gemini Finding 3+4: conversationId passed as parameter for stateless design
+	 */
+	detectContentLoop(content: string, conversationId: string): boolean;
 }
 
 export interface IClientPoolService {
@@ -58,92 +65,49 @@ export interface ILoggingService {
 }
 
 /**
- * Service interfaces
+ * Service registration config
+ * Finding 9b: Removed duplicate interface declarations
  */
-export interface IToolFilterService {
-	filterToolsByIntent(
-		allTools: any[],
-		userQuery: string,
-		options?: { hasDocuments?: boolean }
-	): { filtered: any[]; categories: string[] };
-	clearCache(): void;
-}
-
-export interface ILoopDetectorService {
-	detectToolLoop(toolCalls: any[]): boolean;
-	detectContentLoop(content: string): boolean;
-	reset(): void;
-}
-
-export interface IClientPoolService {
-	getClient(server: any, signal?: AbortSignal): Promise<any>;
-	releaseClient(server: any, client: any): void;
-	drainPool(): Promise<void>;
-	getPoolStats(): Record<string, { total: number; inUse: number; available: number }>;
-}
-
-export interface IUrlValidationService {
-	validateUrl(urlString: string): { isValid: boolean; error?: string };
-}
-
-export interface IArgumentSanitizationService {
-	sanitizeArguments(
-		toolName: string,
-		args: Record<string, unknown>
-	): {
-		success: boolean;
-		sanitized?: Record<string, unknown>;
-		error?: string;
-		warnings?: string[];
-	};
-}
-
-export interface ILoggingService {
-	debug(message: string, metadata?: Record<string, unknown>): void;
-	info(message: string, metadata?: Record<string, unknown>): void;
-	warn(message: string, metadata?: Record<string, unknown>): void;
-	error(message: string, error?: Error, metadata?: Record<string, unknown>): void;
+interface ServiceConfig {
+	factory: () => unknown;
+	singleton: boolean;
 }
 
 /**
  * Service container implementation
+ * Finding 9: Fixed to properly respect singleton flag
  */
 export class ServiceContainer {
-	private services = new Map<string, any>();
-	private singletons = new Map<string, any>();
+	private services = new Map<string, ServiceConfig>();
+	private singletons = new Map<string, unknown>();
 
 	/**
 	 * Register a service
 	 */
 	register<T>(key: string, factory: () => T, singleton: boolean = true): void {
-		if (singleton) {
-			// For singletons, store the factory and create on first access
-			this.services.set(key, factory);
-		} else {
-			// For transient services, store the factory directly
-			this.services.set(key, factory);
-		}
+		// Store factory with singleton flag to properly track registration intent
+		this.services.set(key, { factory, singleton });
 	}
 
 	/**
 	 * Resolve a service
 	 */
 	resolve<T>(key: string): T {
-		const service = this.services.get(key);
-		if (!service) {
+		const config = this.services.get(key);
+		if (!config) {
 			throw new Error(`Service '${key}' not registered`);
 		}
 
-		// Check if it's a singleton and already created
-		if (this.singletons.has(key)) {
-			return this.singletons.get(key);
+		// For singletons, return cached instance if available
+		if (config.singleton && this.singletons.has(key)) {
+			return this.singletons.get(key) as T;
 		}
 
-		// Create the service
-		const instance = typeof service === "function" ? service() : service;
+		// Create the service instance
+		const instance = config.factory() as T;
 
-		// Store as singleton if requested
-		if (this.services.has(key) && !this.singletons.has(key)) {
+		// Only cache if singleton flag is true
+		if (config.singleton) {
 			this.singletons.set(key, instance);
 		}
 

@@ -1,0 +1,38 @@
+{
+  "dataset_id": "c05c4b4c-3e14-42a4-8056-42ac7410804d",
+  "title": "תמונה חינוכית מוסדות תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "מוסדות_חינוך",
+    "תמונה_חינוכית"
+  ],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "חינוך",
+    "משרד",
+    "החינוך",
+    "מוסדות",
+    "תמונה",
+    "חינוכית",
+    "תשע"
+  ],
+  "resources": [
+    {
+      "resource_id": "a477d1ff-596e-48f8-a769-3bb5eb28bca9",
+      "title": "תמונה חינוכית מוסדות תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

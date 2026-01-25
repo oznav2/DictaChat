@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { slide, scale } from "svelte/transition";
+	import { cubicOut, backOut } from "svelte/easing";
+	import { browser } from "$app/environment";
 	import { MessageToolUpdateType, type MessageToolUpdate } from "$lib/types/MessageUpdate";
 	import {
 		isMessageToolCallUpdate,
@@ -11,6 +14,10 @@
 	import { page } from "$app/state";
 	import CarbonChevronRight from "~icons/carbon/chevron-right";
 	import BlockWrapper from "./BlockWrapper.svelte";
+
+	// Respect user's motion preferences
+	const prefersReducedMotion =
+		browser && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 	interface Props {
 		tool: MessageToolUpdate[];
@@ -104,27 +111,35 @@
 
 {#snippet icon()}
 	{#if toolSuccess}
-		<LucideCheck class="size-3.5 text-purple-600 dark:text-purple-400" />
+		<div
+			class="tool-success-icon"
+			in:scale={{ duration: prefersReducedMotion ? 0 : 300, easing: backOut }}
+		>
+			<LucideCheck class="size-3.5 text-purple-600 dark:text-purple-400" />
+		</div>
 	{:else}
-		<LucideHammer
-			class="size-3.5 {toolError
-				? 'text-red-500 dark:text-red-400'
-				: 'text-purple-600 dark:text-purple-400'}"
-		/>
+		<div class="tool-icon {isExecuting ? 'tool-executing' : ''}">
+			<LucideHammer
+				class="size-3.5 {toolError
+					? 'text-red-500 dark:text-red-400'
+					: 'text-purple-600 dark:text-purple-400'}"
+			/>
+		</div>
 	{/if}
 {/snippet}
 
 {#if toolFnName}
 	<BlockWrapper {icon} {iconBg} {iconRing} {hasNext} loading={isExecuting}>
 		<!-- Header row -->
-		<div class="flex w-full select-none items-center gap-2">
+		<div class="tool-header flex w-full select-none items-center gap-2">
 			<button
 				type="button"
-				class="flex flex-1 cursor-pointer items-center gap-2 text-left"
+				class="flex flex-1 cursor-pointer items-center gap-2 text-left transition-colors duration-200"
 				onclick={() => (isOpen = !isOpen)}
+				aria-expanded={isOpen}
 			>
 				<span
-					class="text-sm font-medium {isExecuting
+					class="tool-label text-sm font-medium transition-colors duration-200 {isExecuting
 						? 'text-purple-700 dark:text-purple-300'
 						: toolError
 							? 'text-red-600 dark:text-red-400'
@@ -132,7 +147,7 @@
 				>
 					{toolError ? "Error calling" : toolDone ? "Called" : "Calling"} tool
 					<code
-						class="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-xs text-gray-500 opacity-90 dark:bg-gray-800 dark:text-gray-400"
+						class="tool-name rounded bg-gray-100 px-1.5 py-0.5 font-mono text-xs text-gray-500 opacity-90 transition-colors duration-200 dark:bg-gray-800 dark:text-gray-400"
 					>
 						{availableTools.find((entry) => entry.name === toolFnName)?.displayName ?? toolFnName}
 					</code>
@@ -141,29 +156,34 @@
 
 			<button
 				type="button"
-				class="cursor-pointer"
+				class="chevron-btn cursor-pointer rounded p-0.5 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-700"
 				onclick={() => (isOpen = !isOpen)}
 				aria-label={isOpen ? "Collapse" : "Expand"}
 			>
 				<CarbonChevronRight
-					class="size-4 text-gray-400 transition-transform duration-200 {isOpen ? 'rotate-90' : ''}"
+					class="chevron-icon size-4 text-gray-400 transition-transform duration-300 ease-out {isOpen
+						? 'rotate-90'
+						: ''}"
 				/>
 			</button>
 		</div>
 
 		<!-- Expandable content -->
 		{#if isOpen}
-			<div class="mt-2 space-y-3">
+			<div
+				class="tool-content mt-2 space-y-3"
+				transition:slide={{ duration: prefersReducedMotion ? 0 : 250, easing: cubicOut }}
+			>
 				{#each tool as update, i (`${update.subtype}-${i}`)}
 					{#if update.subtype === MessageToolUpdateType.Call}
-						<div class="space-y-1">
+						<div class="tool-section space-y-1">
 							<div
 								class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500"
 							>
 								Input
 							</div>
 							<div
-								class="rounded-md border border-gray-100 bg-white p-2 text-gray-500 dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-400"
+								class="rounded-md border border-gray-100 bg-white p-2 text-gray-500 transition-colors duration-200 dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-400"
 							>
 								<pre class="whitespace-pre-wrap break-all font-mono text-xs">{formatValue(
 										update.call.parameters
@@ -171,7 +191,7 @@
 							</div>
 						</div>
 					{:else if update.subtype === MessageToolUpdateType.Error}
-						<div class="space-y-1">
+						<div class="tool-section tool-error-section space-y-1">
 							<div
 								class="text-[10px] font-semibold uppercase tracking-wider text-red-500 dark:text-red-400"
 							>
@@ -184,7 +204,7 @@
 							</div>
 						</div>
 					{:else if isMessageToolResultUpdate(update) && update.result.status === ToolResultStatus.Success && update.result.display}
-						<div class="space-y-1">
+						<div class="tool-section tool-success-section space-y-1">
 							<div class="flex items-center gap-2">
 								<div
 									class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500"
@@ -201,14 +221,14 @@
 									stroke-width="2"
 									stroke-linecap="round"
 									stroke-linejoin="round"
-									class="text-emerald-500"
+									class="success-checkmark text-emerald-500"
 								>
 									<circle cx="12" cy="12" r="10"></circle>
 									<path d="m9 12 2 2 4-4"></path>
 								</svg>
 							</div>
 							<div
-								class="scrollbar-custom rounded-md border border-gray-100 bg-white p-2 text-gray-500 dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-400"
+								class="scrollbar-custom rounded-md border border-gray-100 bg-white p-2 text-gray-500 transition-colors duration-200 dark:border-gray-700 dark:bg-gray-800/50 dark:text-gray-400"
 							>
 								{#each parseToolOutputs(update.result.outputs) as parsedOutput}
 									<div class="space-y-2">
@@ -222,7 +242,7 @@
 												{#each parsedOutput.images as image, imageIndex}
 													<img
 														alt={`Tool result image ${imageIndex + 1}`}
-														class="max-h-60 rounded border border-gray-200 dark:border-gray-700"
+														class="max-h-60 rounded border border-gray-200 transition-transform duration-200 hover:scale-[1.02] dark:border-gray-700"
 														src={`data:${image.mimeType};base64,${image.data}`}
 													/>
 												{/each}
@@ -239,7 +259,7 @@
 							</div>
 						</div>
 					{:else if isMessageToolResultUpdate(update) && update.result.status === ToolResultStatus.Error && update.result.display}
-						<div class="space-y-1">
+						<div class="tool-section tool-error-section space-y-1">
 							<div
 								class="text-[10px] font-semibold uppercase tracking-wider text-red-500 dark:text-red-400"
 							>
@@ -258,3 +278,151 @@
 		{/if}
 	</BlockWrapper>
 {/if}
+
+<style>
+	/* Tool icon animations */
+	.tool-icon {
+		transition: transform 0.2s ease;
+	}
+
+	.tool-executing {
+		animation: toolPulse 1.5s ease-in-out infinite;
+	}
+
+	@keyframes toolPulse {
+		0%,
+		100% {
+			transform: scale(1);
+			opacity: 1;
+		}
+		50% {
+			transform: scale(1.1);
+			opacity: 0.8;
+		}
+	}
+
+	/* Success icon pop animation */
+	.tool-success-icon {
+		animation: successPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+
+	@keyframes successPop {
+		0% {
+			transform: scale(0);
+			opacity: 0;
+		}
+		70% {
+			transform: scale(1.2);
+		}
+		100% {
+			transform: scale(1);
+			opacity: 1;
+		}
+	}
+
+	/* Success checkmark animation */
+	.success-checkmark {
+		animation: checkPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+	}
+
+	@keyframes checkPop {
+		0% {
+			transform: scale(0);
+			opacity: 0;
+		}
+		100% {
+			transform: scale(1);
+			opacity: 1;
+		}
+	}
+
+	/* Content fade-in within slide */
+	.tool-content {
+		animation: contentFadeIn 0.25s ease-out 0.05s both;
+	}
+
+	@keyframes contentFadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	/* Section stagger animation */
+	.tool-section {
+		animation: sectionSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+	}
+
+	.tool-section:nth-child(1) {
+		animation-delay: 0ms;
+	}
+	.tool-section:nth-child(2) {
+		animation-delay: 50ms;
+	}
+	.tool-section:nth-child(3) {
+		animation-delay: 100ms;
+	}
+	.tool-section:nth-child(n + 4) {
+		animation-delay: 150ms;
+	}
+
+	@keyframes sectionSlideIn {
+		from {
+			opacity: 0;
+			transform: translateY(4px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	/* Error section shake on appearance */
+	.tool-error-section {
+		animation: errorShake 0.4s ease-out;
+	}
+
+	@keyframes errorShake {
+		0%,
+		100% {
+			transform: translateX(0);
+		}
+		20% {
+			transform: translateX(-4px);
+		}
+		40% {
+			transform: translateX(4px);
+		}
+		60% {
+			transform: translateX(-2px);
+		}
+		80% {
+			transform: translateX(2px);
+		}
+	}
+
+	/* Mobile touch feedback */
+	@media (hover: none) {
+		.tool-header:active {
+			transform: scale(0.99);
+			transition: transform 0.1s ease;
+		}
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.tool-icon,
+		.tool-executing,
+		.tool-success-icon,
+		.success-checkmark,
+		.tool-content,
+		.tool-section,
+		.tool-error-section,
+		.tool-header {
+			animation: none !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+</style>

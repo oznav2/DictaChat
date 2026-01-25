@@ -1,0 +1,348 @@
+{
+  "dataset_id": "02789da8-7a3e-4bfc-b771-1732b1cf403c",
+  "title": "תאונות דרכים עם נפגעים - 2023 - PUF מקוצר",
+  "organization": "הלשכה המרכזית לסטטיסטיקה",
+  "tags": [
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "yom",
+    "bashavua",
+    "תחבורה",
+    "shaa",
+    "status",
+    "mahoz",
+    "simun",
+    "נפגעים",
+    "הלשכה",
+    "לסטטיסטיקה",
+    "thum",
+    "ishuv",
+    "mekom",
+    "teuna",
+    "sug",
+    "haziya",
+    "דרכים",
+    "humrat",
+    "avir",
+    "haza",
+    "ezor",
+    "had",
+    "ironi",
+    "zurat",
+    "fikt",
+    "maslul",
+    "rehov",
+    "rohav",
+    "ezem",
+    "teura",
+    "maamad",
+    "puf",
+    "מסמך",
+    "מילון",
+    "kvish",
+    "shnat",
+    "mezeg",
+    "zomet",
+    "kivun",
+    "ofen",
+    "tivi",
+    "dereh",
+    "layla",
+    "rav",
+    "minizipali",
+    "tik",
+    "המרכזית",
+    "pne",
+    "tkinut",
+    "semel",
+    "nafa",
+    "bayit",
+    "תאונות",
+    "merhak",
+    "mehirut",
+    "מקוצר",
+    "yehida",
+    "muteret",
+    "geografi",
+    "hodesh",
+    "igun",
+    "timrur",
+    "yishuv"
+  ],
+  "resources": [
+    {
+      "resource_id": "46284f0c-ef59-4b63-b1a4-c93aafddf91a",
+      "title": "מבוא.docx",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "7725f888-0c51-44e7-8c5e-6771af01929a",
+      "title": "Data dictionary document - accidents",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מסמך מילון נתונים – תאונות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 201
+    },
+    {
+      "resource_id": "7e6194a3-cc27-4de6-91d4-025f26520617",
+      "title": "   data",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "pk_teuna_fikt",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_tik",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "THUM_GEOGRAFI",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SUG_DEREH",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SEMEL_YISHUV",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "REHOV1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "REHOV2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "BAYIT",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ZOMET_IRONI",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "KVISH1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "KVISH2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "KM",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ZOMET_LO_IRONI",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "YEHIDA",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SHNAT_TEUNA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "HODESH_TEUNA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SHAA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SUG_YOM",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YOM_LAYLA",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YOM_BASHAVUA",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "HUMRAT_TEUNA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SUG_TEUNA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "HAD_MASLUL",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "RAV_MASLUL",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MEHIRUT_MUTERET",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TKINUT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ROHAV",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SIMUN_TIMRUR",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TEURA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MEZEG_AVIR",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PNE_KVISH",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SUG_EZEM",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MERHAK_EZEM",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LO_HAZA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "OFEN_HAZIYA",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MEKOM_HAZIYA",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "KIVUN_HAZIYA",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MAHOZ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NAFA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "EZOR_TIVI",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MAAMAD_MINIZIPALI",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ZURAT_ISHUV",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "STATUS_IGUN",
+          "type": "numeric",
+          "semantic": "status"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 8832
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

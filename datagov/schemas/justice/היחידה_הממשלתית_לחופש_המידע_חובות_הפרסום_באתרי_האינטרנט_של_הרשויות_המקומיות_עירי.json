@@ -1,0 +1,62 @@
+{
+  "dataset_id": "950e5f64-7b19-44d2-818c-187ba3c6353a",
+  "title": "היחידה הממשלתית לחופש המידע-חובות הפרסום באתרי האינטרנט של הרשויות המקומיות-עיריות",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice",
+    "communications"
+  ],
+  "keywords": [
+    "עמודה",
+    "המקומיות",
+    "משרד",
+    "הרשויות",
+    "הממשלתית",
+    "היחידה",
+    "לחופש",
+    "הפרסום",
+    "האינטרנט",
+    "עיריות",
+    "באתרי",
+    "חובות",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "8be11226-18b4-42f3-94c1-e2f54a4e94f6",
+      "title": "חובות הפרסום באתרי הרשויות המקומיות-עיריות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "עמודה1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עמודה2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עמודה3",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 46
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

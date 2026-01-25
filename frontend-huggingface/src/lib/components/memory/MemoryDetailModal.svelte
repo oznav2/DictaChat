@@ -32,16 +32,20 @@
 		working: "זיכרון עבודה",
 		history: "היסטוריה",
 		patterns: "דפוסים",
-		books: "ספרים",
+		documents: "מסמכים",
 		memory_bank: "בנק זיכרון",
+		datagov_schema: "DataGov סכמות",
+		datagov_expansion: "DataGov הרחבות",
 	};
 
 	const tierColors: Record<MemoryTier, string> = {
 		working: "bg-blue-500",
 		history: "bg-purple-500",
 		patterns: "bg-green-500",
-		books: "bg-amber-500",
+		documents: "bg-amber-500",
 		memory_bank: "bg-pink-500",
+		datagov_schema: "bg-slate-500",
+		datagov_expansion: "bg-slate-500",
 	};
 
 	function getScoreColor(score: number): string {

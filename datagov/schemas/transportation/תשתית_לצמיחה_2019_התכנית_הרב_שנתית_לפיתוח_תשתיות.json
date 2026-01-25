@@ -1,0 +1,55 @@
+{
+  "dataset_id": "daa60fd8-564b-45ae-9eb1-89b13a5ef802",
+  "title": "תשתית לצמיחה 2019 - התכנית הרב שנתית לפיתוח תשתיות",
+  "organization": "משרד ראש הממשלה ",
+  "tags": [
+    "משרד האוצר",
+    "משרד האנרגיה",
+    "משרד החינוך",
+    "משרד התחבורה והבטיחות בדרכים",
+    "משרד התקשורת",
+    "משרד ראש הממשלה",
+    "תשתיות"
+  ],
+  "categories": [
+    "transportation",
+    "education",
+    "technology",
+    "communications"
+  ],
+  "keywords": [
+    "הממשלה",
+    "שנתית",
+    "בדרכים",
+    "משרד",
+    "התכנית",
+    "החינוך",
+    "לצמיחה",
+    "תשתיות",
+    "הרב",
+    "התקשורת",
+    "והבטיחות",
+    "האנרגיה",
+    "לפיתוח",
+    "תשתית",
+    "ראש",
+    "האוצר",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "59a4ea7f-bc99-4bc1-b34b-8b320f51887a",
+      "title": "תשתית לצמיחה 2019 רשימת פרויקטים.xlsx",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

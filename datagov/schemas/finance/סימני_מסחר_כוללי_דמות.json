@@ -1,0 +1,30 @@
+{
+  "dataset_id": "a54eb76c-90ea-4903-abc2-6973c70ef425",
+  "title": "סימני מסחר כוללי דמות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "סמני מסחר כולל דמות"
+  ],
+  "categories": [
+    "finance",
+    "justice",
+    "economy"
+  ],
+  "keywords": [
+    "משרד",
+    "דמות",
+    "מסחר",
+    "סמני",
+    "סימני",
+    "המשפטים",
+    "כוללי"
+  ],
+  "resources": [],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

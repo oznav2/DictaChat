@@ -1,0 +1,115 @@
+{
+  "dataset_id": "c91245f3-dc46-4604-a00d-f903d355c53e",
+  "title": "מאגר השאלות והתשובות הרשמי למבחן עיוני ייעודי לרוכבי אופניים חשמליים (A3) בשפה האמהרית",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "מבחן נהיגה עיוני",
+    "משרד התחבורה",
+    "שאלות תאוריה"
+  ],
+  "categories": [
+    "transportation",
+    "water"
+  ],
+  "keywords": [
+    "language",
+    "והתשובות",
+    "אופניים",
+    "מבחן",
+    "חשמליים",
+    "הרשמי",
+    "ייעודי",
+    "בדרכים",
+    "שאלות",
+    "השאלות",
+    "האמהרית",
+    "והבטיחות",
+    "category",
+    "description",
+    "תאוריה",
+    "בשפה",
+    "משרד",
+    "pubdate",
+    "למבחן",
+    "עיוני",
+    "לרוכבי",
+    "lastbuilddate",
+    "version",
+    "title",
+    "נהיגה",
+    "generator",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "25619d6d-37f0-4163-87cc-78e142ae0ebd",
+      "title": "theoryexamhe_a3_data_yellow_AM.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "version",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lastBuildDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "generator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "language",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "title2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "description4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "category",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "pubDate",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 58
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

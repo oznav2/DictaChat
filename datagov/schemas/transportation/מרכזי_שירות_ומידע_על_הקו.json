@@ -1,0 +1,267 @@
+{
+  "dataset_id": "88417eb2-78dc-4550-b076-054723db4b07",
+  "title": "מרכזי שירות ומידע על-הקו",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "notesheb",
+    "nameofstationarb",
+    "תחבורה",
+    "mondayhours",
+    "chargingcompanyheb",
+    "notesarb",
+    "tuesdayhours",
+    "nameofstationheb",
+    "noteseng",
+    "placeeng",
+    "ravkavservices",
+    "cityheb",
+    "cityarb",
+    "addressheb",
+    "chargingcompanyarb",
+    "saturdayhours",
+    "בדרכים",
+    "agencyarb",
+    "addresseng",
+    "acceptcreditcard",
+    "nameofstationeng",
+    "והבטיחות",
+    "latitude",
+    "placearb",
+    "placeheb",
+    "acceptcash",
+    "cityeng",
+    "thursdayhours",
+    "משרד",
+    "sundayhours",
+    "manned",
+    "chargingcompanyeng",
+    "שירות",
+    "agencyeng",
+    "agencyheb",
+    "ציבורית",
+    "accessible",
+    "wednesdayhours",
+    "מרכזי",
+    "הקו",
+    "addressarb",
+    "anonymouscard",
+    "longitude",
+    "phonenumber",
+    "ומידע",
+    "fridayhours",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "3322791c-0450-404a-9e19-416fc9693537",
+      "title": "AllHakav-ChargingRavKav.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "NameOfStationHeb",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "nameofstationeng",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "nameofstationarb",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "agencyheb",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "agencyeng",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "agencyarb",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "chargingcompanyheb",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "chargingcompanyeng",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "chargingcompanyarb",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "cityheb",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "cityeng",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "cityarb",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "addressheb",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "addresseng",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "addressarb",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "placeheb",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "placeeng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "placearb",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PhoneNumber",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "latitude",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "longitude",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "acceptcash",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "acceptcreditcard",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "manned",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ravkavservices",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "anonymouscard",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "accessible",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sundayhours",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "mondayhours",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "tuesdayhours",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "wednesdayhours",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "thursdayhours",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "fridayhours",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "saturdayhours",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "notesheb",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "noteseng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "notesarb",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 142
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

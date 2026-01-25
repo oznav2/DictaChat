@@ -1,0 +1,142 @@
+{
+  "dataset_id": "c1bc8fa2-72c4-44e0-b9c6-a7a4832a2e7d",
+  "title": "אשפוזיות לגמילה מסמים ומאלכוהול",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "אשפוזיות",
+    "אשפוזית",
+    "גמילה מאלכוהול",
+    "גמילה מסמים",
+    "מוסד גמילה"
+  ],
+  "categories": [
+    "health",
+    "finance",
+    "water"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "לגמילה",
+    "manager",
+    "city",
+    "institute",
+    "אשפוזיות",
+    "fax",
+    "אשפוזית",
+    "email",
+    "הבריאות",
+    "street",
+    "streetcode",
+    "code",
+    "משרד",
+    "מאלכוהול",
+    "מסמים",
+    "num",
+    "ומאלכוהול",
+    "zip",
+    "מוסד",
+    "notes",
+    "building",
+    "citycode",
+    "address",
+    "גמילה"
+  ],
+  "resources": [
+    {
+      "resource_id": "2b197f80-e3c9-4ac8-a734-b1a1625770ed",
+      "title": "אשפוזיות לגמילה מסמים ומאלכוהול",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "institute_code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "institute_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "cityCode",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "streetCode",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Building_num",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Zip_code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "phone2",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 26
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "dataset_id": "505aa85e-a49f-4a49-aea2-4cc7b6e44e92",
+  "title": "קונסולי כבוד של מדינת ישראל",
+  "organization": "משרד החוץ",
+  "tags": [
+    "משרד החוץ",
+    "קונסול כבוד"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "קונסולי",
+    "מדינת",
+    "החוץ",
+    "appointment",
+    "date",
+    "number",
+    "consul",
+    "משרד",
+    "mobile",
+    "כבוד",
+    "area",
+    "country",
+    "ישראל",
+    "honorary",
+    "title",
+    "קונסול",
+    "address",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "06bd9490-bcdd-402a-8eaa-2c67b25b69ed",
+      "title": "קונסול כבוד בישראל בעברית ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "honorary_consul_title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "area",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "phone_number",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "mobile_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "appointment_date",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 150
+    },
+    {
+      "resource_id": "455ee10b-5b31-47a8-856a-7fb152c028c1",
+      "title": "קונסול כבוד בישראל באנגלית ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "honorary_consul_title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "area",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "phone_number",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "mobile_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "appointment_date",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 150
+    },
+    {
+      "resource_id": "9209e586-2b5c-4783-9837-e61ba6642132",
+      "title": "קונסול כבוד בחו\"ל בעברית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "honorary_consul_title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "area",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "phone_number",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "mobile_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "appointment_date",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 103
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": true
+  }
+}

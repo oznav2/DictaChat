@@ -1,0 +1,52 @@
+{
+  "dataset_id": "7f5b06d7-b246-4d24-81f1-ff7023e85281",
+  "title": "ספירות תנועה 2019",
+  "organization": "הלשכה המרכזית לסטטיסטיקה",
+  "tags": [
+    "מימון של משרד התחבורה",
+    "ספירות תנועה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תנועה",
+    "משרד",
+    "הלשכה",
+    "המרכזית",
+    "לסטטיסטיקה",
+    "מימון",
+    "ספירות",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "a500aeae-9a79-46de-8893-5490dbb3dc7b",
+      "title": "puf_2018.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "167d4eb8-2b93-4430-80e5-fce2ac3e1f2d",
+      "title": "ספירות תנועה 2018",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "f9575ca0-cb68-4c7b-bad0-1ad8bacd20b8",
+      "title": "puf109.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

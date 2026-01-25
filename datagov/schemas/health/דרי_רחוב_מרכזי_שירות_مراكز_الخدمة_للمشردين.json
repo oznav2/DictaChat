@@ -1,0 +1,132 @@
+{
+  "dataset_id": "2cfc41aa-7842-4fb1-a7e8-a9e002b89867",
+  "title": "דרי רחוב - מרכזי שירות مراكز الخدمة للمشردين",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "בריאות ורווחה",
+    "דרי רחוב"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "gender",
+    "identification",
+    "phone",
+    "manager",
+    "age",
+    "frame",
+    "רחוב",
+    "operator",
+    "outerhome",
+    "adress",
+    "spreading",
+    "והביטחון",
+    "בריאות",
+    "settlement",
+    "משרד",
+    "type",
+    "דרי",
+    "ורווחה",
+    "allocation",
+    "שירות",
+    "החברתי",
+    "מרכזי",
+    "population",
+    "הרווחה",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "41edf481-96a4-4317-bf88-86c3e186fc79",
+      "title": " مراكز الخدمة للمشردين מרכזי שירות לדרי רחוב",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OuterHome",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "identification",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "settlement",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "allocation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "operator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "population",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "frame_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "age",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "spreading",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "gender",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 23
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

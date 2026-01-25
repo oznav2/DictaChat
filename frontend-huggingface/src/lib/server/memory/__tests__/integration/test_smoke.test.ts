@@ -388,15 +388,13 @@ describe("TestMemoryOperations", () => {
 	it("should prefetch context for conversation", async () => {
 		const testName = "test_prefetch_context";
 		try {
-			const { facade, mockContext } = harness;
+			const { facade, mockPrefetch } = harness;
 
 			// Configure mock to return context
-			mockContext.prefetchContext.mockResolvedValueOnce({
-				context: "<memory>\nRelevant context here\n</memory>",
-				insights: {
-					matched_concepts: ["programming", "typescript"],
-					confidence: 0.85,
-				},
+			mockPrefetch.prefetchContext.mockResolvedValueOnce({
+				memoryContextInjection: "<memory>\nRelevant context here\n</memory>",
+				retrievalConfidence: "high",
+				retrievalDebug: { from_mongo: true, stage_timings_ms: {} },
 			});
 
 			// Prefetch context
@@ -406,8 +404,8 @@ describe("TestMemoryOperations", () => {
 				conversationHistory: [],
 			});
 
-			expect(result.context).toBeDefined();
-			expect(result.context).toContain("<memory>");
+			expect(result.memoryContextInjection).toBeDefined();
+			expect(result.memoryContextInjection).toContain("<memory>");
 
 			recordResult(testName, true, "Context prefetched successfully");
 		} catch (error) {
@@ -750,7 +748,7 @@ describe("TestAPIEndpointShapes", () => {
 					working: 50,
 					history: 30,
 					patterns: 15,
-					books: 5,
+					documents: 5,
 				},
 				avg_score: 0.65,
 			});

@@ -1,0 +1,92 @@
+{
+  "dataset_id": "c33fd140-6883-4b25-8051-3ef48e97c322",
+  "title": "רשימת גני ילדים חינוך מיוחד",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "גני ילדים",
+    "גני שילוב",
+    "גני תקשורת",
+    "חינוך",
+    "חינוך מיוחד"
+  ],
+  "categories": [
+    "education",
+    "water",
+    "welfare",
+    "communications"
+  ],
+  "keywords": [
+    "חובה",
+    "כתובת",
+    "טלפון",
+    "זרם",
+    "חינוך",
+    "שילוב",
+    "תקשורת",
+    "אדומים",
+    "עיריית",
+    "טרום",
+    "סמל",
+    "מיוחד",
+    "מעלה",
+    "גני",
+    "ילדים"
+  ],
+  "resources": [
+    {
+      "resource_id": "00ef7ec7-eed6-4047-93f0-2785930101ea",
+      "title": "רשימת גני ילדים חינוך מיוחד",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מס'",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "טלפון",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "סמל",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "חובה/טרום חובה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "זרם",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 9
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "dataset_id": "f6913eec-d17f-4dd9-a0ed-96ccb09f290a",
+  "title": "רכבי דיזל מזהמים",
+  "organization": "המשרד להגנת הסביבה",
+  "tags": [
+    "זיהום אויר",
+    "כלי רכב",
+    "סביבה"
+  ],
+  "categories": [
+    "transportation",
+    "environment",
+    "water"
+  ],
+  "keywords": [
+    "הסביבה",
+    "דיזל",
+    "רכבי",
+    "מזהמים",
+    "המשרד",
+    "רכב",
+    "כלי",
+    "להגנת",
+    "אויר",
+    "זיהום",
+    "סביבה"
+  ],
+  "resources": [
+    {
+      "resource_id": "10283c63-5bab-4c24-b326-1680afd579ad",
+      "title": "רכבי דיזל מזהמים 10-2017",
+      "format": "CSV",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "48986b43-997c-43bc-b03a-ac305a1b41eb",
+      "title": "רכבי דיזל מזהמים - 10-2017",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

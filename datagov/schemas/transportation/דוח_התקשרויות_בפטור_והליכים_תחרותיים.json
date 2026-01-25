@@ -1,0 +1,198 @@
+{
+  "dataset_id": "5c02b77d-9295-4d4d-91c8-7e06e18e1a5d",
+  "title": "דוח התקשרויות בפטור והליכים תחרותיים",
+  "organization": "מינהל הרכש הממשלתי",
+  "tags": [
+    "החשב הכללי",
+    "מינהל הרכש",
+    "מכרז",
+    "מכרזים",
+    "מרכבה",
+    "רכש",
+    "שינויים בתקציב"
+  ],
+  "categories": [
+    "transportation",
+    "finance"
+  ],
+  "keywords": [
+    "אחרונה",
+    "מרכבה",
+    "החלטה",
+    "השגות",
+    "סוג",
+    "מטבע",
+    "גורם",
+    "נושאים",
+    "אחרון",
+    "יחידה",
+    "רכש",
+    "ספק",
+    "הממשלתי",
+    "דוח",
+    "מינהל",
+    "מכרזים",
+    "שינויים",
+    "המשרד",
+    "פרסום",
+    "התקשרות",
+    "היקף",
+    "הכללי",
+    "מפרסמת",
+    "לטקסטים",
+    "תקנה",
+    "התקשרויות",
+    "תקופת",
+    "מהות",
+    "כספי",
+    "שעה",
+    "תחרותיים",
+    "בפטור",
+    "הרכש",
+    "סיום",
+    "החשב",
+    "תאריך",
+    "סטטוס",
+    "מכרז",
+    "והליכים",
+    "להגשת",
+    "לינק",
+    "הליך",
+    "מאשר",
+    "עדכון",
+    "תחילת",
+    "בתקציב"
+  ],
+  "resources": [
+    {
+      "resource_id": "65c8fced-c50c-400e-94fb-ef1a208c43e5",
+      "title": "דוח התקשרויות בפטור והליכים תחרותיים ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר פרסום",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "שם המשרד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם יחידה מפרסמת",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג הליך",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מספר הליך",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "שם הליך",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "לינק לטקסטים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקנה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטטוס",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "מהות החלטה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גורם מאשר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך פרסום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך עדכון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך אחרון להגשת השגות",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שעה אחרונה להגשת השגות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם ספק",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר חפ ספק",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "היקף כספי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מטבע",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך תחילת תקופת התקשרות",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך סיום תקופת התקשרות",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "נושאים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 165705
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

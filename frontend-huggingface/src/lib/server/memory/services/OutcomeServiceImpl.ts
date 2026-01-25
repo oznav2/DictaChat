@@ -51,7 +51,7 @@ const OUTCOME_SCORES: Record<Outcome, number> = {
 /**
  * Tiers that should NOT have their scores updated (protected)
  */
-const PROTECTED_TIERS = new Set(["books", "memory_bank"]);
+const PROTECTED_TIERS = new Set(["documents", "memory_bank"]);
 
 export class OutcomeServiceImpl implements OutcomeService {
 	private mongo: MemoryMongoStore;
@@ -106,11 +106,12 @@ export class OutcomeServiceImpl implements OutcomeService {
 				// Get current memory to check tier
 				const memory = await this.mongo.getById(memoryId, userId);
 				if (!memory) {
+					logger.warn({ memoryId }, "[outcome] Item not found");
 					logger.warn({ memoryId }, "Memory not found for outcome recording");
 					continue;
 				}
 
-				// Skip protected tiers (books, memory_bank don't get scored)
+				// Skip protected tiers (documents, memory_bank don't get scored)
 				// But KG routing was still updated above
 				if (PROTECTED_TIERS.has(memory.tier)) {
 					logger.debug(
@@ -121,7 +122,14 @@ export class OutcomeServiceImpl implements OutcomeService {
 				}
 
 				// Calculate time weight (Roampal pattern)
-				const timeWeight = this.calculateTimeWeight(memory.timestamps.updated_at);
+				const timeWeight = this.calculateTimeWeight(memory.timestamps?.updated_at ?? null);
+				const oldScore =
+					typeof memory.stats?.wilson_score === "number" ? memory.stats.wilson_score : null;
+
+				logger.info(
+					{ memoryId, outcome, delta: 0, timeWeight },
+					"[outcome] Recording with time decay"
+				);
 
 				// Record outcome in MongoDB with time-weighted adjustment
 				await this.mongo.recordOutcome({
@@ -133,6 +141,22 @@ export class OutcomeServiceImpl implements OutcomeService {
 					timeWeight, // Pass time weight for score calculation
 				});
 
+				const updated = await this.mongo.getById(memoryId, userId);
+				const newWilsonScore =
+					typeof updated?.stats?.wilson_score === "number" ? updated.stats.wilson_score : null;
+				const delta =
+					oldScore !== null && newWilsonScore !== null
+						? Number((newWilsonScore - oldScore).toFixed(6))
+						: null;
+				logger.info(
+					{ memoryId, outcome, oldScore, newScore: newWilsonScore, delta, timeWeight },
+					"[outcome] Score updated with time decay"
+				);
+
+				if (outcome === "failed") {
+					logger.warn({ memoryId, reason: "failed" }, "[outcome] Failure recorded");
+				}
+
 				if (outcome === "worked" && memory.tier === "patterns" && problemHash) {
 					await this.mongo.recordKnownSolution({
 						userId,
@@ -142,10 +166,10 @@ export class OutcomeServiceImpl implements OutcomeService {
 				}
 
 				// Update Qdrant composite score
-				const newScore = await this.calculateNewCompositeScore(memoryId, userId);
-				if (newScore !== null) {
+				const compositeScore = await this.calculateNewCompositeScore(memoryId, userId);
+				if (compositeScore !== null) {
 					await this.qdrant.updatePayload(memoryId, {
-						composite_score: newScore,
+						composite_score: compositeScore,
 					});
 				}
 			} catch (err) {
@@ -210,7 +234,10 @@ export class OutcomeServiceImpl implements OutcomeService {
 			const lastUsedDate = new Date(lastUsed);
 			const ageDays = (Date.now() - lastUsedDate.getTime()) / (1000 * 60 * 60 * 24);
 			// Decay over month: 1.0 / (1 + age_days / 30)
-			return 1.0 / (1 + ageDays / 30);
+			const decayFactor = 1.0 / (1 + ageDays / 30);
+			logger.debug({ ageDays, decayFactor }, "[outcome] Time weight calculation");
+			logger.debug({ lastUsed, ageDays, weight: decayFactor }, "[outcome] Time weight calculated");
+			return decayFactor;
 		} catch {
 			return 1.0;
 		}

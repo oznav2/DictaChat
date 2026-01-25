@@ -13,7 +13,17 @@ async function readPackageVersion(): Promise<string | null> {
 	}
 }
 
-export const GET: RequestHandler = async () => {
+export const GET: RequestHandler = async ({ locals }) => {
+	if (!locals.isAdmin) {
+		return json(
+			{
+				success: false,
+				error: "Admin only",
+			},
+			{ status: 403 }
+		);
+	}
+
 	const version = await readPackageVersion();
 	return json({
 		success: true,

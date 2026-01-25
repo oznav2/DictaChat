@@ -1,0 +1,161 @@
+{
+  "dataset_id": "0d339555-a3c6-42ad-84f3-fa91743115cb",
+  "title": "נתוני דורשי עבודה",
+  "organization": "שירות התעסוקה",
+  "tags": [
+    "אבטלה",
+    "אוכלוסיה",
+    "אוצר וכלכלה",
+    "אקדמאים",
+    "גיל",
+    "דורשי עבודה",
+    "הבטחת הכנסה",
+    "מפוטרים",
+    "שנות לימוד"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "התעסוקה",
+    "gender",
+    "וכלכלה",
+    "newcomers",
+    "אוכלוסיה",
+    "fired",
+    "got",
+    "age",
+    "גיל",
+    "עבודה",
+    "דורשי",
+    "הכנסה",
+    "month",
+    "jobseekers",
+    "that",
+    "disability",
+    "non",
+    "unemployment",
+    "academic",
+    "april",
+    "מפוטרים",
+    "אוצר",
+    "district",
+    "שנות",
+    "religion",
+    "occupations",
+    "שירות",
+    "אקדמאים",
+    "הבטחת",
+    "february",
+    "days",
+    "education",
+    "אבטלה",
+    "until",
+    "annual",
+    "group",
+    "לימוד"
+  ],
+  "resources": [
+    {
+      "resource_id": "3739f4af-9e4b-4502-a904-c7bc14ffa7db",
+      "title": "נתוני דורשי עבודה - אפריל 2020",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "District",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Age group",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Gender",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Education",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Disability",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Religion",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Annual unemployment days",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Occupations until February 2015",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Occupations until April 2015",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Jobseekers",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Hh",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Academic unemployment",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Non academic unemployment",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Newcomers",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Newcomers that got fired",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 113573
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

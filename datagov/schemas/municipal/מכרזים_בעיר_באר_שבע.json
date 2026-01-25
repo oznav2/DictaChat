@@ -1,0 +1,152 @@
+{
+  "dataset_id": "f4a5cdab-82b2-48ad-9d95-424a035cfed8",
+  "title": "מכרזים בעיר באר שבע",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "עירייה"
+  ],
+  "categories": [
+    "municipal"
+  ],
+  "keywords": [
+    "קבצים",
+    "בעיר",
+    "באר",
+    "עירייה",
+    "מכרז",
+    "זוכה",
+    "מכרזים",
+    "להגשה",
+    "עיריית",
+    "במכרז",
+    "שבע",
+    "עדכון",
+    "אחרון",
+    "תשלום",
+    "url",
+    "מקוון",
+    "תאריך"
+  ],
+  "resources": [
+    {
+      "resource_id": "02df5e1b-e53e-41d7-a1d3-1aeb9983b7c9",
+      "title": "JSON",
+      "format": "JSON",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "6a281768-6327-420b-a1c5-fb84af1fa8ae",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מכרז",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר מכרז",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך אחרון להגשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך עדכון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "זוכה במכרז",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קבצים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תשלום מקוון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 763
+    },
+    {
+      "resource_id": "0e41e810-b738-4219-a2c0-f0e13a3feeb7",
+      "title": "XLSX",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מכרז",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר מכרז",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך אחרון להגשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך עדכון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "זוכה במכרז",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קבצים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תשלום מקוון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 763
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

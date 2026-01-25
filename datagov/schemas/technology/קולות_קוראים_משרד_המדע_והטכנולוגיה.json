@@ -1,0 +1,144 @@
+{
+  "dataset_id": "776ad523-6e7b-4451-85f1-6eb123d992af",
+  "title": "קולות קוראים  משרד המדע והטכנולוגיה",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "משרד המדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "מרכבה",
+    "מטבע",
+    "קורא",
+    "שותפה",
+    "תקציבית",
+    "נושא",
+    "מלגה",
+    "תקציב",
+    "סידורי",
+    "מחקר",
+    "מדינה",
+    "משרד",
+    "והטכנולוגיה",
+    "סיום",
+    "תאריך",
+    "החוקר",
+    "קולות",
+    "סטטוס",
+    "מוסד",
+    "קוראים",
+    "תחום",
+    "מגדר",
+    "התכנית",
+    "שנה",
+    "קול",
+    "המדע",
+    "תחילת",
+    "ההסכם"
+  ],
+  "resources": [
+    {
+      "resource_id": "347114f1-1bd7-49b3-848a-582efc46f888",
+      "title": "קולות קוראים  משרד המדע והטכנולוגיה.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר סידורי",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר מרכבה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "שם החוקר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מגדר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מוסד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נושא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך תחילת ההסכם",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך סיום ההסכם",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תקציב ההסכם",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מטבע",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "התכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מדינה שותפה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנה תקציבית",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "תחום קול קורא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מחקר/מלגה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטטוס",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 480
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

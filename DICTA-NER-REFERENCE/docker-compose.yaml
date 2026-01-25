@@ -1,0 +1,60 @@
+services:
+  semantic-search:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hebrew-semantic-search
+    ports:
+      - "${PORT:-8001}:8001"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=8001
+      - HOST=0.0.0.0
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_PRETTY=${LOG_PRETTY:-false}
+      
+      # Model Configuration
+      - MODEL_PROVIDER=${MODEL_PROVIDER:-huggingface}
+      - MODEL_NAME=${MODEL_NAME:-dicta-il/neodictabert-bilingual}
+      
+      # HuggingFace API
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
+      - HUGGINGFACE_API_TIMEOUT=${HUGGINGFACE_API_TIMEOUT:-30000}
+      
+      # Performance
+      - BATCH_SIZE=${BATCH_SIZE:-8}
+      - MAX_CONCURRENT_REQUESTS=${MAX_CONCURRENT_REQUESTS:-10}
+      
+      # Caching
+      - ENABLE_EMBEDDING_CACHE=${ENABLE_EMBEDDING_CACHE:-true}
+      - CACHE_TTL_MS=${CACHE_TTL_MS:-3600000}
+      - CACHE_MAX_SIZE=${CACHE_MAX_SIZE:-1000}
+      
+      # Rate Limiting
+      - RATE_LIMIT_MAX=${RATE_LIMIT_MAX:-100}
+      - RATE_LIMIT_WINDOW=${RATE_LIMIT_WINDOW:-1 minute}
+      
+      # CORS
+      - CORS_ORIGIN=${CORS_ORIGIN:-*}
+      - CORS_CREDENTIALS=${CORS_CREDENTIALS:-true}
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:8001/health').then(r => r.ok ? process.exit(0) : process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - semantic-network
+
+networks:
+  semantic-network:
+    driver: bridge

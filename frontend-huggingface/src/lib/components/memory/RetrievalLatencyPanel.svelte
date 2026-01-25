@@ -53,8 +53,10 @@
 			working: createEmptyTierMetric("working"),
 			history: createEmptyTierMetric("history"),
 			patterns: createEmptyTierMetric("patterns"),
-			books: createEmptyTierMetric("books"),
+			documents: createEmptyTierMetric("documents"),
 			memory_bank: createEmptyTierMetric("memory_bank"),
+			datagov_schema: createEmptyTierMetric("datagov_schema"),
+			datagov_expansion: createEmptyTierMetric("datagov_expansion"),
 		},
 		overall: {
 			p50: 0,
@@ -180,8 +182,10 @@
 				working: createEmptyTierMetric("working"),
 				history: createEmptyTierMetric("history"),
 				patterns: createEmptyTierMetric("patterns"),
-				books: createEmptyTierMetric("books"),
+				documents: createEmptyTierMetric("documents"),
 				memory_bank: createEmptyTierMetric("memory_bank"),
+				datagov_schema: createEmptyTierMetric("datagov_schema"),
+				datagov_expansion: createEmptyTierMetric("datagov_expansion"),
 			},
 			overall: {
 				p50: 0,

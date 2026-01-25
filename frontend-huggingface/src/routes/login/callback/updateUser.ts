@@ -3,7 +3,7 @@ import {
 	refreshSessionCookie,
 	tokenSetToSessionOauth,
 } from "$lib/server/auth";
-import { collections } from "$lib/server/database";
+import { collections, Database } from "$lib/server/database";
 import { ObjectId } from "mongodb";
 import { DEFAULT_SETTINGS } from "$lib/types/Settings";
 import { z } from "zod";
@@ -15,6 +15,7 @@ import { addWeeks } from "date-fns";
 import { OIDConfig } from "$lib/server/auth";
 import { config } from "$lib/server/config";
 import { logger } from "$lib/server/logger";
+import { MEMORY_COLLECTIONS } from "$lib/server/memory/stores/schemas";
 
 export async function updateUser(params: {
 	userData: UserinfoResponse;
@@ -217,11 +218,38 @@ export async function updateUser(params: {
 	// This ensures anonymous users don't lose their data when they login
 	const userIdStr = userId?.toString();
 	if (userIdStr && previousSessionId) {
-		// Migrate memory bank items
+		// Migrate memory bank items (legacy collection)
 		await collections.memoryBank.updateMany(
 			{ userId: previousSessionId },
 			{ $set: { userId: userIdStr } }
 		);
+
+		// Phase 1.4: Migrate memory_items collection (unified memory system)
+		// This ensures data created in the unified system is also migrated
+		try {
+			const database = await Database.getInstance();
+			const client = database.getClient();
+			const db = client.db(config.MONGODB_DB_NAME);
+			const memoryItemsCollection = db.collection(MEMORY_COLLECTIONS.ITEMS);
+
+			const memoryItemsResult = await memoryItemsCollection.updateMany(
+				{ user_id: previousSessionId },
+				{ $set: { user_id: userIdStr } }
+			);
+
+			if (memoryItemsResult.modifiedCount > 0) {
+				logger.info(
+					{ previousSessionId, userId: userIdStr, count: memoryItemsResult.modifiedCount },
+					"Migrated memory_items from session to user account"
+				);
+			}
+		} catch (err) {
+			// Non-blocking: Log error but don't fail login
+			logger.error(
+				{ err, previousSessionId, userId: userIdStr },
+				"Failed to migrate memory_items (non-blocking)"
+			);
+		}
 
 		// Migrate uploaded books
 		await collections.books.updateMany(

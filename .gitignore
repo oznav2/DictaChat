@@ -3,6 +3,7 @@ target
 .DS_STORE
 .vscode/launch.json
 .env
+frontend-huggingface/.env
 .trae
 .logs
 blog/
@@ -16,7 +17,6 @@ frontend/ref.css
 
 test-stack.sh
 agent-description.md
-CLAUDE.md
 WARP.md
 .trae
 
@@ -51,17 +51,16 @@ response_content.txt
 _pycache_
 __pycache__
 .models/
-BAAI/
 
 frontend-huggingface/CONFIG_MOVED.md
 frontend-huggingface/HOT_RELOAD.md
-datagov/schemas
-datagov/enterprise_schemas.json
+
+
 datagov/generate_enterprise_schemas.py
 datagov/proxy_finder.py
 datagov/enterprise_expansions.py
 datagov/ENHANCEMENT_PLAN.md
-datagov/resources_map.json
+
 datagov/resources_mapper.log
 datagov/split_schemas.py
 datagov/resources_mapper.py
@@ -72,5 +71,6 @@ datagov/schemas/environment
 blog
 roampal
 rompal_implementation_plan.md
-Roampal_Architecture.mdblog-heb/
 Roampal_Architecture.md
+blog-heb/
+models/

@@ -1,0 +1,70 @@
+{
+  "dataset_id": "59c43692-a8ba-4479-8865-adc58ab2db1a",
+  "title": "בתי מרקחת בחיפה",
+  "organization": "עיריית חיפה",
+  "tags": [
+    "אוכלוסיה",
+    "בריאות ורווחה"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "מרקחת",
+    "טלפון",
+    "העסק",
+    "בית",
+    "בתי",
+    "אוכלוסיה",
+    "עיריית",
+    "בחיפה",
+    "ורווחה",
+    "חיפה",
+    "עסק",
+    "בריאות",
+    "רחוב"
+  ],
+  "resources": [
+    {
+      "resource_id": "b4057de6-ece0-4dff-84a5-f9b8ef904434",
+      "title": "בתי מרקחת בחיפה",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "רחוב העסק",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "בית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם עסק",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר טלפון",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 49
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "dataset_id": "67a62e93-4c84-42dc-930a-3adc4aa752f9",
+  "title": "צרכני קולחין",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "water",
+    "טיפול בשפכים",
+    "מטש",
+    "מים",
+    "קולחין",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "רשות",
+    "מטש",
+    "איכות",
+    "הממשלתית",
+    "מים",
+    "בשפכים",
+    "water",
+    "צרכני",
+    "צרכנים",
+    "המטש",
+    "למים",
+    "מתקן",
+    "טיפול",
+    "הרשות",
+    "קולחין",
+    "שנה",
+    "ולביוב",
+    "מפעיל",
+    "המים",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "613885d9-d9ba-454d-89c3-3133d0855e05",
+      "title": "צרכני קולחין",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "רישיון מטש",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם רישיון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר מתקן",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם המטש",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "איכות מים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מפעיל",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "צרכנים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 241
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

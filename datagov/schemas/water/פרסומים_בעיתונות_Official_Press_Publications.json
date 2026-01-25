@@ -1,0 +1,289 @@
+{
+  "dataset_id": "a5a6874a-47c5-4035-823f-053b27204f78",
+  "title": "פרסומים בעיתונות - Official Press Publications",
+  "organization": "משרד התיירות",
+  "tags": [
+    "הודעות",
+    "הודעות לעיתונות",
+    "משרד התיירות",
+    "תיירות"
+  ],
+  "categories": [
+    "water",
+    "tourism"
+  ],
+  "keywords": [
+    "name",
+    "language",
+    "tourism",
+    "התיירות",
+    "fulldescription",
+    "official",
+    "product",
+    "תיירות",
+    "operator",
+    "vendor",
+    "לעיתונות",
+    "writer",
+    "month",
+    "source",
+    "press",
+    "הודעות",
+    "בעיתונות",
+    "shortdescription",
+    "publications",
+    "משרד",
+    "url",
+    "region",
+    "photographer",
+    "פרסומים",
+    "country",
+    "origin",
+    "day",
+    "year",
+    "brands",
+    "vendorid"
+  ],
+  "resources": [
+    {
+      "resource_id": "457cb173-75a9-4623-96cc-cef273d49d20",
+      "title": "פרסומים בעיתונות - עברית",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ShortDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "VendorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Vendor_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Product_Url",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Country_of_Origin",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Day",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Language",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Operator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Photographer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Source_",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Tourism_Brands",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Writer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Year",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 458
+    },
+    {
+      "resource_id": "8c348588-9efc-4dfa-a329-952601d3c0b8",
+      "title": "קובץ הסבר",
+      "format": "DOCX",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "9e042c46-f008-46f6-aa43-d3c31672a7bf",
+      "title": "פרסומים בעיתונות - אנגלית",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ShortDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "VendorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Vendor_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Product_Url",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Country_of_Origin",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Day",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Language",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Operator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Photographer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Source_",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Tourism_Brands",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Writer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Year",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 458
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -58,7 +58,7 @@ export function getConfidenceBgColor(confidence: number): string {
  */
 export function getTierIcon(tier: MemoryTier | string): string {
 	const icons: Record<string, string> = {
-		books: "📕",
+		documents: "📄",
 		working: "💭",
 		history: "🕐",
 		patterns: "⚡",
@@ -72,7 +72,7 @@ export function getTierIcon(tier: MemoryTier | string): string {
  */
 export function getTierLabel(tier: MemoryTier | string): string {
 	const labels: Record<string, string> = {
-		books: "Book",
+		documents: "Document",
 		working: "Working Memory",
 		history: "History",
 		patterns: "Pattern",

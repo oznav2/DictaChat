@@ -230,6 +230,109 @@ export const BILINGUAL_PROMPTS: Record<string, BilingualPrompt> = {
 		en: "Done",
 		he: "הושלם",
 	},
+
+	// Memory Attribution (for causal feedback)
+	memory_attribution_instruction: {
+		en: `IMPORTANT: When using information from the memory context above, at the END of your response,
+add a hidden attribution comment in this exact format on its own line:
+<!-- MEM: 1👍 2👎 3➖ -->
+
+Where numbers correspond to memory positions from the context:
+- 👍 = memory was helpful and used in your response
+- 👎 = memory was unhelpful, irrelevant, or wrong
+- ➖ = memory was not used in your response
+
+Example: If memories 1 and 3 helped, memory 2 was wrong, and 4-5 weren't used:
+<!-- MEM: 1👍 3👍 2👎 4➖ 5➖ -->
+
+This helps improve memory quality for future conversations. Include ALL memory positions.`,
+		he: `חשוב: כאשר אתה משתמש במידע מהקשר הזיכרון לעיל, בסוף התשובה שלך,
+הוסף הערת ייחוס מוסתרת בפורמט הזה בדיוק בשורה נפרדת:
+<!-- MEM: 1👍 2👎 3➖ -->
+
+כאשר המספרים מתאימים למיקומי הזיכרונות מההקשר:
+- 👍 = הזיכרון היה שימושי ונעשה בו שימוש בתשובתך
+- 👎 = הזיכרון היה לא רלוונטי או שגוי
+- ➖ = לא נעשה שימוש בזיכרון בתשובתך
+
+דוגמה: אם זיכרונות 1 ו-3 עזרו, זיכרון 2 היה שגוי, ו-4-5 לא נעשה בהם שימוש:
+<!-- MEM: 1👍 3👍 2👎 4➖ 5➖ -->
+
+זה עוזר לשפר את איכות הזיכרון לשיחות עתידיות. כלול את כל מיקומי הזיכרון.`,
+	},
+
+	// Confidence Hints - MEMORY-FIRST ARCHITECTURE
+	// These instructions are CRITICAL for preventing unnecessary tool calls when memory has the answer
+	confidence_high: {
+		en: `**⚠️ CRITICAL: MEMORY-FIRST RESPONSE REQUIRED (HIGH CONFIDENCE)**
+The memory context above contains DIRECTLY RELEVANT information for this query.
+YOU MUST:
+1. Answer FIRST from the memory context provided above
+2. Do NOT call external search tools (tavily, perplexity, web search) - the answer is already in memory
+3. Only use tools if the user explicitly requests NEW/UPDATED information not in memory
+
+The memory context may contain ingested documents, past conversations, or stored knowledge.
+Your FIRST response should come from this context. Tool calls are NOT needed.`,
+		he: `**⚠️ קריטי: נדרשת תשובה מבוססת זיכרון (ודאות גבוהה)**
+הקשר הזיכרון למעלה מכיל מידע רלוונטי ישירות לשאילתה זו.
+עליך:
+1. לענות תחילה מהקשר הזיכרון שסופק למעלה
+2. לא לקרוא לכלי חיפוש חיצוניים (tavily, perplexity, חיפוש אינטרנט) - התשובה כבר בזיכרון
+3. להשתמש בכלים רק אם המשתמש מבקש במפורש מידע חדש/מעודכן שאינו בזיכרון
+
+הקשר הזיכרון עשוי להכיל מסמכים שנקלטו, שיחות קודמות או ידע שנשמר.
+התשובה הראשונה שלך צריכה להגיע מהקשר הזה. אין צורך בקריאות לכלים.`,
+	},
+
+	confidence_medium: {
+		en: `**MEMORY CONTEXT AVAILABLE (MEDIUM CONFIDENCE)**
+The memory context above contains potentially relevant information.
+IMPORTANT INSTRUCTIONS:
+1. Check the memory context FIRST - it may already contain the answer
+2. If memory provides a partial answer, START with what you know from memory
+3. You may supplement with tools AFTER providing the memory-based answer
+4. Do NOT skip memory and go straight to tools - that defeats the purpose of memory`,
+		he: `**הקשר זיכרון זמין (ודאות בינונית)**
+הקשר הזיכרון למעלה עשוי להכיל מידע רלוונטי.
+הנחיות חשובות:
+1. בדוק את הקשר הזיכרון תחילה - ייתכן שכבר מכיל את התשובה
+2. אם הזיכרון מספק תשובה חלקית, התחל במה שאתה יודע מהזיכרון
+3. אתה יכול להשלים עם כלים אחרי שסיפקת את התשובה מבוססת הזיכרון
+4. אל תדלג על הזיכרון ותעבור ישירות לכלים - זה מביס את מטרת הזיכרון`,
+	},
+
+	confidence_low: {
+		en: `**MEMORY CONTEXT AVAILABLE (LOW CONFIDENCE)**
+The memory context above has limited relevance to this query.
+You may need to use tools to gather additional information.
+However, still check if ANY part of your answer can come from memory first.`,
+		he: `**הקשר זיכרון זמין (ודאות נמוכה)**
+להקשר הזיכרון למעלה יש רלוונטיות מוגבלת לשאילתה זו.
+ייתכן שתצטרך להשתמש בכלים כדי לאסוף מידע נוסף.
+עם זאת, עדיין בדוק אם חלק כלשהו מהתשובה יכול להגיע מהזיכרון תחילה.`,
+	},
+
+	// Contextual Guidance
+	contextual_guidance_header: {
+		en: `**CONTEXTUAL GUIDANCE FROM MEMORY SYSTEM**
+The following insights are derived from past interactions and should inform your response:`,
+		he: `**הנחיות הקשריות ממערכת הזיכרון**
+התובנות הבאות נגזרות מאינטראקציות קודמות ויש להתחשב בהן בתשובתך:`,
+	},
+
+	// Memory Bank Philosophy
+	memory_bank_philosophy: {
+		en: `**MEMORY BANK PHILOSOPHY**
+When responding to questions about the user, you should weave the information naturally into your response.
+You don't need to explicitly mention "according to memory bank" or similar phrases.
+Just use the information as if you naturally remember it from past conversations.
+The goal is to provide a seamless, personalized experience.`,
+		he: `**פילוסופיית בנק הזיכרון**
+כאשר אתה עונה על שאלות לגבי המשתמש, עליך לשלב את המידע באופן טבעי בתשובתך.
+אינך צריך לציין במפורש "לפי בנק הזיכרון" או ביטויים דומים.
+פשוט השתמש במידע כאילו אתה זוכר אותו באופן טבעי משיחות קודמות.
+המטרה היא לספק חוויה חלקה ומותאמת אישית.`,
+	},
 };
 
 // ============================================================================

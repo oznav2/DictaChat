@@ -1,0 +1,113 @@
+{
+  "dataset_id": "c05f84f6-3ca1-409b-af3c-2c8531a99093",
+  "title": "קלפיות",
+  "organization": "רשות האוכלוסין וההגירה",
+  "tags": [
+    "אוכלוסיה",
+    "בחירות",
+    "קלפי",
+    "קלפיות"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "אות",
+    "תיאור",
+    "אוכלוסיה",
+    "בחירות",
+    "סוג",
+    "רשות",
+    "אזורית",
+    "הקלפי",
+    "רחוב",
+    "מקום",
+    "האוכלוסין",
+    "נפה",
+    "סמל",
+    "מזהה",
+    "וההגירה",
+    "בית",
+    "קלפי",
+    "ישוב",
+    "קלפיות",
+    "ועדה"
+  ],
+  "resources": [
+    {
+      "resource_id": "68c4d7e8-2218-48ee-996f-2db2f72b2395",
+      "title": "קלפיות",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מזהה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל ישוב",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל קלפי",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מספר בית",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "אות בית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סמל ועדה אזורית",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "נפה",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "תיאור מקום הקלפי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם ישוב",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג ישוב",
+          "type": "numeric",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 10148
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

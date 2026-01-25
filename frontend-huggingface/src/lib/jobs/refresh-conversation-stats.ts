@@ -1,9 +1,6 @@
 import type { ConversationStats } from "$lib/types/ConversationStats";
 import { CONVERSATION_STATS_COLLECTION, collections } from "$lib/server/database";
 import { logger } from "$lib/server/logger";
-import type { ObjectId } from "mongodb";
-import { acquireLock, refreshLock } from "$lib/migrations/lock";
-import { Semaphores } from "$lib/types/Semaphore";
 
 async function getLastComputationTime(): Promise<Date> {
 	const lastStats = await collections.conversationStats.findOne({}, { sort: { "date.at": -1 } });
@@ -33,12 +30,6 @@ async function computeStats(params: {
 	span: ConversationStats["date"]["span"];
 	type: ConversationStats["type"];
 }) {
-	const indexes = await collections.semaphores.listIndexes().toArray();
-	if (indexes.length <= 2) {
-		logger.info("Indexes not created, skipping stats computation");
-		return;
-	}
-
 	const lastComputed = await collections.conversationStats.findOne(
 		{ "date.field": params.dateField, "date.span": params.span, type: params.type },
 		{ sort: { "date.at": -1 } }
@@ -241,36 +232,39 @@ async function computeStats(params: {
 	);
 }
 
-let hasLock = false;
-let lockId: ObjectId | null = null;
+let isShuttingDown = false;
+let statsIntervalId: ReturnType<typeof setInterval> | null = null;
 
-async function maintainLock() {
-	if (hasLock && lockId) {
-		hasLock = await refreshLock(Semaphores.CONVERSATION_STATS, lockId);
-
-		if (!hasLock) {
-			lockId = null;
-		}
-	} else if (!hasLock) {
-		lockId = (await acquireLock(Semaphores.CONVERSATION_STATS)) || null;
-		hasLock = !!lockId;
+export function stopConversationStatsRefresh() {
+	isShuttingDown = true;
+	if (statsIntervalId) {
+		clearInterval(statsIntervalId);
+		statsIntervalId = null;
 	}
-
-	setTimeout(maintainLock, 10_000);
 }
 
 export function refreshConversationStats() {
 	const ONE_HOUR_MS = 3_600_000;
 
-	maintainLock().then(async () => {
-		if (await shouldComputeStats()) {
-			computeAllStats();
-		}
-
-		setInterval(async () => {
-			if (await shouldComputeStats()) {
+	void (async () => {
+		try {
+			if (!isShuttingDown && (await shouldComputeStats())) {
 				computeAllStats();
 			}
-		}, 24 * ONE_HOUR_MS);
-	});
+
+			if (statsIntervalId) {
+				clearInterval(statsIntervalId);
+				statsIntervalId = null;
+			}
+
+			statsIntervalId = setInterval(async () => {
+				if (isShuttingDown) return;
+				if (await shouldComputeStats()) {
+					computeAllStats();
+				}
+			}, 24 * ONE_HOUR_MS);
+		} catch (err) {
+			logger.error({ err }, "refreshConversationStats failed");
+		}
+	})();
 }

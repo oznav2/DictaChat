@@ -1,0 +1,263 @@
+{
+  "dataset_id": "642627ab-438f-4a70-8c43-2d651ba99c7c",
+  "title": "מרשם אוכלוסין",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "אוכלוסייה ודמוגרפיה"
+  ],
+  "categories": [
+    "demographics"
+  ],
+  "keywords": [
+    "אלמנים",
+    "נשואים",
+    "מאתיופיה",
+    "משאר",
+    "עצמאי",
+    "עולים",
+    "שבע",
+    "רווקים",
+    "אוכלוסין",
+    "עומד",
+    "מרשם",
+    "הורה",
+    "אלמנות",
+    "משפחות",
+    "אוכלוסייה",
+    "מארה",
+    "גרושים",
+    "גרושות",
+    "הארצות",
+    "גרוש",
+    "סה״כ",
+    "מדרא",
+    "באר",
+    "אלמן",
+    "רווקות",
+    "עיריית",
+    "שבראשן",
+    "מרוסיה",
+    "ודמוגרפיה",
+    "נשואות",
+    "דצמ",
+    "אג״ס"
+  ],
+  "resources": [
+    {
+      "resource_id": "b6ee8e0f-b16e-4b66-b258-7714bd40440f",
+      "title": "לפי סטטוס",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "אג״ס",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סה״כ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נשואים/נשואות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גרושים/גרושות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אלמנים/אלמנות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "רווקים/רווקות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "משפחות שבראשן עומד הורה עצמאי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "גרוש-אלמן-משפחות שבראשן עומד הורה",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 61
+    },
+    {
+      "resource_id": "31f17dc1-42ca-40cb-b4c1-f2d8fa28f222",
+      "title": "לפי עולים וותיקים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "אג''ס",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סה''כ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עולים מרוסיה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עולים מאתיופיה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עולים מארה''ב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עולים מדרא''פ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עולים משאר הארצות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סה''כ עולים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עולים %",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 61
+    },
+    {
+      "resource_id": "feecb5bb-8554-491f-80d9-dae316837f80",
+      "title": "לפי קבוצות גיל",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "אג''ס",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "0-5",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "06-דצמ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "13-17",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "18-21",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "22-24",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "25-29",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "30-34",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "35-39",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "40-44",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "45-49",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "50-54",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "55-59",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "60-64",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "65-69",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "70-74",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "75-120",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 61
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

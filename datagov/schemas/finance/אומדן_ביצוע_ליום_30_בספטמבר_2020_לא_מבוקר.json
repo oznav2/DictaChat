@@ -1,0 +1,36 @@
+{
+  "dataset_id": "4a49c9dd-6d61-46cb-8d23-9ba9a44a68b9",
+  "title": "אומדן ביצוע ליום 30 בספטמבר 2020 לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "תקציב"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "תקציב",
+    "ביצוע",
+    "מבוקר",
+    "משרד",
+    "אומדן",
+    "בספטמבר",
+    "האוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "99ff4f81-66d1-4ed5-a3a3-6555b13c5d82",
+      "title": "אומדן ביצוע ליום 30 בספטמבר 2020 לא מבוקר",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

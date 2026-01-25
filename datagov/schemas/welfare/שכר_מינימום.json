@@ -1,0 +1,40 @@
+{
+  "dataset_id": "2f4ff4d0-df2c-4ca5-9669-ebe829b9ab89",
+  "title": "שכר מינימום",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "אוצר וכלכלה",
+    "ביטוח לאומי",
+    "שכר מינימום"
+  ],
+  "categories": [
+    "welfare",
+    "economy"
+  ],
+  "keywords": [
+    "ביטוח",
+    "וכלכלה",
+    "מינימום",
+    "לאומי",
+    "שכר",
+    "לביטוח",
+    "אוצר",
+    "המוסד"
+  ],
+  "resources": [
+    {
+      "resource_id": "abc69039-d84c-4b13-9a64-06702e69ccac",
+      "title": "שכר מינימום",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

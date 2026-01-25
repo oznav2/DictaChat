@@ -1,0 +1,132 @@
+{
+  "dataset_id": "a59be263-f392-46b2-b7e7-8ca0afea5dd6",
+  "title": "רכבת כבדה - תחנות נוסעים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "ארצי",
+    "חצב",
+    "רכבת",
+    "רכבת ישראל",
+    "רכבת כבדה",
+    "תחנות"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "name",
+    "status",
+    "כבדה",
+    "maagan",
+    "ארצי",
+    "upd",
+    "רכבת",
+    "בדרכים",
+    "asset",
+    "source",
+    "והבטיחות",
+    "mgn",
+    "code",
+    "משרד",
+    "type",
+    "חצב",
+    "תחנות",
+    "yearmonth",
+    "kav",
+    "נוסעים",
+    "oid",
+    "ישראל",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "280a55f6-7bfa-43f4-ba18-3c945ff09f59",
+      "title": "RAIL_STAT_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "8b331e29-568b-4c53-95cd-c91e037c981c",
+      "title": "RAIL_STAT_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "b6685ecf-2f87-4602-823e-af9790fd6aba",
+      "title": "RAIL_STAT_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ASSET_NO",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "MAAGAN_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "MGN_TYPE",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SOURCE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "KAV_CODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "MGN_UPD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 131
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

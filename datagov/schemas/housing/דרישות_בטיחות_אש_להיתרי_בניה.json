@@ -1,0 +1,172 @@
+{
+  "dataset_id": "40593d42-f3c9-4c1d-a9e9-67d72c1e7714",
+  "title": "דרישות בטיחות אש להיתרי בניה",
+  "organization": "כבאות והצלה לישראל",
+  "tags": [
+    "בניה",
+    "בניה מתוכננת",
+    "כבאות והצלה",
+    "תכנון ובניה"
+  ],
+  "categories": [
+    "housing"
+  ],
+  "keywords": [
+    "כבאות",
+    "בטיחות",
+    "לישראל",
+    "remarks",
+    "והצלה",
+    "categorydesc",
+    "categorygroup",
+    "requirementnumber",
+    "ובניה",
+    "source",
+    "requirement",
+    "תכנון",
+    "להיתרי",
+    "requirementdesc",
+    "categorycode",
+    "בניה",
+    "categorytypedesc",
+    "דרישות",
+    "desc",
+    "מתוכננת"
+  ],
+  "resources": [
+    {
+      "resource_id": "73ca5e67-2388-45ae-b685-6048f4d5486d",
+      "title": "דרישות כבאות למבנה - הסתייגות משפטית",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e716f989-c091-40f8-8bc8-602471d7b1a1",
+      "title": "דרישות כבאות היתרי בניה - מבנה קובץ",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d57e0cc1-66e6-441d-b914-de9096695865",
+      "title": "דרישות בטיחות אש לתחום הבנייה נכון ליום 07-12-2025",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CategoryTypeDesc",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryGroup",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode3",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc3",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode4",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc4",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode5",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc5",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode6",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc6",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode7",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc7",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RequirementNumber",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "RequirementDesc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Remarks",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "REQUIREMENT_SOURCE_DESC",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 38620
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

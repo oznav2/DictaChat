@@ -1,15 +1,61 @@
 import { json, error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
-import { collections } from "$lib/server/database";
+import { env } from "$env/dynamic/private";
+import { collections, Database } from "$lib/server/database";
 import { ObjectId } from "mongodb";
 import { ADMIN_USER_ID } from "$lib/server/constants";
-import { extractDocumentText } from "$lib/server/textGeneration/mcp/services/doclingClient";
+import {
+	extractDocumentText,
+	sanitizeExtractedText,
+} from "$lib/server/textGeneration/mcp/services/doclingClient";
 import { writeFile, mkdir, unlink } from "fs/promises";
 import { existsSync } from "fs";
 import { join } from "path";
 import { createHash } from "crypto";
+import { MemoryMongoStore } from "$lib/server/memory/stores/MemoryMongoStore";
 
-const BOOK_UPLOADS_DIR = "/app/uploads/books";
+function resolveUploadsDir(): string {
+	if (env.UPLOADS_DIR) return env.UPLOADS_DIR;
+	if (env.DOCKER_ENV === "true") return "/app/uploads";
+	return join(process.cwd(), ".uploads");
+}
+
+const BOOK_UPLOADS_DIR = join(resolveUploadsDir(), "books");
+
+/**
+ * Check if a document already exists in the memory system by its content hash
+ * This enables cross-chat document recognition
+ */
+async function checkMemorySystemForDocument(
+	userId: string,
+	documentHash: string
+): Promise<{
+	exists: boolean;
+	bookId?: string;
+	title?: string;
+	chunkCount?: number;
+} | null> {
+	try {
+		const db = await Database.getInstance();
+		const client = db.getClient();
+		const mongoStore = new MemoryMongoStore({ client, dbName: "chat-ui" });
+		await mongoStore.initialize();
+
+		const docInfo = await mongoStore.getDocumentByHash(userId, documentHash);
+		if (docInfo) {
+			return {
+				exists: true,
+				bookId: docInfo.bookId,
+				title: docInfo.title,
+				chunkCount: docInfo.chunkCount,
+			};
+		}
+		return { exists: false };
+	} catch (err) {
+		console.error("[API] Memory system document check failed:", err);
+		return null;
+	}
+}
 
 async function saveTempFile(file: File): Promise<string> {
 	if (!existsSync(BOOK_UPLOADS_DIR)) {
@@ -63,6 +109,10 @@ export const GET: RequestHandler = async () => {
 				processingStage: b.processingStage,
 				processingMessage: b.processingMessage,
 				doclingStatus: b.doclingStatus,
+				// Cross-chat recognition info
+				recognizedFromPreviousChat: b.recognizedFromPreviousChat ?? false,
+				linkedToBookId: b.linkedToBookId ?? null,
+				documentHash: b.documentHash ?? null,
 			})),
 		});
 	} catch (err) {
@@ -213,9 +263,12 @@ async function processBookInBackground(
 				{ _id: new ObjectId(bookId) },
 				{ $set: { processingStage: "reading", processingMessage: "Reading file..." } }
 			);
-			// Direct text for plain files
-			extractedText = await file.text();
-			console.log(`[API] Plain text extracted: ${extractedText.length} chars`);
+			// Direct text for plain files, sanitize to remove any binary artifacts
+			const rawText = await file.text();
+			extractedText = sanitizeExtractedText(rawText);
+			console.log(
+				`[API] Plain text extracted: ${rawText.length} chars, after sanitization: ${extractedText.length} chars`
+			);
 		} else {
 			// Use Docling for PDF, DOCX, etc.
 			console.log(`[API] Processing ${extension} file with Docling...`);
@@ -274,6 +327,36 @@ async function processBookInBackground(
 		// Generate document hash for dedup
 		const documentHash = createHash("sha256").update(extractedText).digest("hex");
 
+		// ============================================
+		// Cross-Chat Document Recognition
+		// Check if this document's content was already processed in memory system
+		// ============================================
+		const existingInMemory = await checkMemorySystemForDocument(userId, documentHash);
+		if (existingInMemory?.exists) {
+			console.log(
+				`[API] Document already exists in memory system: ${existingInMemory.title} (${existingInMemory.chunkCount} chunks)`
+			);
+			// Update book record to indicate it's using existing memories
+			await collections.books.updateOne(
+				{ _id: new ObjectId(bookId) },
+				{
+					$set: {
+						status: "completed",
+						processingStage: "completed",
+						processingMessage: `Document already processed. Using existing ${existingInMemory.chunkCount} memories.`,
+						doclingStatus: "completed",
+						totalChunks: existingInMemory.chunkCount ?? 0,
+						chunksProcessed: existingInMemory.chunkCount ?? 0,
+						documentHash,
+						linkedToBookId: existingInMemory.bookId,
+						recognizedFromPreviousChat: true,
+					},
+				}
+			);
+			// Skip further processing - memories already exist
+			return;
+		}
+
 		await collections.books.updateOne(
 			{ _id: new ObjectId(bookId) },
 			{ $set: { processingStage: "chunking", processingMessage: "Chunking document..." } }
@@ -314,7 +397,7 @@ async function processBookInBackground(
 		for (let i = 0; i < chunks.length; i++) {
 			await facade.store({
 				userId,
-				tier: "books",
+				tier: "documents",
 				text: chunks[i],
 				metadata: {
 					book_id: bookId,
@@ -350,6 +433,7 @@ async function processBookInBackground(
 					processingStage: "completed",
 					processingMessage: "Completed. Knowledge added to the graph.",
 					doclingStatus: "completed",
+					documentHash, // Store for cross-chat recognition
 				},
 			}
 		);

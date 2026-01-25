@@ -42,7 +42,7 @@ export async function checkAndRunMigrations() {
 	// make sure to refresh it regularly while it's running
 	const refreshInterval = setInterval(async () => {
 		await refreshLock(Semaphores.MIGRATION, lockId);
-	}, 1000 * 10);
+	}, 1000 * 60);
 
 	// iterate over all migrations
 	for (const migration of migrations) {

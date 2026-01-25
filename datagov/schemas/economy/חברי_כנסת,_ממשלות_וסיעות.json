@@ -1,0 +1,33 @@
+{
+  "dataset_id": "869eb507-0785-4164-93fd-7bc3e27dbd7a",
+  "title": "חברי כנסת, ממשלות וסיעות",
+  "organization": "הכנסת",
+  "tags": [
+    "אוצר וכלכלה",
+    "חברי כנסת",
+    "כנסת",
+    "ממשלות",
+    "סיעות"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "ממשלות",
+    "וכלכלה",
+    "הכנסת",
+    "כנסת",
+    "וסיעות",
+    "אוצר",
+    "סיעות",
+    "חברי"
+  ],
+  "resources": [],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

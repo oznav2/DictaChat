@@ -1,0 +1,102 @@
+{
+  "dataset_id": "c4d08d1d-aacc-4a46-a17f-09c5c1685bbf",
+  "title": "מאגר החברות המיועדות למחיקה",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "התאגיד",
+    "סטטוס",
+    "קוד",
+    "התנגד",
+    "מיועדת",
+    "הצפוי",
+    "המחיקה",
+    "המיועדות",
+    "סוג",
+    "משרד",
+    "למחיקה",
+    "פרסום",
+    "תאגיד",
+    "מועד",
+    "באנגלית",
+    "תוגש",
+    "החברות",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "0fd312bb-68c9-4647-b186-60c3e7b4f6f7",
+      "title": "רשימת החברות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר התאגיד",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם התאגיד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם התאגיד באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג תאגיד",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סטטוס התאגיד",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תת סטטוס התאגיד",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "מועד פרסום סטטוס ~מיועדת למחיקה~",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "מועד המחיקה הצפוי אם לא תוגש התנגד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד סוג תאגיד",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד סטטוס התאגיד",
+          "type": "numeric",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 318
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

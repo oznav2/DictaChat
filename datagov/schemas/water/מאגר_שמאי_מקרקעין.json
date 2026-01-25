@@ -1,0 +1,131 @@
+{
+  "dataset_id": "669b2652-f75b-4de3-8e6b-0dfa17accef5",
+  "title": "מאגר שמאי מקרקעין",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "שמאי מקרקעין"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "תיאור",
+    "הבחינה",
+    "מוסד",
+    "עיר",
+    "משרד",
+    "שמאי",
+    "רשיון",
+    "ציון",
+    "תיק",
+    "לימודי",
+    "מקרקעין",
+    "תאריך",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "8540534a-eccd-4568-a677-652d589ed172",
+      "title": "רשימת שמאי מקרקעין",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם שמאי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר רשיון",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר תיק",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "עיר",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 3031
+    },
+    {
+      "resource_id": "8b7f49b2-8281-460f-bcd1-71c5b367db47",
+      "title": "ציון בחינות שמאים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תיאור הבחינה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך הבחינה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מוסד לימודי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ציון",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 89224
+    },
+    {
+      "resource_id": "fdb6434a-e046-428f-b8f5-e753f54ffebc",
+      "title": "פטור ממבחן שמאים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תיאור הבחינה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך הבחינה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מוסד לימודי",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 4519
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

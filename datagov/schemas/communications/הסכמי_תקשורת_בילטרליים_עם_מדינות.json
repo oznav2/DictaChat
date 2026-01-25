@@ -1,0 +1,94 @@
+{
+  "dataset_id": "45d2cf60-473f-44ab-bf4d-fe8a248ad7bb",
+  "title": "הסכמי תקשורת בילטרליים עם מדינות",
+  "organization": "משרד התקשורת",
+  "tags": [
+    "משרד התקשורת",
+    "קשרי חוץ"
+  ],
+  "categories": [
+    "communications"
+  ],
+  "keywords": [
+    "ונושאו",
+    "כריתת",
+    "סוג",
+    "משרד",
+    "המדינה",
+    "בילטרליים",
+    "התקשורת",
+    "מדינות",
+    "הסכמי",
+    "קשרי",
+    "חוץ",
+    "מועד",
+    "תקשורת",
+    "אמנה",
+    "ההסכם"
+  ],
+  "resources": [
+    {
+      "resource_id": "929010ba-b920-4d54-9360-12e19330eb95",
+      "title": "הסכמי תקשורת בילטרליים עם מדינות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "המדינה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג ההסכם ונושאו",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מועד כריתת אמנה",
+          "type": "timestamp",
+          "semantic": null
+        }
+      ],
+      "total_records": 43
+    },
+    {
+      "resource_id": "4859f298-b56f-483b-aec9-a5f0960a1ceb",
+      "title": "הסכמי תקשורת בילטרליים עם מדינות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "המדינה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג ההסכם ונושאו",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מועד כריתת אמנה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 43
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

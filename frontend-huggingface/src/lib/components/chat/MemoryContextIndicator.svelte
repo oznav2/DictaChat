@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { slide, fade } from "svelte/transition";
-	import { cubicOut } from "svelte/easing";
+	import { slide, fade, scale } from "svelte/transition";
+	import { cubicOut, backOut } from "svelte/easing";
 	import { memoryUi } from "$lib/stores/memoryUi";
 	import {
 		getTierIcon,
@@ -89,7 +89,7 @@
 			working: isRTL ? "זיכרון עבודה" : "Working Memory",
 			history: isRTL ? "היסטוריה" : "History",
 			patterns: isRTL ? "תבניות" : "Patterns",
-			books: isRTL ? "ספרים" : "Books",
+			documents: isRTL ? "מסמכים" : "Documents",
 			memory_bank: isRTL ? "בנק זיכרון" : "Memory Bank",
 		};
 		return labels[tier] ?? tier;
@@ -110,24 +110,43 @@
 		if (text.length <= maxLen) return text;
 		return text.slice(0, maxLen) + "...";
 	}
+
+	/**
+	 * Get display text for citation with proper fallback
+	 * Prevents gibberish like raw memory_ids or HTML from showing
+	 */
+	function getCitationDisplayText(citation: {
+		content?: string;
+		memory_id: string;
+		tier: string;
+	}): string {
+		// Prefer content if it's a meaningful string
+		if (citation.content && citation.content.length > 0) {
+			return citation.content;
+		}
+		// If no content, use a friendly tier-based description
+		const tierName = getTierLabel(citation.tier);
+		return isRTL ? `תוכן מ${tierName}` : `Content from ${tierName}`;
+	}
 </script>
 
-{#if (hasKnownContext || hasCitations) && !isStreaming}
+{#if hasKnownContext || hasCitations || (isFeedbackEligible && !isStreaming)}
 	<div
 		class="memory-context-indicator mt-3 space-y-2"
 		dir={isRTL ? "rtl" : "ltr"}
-		transition:fade={{ duration: 200 }}
+		in:fade={{ duration: 300 }}
+		out:fade={{ duration: 150 }}
 	>
-		<!-- Known Context Badge -->
+		<!-- Known Context Badge - uses gray to match reasoning block -->
 		{#if hasKnownContext}
 			<div class="known-context-section">
 				<button
 					type="button"
-					class="flex w-full items-center gap-2 rounded-lg border border-blue-200 bg-gradient-to-br from-blue-50/80 to-white/60 px-3 py-2 text-sm transition-colors hover:from-blue-100/80 dark:border-blue-800/50 dark:from-blue-950/40 dark:to-gray-900/40 dark:hover:from-blue-900/50"
+					class="flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm transition-colors hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700/50"
 					onclick={toggleKnownContext}
 				>
-					<CarbonBook class="h-4 w-4 flex-shrink-0 text-blue-600 dark:text-blue-400" />
-					<span class="flex-grow text-start font-medium text-blue-700 dark:text-blue-300">
+					<CarbonBook class="h-4 w-4 flex-shrink-0 text-gray-500 dark:text-gray-400" />
+					<span class="flex-grow text-start font-medium text-gray-600 dark:text-gray-300">
 						{isRTL ? "הקשר ידוע" : "Known Context"}
 					</span>
 					<span
@@ -160,7 +179,7 @@
 								{@const itemConfidence = item.wilson_score ?? item.confidence ?? 0.5}
 								<div
 									class="flex items-start gap-2 rounded border-l-2 bg-white/60 p-2 dark:bg-gray-900/40 {item.tier ===
-									'books'
+									'documents'
 										? 'border-purple-400'
 										: item.tier === 'patterns'
 											? 'border-green-400'
@@ -205,16 +224,16 @@
 			</div>
 		{/if}
 
-		<!-- Citations Section -->
+		<!-- Citations Section - uses gray to match reasoning block -->
 		{#if hasCitations}
 			<div class="citations-section">
 				<button
 					type="button"
-					class="flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-gradient-to-br from-gray-50/80 to-white/60 px-3 py-2 text-sm transition-colors hover:from-gray-100/80 dark:border-gray-700/50 dark:from-gray-800/40 dark:to-gray-900/40 dark:hover:from-gray-700/50"
+					class="flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm transition-colors hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700/50"
 					onclick={toggleCitations}
 				>
-					<CarbonDocument class="h-4 w-4 flex-shrink-0 text-gray-600 dark:text-gray-400" />
-					<span class="flex-grow text-start font-medium text-gray-700 dark:text-gray-300">
+					<CarbonDocument class="h-4 w-4 flex-shrink-0 text-gray-500 dark:text-gray-400" />
+					<span class="flex-grow text-start font-medium text-gray-600 dark:text-gray-300">
 						{citations.length}
 						{isRTL
 							? citations.length === 1
@@ -261,7 +280,7 @@
 								</span>
 								<!-- Content excerpt -->
 								<span class="flex-grow truncate text-gray-600 dark:text-gray-400">
-									{truncateText(citation.content ?? citation.memory_id, 40)}
+									{truncateText(getCitationDisplayText(citation), 40)}
 								</span>
 								<!-- Confidence percentage -->
 								<span class="{getConfidenceColor(confidence)} text-[10px] font-medium">
@@ -279,10 +298,10 @@
 			</div>
 		{/if}
 
-		<!-- Feedback Buttons -->
-		{#if isFeedbackEligible && !feedbackSubmitted}
+		<!-- Feedback Buttons (only shown after streaming completes) -->
+		{#if isFeedbackEligible && !feedbackSubmitted && !isStreaming}
 			<div
-				class="feedback-section flex items-center gap-2 rounded-lg border border-gray-200 bg-gradient-to-br from-gray-50/80 to-white/60 px-3 py-2 dark:border-gray-700/50 dark:from-gray-800/40 dark:to-gray-900/40"
+				class="feedback-section flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 dark:border-gray-700 dark:bg-gray-800"
 				transition:fade={{ duration: 200 }}
 			>
 				<span class="flex-grow text-xs text-gray-500 dark:text-gray-400">
@@ -316,9 +335,12 @@
 		{#if feedbackSubmitted}
 			<div
 				class="feedback-success flex items-center gap-2 rounded-lg border border-green-200 bg-green-50/80 px-3 py-2 dark:border-green-800/30 dark:bg-green-900/20"
-				transition:fade={{ duration: 200 }}
+				in:scale={{ duration: 300, start: 0.9, easing: backOut }}
+				out:fade={{ duration: 150, easing: cubicOut }}
 			>
-				<CarbonCheckmarkOutline class="h-4 w-4 text-green-600 dark:text-green-400" />
+				<div class="success-icon">
+					<CarbonCheckmarkOutline class="h-4 w-4 text-green-600 dark:text-green-400" />
+				</div>
 				<span class="text-xs text-green-700 dark:text-green-300">
 					{isRTL ? "תודה על המשוב!" : "Thanks for your feedback!"}
 				</span>
@@ -326,3 +348,120 @@
 		{/if}
 	</div>
 {/if}
+
+<style>
+	/* Section entrance animations */
+	.known-context-section,
+	.citations-section,
+	.feedback-section {
+		animation: sectionEnter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	@keyframes sectionEnter {
+		from {
+			opacity: 0;
+			transform: translateY(4px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	/* Button hover lift effect */
+	.known-context-section button,
+	.citations-section button {
+		transition:
+			transform 0.2s ease,
+			box-shadow 0.2s ease;
+	}
+
+	.known-context-section button:hover,
+	.citations-section button:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	}
+
+	:global(.dark) .known-context-section button:hover,
+	:global(.dark) .citations-section button:hover {
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	}
+
+	.known-context-section button:active,
+	.citations-section button:active {
+		transform: translateY(0);
+	}
+
+	/* Success feedback animation */
+	.feedback-success {
+		animation: feedbackPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+
+	@keyframes feedbackPop {
+		0% {
+			opacity: 0;
+			transform: scale(0.9);
+		}
+		70% {
+			transform: scale(1.02);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	.success-icon {
+		animation: iconPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+	}
+
+	@keyframes iconPop {
+		0% {
+			transform: scale(0);
+		}
+		70% {
+			transform: scale(1.2);
+		}
+		100% {
+			transform: scale(1);
+		}
+	}
+
+	/* Feedback button hover states */
+	.feedback-section button {
+		transition:
+			transform 0.15s ease,
+			background-color 0.2s ease;
+	}
+
+	.feedback-section button:hover {
+		transform: scale(1.1);
+	}
+
+	.feedback-section button:active {
+		transform: scale(0.95);
+	}
+
+	/* Mobile touch feedback */
+	@media (hover: none) {
+		.known-context-section button:active,
+		.citations-section button:active {
+			transform: scale(0.98);
+		}
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.known-context-section,
+		.citations-section,
+		.feedback-section,
+		.feedback-success,
+		.success-icon,
+		.known-context-section button,
+		.citations-section button,
+		.feedback-section button {
+			animation: none !important;
+			transition-duration: 0.01ms !important;
+		}
+	}
+</style>

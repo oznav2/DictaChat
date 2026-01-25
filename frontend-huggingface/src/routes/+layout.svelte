@@ -188,12 +188,20 @@
 		if (page.url.searchParams.has("token")) {
 			const token = page.url.searchParams.get("token");
 
-			await fetch(`${base}/api/user/validate-token`, {
+			const response = await fetch(`${base}/api/user/validate-token`, {
 				method: "POST",
 				body: JSON.stringify({ token }),
-			}).then(() => {
-				goto(`${base}/`, { invalidateAll: true });
 			});
+
+			if (response.ok) {
+				const result = await response.json();
+				if (result.valid) {
+					const query = new URLSearchParams(page.url.searchParams.toString());
+					query.delete("token");
+					// Force full reload to ensure session is recognized
+					window.location.href = `${base}/?${query.toString()}`;
+				}
+			}
 		}
 
 		// Global keyboard shortcut: New Chat (Ctrl/Cmd + Shift + O)

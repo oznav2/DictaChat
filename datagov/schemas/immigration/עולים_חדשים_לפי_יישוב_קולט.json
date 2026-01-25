@@ -1,0 +1,236 @@
+{
+  "dataset_id": "56da3e15-0111-489e-bad8-f506b121edc7",
+  "title": "עולים חדשים לפי יישוב קולט",
+  "organization": "משרד העלייה והקליטה",
+  "tags": [
+    "עולים חדשים",
+    "רשויות מקומיות"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "ussr",
+    "קולט",
+    "ethiopia",
+    "other",
+    "עולים",
+    "residents",
+    "regional",
+    "argentina",
+    "ethiopian",
+    "מקומיות",
+    "olim",
+    "county",
+    "usa",
+    "yeshuv",
+    "england",
+    "britain",
+    "india",
+    "france",
+    "office",
+    "code",
+    "משרד",
+    "region",
+    "num",
+    "percentage",
+    "amount",
+    "רשויות",
+    "percent",
+    "והקליטה",
+    "חדשים",
+    "יישוב",
+    "council",
+    "העלייה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d735ad06-8bde-41aa-8350-a15a36bac18f",
+      "title": "עולים לפי יישוב קולט בין השנים 2014-2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "yeshuv",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "yeshuv_code",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "amount",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "f_ussr",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ethiopia",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "india",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "france",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "usa",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "argentina",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "britain",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "other",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "num_of_residents",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "olim_percent",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "regional_council",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "office",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 322
+    },
+    {
+      "resource_id": "98f17aed-8f6a-49a0-94e6-0338cdf99365",
+      "title": "עולים לפי יישוב קולט בין השנים 2009 ל- 2018",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "yeshuv",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "yeshuv_code",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "olim",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "f_ussr",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ethiopian",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "france",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "usa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "argentina",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "england",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "other",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "no_of_residents",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "olim_percentage",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "regional_county",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "office",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 910
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

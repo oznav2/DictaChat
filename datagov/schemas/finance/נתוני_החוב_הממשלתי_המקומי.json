@@ -1,0 +1,256 @@
+{
+  "dataset_id": "d3c80c46-9d99-41a9-8b62-50b590011a60",
+  "title": "נתוני החוב הממשלתי המקומי",
+  "organization": "משרד האוצר",
+  "tags": [
+    "איגרת",
+    "החלף",
+    "הנפקה",
+    "הפוך",
+    "השאלות",
+    "לא סחירה",
+    "מכרז",
+    "מסחר",
+    "סחירה",
+    "פדיונות",
+    "פירעונות",
+    "שוק מקומי"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "המקומי",
+    "issuancedate",
+    "פירעונות",
+    "cutoffprice",
+    "purchasedquantity",
+    "שוק",
+    "originaltermtomaturity",
+    "הממשלתי",
+    "series",
+    "השאלות",
+    "האוצר",
+    "prncipal",
+    "החוב",
+    "bonds",
+    "additionalpurchased",
+    "redemptiondate",
+    "datatype",
+    "הפוך",
+    "משרד",
+    "החלף",
+    "coupon",
+    "demandedamount",
+    "actualtermtomaturity",
+    "totalfunding",
+    "איגרת",
+    "סחירה",
+    "redemtiondate",
+    "הנפקה",
+    "grossavgyield",
+    "מכרז",
+    "offeredquantity",
+    "tradableornontradable",
+    "averageprice",
+    "coverratio",
+    "מסחר",
+    "מקומי",
+    "פדיונות",
+    "grosscutoffyield"
+  ],
+  "resources": [
+    {
+      "resource_id": "c92fdda2-0939-4110-8ebc-edfcf35e8723",
+      "title": "הנפקת אג\"ח סחירות בשוק המקומי ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ISSUANCEDATE",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "BONDS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SERIES",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ACTUALTERMTOMATURITY",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ORIGINALTERMTOMATURITY",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "REDEMTIONDATE",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "COUPON",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "OFFEREDQUANTITY",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PURCHASEDQUANTITY",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ADDITIONALPURCHASED",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AVERAGEPRICE",
+          "type": "numeric",
+          "semantic": "price"
+        },
+        {
+          "name": "CUTOFFPRICE",
+          "type": "numeric",
+          "semantic": "price"
+        },
+        {
+          "name": "TOTALFUNDING",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "DEMANDEDAMOUNT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "COVERRATIO",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "GROSSAVGYIELD",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "GROSSCUTOFFYIELD",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1954
+    },
+    {
+      "resource_id": "76abc04f-8fc9-48aa-b86e-e993c9235ee1",
+      "title": "הנפקות אג\"ח לא סחירות בשוק המקומי ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "SERIES",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BONDS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ACTUALTERMTOMATURITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ISSUANCEDATE",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "REDEMPTIONDATE",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "COUPON",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PURCHASEDQUANTITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 55
+    },
+    {
+      "resource_id": "a772f69d-cc72-4cd7-a903-8c2a291bfbc9",
+      "title": "פדיונות לפי סוג איגרת ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "TRADABLEORNONTRADABLE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BONDS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "REDEMPTIONDATE",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PRNCIPAL",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "DATATYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1938
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

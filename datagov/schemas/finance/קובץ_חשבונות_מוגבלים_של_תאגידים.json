@@ -1,0 +1,47 @@
+{
+  "dataset_id": "c7c077a1-93ec-4357-a396-63d46f52c219",
+  "title": "קובץ חשבונות מוגבלים של תאגידים",
+  "organization": "בנק ישראל",
+  "tags": [
+    "אוצר וכלכלה",
+    "בנק ישראל",
+    "חשבונות מוגבלים",
+    "תאגידים"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "חשבונות",
+    "וכלכלה",
+    "תאגידים",
+    "ישראל",
+    "מוגבלים",
+    "בנק",
+    "אוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "22b76984-ca91-4995-ba0e-dc9bae93de29",
+      "title": "קובץ חשבונות מוגבלים של תאגידים",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "14e52a67-9b17-450d-9411-0f2a110b7b4a",
+      "title": "הסברים לקובץ חשבונות מוגבלים של תאגידים",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

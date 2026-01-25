@@ -1,0 +1,106 @@
+{
+  "dataset_id": "7c6b6b6d-4e4e-42ea-aee1-84a14e69988e",
+  "title": "רכבת כבדה - תדירות שעתית 2020",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2020",
+    "gis",
+    "חצב",
+    "ממג",
+    "נסיעות",
+    "רכבת",
+    "רכבת כבדה",
+    "תדירות",
+    "תדירות שעתית"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "abba",
+    "רכבת",
+    "yearmonth",
+    "ממג",
+    "objectid",
+    "shape",
+    "בדרכים",
+    "freq",
+    "משרד",
+    "length",
+    "שעתית",
+    "והבטיחות",
+    "gis",
+    "חצב",
+    "כבדה",
+    "נסיעות",
+    "תדירות",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "cc77c7e4-4808-4e27-ae7e-c10bd18f4c24",
+      "title": "RAIL_FREQ_2020_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0045d97f-2efb-4420-a2a1-889e41484287",
+      "title": "RAIL_FREQ_2020_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "740e3550-f15d-4198-a75a-55f50e06f26b",
+      "title": "RAIL_FREQ_2020_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "AB_FREQ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BA_FREQ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ABBA_FREQ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 79
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

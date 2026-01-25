@@ -5,11 +5,12 @@
 	import { memoryUi } from "$lib/stores/memoryUi";
 	import * as d3 from "d3";
 	import { apiRequest } from "$lib/utils/apiClient";
+	import KnowledgeGraph3D from "./KnowledgeGraph3D.svelte";
 
-	type ConceptType = "routing" | "content" | "action";
+	type ConceptType = "routing" | "content" | "action" | "both";
 	type TimeFilter = "all" | "today" | "week" | "session";
 	type SortOption = "hybrid" | "recent" | "oldest";
-	type ViewMode = "list" | "graph";
+	type ViewMode = "list" | "graph" | "3d";
 	type GraphMode = "both" | "content" | "routing";
 
 	type ActionRollup = {
@@ -109,12 +110,18 @@
 			text: "text-orange-700 dark:text-orange-300",
 			border: "border-orange-300 dark:border-orange-700",
 		},
+		both: {
+			bg: "bg-purple-100 dark:bg-purple-900/30",
+			text: "text-purple-700 dark:text-purple-300",
+			border: "border-purple-300 dark:border-purple-700",
+		},
 	};
 
 	const typeLabels: Record<ConceptType, string> = {
 		routing: "ניתוב",
 		content: "תוכן",
 		action: "פעולה",
+		both: "גם וגם",
 	};
 
 	const timeFilterLabels: Record<TimeFilter, string> = {
@@ -332,18 +339,22 @@
 			});
 			const res = await fetch(`${base}/api/memory/kg/action-rollups?${params}`);
 			if (!res.ok) throw new Error(`Failed to load action rollups: ${res.status}`);
-			const data = (await res.json()) as any;
-			const rollups = Array.isArray(data?.rollups) ? data.rollups : [];
-			actionRollups = rollups.map((r: any) => ({
-				label: String(r.label ?? ""),
-				action: String(r.action ?? ""),
-				context_type: String(r.context_type ?? "general"),
-				tier_key: String(r.tier_key ?? "*"),
-				uses: Number(r.uses ?? 0),
-				success_rate: Number(r.success_rate ?? 0.5),
-				wilson_score: Number(r.wilson_score ?? 0.5),
-				last_used_at: typeof r.last_used_at === "string" ? r.last_used_at : null,
-			}));
+			const data = (await res.json()) as { rollups?: unknown };
+			const rollups = Array.isArray(data.rollups) ? data.rollups : [];
+			actionRollups = rollups.map((r) => {
+				const rr = r as Record<string, unknown>;
+				const lastUsedAt = rr.last_used_at;
+				return {
+					label: String(rr.label ?? ""),
+					action: String(rr.action ?? ""),
+					context_type: String(rr.context_type ?? "general"),
+					tier_key: String(rr.tier_key ?? "*"),
+					uses: Number(rr.uses ?? 0),
+					success_rate: Number(rr.success_rate ?? 0.5),
+					wilson_score: Number(rr.wilson_score ?? 0.5),
+					last_used_at: typeof lastUsedAt === "string" ? lastUsedAt : null,
+				};
+			});
 		} catch (err) {
 			console.error("Failed to load action rollups:", err);
 			actionRollups = [];
@@ -436,10 +447,11 @@
 	});
 
 	$effect(() => {
-		// Load graph data when switching to graph view
+		// Load graph data when switching to 2D graph view
 		if (viewMode === "graph") {
 			loadGraphData();
-		} else {
+		} else if (viewMode !== "3d") {
+			// Stop 2D simulation when not in graph view (but not when in 3D view)
 			stopSimulation();
 		}
 	});
@@ -535,29 +547,20 @@
 			</svg>
 		</button>
 
-		<!-- View Mode Toggle -->
-		<button
-			type="button"
-			onclick={() => (viewMode = viewMode === "list" ? "graph" : "list")}
-			class={[
-				"rounded p-1.5 transition-colors",
-				viewMode === "graph"
-					? "bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400"
-					: "text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600",
-			]}
-			title={viewMode === "list" ? "הצג גרף" : "הצג רשימה"}
-			aria-label={viewMode === "list" ? "הצג גרף" : "הצג רשימה"}
-		>
-			{#if viewMode === "list"}
-				<!-- Graph icon -->
-				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<circle cx="5" cy="12" r="2" stroke-width="2" />
-					<circle cx="19" cy="6" r="2" stroke-width="2" />
-					<circle cx="19" cy="18" r="2" stroke-width="2" />
-					<path stroke-linecap="round" stroke-width="2" d="M7 11l10-4M7 13l10 4" />
-				</svg>
-			{:else}
-				<!-- List icon -->
+		<!-- View Mode Toggle (List/2D/3D) -->
+		<div class="flex rounded-lg border border-gray-200 dark:border-gray-600">
+			<button
+				type="button"
+				onclick={() => (viewMode = "list")}
+				class={[
+					"rounded-r-lg px-2 py-1 text-xs transition-colors",
+					viewMode === "list"
+						? "bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400"
+						: "text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700",
+				]}
+				title="רשימה"
+				aria-label="הצג רשימה"
+			>
 				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path
 						stroke-linecap="round"
@@ -566,11 +569,51 @@
 						d="M4 6h16M4 12h16M4 18h16"
 					/>
 				</svg>
-			{/if}
-		</button>
+			</button>
+			<button
+				type="button"
+				onclick={() => (viewMode = "graph")}
+				class={[
+					"border-x border-gray-200 px-2 py-1 text-xs transition-colors dark:border-gray-600",
+					viewMode === "graph"
+						? "bg-blue-100 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400"
+						: "text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700",
+				]}
+				title="גרף 2D"
+				aria-label="הצג גרף דו-ממדי"
+			>
+				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<circle cx="5" cy="12" r="2" stroke-width="2" />
+					<circle cx="19" cy="6" r="2" stroke-width="2" />
+					<circle cx="19" cy="18" r="2" stroke-width="2" />
+					<path stroke-linecap="round" stroke-width="2" d="M7 11l10-4M7 13l10 4" />
+				</svg>
+			</button>
+			<button
+				type="button"
+				onclick={() => (viewMode = "3d")}
+				class={[
+					"rounded-l-lg px-2 py-1 text-xs transition-colors",
+					viewMode === "3d"
+						? "bg-purple-100 text-purple-600 dark:bg-purple-900/50 dark:text-purple-400"
+						: "text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700",
+				]}
+				title="גרף 3D"
+				aria-label="הצג גרף תלת-ממדי"
+			>
+				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
+					/>
+				</svg>
+			</button>
+		</div>
 	</div>
 
-	<!-- Concept List / Graph -->
+	<!-- Concept List / Graph / 3D -->
 	<div class="flex-1 overflow-y-auto">
 		{#if isLoading}
 			<div class="flex items-center justify-center py-8">
@@ -578,8 +621,31 @@
 					class="size-6 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500"
 				></div>
 			</div>
+		{:else if viewMode === "3d"}
+			<!-- 3D Graph View -->
+			<div class="h-full min-h-[400px]">
+				<KnowledgeGraph3D
+					{graphMode}
+					{timeFilter}
+					{sortBy}
+					onNodeSelect={(node) => {
+						if (node) {
+							selectedConcept = {
+								id: node.id,
+								concept: node.concept,
+								type: node.type,
+								usage_count: node.usage,
+								success_rate: node.success_rate ?? 0.5,
+								last_used: node.last_used ?? new Date().toISOString(),
+							};
+						} else {
+							selectedConcept = null;
+						}
+					}}
+				/>
+			</div>
 		{:else if viewMode === "graph"}
-			<!-- Graph View -->
+			<!-- 2D Graph View -->
 			<div class="flex h-full items-center justify-center">
 				{#if graphNodes.length === 0}
 					<div class="text-center text-sm text-gray-500 dark:text-gray-400">אין נתונים לגרף</div>
@@ -685,7 +751,9 @@
 			<div class="py-8 text-center text-sm text-gray-500 dark:text-gray-400">אין מושגים להצגה</div>
 		{:else}
 			<div class="flex flex-col gap-2">
-				<div class="rounded-lg border border-gray-200 bg-white p-2.5 dark:border-gray-600 dark:bg-gray-700">
+				<div
+					class="rounded-lg border border-gray-200 bg-white p-2.5 dark:border-gray-600 dark:bg-gray-700"
+				>
 					<div class="mb-2 flex items-center justify-between">
 						<div class="text-xs font-medium text-gray-700 dark:text-gray-200">
 							סיכום יעילות פעולות
@@ -708,7 +776,9 @@
 										<div class="truncate font-medium text-gray-800 dark:text-gray-100">
 											{r.action}
 											<span class="text-gray-500 dark:text-gray-400">
-												@{formatContextType(r.context_type)}{r.tier_key !== "*" ? ` → ${r.tier_key}` : ""}
+												@{formatContextType(r.context_type)}{r.tier_key !== "*"
+													? ` → ${r.tier_key}`
+													: ""}
 											</span>
 										</div>
 										<div class="text-[11px] text-gray-500 dark:text-gray-400">

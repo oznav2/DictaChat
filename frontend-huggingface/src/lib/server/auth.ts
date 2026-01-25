@@ -46,7 +46,7 @@ export const OIDConfig = z
 		CLIENT_SECRET: stringWithDefault(config.OPENID_CLIENT_SECRET),
 		PROVIDER_URL: stringWithDefault(config.OPENID_PROVIDER_URL),
 		SCOPES: stringWithDefault(config.OPENID_SCOPES),
-		NAME_CLAIM: stringWithDefault(config.OPENID_NAME_CLAIM).refine(
+		NAME_CLAIM: stringWithDefault(config.OPENID_NAME_CLAIM || "name").refine(
 			(el) => !["preferred_username", "email", "picture", "sub"].includes(el),
 			{ message: "nameClaim cannot be one of the restricted keys." }
 		),

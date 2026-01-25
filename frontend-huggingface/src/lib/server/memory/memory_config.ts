@@ -115,6 +115,26 @@ export interface DedupConfig {
 	similarity_threshold: number;
 }
 
+/**
+ * Phase 25: DataGov Pre-Ingestion Configuration
+ */
+export interface DataGovConfig {
+	/** Enable DataGov knowledge pre-loading at startup */
+	enabled: boolean;
+	/** Run ingestion in background (non-blocking startup) */
+	background: boolean;
+	/** Path to schema files */
+	schemas_path: string;
+	/** Path to enterprise expansions JSON */
+	expansion_path: string;
+	/** Number of sample datasets per category in KG */
+	kg_sample_size: number;
+	/** Batch size for schema ingestion */
+	batch_size: number;
+	/** Maximum KG nodes to prevent UI collapse */
+	max_kg_nodes: number;
+}
+
 export interface MemoryConfig {
 	timeouts: MemoryTimeoutsConfig;
 	caps: MemoryCapsConfig;
@@ -127,6 +147,7 @@ export interface MemoryConfig {
 		reranker: CircuitBreakerConfig;
 		embeddings: CircuitBreakerConfig;
 		contextual_prefix: CircuitBreakerConfig;
+		ner: CircuitBreakerConfig;
 	};
 	cold_start: ColdStartConfig;
 	recency: RecencyConfig;
@@ -134,6 +155,8 @@ export interface MemoryConfig {
 	qdrant: QdrantCollectionConfig;
 	vector_schema_validation: VectorSchemaValidationConfig;
 	dedup: DedupConfig;
+	/** Phase 25: DataGov pre-ingestion settings */
+	datagov: DataGovConfig;
 }
 
 export const defaultMemoryConfig: MemoryConfig = {
@@ -143,7 +166,7 @@ export const defaultMemoryConfig: MemoryConfig = {
 		qdrant_query_ms: 10_000, // 10s for first-use model loading, SQLite locks, HNSW scenarios
 		mongo_text_query_ms: 1_500,
 		mongo_aggregate_ms: 1_500,
-		reranker_ms: 4_000,
+		reranker_ms: 2_000, // Reduced from 4s to 2s for better UX - skip reranking if slow
 		embeddings_ms: 3_000,
 		contextual_prefix_ms: 5_000,
 		book_conversion_ms: 30_000,
@@ -152,8 +175,12 @@ export const defaultMemoryConfig: MemoryConfig = {
 		search_limit_default: 5,
 		search_limit_max: 20,
 		candidate_fetch_multiplier_per_tier: 3,
-		rerank_k: 30,
-		rerank_max_input_chars: 10_000,
+		// Option C Safety: Reduced from 30 to 10 to prevent dicta-retrieval batch size crashes
+		// The reranker works better with fewer, high-quality candidates anyway
+		rerank_k: 10,
+		// Option C Safety: Reduced from 10k to 2k chars to prevent token overflow
+		// Legal/formal documents are often longer but 2k chars captures the key content
+		rerank_max_input_chars: 2_000,
 		max_memory_bank_items: 1_000,
 		max_action_examples_per_key: 5,
 		max_entities_per_memory: 32,
@@ -205,9 +232,9 @@ export const defaultMemoryConfig: MemoryConfig = {
 			half_open_max_concurrency: 1,
 		},
 		reranker: {
-			failure_threshold: 2,
+			failure_threshold: 3, // Increased from 2 to match qdrant/bm25 - less aggressive circuit opening
 			success_threshold: 2,
-			open_duration_ms: 60_000,
+			open_duration_ms: 30_000, // Reduced from 60s to 30s for faster recovery
 			half_open_max_concurrency: 1,
 		},
 		embeddings: {
@@ -220,6 +247,12 @@ export const defaultMemoryConfig: MemoryConfig = {
 			failure_threshold: 2,
 			success_threshold: 2,
 			open_duration_ms: 60_000,
+			half_open_max_concurrency: 1,
+		},
+		ner: {
+			failure_threshold: 3,
+			success_threshold: 2,
+			open_duration_ms: 30_000,
 			half_open_max_concurrency: 1,
 		},
 	},
@@ -288,5 +321,15 @@ export const defaultMemoryConfig: MemoryConfig = {
 	dedup: {
 		enabled: true,
 		similarity_threshold: 0.95,
+	},
+	/** Phase 25: DataGov pre-ingestion defaults */
+	datagov: {
+		enabled: true,
+		background: true,
+		schemas_path: "/datagov/schemas",
+		expansion_path: "/datagov/enterprise_expansions.json",
+		kg_sample_size: 5,
+		batch_size: 50,
+		max_kg_nodes: 150,
 	},
 };

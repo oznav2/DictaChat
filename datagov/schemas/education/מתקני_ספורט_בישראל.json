@@ -1,0 +1,361 @@
+{
+  "dataset_id": "db2941a4-d5d7-4a1f-893f-e456bfc6c774",
+  "title": "מתקני ספורט בישראל",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "חינוך ותרבות",
+    "מתקני ספורט",
+    "נגישות",
+    "ספורט",
+    "תחרויות"
+  ],
+  "categories": [
+    "education",
+    "culture"
+  ],
+  "keywords": [
+    "זיהוי",
+    "תאורה",
+    "גידור",
+    "לנכים",
+    "מושבים",
+    "סוג",
+    "לתחרויות",
+    "רשות",
+    "ציר",
+    "משרת",
+    "איש",
+    "המבנים",
+    "קיימת",
+    "לרכבים",
+    "רחוב",
+    "ספר",
+    "טלפון",
+    "התרבות",
+    "חינוך",
+    "רשמיות",
+    "קשר",
+    "פנוי",
+    "תקני",
+    "ותרבות",
+    "קיים",
+    "ספורט",
+    "רובע",
+    "משרד",
+    "בעלי",
+    "לפעילות",
+    "נגישות",
+    "דואל",
+    "מתקן",
+    "והספורט",
+    "שימוש",
+    "המתקן",
+    "חניה",
+    "הקמה",
+    "בית",
+    "תחרויות",
+    "ישוב",
+    "שכונה",
+    "מצב",
+    "מפעיל",
+    "מקומית",
+    "גוף",
+    "בישראל",
+    "מתקני"
+  ],
+  "resources": [
+    {
+      "resource_id": "f8dbd3ed-2c62-4d0e-bbaa-b6a15a0e5f7d",
+      "title": "מתקני ספורט בישראל",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "רשות מקומית",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מספר זיהוי",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סוג מתקן",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שם המתקן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שכונה-רובע",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מספר בית",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "ציר X",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "ציר Y",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "מספר המבנים",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "בעלי המתקן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גוף מפעיל המתקן",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "טלפון איש קשר",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואל איש קשר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר מושבים",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "פנוי לפעילות",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "גידור קיים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאורה קיימת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נגישות לנכים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חניה לרכבים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מצב המתקן",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "מתקן תקני לתחרויות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שימוש לתחרויות רשמיות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת הקמה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "משרת בית ספר",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 8777
+    },
+    {
+      "resource_id": "2304b5de-c720-4b5c-bbc7-4cbab85e0ae8",
+      "title": "רשימת מתקני הספורט לפי רשויות - מעודכן 25.7.21.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "רשות מקומית",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מספר זיהוי",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "סוג מתקן",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שם המתקן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שכונה-רובע",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מספר בית",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "ציר X",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "ציר Y",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "מספר המבנים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "בעלי המתקן",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "גוף מפעיל המתקן",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "טלפון איש קשר",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואל איש קשר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר מושבים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "פנוי לפעילות",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "גידור קיים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאורה קיימת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נגישות לנכים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "חניה לרכבים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מצב המתקן",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "מתקן תקני לתחרויות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שימוש לתחרויות רשמיות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת הקמה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "משרת בית ספר",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 8777
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

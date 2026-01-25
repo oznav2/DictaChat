@@ -26,6 +26,16 @@ interface HealthCheckResponse {
 export const POST: RequestHandler = async ({ request, locals }) => {
 	let client: Client | undefined;
 
+	if (!locals.isAdmin) {
+		return new Response(
+			JSON.stringify({ ready: false, error: "Admin only" } satisfies HealthCheckResponse),
+			{
+				status: 403,
+				headers: { "Content-Type": "application/json" },
+			}
+		);
+	}
+
 	try {
 		const body: HealthCheckRequest = await request.json();
 		const { url, headers } = body;
@@ -147,81 +157,22 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 		let httpError: Error | undefined;
 		let lastError: Error | undefined;
 
-		// Try Streamable HTTP transport first
-		try {
-			console.log(`[MCP Health] Trying HTTP transport for ${url}`);
-			client = new Client({
-				name: "chat-ui-health-check",
-				version: "1.0.0",
-			});
+		// Try Streamable HTTP transport first, unless URL indicates SSE
+		const isSseUrl = url.endsWith("/sse") || url.includes("/sse?");
+		const useHttp = !isSseUrl;
 
-			const transport = new StreamableHTTPClientTransport(baseUrl, { requestInit });
-			console.log(`[MCP Health] Connecting to ${url}...`);
-			await client.connect(transport);
-			console.log(`[MCP Health] Connected successfully via HTTP`);
-
-			// Connection successful, get tools
-			const toolsResponse = await client.listTools();
-
-			// Disconnect after getting tools
-			await client.close();
-
-			if (toolsResponse && toolsResponse.tools) {
-				const response: HealthCheckResponse = {
-					ready: true,
-					tools: toolsResponse.tools.map((tool) => ({
-						name: tool.name,
-						description: tool.description,
-						inputSchema: tool.inputSchema,
-					})),
-					authRequired: false,
-				};
-
-				const res = new Response(JSON.stringify(response), {
-					status: 200,
-					headers: { "Content-Type": "application/json" },
-				});
-				clearTimeout(timeoutId);
-				return res;
-			} else {
-				const res = new Response(
-					JSON.stringify({
-						ready: false,
-						error: "Connected but no tools available",
-						authRequired: false,
-					} as HealthCheckResponse),
-					{
-						status: 503,
-						headers: { "Content-Type": "application/json" },
-					}
-				);
-				clearTimeout(timeoutId);
-				return res;
-			}
-		} catch (error) {
-			httpError = error instanceof Error ? error : new Error(String(error));
-			lastError = httpError;
-			console.log("Streamable HTTP failed, trying SSE transport...", lastError.message);
-
-			// Close failed client
+		if (useHttp) {
 			try {
-				await client?.close();
-			} catch {
-				// Ignore
-			}
-
-			// Try SSE transport
-			try {
-				console.log(`[MCP Health] Trying SSE transport for ${url}`);
+				console.log(`[MCP Health] Trying HTTP transport for ${url}`);
 				client = new Client({
 					name: "chat-ui-health-check",
 					version: "1.0.0",
 				});
 
-				const sseTransport = new SSEClientTransport(baseUrl, { requestInit });
-				console.log(`[MCP Health] Connecting via SSE...`);
-				await client.connect(sseTransport);
-				console.log(`[MCP Health] Connected successfully via SSE`);
+				const transport = new StreamableHTTPClientTransport(baseUrl, { requestInit });
+				console.log(`[MCP Health] Connecting to ${url}...`);
+				await client.connect(transport);
+				console.log(`[MCP Health] Connected successfully via HTTP`);
 
 				// Connection successful, get tools
 				const toolsResponse = await client.listTools();
@@ -261,18 +212,82 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 					clearTimeout(timeoutId);
 					return res;
 				}
-			} catch (sseError) {
-				lastError = sseError instanceof Error ? sseError : new Error(String(sseError));
-				// Prefer the HTTP error when both failed so UI shows the primary failure (e.g., HTTP 500) instead
-				// of the fallback SSE message.
-				if (httpError) {
-					lastError = new Error(
-						`HTTP transport failed: ${httpError.message}; SSE fallback failed: ${lastError.message}`,
-						{ cause: sseError instanceof Error ? sseError : undefined }
-					);
+			} catch (error) {
+				httpError = error instanceof Error ? error : new Error(String(error));
+				lastError = httpError;
+				console.log("Streamable HTTP failed, trying SSE transport...", lastError.message);
+
+				// Close failed client
+				try {
+					await client?.close();
+				} catch {
+					// Ignore
 				}
-				console.error("Both transports failed. Last error:", lastError);
 			}
+		}
+
+		// Try SSE transport (if HTTP failed or skipped)
+		try {
+			console.log(`[MCP Health] Trying SSE transport for ${url}`);
+			client = new Client({
+				name: "chat-ui-health-check",
+				version: "1.0.0",
+			});
+
+			const sseTransport = new SSEClientTransport(baseUrl, { requestInit });
+			console.log(`[MCP Health] Connecting via SSE...`);
+			await client.connect(sseTransport);
+			console.log(`[MCP Health] Connected successfully via SSE`);
+
+			// Connection successful, get tools
+			const toolsResponse = await client.listTools();
+
+			// Disconnect after getting tools
+			await client.close();
+
+			if (toolsResponse && toolsResponse.tools) {
+				const response: HealthCheckResponse = {
+					ready: true,
+					tools: toolsResponse.tools.map((tool) => ({
+						name: tool.name,
+						description: tool.description,
+						inputSchema: tool.inputSchema,
+					})),
+					authRequired: false,
+				};
+
+				const res = new Response(JSON.stringify(response), {
+					status: 200,
+					headers: { "Content-Type": "application/json" },
+				});
+				clearTimeout(timeoutId);
+				return res;
+			} else {
+				const res = new Response(
+					JSON.stringify({
+						ready: false,
+						error: "Connected but no tools available",
+						authRequired: false,
+					} as HealthCheckResponse),
+					{
+						status: 503,
+						headers: { "Content-Type": "application/json" },
+					}
+				);
+				clearTimeout(timeoutId);
+				return res;
+			}
+		} catch (sseError) {
+			lastError = sseError instanceof Error ? sseError : new Error(String(sseError));
+			// Prefer the HTTP error when both failed so UI shows the primary failure (e.g., HTTP 500) instead
+			// of the fallback SSE message.
+			if (httpError) {
+				lastError = new Error(
+					`HTTP transport failed: ${httpError.message}; SSE fallback failed: ${lastError.message}`,
+					{ cause: sseError instanceof Error ? sseError : undefined }
+				);
+			}
+			console.error("Both transports failed. Last error:", lastError);
 		}
 
 		// Both transports failed

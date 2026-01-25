@@ -161,7 +161,8 @@ export async function seedDataGovCategories(): Promise<void> {
 							source_personality_id: null,
 							source_personality_name: null,
 						},
-						language: "he",
+						// MongoDB text indexes don't support Hebrew - use "none" to disable language-specific stemming
+						language: "none",
 						translation_ref_id: null,
 						updated_at: new Date(),
 					},

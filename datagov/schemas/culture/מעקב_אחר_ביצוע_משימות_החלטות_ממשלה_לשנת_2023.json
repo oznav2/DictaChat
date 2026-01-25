@@ -1,0 +1,188 @@
+{
+  "dataset_id": "6e25cd24-1b68-4298-90ae-8ae447d9016b",
+  "title": "מעקב אחר ביצוע משימות החלטות ממשלה לשנת 2023",
+  "organization": "משרד ראש הממשלה ",
+  "tags": [
+    "ביצוע",
+    "בקרה",
+    "דוח",
+    "דיווח",
+    "החלטות ממשלה",
+    "ייעול",
+    "ממשל",
+    "ממשל וחברה",
+    "מעקב",
+    "משימות",
+    "משרד ראש הממשלה",
+    "פיקוח",
+    "שיפור",
+    "שקיפות",
+    "תכנון",
+    "תמונת מצב",
+    "תרבות ארגונית"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "name",
+    "deadline",
+    "status",
+    "אחר",
+    "budget",
+    "execution",
+    "task",
+    "published",
+    "cojajrfk",
+    "שיפור",
+    "שקיפות",
+    "responsible",
+    "ממשל",
+    "section",
+    "sbczkvsw",
+    "דוח",
+    "מעקב",
+    "הממשלה",
+    "דיווח",
+    "gwpkau",
+    "decision",
+    "date",
+    "source",
+    "unit",
+    "ארגונית",
+    "ראש",
+    "ממשלה",
+    "number",
+    "explanation",
+    "pmo",
+    "החלטות",
+    "תכנון",
+    "משרד",
+    "פיקוח",
+    "type",
+    "בקרה",
+    "the",
+    "ייעול",
+    "publication",
+    "משימות",
+    "תמונת",
+    "government",
+    "ביצוע",
+    "וחברה",
+    "jcto",
+    "qfkmedo",
+    "yes",
+    "מצב",
+    "תרבות"
+  ],
+  "resources": [
+    {
+      "resource_id": "5b6cd1b1-c553-4838-af7e-c1132e7234f1",
+      "title": "כלל הנתונים - משימות 2023",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Decision Number ‏",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "Task Number ‏",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "Section In The Decision",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Name Of Government Decision",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Task",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Responsible Unit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Deadline",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Execution Status",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Explanation",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Budget Task Yes/No",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Type Of Budget Task",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Budget Source",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Budget ‏",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Date Published",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 2243
+    },
+    {
+      "resource_id": "80a52931-dd5a-42a5-a998-e8b5991b948f",
+      "title": "כלל הנתונים - משימות 2015-2023",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "pmo_publication:sBCzKVSw3qFkmEDo29w/jcTo5coJAjrFK2j2X1t6gwPKAU0",
+          "type": "text",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 7
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

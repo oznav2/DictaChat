@@ -1,20 +1,20 @@
 ============================= test session starts =============================
 platform: node v20.18.1
 test framework: vitest
-timestamp: 2026-01-11T16:08:10.911Z
+timestamp: 2026-01-21T22:00:10.203Z
 rootdir: /home/ilan/BricksLLM/frontend-huggingface
 
 collecting ... collected 9 items
 
-test_learning_speed::test_cold_start_baseline PASSED (10ms) [cold_start_results=0.000, after_first_memory_results=1.000, first_memory_found=1.000] [ 11%]
-test_learning_speed::test_learning_curve PASSED (14ms) [interactions=20.000, avg_first_half_score=0.205, avg_second_half_score=0.469, improvement=0.264, final_wilson_score=0.531] [ 22%]
-test_learning_speed::test_adaptation_speed PASSED (2ms) [found_old_preference=1.000, found_new_preference=1.000, adaptation_steps=3.000, final_new_pref_score=0.676] [ 33%]
-test_learning_speed::test_knowledge_retention PASSED (10ms) [total_facts=4.000, retained_facts=4.000, retention_rate=1.000, old_birthday_found=1.000, mid_work_found=1.000] [ 44%]
-test_learning_speed::test_pattern_recognition PASSED (1ms) [pattern_instances=5.000, pattern_results_found=5.000, pattern_recognition_rate=1.000] [ 56%]
+test_learning_speed::test_cold_start_baseline PASSED (5ms) [cold_start_results=0.000, after_first_memory_results=1.000, first_memory_found=1.000] [ 11%]
+test_learning_speed::test_learning_curve PASSED (18ms) [interactions=20.000, avg_first_half_score=0.205, avg_second_half_score=0.469, improvement=0.264, final_wilson_score=0.531] [ 22%]
+test_learning_speed::test_adaptation_speed PASSED (1ms) [found_old_preference=1.000, found_new_preference=1.000, adaptation_steps=3.000, final_new_pref_score=0.676] [ 33%]
+test_learning_speed::test_knowledge_retention PASSED (1ms) [total_facts=4.000, retained_facts=4.000, retention_rate=1.000, old_birthday_found=1.000, mid_work_found=1.000] [ 44%]
+test_learning_speed::test_pattern_recognition PASSED (4ms) [pattern_instances=5.000, pattern_results_found=5.000, pattern_recognition_rate=1.000] [ 56%]
 test_learning_speed::test_context_specialization PASSED (1ms) [work_context_matches=2.000, personal_context_matches=1.000, specialization_accuracy=0.500] [ 67%]
-test_learning_speed::test_learning_efficiency PASSED (1ms) [target_confidence=0.800, iterations_to_target=50.000, final_confidence=0.786, total_uses=50.000, success_rate=0.900, learning_efficiency=0.016] [ 78%]
-test_learning_speed::test_hebrew_learning_speed PASSED (2ms) [hebrew_items=3.000, hebrew_found=3.000, avg_hebrew_score=0.700] [ 89%]
-test_learning_speed::test_learning_speed PASSED (4ms) [total_learning_items=30.000, avg_first_10_score=0.166, avg_last_10_score=0.715, score_improvement=0.549, searchable_items=10.000, learning_success=1.000] [100%]
+test_learning_speed::test_learning_efficiency PASSED (1ms) [target_confidence=0.800, iterations_to_target=40.000, final_confidence=0.812, total_uses=50.000, success_rate=0.920, learning_efficiency=0.020] [ 78%]
+test_learning_speed::test_hebrew_learning_speed PASSED (0ms) [hebrew_items=3.000, hebrew_found=3.000, avg_hebrew_score=0.700] [ 89%]
+test_learning_speed::test_learning_speed PASSED (2ms) [total_learning_items=30.000, avg_first_10_score=0.166, avg_last_10_score=0.715, score_improvement=0.549, searchable_items=10.000, learning_success=1.000] [100%]
 
 ============================== benchmark summary ==============================
 
@@ -43,11 +43,11 @@ Metrics Summary:
   personal_context_matches: avg=1.000, min=1.000, max=1.000
   specialization_accuracy: avg=0.500, min=0.500, max=0.500
   target_confidence: avg=0.800, min=0.800, max=0.800
-  iterations_to_target: avg=50.000, min=50.000, max=50.000
-  final_confidence: avg=0.786, min=0.786, max=0.786
+  iterations_to_target: avg=40.000, min=40.000, max=40.000
+  final_confidence: avg=0.812, min=0.812, max=0.812
   total_uses: avg=50.000, min=50.000, max=50.000
-  success_rate: avg=0.900, min=0.900, max=0.900
-  learning_efficiency: avg=0.016, min=0.016, max=0.016
+  success_rate: avg=0.920, min=0.920, max=0.920
+  learning_efficiency: avg=0.020, min=0.020, max=0.020
   hebrew_items: avg=3.000, min=3.000, max=3.000
   hebrew_found: avg=3.000, min=3.000, max=3.000
   avg_hebrew_score: avg=0.700, min=0.700, max=0.700
@@ -59,5 +59,5 @@ Metrics Summary:
   learning_success: avg=1.000, min=1.000, max=1.000
 
 ============================== test results ===================================
-9 passed, 0 failed in 0.08s
+9 passed, 0 failed in 0.06s
 ===============================================================================

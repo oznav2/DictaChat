@@ -76,6 +76,8 @@ export interface MemoryItemDocument {
 		failed_count: number;
 		partial_count: number;
 		unknown_count: number;
+		/** Phase 23.2: Cumulative success value for Wilson calculation */
+		success_count?: number;
 		success_rate: number;
 		wilson_score: number;
 	};
@@ -85,6 +87,13 @@ export interface MemoryItemDocument {
 	updated_at: Date;
 	archived_at: Date | null;
 	expires_at: Date | null;
+
+	needs_reindex?: boolean;
+	reindex_reason?: string;
+	reindex_marked_at?: Date;
+	embedding_status?: "pending" | "indexed" | "failed";
+	embedding_error?: string | null;
+	last_reindexed_at?: Date | null;
 
 	// Embedding info (for consistency checks with Qdrant)
 	embedding: {

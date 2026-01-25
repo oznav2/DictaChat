@@ -1,0 +1,110 @@
+{
+  "dataset_id": "6c44da0d-e499-4233-973a-e404c607fb86",
+  "title": "רשימת חברות ממשלתיות ודירקטורים מכהנים",
+  "organization": "משרד האוצר",
+  "tags": [
+    "חברות ממשלתיות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "goverment",
+    "מכהנים",
+    "חברות",
+    "company",
+    "status",
+    "occupation",
+    "office",
+    "site",
+    "ממשלתיות",
+    "משרד",
+    "first",
+    "primary",
+    "last",
+    "role",
+    "ודירקטורים",
+    "האוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "2d5abbad-4809-4900-b74f-b2f8b40bcfb8",
+      "title": "רשימת החברות הממשלתיות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "COMPANY_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "COMPANY_SITE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PRIMARY_OCCUPATION",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "GOVERMENT_OFFICE",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 106
+    },
+    {
+      "resource_id": "256b111d-6aeb-4e5b-a8df-5ec851487c57",
+      "title": "רשימת דירקטורים מכהנים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "COMPANY_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ROLE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FIRST_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LAST_NAME",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 371
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

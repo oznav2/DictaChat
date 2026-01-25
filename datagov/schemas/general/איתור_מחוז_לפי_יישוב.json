@@ -1,0 +1,67 @@
+{
+  "dataset_id": "3768866d-84e0-479f-b720-ccae0ac315d5",
+  "title": "איתור מחוז לפי יישוב",
+  "organization": "משרד העבודה",
+  "tags": [
+    "איתור",
+    "בחינות ממשלתיות",
+    "יישוב",
+    "יישובים",
+    "מחוז",
+    "מחוזות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "מחוז",
+    "איתור",
+    "יישובים",
+    "מחוזות",
+    "symbol",
+    "העבודה",
+    "ממשלתיות",
+    "משרד",
+    "city",
+    "district",
+    "בחינות",
+    "יישוב"
+  ],
+  "resources": [
+    {
+      "resource_id": "75c2333e-c3d5-41ac-b144-f5f16d820981",
+      "title": "איתור מחוז לפי יישוב",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "city_symbol",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 1486
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

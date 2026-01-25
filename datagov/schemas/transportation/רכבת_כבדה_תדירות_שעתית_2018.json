@@ -1,0 +1,102 @@
+{
+  "dataset_id": "707170c4-1175-416a-89be-b23220a86bfb",
+  "title": "רכבת כבדה - תדירות שעתית 2018",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "2018",
+    "GIS",
+    "חצב",
+    "ממג",
+    "רכבת",
+    "רכבת כבדה",
+    "תדירות"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "abba",
+    "רכבת",
+    "yearmonth",
+    "ממג",
+    "shape",
+    "בדרכים",
+    "משרד",
+    "fid",
+    "שעתית",
+    "והבטיחות",
+    "gis",
+    "leng",
+    "חצב",
+    "כבדה",
+    "תדירות",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "76665410-f823-4220-a440-62c9b98cc432",
+      "title": "RAIL_FREQ_2018_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "eaf5e664-4dc1-471e-88ac-304a4cfbe79d",
+      "title": "RAIL_FREQ_2018_KML",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "3691808b-1c2e-4e7f-96c4-1d268cc5ad79",
+      "title": "RAIL_FREQ_2018_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "AM_AB",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AM_BA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AM_ABBA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YearMonth",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Shape_Leng",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 86
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

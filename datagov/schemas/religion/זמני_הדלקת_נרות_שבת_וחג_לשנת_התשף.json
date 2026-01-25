@@ -1,0 +1,122 @@
+{
+  "dataset_id": "1eedcd30-09ea-46bb-aa87-629a25d89e87",
+  "title": "זמני הדלקת נרות שבת וחג לשנת התש\"ף",
+  "organization": "המשרד לשירותי דת",
+  "tags": [
+    "דת",
+    "הדלקת נרות",
+    "חג",
+    "שבת"
+  ],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "out",
+    "heb",
+    "beersheva",
+    "telaviv",
+    "date",
+    "המשרד",
+    "month",
+    "לשירותי",
+    "hayfa",
+    "parasha",
+    "נרות",
+    "התש",
+    "שבת",
+    "וחג",
+    "day",
+    "year",
+    "זמני",
+    "הדלקת",
+    "jerusalem"
+  ],
+  "resources": [
+    {
+      "resource_id": "fc678ba7-0668-47ba-94af-1a69d049226f",
+      "title": "shabatTimes_hatashap.xls",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "parasha",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "heb_day",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "heb_month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "heb_year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "date",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "Jerusalem_in",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Jerusalem_out",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TelAviv_in",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "TelAviv_out",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Hayfa_in",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Hayfa_out",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "BeerSheva_in",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BeerSheva_out",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 66
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

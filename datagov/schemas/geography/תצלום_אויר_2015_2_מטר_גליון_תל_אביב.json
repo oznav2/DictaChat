@@ -1,0 +1,35 @@
+{
+  "dataset_id": "fd445895-e58e-4d8b-a165-4b6fec636770",
+  "title": "תצלום אויר 2015 2 מטר - גליון תל אביב",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "אביב",
+    "מטר",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "273447a7-06b3-482e-8362-a9218b1c480c",
+      "title": "תצלום אויר 2015 2 מטר - גליון תל אביב",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

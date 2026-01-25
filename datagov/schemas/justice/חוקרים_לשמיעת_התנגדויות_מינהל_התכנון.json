@@ -1,0 +1,68 @@
+{
+  "dataset_id": "2146aa8a-9745-453a-a232-ef3b655459fe",
+  "title": "חוקרים לשמיעת התנגדויות - מינהל התכנון",
+  "organization": "מינהל התכנון ",
+  "tags": [
+    "התנגדויות",
+    "חוקרים",
+    "מינהל התכנון",
+    "תכנון",
+    "תכניות",
+    "תכנית מתאר"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "לשמיעת",
+    "מינהל",
+    "תכנית",
+    "תכנון",
+    "פרטי",
+    "זהות",
+    "התכנון",
+    "חוקרים",
+    "תעודת",
+    "תכניות",
+    "משפחה",
+    "מתאר",
+    "התנגדויות"
+  ],
+  "resources": [
+    {
+      "resource_id": "55acb9b5-5437-44f5-a84a-f96c4577dd4d",
+      "title": "רשימת החוקרים העדכנית כפי שפורסמה ברשומות ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר תעודת זהות",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 58
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

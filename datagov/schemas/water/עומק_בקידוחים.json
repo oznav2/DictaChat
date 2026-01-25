@@ -1,0 +1,75 @@
+{
+  "dataset_id": "bf4470dc-c7cf-45db-8260-205ef1a9aa30",
+  "title": "עומק בקידוחים",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "borehole",
+    "water",
+    "מים",
+    "קידוח",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "עומק",
+    "הרשות",
+    "borehole",
+    "במטרים",
+    "קידוח",
+    "רשות",
+    "מתאריך",
+    "למים",
+    "הממשלתית",
+    "הקידוח",
+    "המים",
+    "מים",
+    "ולביוב",
+    "תאריך",
+    "water",
+    "בקידוחים"
+  ],
+  "resources": [
+    {
+      "resource_id": "32df47bd-b4d0-4a55-b344-e59743aef9b0",
+      "title": "עומק בקידוחים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם קידוח",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מתאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עד תאריך",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עומק הקידוח במטרים",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 12448
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

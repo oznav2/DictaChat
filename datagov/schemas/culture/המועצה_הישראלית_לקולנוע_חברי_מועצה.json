@@ -1,0 +1,58 @@
+{
+  "dataset_id": "9d1cce08-617b-485c-9a1a-8940de1ab2d7",
+  "title": "המועצה הישראלית לקולנוע - חברי מועצה",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "קולנוע חברי מועצה"
+  ],
+  "categories": [
+    "culture",
+    "municipal"
+  ],
+  "keywords": [
+    "התרבות",
+    "הישראלית",
+    "משרד",
+    "פרטי",
+    "ומשפחה",
+    "לקולנוע",
+    "המועצה",
+    "קולנוע",
+    "והספורט",
+    "תפקיד",
+    "מועצה",
+    "חברי"
+  ],
+  "resources": [
+    {
+      "resource_id": "885c45a5-5bb1-4524-9535-2fdb13300922",
+      "title": "המועצה הישראלית לקולנוע - חברי מועצה ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם פרטי ומשפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תפקיד",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 13
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

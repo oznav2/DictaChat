@@ -1,0 +1,42 @@
+{
+  "dataset_id": "34f85227-aeae-477d-b0c2-83f86ef653cb",
+  "title": "מרחבי תכנון",
+  "organization": "מינהל התכנון ",
+  "tags": [
+    "וועדות",
+    "וועדות תכנון",
+    "ועדה לתכנון ולבניה",
+    "מרחב תכנון",
+    "מרחבי תכנון"
+  ],
+  "categories": [
+    "housing"
+  ],
+  "keywords": [
+    "מינהל",
+    "תכנון",
+    "מרחבי",
+    "לתכנון",
+    "התכנון",
+    "וועדות",
+    "ולבניה",
+    "מרחב",
+    "ועדה"
+  ],
+  "resources": [
+    {
+      "resource_id": "5853b3f1-cf17-46d6-ada8-2e8282ce4a26",
+      "title": "קישור למידע תכנוני של מינהל התכנון - מרחבי תכנון",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

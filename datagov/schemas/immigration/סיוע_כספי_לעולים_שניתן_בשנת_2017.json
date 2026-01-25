@@ -1,0 +1,56 @@
+{
+  "dataset_id": "12c8055f-8e35-43a8-9565-25b968372a8d",
+  "title": "סיוע כספי לעולים שניתן בשנת 2017",
+  "organization": "משרד העלייה והקליטה",
+  "tags": [
+    "סיוע כספי",
+    "עולים",
+    "קליטת עלייה"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "קליטת",
+    "עלייה",
+    "לכלל",
+    "סכומים",
+    "העולים",
+    "כספי",
+    "לעולים",
+    "עולים",
+    "משרד",
+    "והקליטה",
+    "סיוע",
+    "ששולמו",
+    "שניתן",
+    "העלייה"
+  ],
+  "resources": [
+    {
+      "resource_id": "07a2142c-12c3-41d7-8061-ecf855aafb51",
+      "title": "siua_kaspi_2017.xls",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סכומים ששולמו לכלל העולים  בשנת 2017",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 131
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

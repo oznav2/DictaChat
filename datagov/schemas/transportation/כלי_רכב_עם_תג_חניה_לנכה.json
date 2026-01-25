@@ -1,0 +1,69 @@
+{
+  "dataset_id": "11369651-1c70-4d8f-8090-ee49354a7c52",
+  "title": "כלי רכב עם תג חניה לנכה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "לנכה",
+    "mispar",
+    "תחבורה",
+    "rechev",
+    "בדרכים",
+    "משרד",
+    "tav",
+    "tag",
+    "רכב",
+    "והבטיחות",
+    "כלי",
+    "taarich",
+    "hafakat",
+    "sug",
+    "חניה",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c8b9f9c8-4612-4068-934f-d4acd2e3c06e",
+      "title": "כלי רכב עם תג חניה לנכה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "MISPAR RECHEV",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TAARICH HAFAKAT TAG",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SUG TAV",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 687855
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

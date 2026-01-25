@@ -1,0 +1,51 @@
+{
+  "dataset_id": "6a2f8a51-ee1a-444c-903f-c5c5bbefae3a",
+  "title": "שירותי מפה תכנוניים מקוונים - סרביסים",
+  "organization": "מינהל התכנון ",
+  "tags": [
+    "service",
+    "אפליקציות",
+    "מינהל התכנון",
+    "סרביס",
+    "תכנון"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "תכנוניים",
+    "מקוונים",
+    "מינהל",
+    "מפה",
+    "שירותי",
+    "תכנון",
+    "סרביס",
+    "התכנון",
+    "service",
+    "אפליקציות",
+    "סרביסים"
+  ],
+  "resources": [
+    {
+      "resource_id": "b3062e19-3dd4-4da1-ac9f-248465735ac0",
+      "title": "קישור למידע תכנוני של מינהל התכנון - שירותי מפה תכנוניים מקוונים - סרביסים",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "cd6b4524-7df7-4613-9df8-eefd5b67c8f5",
+      "title": "מינהל הכתנון - סרביסים",
+      "format": "DOCX",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "dataset_id": "5e4ffbc7-dcc1-4d0b-b158-9f720cc02f01",
+  "title": "תכנית אסטרטגית למסופים ומתקני תשתית",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "אוטובוסים",
+    "חצב",
+    "ממג",
+    "מסופי אוטובוסים",
+    "מסופים",
+    "תכנית אב"
+  ],
+  "categories": [
+    "transportation",
+    "finance",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "status",
+    "taba",
+    "update",
+    "city",
+    "night",
+    "term",
+    "gis",
+    "helka",
+    "bld",
+    "rights",
+    "בדרכים",
+    "use",
+    "poly",
+    "sta",
+    "והבטיחות",
+    "faci",
+    "אוטובוסים",
+    "land",
+    "authority",
+    "landus",
+    "new",
+    "stat",
+    "משרד",
+    "type",
+    "מסופים",
+    "district",
+    "length",
+    "usage",
+    "למסופים",
+    "autho",
+    "חצב",
+    "תשתית",
+    "num",
+    "מסופי",
+    "shape",
+    "size",
+    "area",
+    "oid",
+    "תכנית",
+    "year",
+    "gush",
+    "ומתקני",
+    "owner",
+    "אסטרטגית",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "0cb6a87b-697f-41a2-8a91-58692bcb269d",
+      "title": "BUS_TERMINAL_STRAT_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a8276341-6d2a-49d9-9bbf-855e9aafb61f",
+      "title": "BUS_TERMINAL_STRAT_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "dd629faf-aad2-4778-9111-45545cea6f44",
+      "title": "BUS_TERMINAL_STRAT_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "term_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "DISTRICT",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "AUTHO_2040",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "term_stat",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "term_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "gush_helka",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "poly_size",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "faci_size",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "term_size",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "night_size",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "OWNER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "taba_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "taba_num",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "taba_year",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "land_use",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "usage",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "bld_rights",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "new_taba",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "new_status",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "new_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "new_num",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "new_landus",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "new_is_sta",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "new_usage",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "new_rights",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "update_",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "AUTHORITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "IS_STAT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 673
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

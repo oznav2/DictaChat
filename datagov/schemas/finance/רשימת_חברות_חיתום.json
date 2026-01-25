@@ -1,0 +1,43 @@
+{
+  "dataset_id": "4b23f399-32fb-484f-b6be-d865cb8833e4",
+  "title": "רשימת חברות חיתום",
+  "organization": "רשות ניירות ערך",
+  "tags": [
+    "אוצר וכלכלה",
+    "חברות חיתום",
+    "חתמים",
+    "רשות ניירות הערך"
+  ],
+  "categories": [
+    "finance",
+    "water",
+    "economy"
+  ],
+  "keywords": [
+    "חברות",
+    "ערך",
+    "וכלכלה",
+    "ניירות",
+    "הערך",
+    "רשות",
+    "חתמים",
+    "אוצר",
+    "חיתום"
+  ],
+  "resources": [
+    {
+      "resource_id": "6a6bd680-5a2e-42ae-a4da-db7b8d6d8eca",
+      "title": "מאגר רשימת חברות חיתום",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

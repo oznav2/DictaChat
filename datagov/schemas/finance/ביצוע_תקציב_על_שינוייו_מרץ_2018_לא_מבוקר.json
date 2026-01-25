@@ -1,0 +1,85 @@
+{
+  "dataset_id": "a24efe3f-faca-43a9-bfc7-c233b246313e",
+  "title": "ביצוע תקציב על שינוייו מרץ 2018 לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "שינויים בתקציב"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "מרץ",
+    "תוכנית",
+    "ברוטו",
+    "תקציב",
+    "מיועדת",
+    "ביצוע",
+    "שינויים",
+    "מבוקר",
+    "משרד",
+    "הכנסה",
+    "מקורי",
+    "שינוייו",
+    "האוצר",
+    "בתקציב",
+    "התוכנית"
+  ],
+  "resources": [
+    {
+      "resource_id": "97f002b9-91b8-4dcc-b846-7cde43027b17",
+      "title": "ביצוע תקציב על שינוייו מרץ 2018 לא מבוקר",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תוכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם התוכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תקציב ברוטו מקורי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו על שינוייו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע ברוטו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 579
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,380 @@
+{
+  "dataset_id": "3de0e7f0-03e1-4665-b078-da6e87543ed7",
+  "title": "ספר סיווג טובין ביבוא - Israel Customs Book for import",
+  "organization": "רשות המסים בישראל",
+  "tags": [
+    "הסכם סחר",
+    "יבוא",
+    "יבואן",
+    "יצוא",
+    "יצואן",
+    "מכסה",
+    "מס קניה",
+    "מסי יבוא",
+    "סוכן מכס",
+    "ספר המכס",
+    "פרט מכס",
+    "צו תעריף המכס",
+    "קוד הנחה",
+    "שיעור מסים",
+    "תיאור טובין",
+    "תעריף",
+    "תעריף המכס"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "תיאור",
+    "סוכן",
+    "goodsdescription",
+    "fullgoodsdescription",
+    "סיווג",
+    "רשות",
+    "פרט",
+    "customs",
+    "מכס",
+    "book",
+    "תעריף",
+    "יבוא",
+    "maslulmeasurementunit",
+    "ספר",
+    "מכסה",
+    "measurementunitdescription",
+    "customsitemfullclassification",
+    "customstariff",
+    "percentagecapadditiontariff",
+    "digits",
+    "טובין",
+    "hierarchiclocation",
+    "ביבוא",
+    "יצואן",
+    "מסים",
+    "המסים",
+    "measurementunitid",
+    "קניה",
+    "purchasetaxtariffenddate",
+    "customsitem",
+    "שיעור",
+    "יבואן",
+    "customstariffenddate",
+    "קוד",
+    "יצוא",
+    "import",
+    "הנחה",
+    "המכס",
+    "הסכם",
+    "israel",
+    "סחר",
+    "customsbooktypeid",
+    "for",
+    "customsitemenddate",
+    "purchasetaxtariff",
+    "מסי",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "c96d99fe-fd3a-4e86-a767-4119dd8b723e",
+      "title": "Israel Customs Tariff and Purchase Tax",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CustomsBookTypeID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItem_2_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_4_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_6_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemFullClassification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HierarchicLocation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullGoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MeasurementUnitID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "MeasurementUnitDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemEndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "CustomsTariff",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsTariffEndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PurchaseTaxTariff",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "PurchaseTaxTariffEndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PercentageCapAdditionTariff",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MaslulMeasurementUnit",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 12817
+    },
+    {
+      "resource_id": "5536eaa1-2e51-406b-aff6-b9ca02801b7c",
+      "title": "ספר סיווג טובין ביבוא - תעריף המכס ומס קניה - עברית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CustomsBookTypeID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItem_2_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_4_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_6_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemFullClassification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HierarchicLocation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullGoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MeasurementUnitID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "MeasurementUnitDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemEndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "CustomsTariff",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsTariffEndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PurchaseTaxTariff",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "PurchaseTaxTariffEndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PercentageCapAdditionTariff",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MaslulMeasurementUnit",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 12817
+    },
+    {
+      "resource_id": "9ef558bb-08e4-47d6-995d-495db2475cdf",
+      "title": "ספר אוטונומיה -עברית.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CustomsBookTypeID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItem_2_Digits",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_4_Digits",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_6_Digits",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemFullClassification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HierarchicLocation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullGoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MeasurementUnitID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "MeasurementUnitDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemEndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "CustomsTariff",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsTariffEndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PurchaseTaxTariff",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "PurchaseTaxTariffEndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PercentageCapAdditionTariff",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MaslulMeasurementUnit",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1662
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

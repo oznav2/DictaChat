@@ -1,0 +1,43 @@
+{
+  "dataset_id": "92c262e6-c109-4620-b28e-3fb28e3c967a",
+  "title": "מיפוי חופות עצים - מאגר גיאוגרפי לאומי",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "אקלים",
+    "המרכז למיפוי ישראל",
+    "צל",
+    "צמחיה"
+  ],
+  "categories": [
+    "water",
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "לאומי",
+    "מיפוי",
+    "ישראל",
+    "גיאוגרפי",
+    "חופות",
+    "צמחיה",
+    "המרכז",
+    "עצים",
+    "אקלים"
+  ],
+  "resources": [
+    {
+      "resource_id": "aff55dc8-8850-4fe5-8a11-0a2d734ae33a",
+      "title": "NationalCanopyTreesV2.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

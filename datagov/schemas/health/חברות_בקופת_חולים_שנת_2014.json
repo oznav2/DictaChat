@@ -1,0 +1,53 @@
+{
+  "dataset_id": "ffab589d-158d-4373-b3ea-a350e951048e",
+  "title": "חברות בקופת חולים - שנת 2014",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "בריאות ורווחה",
+    "קופת חולים"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "חברות",
+    "לאומי",
+    "חולים",
+    "לביטוח",
+    "ורווחה",
+    "בקופת",
+    "המוסד",
+    "קופת",
+    "בריאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "08c195e2-6256-4497-ad7f-1a09cbd18cd4",
+      "title": "חברות בקופת חולים 2014",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "facda008-6064-4846-a4e6-d8c79f224fe6",
+      "title": "חברות בקופת חולים 2014",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 0
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

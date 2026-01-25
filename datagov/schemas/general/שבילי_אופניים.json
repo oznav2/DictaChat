@@ -1,0 +1,75 @@
+{
+  "dataset_id": "fc79c091-501a-423d-8675-0b3fdd2908f9",
+  "title": "שבילי אופניים",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "אופניים",
+    "באר שבע",
+    "שבילי אופניים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "lon",
+    "באר",
+    "lat",
+    "עיריית",
+    "אופניים",
+    "שבע",
+    "leng",
+    "שבילי",
+    "shape"
+  ],
+  "resources": [
+    {
+      "resource_id": "f40db220-6e77-4e91-bb41-38e2ab012103",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "f81bd6b4-de24-4c89-b3da-4c52c4d2a37b",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "SHAPE_Leng",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 90
+    },
+    {
+      "resource_id": "e282fb14-b69f-4590-a82d-c96aef2218b1",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "dataset_id": "0bd40f79-1acd-4ae7-9090-595f1ebfa0a6",
+  "title": "תצלום אויר 2015 2 מטר - גליון ראש פינה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "פינה",
+    "ראש",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "a0e3b3ef-6d60-4c0b-8b9f-71ffcf94458d",
+      "title": "תצלום אויר 2015 2 מטר - גליון ראש פינה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

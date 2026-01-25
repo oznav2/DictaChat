@@ -1,0 +1,137 @@
+{
+  "dataset_id": "59d2e891-d1d4-44bc-a54f-24762848ab13",
+  "title": "Israel Dialing Plan – Within Israel - רשימת מספרי טלפון לשירותים ארציים",
+  "organization": "משרד התקשורת",
+  "tags": [
+    "מספור שירותי טלפוניה",
+    "משרד התקשורת"
+  ],
+  "categories": [
+    "finance",
+    "communications"
+  ],
+  "keywords": [
+    "רשתי",
+    "סוג",
+    "מורשה",
+    "לספק",
+    "טלפון",
+    "טלפוניה",
+    "לשירותים",
+    "שירותי",
+    "התקשורת",
+    "חיוג",
+    "ארציים",
+    "גישה",
+    "within",
+    "משרד",
+    "dialing",
+    "הקידומת",
+    "מספרי",
+    "מספור",
+    "קוד",
+    "במשרד",
+    "israel",
+    "לאחר",
+    "קידומת",
+    "הערות",
+    "plan",
+    "ספרות",
+    "מוקצה"
+  ],
+  "resources": [
+    {
+      "resource_id": "da86f974-f009-496e-b0ce-a92251603291",
+      "title": "רשימת מספרי טלפון לשירותים ארציים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "רשתי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר ספרות לאחר הקידומת",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "קידומת חיוג (קוד גישה)",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "מוקצה לספק מורשה במשרד התקשורת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הערות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 330
+    },
+    {
+      "resource_id": "f5e57cec-4af9-488e-94b5-53f948a3cec3",
+      "title": "רשימת מספרי טלפון לשירותים ארציים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "רשתי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר ספרות לאחר הקידומת",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "קידומת חיוג (קוד גישה)",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "מוקצה לספק מורשה במשרד התקשורת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הערות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 330
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

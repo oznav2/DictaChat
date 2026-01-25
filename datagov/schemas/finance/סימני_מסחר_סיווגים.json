@@ -1,0 +1,97 @@
+{
+  "dataset_id": "556634fd-fcec-4bbd-8bd5-ba1390bc1c14",
+  "title": "סימני מסחר - סיווגים",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "finance",
+    "justice",
+    "economy"
+  ],
+  "keywords": [
+    "תיאור",
+    "באנגלית",
+    "סוג",
+    "משרד",
+    "סיווג",
+    "וינה",
+    "מסחר",
+    "סיווגים",
+    "בעברית",
+    "סימני",
+    "ניצה",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "bc9b55dc-a0c6-4b52-a925-5dabc7ef7979",
+      "title": "סיווגי ניצה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג ניצה",
+          "type": "numeric",
+          "semantic": "type"
+        },
+        {
+          "name": "תיאור בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תיאור באנגלית",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 45
+    },
+    {
+      "resource_id": "820e988c-2740-46ca-8df4-2ed04ec7bf01",
+      "title": "סיווגי וינה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תיאור בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תיאור באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סיווג וינה",
+          "type": "numeric",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 144
+    },
+    {
+      "resource_id": "4f8315d5-2f96-4aaa-8405-0d428040dccd",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

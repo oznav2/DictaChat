@@ -1,0 +1,130 @@
+{
+  "dataset_id": "bff51f70-def8-4705-b90e-761d32b0dedb",
+  "title": "מאגר עצי רחוב",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [],
+  "categories": [
+    "water",
+    "agriculture"
+  ],
+  "keywords": [
+    "effoliation",
+    "soil",
+    "treetop",
+    "רחוב",
+    "maintenance",
+    "החקלאות",
+    "fruit",
+    "treename",
+    "משרד",
+    "wateringcode",
+    "designadjustment",
+    "diameter",
+    "floweringdate",
+    "height",
+    "ובטחון",
+    "המזון",
+    "growthrate",
+    "עצי",
+    "regionalfit",
+    "flowering",
+    "info"
+  ],
+  "resources": [
+    {
+      "resource_id": "f2a07ca4-b7e4-40fe-a7be-6d3c2d0a58f8",
+      "title": "מאגר עצי רחוב",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "TreeName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Diameter",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Height",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Effoliation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GrowthRate",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "RegionalFit",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Flowering",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FloweringDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Fruit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "WateringCode",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "treeTop",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "soil",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DesignAdjustment",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Maintenance",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "info",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 57
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

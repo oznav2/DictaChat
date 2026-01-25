@@ -1,0 +1,613 @@
+{
+  "dataset_id": "3a1ca8fa-738b-4890-b52f-e8f7ce1e6145",
+  "title": "פנסיה-נט",
+  "organization": "רשות שוק ההון, ביטוח וחיסכון",
+  "tags": [
+    "אוצר וכלכלה",
+    "גופים מוסדיים",
+    "דיווח חודשי",
+    "דמי ניהול",
+    "יתרת נכסים",
+    "מדד",
+    "פנסיה",
+    "רשות שוק ההון",
+    "תשואה"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "וכלכלה",
+    "ratio",
+    "רשות",
+    "managing",
+    "adjustment",
+    "שוק",
+    "וחיסכון",
+    "דמי",
+    "monthly",
+    "assets",
+    "מוסדיים",
+    "trailing",
+    "exposure",
+    "net",
+    "alpha",
+    "deposits",
+    "controlling",
+    "גופים",
+    "company",
+    "יתרת",
+    "ביטוח",
+    "actuarial",
+    "fund",
+    "דיווח",
+    "date",
+    "חודשי",
+    "management",
+    "stock",
+    "ניהול",
+    "internal",
+    "report",
+    "classification",
+    "yrs",
+    "standard",
+    "total",
+    "parent",
+    "current",
+    "avg",
+    "deposit",
+    "תשואה",
+    "deviation",
+    "אוצר",
+    "sharpe",
+    "fee",
+    "yield",
+    "corporation",
+    "percent",
+    "פנסיה",
+    "market",
+    "currency",
+    "legal",
+    "withdrawls",
+    "transfers",
+    "מדד",
+    "period",
+    "reporting",
+    "נכסים",
+    "liquid",
+    "year",
+    "ההון",
+    "annual",
+    "inception",
+    "foreign"
+  ],
+  "resources": [
+    {
+      "resource_id": "a66926f3-e396-4984-a4db-75486751c2f7",
+      "title": "נתוני הפנסיה נט לשנת 1999-2022",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FUND_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "FUND_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "PARENT_COMPANY_ID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PARENT_COMPANY_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "FUND_CLASSIFICATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CONTROLLING_CORPORATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MANAGING_CORPORATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "REPORT_PERIOD",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "INCEPTION_DATE",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "DEPOSITS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "WITHDRAWLS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "INTERNAL_TRANSFERS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NET_MONTHLY_DEPOSITS",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "TOTAL_ASSETS",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "AVG_ANNUAL_MANAGEMENT_FEE",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AVG_DEPOSIT_FEE",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MONTHLY_YIELD",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "YEAR_TO_DATE_YIELD",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "ACTUARIAL_ADJUSTMENT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "YIELD_TRAILING_3_YRS",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YIELD_TRAILING_5_YRS",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AVG_ANNUAL_YIELD_TRAILING_3YRS",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AVG_ANNUAL_YIELD_TRAILING_5YRS",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STANDARD_DEVIATION",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ALPHA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SHARPE_RATIO",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LIQUID_ASSETS_PERCENT",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "STOCK_MARKET_EXPOSURE",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FOREIGN_EXPOSURE",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FOREIGN_CURRENCY_EXPOSURE",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "MANAGING_CORPORATION_LEGAL_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "REPORTING_YEAR",
+          "type": "numeric",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 19130
+    },
+    {
+      "resource_id": "4694d5a7-5284-4f3d-a2cb-5887f43fb55e",
+      "title": "נתוני הפנסיה נט לשנת 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FUND_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "FUND_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "PARENT_COMPANY_ID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PARENT_COMPANY_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "FUND_CLASSIFICATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CONTROLLING_CORPORATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MANAGING_CORPORATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "REPORT_PERIOD",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "INCEPTION_DATE",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "DEPOSITS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "WITHDRAWLS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "INTERNAL_TRANSFERS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NET_MONTHLY_DEPOSITS",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "TOTAL_ASSETS",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "AVG_ANNUAL_MANAGEMENT_FEE",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AVG_DEPOSIT_FEE",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MONTHLY_YIELD",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "YEAR_TO_DATE_YIELD",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "ACTUARIAL_ADJUSTMENT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "YIELD_TRAILING_3_YRS",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YIELD_TRAILING_5_YRS",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AVG_ANNUAL_YIELD_TRAILING_3YRS",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AVG_ANNUAL_YIELD_TRAILING_5YRS",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STANDARD_DEVIATION",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ALPHA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SHARPE_RATIO",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LIQUID_ASSETS_PERCENT",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "STOCK_MARKET_EXPOSURE",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FOREIGN_EXPOSURE",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FOREIGN_CURRENCY_EXPOSURE",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "MANAGING_CORPORATION_LEGAL_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "REPORTING_YEAR",
+          "type": "numeric",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 2925
+    },
+    {
+      "resource_id": "6d47d6b5-cb08-488b-b333-f1e717b1e1bd",
+      "title": "נתוני הפנסיה נט לשנים 2024-היום",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FUND_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "FUND_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "PARENT_COMPANY_ID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PARENT_COMPANY_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "FUND_CLASSIFICATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CONTROLLING_CORPORATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MANAGING_CORPORATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "REPORT_PERIOD",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "INCEPTION_DATE",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "DEPOSITS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "WITHDRAWLS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "INTERNAL_TRANSFERS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NET_MONTHLY_DEPOSITS",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "TOTAL_ASSETS",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "AVG_ANNUAL_MANAGEMENT_FEE",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AVG_DEPOSIT_FEE",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MONTHLY_YIELD",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "YEAR_TO_DATE_YIELD",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "ACTUARIAL_ADJUSTMENT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "YIELD_TRAILING_3_YRS",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YIELD_TRAILING_5_YRS",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AVG_ANNUAL_YIELD_TRAILING_3YRS",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AVG_ANNUAL_YIELD_TRAILING_5YRS",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STANDARD_DEVIATION",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ALPHA",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SHARPE_RATIO",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "LIQUID_ASSETS_PERCENT",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "STOCK_MARKET_EXPOSURE",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FOREIGN_EXPOSURE",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FOREIGN_CURRENCY_EXPOSURE",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "MANAGING_CORPORATION_LEGAL_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "CURRENT_DATE",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 6360
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

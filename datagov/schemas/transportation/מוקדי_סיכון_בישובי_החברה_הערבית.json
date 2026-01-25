@@ -1,0 +1,113 @@
+{
+  "dataset_id": "c4072b21-be38-4ec9-b14b-7252645d630e",
+  "title": "מוקדי סיכון בישובי החברה הערבית",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "דרכים",
+    "החברה הערבית",
+    "חצב",
+    "מאגר פרויקטים",
+    "עירוני",
+    "תכנון כללי",
+    "תכנית אב"
+  ],
+  "categories": [
+    "transportation",
+    "water"
+  ],
+  "keywords": [
+    "בישובי",
+    "city",
+    "moked",
+    "כללי",
+    "uniq",
+    "דרכים",
+    "עירוני",
+    "בדרכים",
+    "החברה",
+    "והבטיחות",
+    "תכנון",
+    "משרד",
+    "code",
+    "הערבית",
+    "חצב",
+    "מוקדי",
+    "oid",
+    "תכנית",
+    "desc",
+    "סיכון",
+    "התחבורה",
+    "פרויקטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "0bb2641c-3ba0-4076-ac18-c26cabcf9a61",
+      "title": "MIUTIM_RISK",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "ac3de693-bea2-4de5-a0ec-2caa98c0d46d",
+      "title": "MIUTIM_RISK_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "f2aa6490-c051-4888-a245-f9730e4430cb",
+      "title": "MIUTIM_RISK.CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "UNIQ_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "MOKED_CODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "MOKED_DESC",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2531
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

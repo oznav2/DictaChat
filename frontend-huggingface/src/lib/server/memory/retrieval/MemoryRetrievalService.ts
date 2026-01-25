@@ -236,8 +236,8 @@ export function calculateDynamicWeights(
 		return { embedding_weight: 0.6, learned_weight: 0.4 };
 	}
 
-	// books tier - always favor embedding (never outcome-scored)
-	if (tier === "books") {
+	// documents tier - always favor embedding (never outcome-scored)
+	if (tier === "documents") {
 		return { embedding_weight: 0.9, learned_weight: 0.1 };
 	}
 

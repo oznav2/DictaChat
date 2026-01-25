@@ -32,7 +32,6 @@ import {
 	DictaEmbeddingClient,
 	SearchService as HybridSearchService,
 	Bm25Adapter,
-	SearchServiceImpl,
 	PrefetchServiceImpl,
 	StoreServiceImpl,
 	OutcomeServiceImpl,
@@ -44,8 +43,14 @@ import {
 	createOpsServiceImpl,
 	PromotionService,
 } from "$lib/server/memory";
+import { ServiceFactory } from "$lib/server/memory/ServiceFactory";
+import { getDataGovIngestionService } from "$lib/server/memory/datagov";
 import { ActionKgServiceImpl } from "$lib/server/memory/services/ActionKgServiceImpl";
 import { ContextServiceImpl } from "$lib/server/memory/services/ContextServiceImpl";
+import { runAllSeeders } from "$lib/server/memory/seed";
+import { getPromptEngine } from "$lib/server/memory/PromptEngine";
+import { getUnifiedAIClient } from "$lib/server/memory/ai/UnifiedAIClient";
+import { join } from "path";
 
 let memoryInitPromise: Promise<void> | null = null;
 
@@ -54,7 +59,7 @@ async function initializeMemoryFacadeOnce(): Promise<void> {
 	memoryInitPromise = (async () => {
 		const flags = getMemoryFeatureFlags();
 		logger.info({ flags }, "[Memory System] Feature flags at startup");
-		
+
 		if (!flags.systemEnabled) {
 			logger.warn("[Memory System] System disabled via feature flag (MEMORY_SYSTEM_ENABLED)");
 			return;
@@ -93,9 +98,13 @@ async function initializeMemoryFacadeOnce(): Promise<void> {
 
 		const isDocker = env.DOCKER_ENV === "true";
 		const embeddingEndpoint =
-			env.EMBEDDING_SERVICE_URL ?? (isDocker ? "http://dicta-retrieval:5005" : "http://localhost:5005");
+			env.EMBEDDING_SERVICE_URL ??
+			(isDocker ? "http://dicta-retrieval:5005" : "http://localhost:5005");
+		// CRITICAL FIX: The reranker endpoint must use /v1/rerank path
+		// The dicta-retrieval service exposes /v1/rerank per OpenAPI spec (not /rerank)
 		const rerankerEndpoint =
-			env.RERANKER_SERVICE_URL ?? (isDocker ? "http://dicta-retrieval:5006" : "http://localhost:5006");
+			env.RERANKER_SERVICE_URL ??
+			(isDocker ? "http://dicta-retrieval:5006/v1/rerank" : "http://localhost:5006/v1/rerank");
 		const embeddingClient = new DictaEmbeddingClient({
 			endpoint: embeddingEndpoint,
 			config: memoryConfig,
@@ -116,7 +125,7 @@ async function initializeMemoryFacadeOnce(): Promise<void> {
 		const kgService = new KnowledgeGraphService({ db, config: memoryConfig });
 		await kgService.initialize();
 
-		const searchService = new SearchServiceImpl({
+		const searchService = ServiceFactory.getSearchService({
 			hybridSearch,
 			config: memoryConfig,
 			kgService,
@@ -125,16 +134,22 @@ async function initializeMemoryFacadeOnce(): Promise<void> {
 			},
 		});
 
+		// Phase 1.1: Pass mongoStore for fast always_inject lookup (removes Qdrant zero-vector hack)
 		const prefetchService = new PrefetchServiceImpl({
 			hybridSearch,
 			qdrantAdapter,
+			mongoStore,
 			config: memoryConfig,
 		});
+
+		// Create UnifiedAIClient for parallel NER + Embedding
+		const unifiedAIClient = getUnifiedAIClient(embeddingClient, memoryConfig);
 
 		const storeService = new StoreServiceImpl({
 			mongoStore,
 			qdrantAdapter,
 			embeddingClient,
+			unifiedAIClient,
 			config: memoryConfig,
 		});
 
@@ -213,6 +228,74 @@ async function initializeMemoryFacadeOnce(): Promise<void> {
 
 		UnifiedMemoryFacade.setInstance(facade);
 		await facade.initialize();
+
+		// Seed knowledge graph with initial concepts for D3 visualization
+		await runAllSeeders();
+
+		// Initialize PromptEngine for template-based prompts
+		try {
+			const templatesDir = join(process.cwd(), "src/lib/server/memory/templates");
+			const promptEngine = getPromptEngine({ templatesDir });
+			await promptEngine.initialize();
+			logger.info(
+				{ templateCount: promptEngine.listTemplates().length },
+				"[Memory] PromptEngine initialized"
+			);
+		} catch (err) {
+			logger.warn({ err }, "[Memory] PromptEngine initialization failed, using inline prompts");
+		}
+
+		// Phase 25.7: DataGov Knowledge Pre-Ingestion
+		// Runs once on first startup (if enabled via DATAGOV_PRELOAD_ENABLED=true)
+		const datagovPreloadEnabled = env.DATAGOV_PRELOAD_ENABLED === "true";
+		const datagovBackgroundIngestion = env.DATAGOV_PRELOAD_BACKGROUND !== "false"; // Default: true (non-blocking)
+
+		if (datagovPreloadEnabled) {
+			const datagovIngestion = async () => {
+				try {
+					const datagovService = getDataGovIngestionService(
+						db,
+						facade,
+						kgService,
+						embeddingClient,
+						{ backgroundIngestion: datagovBackgroundIngestion }
+					);
+					const result = await datagovService.ingestAll();
+					if (result.skipped) {
+						logger.info("[Memory] DataGov ingestion skipped (already complete)");
+					} else {
+						logger.info(
+							{
+								categories: result.categories,
+								datasets: result.datasets,
+								expansions: result.expansions,
+								kgNodes: result.kgNodes,
+								totalItems: result.totalItems,
+								durationMs: result.durationMs,
+								errors: result.errors.length,
+							},
+							"[Memory] DataGov knowledge pre-loaded"
+						);
+					}
+				} catch (err) {
+					logger.error({ err }, "[Memory] DataGov pre-load failed - continuing without");
+				}
+			};
+
+			if (datagovBackgroundIngestion) {
+				// Fire-and-forget: Don't block server startup
+				logger.info("[Memory] Starting DataGov ingestion in background...");
+				datagovIngestion().catch((err) => {
+					logger.error({ err }, "[Memory] Background DataGov ingestion failed");
+				});
+			} else {
+				// Blocking: Wait for ingestion to complete before proceeding
+				logger.info("[Memory] Starting DataGov ingestion (blocking)...");
+				await datagovIngestion();
+			}
+		} else {
+			logger.debug("[Memory] DataGov pre-ingestion disabled (DATAGOV_PRELOAD_ENABLED != true)");
+		}
 	})();
 
 	return memoryInitPromise;

@@ -1,0 +1,120 @@
+{
+  "dataset_id": "72662d34-ce69-4990-8504-ee0860529e7d",
+  "title": "רופאים וטרינרים בישראל",
+  "organization": "משרד החקלאות ובטחון המזון",
+  "tags": [
+    "בעלי חיים",
+    "בריאות",
+    "בריאות ורווחה",
+    "חקלאות",
+    "סביבה",
+    "רופאים וטרינריים",
+    "רפואה"
+  ],
+  "categories": [
+    "health",
+    "environment",
+    "welfare",
+    "agriculture"
+  ],
+  "keywords": [
+    "סוג",
+    "רופאים",
+    "החקלאות",
+    "חיים",
+    "רשיון",
+    "בריאות",
+    "וטרינרים",
+    "וטרינריים",
+    "בעלי",
+    "משרד",
+    "ורווחה",
+    "מומחיות",
+    "סביבה",
+    "ובטחון",
+    "תאריך",
+    "המזון",
+    "פרטי",
+    "רפואה",
+    "משפחה",
+    "חקלאות",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "14339de6-278c-49ed-a6c1-307044aaee3f",
+      "title": "רופאים וטרינרים בישראל",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג_רשיון",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מספר_רשיון",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם_משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם_פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך_רשיון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מומחיות_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת_מומחיות_1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מומחיות_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת_מומחיות_2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מומחיות_3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנת_מומחיות_3",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 3655
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

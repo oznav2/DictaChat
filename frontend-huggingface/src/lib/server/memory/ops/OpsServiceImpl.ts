@@ -96,6 +96,8 @@ export interface OpsServiceImplConfig {
 	consistencyService: ConsistencyService;
 	db: Db;
 	config?: MemoryConfig;
+	/** Optional BM25 adapter for cache invalidation (v0.2.9 parity) */
+	bm25Adapter?: { invalidateUserCache: (userId: string) => void };
 }
 
 export interface BackupPayload {
@@ -119,6 +121,7 @@ export class OpsServiceImpl {
 	private consistency: ConsistencyService;
 	private db: Db;
 	private config: MemoryConfig;
+	private bm25?: { invalidateUserCache: (userId: string) => void };
 
 	constructor(params: OpsServiceImplConfig) {
 		this.mongo = params.mongoStore;
@@ -129,6 +132,7 @@ export class OpsServiceImpl {
 		this.consistency = params.consistencyService;
 		this.db = params.db;
 		this.config = params.config ?? defaultMemoryConfig;
+		this.bm25 = params.bm25Adapter;
 	}
 
 	private stripMongoIds<T extends Record<string, unknown>>(
@@ -734,12 +738,25 @@ export class OpsServiceImpl {
 
 	/**
 	 * Get memory system stats snapshot
+	 *
+	 * Note: Documents are stored in a separate 'documents' collection, so we need to
+	 * count them separately and merge into the stats.
 	 */
 	async getStats(userId: string): Promise<StatsSnapshot> {
-		const tiers: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+		// Include DataGov tiers (Phase 25) in stats - they are static/pre-loaded
+		const tiers: MemoryTier[] = [
+			"working",
+			"history",
+			"patterns",
+			"documents",
+			"memory_bank",
+			"datagov_schema",
+			"datagov_expansion",
+		];
 		const { items } = this.mongo.getCollections();
 		const derivedWindowMs = 5 * 60 * 1000;
 
+		// Get stats from memory_items collection (for most tiers)
 		const aggregates = await items
 			.aggregate<{
 				_id: string;
@@ -765,6 +782,76 @@ export class OpsServiceImpl {
 			])
 			.toArray();
 
+		// Also count documents from the dedicated documents collection
+		// Documents are stored separately from memory_items for document management
+		let documentsActiveCount = 0;
+		let documentsArchivedCount = 0;
+		let documentsTotalChunks = 0;
+		try {
+			const documentsCollection = this.db.collection("documents");
+			const documentsAgg = await documentsCollection
+				.aggregate<{
+					_id: string | null;
+					count: number;
+					totalChunks: number;
+				}>([
+					{ $match: { userId } },
+					{
+						$group: {
+							_id: "$status",
+							count: { $sum: 1 },
+							totalChunks: {
+								$sum: { $ifNull: ["$totalChunks", "$processing_stats.total_chunks", 0] },
+							},
+						},
+					},
+				])
+				.toArray();
+
+			for (const agg of documentsAgg) {
+				if (agg._id === "completed" || agg._id === "active" || !agg._id) {
+					documentsActiveCount += agg.count;
+					documentsTotalChunks += agg.totalChunks;
+				} else if (agg._id === "archived") {
+					documentsArchivedCount += agg.count;
+				}
+			}
+		} catch (err) {
+			logger.warn({ err }, "Failed to get documents stats from documents collection");
+		}
+
+		// Also count items from the dedicated memoryBank collection
+		// Memory Bank items are stored separately from memory_items
+		let memoryBankActiveCount = 0;
+		let memoryBankArchivedCount = 0;
+		try {
+			const memoryBankCollection = this.db.collection("memoryBank");
+			const mbAgg = await memoryBankCollection
+				.aggregate<{
+					_id: string | null;
+					count: number;
+				}>([
+					{ $match: { userId } },
+					{
+						$group: {
+							_id: "$status",
+							count: { $sum: 1 },
+						},
+					},
+				])
+				.toArray();
+
+			for (const agg of mbAgg) {
+				if (agg._id === "active" || !agg._id) {
+					memoryBankActiveCount += agg.count;
+				} else if (agg._id === "archived") {
+					memoryBankArchivedCount += agg.count;
+				}
+			}
+		} catch (err) {
+			logger.warn({ err }, "Failed to get memory bank stats from memoryBank collection");
+		}
+
 		const tierMap = new Map(aggregates.map((a) => [String(a._id), a]));
 		const tiersRecord = Object.fromEntries(
 			tiers.map((tier) => {
@@ -772,6 +859,41 @@ export class OpsServiceImpl {
 				const worked = agg?.worked_total ?? 0;
 				const failed = agg?.failed_total ?? 0;
 				const denom = worked + failed;
+
+				// For documents tier, merge counts from both memory_items AND documents collection
+				if (tier === "documents") {
+					const memoryItemsActive = agg?.active_count ?? 0;
+					const memoryItemsArchived = agg?.archived_count ?? 0;
+					return [
+						tier,
+						{
+							// Document chunks in memory_items PLUS documents count from documents collection
+							active_count: memoryItemsActive + documentsTotalChunks + documentsActiveCount,
+							archived_count: memoryItemsArchived + documentsArchivedCount,
+							deleted_count: agg?.deleted_count ?? 0,
+							uses_total: agg?.uses_total ?? 0,
+							success_rate: denom > 0 ? worked / denom : 0.5,
+						},
+					];
+				}
+
+				// For memory_bank tier, merge counts from both memory_items AND memoryBank collection
+				if (tier === "memory_bank") {
+					const memoryItemsActive = agg?.active_count ?? 0;
+					const memoryItemsArchived = agg?.archived_count ?? 0;
+					return [
+						tier,
+						{
+							// Memory bank items in memory_items PLUS memoryBank collection
+							active_count: memoryItemsActive + memoryBankActiveCount,
+							archived_count: memoryItemsArchived + memoryBankArchivedCount,
+							deleted_count: agg?.deleted_count ?? 0,
+							uses_total: agg?.uses_total ?? 0,
+							success_rate: denom > 0 ? worked / denom : 0.5,
+						},
+					];
+				}
+
 				return [
 					tier,
 					{
@@ -813,7 +935,8 @@ export class OpsServiceImpl {
 		const promotionDenom = promotionStats
 			? promotionStats.promoted + promotionStats.archived + promotionStats.deleted
 			: 0;
-		const promotionRate = promotionDenom > 0 && promotionStats ? promotionStats.promoted / promotionDenom : null;
+		const promotionRate =
+			promotionDenom > 0 && promotionStats ? promotionStats.promoted / promotionDenom : null;
 		const demotionRate =
 			promotionDenom > 0 && promotionStats
 				? (promotionStats.archived + promotionStats.deleted) / promotionDenom
@@ -829,6 +952,174 @@ export class OpsServiceImpl {
 			tiers: tiersRecord,
 			action_effectiveness,
 		};
+	}
+
+	/**
+	 * Clear all documents for a user (v0.2.9 "Clear Documents" functionality)
+	 *
+	 * This is the "nuke" operation that:
+	 * 1. Deletes all documents from MongoDB
+	 * 2. Deletes all documents vectors from Qdrant
+	 * 3. Clears ghost registry for documents tier
+	 * 4. Clears Action KG entries for documents
+	 *
+	 * RoamPal Parity: delete_collection() + create_collection() rebuilt HNSW
+	 * DictaChat: Uses filter deletion (Qdrant supports this efficiently)
+	 *
+	 * @param userId - User identifier
+	 * @returns Clear result with counts
+	 */
+	async clearDocumentsTier(userId: string): Promise<{
+		success: boolean;
+		mongoDeleted: number;
+		qdrantDeleted: number;
+		ghostsCleared: number;
+		actionKgCleared: number;
+		errors: string[];
+	}> {
+		const result = {
+			success: true,
+			mongoDeleted: 0,
+			qdrantDeleted: 0,
+			ghostsCleared: 0,
+			actionKgCleared: 0,
+			errors: [] as string[],
+		};
+
+		logger.info({ userId }, "OpsService: Clearing documents tier (nuke)");
+		const startTime = Date.now();
+
+		// Step 1: Get document memory IDs before deletion (for Action KG cleanup)
+		const { items } = this.mongo.getCollections();
+		let documentMemoryIds: string[] = [];
+		try {
+			const documentDocs = await items
+				.find({ user_id: userId, tier: "documents" })
+				.project({ memory_id: 1 })
+				.toArray();
+			documentMemoryIds = documentDocs.map((d) => d.memory_id);
+		} catch (err) {
+			result.errors.push(
+				`Failed to get document IDs: ${err instanceof Error ? err.message : String(err)}`
+			);
+		}
+
+		// Step 2: Delete all documents from MongoDB
+		try {
+			const mongoResult = await items.deleteMany({
+				user_id: userId,
+				tier: "documents",
+			});
+			result.mongoDeleted = mongoResult.deletedCount;
+			logger.debug({ userId, deleted: result.mongoDeleted }, "Documents deleted from MongoDB");
+		} catch (err) {
+			result.success = false;
+			result.errors.push(
+				`MongoDB deletion failed: ${err instanceof Error ? err.message : String(err)}`
+			);
+		}
+
+		// Step 3: Delete all documents vectors from Qdrant
+		try {
+			const qdrantResult = await this.qdrant.deleteByFilter({
+				userId,
+				tier: "documents",
+			});
+			result.qdrantDeleted = qdrantResult.deleted;
+			if (!qdrantResult.success) {
+				result.errors.push("Qdrant deletion may have failed");
+			}
+			logger.debug({ userId, deleted: result.qdrantDeleted }, "Documents deleted from Qdrant");
+		} catch (err) {
+			result.success = false;
+			result.errors.push(
+				`Qdrant deletion failed: ${err instanceof Error ? err.message : String(err)}`
+			);
+		}
+
+		// Step 4: Clear ghost registry for documents tier
+		try {
+			const { getGhostRegistry } = await import("../services/GhostRegistry");
+			const ghostRegistry = getGhostRegistry();
+			result.ghostsCleared = await ghostRegistry.clearByTier(userId, "documents");
+			logger.debug({ userId, cleared: result.ghostsCleared }, "Document ghosts cleared");
+		} catch (err) {
+			result.errors.push(
+				`Ghost registry clear failed: ${err instanceof Error ? err.message : String(err)}`
+			);
+		}
+
+		// Step 5: Clear Action KG entries for deleted documents (v0.2.9 requirement)
+		if (documentMemoryIds.length > 0) {
+			try {
+				const actionOutcomes = this.db.collection("memory_action_outcomes");
+				const actionResult = await actionOutcomes.deleteMany({
+					user_id: userId,
+					memory_id: { $in: documentMemoryIds },
+				});
+				result.actionKgCleared = actionResult.deletedCount;
+				logger.debug(
+					{ userId, cleared: result.actionKgCleared },
+					"Document action outcomes cleared"
+				);
+			} catch (err) {
+				result.errors.push(
+					`Action KG clear failed: ${err instanceof Error ? err.message : String(err)}`
+				);
+			}
+		}
+
+		// Step 6: Invalidate BM25 cache (v0.2.9 parity - MCP Stale Cache fix)
+		try {
+			if (this.bm25) {
+				this.bm25.invalidateUserCache(userId);
+				logger.debug({ userId }, "BM25 cache invalidated");
+			}
+		} catch (err) {
+			result.errors.push(
+				`BM25 cache invalidation failed: ${err instanceof Error ? err.message : String(err)}`
+			);
+		}
+
+		const latencyMs = Date.now() - startTime;
+		logger.info(
+			{
+				userId,
+				...result,
+				latencyMs,
+			},
+			"OpsService: Documents tier cleared"
+		);
+
+		return result;
+	}
+
+	/**
+	 * Clean up Action KG entries for specific doc_ids (v0.2.9 book deletion cleanup)
+	 *
+	 * @param userId - User identifier
+	 * @param docIds - Document/memory IDs to clean up
+	 * @returns Number of entries deleted
+	 */
+	async cleanupActionKgForDocIds(userId: string, docIds: string[]): Promise<number> {
+		if (docIds.length === 0) return 0;
+
+		try {
+			const actionOutcomes = this.db.collection("memory_action_outcomes");
+			const result = await actionOutcomes.deleteMany({
+				user_id: userId,
+				$or: [{ memory_id: { $in: docIds } }, { doc_id: { $in: docIds } }],
+			});
+
+			logger.debug(
+				{ userId, docIds: docIds.length, deleted: result.deletedCount },
+				"Action KG entries cleaned up"
+			);
+			return result.deletedCount;
+		} catch (err) {
+			logger.error({ err, userId }, "Failed to cleanup Action KG entries");
+			return 0;
+		}
 	}
 }
 

@@ -1,0 +1,95 @@
+{
+  "dataset_id": "023b7883-3599-4cb7-adef-1a76ea051cf0",
+  "title": "מקלטים בעיר באר שבע",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "ביטחון ותשתיות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "ביטחון",
+    "name",
+    "בעיר",
+    "באר",
+    "lon",
+    "lat",
+    "ותשתיות",
+    "עיריית",
+    "שבע",
+    "מקלטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "6ab1c602-873c-4c1f-b046-60505af1bacd",
+      "title": "XLSX",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 261
+    },
+    {
+      "resource_id": "02126f0d-b498-4608-b001-1d5c6c0ade34",
+      "title": "XLSX-ITM",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 261
+    },
+    {
+      "resource_id": "6c26c438-9283-471d-8f81-43833b6bbcb6",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

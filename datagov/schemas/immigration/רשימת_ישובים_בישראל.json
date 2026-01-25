@@ -1,0 +1,169 @@
+{
+  "dataset_id": "3fc54b81-25b3-4ac7-87db-248c3e1602de",
+  "title": "רשימת ישובים בישראל",
+  "organization": "רשות האוכלוסין וההגירה",
+  "tags": [
+    "אוכלוסיה",
+    "ישובים בישראל"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "name",
+    "מנא",
+    "אוכלוסיה",
+    "איזורית",
+    "רשות",
+    "city",
+    "לשכה",
+    "regional",
+    "לועזי",
+    "מועצה",
+    "האוכלוסין",
+    "bureau",
+    "נפה",
+    "לשכת",
+    "code",
+    "סמל",
+    "ישובים",
+    "region",
+    "וההגירה",
+    "ישוב",
+    "piba",
+    "council",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "5c78e9fa-c2e2-4771-93ff-7f400a12f7ba",
+      "title": "רשימת ישובים בישראל - מתעדכן",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל_ישוב",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_ישוב",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם_ישוב_לועזי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סמל_נפה",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "שם_נפה",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "סמל_לשכת_מנא",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "לשכה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סמל_מועצה_איזורית",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם_מועצה",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 1289
+    },
+    {
+      "resource_id": "8f714b6f-c35c-4b40-a0e7-547b675eee0e",
+      "title": "רשימת ישובים בישראל - כותרות באנגלית -מתעדכן",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "city_code",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "city_name_he",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "city_name_en",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "region_code",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "region_name",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "PIBA_bureau_code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "PIBA_bureau_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Regional_Council_code",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "Regional_Council_name",
+          "type": "text",
+          "semantic": "district"
+        }
+      ],
+      "total_records": 1289
+    },
+    {
+      "resource_id": "72bd51be-512b-4430-b2d2-f3295c90e569",
+      "title": "רשימת ישובים בישראל - מתעדכן",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

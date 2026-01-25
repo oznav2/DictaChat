@@ -1,0 +1,112 @@
+{
+  "dataset_id": "842570f6-3ff1-4dd9-9b9b-ff84aae228fa",
+  "title": "רשימת מסגרות לבריאות הנפש (הוסטלים) של הרווחה - אגף לשעת חירום",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות הנפש",
+    "שעת חירום"
+  ],
+  "categories": [
+    "health",
+    "finance",
+    "welfare"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "הוסטלים",
+    "tenants",
+    "city",
+    "institute",
+    "staff",
+    "contact",
+    "operator",
+    "supplier",
+    "הבריאות",
+    "לבריאות",
+    "number",
+    "בריאות",
+    "אגף",
+    "משרד",
+    "type",
+    "מסגרות",
+    "שעת",
+    "address",
+    "הנפש",
+    "הרווחה",
+    "לשעת",
+    "חירום"
+  ],
+  "resources": [
+    {
+      "resource_id": "95e53c1e-aa71-432d-8c38-34a13b3b3b33",
+      "title": "רשימת מסגרות לבריאות הנפש (הוסטלים) של הרווחה - אגף לשעת חירום",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "supplier_no",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "institute_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "institute_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "contact",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "operator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "number_of_tenants",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "number_of_staff",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 145
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

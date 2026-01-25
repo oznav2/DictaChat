@@ -1,0 +1,36 @@
+{
+  "dataset_id": "e72fe386-80d6-4e7c-8448-ac0a1eabdddd",
+  "title": "תצלום אויר 2015 2 מטר - גליון בארות עודד",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "עודד",
+    "בארות",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "b80e9977-8e89-4aa8-88e5-669c36e78d7a",
+      "title": "תצלום אויר 2015 2 מטר - גליון בארות עודד",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

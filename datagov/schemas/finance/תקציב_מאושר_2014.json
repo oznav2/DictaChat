@@ -1,0 +1,36 @@
+{
+  "dataset_id": "eb1e5823-7f0e-4667-93f1-28a31096146c",
+  "title": "תקציב מאושר 2014",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אוצר וכלכלה"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "מאושר",
+    "תקציב",
+    "וכלכלה",
+    "משרד",
+    "אוצר",
+    "האוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "456c6195-7d2d-4622-9d74-9d11d615cb0a",
+      "title": "תקציב מאושר 2014",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

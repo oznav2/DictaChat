@@ -1,0 +1,153 @@
+{
+  "dataset_id": "cdf9391c-e51d-48d7-aacc-2dade6e63c09",
+  "title": "בתי הדין השרעיים - תיקים וחוזי נישואין",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "בתי הדין השרעיים",
+    "חוזי נישואין",
+    "משרד המשפטים",
+    "תיקים"
+  ],
+  "categories": [
+    "justice",
+    "demographics"
+  ],
+  "keywords": [
+    "פתיחת",
+    "השרעיים",
+    "החלטה",
+    "רשם",
+    "נישואין",
+    "סוג",
+    "פינקס",
+    "הדין",
+    "נושא",
+    "חוזה",
+    "וחוזי",
+    "יצירת",
+    "משרד",
+    "תיקים",
+    "דין",
+    "תאריך",
+    "המשפטים",
+    "סטטוס",
+    "בית",
+    "בתי",
+    "נותן",
+    "חוזי",
+    "תיק",
+    "עריכת"
+  ],
+  "resources": [
+    {
+      "resource_id": "4a566ecb-8d03-4f66-8278-b8d2b4b354ff",
+      "title": "חוזי נישואין",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "בית דין",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר חוזה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך עריכת חוזה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך יצירת חוזה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מספר פינקס",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "רשם נישואין",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 151320
+    },
+    {
+      "resource_id": "a8c8391a-5f15-436a-9805-ca62765765a2",
+      "title": "תיקים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר תיק",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "בית דין",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נושא תיק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג תיק",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "תאריך פתיחת תיק",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סטטוס תיק",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "החלטה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נותן החלטה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 816081
+    },
+    {
+      "resource_id": "4c86b5a5-ec88-47d7-afc6-a5aeaea45a9a",
+      "title": "פתיחת קובץ מאגר באמצעות תוכנת Excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

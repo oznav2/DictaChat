@@ -1,0 +1,149 @@
+{
+  "dataset_id": "efaac618-723a-46bb-9fdf-44229aa0fea8",
+  "title": "מתקני משחקים",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "באר שבע",
+    "מתקני משחקים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "carrousel",
+    "other",
+    "surface",
+    "משחקים",
+    "lat",
+    "שבע",
+    "swing",
+    "omega",
+    "lon",
+    "slid",
+    "shadowing",
+    "roserose",
+    "spring",
+    "combined",
+    "specialcom",
+    "באר",
+    "עיריית",
+    "מתקני"
+  ],
+  "resources": [
+    {
+      "resource_id": "b348a384-9059-4b02-b2c1-b91144fa0c50",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "64129aff-845c-4792-a479-1792c1ab9b0a",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "combined1",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "combined2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "combined3",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SpecialCom",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Swing",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "slid",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "carrousel",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "spring",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "omega",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "roserose",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "other",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shadowing",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "surface",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 256
+    },
+    {
+      "resource_id": "8c29e40a-e41d-4093-a24c-c0000dea1229",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

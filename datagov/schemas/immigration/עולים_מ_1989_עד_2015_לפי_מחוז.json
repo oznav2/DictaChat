@@ -1,0 +1,49 @@
+{
+  "dataset_id": "46242de8-ded9-4b01-ad73-551abae4491d",
+  "title": "עולים מ 1989 עד 2015 - לפי מחוז",
+  "organization": "משרד העלייה והקליטה",
+  "tags": [
+    "אוכלוסיה",
+    "מחוזות משרד העלייה והקליטה",
+    "עולה",
+    "עולה חדש",
+    "עולים חדשים",
+    "עליה",
+    "עלייה",
+    "קליטת עלייה"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "מחוז",
+    "קליטת",
+    "עלייה",
+    "מחוזות",
+    "אוכלוסיה",
+    "עולה",
+    "משרד",
+    "והקליטה",
+    "עולים",
+    "חדש",
+    "עליה",
+    "חדשים",
+    "העלייה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d03be79e-a19f-4702-8994-171f775d8b64",
+      "title": "עולים מ 1989 עד 2015 - לפי מחוז",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

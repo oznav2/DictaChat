@@ -1,0 +1,122 @@
+{
+  "dataset_id": "d89ecfe3-e443-4fde-925a-bf686790b35d",
+  "title": "ציי רכב אוטובוסים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אוטובוסים",
+    "משרד התחבורה",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תחבורה",
+    "kilometer",
+    "stone",
+    "bustype",
+    "bussize",
+    "production",
+    "operator",
+    "בדרכים",
+    "license",
+    "רכב",
+    "והבטיחות",
+    "seatsnum",
+    "אוטובוסים",
+    "ציי",
+    "cluster",
+    "total",
+    "משרד",
+    "propulsiontype",
+    "bus",
+    "ציבורית",
+    "country",
+    "proof",
+    "bullet",
+    "year",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "91d298ed-a260-4f93-9d50-d5e3c5b82ce1",
+      "title": "ציי רכב אוטובוסים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "operator_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "cluster_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "bus_license_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "stone_proof_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "bullet_proof_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BusSize_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BusType_nm",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SeatsNum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "production_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "production_country",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PropulsionType_nm",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "total_kilometer",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 15308
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

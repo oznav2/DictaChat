@@ -1,0 +1,99 @@
+{
+  "dataset_id": "15214e9a-d9b0-44ac-9fb9-795cf1495a6a",
+  "title": "מאגר לידות חי",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "דאטה",
+    "לידות",
+    "משרד הבריאות",
+    "נתונים",
+    "תמנע"
+  ],
+  "categories": [
+    "health",
+    "water",
+    "demographics"
+  ],
+  "keywords": [
+    "דאטה",
+    "gestation",
+    "תמנע",
+    "parity",
+    "לידות",
+    "משרד",
+    "week",
+    "month",
+    "weight",
+    "birth",
+    "הבריאות",
+    "mother",
+    "age",
+    "sex"
+  ],
+  "resources": [
+    {
+      "resource_id": "70ac0282-1424-453b-8d41-5663e29c6eb8",
+      "title": "קובץ README - עברית",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0290f6eb-e0fa-4b26-ab27-d02a9d362b77",
+      "title": "birth_data_2014.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "birth_month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "mother_age",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "parity",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "gestation_week",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "birth_sex",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "birth_weight",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 165915
+    },
+    {
+      "resource_id": "b1cf2a1f-b923-40ae-a3dc-75930c3b3064",
+      "title": "README FILE - ENGLISH",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

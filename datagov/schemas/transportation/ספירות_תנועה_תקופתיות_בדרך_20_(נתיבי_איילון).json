@@ -1,0 +1,54 @@
+{
+  "dataset_id": "05d30298-cd9c-47c5-bcef-841196aeec1e",
+  "title": "ספירות תנועה תקופתיות בדרך 20 (נתיבי איילון)",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "נתיבי איילון",
+    "ספירות תנועה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תקופתיות",
+    "בדרכים",
+    "משרד",
+    "נתיבי",
+    "בדרך",
+    "איילון",
+    "והבטיחות",
+    "התחבורה",
+    "ספירות",
+    "תנועה"
+  ],
+  "resources": [
+    {
+      "resource_id": "011740eb-da21-4831-af6d-a3970a94c895",
+      "title": "AyalonCounts2019",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1f33f8d7-5532-41b2-81b5-08c57246d02c",
+      "title": "מטאדאטה לשנת 2019",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "54245f7f-0169-44d6-9e46-3de523191e7e",
+      "title": "AyalonCounts2021",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

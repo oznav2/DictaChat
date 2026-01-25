@@ -1,0 +1,167 @@
+{
+  "dataset_id": "943f40df-d2e0-481b-9f06-04386c8e2419",
+  "title": "בתי חולים המבצעים בדיקות קורונה פרטיות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בדיקות קורונה",
+    "בריאות"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "phone",
+    "בתי",
+    "comments",
+    "בדיקות",
+    "משרד",
+    "חולים",
+    "hospital",
+    "code",
+    "city",
+    "קורונה",
+    "פרטיות",
+    "המבצעים",
+    "הבריאות",
+    "availability",
+    "בריאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "7861f609-3f8b-4f7f-9c8d-eaf5007f7466",
+      "title": "בתי חולים המבצעים בדיקות קורונה פרטיות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "hospital",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "availability",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "comments",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "city_code",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 18
+    },
+    {
+      "resource_id": "88affa89-d3ed-4b0b-b70a-5ae777a87dbb",
+      "title": "בתי חולים המבצעים בדיקות קורונה פרטיות (אנגלית)",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "hospital",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "availability",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "comments",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "city_code",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 18
+    },
+    {
+      "resource_id": "52fb56af-e3f5-4383-9d22-152cb97b8a17",
+      "title": "בתי חולים המבצעים בדיקות קורונה פרטיות (ערבית)",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "hospital",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "availability",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "comments",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "city_code",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 19
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "dataset_id": "01fa89cc-8e1f-4c96-919e-91d28d1c0d42",
+  "title": "אוגדן השכלות  - לצורך בדיקת תנאי סף השכלה במכרזי כ\"א בשירות המדינה",
+  "organization": "נציבות שירות המדינה",
+  "tags": [
+    "מכרזים בשירות המדינה",
+    "תנאי סף"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "combo",
+    "one",
+    "degree",
+    "institution",
+    "תנאי",
+    "regular",
+    "בשירות",
+    "השכלה",
+    "מכרזים",
+    "המדינה",
+    "faculty",
+    "level",
+    "לצורך",
+    "אוגדן",
+    "נציבות",
+    "two",
+    "updates",
+    "בדיקת",
+    "parallel",
+    "השכלות",
+    "שירות",
+    "במכרזי",
+    "placement",
+    "explanations",
+    "worlds",
+    "education",
+    "field",
+    "foreign",
+    "content",
+    "recommendations"
+  ],
+  "resources": [
+    {
+      "resource_id": "9d656232-3329-4e41-bd6f-a793644b4ea6",
+      "title": "אוגדן השכלות לבחינת תנאי סף במכרזים לשירות המדינה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "institution_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Faculty_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Field_of_Education",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Degree_level",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "One_Two_Combo",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Parallel_Foreign_Degree",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Placement_recommendations",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Regular_updates",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Explanations",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Content_worlds",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2311
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

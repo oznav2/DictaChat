@@ -26,6 +26,64 @@ import type {
 	ActionType,
 	SearchResult,
 } from "../types";
+
+// ============================================
+// Phase 23: v0.2.8 Bug Fixes (Safeguards)
+// ============================================
+
+/**
+ * Valid outcome types for memory feedback.
+ * Phase 23.1: Explicit type definition prevents invalid outcomes from silently falling through.
+ */
+const VALID_OUTCOMES = ["worked", "failed", "partial", "unknown"] as const;
+type ValidOutcome = (typeof VALID_OUTCOMES)[number];
+
+/**
+ * Success values for Wilson score calculation.
+ * Phase 23.1/22.3: Authoritative outcome semantics.
+ *
+ * | Outcome | success_count Delta | Wilson Impact |
+ * |---------|---------------------|---------------|
+ * | worked  | +1.0                | Positive      |
+ * | partial | +0.5                | Neutral       |
+ * | unknown | +0.25               | Weak negative (surfaced but unused) |
+ * | failed  | +0.0                | Strong negative |
+ */
+const OUTCOME_SUCCESS_VALUES: Record<ValidOutcome, number> = {
+	worked: 1.0,
+	partial: 0.5,
+	unknown: 0.25,
+	failed: 0.0,
+};
+
+/**
+ * Check if an outcome is valid.
+ * Phase 23.1: Validates outcome type before processing.
+ */
+function isValidOutcome(outcome: string): outcome is ValidOutcome {
+	return VALID_OUTCOMES.includes(outcome as ValidOutcome);
+}
+
+/**
+ * Get the success delta for an outcome.
+ * Phase 23.1: Uses explicit switch statement with TypeScript exhaustiveness check.
+ * NO DEFAULT CASE - TypeScript will error if a case is missing.
+ */
+function getSuccessDelta(outcome: ValidOutcome): number {
+	switch (outcome) {
+		case "worked":
+			return OUTCOME_SUCCESS_VALUES.worked;
+		case "partial":
+			return OUTCOME_SUCCESS_VALUES.partial;
+		case "unknown":
+			return OUTCOME_SUCCESS_VALUES.unknown;
+		case "failed":
+			return OUTCOME_SUCCESS_VALUES.failed;
+	}
+	// TypeScript exhaustiveness check - this should never be reached
+	const _exhaustiveCheck: never = outcome;
+	return _exhaustiveCheck;
+}
 import type {
 	MemoryItemDocument,
 	MemoryVersionDocument,
@@ -124,20 +182,67 @@ export interface RecordActionOutcomeParams {
 }
 
 /**
- * Calculate Wilson score lower bound for confidence interval
- * Used for ranking memories by outcome success rate
+ * Calculate Wilson score lower bound for confidence interval.
+ * Used for ranking memories by outcome success rate.
+ *
+ * Phase 23.2: Now uses cumulative success_count field instead of capped outcome_history.
+ * This fixes the bug where Wilson was incorrectly calculated for memories with >10 uses.
+ *
+ * @param successCount - Cumulative success value (sum of outcome success deltas)
+ * @param uses - Total number of uses (denominator)
+ * @param z - Z-score for confidence interval (default: 1.96 for 95% CI)
+ * @returns Wilson score lower bound [0, 1]
  */
-function calculateWilsonScore(successes: number, total: number, z = 1.96): number {
-	if (total === 0) return 0.5; // Prior: assume 50% success rate
+function calculateWilsonScore(successCount: number, uses: number, z = 1.96): number {
+	if (uses === 0) return 0.5; // Prior: assume 50% success rate
 
-	const p = successes / total;
-	const n = total;
+	const p = successCount / uses;
+	const n = uses;
 
 	// Wilson score interval lower bound
 	const numerator = p + (z * z) / (2 * n) - z * Math.sqrt((p * (1 - p) + (z * z) / (4 * n)) / n);
 	const denominator = 1 + (z * z) / n;
 
 	return Math.max(0, Math.min(1, numerator / denominator));
+}
+
+/**
+ * Calculate Wilson score from memory stats with fallback for legacy records.
+ * Phase 23.2: Uses success_count field if available, falls back to counting individual outcome counts.
+ *
+ * @param stats - Memory stats object
+ * @returns Wilson score [0, 1]
+ */
+function calculateWilsonFromStats(stats: {
+	uses: number;
+	success_count?: number;
+	worked_count: number;
+	partial_count: number;
+	unknown_count: number;
+	failed_count: number;
+}): number {
+	const uses = stats.uses;
+	if (uses === 0) return 0.5;
+
+	// Phase 23.2: Prefer success_count if available (new field)
+	if (typeof stats.success_count === "number") {
+		return calculateWilsonScore(stats.success_count, uses);
+	}
+
+	// Fallback: Calculate from individual counts (legacy records)
+	// This logs a warning so we can track migration progress
+	logger.warn(
+		{ uses, worked: stats.worked_count, partial: stats.partial_count },
+		"[Phase 23.2] Using fallback Wilson calculation - success_count field missing"
+	);
+
+	const successCount =
+		stats.worked_count * OUTCOME_SUCCESS_VALUES.worked +
+		stats.partial_count * OUTCOME_SUCCESS_VALUES.partial +
+		stats.unknown_count * OUTCOME_SUCCESS_VALUES.unknown +
+		stats.failed_count * OUTCOME_SUCCESS_VALUES.failed;
+
+	return calculateWilsonScore(successCount, uses);
 }
 
 export class MemoryMongoStore {
@@ -175,7 +280,9 @@ export class MemoryMongoStore {
 		this.actionOutcomes = this.db.collection<ActionOutcomeDocument>(
 			MEMORY_COLLECTIONS.ACTION_OUTCOMES
 		);
-		this.knownSolutions = this.db.collection<KnownSolutionDocument>(MEMORY_COLLECTIONS.KNOWN_SOLUTIONS);
+		this.knownSolutions = this.db.collection<KnownSolutionDocument>(
+			MEMORY_COLLECTIONS.KNOWN_SOLUTIONS
+		);
 		this.kgNodes = this.db.collection<KgNodeDocument>(MEMORY_COLLECTIONS.KG_NODES);
 		this.kgEdges = this.db.collection<KgEdgeDocument>(MEMORY_COLLECTIONS.KG_EDGES);
 		this.personalityMappings = this.db.collection<PersonalityMemoryMappingDocument>(
@@ -372,11 +479,11 @@ export class MemoryMongoStore {
 		const now = new Date();
 
 		logger.info(
-			{ 
-				dbName: this.db.databaseName, 
+			{
+				dbName: this.db.databaseName,
 				collection: this.items.collectionName,
-				memoryId 
-			}, 
+				memoryId,
+			},
 			"[MemoryMongoStore] storing item"
 		);
 
@@ -415,6 +522,7 @@ export class MemoryMongoStore {
 				failed_count: 0,
 				partial_count: 0,
 				unknown_count: 0,
+				success_count: 0, // Phase 23.2: Cumulative success for Wilson calculation
 				success_rate: 0.5,
 				wilson_score: 0.5,
 			},
@@ -717,8 +825,10 @@ export class MemoryMongoStore {
 					working: 0,
 					history: 0,
 					patterns: 0,
-					books: 0,
+					documents: 0,
 					memory_bank: 0,
+					datagov_schema: 0,
+					datagov_expansion: 0,
 				};
 
 				for (const item of counts) {
@@ -731,7 +841,17 @@ export class MemoryMongoStore {
 			"countByTier"
 		);
 
-		return result ?? { working: 0, history: 0, patterns: 0, books: 0, memory_bank: 0 };
+		return (
+			result ?? {
+				working: 0,
+				history: 0,
+				patterns: 0,
+				documents: 0,
+				memory_bank: 0,
+				datagov_schema: 0,
+				datagov_expansion: 0,
+			}
+		);
 	}
 
 	// ============================================
@@ -739,12 +859,31 @@ export class MemoryMongoStore {
 	// ============================================
 
 	/**
-	 * Record an outcome for a memory and update its stats
-	 * Roampal-aligned: Uses time-weighted score deltas
+	 * Record an outcome for a memory and update its stats.
+	 *
+	 * Phase 23 Bug Fixes (v0.2.8 Safeguards):
+	 * - 23.1: Validates outcome type explicitly (no silent fallthrough)
+	 * - 23.2: Uses cumulative success_count for Wilson (not capped history)
+	 * - 23.3: Always increments uses counter (including for failed/unknown)
+	 * - 23.4: Atomic update with aggregation pipeline
+	 *
+	 * Roampal-aligned: Uses time-weighted score deltas.
 	 */
 	async recordOutcome(params: RecordOutcomeParams): Promise<boolean> {
 		const now = new Date();
 		const outcomeId = uuidv4();
+
+		// Phase 23.1: Validate outcome type explicitly
+		if (!isValidOutcome(params.outcome)) {
+			logger.warn(
+				{ outcome: params.outcome, memoryId: params.memoryId },
+				"[Phase 23.1] Invalid outcome type - rejecting"
+			);
+			return false;
+		}
+
+		// Phase 23.1: Get success delta using explicit switch (no default case)
+		const successDelta = getSuccessDelta(params.outcome);
 
 		// Calculate time-weighted score delta (Roampal pattern)
 		const deltas = this.config.outcome_deltas;
@@ -752,35 +891,94 @@ export class MemoryMongoStore {
 		const timeWeight = params.timeWeight ?? 1.0;
 		const scoreDelta = baseDelta * timeWeight;
 
+		logger.debug(
+			{
+				memoryId: params.memoryId,
+				outcome: params.outcome,
+				successDelta,
+				scoreDelta,
+				timeWeight,
+			},
+			"[Phase 23] Recording outcome"
+		);
+
 		const result = await this.withTimeout(
 			async () => {
-				// Update memory stats atomically
+				// Phase 23.3 & 23.4: Atomic update with aggregation pipeline
+				// - Always increment uses (outside conditionals)
+				// - Always increment success_count by successDelta
+				// - Calculate Wilson in same operation (atomicity)
 				const outcomeField = `stats.${params.outcome}_count`;
 
 				const updated = (await this.items.findOneAndUpdate(
 					{ memory_id: params.memoryId, user_id: params.userId },
-					{
-						$inc: {
-							"stats.uses": 1,
-							[outcomeField]: 1,
+					[
+						{
+							$set: {
+								// Phase 23.3: ALWAYS increment uses (for ALL outcomes including failed/unknown)
+								"stats.uses": { $add: [{ $ifNull: ["$stats.uses", 0] }, 1] },
+								// Increment specific outcome counter
+								[outcomeField]: { $add: [{ $ifNull: [`$${outcomeField}`, 0] }, 1] },
+								// Phase 23.2: Increment cumulative success_count
+								"stats.success_count": {
+									$add: [{ $ifNull: ["$stats.success_count", 0] }, successDelta],
+								},
+								"stats.last_used_at": now,
+								updated_at: now,
+							},
 						},
-						$set: {
-							"stats.last_used_at": now,
-							updated_at: now,
-						},
-					},
+					],
 					{ returnDocument: "after" }
 				)) as unknown as MemoryItemDocument | null;
 
-				if (!updated) return false;
+				if (!updated) {
+					logger.warn(
+						{ memoryId: params.memoryId },
+						"[Phase 23] Memory not found for outcome recording"
+					);
+					return false;
+				}
 
-				// Recalculate Wilson score
-				const stats = updated.stats;
-				const total = stats.worked_count + stats.failed_count + stats.partial_count;
-				const successes = stats.worked_count + stats.partial_count * 0.5;
-				const wilsonScore = calculateWilsonScore(successes, total);
-				const successRate = total > 0 ? successes / total : 0.5;
+				// Phase 23.2 & 23.4: Recalculate Wilson from cumulative stats
+				let stats = updated.stats;
+				if (!stats) {
+					// Phase 23.5: Initialize stats for legacy memories missing this field
+					logger.info(
+						{ memoryId: params.memoryId },
+						"[Phase 23.5] Initializing missing stats field for legacy memory"
+					);
+					const defaultStats = {
+						uses: 1,
+						last_used_at: now,
+						worked_count: params.outcome === "worked" ? 1 : 0,
+						failed_count: params.outcome === "failed" ? 1 : 0,
+						partial_count: params.outcome === "partial" ? 1 : 0,
+						unknown_count: params.outcome === "unknown" ? 1 : 0,
+						success_count: successDelta,
+						success_rate: 0.5,
+						wilson_score: 0.5,
+					};
+					await this.items.updateOne(
+						{ memory_id: params.memoryId },
+						{ $set: { stats: defaultStats } }
+					);
+					stats = defaultStats;
+				}
+				const wilsonScore = calculateWilsonFromStats({
+					uses: stats.uses ?? 0,
+					success_count: (stats as Record<string, unknown>).success_count as number | undefined,
+					worked_count: stats.worked_count,
+					partial_count: stats.partial_count,
+					unknown_count: stats.unknown_count,
+					failed_count: stats.failed_count,
+				});
+				const successRate =
+					stats.uses > 0
+						? (((stats as Record<string, unknown>).success_count as number) ?? 0) / stats.uses
+						: 0.5;
 
+				// Second update for Wilson score (could be combined with aggregation pipeline
+				// but kept separate for clarity and debugging)
 				await this.items.updateOne(
 					{ memory_id: params.memoryId },
 					{
@@ -791,7 +989,18 @@ export class MemoryMongoStore {
 					}
 				);
 
-				// Record outcome event
+				logger.info(
+					{
+						memoryId: params.memoryId,
+						outcome: params.outcome,
+						newUses: stats.uses,
+						newWilson: wilsonScore,
+						successCount: (stats as Record<string, unknown>).success_count,
+					},
+					"[Phase 23] Outcome recorded successfully"
+				);
+
+				// Record outcome event for audit trail
 				const outcomeDoc: MemoryOutcomeDocument = {
 					_id: new ObjectId(),
 					outcome_id: outcomeId,
@@ -1054,6 +1263,12 @@ export class MemoryMongoStore {
 			org_id: doc.org_id,
 			tier: doc.tier,
 			status: doc.status,
+			needs_reindex: doc.needs_reindex ?? false,
+			reindex_reason: doc.reindex_reason ?? null,
+			reindex_marked_at: doc.reindex_marked_at?.toISOString() ?? null,
+			embedding_status: doc.embedding_status,
+			embedding_error: doc.embedding_error ?? null,
+			last_reindexed_at: doc.last_reindexed_at?.toISOString() ?? null,
 			tags: doc.tags,
 			always_inject: doc.always_inject,
 			text: doc.text,
@@ -1077,6 +1292,7 @@ export class MemoryMongoStore {
 				failed_count: doc.stats.failed_count,
 				partial_count: doc.stats.partial_count,
 				unknown_count: doc.stats.unknown_count,
+				success_count: doc.stats.success_count, // Phase 23.2
 				success_rate: doc.stats.success_rate,
 				wilson_score: doc.stats.wilson_score,
 			},
@@ -1125,5 +1341,147 @@ export class MemoryMongoStore {
 			reindexCheckpoints: this.reindexCheckpoints,
 			consistencyLogs: this.consistencyLogs,
 		};
+	}
+
+	// ============================================
+	// Document Recognition (Cross-Chat Memory)
+	// ============================================
+
+	/**
+	 * Find memories by document hash (for cross-chat document recognition)
+	 *
+	 * This enables the memory system to recognize previously processed documents
+	 * even when uploaded in a new chat session.
+	 *
+	 * @param userId - User ID to scope the search
+	 * @param documentHash - SHA256 hash of the document content
+	 * @param options - Optional filters for tier and status
+	 * @returns Array of memory items matching the document hash
+	 */
+	async findByDocumentHash(
+		userId: string,
+		documentHash: string,
+		options?: {
+			tier?: MemoryTier;
+			status?: MemoryStatus[];
+			limit?: number;
+		}
+	): Promise<MemoryItem[]> {
+		const filter: Record<string, unknown> = {
+			user_id: userId,
+			"source.book.document_hash": documentHash,
+		};
+
+		if (options?.tier) {
+			filter.tier = options.tier;
+		}
+
+		if (options?.status?.length) {
+			filter.status = { $in: options.status };
+		} else {
+			filter.status = "active"; // Default to active only
+		}
+
+		const limit = options?.limit ?? 100;
+
+		const result = await this.withTimeout(
+			async () => {
+				const docs = await this.items
+					.find(filter)
+					.sort({ "source.book.chunk_index": 1 })
+					.limit(limit)
+					.maxTimeMS(this.config.timeouts.mongo_text_query_ms)
+					.toArray();
+
+				return docs.map((doc) => this.documentToMemoryItem(doc));
+			},
+			this.config.timeouts.mongo_text_query_ms,
+			"findByDocumentHash"
+		);
+
+		return result ?? [];
+	}
+
+	/**
+	 * Get document metadata by hash (book info without loading all chunks)
+	 *
+	 * Returns summary info about a previously processed document.
+	 *
+	 * @param userId - User ID to scope the search
+	 * @param documentHash - SHA256 hash of the document content
+	 * @returns Document metadata or null if not found
+	 */
+	async getDocumentByHash(
+		userId: string,
+		documentHash: string
+	): Promise<{
+		bookId: string;
+		title: string;
+		author: string | null;
+		chunkCount: number;
+		firstChunkPreview: string;
+		uploadTimestamp: string | null;
+	} | null> {
+		const result = await this.withTimeout(
+			async () => {
+				// Get first chunk to extract metadata
+				const firstChunk = await this.items.findOne({
+					user_id: userId,
+					"source.book.document_hash": documentHash,
+					status: "active",
+				});
+
+				if (!firstChunk?.source?.book) {
+					return null;
+				}
+
+				// Count total chunks
+				const chunkCount = await this.items.countDocuments({
+					user_id: userId,
+					"source.book.document_hash": documentHash,
+					status: "active",
+				});
+
+				return {
+					bookId: firstChunk.source.book.book_id,
+					title: firstChunk.source.book.title ?? "Unknown",
+					author: firstChunk.source.book.author ?? null,
+					chunkCount,
+					firstChunkPreview:
+						firstChunk.text.slice(0, 200) + (firstChunk.text.length > 200 ? "..." : ""),
+					uploadTimestamp: firstChunk.source.book.upload_timestamp ?? null,
+				};
+			},
+			this.config.timeouts.mongo_text_query_ms,
+			"getDocumentByHash"
+		);
+
+		return result;
+	}
+
+	/**
+	 * Check if a document has been processed (exists in memory system)
+	 *
+	 * Fast check to determine if document processing can be skipped.
+	 *
+	 * @param userId - User ID to scope the search
+	 * @param documentHash - SHA256 hash of the document content
+	 * @returns true if document exists, false otherwise
+	 */
+	async documentExists(userId: string, documentHash: string): Promise<boolean> {
+		const result = await this.withTimeout(
+			async () => {
+				const count = await this.items.countDocuments({
+					user_id: userId,
+					"source.book.document_hash": documentHash,
+					status: "active",
+				});
+				return count > 0;
+			},
+			this.config.timeouts.mongo_text_query_ms,
+			"documentExists"
+		);
+
+		return result ?? false;
 	}
 }

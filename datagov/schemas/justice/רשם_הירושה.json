@@ -1,0 +1,114 @@
+{
+  "dataset_id": "d5c53ee0-5fc5-4bb6-81d1-d382d01285a2",
+  "title": "רשם הירושה",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "מחוז",
+    "בקשה",
+    "סטטוס",
+    "עיתון",
+    "מפרסם",
+    "הירושה",
+    "החלטת",
+    "סיבת",
+    "רשם",
+    "משרד",
+    "סוג",
+    "הגשת",
+    "מיוצג",
+    "פרסום",
+    "סגירה",
+    "תאריך",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "7691b4a2-fe1d-44ec-9f1b-9f2f0a15381b",
+      "title": "בקשות שהוגשו לרשם הירושה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תאריך הגשת בקשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סוג בקשה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "מיוצג",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטטוס בקשה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך פרסום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "עיתון מפרסם",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "החלטת רשם",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך החלטת רשם",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סיבת סגירה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך סגירה",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 1204883
+    },
+    {
+      "resource_id": "74cc9fbd-63aa-49dd-9456-94951e97624d",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,802 @@
+{
+  "dataset_id": "26f9fa06-fcd7-4173-8df5-65797b63e857",
+  "title": "תוצאות בחירות - ועדת הבחירות המרכזית לכנסת",
+  "organization": "ועדת הבחירות המרכזית לכנסת",
+  "tags": [
+    "ועדת הבחירות"
+  ],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "מצביעים",
+    "לכנסת",
+    "בחירות",
+    "שופט",
+    "ועדה",
+    "ריכוז",
+    "בזב",
+    "סמל",
+    "המרכזית",
+    "מחל",
+    "תוצאות",
+    "אמת",
+    "פסולים",
+    "כשרים",
+    "ועדת",
+    "ברזל",
+    "ודעם",
+    "ישוב",
+    "קלפי",
+    "הבחירות",
+    "מרצ"
+  ],
+  "resources": [
+    {
+      "resource_id": "b392b8ee-ba45-4ea0-bfed-f03a1a36e99c",
+      "title": "תוצאות האמת של הבחירות לכנסת ה-25 לפי יישובים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל ועדה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם ישוב",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סמל ישוב",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "בזב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מצביעים",
+          "type": "numeric",
+          "semantic": "status"
+        },
+        {
+          "name": "פסולים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "כשרים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אמת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אצ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ב",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "ג",
+          "type": "numeric",
+          "semantic": "type"
+        },
+        {
+          "name": "ד",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "ום",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "ז",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "זך",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "זנ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "זץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ט",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "י",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "יז",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ינ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יק",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "כן",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ך",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "ל",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "מחל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מרצ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נז",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ני",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "נף",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נק",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עם",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "פה",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "ף",
+          "type": "numeric",
+          "semantic": "price"
+        },
+        {
+          "name": "צ",
+          "type": "numeric",
+          "semantic": "status"
+        },
+        {
+          "name": "ץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ק",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "קי",
+          "type": "numeric",
+          "semantic": "url"
+        },
+        {
+          "name": "קך",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קנ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "רז",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שס",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ת",
+          "type": "numeric",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 1216
+    },
+    {
+      "resource_id": "cc223336-07bc-485d-b160-62df92967c0a",
+      "title": "תוצאות האמת של הבחירות לכנסת ה-25 לפי קלפיות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל ועדה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ברזל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם ישוב",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סמל ישוב",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קלפי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ריכוז",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שופט",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "בזב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מצביעים",
+          "type": "numeric",
+          "semantic": "status"
+        },
+        {
+          "name": "פסולים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "כשרים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אמת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אצ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ב",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "ג",
+          "type": "numeric",
+          "semantic": "type"
+        },
+        {
+          "name": "ד",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "ום",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "ז",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "זך",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "זנ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "זץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ט",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "י",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "יז",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ינ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יק",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "כן",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ך",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "ל",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "מחל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מרצ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נז",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ני",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "נף",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נק",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עם",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "פה",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "ף",
+          "type": "numeric",
+          "semantic": "price"
+        },
+        {
+          "name": "צ",
+          "type": "numeric",
+          "semantic": "status"
+        },
+        {
+          "name": "ץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ק",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "קי",
+          "type": "numeric",
+          "semantic": "url"
+        },
+        {
+          "name": "קך",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קנ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "רז",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שס",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ת",
+          "type": "numeric",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 12545
+    },
+    {
+      "resource_id": "9921a347-8466-4ef4-81f9-22523c5c4632",
+      "title": "תוצאות האמת של הבחירות לכנסת ה-24 לפי יישובים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סמל ועדה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם ישוב",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סמל ישוב",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "בזב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מצביעים",
+          "type": "numeric",
+          "semantic": "status"
+        },
+        {
+          "name": "פסולים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "כשרים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "אמת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ב",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "ג",
+          "type": "numeric",
+          "semantic": "type"
+        },
+        {
+          "name": "ודעם",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ז",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "זץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ט",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "י",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "יז",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ינ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יף",
+          "type": "numeric",
+          "semantic": "price"
+        },
+        {
+          "name": "יק",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "יר",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "כ",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "כך",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "כן",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ל",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "מחל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מרצ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נ",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "ני",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "נר",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "עם",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "פה",
+          "type": "numeric",
+          "semantic": "district"
+        },
+        {
+          "name": "ףז",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "צי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "צכ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "צף",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ק",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "קי",
+          "type": "numeric",
+          "semantic": "url"
+        },
+        {
+          "name": "קך",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קץ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ר",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "רנ",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "רף",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "רק",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שס",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ת",
+          "type": "numeric",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 1215
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

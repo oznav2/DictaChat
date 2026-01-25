@@ -1,0 +1,159 @@
+{
+  "dataset_id": "382c098b-a687-478a-9965-06977d7c9501",
+  "title": "מאגר שותפויות - רשם החברות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "מיקוד",
+    "רשם",
+    "סוג",
+    "סיווג",
+    "רחוב",
+    "שותפות",
+    "התאגדות",
+    "שותפויות",
+    "החברות",
+    "תאגיד",
+    "מדינה",
+    "משרד",
+    "באנגלית",
+    "קוד",
+    "תאריך",
+    "המשפטים",
+    "סטטוס",
+    "בית",
+    "ישוב",
+    "אצל",
+    "חברה"
+  ],
+  "resources": [
+    {
+      "resource_id": "139aa193-fabb-4f6b-a71b-0bb40fd73eb2",
+      "title": "רשימת השותפויות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר שותפות",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם שותפות",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג תאגיד",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סטטוס תאגיד",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך התאגדות",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מספר בית",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מיקוד",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ת.ד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מדינה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אצל",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד סטטוס שותפות",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד סוג חברה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד סיווג חברה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד ישוב",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "קוד מדינה",
+          "type": "numeric",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 28092
+    },
+    {
+      "resource_id": "a4c2ce3b-c3a9-4840-8552-d5693ddf5c16",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "dataset_id": "5c8c7be1-3825-4c7d-bcd6-9735355b4a04",
+  "title": "שמאי רכב",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "mispar",
+    "prati",
+    "תחבורה",
+    "shem",
+    "בדרכים",
+    "mishpaha",
+    "משרד",
+    "שמאי",
+    "רכב",
+    "והבטיחות",
+    "כלי",
+    "rishayon",
+    "התחבורה",
+    "yishuv"
+  ],
+  "resources": [
+    {
+      "resource_id": "4a434d65-3ca2-45e5-8026-5d9819c3f95c",
+      "title": "שמאי רכב",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rishayon",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "shem_prati",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shem_mishpaha",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "yishuv",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1013
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

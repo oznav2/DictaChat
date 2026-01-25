@@ -1,0 +1,85 @@
+{
+  "dataset_id": "18767907-4168-4639-ab91-39ae94e85df5",
+  "title": "ביצוע תקציב על שינוייו יוני 2017 לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "שינויים בתקציב"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "תוכנית",
+    "ברוטו",
+    "תקציב",
+    "מיועדת",
+    "ביצוע",
+    "תכנית",
+    "שינויים",
+    "מבוקר",
+    "משרד",
+    "מקורי",
+    "שינוייו",
+    "האוצר",
+    "בתקציב",
+    "יוני",
+    "הכנסה"
+  ],
+  "resources": [
+    {
+      "resource_id": "ecfa85a4-387d-4c62-aba6-6a7f63b69d5f",
+      "title": "ביצוע תקציב על שינוייו יוני 2017 לא מבוקר",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ביצוע הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע ברוטו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו על שינוייו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו מקורי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תוכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר תכנית",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 591
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "dataset_id": "da374239-7f83-43bc-a60f-36fc8380a093",
+  "title": "תקנות הירושה – בתי הדין הדרוזים – בשפה הערבית",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "name",
+    "court",
+    "request",
+    "תקנות",
+    "deaceased",
+    "published",
+    "הדין",
+    "date",
+    "file",
+    "number",
+    "הדרוזים",
+    "בשפה",
+    "הירושה",
+    "משרד",
+    "הערבית",
+    "המשפטים",
+    "בתי",
+    "address",
+    "deceased"
+  ],
+  "resources": [
+    {
+      "resource_id": "af0bb999-3773-4c10-aa3c-b22c488f9275",
+      "title": "Druze_Inheritance.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "court_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "file_number",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "request_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "deceased_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "deaceased_address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "deaceased_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "published_date",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 794
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

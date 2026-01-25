@@ -1,0 +1,41 @@
+{
+  "dataset_id": "870e47f1-18ba-4079-b85d-b2938e9825d6",
+  "title": "מרכזים קהילתיים בחיפה",
+  "organization": "עיריית חיפה",
+  "tags": [
+    "אוכלוסיה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "אוכלוסיה",
+    "עיריית",
+    "קהילתיים",
+    "בחיפה",
+    "חיפה",
+    "מרכזים"
+  ],
+  "resources": [
+    {
+      "resource_id": "691ddc93-07e9-46b7-aadd-76fb4317b034",
+      "title": "מרכזים קהילתיים בחיפה",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 0
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

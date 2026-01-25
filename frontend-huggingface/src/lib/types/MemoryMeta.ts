@@ -1,4 +1,45 @@
-export type MemoryTier = "working" | "history" | "patterns" | "books" | "memory_bank";
+export type MemoryTier =
+	| "working"
+	| "history"
+	| "patterns"
+	| "documents"
+	| "memory_bank"
+	| "datagov_schema"
+	| "datagov_expansion";
+
+/**
+ * Phase 25: DataGov category definitions for UI filtering
+ */
+export const DATAGOV_CATEGORIES: Record<string, string> = {
+	transportation: "תחבורה",
+	health: "בריאות",
+	finance: "כספים",
+	justice: "משפט",
+	education: "חינוך",
+	environment: "סביבה",
+	geography: "גיאוגרפיה",
+	water: "מים",
+	welfare: "רווחה",
+	culture: "תרבות",
+	technology: "מדע וטכנולוגיה",
+	agriculture: "חקלאות",
+	immigration: "הגירה",
+	housing: "דיור",
+	communications: "תקשורת",
+	tourism: "תיירות",
+	religion: "דת",
+	municipal: "רשויות מקומיות",
+	economy: "כלכלה",
+	demographics: "דמוגרפיה",
+	statistics: "סטטיסטיקה",
+};
+
+/**
+ * Phase 25: Check if a tier is a DataGov tier
+ */
+export function isDataGovTier(tier: MemoryTier): boolean {
+	return tier === "datagov_schema" || tier === "datagov_expansion";
+}
 
 export type SortBy = "relevance" | "recency" | "score";
 

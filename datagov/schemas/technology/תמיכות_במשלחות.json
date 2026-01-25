@@ -1,0 +1,54 @@
+{
+  "dataset_id": "7e417310-e776-46c1-9c2a-fe94387f03a5",
+  "title": "תמיכות במשלחות",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "מדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "מדע",
+    "החדשנות",
+    "סכום",
+    "משרד",
+    "רשות",
+    "תמיכות",
+    "המדע",
+    "במשלחות",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "dcf4471f-2605-4440-bb46-4b079c0dcdc1",
+      "title": "תמיכות במשלחות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "סכום",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 19
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

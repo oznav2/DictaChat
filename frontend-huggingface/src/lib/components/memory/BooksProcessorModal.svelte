@@ -339,12 +339,12 @@
 				);
 
 				dispatchMemoryEvent({
-					type: "book_ingested",
+					type: "document_ingested",
 					detail: { bookId },
 				});
 				dispatchMemoryEvent({
 					type: "kg_updated",
-					detail: { source: "book_ingested", bookId },
+					detail: { source: "document_ingested", bookId },
 				});
 
 				setTimeout(() => {
@@ -414,6 +414,8 @@
 			clearTimeout(fallbackTimer);
 			try {
 				const payload = JSON.parse((evt as MessageEvent).data);
+				const data = payload as { type?: unknown };
+				console.debug({ event: data.type ?? "progress" }, "[sse] Memory event received");
 				applyProgress(payload);
 			} catch {
 				es.close();
@@ -479,12 +481,12 @@
 						}, 2000);
 
 						dispatchMemoryEvent({
-							type: "book_ingested",
+							type: "document_ingested",
 							detail: { bookId },
 						});
 						dispatchMemoryEvent({
 							type: "kg_updated",
-							detail: { source: "book_ingested", bookId },
+							detail: { source: "document_ingested", bookId },
 						});
 						return;
 					} else if (book.status === "failed") {
@@ -565,8 +567,8 @@
 			if (response.ok) {
 				existingBooks = existingBooks.filter((b) => b.book_id !== bookId);
 				deleteConfirm = null;
-				dispatchMemoryEvent({ type: "book_deleted", detail: { bookId } });
-				dispatchMemoryEvent({ type: "kg_updated", detail: { source: "book_deleted", bookId } });
+				dispatchMemoryEvent({ type: "document_deleted", detail: { bookId } });
+				dispatchMemoryEvent({ type: "kg_updated", detail: { source: "document_deleted", bookId } });
 			} else {
 				const errorData = await response.json().catch(() => ({ error: "מחיקה נכשלה" }));
 				deleteError = errorData.error || "מחיקה נכשלה";

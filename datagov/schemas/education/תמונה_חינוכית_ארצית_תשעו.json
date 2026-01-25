@@ -1,0 +1,37 @@
+{
+  "dataset_id": "d4f056f6-702d-445c-a1f1-3f83d101b5c1",
+  "title": "תמונה חינוכית ארצית תשע\"ו",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך",
+    "תמונה_חינוכית"
+  ],
+  "categories": [
+    "education"
+  ],
+  "keywords": [
+    "חינוך",
+    "משרד",
+    "החינוך",
+    "תמונה",
+    "חינוכית",
+    "תשע",
+    "ארצית"
+  ],
+  "resources": [
+    {
+      "resource_id": "fe1baa22-569e-40d5-b8be-dba6d9f65153",
+      "title": "תמונה חינוכית ארצית תשע\"ו",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

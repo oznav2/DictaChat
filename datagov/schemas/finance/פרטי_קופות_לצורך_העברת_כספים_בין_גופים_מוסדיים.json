@@ -1,0 +1,217 @@
+{
+  "dataset_id": "8c5e076a-56d0-4123-af95-173d04bfaf79",
+  "title": "פרטי קופות לצורך העברת כספים בין גופים מוסדיים",
+  "organization": "רשות שוק ההון, ביטוח וחיסכון",
+  "tags": [
+    "רשות שוק ההון"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "אישור",
+    "מיקוד",
+    "כתובת",
+    "התמחות",
+    "חשבון",
+    "סוג",
+    "רשות",
+    "איש",
+    "שוק",
+    "וחיסכון",
+    "יוצאות",
+    "מוסדיים",
+    "כספים",
+    "דואר",
+    "הכנסה",
+    "גופים",
+    "ביטוח",
+    "ארוך",
+    "טלפון",
+    "פקס",
+    "קצר",
+    "סניף",
+    "קשר",
+    "לצורך",
+    "העברות",
+    "קופות",
+    "עיר",
+    "העברת",
+    "נכנסות",
+    "מתפעלת",
+    "בנק",
+    "קופה",
+    "השקעה",
+    "קוד",
+    "תאריך",
+    "משנית",
+    "תחום",
+    "בין",
+    "מסלול",
+    "פרטי",
+    "קרן",
+    "ההון",
+    "אלקטרוני",
+    "עדכון",
+    "אחרון",
+    "ראשית",
+    "חברה"
+  ],
+  "resources": [
+    {
+      "resource_id": "b5223cbc-e1b2-4503-a499-97cdcd7190d2",
+      "title": "פרטי קופות לצורך העברת כספים בין גופים מוסדיים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תחום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ח.פ. של חברה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם חברה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר קופה -אישור מס הכנסה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם קופה / קרן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם קצר - קופה / קרן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר מסלול השקעה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם מסלול ארוך",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם מסלול קצר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג מסלול השקעה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "התמחות ראשית של מסלול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "התמחות משנית של מסלול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר ח.פ. של חברה מתפעלת",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם חברה מתפעלת",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "שם איש קשר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "עיר",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מיקוד",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "העברות נכנסות / יוצאות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קוד בנק",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם בנק",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר סניף",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר חשבון",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך עדכון אחרון",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 1968
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": true
+  }
+}

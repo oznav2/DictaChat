@@ -1,0 +1,124 @@
+{
+  "dataset_id": "5b858b2f-f41a-488a-b1d3-461bfafb3b1d",
+  "title": "מעבדות מוכרות לסטאז' - משרד הבריאות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות",
+    "בריאות ורווחה",
+    "התמחות",
+    "מוסדות רפואיים",
+    "מעבדות",
+    "משרד הבריאות"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "מיקוד",
+    "התמחות",
+    "רפואיים",
+    "משני",
+    "נושא",
+    "רחוב",
+    "דואר",
+    "טלפון",
+    "פקס",
+    "בניין",
+    "הבריאות",
+    "בריאות",
+    "מוכרות",
+    "עיר",
+    "משרד",
+    "מוסדות",
+    "ורווחה",
+    "לסטאז",
+    "המעבדה",
+    "מעבדות",
+    "המנהל",
+    "אלקטרוני",
+    "הערות"
+  ],
+  "resources": [
+    {
+      "resource_id": "719d0c20-4334-4f71-83ce-9926feeaa430",
+      "title": "מעבדות מוכרות לסטאז' - משרד הבריאות",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המעבדה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "נושא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נושא משני",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם המנהל",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "עיר",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "רחוב",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מספר בניין",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מיקוד",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "מספר פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "הערות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 214
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

@@ -167,6 +167,16 @@ export class ToolArgumentSanitizer {
 			.replace(/\x00/g, "") // Remove null bytes
 			.trim();
 
+		// Strip markdown backticks that models sometimes wrap URLs/values in
+		// Pattern: ` value ` or `value` -> value (trim surrounding backticks)
+		if (str.startsWith("`") && str.endsWith("`") && str.length > 2) {
+			const stripped = str.slice(1, -1).trim();
+			if (stripped.length > 0) {
+				warnings.push(`Stripped backticks from value`);
+				str = stripped;
+			}
+		}
+
 		return str;
 	}
 

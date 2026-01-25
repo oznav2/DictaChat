@@ -1,0 +1,131 @@
+{
+  "dataset_id": "405e5b54-5445-48aa-9120-06c9c4764a84",
+  "title": "חגים בישראל - Holidays in Israel",
+  "organization": "משרד התיירות",
+  "tags": [
+    "משרד התיירות",
+    "תיירות"
+  ],
+  "categories": [
+    "tourism"
+  ],
+  "keywords": [
+    "name",
+    "holidays",
+    "shortdescription",
+    "משרד",
+    "israel",
+    "התיירות",
+    "date",
+    "holidaystart",
+    "hebrewdate",
+    "fulldescription",
+    "חגים",
+    "hebrew",
+    "holidayends",
+    "בישראל",
+    "תיירות"
+  ],
+  "resources": [
+    {
+      "resource_id": "38a82e1f-2800-452f-bf70-20c1f4439924",
+      "title": "Holidays In Israel - English",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ShortDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Hebrew_Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "HolidayStart",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "HolidayEnds",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 15
+    },
+    {
+      "resource_id": "67492cda-b36e-45f4-9ed1-0471af297e8b",
+      "title": "חגים בישראל - עברית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ShortDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HebrewDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "HolidayStart",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "HolidayEnds",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 15
+    },
+    {
+      "resource_id": "5a20dfb8-0ce6-465f-a3d2-8f4743b897a1",
+      "title": "קובץ הסבר",
+      "format": "DOCX",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

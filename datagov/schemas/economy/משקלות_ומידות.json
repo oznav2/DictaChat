@@ -1,0 +1,110 @@
+{
+  "dataset_id": "ed8ce28e-ae7f-4588-b3f9-59485960d521",
+  "title": "משקלות ומידות",
+  "organization": "משרד הכלכלה והתעשייה",
+  "tags": [
+    "כלכלה"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "commercial",
+    "והתעשייה",
+    "valid",
+    "manufacter",
+    "הכלכלה",
+    "validity",
+    "number",
+    "כלכלה",
+    "equipment",
+    "confirmation",
+    "משרד",
+    "eqitf",
+    "type",
+    "manufactor",
+    "ומידות",
+    "משקלות",
+    "device",
+    "model",
+    "group"
+  ],
+  "resources": [
+    {
+      "resource_id": "5cc7cc5b-9e38-42bd-bc77-f70297c10a1f",
+      "title": "דגמים מאושרים של מכשירי מדידה בישראל",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "equipment_group_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "equipment_group",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "device_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "manufacter_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "manufacter_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "model_id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "manufactor_model",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "eqitf_is_commercial",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "eqitf_confirmation_number",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "eqitf_confirmation_validity",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "is_valid",
+          "type": "text",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 2540
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

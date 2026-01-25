@@ -1,0 +1,57 @@
+{
+  "dataset_id": "c6b1c0b7-6d94-4191-acf1-b572eb6a6b79",
+  "title": "רשימת חוקרים פרטיים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "חוקרים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "משרד",
+    "פרטי",
+    "חוקרים",
+    "פרטיים",
+    "משפחה",
+    "המשפטים",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "a9ddb445-825f-4635-a573-fe82d2a95bf0",
+      "title": "רשימת חוקרים פרטיים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר רישיון",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 1556
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

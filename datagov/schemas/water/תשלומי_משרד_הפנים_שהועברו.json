@@ -1,0 +1,228 @@
+{
+  "dataset_id": "48cb43dd-ae45-43a2-979d-f93aa985ff96",
+  "title": "תשלומי משרד הפנים שהועברו",
+  "organization": "משרד הפנים",
+  "tags": [
+    "תשלום לרשויות",
+    "תשלומי משרד הפנים",
+    "תשלומים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "תיאור",
+    "שהועברו",
+    "דרך",
+    "התאמה",
+    "מעודכן",
+    "שחרור",
+    "תאור",
+    "לתשלום",
+    "אבן",
+    "תשלום",
+    "הפנים",
+    "ספק",
+    "התקנה",
+    "יתרת",
+    "סטאטוס",
+    "אחראית",
+    "מסמך",
+    "לרשויות",
+    "שולם",
+    "wbs",
+    "תקנה",
+    "זכאות",
+    "יצירת",
+    "תשלומים",
+    "נרשם",
+    "הדרך",
+    "משרד",
+    "מזהה",
+    "אסמכתא",
+    "מגיש",
+    "בפועל",
+    "תשלומי",
+    "תאריך",
+    "בקשה",
+    "סכום",
+    "קרנות",
+    "יוצר",
+    "מחלקה",
+    "מרכז",
+    "פירעון",
+    "גוף"
+  ],
+  "resources": [
+    {
+      "resource_id": "702f9bd7-c97b-4cff-92c8-0383d95e5955",
+      "title": "תשלומי משרד הפנים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מסמך זכאות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תיאור בקשה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ספק",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מזהה ספק",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם גוף מגיש בקשה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תקנה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאור התקנה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מרכז קרנות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מחלקה אחראית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם של מחלקה אחראית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך התאמה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שולם בפועל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סכום מעודכן",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך פירעון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שנת WBS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תיאור אבן הדרך",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "נרשם לתשלום",
+          "type": "numeric",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר אסמכתא",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "ת.אסמכתא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור תשלום",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך זכאות",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סטאטוס",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מסמך התאמה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "יוצר ש. תשלום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סכום אבן  דרך",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "יתרת אבן דרך",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מספר שחרור תשלום",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר אבן דרך",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך יצירת תשלום",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 36403
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

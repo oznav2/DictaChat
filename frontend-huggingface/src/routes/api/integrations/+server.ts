@@ -45,7 +45,10 @@ function safeBaseUrl(input: string | undefined | null): string | null {
 	}
 }
 
-async function fetchHealth(url: string, timeoutMs: number): Promise<{ ok: boolean; latency_ms: number | null; error: string | null }> {
+async function fetchHealth(
+	url: string,
+	timeoutMs: number
+): Promise<{ ok: boolean; latency_ms: number | null; error: string | null }> {
 	const controller = new AbortController();
 	const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 	const start = Date.now();
@@ -94,8 +97,18 @@ function buildDefaults(): IntegrationDef[] {
 			fallback: { configured: Boolean(doclingUrl), base_url: safeBaseUrl(doclingUrl) },
 			healthProbe: async (): Promise<IntegrationHealth> => {
 				const configured = Boolean(doclingUrl);
-				if (!configured) return { ok: false, configured: false, base_url: null, latency_ms: null, error: "missing_url" };
-				const { ok, latency_ms, error } = await fetchHealth(`${doclingUrl.replace(/\/$/, "")}/health`, 1500);
+				if (!configured)
+					return {
+						ok: false,
+						configured: false,
+						base_url: null,
+						latency_ms: null,
+						error: "missing_url",
+					};
+				const { ok, latency_ms, error } = await fetchHealth(
+					`${doclingUrl.replace(/\/$/, "")}/health`,
+					1500
+				);
 				return { ok, configured: true, base_url: safeBaseUrl(doclingUrl), latency_ms, error };
 			},
 		},
@@ -107,8 +120,18 @@ function buildDefaults(): IntegrationDef[] {
 			fallback: { configured: Boolean(embeddingUrl), base_url: safeBaseUrl(embeddingUrl) },
 			healthProbe: async (): Promise<IntegrationHealth> => {
 				const configured = Boolean(embeddingUrl);
-				if (!configured) return { ok: false, configured: false, base_url: null, latency_ms: null, error: "missing_url" };
-				const { ok, latency_ms, error } = await fetchHealth(`${embeddingUrl.replace(/\/$/, "")}/health`, 1500);
+				if (!configured)
+					return {
+						ok: false,
+						configured: false,
+						base_url: null,
+						latency_ms: null,
+						error: "missing_url",
+					};
+				const { ok, latency_ms, error } = await fetchHealth(
+					`${embeddingUrl.replace(/\/$/, "")}/health`,
+					1500
+				);
 				return { ok, configured: true, base_url: safeBaseUrl(embeddingUrl), latency_ms, error };
 			},
 		},
@@ -120,8 +143,18 @@ function buildDefaults(): IntegrationDef[] {
 			fallback: { configured: Boolean(rerankerUrl), base_url: safeBaseUrl(rerankerUrl) },
 			healthProbe: async (): Promise<IntegrationHealth> => {
 				const configured = Boolean(rerankerUrl);
-				if (!configured) return { ok: false, configured: false, base_url: null, latency_ms: null, error: "missing_url" };
-				const { ok, latency_ms, error } = await fetchHealth(`${rerankerUrl.replace(/\/$/, "")}/health`, 1500);
+				if (!configured)
+					return {
+						ok: false,
+						configured: false,
+						base_url: null,
+						latency_ms: null,
+						error: "missing_url",
+					};
+				const { ok, latency_ms, error } = await fetchHealth(
+					`${rerankerUrl.replace(/\/$/, "")}/health`,
+					1500
+				);
 				return { ok, configured: true, base_url: safeBaseUrl(rerankerUrl), latency_ms, error };
 			},
 		},

@@ -1,0 +1,49 @@
+{
+  "dataset_id": "7a283a1b-1b66-43b5-9892-eba982bcbb48",
+  "title": "מחירון חיסונים לנוסעים לחו\"ל - משרד הבריאות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות",
+    "בריאות ורווחה",
+    "חיסונים",
+    "מחירונים",
+    "משרד הבריאות"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "לנוסעים",
+    "משרד",
+    "חיסונים",
+    "ורווחה",
+    "מחירונים",
+    "הבריאות",
+    "לחו",
+    "בריאות",
+    "מחירון"
+  ],
+  "resources": [
+    {
+      "resource_id": "51601719-96ed-4bca-b925-6f8afb075ac3",
+      "title": "מחירון חיסונים לנוסעים לחו\"ל - משרד הבריאות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 0
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

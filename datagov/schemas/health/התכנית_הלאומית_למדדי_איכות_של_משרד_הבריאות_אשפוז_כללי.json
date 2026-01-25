@@ -1,0 +1,447 @@
+{
+  "dataset_id": "46728cf3-2186-417e-9681-0f789dbb35c2",
+  "title": "התכנית הלאומית למדדי איכות של משרד הבריאות - אשפוז כללי",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "אישפוז כללי",
+    "מדדי איכות"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "gender",
+    "start",
+    "איכות",
+    "provider",
+    "age",
+    "cases",
+    "measure",
+    "כללי",
+    "target",
+    "time",
+    "אשפוז",
+    "measurement",
+    "shift",
+    "groups",
+    "month",
+    "למדדי",
+    "הבריאות",
+    "אישפוז",
+    "range",
+    "number",
+    "description",
+    "ownership",
+    "long",
+    "detailed",
+    "code",
+    "משרד",
+    "subject",
+    "type",
+    "הלאומית",
+    "method",
+    "quarter",
+    "approved",
+    "size",
+    "מדדי",
+    "day",
+    "centrality",
+    "התכנית",
+    "desc",
+    "year",
+    "actual"
+  ],
+  "resources": [
+    {
+      "resource_id": "6e0fce9f-9f58-47a9-a356-861cba135225",
+      "title": "CHADS.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "subject_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "provider_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "measure_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "measure_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "measure_long_description",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "measurement_start_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "measurement_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Quarter",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "provider_centrality",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "provider_size",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "provider_ownership",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "provider",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "gender",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shift",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "day_range",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "age_range",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "method",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "target",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "actual_time",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "number_of_cases",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "number_of_cases_approved",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "detailed_age_range_groups",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 19403
+    },
+    {
+      "resource_id": "ceb466ea-c1e7-43c3-9e64-a7024289d6fa",
+      "title": "דופלקס צוואר תוך 72 שעות למאובחנים ב- TIA",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "subject_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "provider_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "measure_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "measure_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "measure_long_description",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "measurement_start_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "measurement_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Quarter",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "provider_centrality",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "provider_size",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "provider_ownership",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "provider",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "gender",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shift",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "day_range",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "age_range",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "method",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "target",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "actual_time",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "number_of_cases",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "number_of_cases_approved",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "detailed_age_range_groups",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 17640
+    },
+    {
+      "resource_id": "d5634d31-e239-4296-a525-78381b83c782",
+      "title": "צנתור לב בתוך 90 דקות מהכניסה לבית החולים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "subject_desc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "provider_type",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "measure_code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "measure_description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "measure_long_description",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "measurement_start_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "measurement_year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Quarter",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "provider_centrality",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "provider_size",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "provider_ownership",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "provider",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "gender",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shift",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "day_range",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "age_range",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "method",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "target",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "actual_time",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "number_of_cases",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "number_of_cases_approved",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "detailed_age_range_groups",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 12707
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -11,6 +11,8 @@
 	import CarbonDownload from "~icons/carbon/download";
 	import CarbonTerminal from "~icons/carbon/terminal";
 	import CarbonPlug from "~icons/carbon/plug";
+	import CarbonDataBase from "~icons/carbon/data-base";
+	import CarbonDocument from "~icons/carbon/document";
 	import LucideImage from "~icons/lucide/image";
 	import LucideHammer from "~icons/lucide/hammer";
 	import IconGear from "~icons/bi/gear-fill";
@@ -19,7 +21,12 @@
 	import { browser } from "$app/environment";
 	import { isDesktop } from "$lib/utils/isDesktop";
 	import { debounce } from "$lib/utils/debounce";
-	import { canPopSettingsStack, popSettingsStack, resetSettingsStack, syncSettingsStackTo } from "$lib/stores/settingsStack";
+	import {
+		canPopSettingsStack,
+		popSettingsStack,
+		resetSettingsStack,
+		syncSettingsStackTo,
+	} from "$lib/stores/settingsStack";
 
 	interface Props {
 		data: LayoutData;
@@ -97,14 +104,14 @@
 	const settings = useSettingsStore();
 
 	function handleClose() {
-		if (canPopSettingsStack()) {
-			const next = popSettingsStack();
-			if (next) {
-				goto(next);
-				return;
-			}
-		}
-		goto(previousPage);
+		// Simple navigation - go back to previous page or root
+		const target = previousPage || base || "/";
+		console.log("[Settings] Closing, navigating to:", target);
+		goto(target).catch((err) => {
+			console.error("[Settings] Navigation failed:", err);
+			// Fallback: force navigation via window.location
+			window.location.href = target;
+		});
 	}
 
 	// Local filter for model list (hyphen/space insensitive)
@@ -137,14 +144,16 @@
 					class="text-xl text-gray-900 hover:text-black dark:text-gray-200 dark:hover:text-white"
 				/>
 			</button>
+		{:else}
+			<!-- Invisible spacer to maintain layout when back button is hidden -->
+			<div class="w-8 md:hidden"></div>
 		{/if}
-		<h2 class=" left-0 right-0 mx-auto w-fit text-center text-xl font-bold md:hidden">Settings</h2>
+		<h2 class="left-0 right-0 mx-auto w-fit text-center text-xl font-bold md:hidden">Settings</h2>
 		<button
-			class="btn rounded-lg"
+			class="btn relative z-50 ml-auto rounded-lg"
+			type="button"
 			aria-label="Close settings"
-			onclick={() => {
-				handleClose();
-			}}
+			onclick={handleClose}
 		>
 			<CarbonClose
 				class="text-xl text-gray-900 hover:text-black dark:text-gray-200 dark:hover:text-white"
@@ -261,8 +270,32 @@
 			</button>
 			<button
 				type="button"
+				onclick={() => goto(`${base}/settings/data`)}
+				class="group sticky bottom-[72px] mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
+					.url.pathname === `${base}/settings/data`
+					? '!bg-gray-100 !text-gray-800 dark:!bg-gray-700 dark:!text-gray-200'
+					: 'bg-white dark:bg-gray-800'}"
+				aria-label="Data Management"
+			>
+				<CarbonDataBase class="mr-0.5 text-xxs" />
+				ניהול נתונים
+			</button>
+			<button
+				type="button"
+				onclick={() => goto(`${base}/settings/documents`)}
+				class="group sticky bottom-[90px] mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
+					.url.pathname === `${base}/settings/documents`
+					? '!bg-gray-100 !text-gray-800 dark:!bg-gray-700 dark:!text-gray-200'
+					: 'bg-white dark:bg-gray-800'}"
+				aria-label="Document Library"
+			>
+				<CarbonDocument class="mr-0.5 text-xxs" />
+				ספריית מסמכים
+			</button>
+			<button
+				type="button"
 				onclick={() => goto(`${base}/settings/integrations`)}
-				class="group sticky bottom-20 mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
+				class="group sticky bottom-24 mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
 					.url.pathname === `${base}/settings/integrations`
 					? '!bg-gray-100 !text-gray-800 dark:!bg-gray-700 dark:!text-gray-200'
 					: 'bg-white dark:bg-gray-800'}"
@@ -274,7 +307,7 @@
 			<button
 				type="button"
 				onclick={() => goto(`${base}/settings/dev`)}
-				class="group sticky bottom-32 mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
+				class="group sticky bottom-36 mt-1 flex h-9 w-full flex-none items-center gap-1 rounded-lg px-3 text-[13px] text-gray-600 dark:text-gray-300 md:rounded-xl md:px-3 {page
 					.url.pathname === `${base}/settings/dev`
 					? '!bg-gray-100 !text-gray-800 dark:!bg-gray-700 dark:!text-gray-200'
 					: 'bg-white dark:bg-gray-800'}"

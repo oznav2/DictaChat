@@ -17,6 +17,8 @@
 
 import { logger } from "../../logger";
 
+export const INGESTIBLE_TOOL_CATEGORIES = ["search", "research", "data", "document"] as const;
+
 // ============================================================================
 // Type Definitions
 // ============================================================================
@@ -572,7 +574,8 @@ const TOOL_INTELLIGENCE: ToolIntelligence[] = [
 		mcpServer: "fetch",
 		displayName: "Web Fetch",
 		priority: 70,
-		fallbackChain: [],
+		// Fallback to search APIs when fetch is blocked by robots/captcha
+		fallbackChain: ["perplexity-ask", "tavily-search"],
 		conflictsWith: [],
 		latency: {
 			typical: 3000,
@@ -1144,13 +1147,14 @@ const TOOL_CATEGORIES: Record<ToolCategory, ToolCategoryInfo> = {
  * @returns Hebrew + English description of capabilities
  */
 export function generateToolCapabilityManifest(availableTools: string[]): string {
+	// Phase 2.4: Compact capability manifest to reduce prompt tokens
+	// With 80+ tools, verbose descriptions add ~2KB overhead per request
 	const availableSet = new Set(availableTools.map((t) => t.toLowerCase()));
 
-	const sections: string[] = [];
+	const categoryTools: Record<string, string[]> = {};
 
-	for (const [category, info] of Object.entries(TOOL_CATEGORIES)) {
-		// Filter to only tools that are actually available
-		const categoryTools = info.tools.filter((tool) => {
+	for (const [, info] of Object.entries(TOOL_CATEGORIES)) {
+		const tools = info.tools.filter((tool) => {
 			const normalizedTool = tool.toLowerCase();
 			return (
 				availableSet.has(normalizedTool) ||
@@ -1159,36 +1163,25 @@ export function generateToolCapabilityManifest(availableTools: string[]): string
 			);
 		});
 
-		if (categoryTools.length === 0) continue;
-
-		const toolDescriptions = categoryTools.map((toolName) => {
-			const ti = getToolIntelligence(toolName);
-			if (!ti) return `- ${toolName}`;
-
-			const latencyHint =
-				ti.latency.tier === "fast"
-					? "(מהיר)"
-					: ti.latency.tier === "slow" || ti.latency.tier === "very_slow"
-						? "(לוקח זמן)"
-						: "";
-
-			return `  • ${ti.displayName} ${latencyHint}: ${ti.messages.progress.replace("...", "")}`;
-		});
-
-		sections.push(`**${info.hebrewName} / ${info.name}**\n${toolDescriptions.join("\n")}`);
+		if (tools.length > 0) {
+			// Use short Hebrew category name, list tool display names
+			categoryTools[info.hebrewName] = tools.map((t) => {
+				const ti = getToolIntelligence(t);
+				return ti?.displayName ?? t;
+			});
+		}
 	}
 
-	if (sections.length === 0) {
+	if (Object.keys(categoryTools).length === 0) {
 		return "";
 	}
 
-	return `
-## היכולות שלי / My Capabilities
+	// Compact format: category: tool1, tool2, tool3
+	const lines = Object.entries(categoryTools).map(
+		([category, tools]) => `• ${category}: ${tools.join(", ")}`
+	);
 
-${sections.join("\n\n")}
-
-**הנחיה חשובה**: כאשר המשתמש שואל מה אתה יכול לעשות, תאר את היכולות הללו. לאחר שימוש בכלי, ציין איזה כלי שימש ואם יש אפשרויות נוספות.
-`;
+	return `\n**כלים זמינים:**\n${lines.join("\n")}\n`;
 }
 
 /**

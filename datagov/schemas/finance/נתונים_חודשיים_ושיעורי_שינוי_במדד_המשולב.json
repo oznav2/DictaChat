@@ -1,0 +1,51 @@
+{
+  "dataset_id": "c083636d-7f20-4482-9991-16689f255742",
+  "title": "נתונים חודשיים ושיעורי שינוי במדד המשולב",
+  "organization": "בנק ישראל",
+  "tags": [
+    "אוצר וכלכלה",
+    "בנק ישראל",
+    "מדד משולב",
+    "שינוי במדד המשולב"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "משולב",
+    "המשולב",
+    "וכלכלה",
+    "ישראל",
+    "שינוי",
+    "מדד",
+    "חודשיים",
+    "בנק",
+    "אוצר",
+    "ושיעורי",
+    "במדד"
+  ],
+  "resources": [
+    {
+      "resource_id": "6f1f94c8-8e5d-4771-9f87-ec8b098b676c",
+      "title": "נתונים חודשיים ושיעורי שינוי במדד המשולב",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "2fef9018-c67a-4e29-a04b-bdc48b2616a6",
+      "title": "קישור להסברים על נתונים חודשיים ושיעורי שינוי במדד המשולב",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

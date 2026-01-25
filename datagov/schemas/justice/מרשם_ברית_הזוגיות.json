@@ -1,0 +1,126 @@
+{
+  "dataset_id": "1e04cde0-57a5-42e0-81a0-b634bafee4d6",
+  "title": "מרשם ברית הזוגיות",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "ברית הזוגיות",
+    "משרד המשפטים",
+    "רשם הזוגיות"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "בקשה",
+    "סטטוס",
+    "סיבת",
+    "מוצא",
+    "מרשם",
+    "משרד",
+    "רשם",
+    "סוג",
+    "פרטי",
+    "סגירה",
+    "ארץ",
+    "משפחה",
+    "הזוגיות",
+    "ברית",
+    "תאריך",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "aa86b074-58c2-4e36-a2bb-a61dd6f87117",
+      "title": "מאגר בקשות ברית הזוגיות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג בקשה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "תאריך בקשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סטטוס",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "סיבת סגירה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ארץ מוצא 1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ארץ מוצא 2",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 177
+    },
+    {
+      "resource_id": "67926982-c8ca-47c7-a904-cf10fd7a6020",
+      "title": "רישום במרשם הזוגיות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם פרטי 1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם משפחה 1",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ארץ מוצא 1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם פרטי 2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם משפחה 2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ארץ מוצא 2",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 153
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

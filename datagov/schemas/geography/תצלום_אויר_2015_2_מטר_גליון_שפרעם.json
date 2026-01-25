@@ -1,0 +1,35 @@
+{
+  "dataset_id": "fd6673da-0d49-48cd-9795-1fbf3acd734d",
+  "title": "תצלום אויר 2015 2 מטר - גליון שפרעם",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "שפרעם",
+    "מטר",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "c6fa7c40-bdb7-403c-adec-7eb0629af5c4",
+      "title": "תצלום אויר 2015 2 מטר - גליון שפרעם",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

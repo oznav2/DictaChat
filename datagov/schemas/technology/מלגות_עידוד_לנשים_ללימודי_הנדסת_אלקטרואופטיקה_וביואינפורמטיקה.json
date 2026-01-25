@@ -1,0 +1,73 @@
+{
+  "dataset_id": "f4fc3ede-eba4-45a8-bbbe-7a473dad1e54",
+  "title": "מלגות עידוד לנשים ללימודי הנדסת אלקטרואופטיקה וביואינפורמטיקה",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "מלגות נשים הנדסת אלקטרואופטיקה ביואינפורמטיקה"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "מוסד",
+    "פרטים",
+    "הנדסת",
+    "לנשים",
+    "נשים",
+    "משרד",
+    "ללימודי",
+    "התכנית",
+    "רקע",
+    "המדע",
+    "אלקטרואופטיקה",
+    "וביואינפורמטיקה",
+    "ביואינפורמטיקה",
+    "גוף",
+    "עידוד",
+    "והטכנולוגיה",
+    "מלגות"
+  ],
+  "resources": [
+    {
+      "resource_id": "55a7aba5-49b7-49a3-a1b0-4abdccf0135a",
+      "title": "מלגות עידוד לנשים ללימודי הנדסת אלקטרואופטיקה וביואינפורמטיקה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "גוף/ מוסד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם התכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "רקע",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "פרטים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 10
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -114,6 +114,10 @@ async function initializeMcpClient(serverName, serverConfig) {
   // Validate and normalize configuration
   const config = validateAndNormalizeConfig(serverName, serverConfig);
 
+  if (config.disabled) {
+    throw new Error(`Server '${serverName}' is disabled in configuration`);
+  }
+
   console.log(`[${timestamp}] [${tag}] [CLIENT-INIT] Creating new MCP client`);
   console.log(`[${timestamp}] [${tag}] [CLIENT-INIT] Server type:`, config.type);
   console.log(`[${timestamp}] [${tag}] [CLIENT-INIT] Environment vars:`, JSON.stringify(config.env || {}));

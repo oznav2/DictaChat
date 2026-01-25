@@ -1,0 +1,127 @@
+{
+  "dataset_id": "bb14cc9f-7dbe-4ddb-a388-864cace49483",
+  "title": "מגרשי חניה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "המרכז למיפוי ישראל",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "תחבורה",
+    "ver",
+    "המרכז",
+    "ord",
+    "uniq",
+    "למיפוי",
+    "latin",
+    "fcode",
+    "setl",
+    "data",
+    "מגרשי",
+    "code",
+    "type",
+    "usg",
+    "ישראל",
+    "year",
+    "prdct",
+    "group",
+    "חניה"
+  ],
+  "resources": [
+    {
+      "resource_id": "34729a10-299b-448d-a223-5d7533e8f147",
+      "title": "מגרשי חניה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "UNIQ_ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "FCODE_TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SETL_CODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "SETL_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LATIN_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "USG_GROUP",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "USG_CODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "E_ORD",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "N_ORD",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DATA_YEAR",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PRDCT_VER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 5826
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

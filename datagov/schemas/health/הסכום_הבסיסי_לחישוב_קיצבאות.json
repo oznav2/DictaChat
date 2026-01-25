@@ -1,0 +1,52 @@
+{
+  "dataset_id": "0ed72dea-2269-42f0-9d69-376be86666eb",
+  "title": "הסכום הבסיסי לחישוב קיצבאות",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "אוצר וכלכלה",
+    "ביטוח לאומי",
+    "בריאות ורווחה",
+    "קיצבאות"
+  ],
+  "categories": [
+    "health",
+    "welfare",
+    "economy"
+  ],
+  "keywords": [
+    "הסכום",
+    "ביטוח",
+    "וכלכלה",
+    "לחישוב",
+    "לאומי",
+    "בריאות",
+    "לביטוח",
+    "הבסיסי",
+    "אוצר",
+    "ורווחה",
+    "המוסד",
+    "קיצבאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "62635bdd-3ffd-4ae5-90ca-ebf492aa661f",
+      "title": "הסכום הבסיסי לחישוב קיצבאות",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 0
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

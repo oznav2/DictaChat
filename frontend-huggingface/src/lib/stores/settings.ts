@@ -20,6 +20,12 @@ type SettingsStore = {
 	directPaste: boolean;
 	hidePromptExamples: Record<string, boolean>;
 	billingOrganization?: string;
+	/**
+	 * RoamPal v0.2.11 Fix #2: Message virtualization for long conversations
+	 * When enabled (or auto-enabled for 50+ messages), only visible messages are rendered
+	 * to DOM, significantly improving performance for long conversation histories.
+	 */
+	enableVirtualization?: boolean;
 };
 
 type SettingsStoreWritable = Writable<SettingsStore> & {
@@ -50,14 +56,27 @@ export function createSettingsStore(initialValue: Omit<SettingsStore, "recentlyS
 		if (browser) {
 			showSavedOnNextSync = true; // User edit, should show "Saved"
 			clearTimeout(timeoutId);
-			timeoutId = setTimeout(async () => {
-				await fetch(`${base}/settings`, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(get(baseStore)),
-				});
+			timeoutId = setTimeout(() => {
+				(async () => {
+					try {
+						await fetch(`${base}/settings`, {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify(get(baseStore)),
+						});
+					} catch (err) {
+						const message = err instanceof Error ? err.message : String(err);
+						const isAbort =
+							message.includes("AbortError") ||
+							message.includes("aborted") ||
+							message.includes("ERR_ABORTED");
+						if (!isAbort) {
+							console.warn("[settings] Failed to persist settings", { error: message });
+						}
+					}
+				})();
 
 				invalidate(UrlDependency.ConversationList);
 
@@ -108,14 +127,27 @@ export function createSettingsStore(initialValue: Omit<SettingsStore, "recentlyS
 		// Save to server (debounced) - note: we don't set showSavedOnNextSync
 		if (browser) {
 			clearTimeout(timeoutId);
-			timeoutId = setTimeout(async () => {
-				await fetch(`${base}/settings`, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(get(baseStore)),
-				});
+			timeoutId = setTimeout(() => {
+				(async () => {
+					try {
+						await fetch(`${base}/settings`, {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify(get(baseStore)),
+						});
+					} catch (err) {
+						const message = err instanceof Error ? err.message : String(err);
+						const isAbort =
+							message.includes("AbortError") ||
+							message.includes("aborted") ||
+							message.includes("ERR_ABORTED");
+						if (!isAbort) {
+							console.warn("[settings] Failed to persist settings", { error: message });
+						}
+					}
+				})();
 
 				invalidate(UrlDependency.ConversationList);
 

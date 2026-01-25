@@ -1,0 +1,106 @@
+{
+  "dataset_id": "d361f6a6-898c-4e4d-8a80-abc4e8643bf6",
+  "title": "מאגר מתווכים פעילים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "מתווכים פעילים"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "תיאור",
+    "הבחינה",
+    "מוסד",
+    "עיר",
+    "מגורים",
+    "משרד",
+    "המתווך",
+    "רשיון",
+    "ציון",
+    "פעילים",
+    "לימודי",
+    "מתווכים",
+    "תאריך",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "a0f56034-88db-4132-8803-854bcdb01ca1",
+      "title": "רשימת מתווכים מורשים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מס רשיון",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם המתווך",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "עיר מגורים",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 27080
+    },
+    {
+      "resource_id": "61de50d3-ab3a-42cd-9846-ddf4b4661c39",
+      "title": "ציון בחינות מתווכים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תיאור הבחינה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך הבחינה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מוסד לימודי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ציון",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 146266
+    },
+    {
+      "resource_id": "0c6a3b61-bdf1-4660-b4dc-2f06c5ec0861",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "dataset_id": "392abd0a-64f6-4c18-9d56-0111001411e6",
+  "title": "סוחרי רכב",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "mikud",
+    "תחבורה",
+    "het",
+    "shem",
+    "בדרכים",
+    "משרד",
+    "סוחרי",
+    "רכב",
+    "והבטיחות",
+    "כלי",
+    "pei",
+    "ktovet",
+    "התחבורה",
+    "yishuv"
+  ],
+  "resources": [
+    {
+      "resource_id": "eb74ad8c-ffcd-43bb-949c-2244fc8a8651",
+      "title": "סוחרי רכב",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "shem",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "yishuv",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "mikud",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ktovet",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "het_pei",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 8863
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

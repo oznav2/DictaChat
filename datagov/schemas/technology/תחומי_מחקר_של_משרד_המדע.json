@@ -1,0 +1,47 @@
+{
+  "dataset_id": "dfa30b6e-da1d-47ec-b8fa-ceeef0053dbf",
+  "title": "תחומי מחקר של משרד המדע",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "משרד המדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "המחקר",
+    "החדשנות",
+    "תחומי",
+    "משרד",
+    "המדע",
+    "מחקר",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "0c67bffa-3af4-40c1-823e-1a0f5451f6ec",
+      "title": "תחומי מחקר של משרד המדע",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המחקר",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 7
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

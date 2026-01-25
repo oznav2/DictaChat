@@ -1,0 +1,714 @@
+{
+  "dataset_id": "45e317cf-7bb1-4535-b8cf-be5e79ea341f",
+  "title": "תוצרים ודגמים של כלי רכב פרטי ומסחרי",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "finance",
+    "water",
+    "economy"
+  ],
+  "keywords": [
+    "blimat",
+    "halon",
+    "ind",
+    "metach",
+    "stiya",
+    "blamim",
+    "adaptivit",
+    "madad",
+    "yatzivut",
+    "menativ",
+    "teura",
+    "pailim",
+    "ודגמים",
+    "kinuy",
+    "nedc",
+    "משרד",
+    "argaz",
+    "hege",
+    "galgaley",
+    "kolel",
+    "hway",
+    "shetah",
+    "technologiat",
+    "פרטי",
+    "hitnagshut",
+    "tozeret",
+    "gova",
+    "mamir",
+    "betihut",
+    "yarok",
+    "manoa",
+    "regel",
+    "blima",
+    "kosher",
+    "התחבורה",
+    "תחבורה",
+    "holhei",
+    "sug",
+    "ramat",
+    "kvutzat",
+    "lifnei",
+    "nitur",
+    "wltp",
+    "agra",
+    "beshetah",
+    "רכב",
+    "nikud",
+    "activ",
+    "hashmal",
+    "koah",
+    "bakarat",
+    "shlita",
+    "cad",
+    "labalam",
+    "hirum",
+    "nesia",
+    "betihuty",
+    "rechev",
+    "sagsoget",
+    "reverse",
+    "solela",
+    "rechavim",
+    "benesiya",
+    "nefah",
+    "dlatot",
+    "hayshaney",
+    "lock",
+    "met",
+    "hagorot",
+    "eivzur",
+    "holchey",
+    "avir",
+    "mispar",
+    "gvohim",
+    "maarechet",
+    "tkina",
+    "source",
+    "gimur",
+    "כלי",
+    "shnat",
+    "leahor",
+    "milfanim",
+    "tamrurey",
+    "shyut",
+    "matzlemat",
+    "zihuy",
+    "alco",
+    "merhak",
+    "matzav",
+    "mehirut",
+    "hitkarvut",
+    "ezer",
+    "lahatz",
+    "otomatit",
+    "hanaa",
+    "moshavim",
+    "ofanaim",
+    "city",
+    "tozar",
+    "degem",
+    "mazgan",
+    "merkav",
+    "hatkana",
+    "automatit",
+    "halonot",
+    "kamut",
+    "beorot",
+    "בדרכים",
+    "grira",
+    "automatic",
+    "והבטיחות",
+    "isa",
+    "abs",
+    "kala",
+    "bagg",
+    "mesukenet",
+    "batzmigim",
+    "zihum",
+    "delek",
+    "mishari",
+    "ומסחרי",
+    "kadima",
+    "yitzur",
+    "tnua",
+    "galgali",
+    "nox",
+    "kvuzat",
+    "תוצרים",
+    "sus",
+    "nistar",
+    "eretz",
+    "kariot",
+    "mishkal",
+    "makor",
+    "bli"
+  ],
+  "resources": [
+    {
+      "resource_id": "142afde2-6228-49f9-8a29-9b6c3a0cbe40",
+      "title": "תוצרים ודגמים של כלי רכב WLTP",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "sug_degem",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_eretz_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozar",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kvuzat_agra_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "nefah_manoa",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_kolel",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "gova",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hanaa_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hanaa_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mazgan_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "abs_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kariot_avir_source",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mispar_kariot_avir",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hege_koah_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "automatic_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "halonot_hashmal_source",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "mispar_halonot_hashmal",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "halon_bagg_ind",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "galgaley_sagsoget_kala_ind",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "argaz_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "merkav",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ramat_gimur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "delek_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "delek_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mispar_dlatot",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "koah_sus",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mispar_moshavim",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "bakarat_yatzivut_ind",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kosher_grira_im_blamim",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kosher_grira_bli_blamim",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_tkina_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_tkina_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_mamir_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_mamir_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "technologiat_hanaa_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "technologiat_hanaa_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "kamut_CO2",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kamut_NOX",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "kamut_PM10",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kamut_HC",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kamut_HC_NOX",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "kamut_CO",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kamut_CO2_city",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "kamut_NOX_city",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "kamut_PM10_city",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "kamut_HC_city",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "kamut_CO_city",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "kamut_CO2_hway",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kamut_NOX_hway",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "kamut_PM10_hway",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kamut_HC_hway",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kamut_CO_hway",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "madad_yarok",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kvutzat_zihum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "bakarat_stiya_menativ_ind",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "bakarat_stiya_menativ_makor_hatkana",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "nitur_merhak_milfanim_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "nitur_merhak_milfanim_makor_hatkana",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "zihuy_beshetah_nistar_ind",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "bakarat_shyut_adaptivit_ind",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "zihuy_holchey_regel_ind",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "zihuy_holchey_regel_makor_hatkana",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "maarechet_ezer_labalam_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "matzlemat_reverse_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hayshaney_lahatz_avir_batzmigim_ind",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "hayshaney_hagorot_ind",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "nikud_betihut",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ramat_eivzur_betihuty",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "teura_automatit_benesiya_kadima_ind",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "shlita_automatit_beorot_gvohim_ind",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shlita_automatit_beorot_gvohim_makor_hatkana",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "zihuy_matzav_hitkarvut_mesukenet_ind",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "zihuy_tamrurey_tnua_ind",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "zihuy_rechev_do_galgali",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "zihuy_tamrurey_tnua_makor_hatkana",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CO2_WLTP",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "HC_WLTP",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PM_WLTP",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NOX_WLTP",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "CO_WLTP",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CO2_WLTP_NEDC",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "bakarat_stiya_activ_s",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "blima_otomatit_nesia_leahor",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "bakarat_mehirut_isa",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "blimat_hirum_lifnei_holhei_regel_ofanaim",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hitnagshut_cad_shetah_met",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "alco_lock",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "dg_metach_solela",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kinuy_mishari",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 94955
+    },
+    {
+      "resource_id": "5e87a7a1-2f6f-41c1-8aec-7216d52a6cf6",
+      "title": "מאגר כמויות כלי רכב לפי תוצר, דגם ושנת יצור",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "sug_degem",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_eretz_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozar",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "mispar_rechavim_pailim",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mispar_rechavim_le_pailim",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kinuy_mishari",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 94955
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "dataset_id": "6c3263b4-793a-4216-8404-d2045440fa8a",
+  "title": "ביצועי שירות התעסוקה - משרות",
+  "organization": "שירות התעסוקה",
+  "tags": [
+    "אוכלוסיה",
+    "אוצר וכלכלה",
+    "איזורים",
+    "הזמנות",
+    "משרות",
+    "עיסוקים"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "עיסוקים",
+    "התעסוקה",
+    "וכלכלה",
+    "started",
+    "אוכלוסיה",
+    "הזמנות",
+    "april",
+    "month",
+    "district",
+    "אוצר",
+    "ביצועי",
+    "until",
+    "occupations",
+    "משרות",
+    "שירות",
+    "איזורים",
+    "orders",
+    "february"
+  ],
+  "resources": [
+    {
+      "resource_id": "5611e8ec-4688-4635-9582-f6fc778decca",
+      "title": "סטטיסטיקת משרות  - אפריל 2020 ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "District",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Occupations until February 2015",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Occupations started in april 2015",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Orders",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 4325
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

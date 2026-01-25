@@ -111,4 +111,3 @@ describe("Graph endpoint regression", () => {
 		expect(findCalls.kg_action_effectiveness ?? 0).toBe(1);
 	});
 });
-

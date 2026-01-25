@@ -1,0 +1,272 @@
+{
+  "dataset_id": "41c2db9f-4615-4864-af15-5350d794c99c",
+  "title": "דירות הדיור הציבורי",
+  "organization": "משרד הבינוי והשיכון",
+  "tags": [
+    "בינוי",
+    "דיור ציבורי",
+    "דירה פנויה",
+    "חדרים",
+    "מלאי",
+    "משרד הבינוי והשיכון",
+    "קומות",
+    "ראוי למגורים",
+    "שיכון"
+  ],
+  "categories": [
+    "housing"
+  ],
+  "keywords": [
+    "name",
+    "rooms",
+    "ninerooms",
+    "דירה",
+    "הציבורי",
+    "sevenrooms",
+    "fiverooms",
+    "nis",
+    "פנויה",
+    "דיור",
+    "למגורים",
+    "statuschangedate",
+    "חדרים",
+    "והשיכון",
+    "validitydate",
+    "הדיור",
+    "lamas",
+    "floor",
+    "morerooms",
+    "fourrooms",
+    "totalarea",
+    "מלאי",
+    "tenrooms",
+    "numofrooms",
+    "eightrooms",
+    "price",
+    "קומות",
+    "משרד",
+    "ראוי",
+    "code",
+    "apartments",
+    "שיכון",
+    "דירות",
+    "citylmsname",
+    "onerooms",
+    "בינוי",
+    "propertytypename",
+    "threerooms",
+    "ציבורי",
+    "citylmscode",
+    "year",
+    "average",
+    "norooms",
+    "sixrooms",
+    "companyname",
+    "statusname",
+    "הבינוי",
+    "tworooms"
+  ],
+  "resources": [
+    {
+      "resource_id": "c3a68837-9b7a-4ee7-bd92-130678dc8ae3",
+      "title": "דירות פנויות בדיור הציבורי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CityLmsName",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "CityLmsCode",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "NumOfRooms",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Floor",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TotalArea",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "ValidityDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "CompanyName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "StatusName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "StatusChangeDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PropertyTypeName",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 443
+    },
+    {
+      "resource_id": "ece87d7d-d79f-4278-8559-921218bc2b6a",
+      "title": "מלאי הדירות בדיור הציבורי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CityLMSName",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Floor",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NoRooms",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "OneRooms",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TwoRooms",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ThreeRooms",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FourRooms",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "FiveRooms",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SixRooms",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "SevenRooms",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "EightRooms",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NineRooms",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "TenRooms",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "MoreRooms",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 869
+    },
+    {
+      "resource_id": "d6d2046b-ccba-4d09-8778-ee9aa57cdf0c",
+      "title": "רכש דירות למלאי הדיור הציבורי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Lamas_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Lamas_code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "3 rooms apartments",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "average price (NIS) 3 rooms apartments",
+          "type": "numeric",
+          "semantic": "price"
+        },
+        {
+          "name": "4+ rooms apartments",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "average price (NIS) 4+ rooms apartments",
+          "type": "numeric",
+          "semantic": "price"
+        }
+      ],
+      "total_records": 231
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

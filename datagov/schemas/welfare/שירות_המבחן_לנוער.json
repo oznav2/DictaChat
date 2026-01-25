@@ -1,0 +1,281 @@
+{
+  "dataset_id": "b62a44d0-9f77-4eff-a489-d2b77be59bac",
+  "title": "שירות המבחן לנוער",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "עיכוב",
+    "אחר",
+    "קנס",
+    "ביניים",
+    "כתב",
+    "תנאי",
+    "הליכים",
+    "מעצר",
+    "ביטול",
+    "מאסר",
+    "רשיון",
+    "צווי",
+    "והביטחון",
+    "מחוז",
+    "ערבות",
+    "משרד",
+    "הרווחה",
+    "שירות",
+    "החברתי",
+    "שלילת",
+    "לנוער",
+    "אישום",
+    "טיפול",
+    "פיצוי",
+    "זיכוי",
+    "יישוב",
+    "המבחן"
+  ],
+  "resources": [
+    {
+      "resource_id": "806f7b05-c14c-4468-ae9f-a4cbcd3743d8",
+      "title": "שירות המבחן לנוער החלטות בית משפט 2019",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "שם יישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מאסר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טיפול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "צווי ביניים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מעצר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שלילת רשיון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קנס/ערבות/פיצוי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עיכוב הליכים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "זיכוי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מאסר  על תנאי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ביטול צו",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 370
+    },
+    {
+      "resource_id": "f00771d5-8692-4be0-96eb-96cba9571704",
+      "title": "שירות המבחן לנוער - החלטות בית משפט 2020",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "יישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מאסר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טיפול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "צווי ביניים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שלילת רשיון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קנס/ערבות/פיצוי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עיכוב הליכים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "זיכוי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מאסר  על תנאי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ביטול צו",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ביטול כתב אישום",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 379
+    },
+    {
+      "resource_id": "3934cd35-e638-4251-a27b-ec0468c90397",
+      "title": " שירות מבחן לנוער החלטות בית משפט 2021",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "יישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מאסר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טיפול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "צווי ביניים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שלילת רשיון",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קנס/ערבות/פיצוי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "עיכוב הליכים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "זיכוי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מאסר  על תנאי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ביטול צו",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ביטול כתב אישום",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 476
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

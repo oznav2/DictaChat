@@ -1,0 +1,162 @@
+{
+  "dataset_id": "656f6e4c-ec04-40a5-b3bc-c556b2b127e0",
+  "title": "סימני מסחר",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "מסחר"
+  ],
+  "categories": [
+    "finance",
+    "justice",
+    "economy"
+  ],
+  "keywords": [
+    "תיאור",
+    "כתובת",
+    "עברית",
+    "לעניין",
+    "סוג",
+    "אימייל",
+    "מכס",
+    "למכס",
+    "תום",
+    "הסימן",
+    "טלפון",
+    "רישום",
+    "מיופה",
+    "סימני",
+    "אכיפת",
+    "תוקף",
+    "לאומי",
+    "משרד",
+    "מייצג",
+    "תאריך",
+    "המשפטים",
+    "אנגלית",
+    "בקשה",
+    "מען",
+    "התחלה",
+    "סוגי",
+    "בינלאומי",
+    "לבקשה",
+    "וינה",
+    "מסחר",
+    "מצב",
+    "סימן",
+    "ניצה"
+  ],
+  "resources": [
+    {
+      "resource_id": "6284d4a9-fdd4-45c9-a1d6-58143c7d8127",
+      "title": "סימני מסחר",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר הסימן",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מצב",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "לאומי/בינלאומי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תיאור סימן עברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תיאור סימן אנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך בקשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך רישום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סוג רישום",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סוגי ניצה לבקשה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "תאריך תום תוקף",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שם מיופה כח",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם מיופה כח אנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוגי וינה לבקשה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מען למכס תאריך התחלה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שם מייצג לעניין אכיפת מכס",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "כתובת אימייל מייצג מכס",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "טלפון מייצג מכס",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 355324
+    },
+    {
+      "resource_id": "9084399c-f842-4684-8fa7-e5cb3d6d4ff7",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

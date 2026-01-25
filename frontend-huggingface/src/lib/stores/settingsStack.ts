@@ -36,4 +36,3 @@ export function popSettingsStack(): string | null {
 	settingsStack.set(next);
 	return next[next.length - 1] ?? null;
 }
-

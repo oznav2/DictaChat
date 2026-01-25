@@ -1,0 +1,54 @@
+{
+  "dataset_id": "da679a28-daea-4857-b3a2-edb73ce818a9",
+  "title": "מרחקים בין ישובים וצמתים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "מרחק בין יישובים",
+    "צמתים"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "יישובים",
+    "מרחקים",
+    "בין",
+    "וצמתים",
+    "ישראל",
+    "מרחק",
+    "ישובים",
+    "המרכז",
+    "צמתים"
+  ],
+  "resources": [
+    {
+      "resource_id": "bc5293d3-1023-4d9e-bdbe-082b58f93b65",
+      "title": "DISTANCE.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "05e53d01-d507-4625-a606-1adb820e78a2",
+      "title": "ReadMe.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "b282b438-0066-47c6-b11f-8277b3f5a0dc",
+      "title": "SETL_JUNC.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "dataset_id": "4a787551-f06c-4eff-891f-61a7b0e6037c",
+  "title": "הסכמי שיתוף פעולה בינלאומיים בתחום המדע",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "שיתוף פעולה בינלאומי הסכם"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "מדינה",
+    "החדשנות",
+    "הסכם",
+    "קישור",
+    "משרד",
+    "שיתוף",
+    "בינלאומיים",
+    "בינלאומי",
+    "הסכמי",
+    "פעולה",
+    "המדע",
+    "להסכם",
+    "בתחום",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "96c792d5-d33c-472d-8bf3-ef6d59dfc4c8",
+      "title": "הסכמי שיתוף פעולה בינלאומיים בתחום המדע",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מדינה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "קישור להסכם",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 18
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

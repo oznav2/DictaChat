@@ -1,0 +1,100 @@
+{
+  "dataset_id": "60829c97-c1d4-4654-a75e-57bd474bbb3d",
+  "title": "מנחתים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "gis",
+    "חצב",
+    "ממג",
+    "מנחתים",
+    "תעופה אזרחית"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "yearmonth",
+    "area",
+    "shape",
+    "ממג",
+    "oid",
+    "מנחתים",
+    "אזרחית",
+    "בדרכים",
+    "משרד",
+    "והבטיחות",
+    "gis",
+    "חצב",
+    "length",
+    "תעופה",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "72d3d7dd-cc33-414c-a154-9f3ecdbe8865",
+      "title": "AIRSTRIP.SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "506e303b-2eb3-443b-96c7-ec7fa3c5ca4c",
+      "title": "AIRSTRIP_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "c39a02e2-3956-4b09-9a45-d3a1486f07bc",
+      "title": "AIRSTRIP_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 25
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "dataset_id": "193f5df7-db6b-45ad-9552-a57c02b5ab12",
+  "title": "מגרשים מבני ציבור",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "מבני ציבור",
+    "מבני קהילה",
+    "מגשים",
+    "מרכזים עירוניים",
+    "ציבור"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "blk",
+    "objectid",
+    "mig",
+    "taba",
+    "מגרשים",
+    "מעלה",
+    "use",
+    "ציבור",
+    "parcel",
+    "אדומים",
+    "מגשים",
+    "desig",
+    "מבני",
+    "num",
+    "shape",
+    "area",
+    "עירוניים",
+    "עיריית",
+    "length",
+    "מרכזים",
+    "קהילה"
+  ],
+  "resources": [
+    {
+      "resource_id": "7245186b-8e21-4466-b249-02f1f7d11b44",
+      "title": "מגרשים - מבני ציבור",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Mig_Num",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Taba_Num",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Area_desig",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Use",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BLK_NUM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PARCEL_NUM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 126
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

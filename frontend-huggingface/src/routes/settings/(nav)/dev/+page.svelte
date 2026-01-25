@@ -7,6 +7,20 @@
 	let loadingStats = $state(false);
 	let opsLog = $state<string[]>([]);
 
+	// Phase: Wire remaining 64 - Circuit Breaker and Performance state
+	let mcpCircuitBreakers = $state<Record<string, unknown> | null>(null);
+	let mcpCircuitLoading = $state(false);
+	let embeddingCircuitBreaker = $state<Record<string, unknown> | null>(null);
+	let embeddingCircuitLoading = $state(false);
+	let performanceSummary = $state<Record<string, unknown> | null>(null);
+	let performanceLoading = $state(false);
+
+	// Phase: Wire remaining 64 - Additional API endpoints state
+	let kgStats = $state<Record<string, unknown> | null>(null);
+	let kgStatsLoading = $state(false);
+	let patternPerformance = $state<Record<string, unknown> | null>(null);
+	let patternLoading = $state(false);
+
 	let reindexProgress = $state<Record<string, unknown> | null>(null);
 	let polling = $state(false);
 	let pollTimer: ReturnType<typeof setInterval> | null = null;
@@ -120,7 +134,13 @@
 			const res = await fetch(`${base}/api/memory/search`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ query: searchQuery, tier: "all", sortBy: "relevance", limit: 10, offset: 0 }),
+				body: JSON.stringify({
+					query: searchQuery,
+					tier: "all",
+					sortBy: "relevance",
+					limit: 10,
+					offset: 0,
+				}),
 			});
 			const data = await res.json();
 			if (!res.ok) throw new Error(data?.error || `search failed (${res.status})`);
@@ -141,6 +161,219 @@
 			log(`memory search error: ${err instanceof Error ? err.message : String(err)}`);
 		} finally {
 			searchLoading = false;
+		}
+	}
+
+	// Phase: Wire remaining 64 - MCP Circuit Breaker functions
+	async function loadMcpCircuitBreakers() {
+		mcpCircuitLoading = true;
+		const started = performance.now();
+		try {
+			const res = await fetch(`${base}/api/admin/circuit-breakers`);
+			const data = await res.json();
+			if (!res.ok) throw new Error(data?.error || `circuit breakers failed (${res.status})`);
+			mcpCircuitBreakers = data.stats;
+			pushApiTiming({
+				at: new Date().toISOString(),
+				name: "GET /api/admin/circuit-breakers",
+				wall_ms: performance.now() - started,
+				server_ms: null,
+			});
+		} catch (err) {
+			log(`MCP circuit breakers error: ${err instanceof Error ? err.message : String(err)}`);
+		} finally {
+			mcpCircuitLoading = false;
+		}
+	}
+
+	async function resetMcpCircuitBreakers() {
+		try {
+			log("resetting MCP circuit breakers");
+			const res = await fetch(`${base}/api/admin/circuit-breakers`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ action: "reset" }),
+			});
+			const data = await res.json();
+			if (!res.ok) throw new Error(data?.error || `reset failed (${res.status})`);
+			log("MCP circuit breakers reset");
+			await loadMcpCircuitBreakers();
+		} catch (err) {
+			log(`reset error: ${err instanceof Error ? err.message : String(err)}`);
+		}
+	}
+
+	// Phase: Wire remaining 64 - Embedding Circuit Breaker functions
+	async function loadEmbeddingCircuitBreaker() {
+		embeddingCircuitLoading = true;
+		const started = performance.now();
+		try {
+			const res = await fetch(`${base}/api/memory/ops/circuit-breaker`);
+			const data = await res.json();
+			if (!res.ok) throw new Error(data?.error || `embedding CB failed (${res.status})`);
+			embeddingCircuitBreaker = data;
+			pushApiTiming({
+				at: new Date().toISOString(),
+				name: "GET /api/memory/ops/circuit-breaker",
+				wall_ms: performance.now() - started,
+				server_ms: null,
+			});
+		} catch (err) {
+			log(`embedding CB error: ${err instanceof Error ? err.message : String(err)}`);
+		} finally {
+			embeddingCircuitLoading = false;
+		}
+	}
+
+	async function resetEmbeddingCircuitBreaker() {
+		try {
+			log("resetting embedding circuit breaker");
+			const res = await fetch(`${base}/api/memory/ops/circuit-breaker`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ action: "reset" }),
+			});
+			const data = await res.json();
+			if (!res.ok) throw new Error(data?.error || `reset failed (${res.status})`);
+			log(`embedding CB reset: ${data.message}`);
+			await loadEmbeddingCircuitBreaker();
+		} catch (err) {
+			log(`embedding CB reset error: ${err instanceof Error ? err.message : String(err)}`);
+		}
+	}
+
+	// Phase: Wire remaining 64 - Performance Monitor functions
+	async function loadPerformanceSummary() {
+		performanceLoading = true;
+		const started = performance.now();
+		try {
+			const res = await fetch(`${base}/api/admin/performance`);
+			const data = await res.json();
+			if (!res.ok) throw new Error(data?.error || `performance failed (${res.status})`);
+			performanceSummary = data.summary;
+			pushApiTiming({
+				at: new Date().toISOString(),
+				name: "GET /api/admin/performance",
+				wall_ms: performance.now() - started,
+				server_ms: null,
+			});
+		} catch (err) {
+			log(`performance error: ${err instanceof Error ? err.message : String(err)}`);
+		} finally {
+			performanceLoading = false;
+		}
+	}
+
+	async function clearPerformanceMetrics() {
+		try {
+			log("clearing performance metrics");
+			const res = await fetch(`${base}/api/admin/performance`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ action: "clear" }),
+			});
+			const data = await res.json();
+			if (!res.ok) throw new Error(data?.error || `clear failed (${res.status})`);
+			log("performance metrics cleared");
+			await loadPerformanceSummary();
+		} catch (err) {
+			log(`clear error: ${err instanceof Error ? err.message : String(err)}`);
+		}
+	}
+
+	// Phase: Wire remaining 64 - Knowledge Graph Stats
+	async function loadKgStats() {
+		kgStatsLoading = true;
+		const started = performance.now();
+		try {
+			const res = await fetch(`${base}/api/memory/content-graph/stats`);
+			const data = await res.json();
+			if (!res.ok) throw new Error(data?.error || `KG stats failed (${res.status})`);
+			kgStats = data;
+			pushApiTiming({
+				at: new Date().toISOString(),
+				name: "GET /api/memory/content-graph/stats",
+				wall_ms: performance.now() - started,
+				server_ms: null,
+			});
+		} catch (err) {
+			log(`KG stats error: ${err instanceof Error ? err.message : String(err)}`);
+		} finally {
+			kgStatsLoading = false;
+		}
+	}
+
+	async function runKgBackfill() {
+		try {
+			log("running KG backfill");
+			const res = await fetch(`${base}/api/memory/content-graph/backfill`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({}),
+			});
+			const data = await res.json();
+			if (!res.ok) throw new Error(data?.error || `backfill failed (${res.status})`);
+			log(`KG backfill: ${JSON.stringify(data.result ?? data)}`);
+			await loadKgStats();
+		} catch (err) {
+			log(`KG backfill error: ${err instanceof Error ? err.message : String(err)}`);
+		}
+	}
+
+	// Phase: Wire remaining 64 - Pattern Performance
+	async function loadPatternPerformance() {
+		patternLoading = true;
+		const started = performance.now();
+		try {
+			const res = await fetch(`${base}/api/memory/patterns/performance`);
+			const data = await res.json();
+			if (!res.ok) throw new Error(data?.error || `pattern perf failed (${res.status})`);
+			patternPerformance = data;
+			pushApiTiming({
+				at: new Date().toISOString(),
+				name: "GET /api/memory/patterns/performance",
+				wall_ms: performance.now() - started,
+				server_ms: null,
+			});
+		} catch (err) {
+			log(`pattern perf error: ${err instanceof Error ? err.message : String(err)}`);
+		} finally {
+			patternLoading = false;
+		}
+	}
+
+	// Phase: Wire remaining 64 - Memory Operations
+	async function runSanitize() {
+		try {
+			log("running sanitize");
+			const res = await fetch(`${base}/api/memory/ops/sanitize`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({}),
+			});
+			const data = await res.json();
+			if (!res.ok) throw new Error(data?.error || `sanitize failed (${res.status})`);
+			log(`sanitize: ${JSON.stringify(data.result ?? data)}`);
+			await loadStats();
+		} catch (err) {
+			log(`sanitize error: ${err instanceof Error ? err.message : String(err)}`);
+		}
+	}
+
+	async function runCleanup() {
+		try {
+			log("running cleanup");
+			const res = await fetch(`${base}/api/memory/cleanup`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({}),
+			});
+			const data = await res.json();
+			if (!res.ok) throw new Error(data?.error || `cleanup failed (${res.status})`);
+			log(`cleanup: ${JSON.stringify(data.result ?? data)}`);
+			await loadStats();
+		} catch (err) {
+			log(`cleanup error: ${err instanceof Error ? err.message : String(err)}`);
 		}
 	}
 
@@ -250,6 +483,13 @@
 		void loadStats();
 		void loadReindexProgress();
 		void loadGraphTimings();
+		// Phase: Wire remaining 64 - Load circuit breaker and performance data
+		void loadMcpCircuitBreakers();
+		void loadEmbeddingCircuitBreaker();
+		void loadPerformanceSummary();
+		// Phase: Wire remaining 64 - Load additional API stats
+		void loadKgStats();
+		void loadPatternPerformance();
 		startPolling();
 	});
 
@@ -335,6 +575,198 @@
 			</div>
 		</div>
 
+		<!-- Phase: Wire remaining 64 - MCP Circuit Breakers Panel -->
+		<div
+			class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+		>
+			<div class="flex items-center justify-between">
+				<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">MCP Circuit Breakers</h2>
+				<div class="flex gap-2">
+					<button
+						type="button"
+						class="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-700"
+						onclick={loadMcpCircuitBreakers}
+						disabled={mcpCircuitLoading}
+					>
+						רענן
+					</button>
+					<button
+						type="button"
+						class="rounded-md bg-orange-600 px-2 py-1 text-xs text-white hover:bg-orange-700"
+						onclick={resetMcpCircuitBreakers}
+					>
+						Reset All
+					</button>
+				</div>
+			</div>
+			<pre class="mt-2 overflow-auto rounded-md bg-gray-50 p-2 text-xs dark:bg-gray-900"><code
+					>{JSON.stringify(mcpCircuitBreakers, null, 2)}</code
+				></pre>
+		</div>
+
+		<!-- Phase: Wire remaining 64 - Embedding Circuit Breaker Panel -->
+		<div
+			class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+		>
+			<div class="flex items-center justify-between">
+				<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+					Embedding Service Circuit Breaker
+				</h2>
+				<div class="flex gap-2">
+					<button
+						type="button"
+						class="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-700"
+						onclick={loadEmbeddingCircuitBreaker}
+						disabled={embeddingCircuitLoading}
+					>
+						רענן
+					</button>
+					<button
+						type="button"
+						class="rounded-md bg-orange-600 px-2 py-1 text-xs text-white hover:bg-orange-700"
+						onclick={resetEmbeddingCircuitBreaker}
+					>
+						Reset
+					</button>
+				</div>
+			</div>
+			{#if embeddingCircuitBreaker}
+				<div class="mt-2 flex flex-wrap gap-2">
+					<span
+						class="rounded-full px-2 py-0.5 text-xs font-medium
+							{embeddingCircuitBreaker.isOperational
+							? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+							: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'}"
+					>
+						{embeddingCircuitBreaker.isOperational ? "Operational" : "Down"}
+					</span>
+					{#if embeddingCircuitBreaker.isDegradedMode}
+						<span
+							class="rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+						>
+							Degraded Mode
+						</span>
+					{/if}
+					{#if embeddingCircuitBreaker.embeddingServiceHealthy}
+						<span
+							class="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+						>
+							Service Healthy
+						</span>
+					{/if}
+				</div>
+			{/if}
+			<pre class="mt-2 overflow-auto rounded-md bg-gray-50 p-2 text-xs dark:bg-gray-900"><code
+					>{JSON.stringify(embeddingCircuitBreaker, null, 2)}</code
+				></pre>
+		</div>
+
+		<!-- Phase: Wire remaining 64 - Performance Monitor Panel -->
+		<div
+			class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+		>
+			<div class="flex items-center justify-between">
+				<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+					MCP Performance Monitor
+				</h2>
+				<div class="flex gap-2">
+					<button
+						type="button"
+						class="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-700"
+						onclick={loadPerformanceSummary}
+						disabled={performanceLoading}
+					>
+						רענן
+					</button>
+					<button
+						type="button"
+						class="rounded-md bg-red-600 px-2 py-1 text-xs text-white hover:bg-red-700"
+						onclick={clearPerformanceMetrics}
+					>
+						Clear Metrics
+					</button>
+				</div>
+			</div>
+			<pre class="mt-2 overflow-auto rounded-md bg-gray-50 p-2 text-xs dark:bg-gray-900"><code
+					>{JSON.stringify(performanceSummary, null, 2)}</code
+				></pre>
+		</div>
+
+		<!-- Phase: Wire remaining 64 - Knowledge Graph Stats Panel -->
+		<div
+			class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+		>
+			<div class="flex items-center justify-between">
+				<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">
+					Knowledge Graph Stats
+				</h2>
+				<div class="flex gap-2">
+					<button
+						type="button"
+						class="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-700"
+						onclick={loadKgStats}
+						disabled={kgStatsLoading}
+					>
+						רענן
+					</button>
+					<button
+						type="button"
+						class="rounded-md bg-purple-600 px-2 py-1 text-xs text-white hover:bg-purple-700"
+						onclick={runKgBackfill}
+					>
+						Backfill KG
+					</button>
+				</div>
+			</div>
+			<pre class="mt-2 overflow-auto rounded-md bg-gray-50 p-2 text-xs dark:bg-gray-900"><code
+					>{JSON.stringify(kgStats, null, 2)}</code
+				></pre>
+		</div>
+
+		<!-- Phase: Wire remaining 64 - Pattern Performance Panel -->
+		<div
+			class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+		>
+			<div class="flex items-center justify-between">
+				<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Pattern Performance</h2>
+				<button
+					type="button"
+					class="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-700"
+					onclick={loadPatternPerformance}
+					disabled={patternLoading}
+				>
+					רענן
+				</button>
+			</div>
+			<pre class="mt-2 overflow-auto rounded-md bg-gray-50 p-2 text-xs dark:bg-gray-900"><code
+					>{JSON.stringify(patternPerformance, null, 2)}</code
+				></pre>
+		</div>
+
+		<!-- Phase: Wire remaining 64 - Memory Maintenance Panel -->
+		<div
+			class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+		>
+			<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">Memory Maintenance</h2>
+			<p class="mt-1 text-xs text-gray-500 dark:text-gray-400">פעולות תחזוקה למערכת הזיכרון</p>
+			<div class="mt-3 flex flex-wrap gap-2">
+				<button
+					class="rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+					type="button"
+					onclick={runSanitize}
+				>
+					Sanitize Data
+				</button>
+				<button
+					class="rounded-md bg-green-600 px-3 py-1.5 text-sm text-white hover:bg-green-700"
+					type="button"
+					onclick={runCleanup}
+				>
+					Cleanup Stale
+				</button>
+			</div>
+		</div>
+
 		<div
 			class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
 		>
@@ -375,7 +807,9 @@
 					<div class="text-gray-500 dark:text-gray-400">No calls yet</div>
 				{:else}
 					{#each apiTimings as t}
-						<div class="flex items-start justify-between gap-3 font-mono text-gray-700 dark:text-gray-200">
+						<div
+							class="flex items-start justify-between gap-3 font-mono text-gray-700 dark:text-gray-200"
+						>
 							<div class="min-w-0 flex-1">
 								<div class="truncate">{t.name}</div>
 								<div class="text-[11px] text-gray-500 dark:text-gray-400">{t.at}</div>

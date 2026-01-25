@@ -1,0 +1,125 @@
+{
+  "dataset_id": "a70e74ea-fd93-4e1a-8a49-b0ea86f9ba1a",
+  "title": "בתי-ספר שדה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "המרכז למיפוי ישראל"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ver",
+    "המרכז",
+    "ord",
+    "uniq",
+    "למיפוי",
+    "latin",
+    "fcode",
+    "setl",
+    "data",
+    "code",
+    "type",
+    "usg",
+    "בתי",
+    "ישראל",
+    "שדה",
+    "year",
+    "prdct",
+    "group",
+    "ספר"
+  ],
+  "resources": [
+    {
+      "resource_id": "016c3f10-fd7d-4f34-a08a-178f93472f00",
+      "title": "שכבת בתי-ספר שדה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "UNIQ_ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "FCODE_TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SETL_CODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "SETL_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LATIN_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "USG_GROUP",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "USG_CODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "E_ORD",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "N_ORD",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DATA_YEAR",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PRDCT_VER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 11
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

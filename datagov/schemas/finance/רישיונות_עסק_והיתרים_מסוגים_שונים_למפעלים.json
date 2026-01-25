@@ -1,0 +1,117 @@
+{
+  "dataset_id": "a9d7da6b-8cb7-46a0-8da8-82b99c737781",
+  "title": "רישיונות עסק והיתרים מסוגים שונים למפעלים",
+  "organization": "המשרד להגנת הסביבה",
+  "tags": [],
+  "categories": [
+    "finance",
+    "environment",
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "status",
+    "start",
+    "mifal",
+    "והיתרים",
+    "עסק",
+    "להגנת",
+    "end",
+    "date",
+    "המשרד",
+    "code",
+    "שונים",
+    "machoz",
+    "למפעלים",
+    "key",
+    "num",
+    "רישיונות",
+    "isuk",
+    "הסביבה",
+    "heter",
+    "מסוגים",
+    "yishuv"
+  ],
+  "resources": [
+    {
+      "resource_id": "e9ecedbd-8f93-437e-9a2f-4ff908daf210",
+      "title": "רישיונות עסק והיתרים למפעלים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Code_Heter",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "End_Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Heter_Key",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Heter_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Heter_Num",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Heter_Status",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "Isuk",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Machoz_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Mifal_Key",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Mifal_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Start_Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Yishuv_Name",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 31654
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

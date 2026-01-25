@@ -18,6 +18,48 @@
 	function handleDetailClick() {
 		onClickDetail?.(citation.memoryId);
 	}
+
+	/**
+	 * Check if excerpt content is problematic (unknown, gibberish, too short)
+	 * Returns true if content should be replaced with fallback
+	 */
+	function isPoorQualityContent(excerpt: string): boolean {
+		if (!excerpt || excerpt.length < 10) return true;
+		// Detect common bad patterns
+		const badPatterns = [
+			/^<unknown>$/i,
+			/^unknown$/i,
+			/^null$/i,
+			/^undefined$/i,
+			/^[\[\]\{\}\(\)]+$/, // Just brackets
+			/^[^\w\u0590-\u05FF]+$/, // No alphanumeric or Hebrew chars
+		];
+		return badPatterns.some((pattern) => pattern.test(excerpt.trim()));
+	}
+
+	/**
+	 * Get a meaningful fallback description based on tier
+	 */
+	function getTierFallbackDescription(tier: string, isRTL: boolean): string {
+		const fallbacks: Record<string, { en: string; he: string }> = {
+			documents: { en: "Retrieved document content", he: "תוכן מסמך שאוחזר" },
+			working: { en: "Recent conversation context", he: "הקשר שיחה עדכני" },
+			history: { en: "Past conversation reference", he: "הפניה לשיחה קודמת" },
+			patterns: { en: "Learned behavior pattern", he: "דפוס התנהגות שנלמד" },
+			memory_bank: { en: "Stored fact or preference", he: "עובדה או העדפה שמורה" },
+		};
+		const fallback = fallbacks[tier] || { en: "Retrieved memory", he: "זיכרון שאוחזר" };
+		return isRTL ? fallback.he : fallback.en;
+	}
+
+	// Compute display excerpt with fallback
+	const displayExcerpt = $derived(
+		isPoorQualityContent(citation.excerpt)
+			? getTierFallbackDescription(citation.tier, isRTL)
+			: citation.excerpt
+	);
+
+	const isPoorQuality = $derived(isPoorQualityContent(citation.excerpt));
 </script>
 
 <div
@@ -35,9 +77,13 @@
 		</span>
 	</div>
 
-	<!-- Excerpt -->
-	<p class="mb-2 line-clamp-3 text-sm text-gray-300">
-		"{citation.excerpt}"
+	<!-- Excerpt with fallback for poor quality content -->
+	<p class="mb-2 line-clamp-3 text-sm" class:text-gray-300={!isPoorQuality} class:text-gray-400={isPoorQuality} class:italic={isPoorQuality}>
+		{#if isPoorQuality}
+			{displayExcerpt}
+		{:else}
+			"{displayExcerpt}"
+		{/if}
 	</p>
 
 	<!-- Footer with citation number and detail link -->

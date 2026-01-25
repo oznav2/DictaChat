@@ -24,3 +24,18 @@ export type { MemoryScoreData, RankedMemory } from "./WilsonScoreService";
 
 export { GhostRegistry, getGhostRegistry } from "./GhostRegistry";
 export type { GhostMemoryParams, GhostRecord } from "./GhostRegistry";
+
+export {
+	DocumentRecognitionService,
+	createDocumentRecognitionService,
+	calculateDocumentHash,
+} from "./DocumentRecognitionService";
+export type {
+	DocumentRecognitionConfig,
+	DocumentRecognitionResult,
+	DocumentMemoryRetrievalResult,
+} from "./DocumentRecognitionService";
+
+// Phase 2 (+16): Tool Result Ingestion
+export { ToolResultIngestionService, ingestToolResult } from "./ToolResultIngestionService";
+export type { ToolResultIngestionParams, IngestionResult } from "./ToolResultIngestionService";
