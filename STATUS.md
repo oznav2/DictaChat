@@ -1,7 +1,30 @@
-<!-- Updated: v0.2.45 QUIET HEALTHCHECKS + SLOWER LOCK/CIRCUIT PROBES - January 21, 2026 -->
+<!-- Updated: v0.2.46 ENHANCED TOOL RESULT INGESTION - January 25, 2026 -->
 # Project Status
 
-**Last Updated**: January 21, 2026 (v0.2.45 - Quiet Healthchecks + Slower Lock/Circuit Probes)
+**Last Updated**: January 25, 2026 (v0.2.46 - Enhanced Tool Result Ingestion)
+
+---
+
+## 🧠 ENHANCED TOOL RESULT INGESTION (v0.2.46 - January 25, 2026)
+
+**Goal**: Improve memory quality by enhancing tool result ingestion with summaries, entity extraction, and document linking.
+
+**Changes**:
+1. **Tool-specific summary extraction**: Heuristic headline/sentence extraction per tool type (Perplexity, Tavily, DataGov, etc.) - <50ms
+2. **Entity extraction**: Extracts capitalized words and Hebrew terms for KG integration - 200ms timeout
+3. **Document linking**: Queries KG for related documents based on entity overlap - 50ms timeout
+4. **UI infrastructure**: Added `ToolIngesting` event type and handlers (ready for future integration)
+5. **Feature flag**: `TOOL_RESULT_ENHANCED_INGESTION_ENABLED` (default: true)
+
+**Performance Budget**: <500ms total (fire-and-forget, non-blocking)
+
+**Files Modified**:
+- `ToolResultIngestionService.ts` - Enhanced ingestion with summaries, entities, document linking
+- `featureFlags.ts` - Added `toolResultEnhancedIngestionEnabled` flag
+- `MessageUpdate.ts` - Added `ToolIngesting` event type
+- `memoryUi.ts` - Added tool ingestion state tracking
+- `+page.svelte` - Added `ToolIngesting` event handler
+- `MemoryProcessingBlock.svelte` - Added `tool_ingesting` status display
 
 ---
 

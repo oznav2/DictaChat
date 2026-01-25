@@ -198,7 +198,7 @@ Files reviewed (direct + critical consumers):
 - Team confusion: file claims “ENTERPRISE STREAMING RAG PIPELINE” but production path disables it.
 
 **Solution**
-- Either fully remove unused RAG path (if docling + memory documents tier is the strategy), or wire it in behind a clear feature flag and add a minimal integration path in `runMcpFlow` (ensuring it cannot block streaming).
+- we use unified method in the codebase so i suggest you fully remove unused RAG path as docling + memory documents tier is the strategy i prefer while ensuring the codelogic that remains after removal cannot block streaming.
 
 ---
 
@@ -232,8 +232,8 @@ Files reviewed (direct + critical consumers):
 - Refactors can break these silently because no runtime path covers them.
 
 **Solution**
-- Remove unused exports or add explicit integration points and tests that exercise them.
-- If keeping them for planned work, move them into an internal module (not exported) until wired.
+add explicit integration points and tests that exercise them.
+wire them into the codelogic and use an internal module.
 
 ---
 
@@ -293,9 +293,9 @@ Files reviewed (direct + critical consumers):
 - More parsing surface area = more edge cases (e.g., false positives inside quoted text).
 
 **Solution**
-- Decide one contract:
+
   - If XML tool calls must remain supported (because upstream templates still emit them), update prompt and formalize XML parsing and its tests.
-  - If not needed, remove the XML parsing branches to simplify streaming logic and reduce risk.
+
 
 ---
 
