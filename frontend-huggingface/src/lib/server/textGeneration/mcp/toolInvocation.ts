@@ -12,7 +12,7 @@ import {
 } from "$lib/types/MessageUpdate";
 import { ToolResultStatus } from "$lib/types/Tool";
 import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
-import type { McpToolMapping } from "$lib/server/mcp/tools";
+import type { McpToolMapping, OpenAiTool } from "$lib/server/mcp/tools";
 import type { McpServerConfig } from "$lib/server/mcp/httpClient";
 import { callMcpTool, type McpToolTextResponse } from "$lib/server/mcp/httpClient";
 import {
@@ -42,6 +42,7 @@ import {
 } from "./toolIntelligenceRegistry";
 // Phase 7: Tool Summarizers for large output storage
 import { getSummarizerPattern, applyLanguageInstructions } from "./toolSummarizers";
+import { buildToolResultSchemaRegistry, validateToolResult } from "./ToolResultSchemaRegistry";
 import type { Client } from "@modelcontextprotocol/sdk/client";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
 import { ADMIN_USER_ID } from "$lib/server/constants";
@@ -79,6 +80,11 @@ function resolveUploadsDir(): string {
 }
 
 const UPLOADS_DIR = resolveUploadsDir();
+
+const BACKGROUND_INGEST_DELAY_MS = 50;
+const BACKGROUND_OUTCOME_DELAY_MS = 100;
+const BACKGROUND_DOCLING_BRIDGE_DELAY_MS = 75;
+const BACKGROUND_MAX_STAGGER_MS = 300;
 
 function extractShaCandidate(input: string): string | null {
 	if (!input) return null;
@@ -606,6 +612,7 @@ export interface ExecuteToolCallsParams {
 	calls: NormalizedToolCall[];
 	mapping: Record<string, McpToolMapping>;
 	servers: McpServerConfig[];
+	toolDefinitions?: OpenAiTool[];
 	parseArgs: (raw: unknown) => { value: Record<string, unknown>; error?: string };
 	resolveFileRef?: FileRefResolver;
 	toPrimitive: (value: unknown) => Primitive | undefined;
@@ -975,6 +982,7 @@ export async function* executeToolCalls({
 	calls,
 	mapping,
 	servers,
+	toolDefinitions,
 	parseArgs,
 	resolveFileRef,
 	toPrimitive,
@@ -990,6 +998,29 @@ export async function* executeToolCalls({
 	const toolMessages: ChatCompletionMessageParam[] = [];
 	const toolRuns: ToolRun[] = [];
 	const serverLookup = serverMap(servers);
+	const toolResultSchemaRegistry = buildToolResultSchemaRegistry(toolDefinitions ?? [], {
+		info: (message, meta) => logger.info(meta ?? {}, message),
+		warn: (message, meta) => logger.warn(meta ?? {}, message),
+		debug: (message, meta) => logger.debug(meta ?? {}, message),
+	});
+	const normalizeToolOutput = (toolName: string, response: McpToolTextResponse) => {
+		const validation = validateToolResult(
+			toolName,
+			{ text: response.text, structured: response.structured },
+			toolResultSchemaRegistry,
+			{
+				info: (message, meta) => logger.info(meta ?? {}, message),
+				warn: (message, meta) => logger.warn(meta ?? {}, message),
+				debug: (message, meta) => logger.debug(meta ?? {}, message),
+			}
+		);
+		const { annotated } = processToolOutput(validation.outputText);
+		return {
+			annotated,
+			structured: validation.structured,
+			blocks: response.content,
+		};
+	};
 
 	// Track trace state for tool calls
 	// Each REAL tool call gets its own step in the trace
@@ -1284,7 +1315,7 @@ export async function* executeToolCalls({
 					}
 				);
 				const toolLatencyMs = Date.now() - toolStartTime;
-				const { annotated } = processToolOutput(toolResponse.text ?? "");
+				const normalizedOutput = normalizeToolOutput(p.call.name, toolResponse);
 				logger.debug(
 					{ server: mappingEntry.server, tool: mappingEntry.tool, latencyMs: toolLatencyMs },
 					"[mcp] tool call completed"
@@ -1295,9 +1326,9 @@ export async function* executeToolCalls({
 				// If fetch got blocked, trigger fallback to search APIs
 				// ============================================================
 				const isFetchTool = p.call.name.toLowerCase() === "fetch";
-				if (isFetchTool && isFetchBlockedResponse(annotated)) {
+				if (isFetchTool && isFetchBlockedResponse(normalizedOutput.annotated)) {
 					logger.warn(
-						{ tool: p.call.name, contentPreview: annotated.slice(0, 100) },
+						{ tool: p.call.name, contentPreview: normalizedOutput.annotated.slice(0, 100) },
 						"[mcp] fetch returned blocked response (robots/captcha), triggering fallback"
 					);
 
@@ -1331,9 +1362,7 @@ export async function* executeToolCalls({
 								p.argsObj,
 								{ client: fallbackClient, signal: abortSignal, timeoutMs: toolTimeoutMs }
 							);
-							const { annotated: fallbackAnnotated } = processToolOutput(
-								fallbackResponse.text ?? ""
-							);
+							const fallbackOutput = normalizeToolOutput(fallbackToolName, fallbackResponse);
 
 							logger.info(
 								{ originalTool: p.call.name, fallbackTool: fallbackToolName },
@@ -1342,9 +1371,9 @@ export async function* executeToolCalls({
 
 							q.push({
 								index,
-								output: fallbackAnnotated,
-								structured: fallbackResponse.structured,
-								blocks: fallbackResponse.content,
+								output: fallbackOutput.annotated,
+								structured: fallbackOutput.structured,
+								blocks: fallbackOutput.blocks,
 								uuid: p.uuid,
 								paramsClean: p.paramsClean,
 								latencyMs: toolLatencyMs,
@@ -1374,9 +1403,9 @@ export async function* executeToolCalls({
 
 				q.push({
 					index,
-					output: annotated,
-					structured: toolResponse.structured,
-					blocks: toolResponse.content,
+					output: normalizedOutput.annotated,
+					structured: normalizedOutput.structured,
+					blocks: normalizedOutput.blocks,
 					uuid: p.uuid,
 					paramsClean: p.paramsClean,
 					latencyMs: toolLatencyMs,
@@ -1496,7 +1525,7 @@ export async function* executeToolCalls({
 									}
 								);
 
-								const { annotated } = processToolOutput(fallbackResponse.text ?? "");
+								const fallbackOutput = normalizeToolOutput(fallbackToolName, fallbackResponse);
 
 								// SUCCESS! Push result and return
 								logger.info(
@@ -1506,9 +1535,9 @@ export async function* executeToolCalls({
 
 								q.push({
 									index,
-									output: annotated,
-									structured: fallbackResponse.structured,
-									blocks: fallbackResponse.content,
+									output: fallbackOutput.annotated,
+									structured: fallbackOutput.structured,
+									blocks: fallbackOutput.blocks,
 									uuid: p.uuid,
 									paramsClean: p.paramsClean,
 								});
@@ -1607,10 +1636,18 @@ export async function* executeToolCalls({
 		// in the memory system for visibility in Memory Panel
 		// ============================================
 		if (isTrackedTool && !r.error && r.output && conversationId) {
+			const output = r.output;
+			if (!output) return;
+			const bridgeDelayMs = Math.min(
+				BACKGROUND_MAX_STAGGER_MS,
+				BACKGROUND_DOCLING_BRIDGE_DELAY_MS + r.index * 50
+			);
 			// Fire and forget - don't block tool execution
-			bridgeDoclingToMemory(conversationId, toolName, r.output).catch((err) => {
-				logger.warn({ err, toolName }, "[mcp] Memory bridge failed (non-blocking)");
-			});
+			setTimeout(() => {
+				bridgeDoclingToMemory(conversationId, toolName, output).catch((err) => {
+					logger.warn({ err, toolName }, "[mcp] Memory bridge failed (non-blocking)");
+				});
+			}, bridgeDelayMs);
 		}
 
 		// ============================================
@@ -1621,6 +1658,8 @@ export async function* executeToolCalls({
 		// Phase 7: Uses ToolSummarizers for pattern-aware processing
 		// ============================================
 		if (!r.error && r.output && conversationId) {
+			const output = r.output;
+			if (!output) return;
 			const trimmedOutputLen = r.output.trim().length;
 			if (trimmedOutputLen < 100) {
 				logger.warn({ toolName }, "[ingest] Skipped - output too short");
@@ -1634,42 +1673,51 @@ export async function* executeToolCalls({
 
 				// Phase 7: Apply tool-specific summarization before storage
 				// Fire-and-forget async chain to avoid blocking
-				summarizeForStorage(toolName, r.output)
-					.then((processedOutput) => {
-						return ToolResultIngestionService.getInstance().ingestToolResult({
-							conversationId,
-							toolName,
-							query: toolQuery,
-							output: processedOutput,
-							metadata: {
-								tool_call_id: toolCallId,
-								params_preview: JSON.stringify(r.paramsClean ?? {}).slice(0, 200),
-								original_length: r.output?.length ?? 0,
-								summarized: processedOutput.length !== (r.output?.length ?? 0),
-								// Phase: Wire remaining 64 - Tool Intelligence metadata
-								source_attribution: getToolUsageAttribution(toolName),
-								suggestions: generatePostExecutionSuggestions(toolName, toolQuery ?? ""),
-								complementary_tools: getComplementaryTools(toolName).map((t) => t.name),
-							},
-						});
-					})
-					.then((res) => {
-						if (res.stored) {
-							logger.info(
-								{ toolName, outputLen: r.output?.length ?? 0 },
-								"[ingest] Tool result stored"
-							);
-							logger.info({ toolName, category: "unknown" }, "[tool-ingest] Stored result");
-						} else if (res.attempted) {
+				const ingestDelayMs = Math.min(
+					BACKGROUND_MAX_STAGGER_MS,
+					BACKGROUND_INGEST_DELAY_MS + r.index * 50
+				);
+				setTimeout(() => {
+					summarizeForStorage(toolName, output)
+						.then((processedOutput) => {
+							return ToolResultIngestionService.getInstance().ingestToolResult({
+								conversationId,
+								toolName,
+								query: toolQuery,
+								output: processedOutput,
+								metadata: {
+									tool_call_id: toolCallId,
+									params_preview: JSON.stringify(r.paramsClean ?? {}).slice(0, 200),
+									original_length: r.output?.length ?? 0,
+									summarized: processedOutput.length !== (r.output?.length ?? 0),
+									// Phase: Wire remaining 64 - Tool Intelligence metadata
+									source_attribution: getToolUsageAttribution(toolName),
+									suggestions: generatePostExecutionSuggestions(toolName, toolQuery ?? ""),
+									complementary_tools: getComplementaryTools(toolName).map((t) => t.name),
+								},
+							});
+						})
+						.then((res) => {
+							if (res.stored) {
+								logger.info(
+									{ toolName, outputLen: r.output?.length ?? 0 },
+									"[ingest] Tool result stored"
+								);
+								logger.info({ toolName, category: "unknown" }, "[tool-ingest] Stored result");
+							} else if (res.attempted) {
+								logger.warn(
+									{ toolName, reason: res.reason ?? "unknown" },
+									"[tool-ingest] Skipped - low quality output"
+								);
+							}
+						})
+						.catch((err) => {
 							logger.warn(
-								{ toolName, reason: res.reason ?? "unknown" },
-								"[tool-ingest] Skipped - low quality output"
+								{ err, toolName },
+								"[mcp] Tool result ingestion failed (non-blocking)"
 							);
-						}
-					})
-					.catch((err) => {
-						logger.warn({ err, toolName }, "[mcp] Tool result ingestion failed (non-blocking)");
-					});
+						});
+				}, ingestDelayMs);
 			}
 		}
 
@@ -1679,14 +1727,20 @@ export async function* executeToolCalls({
 		// Fire-and-forget: NEVER blocks user response path
 		// ============================================
 		// Gemini Finding 6: Log errors instead of silently ignoring
-		recordToolActionOutcome({
-			toolName,
-			result: { error: r.error, output: r.output },
-			conversationId,
-			latencyMs: r.latencyMs,
-		}).catch((err) => {
-			logger.warn({ err, toolName }, "[mcp] recordToolActionOutcome failed (non-blocking)");
-		});
+		const outcomeDelayMs = Math.min(
+			BACKGROUND_MAX_STAGGER_MS,
+			BACKGROUND_OUTCOME_DELAY_MS + r.index * 50
+		);
+		setTimeout(() => {
+			recordToolActionOutcome({
+				toolName,
+				result: { error: r.error, output: r.output },
+				conversationId,
+				latencyMs: r.latencyMs,
+			}).catch((err) => {
+				logger.warn({ err, toolName }, "[mcp] recordToolActionOutcome failed (non-blocking)");
+			});
+		}, outcomeDelayMs);
 
 		// ============================================
 		// EMIT TRACE STEP COMPLETION FOR REAL TOOL CALLS

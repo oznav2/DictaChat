@@ -4348,43 +4348,43 @@ tinycolor.prototype = {
     }
     return "progid:DXImageTransform.Microsoft.gradient(" + gradientType + "startColorstr=" + hex8String + ",endColorstr=" + secondHex8String + ")";
   },
-  toString: function toString(format) {
-    var formatSet = !!format;
-    format = format || this._format;
+  toString: function toString(format2) {
+    var formatSet = !!format2;
+    format2 = format2 || this._format;
     var formattedString = false;
     var hasAlpha = this._a < 1 && this._a >= 0;
-    var needsAlphaFormat = !formatSet && hasAlpha && (format === "hex" || format === "hex6" || format === "hex3" || format === "hex4" || format === "hex8" || format === "name");
+    var needsAlphaFormat = !formatSet && hasAlpha && (format2 === "hex" || format2 === "hex6" || format2 === "hex3" || format2 === "hex4" || format2 === "hex8" || format2 === "name");
     if (needsAlphaFormat) {
-      if (format === "name" && this._a === 0) {
+      if (format2 === "name" && this._a === 0) {
         return this.toName();
       }
       return this.toRgbString();
     }
-    if (format === "rgb") {
+    if (format2 === "rgb") {
       formattedString = this.toRgbString();
     }
-    if (format === "prgb") {
+    if (format2 === "prgb") {
       formattedString = this.toPercentageRgbString();
     }
-    if (format === "hex" || format === "hex6") {
+    if (format2 === "hex" || format2 === "hex6") {
       formattedString = this.toHexString();
     }
-    if (format === "hex3") {
+    if (format2 === "hex3") {
       formattedString = this.toHexString(true);
     }
-    if (format === "hex4") {
+    if (format2 === "hex4") {
       formattedString = this.toHex8String(true);
     }
-    if (format === "hex8") {
+    if (format2 === "hex8") {
       formattedString = this.toHex8String();
     }
-    if (format === "name") {
+    if (format2 === "name") {
       formattedString = this.toName();
     }
-    if (format === "hsl") {
+    if (format2 === "hsl") {
       formattedString = this.toHslString();
     }
-    if (format === "hsv") {
+    if (format2 === "hsv") {
       formattedString = this.toHsvString();
     }
     return formattedString || this.toHexString();
@@ -4474,7 +4474,7 @@ function inputToRGB(color2) {
   var v2 = null;
   var l2 = null;
   var ok = false;
-  var format = false;
+  var format2 = false;
   if (typeof color2 == "string") {
     color2 = stringInputToObject(color2);
   }
@@ -4482,19 +4482,19 @@ function inputToRGB(color2) {
     if (isValidCSSUnit(color2.r) && isValidCSSUnit(color2.g) && isValidCSSUnit(color2.b)) {
       rgb2 = rgbToRgb(color2.r, color2.g, color2.b);
       ok = true;
-      format = String(color2.r).substr(-1) === "%" ? "prgb" : "rgb";
+      format2 = String(color2.r).substr(-1) === "%" ? "prgb" : "rgb";
     } else if (isValidCSSUnit(color2.h) && isValidCSSUnit(color2.s) && isValidCSSUnit(color2.v)) {
       s2 = convertToPercentage(color2.s);
       v2 = convertToPercentage(color2.v);
       rgb2 = hsvToRgb(color2.h, s2, v2);
       ok = true;
-      format = "hsv";
+      format2 = "hsv";
     } else if (isValidCSSUnit(color2.h) && isValidCSSUnit(color2.s) && isValidCSSUnit(color2.l)) {
       s2 = convertToPercentage(color2.s);
       l2 = convertToPercentage(color2.l);
       rgb2 = hslToRgb(color2.h, s2, l2);
       ok = true;
-      format = "hsl";
+      format2 = "hsl";
     }
     if (color2.hasOwnProperty("a")) {
       a3 = color2.a;
@@ -4503,7 +4503,7 @@ function inputToRGB(color2) {
   a3 = boundAlpha(a3);
   return {
     ok,
-    format: color2.format || format,
+    format: color2.format || format2,
     r: Math.min(255, Math.max(rgb2.r, 0)),
     g: Math.min(255, Math.max(rgb2.g, 0)),
     b: Math.min(255, Math.max(rgb2.b, 0)),
@@ -21390,9 +21390,9 @@ var RenderContexts = class {
     if (renderTarget === null) {
       attachmentState = "default";
     } else {
-      const format = renderTarget.texture.format;
+      const format2 = renderTarget.texture.format;
       const count = renderTarget.textures.length;
-      attachmentState = `${count}:${format}:${renderTarget.samples}:${renderTarget.depthBuffer}:${renderTarget.stencilBuffer}`;
+      attachmentState = `${count}:${format2}:${renderTarget.samples}:${renderTarget.depthBuffer}:${renderTarget.stencilBuffer}`;
     }
     const chainMap = this._getChainMap(attachmentState);
     let renderState = chainMap.get(_chainKeys$3);
@@ -36823,13 +36823,13 @@ ${flowData.code}
       const numElements = attribute2.count * attribute2.itemSize;
       const { itemSize } = attribute2;
       const isInteger = attribute2.array.constructor.name.toLowerCase().includes("int");
-      let format = isInteger ? RedIntegerFormat : RedFormat;
+      let format2 = isInteger ? RedIntegerFormat : RedFormat;
       if (itemSize === 2) {
-        format = isInteger ? RGIntegerFormat : RGFormat;
+        format2 = isInteger ? RGIntegerFormat : RGFormat;
       } else if (itemSize === 3) {
-        format = isInteger ? RGBIntegerFormat : RGBFormat;
+        format2 = isInteger ? RGBIntegerFormat : RGBFormat;
       } else if (itemSize === 4) {
-        format = isInteger ? RGBAIntegerFormat : RGBAFormat;
+        format2 = isInteger ? RGBAIntegerFormat : RGBAFormat;
       }
       const typeMap = {
         Float32Array: FloatType,
@@ -36848,7 +36848,7 @@ ${flowData.code}
       const newArray = new originalArray.constructor(newSize);
       newArray.set(originalArray, 0);
       attribute2.array = newArray;
-      const pboTexture = new DataTexture(attribute2.array, width, height, format, typeMap[attribute2.array.constructor.name] || FloatType);
+      const pboTexture = new DataTexture(attribute2.array, width, height, format2, typeMap[attribute2.array.constructor.name] || FloatType);
       pboTexture.needsUpdate = true;
       pboTexture.isPBOTexture = true;
       const pbo = new TextureNode(pboTexture, null, null);
@@ -42553,11 +42553,11 @@ fn main( @location( 0 ) vTex : vec2<f32> ) -> @location( 0 ) vec4<f32> {
    * @param {string} format - The GPU texture format
    * @return {GPURenderPipeline} The GPU render pipeline.
    */
-  getTransferPipeline(format) {
-    let pipeline = this.transferPipelines[format];
+  getTransferPipeline(format2) {
+    let pipeline = this.transferPipelines[format2];
     if (pipeline === void 0) {
       pipeline = this.device.createRenderPipeline({
-        label: `mipmap-${format}`,
+        label: `mipmap-${format2}`,
         vertex: {
           module: this.mipmapVertexShaderModule,
           entryPoint: "main"
@@ -42565,7 +42565,7 @@ fn main( @location( 0 ) vTex : vec2<f32> ) -> @location( 0 ) vec4<f32> {
         fragment: {
           module: this.mipmapFragmentShaderModule,
           entryPoint: "main",
-          targets: [{ format }]
+          targets: [{ format: format2 }]
         },
         primitive: {
           topology: GPUPrimitiveTopology.TriangleStrip,
@@ -42573,7 +42573,7 @@ fn main( @location( 0 ) vTex : vec2<f32> ) -> @location( 0 ) vec4<f32> {
         },
         layout: "auto"
       });
-      this.transferPipelines[format] = pipeline;
+      this.transferPipelines[format2] = pipeline;
     }
     return pipeline;
   }
@@ -42584,11 +42584,11 @@ fn main( @location( 0 ) vTex : vec2<f32> ) -> @location( 0 ) vec4<f32> {
    * @param {string} format - The GPU texture format
    * @return {GPURenderPipeline} The GPU render pipeline.
    */
-  getFlipYPipeline(format) {
-    let pipeline = this.flipYPipelines[format];
+  getFlipYPipeline(format2) {
+    let pipeline = this.flipYPipelines[format2];
     if (pipeline === void 0) {
       pipeline = this.device.createRenderPipeline({
-        label: `flipY-${format}`,
+        label: `flipY-${format2}`,
         vertex: {
           module: this.mipmapVertexShaderModule,
           entryPoint: "main"
@@ -42596,7 +42596,7 @@ fn main( @location( 0 ) vTex : vec2<f32> ) -> @location( 0 ) vec4<f32> {
         fragment: {
           module: this.flipYFragmentShaderModule,
           entryPoint: "main",
-          targets: [{ format }]
+          targets: [{ format: format2 }]
         },
         primitive: {
           topology: GPUPrimitiveTopology.TriangleStrip,
@@ -42604,7 +42604,7 @@ fn main( @location( 0 ) vTex : vec2<f32> ) -> @location( 0 ) vec4<f32> {
         },
         layout: "auto"
       });
-      this.flipYPipelines[format] = pipeline;
+      this.flipYPipelines[format2] = pipeline;
     }
     return pipeline;
   }
@@ -42616,13 +42616,13 @@ fn main( @location( 0 ) vTex : vec2<f32> ) -> @location( 0 ) vec4<f32> {
    * @param {number} [baseArrayLayer=0] - The index of the first array layer accessible to the texture view.
    */
   flipY(textureGPU, textureGPUDescriptor, baseArrayLayer = 0) {
-    const format = textureGPUDescriptor.format;
+    const format2 = textureGPUDescriptor.format;
     const { width, height } = textureGPUDescriptor.size;
-    const transferPipeline = this.getTransferPipeline(format);
-    const flipYPipeline = this.getFlipYPipeline(format);
+    const transferPipeline = this.getTransferPipeline(format2);
+    const flipYPipeline = this.getFlipYPipeline(format2);
     const tempTexture = this.device.createTexture({
       size: { width, height, depthOrArrayLayers: 1 },
-      format,
+      format: format2,
       usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING
     });
     const srcView = textureGPU.createView({
@@ -42839,11 +42839,11 @@ var WebGPUTextureUtils = class {
    */
   createDefaultTexture(texture2) {
     let textureGPU;
-    const format = getFormat2(texture2);
+    const format2 = getFormat2(texture2);
     if (texture2.isCubeTexture) {
-      textureGPU = this._getDefaultCubeTextureGPU(format);
+      textureGPU = this._getDefaultCubeTextureGPU(format2);
     } else {
-      textureGPU = this._getDefaultTextureGPU(format);
+      textureGPU = this._getDefaultTextureGPU(format2);
     }
     this.backend.get(texture2).texture = textureGPU;
   }
@@ -42876,14 +42876,14 @@ var WebGPUTextureUtils = class {
       }
     }
     const dimension = this._getDimension(texture2);
-    const format = texture2.internalFormat || options.format || getFormat2(texture2, backend.device);
-    textureData.format = format;
+    const format2 = texture2.internalFormat || options.format || getFormat2(texture2, backend.device);
+    textureData.format = format2;
     const { samples, primarySamples, isMSAA } = backend.utils.getTextureSampleData(texture2);
     let usage = GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST | GPUTextureUsage.COPY_SRC;
     if (texture2.isStorageTexture === true) {
       usage |= GPUTextureUsage.STORAGE_BINDING;
     }
-    if (texture2.isCompressedTexture !== true && texture2.isCompressedArrayTexture !== true && format !== GPUTextureFormat.RGB9E5UFloat) {
+    if (texture2.isCompressedTexture !== true && texture2.isCompressedArrayTexture !== true && format2 !== GPUTextureFormat.RGB9E5UFloat) {
       usage |= GPUTextureUsage.RENDER_ATTACHMENT;
     }
     const textureDescriptorGPU = {
@@ -42896,10 +42896,10 @@ var WebGPUTextureUtils = class {
       mipLevelCount: levels,
       sampleCount: primarySamples,
       dimension,
-      format,
+      format: format2,
       usage
     };
-    if (format === void 0) {
+    if (format2 === void 0) {
       warn("WebGPURenderer: Texture format not supported.");
       this.createDefaultTexture(texture2);
       return;
@@ -43003,22 +43003,22 @@ var WebGPUTextureUtils = class {
       return backend.get(depthTexture).texture;
     }
     const depthTextureGPU = backend.get(depthTexture).texture;
-    let format, type;
+    let format2, type;
     if (stencil) {
-      format = DepthStencilFormat;
+      format2 = DepthStencilFormat;
       type = UnsignedInt248Type;
     } else if (depth2) {
-      format = DepthFormat;
+      format2 = DepthFormat;
       type = UnsignedIntType;
     }
     if (depthTextureGPU !== void 0) {
-      if (depthTexture.image.width === width && depthTexture.image.height === height && depthTexture.format === format && depthTexture.type === type && depthTexture.samples === samples) {
+      if (depthTexture.image.width === width && depthTexture.image.height === height && depthTexture.format === format2 && depthTexture.type === type && depthTexture.samples === samples) {
         return depthTextureGPU;
       }
       this.destroyTexture(depthTexture);
     }
     depthTexture.name = "depthBuffer";
-    depthTexture.format = format;
+    depthTexture.format = format2;
     depthTexture.type = type;
     depthTexture.image.width = width;
     depthTexture.image.height = height;
@@ -43083,8 +43083,8 @@ var WebGPUTextureUtils = class {
     const device = this.backend.device;
     const textureData = this.backend.get(texture2);
     const textureGPU = textureData.texture;
-    const format = textureData.textureDescriptorGPU.format;
-    const bytesPerTexel = this._getBytesPerTexel(format);
+    const format2 = textureData.textureDescriptorGPU.format;
+    const bytesPerTexel = this._getBytesPerTexel(format2);
     let bytesPerRow = width * bytesPerTexel;
     bytesPerRow = Math.ceil(bytesPerRow / 256) * 256;
     const readBuffer = device.createBuffer(
@@ -43109,7 +43109,7 @@ var WebGPUTextureUtils = class {
         height
       }
     );
-    const typedArrayType = this._getTypedArrayType(format);
+    const typedArrayType = this._getTypedArrayType(format2);
     device.queue.submit([encoder.finish()]);
     await readBuffer.mapAsync(GPUMapMode.READ);
     const buffer2 = readBuffer.getMappedRange();
@@ -43128,14 +43128,14 @@ var WebGPUTextureUtils = class {
    * @param {string} format - The GPU format.
    * @return {GPUTexture} The GPU texture.
    */
-  _getDefaultTextureGPU(format) {
-    let defaultTexture = this.defaultTexture[format];
+  _getDefaultTextureGPU(format2) {
+    let defaultTexture = this.defaultTexture[format2];
     if (defaultTexture === void 0) {
       const texture2 = new Texture();
       texture2.minFilter = NearestFilter;
       texture2.magFilter = NearestFilter;
-      this.createTexture(texture2, { width: 1, height: 1, format });
-      this.defaultTexture[format] = defaultTexture = texture2;
+      this.createTexture(texture2, { width: 1, height: 1, format: format2 });
+      this.defaultTexture[format2] = defaultTexture = texture2;
     }
     return this.backend.get(defaultTexture).texture;
   }
@@ -43146,14 +43146,14 @@ var WebGPUTextureUtils = class {
    * @param {string} format - The GPU format.
    * @return {GPUTexture} The GPU texture.
    */
-  _getDefaultCubeTextureGPU(format) {
-    let defaultCubeTexture = this.defaultCubeTexture[format];
+  _getDefaultCubeTextureGPU(format2) {
+    let defaultCubeTexture = this.defaultCubeTexture[format2];
     if (defaultCubeTexture === void 0) {
       const texture2 = new CubeTexture();
       texture2.minFilter = NearestFilter;
       texture2.magFilter = NearestFilter;
       this.createTexture(texture2, { width: 1, height: 1, depth: 6 });
-      this.defaultCubeTexture[format] = defaultCubeTexture = texture2;
+      this.defaultCubeTexture[format2] = defaultCubeTexture = texture2;
     }
     return this.backend.get(defaultCubeTexture).texture;
   }
@@ -43347,35 +43347,35 @@ var WebGPUTextureUtils = class {
    * @param {string} format - The GPU compressed texture format.
    * @return {Object} The block data descriptor.
    */
-  _getBlockData(format) {
-    if (format === GPUTextureFormat.BC1RGBAUnorm || format === GPUTextureFormat.BC1RGBAUnormSRGB) return { byteLength: 8, width: 4, height: 4 };
-    if (format === GPUTextureFormat.BC2RGBAUnorm || format === GPUTextureFormat.BC2RGBAUnormSRGB) return { byteLength: 16, width: 4, height: 4 };
-    if (format === GPUTextureFormat.BC3RGBAUnorm || format === GPUTextureFormat.BC3RGBAUnormSRGB) return { byteLength: 16, width: 4, height: 4 };
-    if (format === GPUTextureFormat.BC4RUnorm || format === GPUTextureFormat.BC4RSnorm) return { byteLength: 8, width: 4, height: 4 };
-    if (format === GPUTextureFormat.BC5RGUnorm || format === GPUTextureFormat.BC5RGSnorm) return { byteLength: 16, width: 4, height: 4 };
-    if (format === GPUTextureFormat.BC6HRGBUFloat || format === GPUTextureFormat.BC6HRGBFloat) return { byteLength: 16, width: 4, height: 4 };
-    if (format === GPUTextureFormat.BC7RGBAUnorm || format === GPUTextureFormat.BC7RGBAUnormSRGB) return { byteLength: 16, width: 4, height: 4 };
-    if (format === GPUTextureFormat.ETC2RGB8Unorm || format === GPUTextureFormat.ETC2RGB8UnormSRGB) return { byteLength: 8, width: 4, height: 4 };
-    if (format === GPUTextureFormat.ETC2RGB8A1Unorm || format === GPUTextureFormat.ETC2RGB8A1UnormSRGB) return { byteLength: 8, width: 4, height: 4 };
-    if (format === GPUTextureFormat.ETC2RGBA8Unorm || format === GPUTextureFormat.ETC2RGBA8UnormSRGB) return { byteLength: 16, width: 4, height: 4 };
-    if (format === GPUTextureFormat.EACR11Unorm) return { byteLength: 8, width: 4, height: 4 };
-    if (format === GPUTextureFormat.EACR11Snorm) return { byteLength: 8, width: 4, height: 4 };
-    if (format === GPUTextureFormat.EACRG11Unorm) return { byteLength: 16, width: 4, height: 4 };
-    if (format === GPUTextureFormat.EACRG11Snorm) return { byteLength: 16, width: 4, height: 4 };
-    if (format === GPUTextureFormat.ASTC4x4Unorm || format === GPUTextureFormat.ASTC4x4UnormSRGB) return { byteLength: 16, width: 4, height: 4 };
-    if (format === GPUTextureFormat.ASTC5x4Unorm || format === GPUTextureFormat.ASTC5x4UnormSRGB) return { byteLength: 16, width: 5, height: 4 };
-    if (format === GPUTextureFormat.ASTC5x5Unorm || format === GPUTextureFormat.ASTC5x5UnormSRGB) return { byteLength: 16, width: 5, height: 5 };
-    if (format === GPUTextureFormat.ASTC6x5Unorm || format === GPUTextureFormat.ASTC6x5UnormSRGB) return { byteLength: 16, width: 6, height: 5 };
-    if (format === GPUTextureFormat.ASTC6x6Unorm || format === GPUTextureFormat.ASTC6x6UnormSRGB) return { byteLength: 16, width: 6, height: 6 };
-    if (format === GPUTextureFormat.ASTC8x5Unorm || format === GPUTextureFormat.ASTC8x5UnormSRGB) return { byteLength: 16, width: 8, height: 5 };
-    if (format === GPUTextureFormat.ASTC8x6Unorm || format === GPUTextureFormat.ASTC8x6UnormSRGB) return { byteLength: 16, width: 8, height: 6 };
-    if (format === GPUTextureFormat.ASTC8x8Unorm || format === GPUTextureFormat.ASTC8x8UnormSRGB) return { byteLength: 16, width: 8, height: 8 };
-    if (format === GPUTextureFormat.ASTC10x5Unorm || format === GPUTextureFormat.ASTC10x5UnormSRGB) return { byteLength: 16, width: 10, height: 5 };
-    if (format === GPUTextureFormat.ASTC10x6Unorm || format === GPUTextureFormat.ASTC10x6UnormSRGB) return { byteLength: 16, width: 10, height: 6 };
-    if (format === GPUTextureFormat.ASTC10x8Unorm || format === GPUTextureFormat.ASTC10x8UnormSRGB) return { byteLength: 16, width: 10, height: 8 };
-    if (format === GPUTextureFormat.ASTC10x10Unorm || format === GPUTextureFormat.ASTC10x10UnormSRGB) return { byteLength: 16, width: 10, height: 10 };
-    if (format === GPUTextureFormat.ASTC12x10Unorm || format === GPUTextureFormat.ASTC12x10UnormSRGB) return { byteLength: 16, width: 12, height: 10 };
-    if (format === GPUTextureFormat.ASTC12x12Unorm || format === GPUTextureFormat.ASTC12x12UnormSRGB) return { byteLength: 16, width: 12, height: 12 };
+  _getBlockData(format2) {
+    if (format2 === GPUTextureFormat.BC1RGBAUnorm || format2 === GPUTextureFormat.BC1RGBAUnormSRGB) return { byteLength: 8, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.BC2RGBAUnorm || format2 === GPUTextureFormat.BC2RGBAUnormSRGB) return { byteLength: 16, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.BC3RGBAUnorm || format2 === GPUTextureFormat.BC3RGBAUnormSRGB) return { byteLength: 16, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.BC4RUnorm || format2 === GPUTextureFormat.BC4RSnorm) return { byteLength: 8, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.BC5RGUnorm || format2 === GPUTextureFormat.BC5RGSnorm) return { byteLength: 16, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.BC6HRGBUFloat || format2 === GPUTextureFormat.BC6HRGBFloat) return { byteLength: 16, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.BC7RGBAUnorm || format2 === GPUTextureFormat.BC7RGBAUnormSRGB) return { byteLength: 16, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.ETC2RGB8Unorm || format2 === GPUTextureFormat.ETC2RGB8UnormSRGB) return { byteLength: 8, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.ETC2RGB8A1Unorm || format2 === GPUTextureFormat.ETC2RGB8A1UnormSRGB) return { byteLength: 8, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.ETC2RGBA8Unorm || format2 === GPUTextureFormat.ETC2RGBA8UnormSRGB) return { byteLength: 16, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.EACR11Unorm) return { byteLength: 8, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.EACR11Snorm) return { byteLength: 8, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.EACRG11Unorm) return { byteLength: 16, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.EACRG11Snorm) return { byteLength: 16, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.ASTC4x4Unorm || format2 === GPUTextureFormat.ASTC4x4UnormSRGB) return { byteLength: 16, width: 4, height: 4 };
+    if (format2 === GPUTextureFormat.ASTC5x4Unorm || format2 === GPUTextureFormat.ASTC5x4UnormSRGB) return { byteLength: 16, width: 5, height: 4 };
+    if (format2 === GPUTextureFormat.ASTC5x5Unorm || format2 === GPUTextureFormat.ASTC5x5UnormSRGB) return { byteLength: 16, width: 5, height: 5 };
+    if (format2 === GPUTextureFormat.ASTC6x5Unorm || format2 === GPUTextureFormat.ASTC6x5UnormSRGB) return { byteLength: 16, width: 6, height: 5 };
+    if (format2 === GPUTextureFormat.ASTC6x6Unorm || format2 === GPUTextureFormat.ASTC6x6UnormSRGB) return { byteLength: 16, width: 6, height: 6 };
+    if (format2 === GPUTextureFormat.ASTC8x5Unorm || format2 === GPUTextureFormat.ASTC8x5UnormSRGB) return { byteLength: 16, width: 8, height: 5 };
+    if (format2 === GPUTextureFormat.ASTC8x6Unorm || format2 === GPUTextureFormat.ASTC8x6UnormSRGB) return { byteLength: 16, width: 8, height: 6 };
+    if (format2 === GPUTextureFormat.ASTC8x8Unorm || format2 === GPUTextureFormat.ASTC8x8UnormSRGB) return { byteLength: 16, width: 8, height: 8 };
+    if (format2 === GPUTextureFormat.ASTC10x5Unorm || format2 === GPUTextureFormat.ASTC10x5UnormSRGB) return { byteLength: 16, width: 10, height: 5 };
+    if (format2 === GPUTextureFormat.ASTC10x6Unorm || format2 === GPUTextureFormat.ASTC10x6UnormSRGB) return { byteLength: 16, width: 10, height: 6 };
+    if (format2 === GPUTextureFormat.ASTC10x8Unorm || format2 === GPUTextureFormat.ASTC10x8UnormSRGB) return { byteLength: 16, width: 10, height: 8 };
+    if (format2 === GPUTextureFormat.ASTC10x10Unorm || format2 === GPUTextureFormat.ASTC10x10UnormSRGB) return { byteLength: 16, width: 10, height: 10 };
+    if (format2 === GPUTextureFormat.ASTC12x10Unorm || format2 === GPUTextureFormat.ASTC12x10UnormSRGB) return { byteLength: 16, width: 12, height: 10 };
+    if (format2 === GPUTextureFormat.ASTC12x12Unorm || format2 === GPUTextureFormat.ASTC12x12UnormSRGB) return { byteLength: 16, width: 12, height: 12 };
   }
   /**
    * Converts the three.js uv wrapping constants to GPU address mode constants.
@@ -43414,13 +43414,13 @@ var WebGPUTextureUtils = class {
    * @param {string} format - The GPU texture format.
    * @return {number} The bytes-per-texel.
    */
-  _getBytesPerTexel(format) {
-    if (format === GPUTextureFormat.R8Unorm || format === GPUTextureFormat.R8Snorm || format === GPUTextureFormat.R8Uint || format === GPUTextureFormat.R8Sint) return 1;
-    if (format === GPUTextureFormat.R16Uint || format === GPUTextureFormat.R16Sint || format === GPUTextureFormat.R16Float || format === GPUTextureFormat.RG8Unorm || format === GPUTextureFormat.RG8Snorm || format === GPUTextureFormat.RG8Uint || format === GPUTextureFormat.RG8Sint) return 2;
-    if (format === GPUTextureFormat.R32Uint || format === GPUTextureFormat.R32Sint || format === GPUTextureFormat.R32Float || format === GPUTextureFormat.RG16Uint || format === GPUTextureFormat.RG16Sint || format === GPUTextureFormat.RG16Float || format === GPUTextureFormat.RGBA8Unorm || format === GPUTextureFormat.RGBA8UnormSRGB || format === GPUTextureFormat.RGBA8Snorm || format === GPUTextureFormat.RGBA8Uint || format === GPUTextureFormat.RGBA8Sint || format === GPUTextureFormat.BGRA8Unorm || format === GPUTextureFormat.BGRA8UnormSRGB || // Packed 32-bit formats
-    format === GPUTextureFormat.RGB9E5UFloat || format === GPUTextureFormat.RGB10A2Unorm || format === GPUTextureFormat.RG11B10UFloat || format === GPUTextureFormat.Depth32Float || format === GPUTextureFormat.Depth24Plus || format === GPUTextureFormat.Depth24PlusStencil8 || format === GPUTextureFormat.Depth32FloatStencil8) return 4;
-    if (format === GPUTextureFormat.RG32Uint || format === GPUTextureFormat.RG32Sint || format === GPUTextureFormat.RG32Float || format === GPUTextureFormat.RGBA16Uint || format === GPUTextureFormat.RGBA16Sint || format === GPUTextureFormat.RGBA16Float) return 8;
-    if (format === GPUTextureFormat.RGBA32Uint || format === GPUTextureFormat.RGBA32Sint || format === GPUTextureFormat.RGBA32Float) return 16;
+  _getBytesPerTexel(format2) {
+    if (format2 === GPUTextureFormat.R8Unorm || format2 === GPUTextureFormat.R8Snorm || format2 === GPUTextureFormat.R8Uint || format2 === GPUTextureFormat.R8Sint) return 1;
+    if (format2 === GPUTextureFormat.R16Uint || format2 === GPUTextureFormat.R16Sint || format2 === GPUTextureFormat.R16Float || format2 === GPUTextureFormat.RG8Unorm || format2 === GPUTextureFormat.RG8Snorm || format2 === GPUTextureFormat.RG8Uint || format2 === GPUTextureFormat.RG8Sint) return 2;
+    if (format2 === GPUTextureFormat.R32Uint || format2 === GPUTextureFormat.R32Sint || format2 === GPUTextureFormat.R32Float || format2 === GPUTextureFormat.RG16Uint || format2 === GPUTextureFormat.RG16Sint || format2 === GPUTextureFormat.RG16Float || format2 === GPUTextureFormat.RGBA8Unorm || format2 === GPUTextureFormat.RGBA8UnormSRGB || format2 === GPUTextureFormat.RGBA8Snorm || format2 === GPUTextureFormat.RGBA8Uint || format2 === GPUTextureFormat.RGBA8Sint || format2 === GPUTextureFormat.BGRA8Unorm || format2 === GPUTextureFormat.BGRA8UnormSRGB || // Packed 32-bit formats
+    format2 === GPUTextureFormat.RGB9E5UFloat || format2 === GPUTextureFormat.RGB10A2Unorm || format2 === GPUTextureFormat.RG11B10UFloat || format2 === GPUTextureFormat.Depth32Float || format2 === GPUTextureFormat.Depth24Plus || format2 === GPUTextureFormat.Depth24PlusStencil8 || format2 === GPUTextureFormat.Depth32FloatStencil8) return 4;
+    if (format2 === GPUTextureFormat.RG32Uint || format2 === GPUTextureFormat.RG32Sint || format2 === GPUTextureFormat.RG32Float || format2 === GPUTextureFormat.RGBA16Uint || format2 === GPUTextureFormat.RGBA16Sint || format2 === GPUTextureFormat.RGBA16Float) return 8;
+    if (format2 === GPUTextureFormat.RGBA32Uint || format2 === GPUTextureFormat.RGBA32Sint || format2 === GPUTextureFormat.RGBA32Float) return 16;
   }
   /**
    * Returns the corresponding typed array type for the given GPU texture format.
@@ -43429,45 +43429,45 @@ var WebGPUTextureUtils = class {
    * @param {string} format - The GPU texture format.
    * @return {TypedArray.constructor} The typed array type.
    */
-  _getTypedArrayType(format) {
-    if (format === GPUTextureFormat.R8Uint) return Uint8Array;
-    if (format === GPUTextureFormat.R8Sint) return Int8Array;
-    if (format === GPUTextureFormat.R8Unorm) return Uint8Array;
-    if (format === GPUTextureFormat.R8Snorm) return Int8Array;
-    if (format === GPUTextureFormat.RG8Uint) return Uint8Array;
-    if (format === GPUTextureFormat.RG8Sint) return Int8Array;
-    if (format === GPUTextureFormat.RG8Unorm) return Uint8Array;
-    if (format === GPUTextureFormat.RG8Snorm) return Int8Array;
-    if (format === GPUTextureFormat.RGBA8Uint) return Uint8Array;
-    if (format === GPUTextureFormat.RGBA8Sint) return Int8Array;
-    if (format === GPUTextureFormat.RGBA8Unorm || format === GPUTextureFormat.RGBA8UnormSRGB) return Uint8Array;
-    if (format === GPUTextureFormat.RGBA8Snorm) return Int8Array;
-    if (format === GPUTextureFormat.R16Uint) return Uint16Array;
-    if (format === GPUTextureFormat.R16Sint) return Int16Array;
-    if (format === GPUTextureFormat.RG16Uint) return Uint16Array;
-    if (format === GPUTextureFormat.RG16Sint) return Int16Array;
-    if (format === GPUTextureFormat.RGBA16Uint) return Uint16Array;
-    if (format === GPUTextureFormat.RGBA16Sint) return Int16Array;
-    if (format === GPUTextureFormat.R16Float) return Uint16Array;
-    if (format === GPUTextureFormat.RG16Float) return Uint16Array;
-    if (format === GPUTextureFormat.RGBA16Float) return Uint16Array;
-    if (format === GPUTextureFormat.R32Uint) return Uint32Array;
-    if (format === GPUTextureFormat.R32Sint) return Int32Array;
-    if (format === GPUTextureFormat.R32Float) return Float32Array;
-    if (format === GPUTextureFormat.RG32Uint) return Uint32Array;
-    if (format === GPUTextureFormat.RG32Sint) return Int32Array;
-    if (format === GPUTextureFormat.RG32Float) return Float32Array;
-    if (format === GPUTextureFormat.RGBA32Uint) return Uint32Array;
-    if (format === GPUTextureFormat.RGBA32Sint) return Int32Array;
-    if (format === GPUTextureFormat.RGBA32Float) return Float32Array;
-    if (format === GPUTextureFormat.BGRA8Unorm || format === GPUTextureFormat.BGRA8UnormSRGB) return Uint8Array;
-    if (format === GPUTextureFormat.RGB10A2Unorm) return Uint32Array;
-    if (format === GPUTextureFormat.RGB9E5UFloat) return Uint32Array;
-    if (format === GPUTextureFormat.RG11B10UFloat) return Uint32Array;
-    if (format === GPUTextureFormat.Depth32Float) return Float32Array;
-    if (format === GPUTextureFormat.Depth24Plus) return Uint32Array;
-    if (format === GPUTextureFormat.Depth24PlusStencil8) return Uint32Array;
-    if (format === GPUTextureFormat.Depth32FloatStencil8) return Float32Array;
+  _getTypedArrayType(format2) {
+    if (format2 === GPUTextureFormat.R8Uint) return Uint8Array;
+    if (format2 === GPUTextureFormat.R8Sint) return Int8Array;
+    if (format2 === GPUTextureFormat.R8Unorm) return Uint8Array;
+    if (format2 === GPUTextureFormat.R8Snorm) return Int8Array;
+    if (format2 === GPUTextureFormat.RG8Uint) return Uint8Array;
+    if (format2 === GPUTextureFormat.RG8Sint) return Int8Array;
+    if (format2 === GPUTextureFormat.RG8Unorm) return Uint8Array;
+    if (format2 === GPUTextureFormat.RG8Snorm) return Int8Array;
+    if (format2 === GPUTextureFormat.RGBA8Uint) return Uint8Array;
+    if (format2 === GPUTextureFormat.RGBA8Sint) return Int8Array;
+    if (format2 === GPUTextureFormat.RGBA8Unorm || format2 === GPUTextureFormat.RGBA8UnormSRGB) return Uint8Array;
+    if (format2 === GPUTextureFormat.RGBA8Snorm) return Int8Array;
+    if (format2 === GPUTextureFormat.R16Uint) return Uint16Array;
+    if (format2 === GPUTextureFormat.R16Sint) return Int16Array;
+    if (format2 === GPUTextureFormat.RG16Uint) return Uint16Array;
+    if (format2 === GPUTextureFormat.RG16Sint) return Int16Array;
+    if (format2 === GPUTextureFormat.RGBA16Uint) return Uint16Array;
+    if (format2 === GPUTextureFormat.RGBA16Sint) return Int16Array;
+    if (format2 === GPUTextureFormat.R16Float) return Uint16Array;
+    if (format2 === GPUTextureFormat.RG16Float) return Uint16Array;
+    if (format2 === GPUTextureFormat.RGBA16Float) return Uint16Array;
+    if (format2 === GPUTextureFormat.R32Uint) return Uint32Array;
+    if (format2 === GPUTextureFormat.R32Sint) return Int32Array;
+    if (format2 === GPUTextureFormat.R32Float) return Float32Array;
+    if (format2 === GPUTextureFormat.RG32Uint) return Uint32Array;
+    if (format2 === GPUTextureFormat.RG32Sint) return Int32Array;
+    if (format2 === GPUTextureFormat.RG32Float) return Float32Array;
+    if (format2 === GPUTextureFormat.RGBA32Uint) return Uint32Array;
+    if (format2 === GPUTextureFormat.RGBA32Sint) return Int32Array;
+    if (format2 === GPUTextureFormat.RGBA32Float) return Float32Array;
+    if (format2 === GPUTextureFormat.BGRA8Unorm || format2 === GPUTextureFormat.BGRA8UnormSRGB) return Uint8Array;
+    if (format2 === GPUTextureFormat.RGB10A2Unorm) return Uint32Array;
+    if (format2 === GPUTextureFormat.RGB9E5UFloat) return Uint32Array;
+    if (format2 === GPUTextureFormat.RG11B10UFloat) return Uint32Array;
+    if (format2 === GPUTextureFormat.Depth32Float) return Float32Array;
+    if (format2 === GPUTextureFormat.Depth24Plus) return Uint32Array;
+    if (format2 === GPUTextureFormat.Depth24PlusStencil8) return Uint32Array;
+    if (format2 === GPUTextureFormat.Depth32FloatStencil8) return Float32Array;
   }
   /**
    * Returns the GPU dimensions for the given texture.
@@ -43487,13 +43487,13 @@ var WebGPUTextureUtils = class {
   }
 };
 function getFormat2(texture2, device = null) {
-  const format = texture2.format;
+  const format2 = texture2.format;
   const type = texture2.type;
   const colorSpace = texture2.colorSpace;
   const transfer = ColorManagement.getTransfer(colorSpace);
   let formatGPU;
   if (texture2.isCompressedTexture === true || texture2.isCompressedArrayTexture === true) {
-    switch (format) {
+    switch (format2) {
       case RGB_S3TC_DXT1_Format:
       case RGBA_S3TC_DXT1_Format:
         formatGPU = transfer === SRGBTransfer ? GPUTextureFormat.BC1RGBAUnormSRGB : GPUTextureFormat.BC1RGBAUnorm;
@@ -43584,10 +43584,10 @@ function getFormat2(texture2, device = null) {
         formatGPU = transfer === SRGBTransfer ? GPUTextureFormat.RGBA8UnormSRGB : GPUTextureFormat.RGBA8Unorm;
         break;
       default:
-        error("WebGPURenderer: Unsupported texture format.", format);
+        error("WebGPURenderer: Unsupported texture format.", format2);
     }
   } else {
-    switch (format) {
+    switch (format2) {
       case RGBAFormat:
         switch (type) {
           case ByteType:
@@ -43757,7 +43757,7 @@ function getFormat2(texture2, device = null) {
         }
         break;
       default:
-        error("WebGPURenderer: Unsupported texture format.", format);
+        error("WebGPURenderer: Unsupported texture format.", format2);
     }
   }
   return formatGPU;
@@ -45019,12 +45019,12 @@ ${snippets.join("\n")}
             textureType = `texture_depth${multisampled}_2d${texture2.isArrayTexture === true ? "_array" : ""}`;
           }
         } else if (uniform2.node.isStorageTextureNode === true) {
-          const format = getFormat2(texture2);
+          const format2 = getFormat2(texture2);
           const access = this.getStorageAccess(uniform2.node, shaderStage);
           const is3D = uniform2.node.value.is3DTexture;
           const isArrayTexture = uniform2.node.value.isArrayTexture;
           const dimension = is3D ? "3d" : `2d${isArrayTexture ? "_array" : ""}`;
-          textureType = `texture_storage_${dimension}<${format}, ${access}>`;
+          textureType = `texture_storage_${dimension}<${format2}, ${access}>`;
         } else if (texture2.isArrayTexture === true || texture2.isDataArrayTexture === true || texture2.isCompressedArrayTexture === true) {
           textureType = "texture_2d_array<f32>";
         } else if (texture2.is3DTexture === true || texture2.isData3DTexture === true) {
@@ -45412,15 +45412,15 @@ var WebGPUUtils = class {
    * @return {string} The depth/stencil GPU texture format.
    */
   getCurrentDepthStencilFormat(renderContext) {
-    let format;
+    let format2;
     if (renderContext.depthTexture !== null) {
-      format = this.getTextureFormatGPU(renderContext.depthTexture);
+      format2 = this.getTextureFormatGPU(renderContext.depthTexture);
     } else if (renderContext.depth && renderContext.stencil) {
-      format = GPUTextureFormat.Depth24PlusStencil8;
+      format2 = GPUTextureFormat.Depth24PlusStencil8;
     } else if (renderContext.depth) {
-      format = GPUTextureFormat.Depth24Plus;
+      format2 = GPUTextureFormat.Depth24Plus;
     }
-    return format;
+    return format2;
   }
   /**
    * Returns the GPU format for the given texture.
@@ -45460,13 +45460,13 @@ var WebGPUUtils = class {
    * @return {string} The GPU texture format of the default color attachment.
    */
   getCurrentColorFormat(renderContext) {
-    let format;
+    let format2;
     if (renderContext.textures !== null) {
-      format = this.getTextureFormatGPU(renderContext.textures[0]);
+      format2 = this.getTextureFormatGPU(renderContext.textures[0]);
     } else {
-      format = this.getPreferredCanvasFormat();
+      format2 = this.getPreferredCanvasFormat();
     }
-    return format;
+    return format2;
   }
   /**
    * Returns the GPU formats of all color attachments of the current render context.
@@ -45721,12 +45721,12 @@ var WebGPUAttributeUtils = class {
         };
         vertexBuffers.set(bufferAttribute2, vertexBufferLayout);
       }
-      const format = this._getVertexFormat(geometryAttribute);
+      const format2 = this._getVertexFormat(geometryAttribute);
       const offset = geometryAttribute.isInterleavedBufferAttribute === true ? geometryAttribute.offset * bytesPerElement : 0;
       vertexBufferLayout.attributes.push({
         shaderLocation: slot,
         offset,
-        format
+        format: format2
       });
     }
     return Array.from(vertexBuffers.values());
@@ -45790,9 +45790,9 @@ var WebGPUAttributeUtils = class {
     const { itemSize, normalized } = geometryAttribute;
     const ArrayType = geometryAttribute.array.constructor;
     const AttributeType2 = geometryAttribute.constructor;
-    let format;
+    let format2;
     if (itemSize === 1) {
-      format = typeArraysToVertexFormatPrefixForItemSize1.get(ArrayType);
+      format2 = typeArraysToVertexFormatPrefixForItemSize1.get(ArrayType);
     } else {
       const prefixOptions = typedAttributeToVertexFormatPrefix.get(AttributeType2) || typedArraysToVertexFormatPrefix.get(ArrayType);
       const prefix = prefixOptions[normalized ? 1 : 0];
@@ -45803,13 +45803,13 @@ var WebGPUAttributeUtils = class {
         if (paddedItemSize % 1) {
           throw new Error("THREE.WebGPUAttributeUtils: Bad vertex format item size.");
         }
-        format = `${prefix}x${paddedItemSize}`;
+        format2 = `${prefix}x${paddedItemSize}`;
       }
     }
-    if (!format) {
+    if (!format2) {
       error("WebGPUAttributeUtils: Vertex format not supported yet.");
     }
-    return format;
+    return format2;
   }
   /**
    * Utility method for handling interleaved buffer attributes correctly.
@@ -50790,11 +50790,106 @@ function _wrapNativeSuper(t2) {
 }
 
 // node_modules/polished/dist/polished.esm.js
+var ERRORS = {
+  "1": "Passed invalid arguments to hsl, please pass multiple numbers e.g. hsl(360, 0.75, 0.4) or an object e.g. rgb({ hue: 255, saturation: 0.4, lightness: 0.75 }).\n\n",
+  "2": "Passed invalid arguments to hsla, please pass multiple numbers e.g. hsla(360, 0.75, 0.4, 0.7) or an object e.g. rgb({ hue: 255, saturation: 0.4, lightness: 0.75, alpha: 0.7 }).\n\n",
+  "3": "Passed an incorrect argument to a color function, please pass a string representation of a color.\n\n",
+  "4": "Couldn't generate valid rgb string from %s, it returned %s.\n\n",
+  "5": "Couldn't parse the color string. Please provide the color as a string in hex, rgb, rgba, hsl or hsla notation.\n\n",
+  "6": "Passed invalid arguments to rgb, please pass multiple numbers e.g. rgb(255, 205, 100) or an object e.g. rgb({ red: 255, green: 205, blue: 100 }).\n\n",
+  "7": "Passed invalid arguments to rgba, please pass multiple numbers e.g. rgb(255, 205, 100, 0.75) or an object e.g. rgb({ red: 255, green: 205, blue: 100, alpha: 0.75 }).\n\n",
+  "8": "Passed invalid argument to toColorString, please pass a RgbColor, RgbaColor, HslColor or HslaColor object.\n\n",
+  "9": "Please provide a number of steps to the modularScale helper.\n\n",
+  "10": "Please pass a number or one of the predefined scales to the modularScale helper as the ratio.\n\n",
+  "11": 'Invalid value passed as base to modularScale, expected number or em string but got "%s"\n\n',
+  "12": 'Expected a string ending in "px" or a number passed as the first argument to %s(), got "%s" instead.\n\n',
+  "13": 'Expected a string ending in "px" or a number passed as the second argument to %s(), got "%s" instead.\n\n',
+  "14": 'Passed invalid pixel value ("%s") to %s(), please pass a value like "12px" or 12.\n\n',
+  "15": 'Passed invalid base value ("%s") to %s(), please pass a value like "12px" or 12.\n\n',
+  "16": "You must provide a template to this method.\n\n",
+  "17": "You passed an unsupported selector state to this method.\n\n",
+  "18": "minScreen and maxScreen must be provided as stringified numbers with the same units.\n\n",
+  "19": "fromSize and toSize must be provided as stringified numbers with the same units.\n\n",
+  "20": "expects either an array of objects or a single object with the properties prop, fromSize, and toSize.\n\n",
+  "21": "expects the objects in the first argument array to have the properties `prop`, `fromSize`, and `toSize`.\n\n",
+  "22": "expects the first argument object to have the properties `prop`, `fromSize`, and `toSize`.\n\n",
+  "23": "fontFace expects a name of a font-family.\n\n",
+  "24": "fontFace expects either the path to the font file(s) or a name of a local copy.\n\n",
+  "25": "fontFace expects localFonts to be an array.\n\n",
+  "26": "fontFace expects fileFormats to be an array.\n\n",
+  "27": "radialGradient requries at least 2 color-stops to properly render.\n\n",
+  "28": "Please supply a filename to retinaImage() as the first argument.\n\n",
+  "29": "Passed invalid argument to triangle, please pass correct pointingDirection e.g. 'right'.\n\n",
+  "30": "Passed an invalid value to `height` or `width`. Please provide a pixel based unit.\n\n",
+  "31": "The animation shorthand only takes 8 arguments. See the specification for more information: http://mdn.io/animation\n\n",
+  "32": "To pass multiple animations please supply them in arrays, e.g. animation(['rotate', '2s'], ['move', '1s'])\nTo pass a single animation please supply them in simple values, e.g. animation('rotate', '2s')\n\n",
+  "33": "The animation shorthand arrays can only have 8 elements. See the specification for more information: http://mdn.io/animation\n\n",
+  "34": "borderRadius expects a radius value as a string or number as the second argument.\n\n",
+  "35": 'borderRadius expects one of "top", "bottom", "left" or "right" as the first argument.\n\n',
+  "36": "Property must be a string value.\n\n",
+  "37": "Syntax Error at %s.\n\n",
+  "38": "Formula contains a function that needs parentheses at %s.\n\n",
+  "39": "Formula is missing closing parenthesis at %s.\n\n",
+  "40": "Formula has too many closing parentheses at %s.\n\n",
+  "41": "All values in a formula must have the same unit or be unitless.\n\n",
+  "42": "Please provide a number of steps to the modularScale helper.\n\n",
+  "43": "Please pass a number or one of the predefined scales to the modularScale helper as the ratio.\n\n",
+  "44": "Invalid value passed as base to modularScale, expected number or em/rem string but got %s.\n\n",
+  "45": "Passed invalid argument to hslToColorString, please pass a HslColor or HslaColor object.\n\n",
+  "46": "Passed invalid argument to rgbToColorString, please pass a RgbColor or RgbaColor object.\n\n",
+  "47": "minScreen and maxScreen must be provided as stringified numbers with the same units.\n\n",
+  "48": "fromSize and toSize must be provided as stringified numbers with the same units.\n\n",
+  "49": "Expects either an array of objects or a single object with the properties prop, fromSize, and toSize.\n\n",
+  "50": "Expects the objects in the first argument array to have the properties prop, fromSize, and toSize.\n\n",
+  "51": "Expects the first argument object to have the properties prop, fromSize, and toSize.\n\n",
+  "52": "fontFace expects either the path to the font file(s) or a name of a local copy.\n\n",
+  "53": "fontFace expects localFonts to be an array.\n\n",
+  "54": "fontFace expects fileFormats to be an array.\n\n",
+  "55": "fontFace expects a name of a font-family.\n\n",
+  "56": "linearGradient requries at least 2 color-stops to properly render.\n\n",
+  "57": "radialGradient requries at least 2 color-stops to properly render.\n\n",
+  "58": "Please supply a filename to retinaImage() as the first argument.\n\n",
+  "59": "Passed invalid argument to triangle, please pass correct pointingDirection e.g. 'right'.\n\n",
+  "60": "Passed an invalid value to `height` or `width`. Please provide a pixel based unit.\n\n",
+  "61": "Property must be a string value.\n\n",
+  "62": "borderRadius expects a radius value as a string or number as the second argument.\n\n",
+  "63": 'borderRadius expects one of "top", "bottom", "left" or "right" as the first argument.\n\n',
+  "64": "The animation shorthand only takes 8 arguments. See the specification for more information: http://mdn.io/animation.\n\n",
+  "65": "To pass multiple animations please supply them in arrays, e.g. animation(['rotate', '2s'], ['move', '1s'])\\nTo pass a single animation please supply them in simple values, e.g. animation('rotate', '2s').\n\n",
+  "66": "The animation shorthand arrays can only have 8 elements. See the specification for more information: http://mdn.io/animation.\n\n",
+  "67": "You must provide a template to this method.\n\n",
+  "68": "You passed an unsupported selector state to this method.\n\n",
+  "69": 'Expected a string ending in "px" or a number passed as the first argument to %s(), got %s instead.\n\n',
+  "70": 'Expected a string ending in "px" or a number passed as the second argument to %s(), got %s instead.\n\n',
+  "71": 'Passed invalid pixel value %s to %s(), please pass a value like "12px" or 12.\n\n',
+  "72": 'Passed invalid base value %s to %s(), please pass a value like "12px" or 12.\n\n',
+  "73": "Please provide a valid CSS variable.\n\n",
+  "74": "CSS variable not found and no default was provided.\n\n",
+  "75": "important requires a valid style object, got a %s instead.\n\n",
+  "76": "fromSize and toSize must be provided as stringified numbers with the same units as minScreen and maxScreen.\n\n",
+  "77": 'remToPx expects a value in "rem" but you provided it in "%s".\n\n',
+  "78": 'base must be set in "px" or "%" but you set it in "%s".\n'
+};
+function format() {
+  for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+  var a3 = args[0];
+  var b = [];
+  var c3;
+  for (c3 = 1; c3 < args.length; c3 += 1) {
+    b.push(args[c3]);
+  }
+  b.forEach(function(d2) {
+    a3 = a3.replace(/%[a-z]/, d2);
+  });
+  return a3;
+}
 var PolishedError = function(_Error) {
   _inheritsLoose(PolishedError2, _Error);
   function PolishedError2(code2) {
     var _this;
-    if (true) {
+    if (false) {
       _this = _Error.call(this, "An error occurred. See https://github.com/styled-components/polished/blob/main/src/internalHelpers/errors.md#" + code2 + " for more information.") || this;
     } else {
       for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {

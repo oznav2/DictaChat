@@ -70,6 +70,7 @@ export class PrefetchServiceImpl implements PrefetchService {
 	 * Finding 14: Maximum time for prefetch operations to prevent indefinite hangs
 	 */
 	private static readonly PREFETCH_TIMEOUT_MS = 10000;
+	private static readonly DATE_SECOND_PASS_LIMIT = 5;
 
 	/**
 	 * Prefetch context for prompt injection
@@ -149,6 +150,53 @@ export class PrefetchServiceImpl implements PrefetchService {
 					(sum, v) => sum + (typeof v === "number" ? v : 0),
 					0
 				);
+			}
+
+			// Step 2.5: Date-focused second pass for document chunks (if needed)
+			const isDateQuery = this.isHistoricalDateQuery(params.query);
+			if (isDateQuery) {
+				const hasDateInResults = searchResponse.results.some((r) =>
+					this.hasDecisionDateSignal(r.content)
+				);
+				if (!hasDateInResults) {
+					const dateStart = Date.now();
+					try {
+						const dateSearch = await this.hybridSearch.search({
+							userId: params.userId,
+							query: `${params.query} תאריך הישיבה "ניתן היום"`,
+							tiers: ["documents"],
+							limit: PrefetchServiceImpl.DATE_SECOND_PASS_LIMIT,
+							enableRerank: false,
+						});
+						timings.date_second_pass_ms = Date.now() - dateStart;
+
+						const seen = new Set(searchResponse.results.map((r) => r.memory_id));
+						const dateResults = dateSearch.results.filter((r) => !seen.has(r.memory_id));
+						if (dateResults.length > 0) {
+							const merged = [...dateResults, ...searchResponse.results];
+							searchResponse = {
+								...searchResponse,
+								results: merged.map((r, index) => ({ ...r, position: index })),
+								debug: {
+									...searchResponse.debug,
+									stage_timings_ms: {
+										...searchResponse.debug.stage_timings_ms,
+										date_second_pass_ms: timings.date_second_pass_ms,
+									},
+								},
+							};
+							logger.info(
+								{
+									added: dateResults.length,
+									total: searchResponse.results.length,
+								},
+								"[prefetch] Date-focused second pass added document results"
+							);
+						}
+					} catch (err) {
+						logger.debug("[prefetch] Date-focused second pass failed", { error: String(err) });
+					}
+				}
 			}
 
 			// Step 3: Build context injection string with token budget management
@@ -480,6 +528,76 @@ export class PrefetchServiceImpl implements PrefetchService {
 		}
 
 		return `═══ CONTEXTUAL MEMORY ═══\n\n${sections.join("\n\n")}\n\n═══════════════════════`;
+	}
+
+	private isHistoricalDateQuery(query: string): boolean {
+		if (!query) return false;
+		const dateKeywords = /\b(when)\b|מתי|תאריך|באיזה\s*תאריך|באיזה\s*יום|באיזה\s*מועד|מועד/i;
+		const currentTimeKeywords =
+			/\b(current time|time now|what time|timezone|convert|clock|local time)\b|מה\s*השעה|שעה\s*עכשיו|אזור\s*זמן|המרת?\s*זמן|שעון/i;
+		const historicalContext =
+			/\b(decision|appointed|appointment|nominated|nomination|elected|election|resigned|ruling|verdict|court|case|founded|established|announced|approved|hearing)\b|החלט(?:ה|ות)|הוחלט|מונ(?:ה|ו|תה)|מינוי|נבחר|התפטר|פסק(?:\s*דין)?|בג\"ץ|בית\s*המשפט|הוקם|נוסד|אושר|הוכרז|מינויו|מינויה|דיון|שימוע|ישיבה/i;
+		if (!dateKeywords.test(query)) return false;
+		if (currentTimeKeywords.test(query)) return false;
+		return historicalContext.test(query);
+	}
+
+	private hasDateSignal(text: string): boolean {
+		if (!text) return false;
+		const lower = text.toLowerCase();
+		if (/\b(?:19|20)\d{2}\b/.test(lower)) return true;
+		if (/\b\d{1,2}[./-]\d{1,2}[./-](?:19|20)\d{2}\b/.test(lower)) return true;
+		if (
+			/\b(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\b/.test(
+				lower
+			)
+		) {
+			return true;
+		}
+		if (
+			/(?:ינואר|פברואר|מרץ|אפריל|מאי|יוני|יולי|אוגוסט|ספטמבר|אוקטובר|נובמבר|דצמבר)/.test(
+				text
+			) ||
+			/(?:ב|ל)(?:ינואר|פברואר|מרץ|אפריל|מאי|יוני|יולי|אוגוסט|ספטמבר|אוקטובר|נובמבר|דצמבר)/.test(
+				text
+			) ||
+			/\b\d{1,2}\s+(?:ב|ל)?(?:ינואר|פברואר|מרץ|אפריל|מאי|יוני|יולי|אוגוסט|ספטמבר|אוקטובר|נובמבר|דצמבר)\s+\d{4}\b/.test(
+				text
+			)
+		) {
+			return true;
+		}
+		if (/(?:תאריך\s+הישיבה|ניתן\s+היום)/.test(text)) return true;
+		if (/(?:בתאריך|מיום|ביום)\s+\d{1,2}/.test(text)) return true;
+		return false;
+	}
+
+	private hasDecisionDateSignal(text: string): boolean {
+		if (!text) return false;
+		const lower = text.toLowerCase();
+		if (
+			/(?:תאריך\s+הישיבה|מועד\s+הדיון|הדיון\s+התקיים|תאריך\s+פסק\s+דין|מועד\s+הכרעה|ניתן\s+היום|ניתנה?\s+ביום)/.test(
+				text
+			)
+		) {
+			return true;
+		}
+		if (/\b\d{1,2}[./-]\d{1,2}[./-](?:19|20)\d{2}\b/.test(lower)) return true;
+		if (
+			/\b\d{1,2}\s+(?:ב|ל)?(?:ינואר|פברואר|מרץ|אפריל|מאי|יוני|יולי|אוגוסט|ספטמבר|אוקטובר|נובמבר|דצמבר)\s+\d{4}\b/.test(
+				text
+			)
+		) {
+			return true;
+		}
+		if (
+			/\b(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\s+\d{1,2},?\s+(?:19|20)\d{2}\b/.test(
+				lower
+			)
+		) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

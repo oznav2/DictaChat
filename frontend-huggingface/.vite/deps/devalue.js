@@ -16,11 +16,15 @@ var DevalueError = class extends Error {
   /**
    * @param {string} message
    * @param {string[]} keys
+   * @param {any} [value] - The value that failed to be serialized
+   * @param {any} [root] - The root value being serialized
    */
-  constructor(message, keys) {
+  constructor(message, keys, value, root) {
     super(message);
     this.name = "DevalueError";
     this.path = keys.join("");
+    this.value = value;
+    this.root = root;
   }
 };
 function is_primitive(thing) {
@@ -31,7 +35,7 @@ var object_proto_names = Object.getOwnPropertyNames(
 ).sort().join("\0");
 function is_plain_object(thing) {
   const proto = Object.getPrototypeOf(thing);
-  return proto === Object.prototype || proto === null || Object.getOwnPropertyNames(proto).sort().join("\0") === object_proto_names;
+  return proto === Object.prototype || proto === null || Object.getPrototypeOf(proto) === null || Object.getOwnPropertyNames(proto).sort().join("\0") === object_proto_names;
 }
 function get_type(thing) {
   return Object.prototype.toString.call(thing).slice(8, -1);
@@ -95,9 +99,6 @@ function uneval(value, replacer) {
   const keys = [];
   const custom = /* @__PURE__ */ new Map();
   function walk(thing) {
-    if (typeof thing === "function") {
-      throw new DevalueError(`Cannot stringify a function`, keys);
-    }
     if (!is_primitive(thing)) {
       if (counts.has(thing)) {
         counts.set(thing, counts.get(thing) + 1);
@@ -105,11 +106,14 @@ function uneval(value, replacer) {
       }
       counts.set(thing, 1);
       if (replacer) {
-        const str2 = replacer(thing);
+        const str2 = replacer(thing, (value2) => uneval(value2, replacer));
         if (typeof str2 === "string") {
           custom.set(thing, str2);
           return;
         }
+      }
+      if (typeof thing === "function") {
+        throw new DevalueError(`Cannot stringify a function`, keys, thing, value);
       }
       const type = get_type(thing);
       switch (type) {
@@ -119,6 +123,8 @@ function uneval(value, replacer) {
         case "Boolean":
         case "Date":
         case "RegExp":
+        case "URL":
+        case "URLSearchParams":
           return;
         case "Array":
           thing.forEach((value2, i) => {
@@ -150,20 +156,34 @@ function uneval(value, replacer) {
         case "Float64Array":
         case "BigInt64Array":
         case "BigUint64Array":
+          walk(thing.buffer);
           return;
         case "ArrayBuffer":
+          return;
+        case "Temporal.Duration":
+        case "Temporal.Instant":
+        case "Temporal.PlainDate":
+        case "Temporal.PlainTime":
+        case "Temporal.PlainDateTime":
+        case "Temporal.PlainMonthDay":
+        case "Temporal.PlainYearMonth":
+        case "Temporal.ZonedDateTime":
           return;
         default:
           if (!is_plain_object(thing)) {
             throw new DevalueError(
               `Cannot stringify arbitrary non-POJOs`,
-              keys
+              keys,
+              thing,
+              value
             );
           }
           if (enumerable_symbols(thing).length > 0) {
             throw new DevalueError(
               `Cannot stringify POJOs with symbolic keys`,
-              keys
+              keys,
+              thing,
+              value
             );
           }
           for (const key in thing) {
@@ -199,6 +219,10 @@ function uneval(value, replacer) {
         return `new RegExp(${stringify_string(thing.source)}, "${thing.flags}")`;
       case "Date":
         return `new Date(${thing.getTime()})`;
+      case "URL":
+        return `new URL(${stringify_string(thing.toString())})`;
+      case "URLSearchParams":
+        return `new URLSearchParams(${stringify_string(thing.toString())})`;
       case "Array":
         const members = (
           /** @type {any[]} */
@@ -222,20 +246,42 @@ function uneval(value, replacer) {
       case "Float64Array":
       case "BigInt64Array":
       case "BigUint64Array": {
-        const typedArray = thing;
-        return `new ${type}([${typedArray.toString()}])`;
+        let str2 = `new ${type}`;
+        if (counts.get(thing.buffer) === 1) {
+          const array = new thing.constructor(thing.buffer);
+          str2 += `([${array}])`;
+        } else {
+          str2 += `([${stringify2(thing.buffer)}])`;
+        }
+        const a = thing.byteOffset;
+        const b = a + thing.byteLength;
+        if (a > 0 || b !== thing.buffer.byteLength) {
+          const m = +/(\d+)/.exec(type)[1] / 8;
+          str2 += `.subarray(${a / m},${b / m})`;
+        }
+        return str2;
       }
       case "ArrayBuffer": {
         const ui8 = new Uint8Array(thing);
         return `new Uint8Array([${ui8.toString()}]).buffer`;
       }
+      case "Temporal.Duration":
+      case "Temporal.Instant":
+      case "Temporal.PlainDate":
+      case "Temporal.PlainTime":
+      case "Temporal.PlainDateTime":
+      case "Temporal.PlainMonthDay":
+      case "Temporal.PlainYearMonth":
+      case "Temporal.ZonedDateTime":
+        return `${type}.from(${stringify_string(thing.toString())})`;
       default:
-        const obj = `{${Object.keys(thing).map((key) => `${safe_key(key)}:${stringify2(thing[key])}`).join(",")}}`;
+        const keys2 = Object.keys(thing);
+        const obj = keys2.map((key) => `${safe_key(key)}:${stringify2(thing[key])}`).join(",");
         const proto = Object.getPrototypeOf(thing);
         if (proto === null) {
-          return Object.keys(thing).length > 0 ? `Object.assign(Object.create(null),${obj})` : `Object.create(null)`;
+          return keys2.length > 0 ? `{${obj},__proto__:null}` : `{__proto__:null}`;
         }
-        return obj;
+        return `{${obj}}`;
     }
   }
   const str = stringify2(value);
@@ -285,6 +331,11 @@ function uneval(value, replacer) {
           values.push(`new Map`);
           statements.push(
             `${name}.${Array.from(thing).map(([k, v]) => `set(${stringify2(k)}, ${stringify2(v)})`).join(".")}`
+          );
+          break;
+        case "ArrayBuffer":
+          values.push(
+            `new Uint8Array([${new Uint8Array(thing).join(",")}]).buffer`
           );
           break;
         default:
@@ -430,13 +481,16 @@ function unflatten(parsed, revivers) {
     parsed
   );
   const hydrated = Array(values.length);
+  let hydrating = null;
   function hydrate(index, standalone = false) {
     if (index === UNDEFINED) return void 0;
     if (index === NAN) return NaN;
     if (index === POSITIVE_INFINITY) return Infinity;
     if (index === NEGATIVE_INFINITY) return -Infinity;
     if (index === NEGATIVE_ZERO) return -0;
-    if (standalone) throw new Error(`Invalid input`);
+    if (standalone || typeof index !== "number") {
+      throw new Error(`Invalid input`);
+    }
     if (index in hydrated) return hydrated[index];
     const value = values[index];
     if (!value || typeof value !== "object") {
@@ -444,9 +498,20 @@ function unflatten(parsed, revivers) {
     } else if (Array.isArray(value)) {
       if (typeof value[0] === "string") {
         const type = value[0];
-        const reviver = revivers == null ? void 0 : revivers[type];
+        const reviver = revivers && Object.hasOwn(revivers, type) ? revivers[type] : void 0;
         if (reviver) {
-          return hydrated[index] = reviver(hydrate(value[1]));
+          let i = value[1];
+          if (typeof i !== "number") {
+            i = values.push(value[1]) - 1;
+          }
+          hydrating ?? (hydrating = /* @__PURE__ */ new Set());
+          if (hydrating.has(i)) {
+            throw new Error("Invalid circular reference");
+          }
+          hydrating.add(i);
+          hydrated[index] = reviver(hydrate(i));
+          hydrating.delete(i);
+          return hydrated[index];
         }
         switch (type) {
           case "Date":
@@ -493,17 +558,44 @@ function unflatten(parsed, revivers) {
           case "Float64Array":
           case "BigInt64Array":
           case "BigUint64Array": {
+            if (values[value[1]][0] !== "ArrayBuffer") {
+              throw new Error("Invalid data");
+            }
             const TypedArrayConstructor = globalThis[type];
-            const base64 = value[1];
-            const arraybuffer = decode64(base64);
-            const typedArray = new TypedArrayConstructor(arraybuffer);
-            hydrated[index] = typedArray;
+            const buffer = hydrate(value[1]);
+            const typedArray = new TypedArrayConstructor(buffer);
+            hydrated[index] = value[2] !== void 0 ? typedArray.subarray(value[2], value[3]) : typedArray;
             break;
           }
           case "ArrayBuffer": {
             const base64 = value[1];
+            if (typeof base64 !== "string") {
+              throw new Error("Invalid ArrayBuffer encoding");
+            }
             const arraybuffer = decode64(base64);
             hydrated[index] = arraybuffer;
+            break;
+          }
+          case "Temporal.Duration":
+          case "Temporal.Instant":
+          case "Temporal.PlainDate":
+          case "Temporal.PlainTime":
+          case "Temporal.PlainDateTime":
+          case "Temporal.PlainMonthDay":
+          case "Temporal.PlainYearMonth":
+          case "Temporal.ZonedDateTime": {
+            const temporalName = type.slice(9);
+            hydrated[index] = Temporal[temporalName].from(value[1]);
+            break;
+          }
+          case "URL": {
+            const url = new URL(value[1]);
+            hydrated[index] = url;
+            break;
+          }
+          case "URLSearchParams": {
+            const url = new URLSearchParams(value[1]);
+            hydrated[index] = url;
             break;
           }
           default:
@@ -522,6 +614,9 @@ function unflatten(parsed, revivers) {
       const object = {};
       hydrated[index] = object;
       for (const key in value) {
+        if (key === "__proto__") {
+          throw new Error("Cannot parse an object with a `__proto__` property");
+        }
         const n = value[key];
         object[key] = hydrate(n);
       }
@@ -544,15 +639,12 @@ function stringify(value, reducers) {
   const keys = [];
   let p = 0;
   function flatten(thing) {
-    if (typeof thing === "function") {
-      throw new DevalueError(`Cannot stringify a function`, keys);
-    }
-    if (indexes.has(thing)) return indexes.get(thing);
     if (thing === void 0) return UNDEFINED;
     if (Number.isNaN(thing)) return NAN;
     if (thing === Infinity) return POSITIVE_INFINITY;
     if (thing === -Infinity) return NEGATIVE_INFINITY;
     if (thing === 0 && 1 / thing < 0) return NEGATIVE_ZERO;
+    if (indexes.has(thing)) return indexes.get(thing);
     const index2 = p++;
     indexes.set(thing, index2);
     for (const { key, fn } of custom) {
@@ -561,6 +653,9 @@ function stringify(value, reducers) {
         stringified[index2] = `["${key}",${flatten(value2)}]`;
         return index2;
       }
+    }
+    if (typeof thing === "function") {
+      throw new DevalueError(`Cannot stringify a function`, keys, thing, value);
     }
     let str = "";
     if (is_primitive(thing)) {
@@ -579,6 +674,12 @@ function stringify(value, reducers) {
         case "Date":
           const valid = !isNaN(thing.getDate());
           str = `["Date","${valid ? thing.toISOString() : ""}"]`;
+          break;
+        case "URL":
+          str = `["URL",${stringify_string(thing.toString())}]`;
+          break;
+        case "URLSearchParams":
+          str = `["URLSearchParams",${stringify_string(thing.toString())}]`;
           break;
         case "RegExp":
           const { source, flags } = thing;
@@ -628,8 +729,14 @@ function stringify(value, reducers) {
         case "BigInt64Array":
         case "BigUint64Array": {
           const typedArray = thing;
-          const base64 = encode64(typedArray.buffer);
-          str = '["' + type + '","' + base64 + '"]';
+          str = '["' + type + '",' + flatten(typedArray.buffer);
+          const a = thing.byteOffset;
+          const b = a + thing.byteLength;
+          if (a > 0 || b !== typedArray.buffer.byteLength) {
+            const m = +/(\d+)/.exec(type)[1] / 8;
+            str += `,${a / m},${b / m}`;
+          }
+          str += "]";
           break;
         }
         case "ArrayBuffer": {
@@ -638,17 +745,31 @@ function stringify(value, reducers) {
           str = `["ArrayBuffer","${base64}"]`;
           break;
         }
+        case "Temporal.Duration":
+        case "Temporal.Instant":
+        case "Temporal.PlainDate":
+        case "Temporal.PlainTime":
+        case "Temporal.PlainDateTime":
+        case "Temporal.PlainMonthDay":
+        case "Temporal.PlainYearMonth":
+        case "Temporal.ZonedDateTime":
+          str = `["${type}",${stringify_string(thing.toString())}]`;
+          break;
         default:
           if (!is_plain_object(thing)) {
             throw new DevalueError(
               `Cannot stringify arbitrary non-POJOs`,
-              keys
+              keys,
+              thing,
+              value
             );
           }
           if (enumerable_symbols(thing).length > 0) {
             throw new DevalueError(
               `Cannot stringify POJOs with symbolic keys`,
-              keys
+              keys,
+              thing,
+              value
             );
           }
           if (Object.getPrototypeOf(thing) === null) {
@@ -690,6 +811,7 @@ function stringify_primitive2(thing) {
   return String(thing);
 }
 export {
+  DevalueError,
   parse,
   stringify,
   uneval,

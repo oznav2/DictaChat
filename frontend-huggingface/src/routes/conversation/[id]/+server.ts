@@ -124,6 +124,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 		inputs: newPrompt,
 		id: messageId,
 		is_retry: isRetry,
+		clientUserMessageId,
+		clientAssistantMessageId,
 		selectedMcpServerNames,
 		selectedMcpServers,
 	} = z
@@ -136,6 +138,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 					.transform((s) => s.replace(/\r\n/g, "\n"))
 			),
 			is_retry: z.optional(z.boolean()),
+			clientUserMessageId: z.string().uuid().refine(isMessageId).optional(),
+			clientAssistantMessageId: z.string().uuid().refine(isMessageId).optional(),
 			selectedMcpServerNames: z.optional(z.array(z.string())),
 			selectedMcpServers: z
 				.optional(
@@ -251,7 +255,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 					createdAt: new Date(),
 					updatedAt: new Date(),
 				},
-				messageId
+				messageId,
+				clientUserMessageId
 			);
 			messageToWriteToId = addChildren(
 				conv,
@@ -261,7 +266,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 					createdAt: new Date(),
 					updatedAt: new Date(),
 				},
-				newUserMessageId
+				newUserMessageId,
+				clientAssistantMessageId
 			);
 			messagesForPrompt = buildSubtree(conv, newUserMessageId);
 		} else if (messageToRetry.from === "assistant") {
@@ -270,7 +276,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 			messageToWriteToId = addSibling(
 				conv,
 				{ from: "assistant", content: "", createdAt: new Date(), updatedAt: new Date() },
-				messageId
+				messageId,
+				clientAssistantMessageId
 			);
 			messagesForPrompt = buildSubtree(conv, messageId);
 			messagesForPrompt.pop(); // don't need the latest assistant message in the prompt since we're retrying it
@@ -287,7 +294,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			},
-			messageId
+			messageId,
+			clientUserMessageId
 		);
 
 		messageToWriteToId = addChildren(
@@ -298,7 +306,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			},
-			newUserMessageId
+			newUserMessageId,
+			clientAssistantMessageId
 		);
 		// build the prompt from the user message
 		messagesForPrompt = buildSubtree(conv, newUserMessageId);
@@ -369,6 +378,19 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 			async function update(event: MessageUpdate) {
 				if (!messageToWriteTo || !conv) {
 					throw Error("No message or conversation to write events to");
+				}
+				if (
+					event.type === MessageUpdateType.FinalAnswer ||
+					event.type === MessageUpdateType.Memory
+				) {
+					logger.info(
+						{
+							conversationId: convId.toString(),
+							messageId: messageToWriteTo.id,
+							updateType: event.type,
+						},
+						"[stream] message update"
+					);
 				}
 
 				// Add token to content or skip if empty

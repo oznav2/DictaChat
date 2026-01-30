@@ -1,26 +1,26 @@
 ============================= test session starts =============================
 platform: node v20.18.1
 test framework: vitest
-timestamp: 2026-01-21T22:00:09.174Z
+timestamp: 2026-01-28T09:35:54.713Z
 rootdir: /home/ilan/BricksLLM/frontend-huggingface
 
 collecting ... collected 15 items
 
-test_edge_cases::test_empty_string_content PASSED (1ms) [empty_content_stored=1.000, empty_search_results=1.000] [  7%]
-test_edge_cases::test_whitespace_only_content PASSED (2ms) [whitespace_variants=4.000, stored_count=4.000] [ 13%]
-test_edge_cases::test_very_long_content PASSED (33ms) [content_length=11067.000, content_stored=1.000, search_found=1.000] [ 20%]
-test_edge_cases::test_content_size_limits PASSED (22ms) [tested_sizes=5.000, stored_sizes=5.000, max_stored_size=50000.000] [ 27%]
-test_edge_cases::test_unicode_content PASSED (12ms) [unicode_variants=6.000, stored_count=6.000, content_matches=6.000] [ 33%]
-test_edge_cases::test_special_characters PASSED (2ms) [special_char_variants=6.000, stored_count=6.000] [ 40%]
-test_edge_cases::test_hebrew_rtl_markers PASSED (11ms) [rtl_variants=4.000, stored_count=4.000, hebrew_search_results=3.000] [ 47%]
-test_edge_cases::test_hebrew_numbers_mixed PASSED (6ms) [mixed_variants=5.000, exact_matches=5.000] [ 53%]
+test_edge_cases::test_empty_string_content PASSED (2ms) [empty_content_stored=1.000, empty_search_results=1.000] [  7%]
+test_edge_cases::test_whitespace_only_content PASSED (1ms) [whitespace_variants=4.000, stored_count=4.000] [ 13%]
+test_edge_cases::test_very_long_content PASSED (19ms) [content_length=11067.000, content_stored=1.000, search_found=1.000] [ 20%]
+test_edge_cases::test_content_size_limits PASSED (5ms) [tested_sizes=5.000, stored_sizes=5.000, max_stored_size=50000.000] [ 27%]
+test_edge_cases::test_unicode_content PASSED (2ms) [unicode_variants=6.000, stored_count=6.000, content_matches=6.000] [ 33%]
+test_edge_cases::test_special_characters PASSED (1ms) [special_char_variants=6.000, stored_count=6.000] [ 40%]
+test_edge_cases::test_hebrew_rtl_markers PASSED (1ms) [rtl_variants=4.000, stored_count=4.000, hebrew_search_results=3.000] [ 47%]
+test_edge_cases::test_hebrew_numbers_mixed PASSED (2ms) [mixed_variants=5.000, exact_matches=5.000] [ 53%]
 test_edge_cases::test_numeric_content PASSED (1ms) [numeric_variants=8.000, exact_matches=8.000] [ 60%]
-test_edge_cases::test_id_format_validation PASSED (1ms) [tested_ids=10.000, valid_ids=10.000, formats_detected=5.000] [ 67%]
-test_edge_cases::test_duplicate_id_handling PASSED (0ms) [final_content=second, collection_count=1.000] [ 73%]
-test_edge_cases::test_embedding_dimension_validation PASSED (1ms) [embedding_dim=1024.000, expected_dim=1024.000, is_valid=1.000, is_normalized=1.000] [ 80%]
-test_edge_cases::test_rapid_concurrent_adds PASSED (27ms) [items_added=100.000, final_count=100.000, duration_ms=27.000, items_per_second=3703.704] [ 87%]
-test_edge_cases::test_rapid_search_operations PASSED (12ms) [searches_performed=20.000, total_results=100.000, avg_results_per_search=5.000, duration_ms=11.000, searches_per_second=1818.182] [ 93%]
-test_edge_cases::test_edge_cases PASSED (3ms) [edge_cases_tested=6.000, stored_successfully=6.000, search_queries_tested=5.000, search_queries_handled=5.000, robustness_score=1.000] [100%]
+test_edge_cases::test_id_format_validation PASSED (0ms) [tested_ids=10.000, valid_ids=10.000, formats_detected=5.000] [ 67%]
+test_edge_cases::test_duplicate_id_handling PASSED (1ms) [final_content=second, collection_count=1.000] [ 73%]
+test_edge_cases::test_embedding_dimension_validation PASSED (0ms) [embedding_dim=1024.000, expected_dim=1024.000, is_valid=1.000, is_normalized=1.000] [ 80%]
+test_edge_cases::test_rapid_concurrent_adds PASSED (6ms) [items_added=100.000, final_count=100.000, duration_ms=6.000, items_per_second=16666.667] [ 87%]
+test_edge_cases::test_rapid_search_operations PASSED (4ms) [searches_performed=20.000, total_results=100.000, avg_results_per_search=5.000, duration_ms=4.000, searches_per_second=5000.000] [ 93%]
+test_edge_cases::test_edge_cases PASSED (4ms) [edge_cases_tested=6.000, stored_successfully=6.000, search_queries_tested=5.000, search_queries_handled=5.000, robustness_score=1.000] [100%]
 
 ============================== benchmark summary ==============================
 
@@ -53,12 +53,12 @@ Metrics Summary:
   is_normalized: avg=1.000, min=1.000, max=1.000
   items_added: avg=100.000, min=100.000, max=100.000
   final_count: avg=100.000, min=100.000, max=100.000
-  duration_ms: avg=19.000, min=11.000, max=27.000
-  items_per_second: avg=3703.704, min=3703.704, max=3703.704
+  duration_ms: avg=5.000, min=4.000, max=6.000
+  items_per_second: avg=16666.667, min=16666.667, max=16666.667
   searches_performed: avg=20.000, min=20.000, max=20.000
   total_results: avg=100.000, min=100.000, max=100.000
   avg_results_per_search: avg=5.000, min=5.000, max=5.000
-  searches_per_second: avg=1818.182, min=1818.182, max=1818.182
+  searches_per_second: avg=5000.000, min=5000.000, max=5000.000
   edge_cases_tested: avg=6.000, min=6.000, max=6.000
   stored_successfully: avg=6.000, min=6.000, max=6.000
   search_queries_tested: avg=5.000, min=5.000, max=5.000
@@ -66,5 +66,5 @@ Metrics Summary:
   robustness_score: avg=1.000, min=1.000, max=1.000
 
 ============================== test results ===================================
-15 passed, 0 failed in 0.18s
+15 passed, 0 failed in 0.08s
 ===============================================================================

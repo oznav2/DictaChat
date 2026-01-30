@@ -24,7 +24,7 @@
  	 	 {{- "\n" -}} 
  	 	 {{- tool | tojson -}} 
  	 {%- endfor -%} 
- 	 {{- "\n</tools>\n\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\n<tool_call>\n{\"name\": <function-name>, \"arguments\": <args-json-object>}\n</tool_call>" -}} 
+	 {{- "\n</tools>\n\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\n<tool_call>\n{\"name\": <function-name>, \"arguments\": <args-json-object>}\n</tool_call>\nDo NOT output a {\\\"tool_calls\\\": ...} wrapper when using XML tool_call tags." -}} 
  {%- endif -%} 
  {{- "<|im_end|>" -}} 
  {%- for message in messages -%} 

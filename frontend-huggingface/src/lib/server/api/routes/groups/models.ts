@@ -1,9 +1,12 @@
-import { Elysia, status } from "elysia";
-import { refreshModels, lastModelRefreshSummary } from "$lib/server/models";
 import type { BackendModel } from "$lib/server/models";
-import { authPlugin } from "../../authPlugin";
+
+import { Elysia, status } from "elysia";
+
 import { authCondition } from "$lib/server/auth";
 import { collections } from "$lib/server/database";
+import { lastModelRefreshSummary, models, refreshModels } from "$lib/server/models";
+
+import { authPlugin } from "../../authPlugin";
 
 export type GETModelsResponse = Array<{
 	id: string;
@@ -39,9 +42,8 @@ export const modelGroup = new Elysia().group("/models", (app) =>
 	app
 		.get("/", async () => {
 			try {
-				const { models } = await import("$lib/server/models");
 				return models
-					.filter((m) => m.unlisted == false)
+					.filter((m) => !m.unlisted)
 					.map((model) => ({
 						id: model.id,
 						name: model.name,
@@ -65,7 +67,7 @@ export const modelGroup = new Elysia().group("/models", (app) =>
 						hasInferenceAPI: model.hasInferenceAPI,
 						isRouter: model.isRouter,
 					})) satisfies GETModelsResponse;
-			} catch (e) {
+			} catch (_err) {
 				// Return empty list instead of crashing the whole page
 				return [] as GETModelsResponse;
 			}
@@ -76,10 +78,10 @@ export const modelGroup = new Elysia().group("/models", (app) =>
 		.group("/refresh", (app) =>
 			app.use(authPlugin).post("", async ({ locals }) => {
 				if (!locals.user && !locals.sessionId) {
-					throw status(401, "Unauthorized");
+					return status(401, "Unauthorized");
 				}
 				if (!locals.isAdmin) {
-					throw status(403, "Admin privileges required");
+					return status(403, "Admin privileges required");
 				}
 
 				const previous = lastModelRefreshSummary;
@@ -104,36 +106,35 @@ export const modelGroup = new Elysia().group("/models", (app) =>
 									}
 								: null,
 					};
-				} catch (err) {
-					throw status(502, "Model refresh failed");
+				} catch (_err) {
+					return status(502, "Model refresh failed");
 				}
 			})
 		)
 		.group("/:namespace/:model?", (app) =>
 			app
-				.derive(async ({ params, error }) => {
+				.derive(async ({ params }) => {
 					let modelId: string = params.namespace;
 					if (params.model) {
 						modelId += "/" + params.model;
 					}
 					try {
-						const { models } = await import("$lib/server/models");
 						const model = models.find((m) => m.id === modelId);
 						if (!model || model.unlisted) {
-							return error(404, "Model not found");
+							return status(404, "Model not found");
 						}
 						return { model };
-					} catch (e) {
-						return error(500, "Models not available");
+					} catch (_err) {
+						return status(500, "Models not available");
 					}
 				})
 				.get("/", ({ model }) => {
 					return model;
 				})
 				.use(authPlugin)
-				.post("/subscribe", async ({ locals, model, error }) => {
+				.post("/subscribe", async ({ locals, model }) => {
 					if (!locals.sessionId) {
-						return error(401, "Unauthorized");
+						return status(401, "Unauthorized");
 					}
 					await collections.settings.updateOne(
 						authCondition(locals),

@@ -15,6 +15,7 @@
 	import IconMoon from "$lib/components/icons/IconMoon.svelte";
 	import { switchTheme, subscribeToTheme } from "$lib/switchTheme";
 	import { isAborted } from "$lib/stores/isAborted";
+	import { afterNavigate } from "$app/navigation";
 	import { onDestroy, onMount } from "svelte";
 
 	import NavConversationItem from "./NavConversationItem.svelte";
@@ -56,7 +57,6 @@
 	}: Props = $props();
 
 	let hasMore = $state(true);
-	let userPollInterval: ReturnType<typeof setInterval> | null = null;
 
 	function handleNewChatClick(e: MouseEvent) {
 		isAborted.set(true);
@@ -217,6 +217,9 @@
 	}
 
 	async function pollUser() {
+		if (document.visibilityState !== "visible") {
+			return;
+		}
 		try {
 			const nextUser = await client.user.get().then(handleResponse);
 			user = nextUser;
@@ -228,15 +231,31 @@
 	onMount(() => {
 		if (!browser) return;
 		pollUser();
-		userPollInterval = setInterval(pollUser, 5000);
+		const handleVisibility = () => {
+			if (document.visibilityState === "visible") {
+				void pollUser();
+			}
+		};
+		const handleFocus = () => {
+			void pollUser();
+		};
+		window.addEventListener("focus", handleFocus);
+		document.addEventListener("visibilitychange", handleVisibility);
+
+		return () => {
+			window.removeEventListener("focus", handleFocus);
+			document.removeEventListener("visibilitychange", handleVisibility);
+		};
+	});
+
+	afterNavigate(() => {
+		if (browser) {
+			void pollUser();
+		}
 	});
 
 	onDestroy(() => {
 		unsubscribeTheme?.();
-		if (userPollInterval) {
-			clearInterval(userPollInterval);
-			userPollInterval = null;
-		}
 		if (!browser) return;
 
 		window.removeEventListener("pointermove", handlePointerMove);
@@ -299,7 +318,11 @@
 				>
 
 				<img
-					src="https://huggingface.co/api/users/{user.username}/avatar?redirect=true"
+					src={
+						user?.username
+							? `https://huggingface.co/api/users/${user.username}/avatar?redirect=true`
+							: undefined
+					}
 					class="ml-auto size-4 rounded-full border bg-gray-500 dark:border-white/40"
 					alt=""
 				/>
@@ -317,7 +340,7 @@
 			>
 		</a>
 
-		{#if user?.username || user?.email}
+		{#if page.data.singleUserAdminEnabled || user?.username || user?.email}
 			<button
 				onclick={() => (showMcpModal = true)}
 				class="flex h-9 flex-none items-center gap-1.5 rounded-lg pl-2.5 pr-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"

@@ -1,6 +1,6 @@
 // Added regression test to ensure Docling uses stored message file path.
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import type { Message } from "$lib/types/Message";
 import type { MessageFile } from "$lib/types/Message";
 
@@ -23,11 +23,29 @@ vi.mock("fs/promises", () => ({
 }));
 
 describe("preprocessMessages (Docling path)", () => {
+	const originalUploadsDir = process.env.UPLOADS_DIR;
+	const originalDockerEnv = process.env.DOCKER_ENV;
+
 	beforeEach(() => {
 		downloadFileMock.mockReset();
 		existsSyncMock.mockReset();
 		mkdirMock.mockReset();
 		writeFileMock.mockReset();
+		process.env.UPLOADS_DIR = "/app/uploads";
+		process.env.DOCKER_ENV = "true";
+	});
+
+	afterEach(() => {
+		if (originalUploadsDir === undefined) {
+			delete process.env.UPLOADS_DIR;
+		} else {
+			process.env.UPLOADS_DIR = originalUploadsDir;
+		}
+		if (originalDockerEnv === undefined) {
+			delete process.env.DOCKER_ENV;
+		} else {
+			process.env.DOCKER_ENV = originalDockerEnv;
+		}
 	});
 
 	it("preserves message-provided file.path when GridFS metadata path is missing", async () => {

@@ -1,10 +1,10 @@
 import {
   false_default,
   true_default
-} from "./chunk-CNXG7EOH.js";
+} from "./chunk-2GRV7DLA.js";
 import "./chunk-6LNZPZHA.js";
 export {
   true_default as BROWSER,
-  false_default as DEV,
+  true_default as DEV,
   false_default as NODE
 };

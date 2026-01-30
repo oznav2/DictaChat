@@ -1,7 +1,714 @@
-<!-- Updated: v0.2.46 ENHANCED TOOL RESULT INGESTION - January 25, 2026 -->
+<!-- Updated: v0.3.00 TOOL CALL STREAMING GUARD - January 30, 2026 -->
 # Project Status
 
-**Last Updated**: January 25, 2026 (v0.2.46 - Enhanced Tool Result Ingestion)
+**Last Updated**: January 30, 2026 (v0.3.00 - Tool Call Streaming Guard)
+
+---
+
+## ✅ TOOL CALL STREAMING GUARD (v0.3.00 - January 30, 2026)
+
+**Goal**: Prevent XML tool calls from leaking to the UI and ensure tool execution by waiting for a complete closing tag before parsing.
+
+**Root Cause**: Streaming attempted tool_call parsing based on buffer size alone, so the parser ran before `</tool_call>` arrived. This returned null/empty results, resumed streaming, and exposed raw `<tool_call>` content to users while skipping tool execution.
+
+**Changes**:
+1. **Streaming guard**: Added a `shouldAttemptToolCallParse` helper to only parse XML tool calls once the closing tag is present.
+2. **Run-time integration**: Tool call parsing now uses the guard instead of a length-only threshold.
+3. **Regression test**: Added a unit test covering the XML closing-tag guard.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/__tests__/unit/toolCallStreaming.test.ts`
+
+---
+
+## ✅ TOOL CALL INLINE FALLBACK (v0.2.99 - January 29, 2026)
+
+**Goal**: Ensure tool calls execute even if the worker parser returns `xml-parse-failed` (e.g., due to stale worker bundle).
+
+**Root Cause**: The worker parser can return a failure result even when the inline parser (current code) can parse repaired payloads. This prevented tool execution despite valid tool_call content.
+
+**Changes**:
+1. **Inline fallback**: When worker returns no tool calls and errors, re-run inline parsing and prefer its result.
+2. **Runtime use**: MCP streaming now enables inline fallback when using the worker.
+3. **Regression test**: Added a test that mocks worker failure and asserts inline fallback succeeds.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/ToolCallCodec.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/__tests__/unit/toolCallCodec.test.ts`
+
+---
+
+## ✅ TOOL CALL QUOTE REPAIR (v0.2.98 - January 29, 2026)
+
+**Goal**: Prevent tool calls from failing when model emits unescaped quotes inside JSON strings.
+
+**Root Cause**: The model’s `<tool_call>` payload includes quoted phrases like `"אדם, טבע ודין"` inside a JSON string without escaping the inner quotes, causing JSON5 parse failure and `xml-parse-failed`.
+
+**Changes**:
+1. **Codec repair**: Escape unescaped quote characters inside quoted strings using a delimiter-aware heuristic.
+2. **Regression test**: Added a unit test that reproduces unescaped quotes in XML tool_call payloads.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/ToolCallCodec.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/__tests__/unit/toolCallCodec.test.ts`
+
+---
+
+## ✅ TOOL CALL NEWLINE REPAIR (v0.2.97 - January 29, 2026)
+
+**Goal**: Ensure tool calls don’t fail to parse when model outputs unescaped newlines inside JSON strings.
+
+**Root Cause**: The model emitted `<tool_call>` with JSON containing raw newline characters inside quoted strings. JSON5 rejects this, so the ToolCallCodec failed with `xml-parse-failed`, and the tool was never executed.
+
+**Changes**:
+1. **Codec repair**: Escape newlines and line separators inside quoted strings during tool-call preprocessing.
+2. **Regression test**: Added a unit test that reproduces the failure and verifies repair.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/ToolCallCodec.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/__tests__/unit/toolCallCodec.test.ts`
+
+---
+
+## ✅ MCP PANEL VISIBILITY FIX (v0.2.96 - January 29, 2026)
+
+**Goal**: Ensure the MCP controls are visible on initial page load even before servers finish loading.
+
+**Root Cause**: The tools area was hidden when `$allMcpServers` was empty. On first render (SSR/hydration) the store starts empty until `refreshMcpServers()` resolves, so the MCP panel never rendered. If the fetch failed, the panel stayed hidden permanently.
+
+**Changes**:
+1. **Tools area display**: Render tools area whenever the model supports tools (even if servers are empty).
+2. **Loading/empty state**: MCP submenu now shows “loading” or “no servers configured” placeholders, keeping the UI discoverable.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/components/chat/ChatInput.svelte`
+
+---
+
+## ✅ NO-HALLUCINATION DATE SAFETY (v0.2.95 - January 29, 2026)
+
+**Goal**: Prevent the assistant from inventing dates when memory doesn’t contain an explicit hearing/verdict date.
+
+**Changes**:
+1. **MCP guard**: If a date query lacks grounded date signals and tools are unavailable/blocked, return a safe “not found in documents” response instead of generating.
+2. **Fallback guard**: Default generation path now returns a safe response for date queries missing explicit dates, instead of letting the model guess.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/index.ts`
+
+---
+
+## ✅ STRICT DATE SIGNALS FOR VERDICT QUERIES (v0.2.94 - January 29, 2026)
+
+**Goal**: Prevent false positives from bare years (e.g., citations like 2023) so date queries don’t skip tools or second‑pass retrieval.
+
+**Changes**:
+1. **Strict date signal**: For decision/hearing date queries, require explicit date phrases or full day‑month‑year patterns (not just a year).
+2. **Prefetch alignment**: Date second‑pass now triggers when only vague dates are present, ensuring “תאריך הישיבה / ניתן היום” chunks are retrieved.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+- `frontend-huggingface/src/lib/server/memory/services/PrefetchServiceImpl.ts`
+
+---
+
+## ✅ DATE DISAMBIGUATION PROMPTING (v0.2.93 - January 29, 2026)
+
+**Goal**: Prevent mixing hearing date vs verdict date when both appear in the same document context.
+
+**Changes**:
+1. **Disambiguation hint**: Inject a Hebrew/English prompt instruction when memory context contains both “תאריך הישיבה” and “ניתן היום”, telling the model how to map user intent to the correct date.
+2. **Safety fallback**: If the question is ambiguous, instruct the model to mention both dates.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+
+---
+
+## ✅ DATE SECOND PASS FOR DOCUMENT CHUNKS (v0.2.92 - January 29, 2026)
+
+**Goal**: Ensure hearing/decision dates embedded in documents are retrieved even when initial top‑k misses them.
+
+**Changes**:
+1. **Second retrieval pass**: For historical date queries, run a document‑only search keyed on “תאריך הישיבה” and “ניתן היום” when the first pass lacks date signals.
+2. **Result prioritization**: Date‑focused document hits are merged to the front of the prefetch results for prompt injection.
+3. **Date signal detection**: Added local date‑signal detection to decide when the second pass is needed.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/memory/services/PrefetchServiceImpl.ts`
+
+---
+
+## ✅ DATE QUERY MEMORY BOOST + HEBREW DATE DETECTION (v0.2.91 - January 29, 2026)
+
+**Goal**: Ensure date-bearing document chunks are retrieved for date follow‑up questions in Hebrew.
+
+**Changes**:
+1. **Memory prefetch boost**: For historical date queries, expand the retrieval query with Hebrew date hints and raise the context limit floor.
+2. **Hebrew date detection**: Recognize Hebrew month names with prefixes (ל/ב), day‑month‑year patterns, and phrases like “תאריך הישיבה” / “ניתן היום”.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/memoryIntegration.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+
+---
+
+## ✅ DATE QUERY DETECTION EXPANSION (v0.2.90 - January 29, 2026)
+
+**Goal**: Ensure Hebrew date‑worded follow‑ups trigger date query gating so tools are allowed when memory lacks dates.
+
+**Changes**:
+1. **Date keywords**: Added Hebrew date phrases (e.g., "תאריך", "באיזה תאריך", "מועד") to historical date detection.
+2. **Context keywords**: Added hearing context terms (e.g., "דיון", "שימוע", "ישיבה") so date questions about hearings are recognized.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/toolFilter.ts`
+
+---
+
+## ✅ LEGAL MEMORY-FIRST GATING OVERRIDE (v0.2.89 - January 29, 2026)
+
+**Goal**: Prefer ingested memory/documents over external search for legal decision queries when memory confidence is high.
+
+**Changes**:
+1. **Tool gating override**: For legal queries, if memory confidence is high/medium and results include document/memory_bank tiers, reduce external search tools instead of forcing search.
+2. **Gating signal**: Added `memoryHasDocumentTier` to tool gating inputs.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/toolGatingDecision.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+
+---
+
+## ✅ THINK-ONLY RE-PROMPT FOR FINAL ANSWER (v0.2.88 - January 29, 2026)
+
+**Goal**: When the model outputs only `<think>` content, re-prompt once for a clean final answer instead of reusing the think text.
+
+**Changes**:
+1. **Re-prompt flow**: Detect think-only responses and issue a single repair prompt to produce a final answer without reasoning or tool calls.
+2. **Fallback message**: If the repair still fails, return a brief user-facing error message.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+
+---
+
+## ✅ THINK-ONLY ANSWER FALLBACK (v0.2.87 - January 29, 2026)
+
+**Goal**: Prevent empty answers when the model outputs only a `<think>` block with no post‑think response.
+
+**Changes**:
+1. **Think-only fallback**: Detect responses that contain only `<think>` content and recover the inner text as the final answer.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+
+---
+
+## ✅ RETRIEVAL LATENCY DEBUG HASH GUARD (v0.2.86 - January 29, 2026)
+
+**Goal**: Avoid redundant latency metric updates by only appending when retrieval debug data changes.
+
+**Changes**:
+1. **Hash guard**: Added stable hashing for `debugData` and skip metric updates when the hash is unchanged.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/components/memory/RetrievalLatencyPanel.svelte`
+
+---
+
+## ✅ RETRIEVAL LATENCY EFFECT LOOP FIX (v0.2.85 - January 29, 2026)
+
+**Goal**: Stop Svelte `effect_update_depth_exceeded` loops and UI sluggishness caused by retrieval latency metrics updates.
+
+**Changes**:
+1. **Untracked metrics update**: Wrapped latency metric updates in `untrack()` so the effect depends only on `debugData`, preventing reactive self-trigger loops.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/components/memory/RetrievalLatencyPanel.svelte`
+
+---
+
+## ✅ ENV AUDIT REPORT (v0.2.84 - January 29, 2026)
+
+**Goal**: Provide a comprehensive audit of environment variables across `.env`, code, Dockerfiles, and docker-compose for operational clarity.
+
+**Changes**:
+1. **Env audit report**: Generated `env_audit.md` with per-variable defaults, purpose, latency impact, and variants.
+2. **Service mapping**: Included per-service environment blocks and compose interpolation variables.
+3. **Build-time coverage**: Documented Dockerfile ARG/ENV values and build-time variables.
+
+**Files Added**:
+- `env_audit.md`
+
+---
+
+## ✅ MEMORY UI RESET DEDUP + STABLE FALLBACK TIMESTAMPS (v0.2.83 - January 29, 2026)
+
+**Goal**: Stop Svelte `effect_update_depth_exceeded` loops and UI sluggishness after final answers by deduping memory processing resets and avoiding unstable timestamps.
+
+**Changes**:
+1. **Reset dedup**: Added a single reset scheduler in the conversation page to coalesce repeated reset timers and clear pending resets on stream finish.
+2. **Idempotent reset**: `memoryUi.resetProcessing()` now early‑returns when already idle and no history seeding is needed, avoiding no‑op store churn.
+3. **Stable fallback timestamps**: Memory processing fallback steps now use `memoryMeta.created_at` or message timestamps instead of `Date.now()` to prevent reactive thrash.
+
+**Files Modified**:
+- `frontend-huggingface/src/routes/conversation/[id]/+page.svelte`
+- `frontend-huggingface/src/lib/stores/memoryUi.ts`
+- `frontend-huggingface/src/lib/components/chat/ChatMessage.svelte`
+
+---
+
+## ✅ DEV BROWSER CONSOLE LOG CAPTURE (v0.2.82 - January 29, 2026)
+
+**Goal**: Capture live browser console logs into `.logs/console.log` during dev runs.
+
+**Changes**:
+1. **Console log file**: `start-dev.sh` now ensures `.logs/console.log` is created/cleared on startup.
+2. **Browser tools polling**: Added a background poller that fetches console logs/errors from the Browser Tools Server every 5 seconds and appends JSON lines.
+3. **Browser tools auto-start**: `start-dev.sh` now attempts to launch `@agentdeskai/browser-tools-server` in Windows (configurable) and waits for it to become reachable before polling.
+4. **Manual paste capture**: Added a FIFO pipe `.logs/console.paste` to append extension-scope errors into `console.log` when pasted.
+5. **Env overrides**: Supports `BROWSER_TOOLS_HOST`, `BROWSER_TOOLS_HOSTS`, `BROWSER_TOOLS_PORT`, `BROWSER_TOOLS_POLL_INTERVAL`, `BROWSER_TOOLS_AUTO_START`, and `BROWSER_TOOLS_START_TIMEOUT`.
+
+**Files Modified**:
+- `start-dev.sh`
+
+---
+
+## ✅ TRACE PANEL RUNES PROPS FIX (v0.2.81 - January 29, 2026)
+
+**Goal**: Unblock Docker builds by aligning TracePanel props with Svelte 5 runes mode.
+
+**Changes**:
+1. **Runes props**: Replaced `export let` with `$props()` for TracePanel inputs to satisfy runes mode.
+2. **Runes reactivity**: Converted legacy `$:` statements in TracePanel to `$derived` runes.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/components/chat/TracePanel.svelte`
+
+---
+
+## ✅ GREETING MEMORY UI GATING (v0.2.80 - January 29, 2026)
+
+**Goal**: Hide memory reasoning/step UI for short greeting prompts to keep the chat experience clean.
+
+**Changes**:
+1. **Greeting detection**: Added a lightweight Hebrew/English greeting detector with short‑prompt thresholds.
+2. **UI gating**: Chat messages now hide memory blocks and citation overlays when responding to short greetings.
+3. **Virtualized parity**: Virtualized message list receives the same memory‑UI gating map.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/components/chat/ChatWindow.svelte`
+- `frontend-huggingface/src/lib/components/chat/VirtualizedMessageList.svelte`
+- `frontend-huggingface/src/lib/components/chat/ChatMessage.svelte`
+
+---
+
+## ✅ TRACE PANEL LOOP FIX (v0.2.79 - January 29, 2026)
+
+**Goal**: Stop `effect_update_depth_exceeded` loops in the chat UI by batching trace step state updates.
+
+**Changes**:
+1. **TracePanel batching**: Converted reactive step tracking to a batched `$effect` and added a collapse scheduling guard to prevent nested reactive updates.
+2. **State safety**: Promoted trace step tracking sets to `$state` for explicit reactivity.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/components/chat/TracePanel.svelte`
+
+---
+
+## ✅ ELYSIA ROUTE TYPING FIXES (v0.2.78 - January 29, 2026)
+
+**Goal**: Resolve TypeScript/linter errors in API route groups and unblock dev startup by aligning handlers with Elysia’s typed context.
+
+**Changes**:
+1. **Conversations group**: Replaced `guard(...beforeHandle...)` with `onBeforeHandle` to use the auth‑derived context (locals) without TS errors.
+2. **Models group**: Replaced `error(...)` calls with `status(...)` for typed early responses; no reliance on missing context helpers.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/api/routes/groups/conversations.ts`
+- `frontend-huggingface/src/lib/server/api/routes/groups/models.ts`
+
+---
+
+## ✅ TEST STABILITY FIXES (v0.2.76 - January 28, 2026)
+
+**Goal**: Stabilize failing unit/benchmark tests by fixing tool JSON parsing, making env overrides reliable in Vitest, and removing randomness from learning benchmarks.
+
+**Changes**:
+1. **ToolCallCodec parsing**: `parseWithTimeout` now returns parse errors instead of throwing, enabling JSON repair for Hebrew bareword tool calls.
+2. **Vitest env overrides**: Server test env mocks now merge `process.env` to honor per-test overrides like single-user admin secrets and uploads config.
+3. **Docling path test**: Explicitly sets uploads env during test to keep message-provided file paths stable.
+4. **Learning efficiency benchmark**: Removed randomness for deterministic Wilson score growth and stable thresholds.
+5. **Tool prompt assertion update**: Updated expectations to match current XML/JSON formatting guidance.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/ToolCallCodec.ts`
+- `frontend-huggingface/scripts/setups/vitest-setup-server.ts`
+- `frontend-huggingface/src/lib/server/endpoints/__tests__/unit/preprocessMessages.docling-path.test.ts`
+- `frontend-huggingface/src/lib/server/memory/__tests__/benchmarks/test_learning_speed.test.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/utils/__tests__/toolPrompt.test.ts`
+
+---
+
+## 🐳 DOCKER BUILD FIX (v0.2.77 - January 29, 2026)
+
+**Goal**: Prevent Docker build failures during `npm run build` by ensuring git is available in the builder stage and fixing Elysia error helpers.
+
+**Changes**:
+1. **Builder git install**: Added git installation to the frontend builder stage before running the build.
+2. **Elysia error helper**: Switched to context-provided error helper to avoid missing named exports in build output.
+
+**Files Modified**:
+- `frontend-huggingface/Dockerfile`
+- `frontend-huggingface/src/lib/server/api/routes/groups/conversations.ts`
+- `frontend-huggingface/src/lib/server/api/routes/groups/models.ts`
+
+---
+
+## 🧩 TOOLCALLCODEC + XML-FIRST FALLBACK (v0.2.75 - January 28, 2026)
+
+**Goal**: Centralize tool_call parsing/repair and remove fragile JSON/XML fallback branches while keeping XML envelope as the structured fallback (Option C: no grammar enforcement).
+
+**Changes**:
+1. **ToolCallCodec module**: Added a centralized codec with bidi-safe normalization, JSON repair, and Ajv validation for tool arguments.
+2. **runMcpFlow codec fallback**: XML/JSON fallback parsing now routes through the codec; legacy JSON/XML parse branches removed.
+3. **Streaming buffer**: Tool-call detection now buffers a small window and only pauses streaming after a validated tool_call.
+4. **Worker pool parsing**: Tool-call parsing now runs in a worker pool with hard timeouts and metrics.
+5. **Tool result validation**: Added ToolResultSchemaRegistry (DataGov/Tavily/Perplexity) with strict validation + repair fallback; raw-text-only when no schema.
+6. **Schema validation logs**: Added per-tool validated/raw-text-only logs for DataGov, Tavily, and Perplexity outputs.
+7. **Shared repair path**: `repairToolCallsPayload` now delegates to the codec’s repair routine to avoid duplication.
+8. **Phase 7 cleanup**: Removed unused tool_call repair helper and added conflict detection + startup log for ToolCallCodec path.
+9. **Qdrant search log**: Added a debug log for successful Qdrant searches to aid Phase 6 validation.
+10. **Worker pool guard**: Auto-disables tool parse worker pool when the worker bundle is missing, falling back to inline parsing to prevent dev crashes.
+11. **Worker bundle prebuild**: Added a build step that emits the tool-parse worker JS bundle for dev/prod streaming tool detection.
+12. **Worker bundler externals**: buildWorkers now treats SvelteKit virtual modules ($app/$env) as externals to avoid dev build failures.
+13. **Legal decision tool override**: Legal decision queries bypass high-confidence tool reduction to keep search tools available.
+14. **Document answer enforcement**: Document context hint now instructs summarization in the model’s own words (no raw text dumps).
+15. **Tool-call parse timeout**: Increased worker parse timeout to reduce fallback warnings on long outputs.
+16. **Build warning cleanup**: Removed NODE_ENV from frontend env, switched git SHA lookup to execFileSync (no /bin/sh), and cleaned unused imports/dynamic model loads.
+17. **Build size warning**: Raised Vite chunk size warning limit to reduce noise in production builds.
+18. **Audit cleanup**: Added cookie override and updated lockfile; npm audit now reports 0 vulnerabilities.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/ToolCallCodec.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/ToolResultSchemaRegistry.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/workerPool.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/toolParseWorker.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/toolCallsPayload.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/__tests__/unit/toolCallCodec.test.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/__tests__/unit/workerPool.test.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/toolInvocation.ts`
+- `frontend-huggingface/src/lib/server/memory/adapters/QdrantAdapter.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/toolCallsPayload.ts`
+- `docs/json_robust_map.md`
+
+---
+
+## 🧾 TOOL CALL JSON REPAIR + DOCUMENT CONTEXT HINT (v0.2.74 - January 27, 2026)
+
+**Goal**: Prevent malformed tool_calls JSON (Hebrew/RTL unquoted values) from breaking tool execution, and make document-sourced answers explicit when document-tier memories are used.
+
+**Changes**:
+1. **Tool_calls repair**: Added a repair step that quotes bareword values in tool_calls JSON payloads before JSON5 parsing.
+2. **Document context hint**: Injected a document-specific prompt hint when document-tier memories are present, nudging the model to answer from uploaded PDFs.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/toolCallsPayload.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+
+---
+
+## 🧷 MEMORY UI ID SYNC (v0.2.73 - January 27, 2026)
+
+**Goal**: Prevent memory reasoning and feedback UI from disappearing after `invalidateAll()` by keeping client/server message IDs aligned.
+
+**Changes**:
+1. **Client ID propagation**: The client now sends the generated user/assistant message IDs in the streaming request payload.
+2. **Server ID reuse**: Conversation message creation reuses client-provided IDs to avoid mismatches after refresh.
+
+**Files Modified**:
+- `frontend-huggingface/src/routes/conversation/[id]/+page.svelte`
+- `frontend-huggingface/src/routes/conversation/[id]/+server.ts`
+
+---
+
+## 🧠 MEMORY REASONING + FEEDBACK IN FALLBACK (v0.2.72 - January 27, 2026)
+
+**Goal**: Ensure reasoning and feedback UI still appear when MCP is skipped and the fallback generator runs.
+
+**Changes**:
+1. **Dev tools flag**: Added `MODELS` override in `.env.local` to mark the DictaLM model as `supportsTools=true`, preventing unintended MCP bypass in local dev.
+2. **Fallback memoryMeta**: `generateWithMemory()` now builds and attaches `memoryMeta` to `FinalAnswer` so feedback buttons and memory indicators render even without MCP.
+3. **Reasoning rendering**: The chat UI now consumes `MessageUpdateType.Reasoning` and shows server-side reasoning in a collapsible panel when `<think>` tags aren’t present.
+4. **Persistent memory steps**: Memory processing history is now seeded from `memoryMeta` if no step history exists, keeping the collapsible memory block visible after final answer.
+5. **Attribution cleanup**: Fallback + MCP final answers strip `<!-- MEM: ... -->` markers and related labels from the final answer.
+
+**Files Modified**:
+- `frontend-huggingface/.env.local`
+- `frontend-huggingface/src/lib/server/textGeneration/index.ts`
+- `frontend-huggingface/src/routes/conversation/[id]/+page.svelte`
+- `frontend-huggingface/src/lib/components/chat/ChatMessage.svelte`
+- `frontend-huggingface/src/lib/stores/memoryUi.ts`
+
+---
+
+## 🔁 AUTO REINDEX ON MISMATCH (v0.2.71 - January 27, 2026)
+
+**Goal**: Prevent silent memory retrieval failures when MongoDB and Qdrant drift out of sync.
+
+**Changes**:
+1. **Missing-index detection**: Added `countMissingIndex()` to detect active memories lacking indexing metadata.
+2. **Safe marking**: Added `markMissingIndexForReindex()` to conservatively mark a bounded set of candidates with `needs_reindex=true`.
+3. **Real background work**: `triggerBackgroundReindex()` now marks missing-index items and kicks off a guarded deferred reindex via `ReindexService`.
+4. **Safety rails**: Added cooldown, per-user in-flight tracking, and a capped auto-mark limit to avoid overwhelming the embedding service.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/memory/search/Bm25Adapter.ts`
+- `frontend-huggingface/src/lib/server/memory/search/SearchService.ts`
+
+---
+
+## 👑 MCP DIAGNOSTICS DEV PANEL (v0.2.70 - January 27, 2026)
+
+**Goal**: Eliminate fragile token/login behavior by making the app deterministic for a single admin user.
+
+**Changes**:
+1. **Auth short-circuit**: Added `SINGLE_USER_ADMIN=true` mode that returns a stable session and `isAdmin=true`.
+2. **Hooks enforcement**: Skips OAuth redirects in single-user mode, refreshes the stable cookie, and upserts sessions.
+3. **Client alignment**: `requireAuthUser()` and `?token=...` flows are disabled in single-user mode.
+4. **Feature flags**: Exposes `singleUserAdminEnabled` and forces `isAdmin=true` to the client in that mode.
+5. **Data migration**: Added `/api/admin/single-user/migrate` to rebind legacy session-scoped data to the stable session.
+6. **Dev wiring**: `start-dev.sh` and env files now inject/enable single-user admin flags by default.
+7. **Admin user bootstrap**: Single-user mode now upserts a deterministic admin user record for compatibility.
+8. **Auth filter**: `authCondition()` now enforces session scoping in single-user mode.
+9. **Conversation ownership safety**: New conversations and share clones now always store `sessionId` in single-user mode to prevent invisible chats.
+10. **Persona continuity**: Conversation creation now loads personality from `ADMIN_USER_ID` in single-user mode while still storing session-scoped ownership.
+11. **Strict session scoping**: In single-user mode, `authCondition()` now uses only `sessionId` and explicitly ignores legacy `userId` reads.
+12. **Export route strictness**: `/api/v2/export` now uses only the session-scoped owner ID in single-user mode (no legacy `userId` inclusion).
+13. **MCP execution alignment**: The MCP registry now falls back to `FRONTEND_MCP_SERVERS` (with quote sanitization), matching the MCP panel’s base-server source and preventing “panel shows servers but tools don’t run.”
+14. **MCP diagnostics endpoint**: Added `/api/admin/diagnostics/mcp` to reveal the effective MCP server source and parsed server list.
+15. **Navbar MCP availability**: The MCP manager button now shows in single-user mode even when `user` data is missing.
+16. **Broken interpolation fixes**: Corrected avatar URL interpolation in `NavMenu.svelte` and multiple head/meta `content`/`href` attributes in `+layout.svelte`.
+17. **MCP health Docker rewrite**: Health checks now rewrite `localhost:3100` to `mcp-sse-proxy:3100` when running inside Docker.
+18. **Pure rewrite helper + test**: Added a pure rewrite helper (`rewriteMcpUrlForDocker.ts`) and a focused Vitest suite that avoids DB initialization side effects.
+19. **runMcpFlow readiness warning**: Added a rate-limited warning when MCP server count is zero to prevent silent tool disablement.
+20. **Smoke script scaffold**: Added `scripts/mcpPanelSmoke.mjs` to exercise the MCP panel path when Playwright can run locally.
+21. **Dev-page MCP diagnostics**: Added an MCP Diagnostics section in `Settings → Dev` that loads `/api/admin/diagnostics/mcp` and runs batch health checks via `/api/mcp/health`.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/auth.ts`
+- `frontend-huggingface/src/hooks.server.ts`
+- `frontend-huggingface/src/lib/server/api/routes/groups/misc.ts`
+- `frontend-huggingface/src/lib/server/auth.ts`
+- `frontend-huggingface/src/lib/server/mcp/registry.ts`
+- `frontend-huggingface/src/lib/server/mcp/rewriteMcpUrlForDocker.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/mcpReadiness.ts`
+- `frontend-huggingface/src/routes/api/admin/diagnostics/mcp/+server.ts`
+- `frontend-huggingface/src/routes/api/admin/diagnostics/mcp/__tests__/mcp-diagnostics.test.ts`
+- `frontend-huggingface/src/lib/utils/auth.ts`
+- `frontend-huggingface/src/routes/+layout.svelte`
+- `frontend-huggingface/src/lib/components/NavMenu.svelte`
+- `frontend-huggingface/src/routes/api/mcp/health/+server.ts`
+- `frontend-huggingface/src/routes/api/mcp/__tests__/health.rewrite.test.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/__tests__/mcpReadiness.test.ts`
+- `frontend-huggingface/scripts/mcpPanelSmoke.mjs`
+- `frontend-huggingface/src/routes/settings/(nav)/dev/+page.svelte`
+- `frontend-huggingface/src/routes/conversation/+server.ts`
+- `frontend-huggingface/src/lib/server/conversation.ts`
+- `frontend-huggingface/src/lib/server/api/routes/groups/misc.ts`
+- `frontend-huggingface/src/routes/api/admin/single-user/migrate/+server.ts`
+- `frontend-huggingface/src/routes/api/user/validate-token/+server.ts`
+- `start-dev.sh`
+- `.env`
+- `frontend-huggingface/.env.local`
+
+---
+
+## ✅ ADMIN TOKEN SKIPS WELCOME MODAL (v0.2.60 - January 27, 2026)
+
+**Goal**: Make the admin CLI token “take effect” visually by suppressing the welcome modal for the validated admin session.
+
+**Changes**:
+1. **Session settings update**: When `/api/user/validate-token` validates the token, it now upserts settings for that session and sets `welcomeModalSeenAt`.
+
+**Files Modified**:
+- `frontend-huggingface/src/routes/api/user/validate-token/+server.ts`
+
+---
+
+## 🧭 FIX ONDESTROY INSIDE ONMOUNT (v0.2.59 - January 27, 2026)
+
+**Goal**: Restore navbar interactivity by removing a Svelte lifecycle violation that could break client-side behavior.
+
+**Changes**:
+1. **Lifecycle fix**: Removed `onDestroy(...)` from inside an `onMount(async () => ...)` block.
+2. **Proper cleanup**: Moved the global keydown listener to its own `onMount` and returned a cleanup function.
+
+**Files Modified**:
+- `frontend-huggingface/src/routes/+layout.svelte`
+
+---
+
+## 🧹 CLEAR STUCK INERT ON STARTUP (v0.2.58 - January 27, 2026)
+
+**Goal**: Restore navbar interactivity when the app is accidentally left `inert` by a previous modal lifecycle.
+
+**Changes**:
+1. **Startup fail-safe**: On layout mount, remove a stale `inert` attribute from `#app` before normal UI initialization.
+
+**Files Modified**:
+- `frontend-huggingface/src/routes/+layout.svelte`
+
+---
+
+## 🧰 MCP SERVERS FALLBACK IN DEV (v0.2.57 - January 27, 2026)
+
+**Goal**: Restore the MCP panel in dev when `MCP_SERVERS` is empty but `FRONTEND_MCP_SERVERS` is populated (and single-quoted).
+
+**Changes**:
+1. **Env fallback**: `/api/mcp/servers` now falls back from `MCP_SERVERS` to `FRONTEND_MCP_SERVERS`.
+2. **Quote sanitization**: Strips wrapping quotes/backticks so single-quoted JSON parses correctly.
+
+**Files Modified**:
+- `frontend-huggingface/src/routes/api/mcp/servers/+server.ts`
+
+---
+
+## 🔑 TOKEN FLOW SPA NAVIGATION (v0.2.56 - January 27, 2026)
+
+**Goal**: Reduce double refreshes when opening the dev login URL with `?token=...` while preserving session setup.
+
+**Changes**:
+1. **SPA redirect**: Replaced hard reload (`window.location.href`) with `goto(..., { invalidateAll: true, replaceState: true })`.
+2. **Safe fallback**: If SPA navigation fails, fall back to `window.location.href`.
+3. **More robust request**: Added JSON content-type and explicit `credentials: "same-origin"` for token validation.
+
+**Files Modified**:
+- `frontend-huggingface/src/routes/+layout.svelte`
+
+---
+
+## 🧷 MODEL FETCH CUSTOM PROVIDER + TIMEOUT (v0.2.55 - January 27, 2026)
+
+**Goal**: Prevent slow/failed model listing from blocking frontend startup when `OPENAI_BASE_URL` targets a custom provider route.
+
+**Changes**:
+1. **Custom provider detection**: When `OPENAI_BASE_URL` includes `/api/custom/providers/`, model listing now uses the gateway alias at `/v1/models`.
+2. **Fail-fast timeout**: Added a short model fetch timeout (`BRICKSLLM_MODEL_FETCH_TIMEOUT_MS`, default 3000ms) to reduce first-load stalls while the gateway boots.
+3. **Fallback reuse**: Centralized fallback model construction via `buildFallbackModels(...)`.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/models.ts`
+
+---
+
+## 🔒 TOOL GATING ENFORCEMENT (v0.2.54 - January 26, 2026)
+
+**Goal**: Prevent filtered tools from executing when the model emits tool_calls JSON.
+
+**Changes**:
+1. **Allowed tool enforcement**: Normalize and enforce the gated tool list before execution.
+2. **Disallowed tool fallback**: Skip tool execution and fall back to memory generation if only blocked tools appear.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+
+---
+
+## 🧩 LOCAL FAVICON FALLBACK (v0.2.53 - January 26, 2026)
+
+**Goal**: Stop browser console errors when Google’s favicon service can’t reach localhost.
+
+**Changes**:
+1. **Local host detection**: Skip external favicon fetches for localhost/private IPs.
+2. **Fallback icon**: Use the built‑in generic MCP icon when favicon is skipped.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/utils/favicon.ts`
+
+---
+
+## 🛑 SKIP MODEL FETCH DURING DOCKER BUILD (v0.2.52 - January 26, 2026)
+
+**Goal**: Prevent build-time network calls to `OPENAI_BASE_URL` during Docker image builds.
+
+**Changes**:
+1. **Build-stage flag**: Added `BRICKSLLM_SKIP_MODEL_FETCH=true` in the Docker builder stage.
+2. **Safe fallback**: Skip remote model fetch when flagged and use the local fallback model list.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/models.ts`
+- `frontend-huggingface/Dockerfile`
+
+---
+
+## ⏱️ USER REFRESH ON FOCUS/NAV (v0.2.51 - January 26, 2026)
+
+**Goal**: Stop interval polling and refresh user data only when it matters.
+
+**Changes**:
+1. **Removed interval polling**: No more background `setInterval` user checks.
+2. **Refresh on focus/visibility**: Poll user when the tab becomes visible or focused.
+3. **Refresh on navigation**: Poll user after route changes.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/components/NavMenu.svelte`
+
+---
+
+## 📅 DATE QUERY TOOLING FIXES (v0.2.49 - January 26, 2026)
+
+**Goal**: Ensure date/appointment questions can trigger web search even when memory hits are present.
+
+**Changes**:
+1. **Historical date detection**: Treat "מתי" + decision/appointment phrasing as a web-search eligible query.
+2. **Tool filter expansion**: Include search/research tools for historical date queries.
+3. **Memory gate override**: Keep search tools when memory lacks explicit date signals.
+4. **Tool-use prompt hint**: Instruct model to call search tools when dates are missing from memory.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/toolFilter.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/toolGatingDecision.ts`
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
+
+---
+
+## 🧯 UI EFFECT LOOP + WORKER SANITIZE FIX (v0.2.48 - January 26, 2026)
+
+**Goal**: Stop Svelte effect recursion and resolve markdown worker crashes causing UI freezes.
+
+**Changes**:
+1. **Worker-safe HTML sanitizing**: Removed DOMPurify from markdown worker path and replaced with a safe details/summary sanitizer.
+2. **Scroll observer stabilization**: Simplified ScrollToBottom effect wiring to avoid recursive cleanup calls.
+3. **Effect loop prevention**: Removed reactive self-dependencies in chat message count tracking and reasoning panel loading state.
+4. **Patch preview stability**: Untracked selection state to prevent recursive effect updates.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/utils/marked.ts`
+- `frontend-huggingface/src/lib/components/ScrollToBottomBtn.svelte`
+- `frontend-huggingface/src/lib/components/chat/ChatWindow.svelte`
+- `frontend-huggingface/src/lib/components/chat/OpenReasoningResults.svelte`
+- `frontend-huggingface/src/lib/components/chat/CodeChangePreview.svelte`
+
+---
+
+## 🧭 PREFETCH FALLBACK FOR DOCUMENT QUERIES (v0.2.47 - January 26, 2026)
+
+**Goal**: Ensure document memories are surfaced in runMcpFlow even when prefetch returns empty, reducing unnecessary tool calls and improving UI responsiveness.
+
+**Changes**:
+1. **Fallback document search**: When memory prefetch returns empty or no position map, run a small documents-only search.
+2. **Compact context injection**: Build a minimal context block with truncated snippets to avoid oversized prompt sections.
+3. **Tool gating alignment**: Populate `searchPositionMap` from fallback results so tool gating sees document hits.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts`
 
 ---
 
@@ -25,6 +732,24 @@
 - `memoryUi.ts` - Added tool ingestion state tracking
 - `+page.svelte` - Added `ToolIngesting` event handler
 - `MemoryProcessingBlock.svelte` - Added `tool_ingesting` status display
+
+---
+
+## ⚡ UI RESPONSIVENESS FIX: BACKGROUND OPERATION STAGGERING (January 25, 2026)
+
+**Goal**: Stop the chat UI from becoming sluggish after the final answer is emitted by reducing event-loop contention from concurrent background tasks.
+
+**Root Cause**: After `FinalAnswer`, multiple fire-and-forget operations (tool ingestion, action outcome recording, docling bridging, surfaced memory storage, reindex triggers) were firing at once. This saturated the event loop and caused input lag and slow follow-up message handling.
+
+**Fixes**:
+1. **Staggered background operations**: Introduced short, bounded delays (50–300ms) for tool ingestion, action outcome recording, and docling memory bridging to prevent simultaneous CPU spikes.
+2. **Deferred memory storage**: Delayed surfaced memory tracking and working-memory storage to avoid UI stalls immediately after response completion.
+3. **Reindex throttling**: Added a per-user cooldown to prevent repeated background reindex loops after zero-result searches.
+
+**Files Modified**:
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/toolInvocation.ts` - Added staggered delays for docling bridge, tool result ingestion, and action outcome recording.
+- `frontend-huggingface/src/lib/server/textGeneration/mcp/runMcpFlow.ts` - Deferred surfaced memory storage and working-memory persistence to avoid post-answer UI stalls.
+- `frontend-huggingface/src/lib/server/memory/search/SearchService.ts` - Added cooldown throttling for background reindex triggers.
 
 ---
 

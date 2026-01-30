@@ -1,6 +1,8 @@
+import type { ObjectId } from "mongodb";
+
 import { Elysia } from "elysia";
 import { authPlugin } from "../../authPlugin";
-import { loginEnabled } from "$lib/server/auth";
+import { loginEnabled, singleUserAdminEnabled } from "$lib/server/auth";
 import { collections } from "$lib/server/database";
 import { authCondition } from "$lib/server/auth";
 import { config } from "$lib/server/config";
@@ -14,6 +16,7 @@ export interface FeatureFlags {
 	loginEnabled: boolean;
 	isAdmin: boolean;
 	transcriptionEnabled: boolean;
+	singleUserAdminEnabled: boolean;
 }
 
 export const misc = new Elysia()
@@ -22,13 +25,14 @@ export const misc = new Elysia()
 	.get("/feature-flags", async ({ locals }) => {
 		return {
 			enableAssistants: config.ENABLE_ASSISTANTS === "true",
-			loginEnabled, // login feature is on when OID is configured
-			isAdmin: locals.isAdmin,
+			loginEnabled: singleUserAdminEnabled ? false : loginEnabled,
+			isAdmin: singleUserAdminEnabled ? true : locals.isAdmin,
 			transcriptionEnabled: !!config.get("TRANSCRIPTION_MODEL"),
+			singleUserAdminEnabled,
 		} satisfies FeatureFlags;
 	})
 	.get("/export", async ({ locals }) => {
-		if (!locals.user) {
+		if (!locals.user && !locals.sessionId) {
 			throw new Error("Not logged in");
 		}
 
@@ -40,8 +44,13 @@ export const misc = new Elysia()
 			throw new Error("Data export is not enabled");
 		}
 
+		const ownerIds: Array<string | ObjectId> = [locals.sessionId];
+		if (!singleUserAdminEnabled && locals.user?._id) {
+			ownerIds.splice(0, ownerIds.length, locals.user._id);
+		}
+
 		const nExports = await collections.messageEvents.countDocuments({
-			userId: locals.user._id,
+			userId: { $in: ownerIds },
 			type: "export",
 			expiresAt: { $gt: new Date() },
 		});
@@ -128,7 +137,7 @@ export const misc = new Elysia()
 					);
 				}),
 			collections.assistants
-				.find({ createdById: locals.user._id })
+				.find({ createdById: { $in: ownerIds } })
 				.toArray()
 				.then(async (assistants) => {
 					const formattedAssistants = await Promise.all(
@@ -187,20 +196,21 @@ export const misc = new Elysia()
 		Promise.all(promises).then(async () => {
 			logger.info(
 				{
-					userId: locals.user?._id,
+					userId: singleUserAdminEnabled ? locals.sessionId : locals.user?._id,
 					...stats,
 				},
 				"Exported user data"
 			);
 			zipfile.end();
-			if (locals.user?._id) {
-				await collections.messageEvents.insertOne({
-					userId: locals.user?._id,
-					type: "export",
-					createdAt: new Date(),
-					expiresAt: new Date(Date.now() + 1000 * 60 * 60), // 1 hour
-				});
-			}
+			const exportEventOwnerId = singleUserAdminEnabled
+				? locals.sessionId
+				: locals.user?._id || locals.sessionId;
+			await collections.messageEvents.insertOne({
+				userId: exportEventOwnerId,
+				type: "export",
+				createdAt: new Date(),
+				expiresAt: new Date(Date.now() + 1000 * 60 * 60), // 1 hour
+			});
 		});
 
 		// @ts-expect-error - zipfile.outputStream is not typed correctly

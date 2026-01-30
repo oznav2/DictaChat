@@ -57,6 +57,7 @@ export default defineConfig({
 		holdUntilCrawlEnd: true,
 	},
 	build: {
+		chunkSizeWarningLimit: 1500,
 		rollupOptions: {
 			// Mark ioredis as external - it's optionally used for caching
 			// and gracefully falls back when not available

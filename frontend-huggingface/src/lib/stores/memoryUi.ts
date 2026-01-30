@@ -394,46 +394,71 @@ function createMemoryUiStore() {
 		messageId: string;
 		meta: MemoryMetaV1;
 	}) {
-		store.update((s) => ({
-			...s,
-			session: {
-				...s.session,
-				activeConversationId: params.conversationId,
-			},
-			data: {
-				...s.data,
-				activeConcepts: (params.meta.context_insights?.matched_concepts ?? []).slice(0, 8),
-				lastContextInsights:
-					(params.meta.context_insights as unknown as Record<string, unknown>) ?? null,
-				lastRetrievalDebug: (params.meta.debug as unknown as Record<string, unknown>) ?? null,
-				lastKnownContextTextByMessageId: {
-					...s.data.lastKnownContextTextByMessageId,
-					[params.messageId]: params.meta.known_context?.known_context_text ?? "",
+		store.update((s) => {
+			const existingHistory = s.data.memoryProcessingHistoryByMessageId[params.messageId] ?? [];
+			const shouldSeedHistory = existingHistory.length === 0;
+			const fallbackCount =
+				params.meta.citations?.length ??
+				params.meta.retrieval?.limit ??
+				params.meta.known_context?.known_context_items?.length ??
+				0;
+			const nextHistory = shouldSeedHistory
+				? [
+						{
+							status: "found" as const,
+							count: fallbackCount,
+							timestamp: Date.now(),
+						},
+					]
+				: existingHistory;
+
+			return {
+				...s,
+				session: {
+					...s.session,
+					activeConversationId: params.conversationId,
 				},
-				lastCitationsByMessageId: {
-					...s.data.lastCitationsByMessageId,
-					[params.messageId]: (params.meta.citations ?? []).map((c) => ({
-						tier: c.tier,
-						memory_id: c.memory_id,
-						doc_id: c.doc_id ?? null,
-						content: c.content ?? c.text ?? undefined,
-						wilson_score: c.wilson_score ?? undefined,
-						confidence: c.confidence ?? c.score ?? undefined,
-					})),
+				data: {
+					...s.data,
+					activeConcepts: (params.meta.context_insights?.matched_concepts ?? []).slice(0, 8),
+					lastContextInsights:
+						(params.meta.context_insights as unknown as Record<string, unknown>) ?? null,
+					lastRetrievalDebug: (params.meta.debug as unknown as Record<string, unknown>) ?? null,
+					lastKnownContextTextByMessageId: {
+						...s.data.lastKnownContextTextByMessageId,
+						[params.messageId]: params.meta.known_context?.known_context_text ?? "",
+					},
+					lastCitationsByMessageId: {
+						...s.data.lastCitationsByMessageId,
+						[params.messageId]: (params.meta.citations ?? []).map((c) => ({
+							tier: c.tier,
+							memory_id: c.memory_id,
+							doc_id: c.doc_id ?? null,
+							content: c.content ?? c.text ?? undefined,
+							wilson_score: c.wilson_score ?? undefined,
+							confidence: c.confidence ?? c.score ?? undefined,
+						})),
+					},
+					lastMemoryMetaByMessageId: {
+						...s.data.lastMemoryMetaByMessageId,
+						[params.messageId]: params.meta,
+					},
+					memoryProcessingHistoryByMessageId: shouldSeedHistory
+						? {
+								...s.data.memoryProcessingHistoryByMessageId,
+								[params.messageId]: nextHistory,
+							}
+						: s.data.memoryProcessingHistoryByMessageId,
 				},
-				lastMemoryMetaByMessageId: {
-					...s.data.lastMemoryMetaByMessageId,
-					[params.messageId]: params.meta,
+				ui: {
+					...s.ui,
+					feedbackEligibleByMessageId: {
+						...s.ui.feedbackEligibleByMessageId,
+						[params.messageId]: params.meta.feedback?.eligible === true,
+					},
 				},
-			},
-			ui: {
-				...s.ui,
-				feedbackEligibleByMessageId: {
-					...s.ui.feedbackEligibleByMessageId,
-					[params.messageId]: params.meta.feedback?.eligible === true,
-				},
-			},
-		}));
+			};
+		});
 	}
 
 	function toggleKnownContextExpanded(messageId: string) {
@@ -537,24 +562,83 @@ function createMemoryUiStore() {
 	}
 
 	function resetProcessing() {
-		store.update((s) => ({
-			...s,
-			processing: {
-				status: "idle",
-				foundCount: 0,
-				lastQuery: null,
-				documentName: null,
-				documentStage: null,
-				chunksProcessed: 0,
-				totalChunks: 0,
-				toolIngestion: {
-					toolName: null,
-					stage: null,
-					entitiesExtracted: 0,
-					linkedDocuments: 0,
+		store.update((s) => {
+			const messageId = s.session.activeAssistantMessageId;
+			const existingHistory = messageId
+				? s.data.memoryProcessingHistoryByMessageId[messageId] ?? []
+				: [];
+			const shouldSeedHistory =
+				messageId &&
+				existingHistory.length === 0 &&
+				(s.processing.status !== "idle" ||
+					s.processing.foundCount > 0 ||
+					Boolean(s.processing.lastQuery));
+			const fallbackStatus =
+				s.processing.foundCount > 0 ? "found" : s.processing.status === "idle" ? "searching" : s.processing.status;
+			const isAlreadyIdle =
+				s.processing.status === "idle" &&
+				s.processing.foundCount === 0 &&
+				!s.processing.lastQuery &&
+				!s.processing.documentName &&
+				!s.processing.documentStage &&
+				s.processing.chunksProcessed === 0 &&
+				s.processing.totalChunks === 0 &&
+				s.processing.toolIngestion.toolName === null &&
+				s.processing.toolIngestion.stage === null &&
+				s.processing.toolIngestion.entitiesExtracted === 0 &&
+				s.processing.toolIngestion.linkedDocuments === 0;
+
+			if (browser) {
+				console.debug("[memoryUi] resetProcessing", {
+					messageId,
+					shouldSeedHistory,
+					fallbackStatus,
+					isAlreadyIdle,
+				});
+			}
+
+			if (isAlreadyIdle && !shouldSeedHistory) {
+				return s;
+			}
+			const nextHistory = shouldSeedHistory
+				? [
+						{
+							status: fallbackStatus,
+							count: s.processing.foundCount > 0 ? s.processing.foundCount : undefined,
+							query: s.processing.lastQuery ?? undefined,
+							timestamp: Date.now(),
+						},
+					]
+				: existingHistory;
+
+			return {
+				...s,
+				processing: {
+					status: "idle",
+					foundCount: 0,
+					lastQuery: null,
+					documentName: null,
+					documentStage: null,
+					chunksProcessed: 0,
+					totalChunks: 0,
+					toolIngestion: {
+						toolName: null,
+						stage: null,
+						entitiesExtracted: 0,
+						linkedDocuments: 0,
+					},
 				},
-			},
-		}));
+				data: {
+					...s.data,
+					memoryProcessingHistoryByMessageId: shouldSeedHistory
+						? {
+								...s.data.memoryProcessingHistoryByMessageId,
+								[messageId as string]: nextHistory,
+							}
+						: s.data.memoryProcessingHistoryByMessageId,
+				},
+			};
+		});
 	}
 
 	function setDocumentProcessing(params: {

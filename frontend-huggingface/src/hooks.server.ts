@@ -7,6 +7,7 @@ import {
 	loginEnabled,
 	refreshSessionCookie,
 	triggerOauthFlow,
+	singleUserAdminEnabled,
 } from "$lib/server/auth";
 import { ERROR_MESSAGES } from "$lib/stores/errors";
 import { addWeeks } from "date-fns";
@@ -424,7 +425,17 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	event.locals.sessionId = auth.sessionId;
 
-	if (loginEnabled && !auth.user && !event.url.pathname.startsWith(`${base}/.well-known/`)) {
+	if (singleUserAdminEnabled) {
+		// Keep the cookie stable and deterministic in single-user mode.
+		refreshSessionCookie(event.cookies, auth.secretSessionId);
+	}
+
+	if (
+		!singleUserAdminEnabled &&
+		loginEnabled &&
+		!auth.user &&
+		!event.url.pathname.startsWith(`${base}/.well-known/`)
+	) {
 		if (config.AUTOMATIC_LOGIN === "true") {
 			// AUTOMATIC_LOGIN: always redirect to OAuth flow (unless already on login or healthcheck pages)
 			if (
@@ -458,7 +469,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.token = auth.token;
 
 	event.locals.isAdmin =
-		event.locals.user?.isAdmin || adminTokenManager.isAdmin(event.locals.sessionId);
+		singleUserAdminEnabled ||
+		event.locals.user?.isAdmin ||
+		adminTokenManager.isAdmin(event.locals.sessionId);
 
 	// CSRF protection
 	const requestContentType = event.request.headers.get("content-type")?.split(";")[0] ?? "";
@@ -498,7 +511,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 		await collections.sessions.updateOne(
 			{ sessionId: auth.sessionId },
-			{ $set: { updatedAt: new Date(), expiresAt: addWeeks(new Date(), 2) } }
+			{ $set: { updatedAt: new Date(), expiresAt: addWeeks(new Date(), 2) } },
+			{ upsert: true }
 		);
 	}
 

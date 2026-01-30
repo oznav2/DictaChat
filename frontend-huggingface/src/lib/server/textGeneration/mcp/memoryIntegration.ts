@@ -14,6 +14,7 @@
  */
 
 import { logger } from "$lib/server/logger";
+import { isHistoricalDateQuery } from "./toolFilter";
 import { getPersonalityLoader } from "$lib/server/memory/personality";
 import {
 	getMemoryFeatureFlags,
@@ -180,18 +181,19 @@ export function hasDocumentAttachments(
  */
 function estimateContextLimit(query: string): number {
 	const lowerQuery = query.toLowerCase();
+	const isDateQuery = isHistoricalDateQuery(query);
 
 	// Broad queries -> more context
 	if (
 		/\b(show|list|all|everything|מה ה|הראה|תפרט)\b/i.test(lowerQuery) ||
 		lowerQuery.includes("everything")
 	) {
-		return 20;
+		return Math.max(20, isDateQuery ? 12 : 0);
 	}
 
 	// How-to / medium complexity
 	if (/\b(how|explain|why|מדוע|איך|הסבר)\b/i.test(lowerQuery) || lowerQuery.length > 100) {
-		return 12;
+		return Math.max(12, isDateQuery ? 12 : 0);
 	}
 
 	// Specific identity lookup
@@ -199,11 +201,11 @@ function estimateContextLimit(query: string): number {
 		/\b(my name|my preference|what i said|מה שמי|מה אמרתי)\b/i.test(lowerQuery) ||
 		lowerQuery.length < 30
 	) {
-		return 5;
+		return Math.max(5, isDateQuery ? 12 : 0);
 	}
 
 	// Default
-	return 10;
+	return Math.max(10, isDateQuery ? 12 : 0);
 }
 
 /**
@@ -387,11 +389,19 @@ export async function prefetchMemoryContext(
 	try {
 		const facade = UnifiedMemoryFacade.getInstance();
 		const contextLimit = estimateContextLimit(query);
+		const isDateQuery = isHistoricalDateQuery(query);
+		const queryLanguage = detectLanguage(query);
+		const dateHintedQuery =
+			isDateQuery && queryLanguage === "he"
+				? `${query} תאריך מועד "תאריך הישיבה" "ניתן היום"`
+				: isDateQuery
+					? `${query} date hearing issued`
+					: query;
 
 		const prefetchResult = await facade.prefetchContext({
 			userId,
 			conversationId: options.conversationId ?? "",
-			query,
+			query: dateHintedQuery,
 			recentMessages: options.recentMessages ?? [],
 			hasDocuments: options.hasDocuments ?? false,
 			limit: contextLimit,

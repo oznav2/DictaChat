@@ -13,6 +13,8 @@
  * - Single collection with payload filtering (not per-tier collections)
  */
 
+import { v5 as uuidv5, validate as uuidValidate } from "uuid";
+
 import { logger } from "$lib/server/logger";
 import type { MemoryConfig, QdrantDistance } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
@@ -33,6 +35,7 @@ export interface QdrantPoint {
 }
 
 export interface QdrantPayload {
+	memory_id?: string;
 	user_id: string;
 	tier: MemoryTier;
 	status: MemoryStatus;
@@ -102,6 +105,8 @@ interface QdrantCollectionInfo {
 		};
 	};
 }
+
+const MEMORY_ID_NAMESPACE = uuidv5.DNS;
 
 export class QdrantAdapter {
 	private baseUrl: string;
@@ -258,6 +263,26 @@ export class QdrantAdapter {
 		if (this.failureCount >= this.config.circuit_breakers.qdrant.failure_threshold) {
 			this.openCircuitBreaker("Too many failures");
 		}
+	}
+
+	private toPointId(memoryId: string): string {
+		const trimmed = memoryId.trim();
+		if (uuidValidate(trimmed)) {
+			return trimmed;
+		}
+		return uuidv5(trimmed, MEMORY_ID_NAMESPACE);
+	}
+
+	private resolveMemoryId(
+		pointId: string | number,
+		payload?: QdrantPayload,
+		fallbackMap?: Map<string, string>
+	): string {
+		if (payload?.memory_id) {
+			return payload.memory_id;
+		}
+		const pointIdStr = String(pointId);
+		return fallbackMap?.get(pointIdStr) ?? pointIdStr;
 	}
 
 	// ============================================
@@ -473,11 +498,17 @@ export class QdrantAdapter {
 		}
 
 		const body = {
-			points: points.map((p) => ({
-				id: p.id,
-				vector: { [this.vectorName]: p.vector },
-				payload: p.payload,
-			})),
+			points: points.map((p) => {
+				const pointId = this.toPointId(p.id);
+				return {
+					id: pointId,
+					vector: { [this.vectorName]: p.vector },
+					payload: {
+						...p.payload,
+						memory_id: p.payload.memory_id ?? p.id,
+					},
+				};
+			}),
 		};
 
 		const result = await this.request<{ result: { status: string } }>(
@@ -496,7 +527,7 @@ export class QdrantAdapter {
 		if (ids.length === 0) return true;
 
 		const body = {
-			points: ids,
+			points: ids.map((id) => this.toPointId(id)),
 		};
 
 		const result = await this.request<{ result: { status: string } }>(
@@ -608,7 +639,7 @@ export class QdrantAdapter {
 
 		// NER Integration: Add ID filter for entity pre-filtering
 		if (params.filterIds?.length) {
-			must.push({ has_id: params.filterIds });
+			must.push({ has_id: params.filterIds.map((id) => this.toPointId(id)) });
 		}
 
 		const body = {
@@ -625,8 +656,13 @@ export class QdrantAdapter {
 
 		if (!result) return [];
 
+		logger.debug(
+			{ results: result.result.length, userId: params.userId, tiers: params.tiers ?? [] },
+			"[qdrant] search ok"
+		);
+
 		return result.result.map((r) => ({
-			id: r.id,
+			id: this.resolveMemoryId(r.id, r.payload),
 			score: r.score,
 			payload: r.payload,
 		}));
@@ -638,8 +674,15 @@ export class QdrantAdapter {
 	async getByIds(ids: string[]): Promise<QdrantSearchResult[]> {
 		if (ids.length === 0) return [];
 
+		const pointIdToMemoryId = new Map<string, string>();
+		const pointIds = ids.map((id) => {
+			const pointId = this.toPointId(id);
+			pointIdToMemoryId.set(pointId, id);
+			return pointId;
+		});
+
 		const body = {
-			ids,
+			ids: pointIds,
 			with_payload: true,
 			with_vector: false,
 		};
@@ -653,7 +696,7 @@ export class QdrantAdapter {
 		if (!result) return [];
 
 		return result.result.map((r) => ({
-			id: r.id,
+			id: this.resolveMemoryId(r.id, r.payload, pointIdToMemoryId),
 			score: 1, // No score for direct lookups
 			payload: r.payload,
 		}));
@@ -693,19 +736,19 @@ export class QdrantAdapter {
 			const body = {
 				filter,
 				limit,
-				with_payload: false, // We only need IDs
+				with_payload: ["memory_id"],
 				with_vector: false,
 			};
 
 			const result = await this.request<{
-				result: { points: Array<{ id: string }> };
+				result: { points: Array<{ id: string; payload?: QdrantPayload }> };
 			}>("POST", `/collections/${this.collectionName}/points/scroll`, body);
 
 			if (!result?.result?.points) {
 				return [];
 			}
 
-			return result.result.points.map((p) => p.id);
+			return result.result.points.map((p) => this.resolveMemoryId(p.id, p.payload));
 		} catch (err) {
 			logger.warn(
 				{ err, entityCount: params.entityWords.length },
@@ -720,8 +763,9 @@ export class QdrantAdapter {
 	 * Used for score/usage updates
 	 */
 	async updatePayload(id: string, payload: Partial<QdrantPayload>): Promise<boolean> {
+		const pointId = this.toPointId(id);
 		const body = {
-			points: [id],
+			points: [pointId],
 			payload,
 		};
 
@@ -785,7 +829,7 @@ export class QdrantAdapter {
 
 		return {
 			points: result.result.points.map((p) => ({
-				id: p.id,
+				id: this.resolveMemoryId(p.id, p.payload),
 				score: 1,
 				payload: p.payload,
 			})),

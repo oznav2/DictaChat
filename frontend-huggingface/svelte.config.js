@@ -1,16 +1,21 @@
 import adapter from "@sveltejs/adapter-node";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import dotenv from "dotenv";
-import { execSync } from "child_process";
+import { execFileSync } from "node:child_process";
 
 dotenv.config({ path: "./.env.local", override: true });
 dotenv.config({ path: "./.env" });
 
 function getCurrentCommitSHA() {
+	if (process.env.BRICKSLLM_SKIP_GIT_SHA === "true") {
+		return "unknown";
+	}
 	try {
-		return execSync("git rev-parse HEAD").toString();
+		return execFileSync("git", ["rev-parse", "HEAD"], { stdio: ["ignore", "pipe", "ignore"] })
+			.toString()
+			.trim();
 	} catch (error) {
-		console.error("Error getting current commit SHA:", error);
+		console.warn("Unable to resolve git commit SHA:", error);
 		return "unknown";
 	}
 }

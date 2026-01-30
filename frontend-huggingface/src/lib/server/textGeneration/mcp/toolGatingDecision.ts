@@ -34,7 +34,7 @@ import type { RetrievalConfidence } from "$lib/server/memory/types";
 import type { DetectedIntent } from "$lib/server/textGeneration/utils/hebrewIntentDetector";
 
 // ============================================
-// K.1.1: ToolGatingInput Interface (6 parameters)
+// K.1.1: ToolGatingInput Interface (8 parameters)
 // ============================================
 
 /**
@@ -56,6 +56,15 @@ export interface ToolGatingInput {
 
 	/** Whether memory system is degraded (circuit breaker open, timeouts) */
 	memoryDegraded: boolean;
+
+	/** Date query needs search tools because memory lacks explicit date signals */
+	dateQueryNeedsSearch: boolean;
+
+	/** Whether memory results include document or memory-bank tiers */
+	memoryHasDocumentTier: boolean;
+
+	/** Original user query text */
+	userQuery: string;
 
 	/** Original list of tools available */
 	availableTools: ToolDefinition[];
@@ -106,6 +115,8 @@ export type ToolGatingReasonCode =
 	| "FAIL_OPEN_DEGRADED" // Rule 1: Memory system degraded, allow all
 	| "EXPLICIT_TOOL_REQUEST" // Rule 2: User explicitly requested tools
 	| "RESEARCH_INTENT" // Rule 3: Hebrew "מחקר" detected
+	| "DATE_QUERY_NEEDS_SEARCH" // Rule 3.5: Date query requires external search
+	| "LEGAL_DECISION_NEEDS_SEARCH" // Rule 3.75: Legal decision queries should keep search tools
 	| "HIGH_CONFIDENCE_REDUCTION" // Rule 4: High confidence, reduce tools
 	| "DEFAULT_ALLOW_ALL"; // Rule 5: Default allow all tools
 
@@ -186,6 +197,30 @@ export const RESTRICTED_TOOLS = new Set([
 	"system_command", // Shell commands
 ]);
 
+const LEGAL_DECISION_PATTERNS = [
+	/בג["׳״]?ץ/i,
+	/בגץ/i,
+	/פסק[ -]?דין/i,
+	/החלט(ה|ות|ת)/i,
+	/הוחלט/i,
+	/ערעור/i,
+	/עתיר(ה|ות)/i,
+	/עליון/i,
+	/בית המשפט/i,
+	/ביהמ["׳״]?ש/i,
+	/בימ["׳״]?ש/i,
+	/supreme court/i,
+	/decision/i,
+	/ruling/i,
+	/judgment/i,
+	/appeal/i,
+];
+
+function isLegalDecisionQuery(query: string): boolean {
+	if (!query) return false;
+	return LEGAL_DECISION_PATTERNS.some((pattern) => pattern.test(query));
+}
+
 // ============================================
 // K.1.3: decideToolGating() Function (5 Rules)
 // ============================================
@@ -197,8 +232,10 @@ export const RESTRICTED_TOOLS = new Set([
  * 1. Fail-open: If memoryDegraded=true, allow all tools
  * 2. Explicit override: If user explicitly requested a tool, allow all
  * 3. Research intent: If Hebrew "מחקר" detected, allow all
- * 4. High confidence: If confidence='high' + 3+ results, reduce external tools
- * 5. Default: Allow all tools
+ * 4. Date query needs search: Allow all tools when memory lacks dates
+ * 5. Legal decision queries: Allow all tools to verify current rulings
+ * 6. High confidence: If confidence='high' + 3+ results, reduce external tools
+ * 7. Default: Allow all tools
  *
  * @param input - Tool gating input parameters
  * @returns Tool gating output with filtered tools and trace info
@@ -210,6 +247,9 @@ export function decideToolGating(input: ToolGatingInput): ToolGatingOutput {
 		explicitToolRequest,
 		detectedHebrewIntent,
 		memoryDegraded,
+		dateQueryNeedsSearch,
+		memoryHasDocumentTier,
+		userQuery,
 		availableTools,
 	} = input;
 
@@ -282,6 +322,55 @@ export function decideToolGating(input: ToolGatingInput): ToolGatingOutput {
 				en: `Explicit intent detected (${detectedHebrewIntent}) - all tools allowed`,
 			},
 		};
+	}
+
+	// ============================================
+	// K.1.6.5: Rule 3.5 - Date queries need external search if memory lacks dates
+	// ============================================
+	if (dateQueryNeedsSearch) {
+		logger.info(
+			{ reason: "DATE_QUERY_NEEDS_SEARCH" },
+			"[toolGating] Date query missing memory dates, allowing all tools"
+		);
+		return {
+			allowedTools: availableTools,
+			reducedCount: 0,
+			reasonCode: "DATE_QUERY_NEEDS_SEARCH",
+			traceExplanation: {
+				he: "שאלת תאריך בלי תאריך בזיכרון - כל כלי החיפוש מותרים",
+				en: "Date question missing memory dates - all search tools allowed",
+			},
+		};
+	}
+
+	// ============================================
+	// K.1.7: Rule 3.75 - Legal decision queries should keep search tools
+	// ============================================
+	const shouldOverrideLegalSearch =
+		isLegalDecisionQuery(userQuery) &&
+		memoryHasDocumentTier &&
+		(retrievalConfidence === "high" || retrievalConfidence === "medium") &&
+		memoryResultCount >= 1;
+
+	if (isLegalDecisionQuery(userQuery) && !shouldOverrideLegalSearch) {
+		logger.info(
+			{ reason: "LEGAL_DECISION_NEEDS_SEARCH" },
+			"[toolGating] Legal decision query, allowing all tools"
+		);
+		return {
+			allowedTools: availableTools,
+			reducedCount: 0,
+			reasonCode: "LEGAL_DECISION_NEEDS_SEARCH",
+			traceExplanation: {
+				he: "שאילתת פסיקה משפטית - כל כלי החיפוש מותרים",
+				en: "Legal decision query - all search tools allowed",
+			},
+		};
+	} else if (shouldOverrideLegalSearch) {
+		logger.info(
+			{ reason: "HIGH_CONFIDENCE_REDUCTION", memoryResultCount },
+			"[toolGating] Legal decision query satisfied by memory documents, reducing search tools"
+		);
 	}
 
 	// ============================================

@@ -51,6 +51,7 @@
 		alternatives?: Message["id"][];
 		editMsdgId?: Message["id"] | null;
 		isLast?: boolean;
+		hideMemoryUi?: boolean;
 		onretry?: (payload: { id: Message["id"]; content?: string }) => void;
 		onshowAlternateMsg?: (payload: { id: Message["id"] }) => void;
 	}
@@ -65,6 +66,7 @@
 		alternatives = [],
 		editMsdgId = $bindable(null),
 		isLast = false,
+		hideMemoryUi = false,
 		onretry,
 		onshowAlternateMsg,
 	}: Props = $props();
@@ -103,7 +105,6 @@
 	let memoryProcessingHistory = $derived(
 		$memoryUi.data.memoryProcessingHistoryByMessageId[message.id] ?? []
 	);
-	let hasMemoryProcessingHistory = $derived(memoryProcessingHistory.length > 0);
 
 	// Show memory block during streaming when memory is being processed for THIS message
 	let isMemoryActiveForThisMessage = $derived(
@@ -112,11 +113,64 @@
 			$memoryUi.session.activeAssistantMessageId === message.id &&
 			$memoryUi.processing.status !== "idle"
 	);
-	let showMemoryBlock = $derived(hasMemoryProcessingHistory || isMemoryActiveForThisMessage);
 
 	// Inline feedback state (persistent buttons next to copy/retry)
 	let isFeedbackEligible = $derived($memoryUi.ui.feedbackEligibleByMessageId[message.id] ?? false);
 	let memoryMeta = $derived($memoryUi.data.lastMemoryMetaByMessageId[message.id]);
+	let memorySteps = $derived.by(() => {
+		if (memoryProcessingHistory.length > 0) return memoryProcessingHistory;
+		if (!memoryMeta) return [];
+
+		const fallbackTimestamp = (() => {
+			if (memoryMeta?.created_at) {
+				const parsed = Date.parse(memoryMeta.created_at);
+				if (Number.isFinite(parsed)) return parsed;
+			}
+			const messageTimestamp = message.updatedAt ?? message.createdAt;
+			if (messageTimestamp instanceof Date) return messageTimestamp.getTime();
+			if (typeof messageTimestamp === "string") {
+				const parsed = Date.parse(messageTimestamp);
+				if (Number.isFinite(parsed)) return parsed;
+			}
+			return 0;
+		})();
+
+		const positionMapCount = (() => {
+			const byPosition = memoryMeta.retrieval?.search_position_map?.by_position?.length ?? 0;
+			if (byPosition > 0) return byPosition;
+			const byMemoryId = memoryMeta.retrieval?.search_position_map?.by_memory_id ?? {};
+			return Object.keys(byMemoryId).length;
+		})();
+		const fallbackCount =
+			memoryMeta.citations?.length ??
+			memoryMeta.retrieval?.limit ??
+			memoryMeta.known_context?.known_context_items?.length ??
+			positionMapCount ??
+			0;
+		if (fallbackCount > 0) {
+			return [
+				{
+					status: "found" as const,
+					count: fallbackCount,
+					timestamp: fallbackTimestamp,
+				},
+			];
+		}
+		const fallbackQuery = memoryMeta.retrieval?.query ?? undefined;
+		return fallbackQuery
+			? [
+					{
+						status: "searching" as const,
+						query: fallbackQuery,
+						timestamp: fallbackTimestamp,
+					},
+				]
+			: [];
+	});
+	let hasMemoryProcessingHistory = $derived(memorySteps.length > 0);
+	let showMemoryBlock = $derived(
+		!hideMemoryUi && (hasMemoryProcessingHistory || isMemoryActiveForThisMessage)
+	);
 	let inlineFeedbackSubmitted = $state(false);
 	let inlineFeedbackValue = $state<"positive" | "negative" | null>(null);
 	let inlineFeedbackLoading = $state(false);
@@ -162,6 +216,8 @@
 	let citationEnhancementAbort: (() => void) | null = null;
 
 	$effect(() => {
+		if (hideMemoryUi) return;
+
 		const container = contentEl;
 		if (!container || memoryCitations.length === 0) return;
 
@@ -605,6 +661,11 @@
 	// Non-global version for .test() calls to avoid lastIndex side effects
 	const THINK_BLOCK_TEST_REGEX = /(<think>[\s\S]*?(?:<\/think>|$))/i;
 	let hasClientThink = $derived(message.content.split(THINK_BLOCK_REGEX).length > 1);
+	let serverReasoningContent = $derived(
+		!hasClientThink && typeof message.reasoning === "string" && message.reasoning.trim().length > 0
+			? message.reasoning.trim()
+			: ""
+	);
 
 	// Strip think blocks for clipboard copy (always, regardless of detection)
 	let contentWithoutThink = $derived.by(() =>
@@ -829,9 +890,18 @@
 				{#if showMemoryBlock}
 					<div data-exclude-from-copy>
 						<MemoryProcessingBlock
-							steps={memoryProcessingHistory}
+							steps={memorySteps}
 							{isRTL}
 							loading={isLast && loading}
+						/>
+					</div>
+				{/if}
+				{#if serverReasoningContent}
+					<div data-exclude-from-copy>
+						<OpenReasoningResults
+							content={serverReasoningContent}
+							loading={isLast && loading}
+							hasNext={blocks.length > 0}
 						/>
 					</div>
 				{/if}
@@ -900,28 +970,34 @@
 					</div>
 				{/if}
 
-				<!-- Memory Context Indicator (citations, known context, feedback) -->
-				<div data-exclude-from-copy>
-					<MemoryContextIndicator messageId={message.id} {isRTL} isStreaming={isLast && loading} />
-				</div>
-
-				<!-- Citation Tooltip (shown on hover over citation markers) -->
-				{#if activeCitation && citationTooltipPosition}
-					<div
-						class="fixed z-50"
-						style="left: {citationTooltipPosition.x}px; top: {citationTooltipPosition.y}px;"
-						onmouseleave={closeCitationTooltip}
-						role="presentation"
-					>
-						<CitationTooltip
-							citation={activeCitation}
+				{#if !hideMemoryUi}
+					<!-- Memory Context Indicator (citations, known context, feedback) -->
+					<div data-exclude-from-copy>
+						<MemoryContextIndicator
+							messageId={message.id}
 							{isRTL}
-							onClickDetail={(memoryId) => {
-								memoryUi.setSelectedMemoryId(memoryId);
-								closeCitationTooltip();
-							}}
+							isStreaming={isLast && loading}
 						/>
 					</div>
+
+					<!-- Citation Tooltip (shown on hover over citation markers) -->
+					{#if activeCitation && citationTooltipPosition}
+						<div
+							class="fixed z-50"
+							style="left: {citationTooltipPosition.x}px; top: {citationTooltipPosition.y}px;"
+							onmouseleave={closeCitationTooltip}
+							role="presentation"
+						>
+							<CitationTooltip
+								citation={activeCitation}
+								{isRTL}
+								onClickDetail={(memoryId) => {
+									memoryUi.setSelectedMemoryId(memoryId);
+									closeCitationTooltip();
+								}}
+							/>
+						</div>
+					{/if}
 				{/if}
 			</div>
 		</div>

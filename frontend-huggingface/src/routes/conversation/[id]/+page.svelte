@@ -13,6 +13,7 @@
 		MessageUpdateStatus,
 		MessageUpdateType,
 		MessageMemoryUpdateType,
+		MessageReasoningUpdateType,
 	} from "$lib/types/MessageUpdate";
 	import { memoryUi } from "$lib/stores/memoryUi";
 	import titleUpdate from "$lib/stores/titleUpdate";
@@ -44,6 +45,25 @@
 	let showSubscribeModal = $state(false);
 
 	let files: File[] = $state([]);
+	let resetProcessingTimeout: ReturnType<typeof setTimeout> | null = null;
+
+	function scheduleResetProcessing(delayMs: number) {
+		if (resetProcessingTimeout) {
+			clearTimeout(resetProcessingTimeout);
+		}
+		resetProcessingTimeout = setTimeout(() => {
+			resetProcessingTimeout = null;
+			memoryUi.resetProcessing();
+		}, delayMs);
+	}
+
+	function resetProcessingNow() {
+		if (resetProcessingTimeout) {
+			clearTimeout(resetProcessingTimeout);
+			resetProcessingTimeout = null;
+		}
+		memoryUi.resetProcessing();
+	}
 
 	let conversations = $state(data.conversations);
 	$effect(() => {
@@ -116,7 +136,9 @@
 		messageId?: ReturnType<typeof v4>;
 		isRetry?: boolean;
 	}): Promise<void> {
-	let messageToWriteToId: Message["id"] | undefined = undefined;
+		let messageToWriteToId: Message["id"] | undefined = undefined;
+		let clientUserMessageId: Message["id"] | undefined = undefined;
+		let clientAssistantMessageId: Message["id"] | undefined = undefined;
 		try {
 			$isAborted = false;
 			$loading = true;
@@ -159,6 +181,7 @@
 						},
 						messageId
 					);
+					clientUserMessageId = newUserMessageId;
 					messageToWriteToId = addChildren(
 						{
 							messages,
@@ -167,6 +190,7 @@
 						{ from: "assistant", content: "" },
 						newUserMessageId
 					);
+					clientAssistantMessageId = messageToWriteToId;
 				} else if (messageToRetry?.from === "assistant") {
 					// we're retrying an assistant message, to generate a new answer
 					// just add a sibling to the assistant answer where we can write to
@@ -178,6 +202,7 @@
 						{ from: "assistant", content: "" },
 						messageId
 					);
+					clientAssistantMessageId = messageToWriteToId;
 				}
 			} else {
 				// just a normal linear conversation, so we add the user message
@@ -194,6 +219,7 @@
 					},
 					messageId
 				);
+				clientUserMessageId = newUserMessageId;
 
 				if (!data.rootMessageId) {
 					data.rootMessageId = newUserMessageId;
@@ -210,6 +236,7 @@
 					},
 					newUserMessageId
 				);
+				clientAssistantMessageId = messageToWriteToId;
 			}
 
 			const userMessage = messages.find((message) => message.id === messageId);
@@ -234,6 +261,8 @@
 					messageId,
 					isRetry,
 					files: isRetry ? userMessage?.files : base64Files,
+					clientUserMessageId,
+					clientAssistantMessageId,
 					selectedMcpServerNames: $enabledServers.map((s) => s.name),
 					selectedMcpServers: $enabledServers.map((s) => ({
 						name: s.name,
@@ -437,6 +466,14 @@
 						route: update.route,
 						model: update.model,
 					};
+				} else if (update.type === MessageUpdateType.Reasoning) {
+					if (
+						update.subtype === MessageReasoningUpdateType.Stream &&
+						"token" in update &&
+						typeof update.token === "string"
+					) {
+						messageToWriteTo.reasoning = (messageToWriteTo.reasoning ?? "") + update.token;
+					}
 				} else if (update.type === MessageUpdateType.Memory) {
 					// Handle memory system events for real-time UI feedback
 					if (update.subtype === MessageMemoryUpdateType.Searching) {
@@ -483,7 +520,7 @@
 								},
 							});
 						}
-						setTimeout(() => memoryUi.resetProcessing(), 1500);
+						scheduleResetProcessing(1500);
 					} else if (update.subtype === MessageMemoryUpdateType.Outcome) {
 						memoryUi.setProcessingStatus("learning");
 						// Skip dispatching if no actual memory IDs to update
@@ -501,14 +538,14 @@
 							});
 						}
 						// Clear status after a short delay
-						setTimeout(() => memoryUi.resetProcessing(), 2000);
+						scheduleResetProcessing(2000);
 					} else if (update.subtype === MessageMemoryUpdateType.Degraded) {
 						// Memory system is temporarily unavailable (circuit breaker open)
 						// This prevents UI freezes by notifying the user immediately
 						memoryUi.setProcessingStatus("degraded");
 						// Don't block - continue without memory context
 						console.debug("Memory system degraded:", update.reason, update.message);
-						setTimeout(() => memoryUi.resetProcessing(), 3000);
+						scheduleResetProcessing(3000);
 					} else if (update.subtype === MessageMemoryUpdateType.DocumentIngesting) {
 						// Document upload/processing progress
 						memoryUi.setDocumentProcessing({
@@ -520,7 +557,7 @@
 						});
 						// If completed or recognized, reset after delay
 						if (update.stage === "completed" || update.stage === "recognized") {
-							setTimeout(() => memoryUi.resetProcessing(), 3000);
+							scheduleResetProcessing(3000);
 						}
 					} else if (update.subtype === MessageMemoryUpdateType.ToolIngesting) {
 						// Tool result ingestion progress (enhanced ingestion)
@@ -532,7 +569,7 @@
 						});
 						// If completed, reset after delay
 						if (update.stage === "completed") {
-							setTimeout(() => memoryUi.resetProcessing(), 2000);
+							scheduleResetProcessing(2000);
 						}
 					}
 				}
@@ -551,7 +588,7 @@
 		} finally {
 			$loading = false;
 			pending = false;
-			memoryUi.resetProcessing();
+			resetProcessingNow();
 			// Mark stream finished to preserve memory processing history
 			if (messageToWriteToId) {
 				memoryUi.assistantStreamFinished({

@@ -12,9 +12,7 @@
  * - Hard timeouts at every stage
  */
 
-import { logger } from "$lib/server/logger";
 import type { MemoryConfig } from "../memory_config";
-import { defaultMemoryConfig } from "../memory_config";
 import type {
 	MemoryTier,
 	MemoryStatus,
@@ -28,8 +26,17 @@ import type {
 } from "../types";
 import type { QdrantAdapter, QdrantSearchResult } from "../adapters/QdrantAdapter";
 import type { Bm25Adapter, Bm25SearchResult } from "./Bm25Adapter";
-import { rankToRrfScore } from "./Bm25Adapter";
 import type { DictaEmbeddingClient } from "../embedding/DictaEmbeddingClient";
+import type { ReindexService } from "../ops";
+
+import { config } from "$lib/server/config";
+import { Database } from "$lib/server/database";
+import { logger } from "$lib/server/logger";
+import { defaultMemoryConfig } from "../memory_config";
+import { createReindexService } from "../ops";
+import { MemoryMongoStore } from "../stores/MemoryMongoStore";
+
+import { rankToRrfScore } from "./Bm25Adapter";
 
 export interface SearchServiceConfig {
 	qdrantAdapter: QdrantAdapter;
@@ -82,6 +89,10 @@ interface CandidateResult {
  */
 const RRF_K = 60;
 
+const REINDEX_COOLDOWN_MS = 30_000;
+const REINDEX_MAX_TRACKED_USERS = 1_000;
+const AUTO_REINDEX_MARK_LIMIT = 500;
+
 /**
  * Tier-based boost multipliers for RAG prioritization
  * Documents tier gets highest boost to prioritize PDF/uploaded content over conversation history
@@ -116,6 +127,9 @@ export class SearchService {
 	private embedding: DictaEmbeddingClient;
 	private rerankerEndpoint?: string;
 	private config: MemoryConfig;
+	private lastReindexAtByUser = new Map<string, number>();
+	private reindexServicePromise: Promise<ReindexService | null> | null = null;
+	private reindexInFlightByUser = new Map<string, Promise<void>>();
 
 	// Circuit breaker for reranker
 	private rerankerOpen = false;
@@ -841,6 +855,46 @@ export class SearchService {
 		}
 	}
 
+	private getMongoDbName(): string {
+		const suffix = import.meta.env.MODE === "test" ? "-test" : "";
+		return `${config.MONGODB_DB_NAME}${suffix}`;
+	}
+
+	private async getReindexService(): Promise<ReindexService | null> {
+		if (import.meta.env.MODE === "test") {
+			return null;
+		}
+
+		if (this.reindexServicePromise) {
+			return this.reindexServicePromise;
+		}
+
+		this.reindexServicePromise = (async () => {
+			try {
+				const db = await Database.getInstance();
+				const mongoStore = new MemoryMongoStore({
+					client: db.getClient(),
+					dbName: this.getMongoDbName(),
+					config: this.config,
+				});
+				await mongoStore.initialize();
+
+				return createReindexService({
+					mongoStore,
+					qdrantAdapter: this.qdrant,
+					embeddingClient: this.embedding,
+					config: this.config,
+				});
+			} catch (err) {
+				logger.warn({ err }, "[search] Failed to initialize reindex service");
+				this.reindexServicePromise = null;
+				return null;
+			}
+		})();
+
+		return this.reindexServicePromise;
+	}
+
 	// ============================================
 	// Phase 5: Auto-Reindex on 0 Results
 	// ============================================
@@ -904,14 +958,75 @@ export class SearchService {
 	 */
 	async triggerBackgroundReindex(userId: string): Promise<void> {
 		try {
-			// This is a fire-and-forget operation
-			// In production, this would call the reindex service directly
-			// For now, we log the intent and let the scheduled reindex handle it
-			logger.info({ userId }, "[Phase 5] Background reindex triggered due to 0 search results");
+			const now = Date.now();
+			const lastReindexAt = this.lastReindexAtByUser.get(userId);
+			if (lastReindexAt && now - lastReindexAt < REINDEX_COOLDOWN_MS) {
+				logger.info(
+					{ userId, cooldownMs: REINDEX_COOLDOWN_MS, sinceLastMs: now - lastReindexAt },
+					"[Phase 5] Background reindex throttled"
+				);
+				return;
+			}
 
-			// Note: The actual reindex is handled by the scheduled reindex service
-			// or can be triggered via POST /api/memory/ops/reindex/deferred
-			// This method serves as a hook for future async reindex implementation
+			if (this.lastReindexAtByUser.size > REINDEX_MAX_TRACKED_USERS) {
+				this.lastReindexAtByUser.clear();
+			}
+			this.lastReindexAtByUser.set(userId, now);
+
+			const inFlight = this.reindexInFlightByUser.get(userId);
+			if (inFlight) {
+				logger.info({ userId }, "[Phase 5] Background reindex already in flight");
+				return;
+			}
+
+			const missingIndexCount = await this.bm25.countMissingIndex(userId);
+			if (missingIndexCount <= 0) {
+				logger.info({ userId }, "[Phase 5] No missing-index items detected");
+				return;
+			}
+
+			const markLimit = Math.min(missingIndexCount, AUTO_REINDEX_MARK_LIMIT);
+			const markedCount = await this.bm25.markMissingIndexForReindex(userId, {
+				limit: markLimit,
+				reason: "auto_reindex_zero_results",
+			});
+
+			logger.warn(
+				{ userId, missingIndexCount, markLimit, markedCount },
+				"[Phase 5] Background reindex prepared"
+			);
+
+			const jobPromise = (async () => {
+				const reindexService = await this.getReindexService();
+				if (!reindexService) {
+					logger.warn(
+						{ userId },
+						"[Phase 5] Reindex service unavailable; marked items for deferred reindex"
+					);
+					return;
+				}
+
+				const result = await reindexService.reindexDeferred(userId);
+				logger.info(
+					{
+						userId,
+						success: result.success,
+						totalProcessed: result.totalProcessed,
+						totalFailed: result.totalFailed,
+						durationMs: result.durationMs,
+					},
+					"[Phase 5] Background deferred reindex completed"
+				);
+			})()
+				.catch((err) => {
+					logger.warn({ err, userId }, "[Phase 5] Background deferred reindex failed");
+				})
+				.finally(() => {
+					this.reindexInFlightByUser.delete(userId);
+				});
+
+			this.reindexInFlightByUser.set(userId, jobPromise);
+			void jobPromise;
 		} catch (err) {
 			// Swallow errors - this is fire-and-forget
 			logger.warn({ err, userId }, "[Phase 5] Background reindex trigger failed");

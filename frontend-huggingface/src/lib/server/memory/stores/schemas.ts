@@ -232,56 +232,37 @@ export interface ActionOutcomeDocument {
 
 /**
  * kg_nodes collection - Knowledge graph nodes
- * Stores concepts, entities, and their metadata
+ * Aligns with KnowledgeGraphService content KG schema.
  */
 export interface KgNodeDocument {
 	_id: ObjectId;
 	node_id: string; // UUID
 	user_id: string;
-	graph_type: "routing" | "content" | "action";
-
-	// Node content
-	label: string; // Normalized form
-	display_label: string; // Original form for display
-	node_type: "concept" | "entity" | "action" | "context" | "topic";
-
-	// Metrics
-	mention_count: number;
-	last_mentioned_at: Date | null;
-	avg_success_rate: number | null;
-
-	// References
-	memory_ids: string[]; // Memories that mention this node
-
-	created_at: Date;
-	updated_at: Date;
+	label: string;
+	node_type: "entity" | "concept" | "topic";
+	aliases: string[];
+	mentions: number;
+	avg_quality: number;
+	quality_sum: number;
+	first_seen_at: Date;
+	last_seen_at: Date;
+	memory_ids: string[];
 }
 
 /**
  * kg_edges collection - Knowledge graph edges
- * Stores relationships between nodes
+ * Aligns with KnowledgeGraphService content KG schema.
  */
 export interface KgEdgeDocument {
 	_id: ObjectId;
 	edge_id: string; // UUID
 	user_id: string;
-	graph_type: "routing" | "content" | "action";
-
-	// Edge endpoints
-	source_node_id: string;
-	target_node_id: string;
-
-	// Edge properties
-	edge_type: "related_to" | "leads_to" | "causes" | "part_of" | "effective_for" | "ineffective_for";
+	source_id: string;
+	target_id: string;
+	relation_type: "co_occurs" | "related_to" | "part_of" | "similar_to";
 	weight: number;
-	co_occurrence_count: number;
-
-	// For action graph: effectiveness data
-	success_rate: number | null;
-	total_uses: number | null;
-
-	created_at: Date;
-	updated_at: Date;
+	first_seen_at: Date;
+	last_seen_at: Date;
 }
 
 /**
@@ -421,16 +402,17 @@ export const MEMORY_COLLECTION_INDEXES = {
 
 	kg_nodes: [
 		{ key: { node_id: 1 }, unique: true },
-		{ key: { user_id: 1, graph_type: 1, label: 1 } },
-		{ key: { user_id: 1, graph_type: 1, node_type: 1 } },
+		{ key: { user_id: 1, label: 1 } },
+		{ key: { user_id: 1, node_type: 1 } },
+		{ key: { aliases: 1 } },
 		{ key: { memory_ids: 1 } },
 	],
 
 	kg_edges: [
 		{ key: { edge_id: 1 }, unique: true },
-		{ key: { user_id: 1, graph_type: 1, source_node_id: 1 } },
-		{ key: { user_id: 1, graph_type: 1, target_node_id: 1 } },
-		{ key: { source_node_id: 1, target_node_id: 1, graph_type: 1 } },
+		{ key: { user_id: 1, source_id: 1 } },
+		{ key: { user_id: 1, target_id: 1 } },
+		{ key: { source_id: 1, target_id: 1, relation_type: 1 } },
 	],
 
 	personality_memory_mappings: [

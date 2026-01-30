@@ -1,9 +1,9 @@
 import {
   transition_slide_display
-} from "./chunk-MER2FNS2.js";
+} from "./chunk-FT2Y2KWB.js";
 import {
-  false_default
-} from "./chunk-CNXG7EOH.js";
+  true_default
+} from "./chunk-2GRV7DLA.js";
 import "./chunk-6LNZPZHA.js";
 
 // node_modules/svelte/src/transition/index.js
@@ -64,7 +64,7 @@ function fly(node, { delay = 0, duration = 400, easing = cubic_out, x = 0, y = 0
 var slide_warning = false;
 function slide(node, { delay = 0, duration = 400, easing = cubic_out, axis = "y" } = {}) {
   const style = getComputedStyle(node);
-  if (false_default && !slide_warning && /(contents|inline|table)/.test(style.display)) {
+  if (true_default && !slide_warning && /(contents|inline|table)/.test(style.display)) {
     slide_warning = true;
     Promise.resolve().then(() => slide_warning = false);
     transition_slide_display(style.display);

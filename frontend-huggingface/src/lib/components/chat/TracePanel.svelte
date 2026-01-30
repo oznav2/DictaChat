@@ -11,44 +11,69 @@
 	import CarbonCheckmarkFilled from "~icons/carbon/checkmark-filled";
 
 	// Props
-	export let runId: string;
-	export let language: "he" | "en" = "en";
+	interface Props {
+		runId: string;
+		language?: "he" | "en";
+	}
+
+	let { runId, language = "en" }: Props = $props();
 
 	// Reactive stores for this run
-	$: runStore = getRunStore(runId);
+	let runStore = $derived.by(() => getRunStore(runId));
 
 	// Reactive state
-	$: run = $runStore;
+	let run = $derived($runStore);
 
 	// Track which steps have been collapsed (after fade delay)
-	let collapsedSteps: Set<string> = new Set();
+	let collapsedSteps = $state<Set<string>>(new Set());
 
 	// Track animated steps to stagger animations
-	let animatedSteps: Set<string> = new Set();
+	let animatedSteps = $state<Set<string>>(new Set());
+
+	// Track scheduled collapses to avoid repeated timers
+	const scheduledCollapse = new Set<string>();
 
 	// Root steps (no parent)
-	$: rootSteps = run
-		? (run.childrenByParent.get("__root__") || [])
-				.map((id) => run.steps.get(id))
-				.filter((s): s is TraceStep => s !== undefined)
-		: [];
+	let rootSteps = $derived.by(() => {
+		if (!run) return [];
+		return (run.childrenByParent.get("__root__") || [])
+			.map((id) => run.steps.get(id))
+			.filter((step): step is TraceStep => step !== undefined);
+	});
 
 	// Auto-collapse completed steps after a delay
 	// User specified: spinner while running → green check when done → wait 2 sec → collapse/fade
-	$: {
+	$effect(() => {
+		if (!rootSteps.length) return;
+
+		let nextAnimated = animatedSteps;
+		let animatedChanged = false;
+
 		for (const step of rootSteps) {
 			if (step.status === "done" && !collapsedSteps.has(step.id)) {
-				// Schedule collapse after 2000ms (2 seconds) as requested
-				setTimeout(() => {
-					collapsedSteps = new Set([...collapsedSteps, step.id]);
-				}, 2000);
+				if (!scheduledCollapse.has(step.id)) {
+					scheduledCollapse.add(step.id);
+					setTimeout(() => {
+						scheduledCollapse.delete(step.id);
+						collapsedSteps = new Set([...collapsedSteps, step.id]);
+					}, 2000);
+				}
 			}
-			// Track new steps for staggered animation
-			if (!animatedSteps.has(step.id)) {
-				animatedSteps = new Set([...animatedSteps, step.id]);
+
+			// Track new steps for staggered animation (batch update once)
+			if (!nextAnimated.has(step.id)) {
+				if (!animatedChanged) {
+					nextAnimated = new Set(nextAnimated);
+					animatedChanged = true;
+				}
+				nextAnimated.add(step.id);
 			}
 		}
-	}
+
+		if (animatedChanged) {
+			animatedSteps = nextAnimated;
+		}
+	});
 
 	// Get display label based on language
 	function getLabel(step: TraceStep): string {
@@ -59,23 +84,27 @@
 	// CRITICAL FIX: TracePanel must display appropriate messages based on runType
 	// - memory_prefetch: Memory search messages
 	// - document_rag: Document processing messages
-	$: isMemoryRun = run?.runType === "memory_prefetch";
+	let isMemoryRun = $derived(run?.runType === "memory_prefetch");
 
-	$: heading = isMemoryRun
-		? language === "he"
-			? "מחפש בזיכרון..."
-			: "Searching memory..."
-		: language === "he"
-			? "מעבד את המסמך המצורף"
-			: "Processing the attached document";
+	let heading = $derived.by(() =>
+		isMemoryRun
+			? language === "he"
+				? "מחפש בזיכרון..."
+				: "Searching memory..."
+			: language === "he"
+				? "מעבד את המסמך המצורף"
+				: "Processing the attached document"
+	);
 
-	$: successMessage = isMemoryRun
-		? language === "he"
-			? "חיפוש זיכרון הושלם"
-			: "Memory search complete"
-		: language === "he"
-			? "המסמך עובד בהצלחה"
-			: "Document processed successfully";
+	let successMessage = $derived.by(() =>
+		isMemoryRun
+			? language === "he"
+				? "חיפוש זיכרון הושלם"
+				: "Memory search complete"
+			: language === "he"
+				? "המסמך עובד בהצלחה"
+				: "Document processed successfully"
+	);
 
 	// Check if step should be visible
 	function isStepVisible(step: TraceStep, _index: number): boolean {

@@ -58,6 +58,18 @@ function getToolPriority(toolName: string, priorities: Record<string, number>): 
 	return 0;
 }
 
+const HISTORICAL_DATE_KEYWORDS = /\b(when)\b|מתי|תאריך|באיזה\s*תאריך|באיזה\s*יום|באיזה\s*מועד|מועד/i;
+const HISTORICAL_CONTEXT_KEYWORDS =
+	/\b(decision|appointed|appointment|nominated|nomination|elected|election|resigned|ruling|verdict|court|case|founded|established|announced|approved|hearing)\b|החלט(?:ה|ות)|הוחלט|מונ(?:ה|ו|תה)|מינוי|נבחר|התפטר|פסק(?:\s*דין)?|בג\"ץ|בית\s*המשפט|הוקם|נוסד|אושר|הוכרז|מינויו|מינויה|דיון|שימוע|ישיבה/i;
+const CURRENT_TIME_KEYWORDS =
+	/\b(current time|time now|what time|timezone|convert|clock|local time)\b|מה\s*השעה|שעה\s*עכשיו|אזור\s*זמן|המרת?\s*זמן|שעון/i;
+
+export function isHistoricalDateQuery(query: string): boolean {
+	if (!HISTORICAL_DATE_KEYWORDS.test(query)) return false;
+	if (CURRENT_TIME_KEYWORDS.test(query)) return false;
+	return HISTORICAL_CONTEXT_KEYWORDS.test(query);
+}
+
 /**
  * Cache for tool filtering results to improve performance
  */
@@ -501,6 +513,18 @@ export function filterToolsByIntent(
 			matchedCategories.push(category);
 			config.tools.forEach((t) => relevantToolNames.add(t));
 		}
+	}
+
+	const isHistoricalDate = isHistoricalDateQuery(userQuery);
+	if (isHistoricalDate) {
+		if (!matchedCategories.includes("simpleSearch")) {
+			matchedCategories.push("simpleSearch");
+		}
+		if (!matchedCategories.includes("research")) {
+			matchedCategories.push("research");
+		}
+		TOOL_CATEGORIES.simpleSearch.tools.forEach((t) => relevantToolNames.add(t));
+		TOOL_CATEGORIES.research.tools.forEach((t) => relevantToolNames.add(t));
 	}
 
 	// Exclude sequentialthinking when documents are attached - the model already has native

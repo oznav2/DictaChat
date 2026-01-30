@@ -6,6 +6,35 @@ import { resetMcpToolsCache } from "./tools";
 let cachedRaw: string | null = null;
 let cachedServers: McpServerConfig[] = [];
 
+type McpServersSource = "MCP_SERVERS" | "FRONTEND_MCP_SERVERS" | "none";
+
+function sanitizeJsonEnv(val: string | undefined): string {
+	const raw = (val || "").trim();
+	if (!raw) return "";
+	if (
+		(raw.startsWith("'") && raw.endsWith("'")) ||
+		(raw.startsWith('"') && raw.endsWith('"')) ||
+		(raw.startsWith("`") && raw.endsWith("`"))
+	) {
+		return raw.slice(1, -1).trim();
+	}
+	return raw;
+}
+
+function getEffectiveRawAndSource(): { raw: string; source: McpServersSource } {
+	const mcpServersRaw = sanitizeJsonEnv(config.MCP_SERVERS);
+	if (mcpServersRaw) {
+		return { raw: mcpServersRaw, source: "MCP_SERVERS" };
+	}
+
+	const frontendMcpServersRaw = sanitizeJsonEnv(config.FRONTEND_MCP_SERVERS);
+	if (frontendMcpServersRaw) {
+		return { raw: frontendMcpServersRaw, source: "FRONTEND_MCP_SERVERS" };
+	}
+
+	return { raw: "[]", source: "none" };
+}
+
 function parseServers(raw: string): McpServerConfig[] {
 	if (!raw) return [];
 
@@ -51,13 +80,13 @@ function setServers(raw: string) {
 }
 
 export function loadMcpServersOnStartup(): McpServerConfig[] {
-	const raw = config.MCP_SERVERS || "[]";
+	const { raw } = getEffectiveRawAndSource();
 	setServers(raw);
 	return cachedServers;
 }
 
 export function refreshMcpServersIfChanged(): void {
-	const currentRaw = config.MCP_SERVERS || "[]";
+	const { raw: currentRaw } = getEffectiveRawAndSource();
 	if (cachedRaw === null) {
 		setServers(currentRaw);
 		return;
@@ -73,4 +102,17 @@ export function getMcpServers(): McpServerConfig[] {
 		loadMcpServersOnStartup();
 	}
 	return cachedServers;
+}
+
+export function getMcpServersDiagnostics(): {
+	effectiveRaw: string;
+	parsedServers: McpServerConfig[];
+	source: McpServersSource;
+} {
+	const { raw, source } = getEffectiveRawAndSource();
+	return {
+		effectiveRaw: raw,
+		parsedServers: parseServers(raw),
+		source,
+	};
 }

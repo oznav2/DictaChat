@@ -126,6 +126,9 @@
 	onMount(() => {
 		if (!browser) return;
 
+		// Fail-safe: if a modal previously left the app inert, clear it on fresh mounts.
+		document.getElementById("app")?.removeAttribute("inert");
+
 		runStorageMigration();
 
 		if (window.innerWidth < 768) {
@@ -185,24 +188,37 @@
 				});
 		}
 
-		if (page.url.searchParams.has("token")) {
+		if (page.url.searchParams.has("token") && !page.data.singleUserAdminEnabled) {
 			const token = page.url.searchParams.get("token");
+			try {
+				const response = await fetch(`${base}/api/user/validate-token`, {
+					method: "POST",
+					headers: { "content-type": "application/json" },
+					credentials: "same-origin",
+					body: JSON.stringify({ token }),
+				});
 
-			const response = await fetch(`${base}/api/user/validate-token`, {
-				method: "POST",
-				body: JSON.stringify({ token }),
-			});
-
-			if (response.ok) {
-				const result = await response.json();
-				if (result.valid) {
-					const query = new URLSearchParams(page.url.searchParams.toString());
-					query.delete("token");
-					// Force full reload to ensure session is recognized
-					window.location.href = `${base}/?${query.toString()}`;
+				if (response.ok) {
+					const result = await response.json();
+					if (result.valid) {
+						const query = new URLSearchParams(page.url.searchParams.toString());
+						query.delete("token");
+						const nextUrl = query.toString() ? `${base}/?${query.toString()}` : `${base}/`;
+						// Prefer SPA navigation to avoid full page reloads, but keep a safe fallback.
+						await goto(nextUrl, { invalidateAll: true, replaceState: true }).catch(() => {
+							window.location.href = nextUrl;
+						});
+					}
 				}
+			} catch (err) {
+				console.warn("Token validation failed:", err);
 			}
 		}
+
+	});
+
+	onMount(() => {
+		if (!browser) return;
 
 		// Global keyboard shortcut: New Chat (Ctrl/Cmd + Shift + O)
 		const onKeydown = (e: KeyboardEvent) => {
@@ -221,7 +237,9 @@
 		};
 
 		window.addEventListener("keydown", onKeydown, { capture: true });
-		onDestroy(() => window.removeEventListener("keydown", onKeydown, { capture: true }));
+		return () => {
+			window.removeEventListener("keydown", onKeydown, { capture: true });
+		};
 	});
 
 	let mobileNavTitle = $derived(
@@ -235,6 +253,8 @@
 		!$settings.welcomeModalSeen &&
 			!(page.data.shared === true && page.route.id?.startsWith("/conversation/"))
 	);
+
+	const resolvedOrigin = $derived(publicConfig.PUBLIC_ORIGIN || page.url.origin);
 </script>
 
 <svelte:head>
@@ -242,44 +262,44 @@
 	<meta name="description" content={publicConfig.PUBLIC_APP_DESCRIPTION} />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:site" content="@huggingface" />
-	<meta name="twitter:title" content="{publicConfig.PUBLIC_APP_NAME} - Chat with AI models" />
+	<meta name="twitter:title" content={`${publicConfig.PUBLIC_APP_NAME} - Chat with AI models`} />
 	<meta name="twitter:description" content={publicConfig.PUBLIC_APP_DESCRIPTION} />
 	<meta
 		name="twitter:image"
-		content="{publicConfig.PUBLIC_ORIGIN || page.url.origin}{publicConfig.assetPath}/thumbnail.png"
+		content={`${resolvedOrigin}${publicConfig.assetPath}/thumbnail.png`}
 	/>
-	<meta name="twitter:image:alt" content="{publicConfig.PUBLIC_APP_NAME} preview" />
+	<meta name="twitter:image:alt" content={`${publicConfig.PUBLIC_APP_NAME} preview`} />
 
 	<!-- use those meta tags everywhere except on special listing pages -->
 	<!-- feel free to refacto if there's a better way -->
 	{#if !page.url.pathname.includes("/models/")}
-		<meta property="og:title" content="{publicConfig.PUBLIC_APP_NAME} - Chat with AI models" />
+		<meta property="og:title" content={`${publicConfig.PUBLIC_APP_NAME} - Chat with AI models`} />
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content="{publicConfig.PUBLIC_ORIGIN || page.url.origin}{base}" />
-		<meta property="og:image" content="{publicConfig.assetPath}/thumbnail.png" />
+		<meta property="og:url" content={`${resolvedOrigin}${base}`} />
+		<meta property="og:image" content={`${publicConfig.assetPath}/thumbnail.png`} />
 		<meta property="og:description" content={publicConfig.PUBLIC_APP_DESCRIPTION} />
 		<meta property="og:site_name" content={publicConfig.PUBLIC_APP_NAME} />
 		<meta property="og:locale" content="en_US" />
 	{/if}
-	<link rel="icon" href="{publicConfig.assetPath}/icon.svg" type="image/svg+xml" />
+	<link rel="icon" href={`${publicConfig.assetPath}/icon.svg`} type="image/svg+xml" />
 	{#if publicConfig.PUBLIC_ORIGIN}
 		<link
 			rel="icon"
-			href="{publicConfig.assetPath}/favicon.svg"
+			href={`${publicConfig.assetPath}/favicon.svg`}
 			type="image/svg+xml"
 			media="(prefers-color-scheme: light)"
 		/>
 		<link
 			rel="icon"
-			href="{publicConfig.assetPath}/favicon-dark.svg"
+			href={`${publicConfig.assetPath}/favicon-dark.svg`}
 			type="image/svg+xml"
 			media="(prefers-color-scheme: dark)"
 		/>
 	{:else}
-		<link rel="icon" href="{publicConfig.assetPath}/favicon-dev.svg" type="image/svg+xml" />
+		<link rel="icon" href={`${publicConfig.assetPath}/favicon-dev.svg`} type="image/svg+xml" />
 	{/if}
-	<link rel="apple-touch-icon" href="{publicConfig.assetPath}/apple-touch-icon.png" />
-	<link rel="manifest" href="{publicConfig.assetPath}/manifest.json" />
+	<link rel="apple-touch-icon" href={`${publicConfig.assetPath}/apple-touch-icon.png`} />
+	<link rel="manifest" href={`${publicConfig.assetPath}/manifest.json`} />
 
 	{#if publicConfig.PUBLIC_PLAUSIBLE_SCRIPT_URL}
 		<script async src={publicConfig.PUBLIC_PLAUSIBLE_SCRIPT_URL}></script>

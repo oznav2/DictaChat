@@ -1,373 +1,349 @@
 {
-  "hash": "85478c58",
-  "configHash": "debe82d4",
-  "lockfileHash": "86ddd313",
-  "browserHash": "8cc81afb",
+  "hash": "d83b0870",
+  "configHash": "a768f445",
+  "lockfileHash": "ced57686",
+  "browserHash": "c2c4fc10",
   "optimized": {
     "uuid": {
       "src": "../../node_modules/uuid/dist/esm-browser/index.js",
       "file": "uuid.js",
-      "fileHash": "437434a3",
+      "fileHash": "0260444c",
       "needsInterop": false
     },
     "clsx": {
       "src": "../../node_modules/clsx/dist/clsx.mjs",
       "file": "clsx.js",
-      "fileHash": "088f241a",
+      "fileHash": "bac1ae08",
       "needsInterop": false
     },
     "@braintree/sanitize-url": {
       "src": "../../node_modules/@braintree/sanitize-url/dist/index.js",
       "file": "@braintree_sanitize-url.js",
-      "fileHash": "f18bb375",
+      "fileHash": "9a3f34e9",
       "needsInterop": true
     },
     "svelte": {
       "src": "../../node_modules/svelte/src/index-client.js",
       "file": "svelte.js",
-      "fileHash": "3c5a4439",
+      "fileHash": "db79ca03",
       "needsInterop": false
     },
     "svelte/animate": {
       "src": "../../node_modules/svelte/src/animate/index.js",
       "file": "svelte_animate.js",
-      "fileHash": "b0469d1c",
+      "fileHash": "751c4145",
       "needsInterop": false
     },
     "svelte/attachments": {
       "src": "../../node_modules/svelte/src/attachments/index.js",
       "file": "svelte_attachments.js",
-      "fileHash": "0883d77a",
+      "fileHash": "334375de",
       "needsInterop": false
     },
     "svelte/easing": {
       "src": "../../node_modules/svelte/src/easing/index.js",
       "file": "svelte_easing.js",
-      "fileHash": "874a622d",
+      "fileHash": "ae43ccfc",
       "needsInterop": false
     },
     "svelte/internal": {
       "src": "../../node_modules/svelte/src/internal/index.js",
       "file": "svelte_internal.js",
-      "fileHash": "2128c0fb",
+      "fileHash": "870cdd5f",
       "needsInterop": true
     },
     "svelte/internal/client": {
       "src": "../../node_modules/svelte/src/internal/client/index.js",
       "file": "svelte_internal_client.js",
-      "fileHash": "b8bd11f8",
+      "fileHash": "a345e44c",
       "needsInterop": false
     },
     "svelte/internal/disclose-version": {
       "src": "../../node_modules/svelte/src/internal/disclose-version.js",
       "file": "svelte_internal_disclose-version.js",
-      "fileHash": "a6263618",
+      "fileHash": "7aabe7e9",
       "needsInterop": false
     },
     "svelte/internal/flags/legacy": {
       "src": "../../node_modules/svelte/src/internal/flags/legacy.js",
       "file": "svelte_internal_flags_legacy.js",
-      "fileHash": "c7d8647d",
+      "fileHash": "d4746394",
       "needsInterop": false
     },
     "svelte/internal/flags/tracing": {
       "src": "../../node_modules/svelte/src/internal/flags/tracing.js",
       "file": "svelte_internal_flags_tracing.js",
-      "fileHash": "97bf49d5",
+      "fileHash": "b31bc2b5",
       "needsInterop": false
     },
     "svelte/legacy": {
       "src": "../../node_modules/svelte/src/legacy/legacy-client.js",
       "file": "svelte_legacy.js",
-      "fileHash": "d577f415",
+      "fileHash": "349d10b6",
       "needsInterop": false
     },
     "svelte/motion": {
       "src": "../../node_modules/svelte/src/motion/index.js",
       "file": "svelte_motion.js",
-      "fileHash": "59263e85",
+      "fileHash": "7351f55c",
       "needsInterop": false
     },
     "svelte/reactivity": {
       "src": "../../node_modules/svelte/src/reactivity/index-client.js",
       "file": "svelte_reactivity.js",
-      "fileHash": "2f3bd476",
+      "fileHash": "218d2bfe",
       "needsInterop": false
     },
     "svelte/reactivity/window": {
       "src": "../../node_modules/svelte/src/reactivity/window/index.js",
       "file": "svelte_reactivity_window.js",
-      "fileHash": "26b391bf",
+      "fileHash": "47a8bd1c",
       "needsInterop": false
     },
     "svelte/store": {
       "src": "../../node_modules/svelte/src/store/index-client.js",
       "file": "svelte_store.js",
-      "fileHash": "3614d8bf",
+      "fileHash": "b49a87da",
       "needsInterop": false
     },
     "svelte/transition": {
       "src": "../../node_modules/svelte/src/transition/index.js",
       "file": "svelte_transition.js",
-      "fileHash": "db979a80",
+      "fileHash": "64363389",
       "needsInterop": false
     },
     "svelte/events": {
       "src": "../../node_modules/svelte/src/events/index.js",
       "file": "svelte_events.js",
-      "fileHash": "b3c7e148",
+      "fileHash": "7118dda8",
       "needsInterop": false
     },
     "svelte > clsx": {
       "src": "../../node_modules/clsx/dist/clsx.mjs",
       "file": "svelte___clsx.js",
-      "fileHash": "2621d2cf",
+      "fileHash": "0b5eac27",
       "needsInterop": false
     },
     "@elysiajs/eden": {
       "src": "../../node_modules/@elysiajs/eden/dist/index.mjs",
       "file": "@elysiajs_eden.js",
-      "fileHash": "0e791651",
+      "fileHash": "ca36ced9",
       "needsInterop": false
     },
     "@huggingface/inference": {
       "src": "../../node_modules/@huggingface/inference/dist/esm/index.js",
       "file": "@huggingface_inference.js",
-      "fileHash": "679ec8f5",
+      "fileHash": "15d8fa55",
       "needsInterop": false
     },
     "3d-force-graph": {
       "src": "../../node_modules/3d-force-graph/dist/3d-force-graph.mjs",
       "file": "3d-force-graph.js",
-      "fileHash": "4be8157c",
+      "fileHash": "6fbe9b52",
       "needsInterop": false
     },
     "bits-ui": {
       "src": "../../node_modules/bits-ui/dist/index.js",
       "file": "bits-ui.js",
-      "fileHash": "6a92df16",
+      "fileHash": "5cf4c5fc",
       "needsInterop": false
     },
     "bson-objectid": {
       "src": "../../node_modules/bson-objectid/objectid.js",
       "file": "bson-objectid.js",
-      "fileHash": "4ce596d6",
+      "fileHash": "fe8fac7c",
       "needsInterop": true
     },
     "d3": {
       "src": "../../node_modules/d3/src/index.js",
       "file": "d3.js",
-      "fileHash": "2bce42e9",
+      "fileHash": "fe3739a8",
       "needsInterop": false
     },
     "devalue": {
       "src": "../../node_modules/devalue/index.js",
       "file": "devalue.js",
-      "fileHash": "f2a7d682",
+      "fileHash": "163e5511",
       "needsInterop": false
     },
     "esm-env": {
       "src": "../../node_modules/esm-env/index.js",
       "file": "esm-env.js",
-      "fileHash": "3cac5fde",
+      "fileHash": "9d6feb5e",
       "needsInterop": false
     },
     "highlight.js/lib/core": {
       "src": "../../node_modules/highlight.js/es/core.js",
       "file": "highlight__js_lib_core.js",
-      "fileHash": "84739fda",
+      "fileHash": "2b52a552",
       "needsInterop": false
     },
     "highlight.js/lib/languages/bash": {
       "src": "../../node_modules/highlight.js/es/languages/bash.js",
       "file": "highlight__js_lib_languages_bash.js",
-      "fileHash": "a8a9bf99",
+      "fileHash": "d1c2b273",
       "needsInterop": false
     },
     "highlight.js/lib/languages/c": {
       "src": "../../node_modules/highlight.js/es/languages/c.js",
       "file": "highlight__js_lib_languages_c.js",
-      "fileHash": "bcdadb49",
+      "fileHash": "57e21427",
       "needsInterop": false
     },
     "highlight.js/lib/languages/cpp": {
       "src": "../../node_modules/highlight.js/es/languages/cpp.js",
       "file": "highlight__js_lib_languages_cpp.js",
-      "fileHash": "0e2f6cb9",
+      "fileHash": "771022a6",
       "needsInterop": false
     },
     "highlight.js/lib/languages/csharp": {
       "src": "../../node_modules/highlight.js/es/languages/csharp.js",
       "file": "highlight__js_lib_languages_csharp.js",
-      "fileHash": "e77e5ccd",
+      "fileHash": "e113dc0f",
       "needsInterop": false
     },
     "highlight.js/lib/languages/css": {
       "src": "../../node_modules/highlight.js/es/languages/css.js",
       "file": "highlight__js_lib_languages_css.js",
-      "fileHash": "343fffb8",
+      "fileHash": "93364126",
       "needsInterop": false
     },
     "highlight.js/lib/languages/go": {
       "src": "../../node_modules/highlight.js/es/languages/go.js",
       "file": "highlight__js_lib_languages_go.js",
-      "fileHash": "c2f56df9",
+      "fileHash": "4da84ba4",
       "needsInterop": false
     },
     "highlight.js/lib/languages/java": {
       "src": "../../node_modules/highlight.js/es/languages/java.js",
       "file": "highlight__js_lib_languages_java.js",
-      "fileHash": "0c519edd",
+      "fileHash": "d24f9f56",
       "needsInterop": false
     },
     "highlight.js/lib/languages/javascript": {
       "src": "../../node_modules/highlight.js/es/languages/javascript.js",
       "file": "highlight__js_lib_languages_javascript.js",
-      "fileHash": "91bf589a",
+      "fileHash": "8d2c422c",
       "needsInterop": false
     },
     "highlight.js/lib/languages/json": {
       "src": "../../node_modules/highlight.js/es/languages/json.js",
       "file": "highlight__js_lib_languages_json.js",
-      "fileHash": "15b4c901",
+      "fileHash": "cce28dc9",
       "needsInterop": false
     },
     "highlight.js/lib/languages/markdown": {
       "src": "../../node_modules/highlight.js/es/languages/markdown.js",
       "file": "highlight__js_lib_languages_markdown.js",
-      "fileHash": "54c9bf6b",
+      "fileHash": "8ea38a45",
       "needsInterop": false
     },
     "highlight.js/lib/languages/plaintext": {
       "src": "../../node_modules/highlight.js/es/languages/plaintext.js",
       "file": "highlight__js_lib_languages_plaintext.js",
-      "fileHash": "c27ca527",
+      "fileHash": "4acc0b89",
       "needsInterop": false
     },
     "highlight.js/lib/languages/python": {
       "src": "../../node_modules/highlight.js/es/languages/python.js",
       "file": "highlight__js_lib_languages_python.js",
-      "fileHash": "10565a1f",
+      "fileHash": "d187d098",
       "needsInterop": false
     },
     "highlight.js/lib/languages/rust": {
       "src": "../../node_modules/highlight.js/es/languages/rust.js",
       "file": "highlight__js_lib_languages_rust.js",
-      "fileHash": "789dd02f",
+      "fileHash": "9ee477c5",
       "needsInterop": false
     },
     "highlight.js/lib/languages/scss": {
       "src": "../../node_modules/highlight.js/es/languages/scss.js",
       "file": "highlight__js_lib_languages_scss.js",
-      "fileHash": "13afd1ca",
+      "fileHash": "b2ade509",
       "needsInterop": false
     },
     "highlight.js/lib/languages/shell": {
       "src": "../../node_modules/highlight.js/es/languages/shell.js",
       "file": "highlight__js_lib_languages_shell.js",
-      "fileHash": "5bfce1c3",
+      "fileHash": "605cab91",
       "needsInterop": false
     },
     "highlight.js/lib/languages/sql": {
       "src": "../../node_modules/highlight.js/es/languages/sql.js",
       "file": "highlight__js_lib_languages_sql.js",
-      "fileHash": "1ad85a81",
+      "fileHash": "a44e01c5",
       "needsInterop": false
     },
     "highlight.js/lib/languages/typescript": {
       "src": "../../node_modules/highlight.js/es/languages/typescript.js",
       "file": "highlight__js_lib_languages_typescript.js",
-      "fileHash": "1c469f16",
+      "fileHash": "2331d6ee",
       "needsInterop": false
     },
     "highlight.js/lib/languages/xml": {
       "src": "../../node_modules/highlight.js/es/languages/xml.js",
       "file": "highlight__js_lib_languages_xml.js",
-      "fileHash": "e905775e",
+      "fileHash": "7479fdca",
       "needsInterop": false
     },
     "highlight.js/lib/languages/yaml": {
       "src": "../../node_modules/highlight.js/es/languages/yaml.js",
       "file": "highlight__js_lib_languages_yaml.js",
-      "fileHash": "9bb489b0",
+      "fileHash": "aed6b5aa",
       "needsInterop": false
     },
     "isomorphic-dompurify": {
       "src": "../../node_modules/isomorphic-dompurify/browser.js",
       "file": "isomorphic-dompurify.js",
-      "fileHash": "39723702",
+      "fileHash": "9a81d512",
       "needsInterop": true
     },
     "jszip": {
       "src": "../../node_modules/jszip/dist/jszip.min.js",
       "file": "jszip.js",
-      "fileHash": "5fd5435b",
+      "fileHash": "d23ab696",
       "needsInterop": true
     },
     "katex": {
       "src": "../../node_modules/katex/dist/katex.mjs",
       "file": "katex.js",
-      "fileHash": "c600a9cf",
+      "fileHash": "7e2c4d42",
       "needsInterop": false
     },
     "katex/dist/contrib/mhchem.mjs": {
       "src": "../../node_modules/katex/dist/contrib/mhchem.mjs",
       "file": "katex_dist_contrib_mhchem__mjs.js",
-      "fileHash": "0fa57e30",
+      "fileHash": "66dfa83c",
       "needsInterop": false
     },
     "marked": {
       "src": "../../node_modules/marked/lib/marked.esm.js",
       "file": "marked.js",
-      "fileHash": "bd598a50",
+      "fileHash": "f0cad86a",
       "needsInterop": false
     },
     "superjson": {
       "src": "../../node_modules/superjson/dist/index.js",
       "file": "superjson.js",
-      "fileHash": "5822f495",
+      "fileHash": "5ace036a",
       "needsInterop": false
     },
     "svelte-tiny-virtual-list": {
       "src": "../../node_modules/svelte-tiny-virtual-list/dist/index.js",
       "file": "svelte-tiny-virtual-list.js",
-      "fileHash": "ea07489c",
+      "fileHash": "f6290974",
       "needsInterop": false
     },
     "three": {
       "src": "../../node_modules/three/build/three.module.js",
       "file": "three.js",
-      "fileHash": "0dbdb190",
+      "fileHash": "107d1c9a",
       "needsInterop": false
     },
     "zod": {
       "src": "../../node_modules/zod/dist/esm/index.js",
       "file": "zod.js",
-      "fileHash": "a5b09fc4",
-      "needsInterop": false
-    },
-    "style-to-object": {
-      "src": "../../node_modules/style-to-object/esm/index.mjs",
-      "file": "style-to-object.js",
-      "fileHash": "066f9fc1",
-      "needsInterop": false
-    },
-    "@internationalized/date": {
-      "src": "../../node_modules/@internationalized/date/dist/import.mjs",
-      "file": "@internationalized_date.js",
-      "fileHash": "8d1fac8e",
-      "needsInterop": false
-    },
-    "tabbable": {
-      "src": "../../node_modules/tabbable/dist/index.esm.js",
-      "file": "tabbable.js",
-      "fileHash": "93d11355",
-      "needsInterop": false
-    },
-    "@floating-ui/dom": {
-      "src": "../../node_modules/@floating-ui/dom/dist/floating-ui.dom.mjs",
-      "file": "@floating-ui_dom.js",
-      "fileHash": "787cd31c",
+      "fileHash": "df68b80f",
       "needsInterop": false
     }
   },
@@ -381,59 +357,47 @@
     "chunk-5GONY4FY": {
       "file": "chunk-5GONY4FY.js"
     },
-    "chunk-TKE4VP3B": {
-      "file": "chunk-TKE4VP3B.js"
-    },
-    "chunk-7MXQRCDG": {
-      "file": "chunk-7MXQRCDG.js"
-    },
-    "chunk-TG2AXNWI": {
-      "file": "chunk-TG2AXNWI.js"
-    },
-    "chunk-7RQDXF5S": {
-      "file": "chunk-7RQDXF5S.js"
-    },
-    "chunk-7QVV7TAH": {
-      "file": "chunk-7QVV7TAH.js"
-    },
-    "chunk-EOB5ZLR7": {
-      "file": "chunk-EOB5ZLR7.js"
-    },
-    "chunk-UR5WURMW": {
-      "file": "chunk-UR5WURMW.js"
-    },
-    "chunk-JDXWA2GI": {
-      "file": "chunk-JDXWA2GI.js"
-    },
-    "chunk-MER2FNS2": {
-      "file": "chunk-MER2FNS2.js"
-    },
-    "chunk-CNXG7EOH": {
-      "file": "chunk-CNXG7EOH.js"
-    },
     "chunk-QRCWDNKT": {
       "file": "chunk-QRCWDNKT.js"
     },
     "chunk-NTBXCXB5": {
       "file": "chunk-NTBXCXB5.js"
     },
+    "chunk-ZQJPPEIT": {
+      "file": "chunk-ZQJPPEIT.js"
+    },
+    "chunk-DBTSH6U3": {
+      "file": "chunk-DBTSH6U3.js"
+    },
+    "chunk-IPTDMU3X": {
+      "file": "chunk-IPTDMU3X.js"
+    },
+    "chunk-7RQDXF5S": {
+      "file": "chunk-7RQDXF5S.js"
+    },
+    "chunk-PLKPVGU2": {
+      "file": "chunk-PLKPVGU2.js"
+    },
+    "chunk-DJ6FSLDI": {
+      "file": "chunk-DJ6FSLDI.js"
+    },
+    "chunk-EGNO7VLM": {
+      "file": "chunk-EGNO7VLM.js"
+    },
+    "chunk-FT2Y2KWB": {
+      "file": "chunk-FT2Y2KWB.js"
+    },
+    "chunk-2GRV7DLA": {
+      "file": "chunk-2GRV7DLA.js"
+    },
     "chunk-OKMPZSYG": {
       "file": "chunk-OKMPZSYG.js"
     },
-    "chunk-4HF7MGII": {
-      "file": "chunk-4HF7MGII.js"
-    },
-    "chunk-7F6MK5HD": {
-      "file": "chunk-7F6MK5HD.js"
-    },
-    "chunk-UJ7JXMTJ": {
-      "file": "chunk-UJ7JXMTJ.js"
-    },
-    "chunk-JCU57T2W": {
-      "file": "chunk-JCU57T2W.js"
-    },
     "chunk-KDVGFZWC": {
       "file": "chunk-KDVGFZWC.js"
+    },
+    "chunk-7QVV7TAH": {
+      "file": "chunk-7QVV7TAH.js"
     },
     "chunk-6LNZPZHA": {
       "file": "chunk-6LNZPZHA.js"

@@ -79,13 +79,17 @@ LOG_DIR="$SCRIPT_DIR/.logs"
 LOG_FILE="$LOG_DIR/debug.log"
 FRONTEND_LOG="$LOG_DIR/frontend.log"
 BACKEND_LOG="$LOG_DIR/backend.log"
+CONSOLE_LOG="$LOG_DIR/console.log"
+CONSOLE_PASTE_PIPE="$LOG_DIR/console.paste"
 
 # Clean up old logs to ensure a fresh start
-rm -f "$LOG_FILE" "$FRONTEND_LOG" "$BACKEND_LOG"
+rm -f "$LOG_FILE" "$FRONTEND_LOG" "$BACKEND_LOG" "$CONSOLE_LOG"
+rm -f "$CONSOLE_PASTE_PIPE"
 
 mkdir -p "$LOG_DIR"
 : > "$FRONTEND_LOG"
 : > "$BACKEND_LOG"
+: > "$CONSOLE_LOG"
 
 # Resolve "failed to get console" error in Docker BuildKit
 export BUILDKIT_PROGRESS=plain
@@ -146,6 +150,196 @@ DOCKER_LOGS_PID=""
 FRONTEND_PID=""
 MCP_LOGS_PID=""
 LLAMA_LOGS_PID=""
+BROWSER_CONSOLE_PID=""
+BROWSER_TOOLS_PID=""
+CONSOLE_PASTE_PID=""
+
+start_browser_tools_server() {
+	if [ "${BROWSER_TOOLS_AUTO_START:-true}" = "false" ]; then
+		log_info "Browser tools auto-start disabled (BROWSER_TOOLS_AUTO_START=false)."
+		return
+	fi
+
+	local port="${BROWSER_TOOLS_PORT:-3025}"
+	local -a hosts=()
+
+	if [ -n "${BROWSER_TOOLS_HOST:-}" ]; then
+		hosts=("${BROWSER_TOOLS_HOST}")
+	elif [ -n "${BROWSER_TOOLS_HOSTS:-}" ]; then
+		IFS=',' read -r -a hosts <<< "${BROWSER_TOOLS_HOSTS}"
+	else
+		hosts=("localhost" "127.0.0.1" "192.168.31.238" "172.21.64.1" "172.28.32.1")
+	fi
+
+	for host in "${hosts[@]}"; do
+		if curl -sS --max-time 1 "http://${host}:${port}/console-logs" >/dev/null 2>&1; then
+			log_info "Browser Tools Server already reachable at ${host}:${port}"
+			return
+		fi
+	done
+
+	log_info "Starting Browser Tools Server via Windows npx..."
+	cmd.exe /c "cd /d %USERPROFILE% && npx -y @agentdeskai/browser-tools-server" >/dev/null 2>&1 &
+	BROWSER_TOOLS_PID="$!"
+
+	local start_time
+	start_time=$(date +%s)
+	local timeout="${BROWSER_TOOLS_START_TIMEOUT:-20}"
+
+	while true; do
+		for host in "${hosts[@]}"; do
+			if curl -sS --max-time 1 "http://${host}:${port}/console-logs" >/dev/null 2>&1; then
+				log_success "Browser Tools Server reachable at ${host}:${port}"
+				return
+			fi
+		done
+		if (( $(date +%s) - start_time > timeout )); then
+			log_error "Browser Tools Server not reachable after ${timeout}s. Start it manually in Windows."
+			return
+		fi
+		sleep 1
+	done
+}
+
+start_browser_console_capture() {
+	log_info "Starting browser console capture (polling every 5s)..."
+	"$PYTHON_CMD" - "$CONSOLE_LOG" <<'PY' &
+import json
+import os
+import sys
+import time
+import urllib.request
+
+log_file = sys.argv[1]
+port = int(os.getenv("BROWSER_TOOLS_PORT", "3025"))
+poll_interval = float(os.getenv("BROWSER_TOOLS_POLL_INTERVAL", "5"))
+host_override = os.getenv("BROWSER_TOOLS_HOST", "").strip()
+hosts_env = os.getenv("BROWSER_TOOLS_HOSTS", "").strip()
+
+def get_hosts() -> list[str]:
+	if host_override:
+		return [host_override]
+	if hosts_env:
+		return [h.strip() for h in hosts_env.split(",") if h.strip()]
+	return [
+		"localhost",
+		"127.0.0.1",
+		"192.168.31.238",
+		"172.21.64.1",
+		"172.28.32.1",
+	]
+
+def fetch_json(url: str, timeout: float = 1.5):
+	with urllib.request.urlopen(url, timeout=timeout) as response:
+		payload = response.read().decode("utf-8")
+		return json.loads(payload)
+
+def discover_host() -> str | None:
+	for host in get_hosts():
+		try:
+			data = fetch_json(f"http://{host}:{port}/console-logs", timeout=1.0)
+			if isinstance(data, list):
+				return host
+		except Exception:
+			continue
+	return None
+
+def append_entries(entries, last_ts, seen):
+	if not isinstance(entries, list):
+		return last_ts
+	newest = last_ts
+	lines = []
+	for entry in entries:
+		if isinstance(entry, dict):
+			key = (entry.get("timestamp"), entry.get("level"), entry.get("message"), entry.get("type"))
+			if key in seen:
+				continue
+			seen.add(key)
+			if len(seen) > 5000:
+				seen.pop()
+			ts_raw = entry.get("timestamp")
+			try:
+				ts = int(ts_raw) if ts_raw is not None else 0
+			except Exception:
+				ts = 0
+			if ts and ts <= last_ts:
+				continue
+			if ts:
+				newest = max(newest, ts)
+			lines.append(entry)
+		else:
+			lines.append(entry)
+	if lines:
+		with open(log_file, "a", encoding="utf-8") as handle:
+			for entry in lines:
+				if isinstance(entry, (dict, list)):
+					handle.write(json.dumps(entry, ensure_ascii=False))
+				else:
+					handle.write(str(entry))
+				handle.write("\n")
+	return newest
+
+selected_host = None
+last_console_ts = 0
+last_error_ts = 0
+seen_entries = set()
+
+while True:
+	if not selected_host:
+		selected_host = discover_host()
+		if not selected_host:
+			time.sleep(2.0)
+			continue
+	base_url = f"http://{selected_host}:{port}"
+	try:
+		console_logs = fetch_json(f"{base_url}/console-logs", timeout=2.0)
+		console_errors = fetch_json(f"{base_url}/console-errors", timeout=2.0)
+	except Exception:
+		selected_host = None
+		time.sleep(2.0)
+		continue
+	last_console_ts = append_entries(console_logs, last_console_ts, seen_entries)
+	last_error_ts = append_entries(console_errors, last_error_ts, seen_entries)
+	time.sleep(poll_interval)
+PY
+	BROWSER_CONSOLE_PID="$!"
+}
+
+start_console_paste_capture() {
+	log_info "Paste capture enabled (pipe: ${CONSOLE_PASTE_PIPE})"
+	mkfifo -m 600 "${CONSOLE_PASTE_PIPE}"
+	"$PYTHON_CMD" - "$CONSOLE_PASTE_PIPE" "$CONSOLE_LOG" <<'PY' &
+import json
+import sys
+import time
+
+pipe_path = sys.argv[1]
+log_file = sys.argv[2]
+
+def write_entry(message: str):
+	payload = {
+		"type": "manual-paste",
+		"level": "error",
+		"message": message,
+		"timestamp": int(time.time() * 1000),
+	}
+	with open(log_file, "a", encoding="utf-8") as handle:
+		handle.write(json.dumps(payload, ensure_ascii=False))
+		handle.write("\n")
+
+while True:
+	with open(pipe_path, "r", encoding="utf-8", errors="replace") as handle:
+		for line in handle:
+			line = line.rstrip("\n")
+			if line:
+				write_entry(line)
+PY
+	CONSOLE_PASTE_PID="$!"
+}
+
+start_browser_tools_server
+start_browser_console_capture
+start_console_paste_capture
 
 cleanup() {
 	if [ -n "${DOCKER_LOGS_PID}" ]; then
@@ -159,6 +353,15 @@ cleanup() {
 	fi
 	if [ -n "${MCP_LOGS_PID}" ]; then
 		kill "${MCP_LOGS_PID}" >/dev/null 2>&1 || true
+	fi
+	if [ -n "${BROWSER_CONSOLE_PID}" ]; then
+		kill "${BROWSER_CONSOLE_PID}" >/dev/null 2>&1 || true
+	fi
+	if [ -n "${BROWSER_TOOLS_PID}" ]; then
+		kill "${BROWSER_TOOLS_PID}" >/dev/null 2>&1 || true
+	fi
+	if [ -n "${CONSOLE_PASTE_PID}" ]; then
+		kill "${CONSOLE_PASTE_PID}" >/dev/null 2>&1 || true
 	fi
 }
 
@@ -205,6 +408,14 @@ if [ -f "$SCRIPT_DIR/.env" ]; then
 
     if ! grep -q "^ADMIN_TOKEN=" "$SCRIPT_DIR/.env"; then
         echo "ADMIN_TOKEN=${ADMIN_TOKEN}" >> "$SCRIPT_DIR/frontend-huggingface/.env"
+    fi
+
+    # Single-user always-admin mode (dev default unless explicitly overridden)
+    if ! grep -q "^SINGLE_USER_ADMIN=" "$SCRIPT_DIR/frontend-huggingface/.env"; then
+        echo "SINGLE_USER_ADMIN=true" >> "$SCRIPT_DIR/frontend-huggingface/.env"
+    fi
+    if ! grep -q "^SINGLE_USER_SESSION_SECRET=" "$SCRIPT_DIR/frontend-huggingface/.env"; then
+        echo "SINGLE_USER_SESSION_SECRET=bricksllm-single-user-admin" >> "$SCRIPT_DIR/frontend-huggingface/.env"
     fi
 fi
 
@@ -310,6 +521,7 @@ echo ""
 echo -e "1. Open the Admin Link above in your browser."
 echo -e "2. Once the UI is visible, press ${GREEN}ENTER${NC} below to start streaming logs."
 echo -e "   (Logs are currently being buffered to .logs/)"
+echo -e "3. To paste extension errors, run: ${GREEN}cat > .logs/console.paste${NC} in another terminal, paste, then Ctrl+D."
 echo ""
 
 read -p "Press ENTER to start streaming logs..."

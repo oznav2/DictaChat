@@ -22,6 +22,7 @@
 		enabledServersCount,
 		selectedServerIds,
 		allMcpServers,
+		mcpServersLoaded,
 		toggleServer,
 		disableAllServers,
 	} from "$lib/stores/mcpServers";
@@ -209,7 +210,10 @@
 
 	// Show file upload when any mime is allowed (text always; images if multimodal)
 	let showFileUpload = $derived(mimeTypes.length > 0);
-	let showNoTools = $derived(!showFileUpload);
+	// Show tools area if file upload is enabled OR model supports tools
+	// This keeps MCP controls visible while servers are still loading or empty.
+	let showToolsArea = $derived(showFileUpload || modelSupportsTools);
+	let showNoTools = $derived(!showToolsArea);
 	let selectedServers = $derived(
 		$allMcpServers.filter((server) => $selectedServerIds.has(server.id))
 	);
@@ -351,6 +355,21 @@
 										onCloseAutoFocus={(e) => e.preventDefault()}
 										interactOutsideBehavior="defer-otherwise-close"
 									>
+										{#if !$mcpServersLoaded}
+											<DropdownMenu.Item
+												class="flex h-9 select-none items-center gap-2 rounded-md px-2 text-sm text-gray-500 dark:text-gray-400 sm:h-8"
+												disabled
+											>
+												טוען שרתי MCP...
+											</DropdownMenu.Item>
+										{:else if $allMcpServers.length === 0}
+											<DropdownMenu.Item
+												class="flex h-9 select-none items-center gap-2 rounded-md px-2 text-sm text-gray-500 dark:text-gray-400 sm:h-8"
+												disabled
+											>
+												אין שרתי MCP מוגדרים
+											</DropdownMenu.Item>
+										{/if}
 										{#each $allMcpServers as server (server.id)}
 											<DropdownMenu.CheckboxItem
 												checked={$selectedServerIds.has(server.id)}

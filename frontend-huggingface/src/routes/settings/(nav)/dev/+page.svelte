@@ -2,10 +2,36 @@
 	import { base } from "$app/paths";
 	import { onMount, onDestroy } from "svelte";
 	import RetrievalLatencyPanel from "$lib/components/memory/RetrievalLatencyPanel.svelte";
+	import type { KeyValuePair } from "$lib/types/Tool";
 
 	let stats = $state<Record<string, unknown> | null>(null);
 	let loadingStats = $state(false);
 	let opsLog = $state<string[]>([]);
+
+	type McpDiagnosticServer = {
+		name: string;
+		url: string;
+		headers?: Record<string, string>;
+	};
+
+	type McpDiagnosticsPayload = {
+		effectiveRaw: string;
+		parsedServers: McpDiagnosticServer[];
+		source: "MCP_SERVERS" | "FRONTEND_MCP_SERVERS" | "none" | string;
+		count: number;
+	};
+
+	type McpHealthResult = {
+		ready: boolean;
+		error?: string;
+		toolCount?: number;
+		checkedAt: string;
+	};
+
+	let mcpDiagnostics = $state<McpDiagnosticsPayload | null>(null);
+	let mcpDiagnosticsLoading = $state(false);
+	let mcpHealthByUrl = $state<Record<string, McpHealthResult>>({});
+	let mcpHealthLoading = $state(false);
 
 	// Phase: Wire remaining 64 - Circuit Breaker and Performance state
 	let mcpCircuitBreakers = $state<Record<string, unknown> | null>(null);
@@ -56,6 +82,124 @@
 			.filter((n) => n > 0);
 		if (vals.length === 0) return null;
 		return vals.reduce((a, b) => a + b, 0);
+	}
+
+	function headersRecordToPairs(headers?: Record<string, string>): KeyValuePair[] | undefined {
+		if (!headers) return undefined;
+		const entries = Object.entries(headers).filter(
+			(entry): entry is [string, string] => typeof entry[1] === "string" && entry[1].length > 0
+		);
+		if (entries.length === 0) return undefined;
+		return entries.map(([key, value]) => ({ key, value }));
+	}
+
+	async function runMcpHealthChecks(servers: McpDiagnosticServer[]) {
+		if (servers.length === 0) {
+			mcpHealthByUrl = {};
+			return;
+		}
+
+		mcpHealthLoading = true;
+		const started = performance.now();
+		try {
+			const results = await Promise.allSettled(
+				servers.map(async (server) => {
+					const res = await fetch(`${base}/api/mcp/health`, {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							url: server.url,
+							headers: headersRecordToPairs(server.headers),
+						}),
+					});
+
+					const data = await res.json().catch(() => null);
+					if (!res.ok) {
+						const message =
+							typeof data?.error === "string" ? data.error : `health failed (${res.status})`;
+						throw new Error(message);
+					}
+
+					const toolCount = Array.isArray(data?.tools) ? data.tools.length : undefined;
+					const ready = Boolean(data?.ready);
+
+					return {
+						url: server.url,
+						result: {
+							ready,
+							toolCount,
+							error: typeof data?.error === "string" ? data.error : undefined,
+							checkedAt: new Date().toISOString(),
+						} satisfies McpHealthResult,
+					};
+				})
+			);
+
+			const next: Record<string, McpHealthResult> = {};
+			for (const item of results) {
+				if (item.status === "fulfilled") {
+					next[item.value.url] = item.value.result;
+				}
+			}
+			mcpHealthByUrl = next;
+			pushApiTiming({
+				at: new Date().toISOString(),
+				name: "POST /api/mcp/health (batch)",
+				wall_ms: performance.now() - started,
+				server_ms: null,
+				meta: { servers: servers.length },
+			});
+		} catch (err) {
+			log(`MCP health error: ${err instanceof Error ? err.message : String(err)}`);
+		} finally {
+			mcpHealthLoading = false;
+		}
+	}
+
+	async function loadMcpDiagnostics() {
+		mcpDiagnosticsLoading = true;
+		const started = performance.now();
+		try {
+			const res = await fetch(`${base}/api/admin/diagnostics/mcp`);
+			const data = await res.json();
+			if (!res.ok || !data?.success) {
+				throw new Error(data?.error || `diagnostics failed (${res.status})`);
+			}
+
+			const diagnostics: McpDiagnosticsPayload = {
+				effectiveRaw:
+					typeof data.effectiveRaw === "string" ? data.effectiveRaw : JSON.stringify(data, null, 2),
+				parsedServers: Array.isArray(data.parsedServers) ? data.parsedServers : [],
+				source: data.source ?? "none",
+				count:
+					typeof data.count === "number"
+						? data.count
+						: Array.isArray(data.parsedServers)
+							? data.parsedServers.length
+							: 0,
+			};
+
+			mcpDiagnostics = diagnostics;
+			pushApiTiming({
+				at: new Date().toISOString(),
+				name: "GET /api/admin/diagnostics/mcp",
+				wall_ms: performance.now() - started,
+				server_ms: null,
+				meta: { source: diagnostics.source, count: diagnostics.count },
+			});
+
+			await runMcpHealthChecks(diagnostics.parsedServers);
+		} catch (err) {
+			log(`MCP diagnostics error: ${err instanceof Error ? err.message : String(err)}`);
+		} finally {
+			mcpDiagnosticsLoading = false;
+		}
+	}
+
+	function mcpHealthLabel(result: McpHealthResult | undefined): string {
+		if (!result) return "לא נבדק / Not checked";
+		if (result.ready) return `מוכן / Ready (${result.toolCount ?? 0})`;
+		return `שגיאה / Error${result.error ? `: ${result.error}` : ""}`;
 	}
 
 	async function loadStats() {
@@ -490,6 +634,7 @@
 		// Phase: Wire remaining 64 - Load additional API stats
 		void loadKgStats();
 		void loadPatternPerformance();
+		void loadMcpDiagnostics();
 		startPolling();
 	});
 
@@ -573,6 +718,73 @@
 						>{JSON.stringify(reindexProgress, null, 2)}</code
 					></pre>
 			</div>
+		</div>
+
+		<!-- MCP Diagnostics Panel -->
+		<div
+			class="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800"
+		>
+			<div class="flex items-center justify-between">
+				<h2 class="text-sm font-semibold text-gray-900 dark:text-gray-100">MCP Diagnostics</h2>
+				<div class="flex gap-2">
+					<button
+						type="button"
+						class="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-700"
+						onclick={loadMcpDiagnostics}
+						disabled={mcpDiagnosticsLoading}
+					>
+						רענן
+					</button>
+					<button
+						type="button"
+						class="rounded-md bg-blue-600 px-2 py-1 text-xs text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+						onclick={() => mcpDiagnostics && runMcpHealthChecks(mcpDiagnostics.parsedServers)}
+						disabled={mcpHealthLoading || !mcpDiagnostics}
+					>
+						בדוק בריאות
+					</button>
+				</div>
+			</div>
+
+			{#if mcpDiagnostics}
+				<div class="mt-2 text-xs text-gray-600 dark:text-gray-300">
+					<div>Source: {mcpDiagnostics.source}</div>
+					<div>Servers: {mcpDiagnostics.count}</div>
+				</div>
+
+				<div class="mt-3 space-y-2">
+					{#each mcpDiagnostics.parsedServers as server (server.url)}
+						<div class="rounded-lg border border-gray-100 p-2 dark:border-gray-700">
+							<div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+								<div class="font-medium text-gray-900 dark:text-gray-100">{server.name}</div>
+								<div
+									class={`rounded-full px-2 py-0.5 text-[11px] ${
+										mcpHealthByUrl[server.url]?.ready
+											? "bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-200"
+											: "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200"
+									}`}
+								>
+									{mcpHealthLabel(mcpHealthByUrl[server.url])}
+								</div>
+							</div>
+							<div class="mt-1 break-all text-[11px] text-gray-600 dark:text-gray-400">
+								{server.url}
+							</div>
+						</div>
+					{/each}
+				</div>
+
+				<details class="mt-3 rounded-md bg-gray-50 p-2 text-xs dark:bg-gray-900">
+					<summary class="cursor-pointer select-none text-gray-700 dark:text-gray-300">
+						Effective Raw MCP JSON
+					</summary>
+					<pre class="mt-2 overflow-auto"><code>{mcpDiagnostics.effectiveRaw}</code></pre>
+				</details>
+			{:else}
+				<div class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+					No diagnostics loaded yet.
+				</div>
+			{/if}
 		</div>
 
 		<!-- Phase: Wire remaining 64 - MCP Circuit Breakers Panel -->

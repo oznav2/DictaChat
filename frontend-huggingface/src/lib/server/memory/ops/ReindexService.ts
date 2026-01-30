@@ -433,7 +433,7 @@ export class ReindexService {
 			}
 
 			// Upsert to Qdrant
-			await this.qdrant.upsert({
+			const upserted = await this.qdrant.upsert({
 				id: item.memory_id,
 				vector,
 				payload: {
@@ -451,6 +451,11 @@ export class ReindexService {
 					always_inject: memory.always_inject ?? false,
 				},
 			});
+
+			if (!upserted) {
+				logger.warn({ memoryId: item.memory_id }, "Failed to upsert memory into Qdrant");
+				return false;
+			}
 
 			return true;
 		} catch (err) {

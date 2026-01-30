@@ -5,7 +5,7 @@ import type {
 	TextGenerationStreamOutputSimplified,
 } from "../endpoints/endpoints";
 import endpoints from "../endpoints/endpoints";
-import type { ProcessedModel } from "../models";
+import { models, type ProcessedModel } from "../models";
 import { config } from "$lib/server/config";
 import { logger } from "$lib/server/logger";
 import { archSelectRoute } from "./arch";
@@ -24,15 +24,8 @@ const REASONING_BLOCK_REGEX = /<think>[\s\S]*?(?:<\/think>|$)/g;
 
 const ROUTER_MULTIMODAL_ROUTE = "multimodal";
 
-// Cache models at module level to avoid redundant dynamic imports on every request
-let cachedModels: ProcessedModel[] | undefined;
-
 async function getModels(): Promise<ProcessedModel[]> {
-	if (!cachedModels) {
-		const mod = await import("../models");
-		cachedModels = (mod as { models: ProcessedModel[] }).models;
-	}
-	return cachedModels;
+	return models;
 }
 
 /**

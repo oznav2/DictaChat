@@ -295,6 +295,97 @@ export class Bm25Adapter {
 	}
 
 	/**
+	 * Count memories that are missing vector indexing metadata.
+	 *
+	 * These items are candidates for deferred reindexing when Qdrant and MongoDB
+	 * counts diverge significantly.
+	 */
+	async countMissingIndex(userId: string): Promise<number> {
+		try {
+			const filter: Record<string, unknown> = {
+				user_id: userId,
+				status: "active",
+				$or: [{ embedding: null }, { "embedding.last_indexed_at": null }],
+			};
+
+			return await this.collection.countDocuments(filter as any, {
+				maxTimeMS: 3000,
+			});
+		} catch (err) {
+			logger.warn({ err, userId }, "Failed to count missing index candidates");
+			return 0;
+		}
+	}
+
+	/**
+	 * Mark a bounded set of missing-index memories for deferred reindexing.
+	 *
+	 * This is intentionally conservative to avoid reindexing the entire corpus
+	 * during a single search request.
+	 */
+	async markMissingIndexForReindex(
+		userId: string,
+		params: { limit?: number; reason?: string } = {}
+	): Promise<number> {
+		try {
+			const limit = Math.max(1, Math.min(params.limit ?? 500, 2000));
+			const reason = params.reason ?? "auto_reindex_mismatch";
+
+			const baseFilter: Record<string, unknown> = {
+				user_id: userId,
+				status: "active",
+				$or: [{ embedding: null }, { "embedding.last_indexed_at": null }],
+				needs_reindex: { $ne: true },
+			};
+
+			const candidates = await this.collection
+				.find(baseFilter as any, {
+					projection: { memory_id: 1 },
+					limit,
+					maxTimeMS: 3000,
+				})
+				.toArray()
+				.catch(() => []);
+
+			const memoryIds = candidates
+				.map((doc) => doc.memory_id)
+				.filter((id): id is string => typeof id === "string" && id.length > 0);
+
+			if (memoryIds.length === 0) {
+				return 0;
+			}
+
+			const now = new Date();
+			const updateResult = await this.collection.updateMany(
+				{
+					user_id: userId,
+					status: "active",
+					memory_id: { $in: memoryIds },
+				} as any,
+				{
+					$set: {
+						needs_reindex: true,
+						reindex_reason: reason,
+						reindex_marked_at: now,
+						embedding_status: "pending",
+					},
+				}
+			);
+
+			const modifiedCount = updateResult.modifiedCount ?? 0;
+			logger.warn(
+				{ userId, requestedLimit: limit, candidateCount: memoryIds.length, modifiedCount, reason },
+				"[search] Marked missing-index items for deferred reindex"
+			);
+
+			return modifiedCount;
+		} catch (err) {
+			logger.warn({ err, userId }, "Failed to mark missing index candidates for reindex");
+			return 0;
+		}
+	}
+
+	/**
 	 * Get max updated_at for cache invalidation checks
 	 */
 	async getMaxUpdatedAt(userId: string, tier?: MemoryTier): Promise<Date | null> {

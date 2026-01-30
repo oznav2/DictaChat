@@ -10,8 +10,8 @@ vite.config.ts.timestamp-*
 SECRET_CONFIG
 .idea
 !.env.ci
-!.env
 gcp-*.json
+src/lib/server/textGeneration/mcp/toolParseWorker.js
 db
 models/*
 !models/add-your-models-here.txt

@@ -1,7 +1,7 @@
 ====================================================================================================
 MEMORY SYSTEM TORTURE TEST REPORT
 ====================================================================================================
-Timestamp: 2026-01-21T22:00:08.023Z
+Timestamp: 2026-01-28T09:35:54.143Z
 Total Tests: 19
 
 CONFIGURATION:
@@ -15,25 +15,25 @@ TEST RESULTS:
 ----------------------------------------------------------------------------------------------------
 
 [PASS] high_volume_insertion
-    Duration: 62.77ms
+    Duration: 67.83ms
     Operations: 1000 | Errors: 0
     Memory: stable
-    Details: Inserted 1000 documents in 62.77ms
+    Details: Inserted 1000 documents in 67.83ms
 
 [PASS] high_volume_search
-    Duration: 286.56ms
+    Duration: 195.79ms
     Operations: 100 | Errors: 0
     Memory: stable
-    Details: Average search latency: 2.87ms
+    Details: Average search latency: 1.96ms
 
 [PASS] large_payload
-    Duration: 0.46ms
+    Duration: 0.30ms
     Operations: 1 | Errors: 0
     Memory: stable
     Details: Handled 100KB payload
 
 [PASS] max_content_length
-    Duration: 0.16ms
+    Duration: 0.19ms
     Operations: 1 | Errors: 0
     Memory: stable
     Details: Handled 50000 character content
@@ -45,85 +45,85 @@ TEST RESULTS:
     Details: 50 concurrent ops in 0.75ms
 
 [PASS] concurrent_searches
-    Duration: 74.99ms
+    Duration: 114.24ms
     Operations: 50 | Errors: 0
     Memory: stable
     Details: 50 concurrent searches
 
 [PASS] mixed_concurrent_ops
-    Duration: 17.52ms
+    Duration: 17.38ms
     Operations: 30 | Errors: 0
     Memory: stable
     Details: Mixed insert/search/embed operations
 
 [PASS] rapid_sequential
-    Duration: 9.68ms
+    Duration: 7.18ms
     Operations: 500 | Errors: 0
     Memory: stable
-    Details: 51639.48 ops/second
+    Details: 69624.92 ops/second
 
 [PASS] empty_content
-    Duration: 0.23ms
+    Duration: 0.30ms
     Operations: 1 | Errors: 0
     Memory: stable
     Details: Empty content handled
 
 [PASS] special_characters
-    Duration: 0.38ms
+    Duration: 0.79ms
     Operations: 4 | Errors: 0
     Memory: stable
     Details: Special characters handled safely
 
 [PASS] null_metadata
-    Duration: 0.11ms
+    Duration: 0.18ms
     Operations: 1 | Errors: 0
     Memory: stable
     Details: Null/undefined metadata handled
 
 [PASS] unicode_handling
-    Duration: 0.90ms
+    Duration: 1.45ms
     Operations: 8 | Errors: 0
     Memory: stable
     Details: Hebrew, Arabic, Japanese, emoji handled
 
 [PASS] hebrew_search
-    Duration: 9.24ms
+    Duration: 14.64ms
     Operations: 3 | Errors: 0
     Memory: stable
     Details: Hebrew RTL queries processed
 
 [PASS] resource_cleanup
-    Duration: 2.48ms
+    Duration: 13.29ms
     Operations: 100 | Errors: 0
     Memory: stable
     Details: Deleted 50 of 50 documents
 
 [PASS] long_running_stability
-    Duration: 432.58ms
+    Duration: 325.36ms
     Operations: 200 | Errors: 0
     Memory: stable
-    Details: Degradation ratio: 0.78x
+    Details: Degradation ratio: 1.05x
 
 [PASS] search_limit_zero
-    Duration: 3.33ms
+    Duration: 2.96ms
     Operations: 1 | Errors: 0
     Memory: stable
     Details: Limit 0 handled gracefully
 
 [PASS] search_high_limit
-    Duration: 7.86ms
+    Duration: 3.12ms
     Operations: 1 | Errors: 0
     Memory: stable
     Details: High limit (10000) handled
 
 [PASS] duplicate_ids
-    Duration: 0.64ms
+    Duration: 0.21ms
     Operations: 2 | Errors: 0
     Memory: stable
     Details: Duplicate overwrites previous
 
 [PASS] error_recovery
-    Duration: 3.02ms
+    Duration: 0.24ms
     Operations: 3 | Errors: 0
     Memory: stable
     Details: System recovers after edge cases

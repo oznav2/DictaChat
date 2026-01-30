@@ -14,8 +14,8 @@
 
 	let { content, loading = false, hasNext = false }: Props = $props();
 	let isOpen = $state(false);
-	let wasLoading = $state(false);
-	let initialized = $state(false);
+	let wasLoading = false;
+	let initialized = false;
 	let isRTL = $derived(detectRTLLanguage(content));
 
 	// Respect user's motion preferences

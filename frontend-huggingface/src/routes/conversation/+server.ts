@@ -7,7 +7,8 @@ import { z } from "zod";
 import type { Message } from "$lib/types/Message";
 import { models, validateModel } from "$lib/server/models";
 import { v4 } from "uuid";
-import { authCondition } from "$lib/server/auth";
+import { authCondition, singleUserAdminEnabled } from "$lib/server/auth";
+import { ADMIN_USER_ID } from "$lib/server/constants";
 import { usageLimits } from "$lib/server/usageLimits";
 import { MetricsServer } from "$lib/server/metrics";
 import { getPersonalityLoader } from "$lib/server/memory/personality/PersonalityLoader";
@@ -89,15 +90,21 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 	let personalityId = "default";
 	let personalityBadge: { name: string; color: string } | undefined;
 
-	if (locals.user?._id) {
+	const personalityUserId = singleUserAdminEnabled ? ADMIN_USER_ID : locals.user?._id;
+	if (personalityUserId) {
 		const loader = getPersonalityLoader();
-		const personality = await loader.getPersonality(locals.user._id);
+		const personality = await loader.getPersonality(personalityUserId);
 		personalityId = personality.name;
 		personalityBadge = {
 			name: personality.name.charAt(0).toUpperCase() + personality.name.slice(1),
 			color: getPersonalityColor(personality.name),
 		};
 	}
+
+	const ownerFields =
+		singleUserAdminEnabled || !locals.user
+			? { sessionId: locals.sessionId }
+			: { userId: locals.user._id };
 
 	const res = await collections.conversations.insertOne({
 		_id: new ObjectId(),
@@ -112,7 +119,7 @@ export const POST: RequestHandler = async ({ locals, request }) => {
 		userAgent: request.headers.get("User-Agent") ?? undefined,
 		personalityId,
 		...(personalityBadge ? { personalityBadge } : {}),
-		...(locals.user ? { userId: locals.user._id } : { sessionId: locals.sessionId }),
+		...ownerFields,
 		...(values.fromShare ? { meta: { fromShareId: values.fromShare } } : {}),
 	});
 

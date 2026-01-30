@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { base } from "$app/paths";
+	import { untrack } from "svelte";
+
 	import { extractPatchesFromText, isRiskyPath, splitPatchByFile } from "$lib/utils/codeChanges";
 
 	interface Props {
@@ -23,8 +25,9 @@
 	let selectedFiles = $state<Record<string, boolean>>({});
 
 	$effect(() => {
+		const previous = untrack(() => selectedFiles);
 		const next: Record<string, boolean> = {};
-		for (const f of applyFiles) next[f.path] = selectedFiles[f.path] ?? true;
+		for (const f of applyFiles) next[f.path] = previous[f.path] ?? true;
 		selectedFiles = next;
 	});
 

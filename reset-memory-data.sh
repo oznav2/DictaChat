@@ -31,8 +31,25 @@ echo "Step 1: Clearing Qdrant collection..."
 echo "--------------------------------------"
 
 # Drop and recreate Qdrant collection
-QDRANT_URL="http://localhost:6333"
-COLLECTION="memories_v1"
+QDRANT_URL="${QDRANT_URL:-http://localhost:6333}"
+COLLECTION="${QDRANT_COLLECTION:-memories_v1}"
+VECTOR_NAME="${QDRANT_VECTOR_NAME:-dense}"
+VECTOR_SIZE="${QDRANT_VECTOR_SIZE:-1024}"
+
+# Helper: count points in Qdrant collection
+qdrant_count_points() {
+    curl -s -X POST "${QDRANT_URL}/collections/${COLLECTION}/points/count" \
+        -H "Content-Type: application/json" \
+        -d '{"exact": true}' 2>/dev/null | sed -n 's/.*"count":\([0-9]\+\).*/\1/p'
+}
+
+# Count points before deletion (if collection exists)
+qdrant_before=0
+if curl -s "${QDRANT_URL}/collections/${COLLECTION}" | grep -q "\"status\":\"ok\""; then
+    qdrant_before=$(qdrant_count_points)
+    qdrant_before=${qdrant_before:-0}
+    echo "Qdrant points before reset: ${qdrant_before}"
+fi
 
 # Check if collection exists
 if curl -s "${QDRANT_URL}/collections/${COLLECTION}" | grep -q "\"status\":\"ok\""; then
@@ -43,18 +60,18 @@ else
     echo "! Qdrant collection does not exist (already clean)"
 fi
 
-# Recreate collection with correct dimensions (1024 for BGE-M3)
-echo "Creating fresh Qdrant collection with 1024 dimensions..."
+# Recreate collection with correct dimensions (1024 for BGE-M3) and correct vector name
+echo "Creating fresh Qdrant collection with ${VECTOR_SIZE} dimensions (vector: ${VECTOR_NAME})..."
 curl -s -X PUT "${QDRANT_URL}/collections/${COLLECTION}" \
     -H "Content-Type: application/json" \
-    -d '{
-        "vectors": {
-            "embedding": {
-                "size": 1024,
-                "distance": "Cosine"
+    -d "{
+        \"vectors\": {
+            \"${VECTOR_NAME}\": {
+                \"size\": ${VECTOR_SIZE},
+                \"distance\": \"Cosine\"
             }
         }
-    }' > /dev/null
+    }" > /dev/null
 echo "✓ Qdrant collection created"
 
 # Create payload indexes for entity filtering
@@ -73,13 +90,18 @@ curl -s -X PUT "${QDRANT_URL}/collections/${COLLECTION}/index" \
     -d '{"field_name": "entities", "field_schema": "keyword"}' > /dev/null
 echo "✓ Payload indexes created (user_id, tier, status, entities)"
 
+# Count points after recreation
+qdrant_after=$(qdrant_count_points)
+qdrant_after=${qdrant_after:-0}
+echo "Qdrant points after reset: ${qdrant_after} (cleared: ${qdrant_before})"
+
 echo ""
 echo "Step 2: Clearing MongoDB memory collections..."
 echo "-----------------------------------------------"
 
 # MongoDB connection
-MONGO_URL="mongodb://localhost:27017"
-DB_NAME="chat-ui"
+MONGO_URL="${MONGO_URL:-mongodb://localhost:27017}"
+DB_NAME="${MONGODB_DB_NAME:-chat-ui}"
 
 # List of memory collections to clear (NOT chat history)
 MEMORY_COLLECTIONS=(
@@ -96,12 +118,24 @@ MEMORY_COLLECTIONS=(
     "memoryBank"
 )
 
+total_deleted=0
+
 for collection in "${MEMORY_COLLECTIONS[@]}"; do
     echo "Clearing: ${collection}"
-    mongosh "${MONGO_URL}/${DB_NAME}" --quiet --eval "db.${collection}.deleteMany({})" 2>/dev/null || echo "  (collection may not exist)"
+    before_count=$(mongosh "${MONGO_URL}/${DB_NAME}" --quiet --eval "db.${collection}.countDocuments({})" 2>/dev/null || echo "0")
+    deleted_count=$(mongosh "${MONGO_URL}/${DB_NAME}" --quiet --eval "db.${collection}.deleteMany({}).deletedCount" 2>/dev/null || echo "0")
+    after_count=$(mongosh "${MONGO_URL}/${DB_NAME}" --quiet --eval "db.${collection}.countDocuments({})" 2>/dev/null || echo "0")
+
+    if [[ "$deleted_count" =~ ^[0-9]+$ ]]; then
+        total_deleted=$((total_deleted + deleted_count))
+    else
+        deleted_count=0
+    fi
+
+    echo "  before=${before_count} deleted=${deleted_count} after=${after_count}"
 done
 
-echo "✓ MongoDB memory collections cleared"
+echo "✓ MongoDB memory collections cleared (total deleted: ${total_deleted})"
 
 echo ""
 echo "Step 3: Verifying preserved collections..."

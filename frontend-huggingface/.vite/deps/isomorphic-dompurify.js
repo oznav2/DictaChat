@@ -245,7 +245,7 @@ var require_purify_cjs = __commonJS({
     function createDOMPurify() {
       let window2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : getGlobal();
       const DOMPurify = (root) => createDOMPurify(root);
-      DOMPurify.version = "3.3.0";
+      DOMPurify.version = "3.3.1";
       DOMPurify.removed = [];
       if (!window2 || !window2.document || window2.document.nodeType !== NODE_TYPE.document || !window2.Element) {
         DOMPurify.isSupported = false;
@@ -495,6 +495,12 @@ var require_purify_cjs = __commonJS({
             FORBID_CONTENTS = clone(FORBID_CONTENTS);
           }
           addToSet(FORBID_CONTENTS, cfg.FORBID_CONTENTS, transformCaseFunc);
+        }
+        if (cfg.ADD_FORBID_CONTENTS) {
+          if (FORBID_CONTENTS === DEFAULT_FORBID_CONTENTS) {
+            FORBID_CONTENTS = clone(FORBID_CONTENTS);
+          }
+          addToSet(FORBID_CONTENTS, cfg.ADD_FORBID_CONTENTS, transformCaseFunc);
         }
         if (KEEP_CONTENT) {
           ALLOWED_TAGS["#text"] = true;
@@ -1031,6 +1037,6 @@ export default require_browser();
 /*! Bundled license information:
 
 dompurify/dist/purify.cjs.js:
-  (*! @license DOMPurify 3.3.0 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.3.0/LICENSE *)
+  (*! @license DOMPurify 3.3.1 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/3.3.1/LICENSE *)
 */
 //# sourceMappingURL=isomorphic-dompurify.js.map

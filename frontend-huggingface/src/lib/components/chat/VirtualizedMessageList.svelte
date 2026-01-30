@@ -26,6 +26,7 @@
 		isReadOnly?: boolean;
 		editMsdgId?: Message["id"] | null;
 		alternativesByMessageId?: Map<Message["id"], Message["id"][]>;
+		hideMemoryUiByMessageId?: Map<Message["id"], boolean>;
 		height?: number;
 		onretry?: (payload: { id: Message["id"]; content?: string }) => void;
 		onshowAlternateMsg?: (payload: { id: Message["id"] }) => void;
@@ -38,6 +39,7 @@
 		isReadOnly = false,
 		editMsdgId = $bindable(null),
 		alternativesByMessageId = new Map(),
+		hideMemoryUiByMessageId = new Map(),
 		height = 600,
 		onretry,
 		onshowAlternateMsg,
@@ -136,6 +138,7 @@
 				loading={isLast ? loading : false}
 				{groupedWithPrevious}
 				alternatives={alternativesByMessageId.get(message.id) ?? []}
+				hideMemoryUi={hideMemoryUiByMessageId.get(message.id) ?? false}
 				isAuthor={!shared}
 				readOnly={isReadOnly}
 				{isLast}

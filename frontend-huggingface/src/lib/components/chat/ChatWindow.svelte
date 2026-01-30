@@ -68,6 +68,27 @@
 	}
 
 	import { detectRTLLanguage } from "$lib/utils/marked";
+	const GREETING_PATTERNS = [
+		/^(hi|hello|hey|yo|howdy|greetings|sup|morning|evening|good (morning|afternoon|evening))\b/i,
+		/^(שלום|שלום לך|היי|הי|בוקר טוב|צהריים טובים|ערב טוב|לילה טוב|מה נשמע|מה קורה|מה העניינים)\b/i,
+	];
+
+	const isShortGreetingPrompt = (text: string): boolean => {
+		const trimmed = text.trim();
+		if (!trimmed) return false;
+
+		const normalized = trimmed.toLowerCase();
+		const cleaned = normalized
+			.replace(/[^\p{L}\p{N}\s]+/gu, " ")
+			.replace(/\s+/g, " ")
+			.trim();
+		if (!cleaned) return false;
+
+		const wordCount = cleaned.split(" ").length;
+		if (cleaned.length > 48 || wordCount > 5) return false;
+
+		return GREETING_PATTERNS.some((pattern) => pattern.test(cleaned));
+	};
 
 	let {
 		messages = [],
@@ -92,6 +113,23 @@
 		for (const group of messagesAlternatives) {
 			for (const id of group) {
 				map.set(id, group);
+			}
+		}
+		return map;
+	});
+	let hideMemoryUiByMessageId = $derived.by(() => {
+		const map = new Map<Message["id"], boolean>();
+		let lastUserMessage: Message | null = null;
+		for (const message of messages) {
+			if (message.from === "user") {
+				lastUserMessage = message;
+				continue;
+			}
+			if (message.from === "assistant" && lastUserMessage) {
+				const shouldHide = isShortGreetingPrompt(lastUserMessage.content ?? "");
+				if (shouldHide) {
+					map.set(message.id, true);
+				}
 			}
 		}
 		return map;
@@ -275,7 +313,7 @@
 
 	// Force scroll to bottom when user sends a new message
 	// Pattern: user message + empty assistant message are added together
-	let prevMessageCount = $state(messages.length);
+	let prevMessageCount = messages.length;
 	let forceReattach = $state(0);
 	$effect(() => {
 		if (messages.length > prevMessageCount) {
@@ -523,6 +561,7 @@
 							{isReadOnly}
 							bind:editMsdgId
 							{alternativesByMessageId}
+							{hideMemoryUiByMessageId}
 							height={typeof window !== "undefined" ? window.innerHeight - 300 : 600}
 							onretry={(payload) => onretry?.(payload)}
 							onshowAlternateMsg={(payload) => onshowAlternateMsg?.(payload)}
@@ -559,6 +598,7 @@
 								{message}
 								{groupedWithPrevious}
 								alternatives={alternativesByMessageId.get(message.id) ?? []}
+								hideMemoryUi={hideMemoryUiByMessageId.get(message.id) ?? false}
 								isAuthor={!shared}
 								readOnly={isReadOnly}
 								isLast={idx === messages.length - 1}

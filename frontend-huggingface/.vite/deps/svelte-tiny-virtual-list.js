@@ -1,19 +1,28 @@
+import "./chunk-QRCWDNKT.js";
 import {
+  add_locations,
   append_styles,
   bind_element_size,
   bind_this,
+  check_target,
+  cleanup_styles,
   each,
+  hmr,
   if_block,
+  legacy_api,
   prop,
   set_style,
-  snippet
-} from "./chunk-EOB5ZLR7.js";
+  snippet,
+  validate_each_keys
+} from "./chunk-PLKPVGU2.js";
 import {
   append,
   comment,
   from_html
-} from "./chunk-UR5WURMW.js";
+} from "./chunk-DJ6FSLDI.js";
 import {
+  FILENAME,
+  HMR,
   child,
   first_child,
   get,
@@ -25,14 +34,14 @@ import {
   sibling,
   snapshot,
   state,
+  strict_equals,
   template_effect,
   untrack,
   user_derived,
   user_effect
-} from "./chunk-JDXWA2GI.js";
-import "./chunk-MER2FNS2.js";
-import "./chunk-CNXG7EOH.js";
-import "./chunk-QRCWDNKT.js";
+} from "./chunk-EGNO7VLM.js";
+import "./chunk-FT2Y2KWB.js";
+import "./chunk-2GRV7DLA.js";
 import "./chunk-OKMPZSYG.js";
 import "./chunk-KDVGFZWC.js";
 import "./chunk-6LNZPZHA.js";
@@ -329,23 +338,25 @@ var SizeAndPositionManager = class {
 };
 
 // node_modules/svelte-tiny-virtual-list/dist/VirtualList.svelte
-var root = from_html(`<div class="virtual-list-wrapper svelte-1qhxbsx"><!> <div class="virtual-list-inner svelte-1qhxbsx"></div> <!></div>`);
+VirtualList[FILENAME] = "node_modules/svelte-tiny-virtual-list/dist/VirtualList.svelte";
+var root = add_locations(from_html(`<div class="virtual-list-wrapper s-LBoz29dSa-wv"><!> <div class="virtual-list-inner s-LBoz29dSa-wv"></div> <!></div>`), VirtualList[FILENAME], [[330, 0, [[341, 1]]]]);
 var $$css = {
-  hash: "svelte-1qhxbsx",
-  code: ".virtual-list-wrapper.svelte-1qhxbsx {overflow:auto;will-change:transform;-webkit-overflow-scrolling:touch;}.virtual-list-inner.svelte-1qhxbsx {position:relative;display:flex;width:100%;}"
+  hash: "s-LBoz29dSa-wv",
+  code: "\n	.virtual-list-wrapper.s-LBoz29dSa-wv {\n		overflow: auto;\n		will-change: transform;\n		-webkit-overflow-scrolling: touch;\n	}\n\n	.virtual-list-inner.s-LBoz29dSa-wv {\n		position: relative;\n		display: flex;\n		width: 100%;\n	}\n\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVmlydHVhbExpc3Quc3ZlbHRlIiwibWFwcGluZ3MiOiIiLCJuYW1lcyI6W10sImlnbm9yZUxpc3QiOltdLCJzb3VyY2VzIjpbIlZpcnR1YWxMaXN0LnN2ZWx0ZSJdfQ== */"
 };
 function VirtualList($$anchor, $$props) {
-  push($$props, true);
+  check_target(new.target);
+  push($$props, true, VirtualList);
   append_styles($$anchor, $$css);
   let height = prop($$props, "height", 3, "100%"), width = prop($$props, "width", 3, "100%"), stickyIndices = prop($$props, "stickyIndices", 19, () => []), scrollDirection = prop($$props, "scrollDirection", 19, () => DIRECTION.VERTICAL), scrollToAlignment = prop($$props, "scrollToAlignment", 19, () => ALIGNMENT.START), scrollToBehaviour = prop($$props, "scrollToBehaviour", 3, "instant"), overscanCount = prop($$props, "overscanCount", 3, 3);
-  let estimatedItemSize = user_derived(() => $$props.estimatedItemSize || typeof $$props.itemSize === "number" && $$props.itemSize || 50);
+  let estimatedItemSize = user_derived(() => $$props.estimatedItemSize || strict_equals(typeof $$props.itemSize, "number") && $$props.itemSize || 50);
   const sizeAndPositionManager = new SizeAndPositionManager($$props.itemSize, $$props.itemCount, get(estimatedItemSize));
   let wrapper;
   let wrapperHeight = state(400);
   let wrapperWidth = state(400);
   let items = state([]);
   let scroll = state({
-    offset: $$props.scrollOffset || $$props.scrollToIndex !== void 0 && getOffsetForIndex($$props.scrollToIndex) || 0,
+    offset: $$props.scrollOffset || strict_equals($$props.scrollToIndex, void 0, false) && getOffsetForIndex($$props.scrollToIndex) || 0,
     changeReason: SCROLL_CHANGE_REASON.REQUESTED
   });
   let prevScroll = snapshot(get(scroll));
@@ -356,7 +367,7 @@ function VirtualList($$anchor, $$props) {
     scrollToAlignment: snapshot(scrollToAlignment()),
     scrollOffset: snapshot($$props.scrollOffset),
     itemCount: snapshot($$props.itemCount),
-    itemSize: typeof $$props.itemSize === "function" ? $$props.itemSize : snapshot($$props.itemSize),
+    itemSize: strict_equals(typeof $$props.itemSize, "function") ? $$props.itemSize : snapshot($$props.itemSize),
     estimatedItemSize: snapshot(get(estimatedItemSize)),
     heightNumber: snapshot(get(heightNumber)),
     widthNumber: snapshot(get(widthNumber)),
@@ -368,7 +379,7 @@ function VirtualList($$anchor, $$props) {
   user_effect(() => {
     let frame;
     const handleScrollAsync = (event) => {
-      if (frame !== void 0) {
+      if (strict_equals(frame, void 0, false)) {
         cancelAnimationFrame(frame);
       }
       frame = requestAnimationFrame(() => {
@@ -399,25 +410,25 @@ function VirtualList($$anchor, $$props) {
     untrack(scrollUpdated);
   });
   function propsUpdated() {
-    const scrollPropsHaveChanged = prevProps.scrollToIndex !== $$props.scrollToIndex || prevProps.scrollToAlignment !== scrollToAlignment();
-    const itemPropsHaveChanged = prevProps.itemCount !== $$props.itemCount || prevProps.itemSize !== $$props.itemSize || prevProps.estimatedItemSize !== get(estimatedItemSize);
+    const scrollPropsHaveChanged = strict_equals(prevProps.scrollToIndex, $$props.scrollToIndex, false) || strict_equals(prevProps.scrollToAlignment, scrollToAlignment(), false);
+    const itemPropsHaveChanged = strict_equals(prevProps.itemCount, $$props.itemCount, false) || strict_equals(prevProps.itemSize, $$props.itemSize, false) || strict_equals(prevProps.estimatedItemSize, get(estimatedItemSize), false);
     let forceRecomputeSizes = false;
     if (itemPropsHaveChanged) {
       sizeAndPositionManager.updateConfig($$props.itemSize, $$props.itemCount, get(estimatedItemSize));
       forceRecomputeSizes = true;
     }
-    if (prevProps.scrollOffset !== $$props.scrollOffset) {
+    if (strict_equals(prevProps.scrollOffset, $$props.scrollOffset, false)) {
       set(scroll, {
         offset: $$props.scrollOffset || 0,
         changeReason: SCROLL_CHANGE_REASON.REQUESTED
       });
-    } else if (typeof $$props.scrollToIndex === "number" && (scrollPropsHaveChanged || itemPropsHaveChanged)) {
+    } else if (strict_equals(typeof $$props.scrollToIndex, "number") && (scrollPropsHaveChanged || itemPropsHaveChanged)) {
       set(scroll, {
         offset: getOffsetForIndex($$props.scrollToIndex),
         changeReason: SCROLL_CHANGE_REASON.REQUESTED
       });
     }
-    if (forceRecomputeSizes || prevProps.heightNumber !== get(heightNumber) || prevProps.widthNumber !== get(widthNumber) || prevProps.stickyIndices.toString() !== snapshot(stickyIndices()).toString()) {
+    if (forceRecomputeSizes || strict_equals(prevProps.heightNumber, get(heightNumber), false) || strict_equals(prevProps.widthNumber, get(widthNumber), false) || strict_equals(prevProps.stickyIndices.toString(), snapshot(stickyIndices()).toString(), false)) {
       recomputeSizes();
     }
     prevProps = {
@@ -425,7 +436,7 @@ function VirtualList($$anchor, $$props) {
       scrollToAlignment: snapshot(scrollToAlignment()),
       scrollOffset: snapshot($$props.scrollOffset),
       itemCount: snapshot($$props.itemCount),
-      itemSize: typeof $$props.itemSize === "function" ? $$props.itemSize : snapshot($$props.itemSize),
+      itemSize: strict_equals(typeof $$props.itemSize, "function") ? $$props.itemSize : snapshot($$props.itemSize),
       estimatedItemSize: snapshot(get(estimatedItemSize)),
       heightNumber: snapshot(get(heightNumber)),
       widthNumber: snapshot(get(widthNumber)),
@@ -433,10 +444,10 @@ function VirtualList($$anchor, $$props) {
     };
   }
   function scrollUpdated() {
-    if (prevScroll.offset !== get(scroll).offset || prevScroll.changeReason !== get(scroll).changeReason) {
+    if (strict_equals(prevScroll.offset, get(scroll).offset, false) || strict_equals(prevScroll.changeReason, get(scroll).changeReason, false)) {
       refresh();
     }
-    if (prevScroll.offset !== get(scroll).offset && get(scroll).changeReason === SCROLL_CHANGE_REASON.REQUESTED) {
+    if (strict_equals(prevScroll.offset, get(scroll).offset, false) && strict_equals(get(scroll).changeReason, SCROLL_CHANGE_REASON.REQUESTED)) {
       wrapper.scroll({
         [SCROLL_PROP[scrollDirection()]]: get(scroll).offset,
         behavior: scrollToBehaviour()
@@ -445,13 +456,13 @@ function VirtualList($$anchor, $$props) {
     prevScroll = snapshot(get(scroll));
   }
   function refresh() {
-    const { start, end } = sizeAndPositionManager.getVisibleRange(scrollDirection() === DIRECTION.VERTICAL ? get(heightNumber) : get(widthNumber), get(scroll).offset, overscanCount());
+    const { start, end } = sizeAndPositionManager.getVisibleRange(strict_equals(scrollDirection(), DIRECTION.VERTICAL) ? get(heightNumber) : get(widthNumber), get(scroll).offset, overscanCount());
     const visibleItems = [];
     const totalSize = sizeAndPositionManager.getTotalSize();
-    const heightUnit = typeof height() === "number" ? "px" : "";
-    const widthUnit = typeof width() === "number" ? "px" : "";
+    const heightUnit = strict_equals(typeof height(), "number") ? "px" : "";
+    const widthUnit = strict_equals(typeof width(), "number") ? "px" : "";
     set(wrapperStyle, `height:${height()}${heightUnit};width:${width()}${widthUnit};`);
-    if (scrollDirection() === DIRECTION.VERTICAL) {
+    if (strict_equals(scrollDirection(), DIRECTION.VERTICAL)) {
       set(innerStyle, `flex-direction:column;height:${totalSize}px;`);
     } else {
       set(innerStyle, `min-height:100%;width:${totalSize}px;`);
@@ -462,7 +473,7 @@ function VirtualList($$anchor, $$props) {
         visibleItems.push({ index, style: getStyle(index, true) });
       }
     }
-    if (start !== void 0 && end !== void 0) {
+    if (strict_equals(start, void 0, false) && strict_equals(end, void 0, false)) {
       for (let index = start; index <= end; index++) {
         if (hasStickyIndices && stickyIndices().includes(index)) continue;
         visibleItems.push({ index, style: getStyle(index, false) });
@@ -474,18 +485,18 @@ function VirtualList($$anchor, $$props) {
   }
   function recomputeSizes(startIndex = $$props.scrollToIndex) {
     set(styleCache, {}, true);
-    if (startIndex !== void 0 && startIndex >= 0) {
+    if (strict_equals(startIndex, void 0, false) && startIndex >= 0) {
       sizeAndPositionManager.resetItem(startIndex);
     }
     refresh();
   }
   function getOffsetForIndex(index) {
     if (index < 0 || index >= $$props.itemCount) index = 0;
-    return sizeAndPositionManager.getUpdatedOffsetForIndex(scrollToAlignment(), scrollDirection() === DIRECTION.VERTICAL ? get(heightNumber) : get(widthNumber), get(scroll).offset || 0, index);
+    return sizeAndPositionManager.getUpdatedOffsetForIndex(scrollToAlignment(), strict_equals(scrollDirection(), DIRECTION.VERTICAL) ? get(heightNumber) : get(widthNumber), get(scroll).offset || 0, index);
   }
   function handleScroll(event) {
     const offset = wrapper[SCROLL_PROP_LEGACY[scrollDirection()]];
-    if (offset < 0 || get(scroll).offset === offset || event.target !== wrapper) return;
+    if (offset < 0 || strict_equals(get(scroll).offset, offset) || strict_equals(event.target, wrapper, false)) return;
     set(scroll, {
       offset,
       changeReason: SCROLL_CHANGE_REASON.OBSERVED
@@ -496,7 +507,7 @@ function VirtualList($$anchor, $$props) {
     if (get(styleCache)[index]) return get(styleCache)[index];
     const { size, offset } = sizeAndPositionManager.getSizeAndPositionForIndex(index);
     let style;
-    if (scrollDirection() === DIRECTION.VERTICAL) {
+    if (strict_equals(scrollDirection(), DIRECTION.VERTICAL)) {
       style = `left:0;width:100%;height:${size}px;`;
       if (sticky) {
         style += `position:sticky;flex-grow:0;z-index:1;top:0;margin-top:${offset}px;margin-bottom:${-(offset + size)}px;`;
@@ -528,6 +539,7 @@ function VirtualList($$anchor, $$props) {
     });
   }
   var div_1 = sibling(node, 2);
+  validate_each_keys(() => get(items), (item) => $$props.getKey ? $$props.getKey(item.index) : item.index);
   each(div_1, 21, () => get(items), (item) => $$props.getKey ? $$props.getKey(item.index) : item.index, ($$anchor2, item) => {
     var fragment_1 = comment();
     var node_2 = first_child(fragment_1);
@@ -559,9 +571,23 @@ function VirtualList($$anchor, $$props) {
   bind_element_size(div, "offsetHeight", ($$value) => set(wrapperHeight, $$value));
   bind_element_size(div, "offsetWidth", ($$value) => set(wrapperWidth, $$value));
   append($$anchor, div);
-  return pop({ recomputeSizes });
+  return pop({
+    get recomputeSizes() {
+      return recomputeSizes;
+    },
+    ...legacy_api()
+  });
 }
+if (import.meta.hot) {
+  VirtualList = hmr(VirtualList, () => VirtualList[HMR].source);
+  import.meta.hot.accept((module) => {
+    cleanup_styles("s-LBoz29dSa-wv");
+    module.default[HMR].source = VirtualList[HMR].source;
+    set(VirtualList[HMR].source, module.default[HMR].original);
+  });
+}
+var VirtualList_default = VirtualList;
 export {
-  VirtualList as default
+  VirtualList_default as default
 };
 //# sourceMappingURL=svelte-tiny-virtual-list.js.map

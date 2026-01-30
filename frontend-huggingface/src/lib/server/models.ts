@@ -6,7 +6,6 @@ import { endpointOAIParametersSchema } from "./endpoints/openai/endpointOai";
 
 import JSON5 from "json5";
 import { logger } from "$lib/server/logger";
-import { makeRouterEndpoint } from "$lib/server/router/endpoint";
 
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
@@ -93,6 +92,10 @@ const openaiBaseUrl = config.OPENAI_BASE_URL
 	? config.OPENAI_BASE_URL.replace(/\/$/, "")
 	: "http://localhost:8002/v1";
 const isHFRouter = openaiBaseUrl === "https://router.huggingface.co/v1";
+const modelFetchTimeoutMs = Math.max(
+	500,
+	Number.parseInt(config.BRICKSLLM_MODEL_FETCH_TIMEOUT_MS || "3000", 10) || 3000
+);
 
 const listSchema = z
 	.object({
@@ -322,6 +325,87 @@ const applyModelState = (newModels: ProcessedModel[], startedAt: number): Models
 	return summary;
 };
 
+const buildFallbackModels = async (baseURL: string): Promise<ProcessedModel[]> => {
+	const fallbackModel: ModelConfig = {
+		id: "dictalm-3.0",
+		name: "dictalm-3.0",
+		displayName: "Dictalm-3.0-24B",
+		description: "DictaLM-3.0 מודל מקומי",
+		preprompt: "",
+		multimodal: false,
+		supportsTools: true,
+		unlisted: false,
+		systemRoleSupported: true,
+		endpoints: [
+			{
+				type: "openai" as const,
+				baseURL,
+				weight: 1,
+				apiKey: config.OPENAI_API_KEY || config.HF_TOKEN || "sk-",
+				completion: "chat_completions",
+				multimodal: {
+					image: {
+						supportedMimeTypes: ["image/png", "image/jpeg"],
+						preferredMimeType: "image/png",
+						maxSizeInMB: 10,
+						maxWidth: 4096,
+						maxHeight: 4096,
+					},
+				},
+				useCompletionTokens: false,
+				streamingSupported: true,
+			},
+		],
+	};
+
+	const builtModels = await Promise.all(
+		[fallbackModel].map((e) =>
+			processModel(e)
+				.then(addEndpoint)
+				.then(async (m) => ({
+					...m,
+					hasInferenceAPI: inferenceApiIds.includes(m.id ?? m.name),
+					isRouter: false as boolean,
+				}))
+		)
+	);
+
+	return builtModels as ProcessedModel[];
+};
+
+const deriveModelsUrl = (baseURL: string): string => {
+	try {
+		const url = new URL(baseURL);
+		const isCustomProvider = url.pathname.includes("/api/custom/providers/");
+		if (isCustomProvider) {
+			// Custom provider routes only support POST passthrough. Use the gateway's models alias.
+			url.pathname = "/v1/models";
+			url.search = "";
+			url.hash = "";
+			return url.toString();
+		}
+
+		return baseURL.endsWith("/") ? `${baseURL}models` : `${baseURL}/models`;
+	} catch (error) {
+		logger.warn({ baseURL, error }, "[models] Failed to parse base URL, using legacy models path");
+		return baseURL.endsWith("/") ? `${baseURL}models` : `${baseURL}/models`;
+	}
+};
+
+const fetchWithTimeout = async (
+	url: string,
+	init: RequestInit,
+	timeoutMs: number
+): Promise<Response> => {
+	const controller = new AbortController();
+	const timer = setTimeout(() => controller.abort(), timeoutMs);
+	try {
+		return await fetch(url, { ...init, signal: controller.signal });
+	} finally {
+		clearTimeout(timer);
+	}
+};
+
 const buildModels = async (): Promise<ProcessedModel[]> => {
 	if (!openaiBaseUrl) {
 		logger.error(
@@ -331,6 +415,8 @@ const buildModels = async (): Promise<ProcessedModel[]> => {
 	}
 
 	const modelsFromEnv = getModelsFromEnv();
+	const skipRemoteFetch =
+		(process.env.BRICKSLLM_SKIP_MODEL_FETCH || "").toLowerCase() === "true";
 	try {
 		if (modelsFromEnv.length > 0) {
 			const overrides = getModelOverrides();
@@ -427,7 +513,10 @@ const buildModels = async (): Promise<ProcessedModel[]> => {
 					...aliasBase,
 					isRouter: true,
 					hasInferenceAPI: false,
-					getEndpoint: async (): Promise<Endpoint> => makeRouterEndpoint(aliasModel),
+					getEndpoint: async (): Promise<Endpoint> => {
+						const { makeRouterEndpoint } = await import("$lib/server/router/endpoint");
+						return makeRouterEndpoint(aliasModel);
+					},
 				} as ProcessedModel;
 
 				decorated = [aliasModel, ...decorated];
@@ -436,17 +525,29 @@ const buildModels = async (): Promise<ProcessedModel[]> => {
 			return decorated;
 		}
 
+		if (skipRemoteFetch) {
+			logger.info("[models] Skipping remote model fetch (build stage)");
+			return buildFallbackModels(openaiBaseUrl);
+		}
+
 		const baseURL = openaiBaseUrl;
 		logger.info({ baseURL }, "[models] Using OpenAI-compatible base URL");
 
 		const authToken = config.OPENAI_API_KEY || config.HF_TOKEN;
 
-		// Handle trailing slash if present to avoid double slashes
-		const url = baseURL.endsWith("/") ? `${baseURL}models` : `${baseURL}/models`;
+		const legacyUrl = baseURL.endsWith("/") ? `${baseURL}models` : `${baseURL}/models`;
+		const url = deriveModelsUrl(baseURL);
+		if (url !== legacyUrl) {
+			logger.info({ modelsUrl: url }, "[models] Using gateway models alias for custom provider");
+		}
 
-		const response = await fetch(url, {
-			headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
-		});
+		const response = await fetchWithTimeout(
+			url,
+			{
+				headers: authToken ? { Authorization: `Bearer ${authToken}` } : undefined,
+			},
+			modelFetchTimeoutMs
+		);
 		logger.info({ status: response.status }, "[models] First fetch status");
 		if (!response.ok && response.status === 401 && !authToken) {
 			throw new Error(
@@ -602,7 +703,10 @@ const buildModels = async (): Promise<ProcessedModel[]> => {
 				...aliasBase,
 				isRouter: true,
 				hasInferenceAPI: false,
-				getEndpoint: async (): Promise<Endpoint> => makeRouterEndpoint(aliasModel),
+				getEndpoint: async (): Promise<Endpoint> => {
+					const { makeRouterEndpoint } = await import("$lib/server/router/endpoint");
+					return makeRouterEndpoint(aliasModel);
+				},
 			} as ProcessedModel;
 
 			decorated = [aliasModel, ...decorated];
@@ -612,52 +716,7 @@ const buildModels = async (): Promise<ProcessedModel[]> => {
 	} catch (e) {
 		logger.error(e, "Failed to load models from OpenAI base URL, falling back to default model");
 
-		const baseURL = openaiBaseUrl;
-		const fallbackModel: ModelConfig = {
-			id: "dictalm-3.0",
-			name: "dictalm-3.0",
-			displayName: "Dictalm-3.0-24B",
-			description: "DictaLM-3.0 מודל מקומי",
-			preprompt: "",
-			multimodal: false,
-			supportsTools: true,
-			unlisted: false,
-			systemRoleSupported: true,
-			endpoints: [
-				{
-					type: "openai" as const,
-					baseURL,
-					weight: 1,
-					apiKey: config.OPENAI_API_KEY || config.HF_TOKEN || "sk-",
-					completion: "chat_completions",
-					multimodal: {
-						image: {
-							supportedMimeTypes: ["image/png", "image/jpeg"],
-							preferredMimeType: "image/png",
-							maxSizeInMB: 10,
-							maxWidth: 4096,
-							maxHeight: 4096,
-						},
-					},
-					useCompletionTokens: false,
-					streamingSupported: true,
-				},
-			],
-		};
-
-		const builtModels = await Promise.all(
-			[fallbackModel].map((e) =>
-				processModel(e)
-					.then(addEndpoint)
-					.then(async (m) => ({
-						...m,
-						hasInferenceAPI: inferenceApiIds.includes(m.id ?? m.name),
-						isRouter: false as boolean,
-					}))
-			)
-		);
-
-		return builtModels as ProcessedModel[];
+		return buildFallbackModels(openaiBaseUrl);
 	}
 };
 

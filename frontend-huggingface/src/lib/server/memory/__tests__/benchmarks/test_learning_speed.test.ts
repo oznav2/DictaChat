@@ -450,7 +450,8 @@ describe("Learning Speed", () => {
 
 				for (let i = 0; i < maxIterations; i++) {
 					useCount++;
-					if (Math.random() < 0.9) successCount++;
+					const isSuccess = i % 10 < 9;
+					if (isSuccess) successCount++;
 
 					const newScore = calculateWilsonScore(successCount, useCount);
 					collection.updateMetadata(memId, {

@@ -2,7 +2,7 @@ import { collections } from "$lib/server/database";
 import { MetricsServer } from "$lib/server/metrics";
 import { error } from "@sveltejs/kit";
 import { ObjectId } from "mongodb";
-import { authCondition } from "$lib/server/auth";
+import { authCondition, singleUserAdminEnabled } from "$lib/server/auth";
 
 /**
  * Create a new conversation from a shared conversation ID.
@@ -32,6 +32,11 @@ export async function createConversationFromShare(
 		return existingConversation._id.toString();
 	}
 
+	const ownerFields =
+		singleUserAdminEnabled || !locals.user
+			? { sessionId: locals.sessionId }
+			: { userId: locals.user._id };
+
 	// Create new conversation from shared conversation
 	const res = await collections.conversations.insertOne({
 		_id: new ObjectId(),
@@ -43,7 +48,7 @@ export async function createConversationFromShare(
 		createdAt: new Date(),
 		updatedAt: new Date(),
 		userAgent,
-		...(locals.user ? { userId: locals.user._id } : { sessionId: locals.sessionId }),
+		...ownerFields,
 		meta: { fromShareId },
 	});
 

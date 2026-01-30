@@ -1,10 +1,10 @@
 import { Elysia } from "elysia";
 import { config } from "$lib/server/config";
+import { models } from "$lib/server/models";
 
 export const debugGroup = new Elysia().group("/debug", (app) =>
 	app
 		.get("/config", async () => {
-			const { models } = await import("$lib/server/models");
 			return {
 				OPENAI_BASE_URL: config.OPENAI_BASE_URL,
 				OPENAI_API_KEY_SET: Boolean(config.OPENAI_API_KEY || config.HF_TOKEN),

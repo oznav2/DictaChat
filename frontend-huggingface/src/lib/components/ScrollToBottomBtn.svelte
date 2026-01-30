@@ -10,7 +10,6 @@
 	let { scrollNode, class: className = "" }: Props = $props();
 
 	let visible = $state(false);
-	let observer: ResizeObserver | null = $state(null);
 
 	function updateVisibility() {
 		if (!scrollNode) return;
@@ -18,22 +17,24 @@
 			Math.ceil(scrollNode.scrollTop) + 200 < scrollNode.scrollHeight - scrollNode.clientHeight;
 	}
 
-	function destroy() {
-		observer?.disconnect();
-		scrollNode?.removeEventListener("scroll", updateVisibility);
-	}
-	const cleanup = $effect.root(() => {
-		$effect(() => {
-			if (scrollNode) {
-				if (window.ResizeObserver) {
-					observer = new ResizeObserver(() => updateVisibility());
-					observer.observe(scrollNode);
-					cleanup();
-				}
-				scrollNode?.addEventListener("scroll", updateVisibility);
-			}
-		});
-		return () => destroy();
+	$effect(() => {
+		if (!scrollNode) return;
+
+		updateVisibility();
+
+		const handleScroll = () => updateVisibility();
+		scrollNode.addEventListener("scroll", handleScroll);
+
+		let observer: ResizeObserver | null = null;
+		if (typeof ResizeObserver !== "undefined") {
+			observer = new ResizeObserver(() => updateVisibility());
+			observer.observe(scrollNode);
+		}
+
+		return () => {
+			observer?.disconnect();
+			scrollNode.removeEventListener("scroll", handleScroll);
+		};
 	});
 </script>
 

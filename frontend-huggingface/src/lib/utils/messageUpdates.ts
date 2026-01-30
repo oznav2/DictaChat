@@ -33,6 +33,8 @@ type MessageUpdateRequestOptions = {
 	isRetry: boolean;
 	isContinue?: boolean;
 	files?: MessageFile[];
+	clientUserMessageId?: string;
+	clientAssistantMessageId?: string;
 	// Optional: pass selected MCP server names (client-side selection)
 	selectedMcpServerNames?: string[];
 	// Optional: pass selected MCP server configs (for custom client-defined servers)
@@ -53,6 +55,8 @@ export async function fetchMessageUpdates(
 		id: opts.messageId,
 		is_retry: opts.isRetry,
 		is_continue: Boolean(opts.isContinue),
+		clientUserMessageId: opts.clientUserMessageId,
+		clientAssistantMessageId: opts.clientAssistantMessageId,
 		// Will be ignored server-side if unsupported
 		selectedMcpServerNames: opts.selectedMcpServerNames,
 		selectedMcpServers: opts.selectedMcpServers,
