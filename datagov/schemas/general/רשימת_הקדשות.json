@@ -1,0 +1,63 @@
+{
+  "dataset_id": "cfc9fab4-e97b-4056-8bd5-0a34ed0aa998",
+  "title": "רשימת הקדשות",
+  "organization": "בתי הדין הרבניים",
+  "tags": [
+    "הקדשות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "הרבניים",
+    "בתי",
+    "city",
+    "hekdesh",
+    "הדין",
+    "target",
+    "הקדשות"
+  ],
+  "resources": [
+    {
+      "resource_id": "9b430249-d387-47f7-a544-4d0328bff163",
+      "title": "רשימת הקדשות דתיים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "hekdesh",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "target",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 1054
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

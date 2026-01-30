@@ -1,0 +1,47 @@
+{
+  "dataset_id": "21c9783e-0ace-44f1-a67e-88f1bc0a42cb",
+  "title": "רשימת חברות בעלות רישון ייעוץ/שיווק/ניהול תיקים",
+  "organization": "רשות ניירות ערך",
+  "tags": [
+    "אוצר וכלכלה",
+    "השקעות",
+    "חברות ייעוץ השקעות",
+    "ניהול תיקים",
+    "ניירות ערך"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "חברות",
+    "ערך",
+    "רישון",
+    "וכלכלה",
+    "ניירות",
+    "השקעות",
+    "רשות",
+    "תיקים",
+    "אוצר",
+    "שיווק",
+    "בעלות",
+    "ייעוץ",
+    "ניהול"
+  ],
+  "resources": [
+    {
+      "resource_id": "8343dfc4-b587-473b-9b38-16b5b71e2c2e",
+      "title": "רשימת חברות בעלות רישון ייעוץ/שיווק/ניהול תיקים",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

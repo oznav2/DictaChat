@@ -1,0 +1,93 @@
+{
+  "dataset_id": "a906f71d-e4c2-40d2-a16e-dd07e3f04a13",
+  "title": "מרכזים קהילתיים",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "פנאי רווחה וספורט"
+  ],
+  "categories": [
+    "welfare",
+    "culture"
+  ],
+  "keywords": [
+    "name",
+    "lon",
+    "באר",
+    "רווחה",
+    "lat",
+    "neighborho",
+    "עיריית",
+    "קהילתיים",
+    "פנאי",
+    "address",
+    "שבע",
+    "וספורט",
+    "מרכזים"
+  ],
+  "resources": [
+    {
+      "resource_id": "da8226b9-4212-46b8-a4bf-c9fabe692115",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "8e08e632-a903-4f85-9260-f145ab2530e7",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "neighborho",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 15
+    },
+    {
+      "resource_id": "9c7cbf9b-e318-4ea0-8c61-b81ed5b1a016",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

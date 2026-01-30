@@ -1,0 +1,37 @@
+{
+  "dataset_id": "7e0de4eb-8491-4042-b0f6-da07acc656d2",
+  "title": "החוקים כפי שנחקקו",
+  "organization": "הכנסת",
+  "tags": [
+    "הכנסת",
+    "הצעות חוק",
+    "חקיקה",
+    "כנסת",
+    "משפט",
+    "קריאה שלישית"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "שנחקקו",
+    "משפט",
+    "הצעות",
+    "הכנסת",
+    "חוק",
+    "החוקים",
+    "חקיקה",
+    "כנסת",
+    "שלישית",
+    "כפי",
+    "קריאה"
+  ],
+  "resources": [],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

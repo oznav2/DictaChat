@@ -1,0 +1,60 @@
+{
+  "dataset_id": "3b05b6ac-53f6-44e7-afd8-141831cf398b",
+  "title": "בתי הדין הדרוזים - קאדים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "דרוזים",
+    "משרד המשפטים",
+    "קאדים",
+    "רשמי נישואין"
+  ],
+  "categories": [
+    "justice",
+    "demographics"
+  ],
+  "keywords": [
+    "רשמי",
+    "בתי",
+    "משרד",
+    "נישואין",
+    "קאדים",
+    "הדין",
+    "הדרוזים",
+    "דרוזים",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "3c255886-3a49-4aad-b56a-d432c693717c",
+      "title": "דרוזים - קאדים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "קאדים",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 9
+    },
+    {
+      "resource_id": "c5c02a71-a4a1-45cf-aff5-9f76ead9a380",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

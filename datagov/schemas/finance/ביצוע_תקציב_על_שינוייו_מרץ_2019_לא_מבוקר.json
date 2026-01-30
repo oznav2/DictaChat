@@ -1,0 +1,85 @@
+{
+  "dataset_id": "7602b25d-fd53-4eca-8ba8-3466f7b3c266",
+  "title": "ביצוע תקציב על שינוייו מרץ 2019 לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "שינויים בתקציב"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "מרץ",
+    "תוכנית",
+    "ברוטו",
+    "תקציב",
+    "מיועדת",
+    "ביצוע",
+    "שינויים",
+    "מבוקר",
+    "משרד",
+    "הכנסה",
+    "מקורי",
+    "שינוייו",
+    "האוצר",
+    "בתקציב",
+    "התוכנית"
+  ],
+  "resources": [
+    {
+      "resource_id": "053eeabf-7cb3-4b90-b553-5a5d1f01c605",
+      "title": "אומדן ביצוע תקציב ליום 31 במרץ 2019 לא מבוקר.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תוכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם התוכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תקציב ברוטו מקורי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו על שינוייו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תקציב הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע ברוטו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 547
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

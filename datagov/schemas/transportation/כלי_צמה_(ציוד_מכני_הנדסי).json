@@ -1,0 +1,188 @@
+{
+  "dataset_id": "0219b34f-43c7-435b-bdfe-e65e944cde50",
+  "title": "כלי צמ\"ה (ציוד מכני הנדסי)",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "hanaa",
+    "תחבורה",
+    "sug",
+    "degem",
+    "totzar",
+    "mispar",
+    "ton",
+    "בדרכים",
+    "tokef",
+    "date",
+    "רכב",
+    "tzama",
+    "hagbala",
+    "והבטיחות",
+    "כלי",
+    "shnat",
+    "shilda",
+    "koah",
+    "harama",
+    "הנדסי",
+    "משרד",
+    "yitzur",
+    "kolel",
+    "מכני",
+    "rishum",
+    "sus",
+    "mishkal",
+    "ציוד",
+    "kosher",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "58dc4654-16b1-42ed-8170-98fadec153ea",
+      "title": "כלי צמ\"ה (ציוד מכני הנדסי)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_tzama",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mispar_shilda",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shilda_totzar_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shilda_totzar_en_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "sug_tzama_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_tzama_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hanaa_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hanaa_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "rishum_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "koah_sus",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_ton",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tokef_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "mishkal_kolel_ton",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kosher_harama_ton",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hagbala_cd_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hagbala_nm_1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hagbala_cd_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hagbala_nm_2",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hagbala_cd_3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hagbala_nm_3",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hagbala_cd_4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hagbala_nm_4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 176291
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

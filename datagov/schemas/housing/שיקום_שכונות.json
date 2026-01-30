@@ -1,0 +1,201 @@
+{
+  "dataset_id": "cbe4227e-c63d-4181-a126-b4a4436e122b",
+  "title": "שיקום שכונות",
+  "organization": "משרד הבינוי והשיכון",
+  "tags": [
+    "מרקם ותיק",
+    "משרד הבינוי והשיכון",
+    "שיקום",
+    "שיקום שכונות חברתי",
+    "שיקום שכונות פיזי",
+    "שכונות"
+  ],
+  "categories": [
+    "housing"
+  ],
+  "keywords": [
+    "שכונות",
+    "mahoz",
+    "פיזי",
+    "heshbonot",
+    "הבינוי",
+    "והשיכון",
+    "closed",
+    "yeshuv",
+    "date",
+    "shuna",
+    "projects",
+    "nose",
+    "חברתי",
+    "משרד",
+    "open",
+    "type",
+    "שיקום",
+    "ותיק",
+    "מרקם",
+    "sumheshbonot",
+    "bitzua",
+    "year",
+    "tashtit",
+    "programa",
+    "tchum"
+  ],
+  "resources": [
+    {
+      "resource_id": "a66f8a88-9c7a-440e-b206-0c0d84ce9b7a",
+      "title": "שיקום שכונות פיזי תשתיות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "YEAR_PROGRAMA",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "MAHOZ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YESHUV",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SHUNA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TASHTIT_TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "sumHeshbonot",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "DATE_BITZUA",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 45
+    },
+    {
+      "resource_id": "f698a52e-48a4-4fe6-a410-763d41bef909",
+      "title": "שיקום שכונות פיזי שיפוץ מבנים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "YEAR_PROGRAMA",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "MAHOZ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YESHUV",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SHUNA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TASHTIT_TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "sumHeshbonot",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "DATE_BITZUA",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 45
+    },
+    {
+      "resource_id": "34a17cb5-fb30-4ecf-bb25-5ba30ca22d35",
+      "title": "שיקום שכונות חברתי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "YEAR",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "MAHOZ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHUNA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TCHUM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NOSE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OPEN_PROJECTS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CLOSED_PROJECTS",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "HESHBONOT",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 112
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

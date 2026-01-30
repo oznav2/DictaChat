@@ -1,0 +1,89 @@
+{
+  "dataset_id": "a9072370-f4d3-4a28-809a-7bf77bb2211e",
+  "title": "מיכלי מים בשעת חירום",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "חירום",
+    "מחסור",
+    "מים",
+    "שריפה"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "ezor",
+    "mispartoshavim",
+    "mikumatahna",
+    "אדומים",
+    "שריפה",
+    "meklot",
+    "עיריית",
+    "מחסור",
+    "sug",
+    "tatezor",
+    "מיכלי",
+    "מים",
+    "מעלה",
+    "בשעת",
+    "stationnumber",
+    "חירום"
+  ],
+  "resources": [
+    {
+      "resource_id": "3402ff6e-8b0e-4d96-b6e7-0f4ff4b8e74e",
+      "title": "מיכלי מים בשעת חרום",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Stationnumber",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "mikumatahna",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mispartoshavim",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ezor",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tatezor",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "meklot",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 13
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "dataset_id": "d8cf1d47-058c-4d8a-a3bd-386a1c5f99a8",
+  "title": "הודעות החוקר הראשי",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "טיסות אזרחיות",
+    "משרד התחבורה",
+    "תחבורה",
+    "תעופה אזרחית"
+  ],
+  "categories": [
+    "transportation",
+    "justice"
+  ],
+  "keywords": [
+    "הראשי",
+    "הודעות",
+    "אזרחיות",
+    "תחבורה",
+    "אזרחית",
+    "בדרכים",
+    "משרד",
+    "טיסות",
+    "והבטיחות",
+    "תעופה",
+    "החוקר",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "752d1b55-3d8c-4558-b109-1501bf82e00f",
+      "title": "הודעות החוקר הראשי",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -386,7 +386,17 @@ export async function healthCheckServer(
 	}
 }
 
-// Initialize on module load
+// Initialize on module load with retry logic
 if (browser) {
-	refreshMcpServers();
+	// Initial load
+	refreshMcpServers().then(() => {
+		// If no servers loaded after initial attempt, retry after a short delay
+		// This handles race conditions where the API isn't ready yet
+		const currentServers = get(allMcpServers);
+		if (currentServers.length === 0) {
+			setTimeout(() => {
+				refreshMcpServers();
+			}, 1000);
+		}
+	});
 }

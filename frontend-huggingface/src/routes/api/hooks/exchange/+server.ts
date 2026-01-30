@@ -31,7 +31,7 @@ export interface ExchangeResponse {
 	memoryMeta: MemoryMetaV1;
 }
 
-const VALID_TIERS: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+const VALID_TIERS: MemoryTier[] = ["working", "history", "patterns", "documents", "memory_bank"];
 
 function isValidTier(tier: string): tier is MemoryTier {
 	return VALID_TIERS.includes(tier as MemoryTier);
@@ -242,7 +242,9 @@ function parseMemoryContext(contextText: string): {
 	// - [n] [tier:memory_id] content
 	const lines = contextText.split("\n");
 	for (const line of lines) {
-		const match = line.match(/\[(working|history|patterns|books|memory_bank):([^\]]+)\]\s*(.*)$/);
+		const match = line.match(
+			/\[(working|history|patterns|documents|memory_bank):([^\]]+)\]\s*(.*)$/
+		);
 		if (!match) continue;
 		const [, tierCandidate, memoryIdRaw, contentRaw] = match;
 		const memoryId = memoryIdRaw.trim();

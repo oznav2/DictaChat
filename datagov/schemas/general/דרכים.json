@@ -1,0 +1,74 @@
+{
+  "dataset_id": "bdf28cc0-680a-415c-af64-944a58079b2f",
+  "title": "דרכים",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "באר שבע",
+    "דרכים",
+    "עיריית באר שבע"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "lon",
+    "באר",
+    "lat",
+    "עיריית",
+    "שבע",
+    "leng",
+    "shape",
+    "דרכים"
+  ],
+  "resources": [
+    {
+      "resource_id": "825413d2-3a2f-4fee-8a70-9eebee0bc0f2",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a50b5e05-970c-4847-a18b-ec446f2c9642",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Shape_Leng",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 128459
+    },
+    {
+      "resource_id": "376163ec-fa94-4ce7-8531-47af25c6f0b5",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

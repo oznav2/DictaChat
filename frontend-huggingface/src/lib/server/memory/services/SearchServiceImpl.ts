@@ -12,11 +12,18 @@
 import { logger } from "$lib/server/logger";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
+import { memoryMetrics } from "../observability";
 import type { MemoryTier, SearchResponse, SearchResult, SortBy } from "../types";
+import type { ISearchService } from "../interfaces/ISearchService";
 import type { SearchService as HybridSearchService } from "../search/SearchService";
-import type { SearchService, SearchParams } from "../UnifiedMemoryFacade";
+import type { SearchParams } from "../UnifiedMemoryFacade";
 import { findHebrewTranslation, findEnglishTranslation } from "../seed/bilingualEntities";
 import { buildProblemHash } from "../utils/problemSignature";
+import { getMemoryFeatureFlags } from "../featureFlags";
+import {
+	ContextualEmbeddingService,
+	createContextualEmbeddingService,
+} from "../ContextualEmbeddingService";
 
 export interface SearchServiceImplConfig {
 	hybridSearch: HybridSearchService;
@@ -32,6 +39,8 @@ export interface SearchServiceImplConfig {
 			memoryIds: string[]
 		) => Promise<Array<{ memory_id: string; boost: number; matched_entities: string[] }>>;
 	};
+	/** Optional contextual embedding service for LLM-enhanced retrieval */
+	contextualEmbeddingService?: ContextualEmbeddingService;
 }
 
 /**
@@ -61,11 +70,12 @@ const RECENCY_KEYWORDS = [
 	"פעם אחרונה",
 ];
 
-export class SearchServiceImpl implements SearchService {
+export class SearchServiceImpl implements ISearchService {
 	private hybridSearch: HybridSearchService;
 	private config: MemoryConfig;
 	private mongoStore: SearchServiceImplConfig["mongoStore"];
 	private kgService: SearchServiceImplConfig["kgService"];
+	private contextualEmbeddingService: ContextualEmbeddingService | null = null;
 
 	// Per-turn tracking for record_response
 	private searchPositionMap: Map<number, string> = new Map();
@@ -78,6 +88,19 @@ export class SearchServiceImpl implements SearchService {
 		this.config = params.config ?? defaultMemoryConfig;
 		this.mongoStore = params.mongoStore;
 		this.kgService = params.kgService;
+
+		// Initialize contextual embedding if enabled via feature flag
+		const flags = getMemoryFeatureFlags();
+		if (flags.contextualEmbeddingEnabled) {
+			this.contextualEmbeddingService =
+				params.contextualEmbeddingService ??
+				createContextualEmbeddingService({
+					enabled: true,
+					timeout_ms: 5000,
+					cache_ttl_hours: 24,
+				});
+			logger.info("[SearchServiceImpl] ContextualEmbeddingService enabled");
+		}
 	}
 
 	/**
@@ -205,119 +228,212 @@ export class SearchServiceImpl implements SearchService {
 	}
 
 	/**
+	 * Enhance query with contextual prefix for better embedding similarity
+	 * Uses LLM to generate context that helps retrieval understand references
+	 * like "that thing we discussed" or "the approach that worked"
+	 */
+	private async enhanceQueryWithContext(
+		query: string,
+		conversationContext?: string
+	): Promise<string> {
+		if (!this.contextualEmbeddingService || !this.contextualEmbeddingService.isEnabled()) {
+			return query;
+		}
+
+		if (this.contextualEmbeddingService.isCircuitOpen()) {
+			logger.debug("[SearchServiceImpl] ContextualEmbedding circuit breaker open, using raw query");
+			return query;
+		}
+
+		try {
+			const enhanced = await this.contextualEmbeddingService.prepareForEmbedding(
+				query,
+				conversationContext
+			);
+
+			if (enhanced.context_prefix) {
+				logger.debug(
+					{
+						originalLength: query.length,
+						prefixLength: enhanced.context_prefix.length,
+					},
+					"[SearchServiceImpl] Query enhanced with contextual prefix"
+				);
+				return enhanced.combined_text;
+			}
+		} catch (err) {
+			logger.warn(
+				{ err },
+				"[SearchServiceImpl] Contextual embedding enhancement failed, using raw query"
+			);
+		}
+
+		return query;
+	}
+
+	/**
 	 * Search memories with hybrid retrieval
 	 */
 	async search(params: SearchParams): Promise<SearchResponse> {
 		const startTime = Date.now();
+		let success = false;
+		let wasHit = false;
+		let stageTimings: Record<string, unknown> | null = null;
 
-		// Step 0: Check for known solution (Roampal pattern)
-		// If we have a high-quality cached solution, return it immediately
-		const knownSolution = await this.checkKnownSolution(params.userId, params.query);
-		if (knownSolution) {
-			const results = [{ ...knownSolution, position: 1 }];
-			this.updatePositionTracking(params.query, results, ["patterns"]);
+		try {
+			// Step 0: Check for known solution (Roampal pattern)
+			// If we have a high-quality cached solution, return it immediately
+			const knownSolution = await this.checkKnownSolution(params.userId, params.query);
+			if (knownSolution) {
+				const results = [{ ...knownSolution, position: 1 }];
+				this.updatePositionTracking(params.query, results, ["patterns"]);
+				wasHit = true;
+				stageTimings = { known_solution_lookup: Date.now() - startTime };
+				success = true;
+
+				return {
+					results,
+					debug: {
+						confidence: "high" as const,
+						stage_timings_ms: stageTimings,
+						fallbacks_used: [],
+						errors: [],
+					},
+				};
+			}
+
+			// Step 1: Determine tiers to search
+			const tiers = this.resolveTiers(params.collections);
+
+			// Step 1b: Enhance query with contextual embedding if enabled
+			let searchQuery = params.query;
+			if (this.contextualEmbeddingService && params.recentMessages?.length) {
+				const conversationContext = params.recentMessages
+					.slice(-3)
+					.map((m) => `${m.from}: ${m.content.slice(0, 200)}`)
+					.join("\n");
+				searchQuery = await this.enhanceQueryWithContext(params.query, conversationContext);
+			}
+
+			// Step 2: Detect sort mode
+			const sortBy = params.sortBy ?? this.detectSortMode(searchQuery);
+
+			// Step 3: Expand query with bilingual translations
+			const expandedQueries = this.expandQueryBilingual(searchQuery);
+			const isBilingual = expandedQueries.length > 1;
+
+			if (isBilingual) {
+				logger.debug({ originalQuery: params.query, expandedQueries }, "Bilingual query expansion");
+			}
+
+			// Step 4: Execute hybrid search(es) with cross-personality support
+			// Respect the MEMORY_RERANK_ENABLED feature flag for graceful degradation
+			const flags = getMemoryFeatureFlags();
+			const searchPromises = expandedQueries.map((query) =>
+				this.hybridSearch.search({
+					userId: params.userId,
+					query,
+					tiers,
+					limit: params.limit ?? this.config.caps.search_limit_default,
+					enableRerank: flags.rerankEnabled,
+					// Cross-personality search - include memories from other personalities
+					personalityId: params.personalityId,
+					includeAllPersonalities: params.includeAllPersonalities ?? true,
+					includePersonalityIds: params.includePersonalityIds,
+				})
+			);
+
+			const responses = await Promise.all(searchPromises);
+
+			// Merge results, keeping best score per memory_id
+			const resultMap = new Map<string, SearchResult>();
+			const bestDebug = responses[0]?.debug;
+
+			for (const response of responses) {
+				for (const result of response.results) {
+					const existing = resultMap.get(result.memory_id);
+					const resultScore = result.score_summary.final_score ?? 0;
+					const existingScore = existing?.score_summary.final_score ?? 0;
+					if (!existing || resultScore > existingScore) {
+						resultMap.set(result.memory_id, result);
+					}
+				}
+			}
+
+			// Convert back to array
+			const limit = params.limit ?? this.config.caps.search_limit_default;
+			let results = Array.from(resultMap.values());
+
+			// Step 4b: Apply entity boost from ContentKG (Roampal pattern)
+			results = await this.applyEntityBoosts(params.userId, results);
+
+			// Sort by score and limit
+			results = results
+				.sort((a, b) => (b.score_summary.final_score ?? 0) - (a.score_summary.final_score ?? 0))
+				.slice(0, limit);
+
+			// Step 5: Apply sort mode
+			if (sortBy === "recency") {
+				results = this.sortByRecency(results);
+			} else if (sortBy === "score") {
+				results = this.sortByScore(results);
+			}
+			// Default "relevance" uses the hybrid search ranking
+
+			// Step 5: Update position tracking for record_response integration
+			this.updatePositionTracking(params.query, results, tiers);
+
+			const latencyMs = Date.now() - startTime;
+			logger.debug(
+				{
+					userId: params.userId,
+					query: params.query.slice(0, 50),
+					resultCount: results.length,
+					sortBy,
+					latencyMs,
+				},
+				"Memory search completed"
+			);
+
+			stageTimings = (bestDebug?.stage_timings_ms as unknown as Record<string, unknown>) ?? null;
+			success = true;
 
 			return {
 				results,
-				debug: {
-					confidence: "high" as const,
-					stage_timings_ms: { known_solution_lookup: Date.now() - startTime },
+				debug: bestDebug ?? {
+					confidence: "low" as const,
+					stage_timings_ms: {},
 					fallbacks_used: [],
 					errors: [],
 				},
 			};
-		}
+		} finally {
+			const durationMs = Date.now() - startTime;
+			memoryMetrics.recordSearch(wasHit);
+			memoryMetrics.recordOperation("search", success);
+			memoryMetrics.recordLatency("search", durationMs);
 
-		// Step 1: Determine tiers to search
-		const tiers = this.resolveTiers(params.collections);
+			if (stageTimings && typeof stageTimings === "object") {
+				const qdrantMs = stageTimings.qdrant_query_ms;
+				if (typeof qdrantMs === "number" && Number.isFinite(qdrantMs) && qdrantMs >= 0) {
+					memoryMetrics.recordLatency("qdrant_query", qdrantMs);
+				}
 
-		// Step 2: Detect sort mode
-		const sortBy = params.sortBy ?? this.detectSortMode(params.query);
+				const bm25Ms = stageTimings.bm25_query_ms;
+				if (typeof bm25Ms === "number" && Number.isFinite(bm25Ms) && bm25Ms >= 0) {
+					memoryMetrics.recordLatency("bm25_query", bm25Ms);
+				}
 
-		// Step 3: Expand query with bilingual translations
-		const expandedQueries = this.expandQueryBilingual(params.query);
-		const isBilingual = expandedQueries.length > 1;
-
-		if (isBilingual) {
-			logger.debug({ originalQuery: params.query, expandedQueries }, "Bilingual query expansion");
-		}
-
-		// Step 4: Execute hybrid search(es) with cross-personality support
-		const searchPromises = expandedQueries.map((query) =>
-			this.hybridSearch.search({
-				userId: params.userId,
-				query,
-				tiers,
-				limit: params.limit ?? this.config.caps.search_limit_default,
-				enableRerank: true,
-				// Cross-personality search - include memories from other personalities
-				personalityId: params.personalityId,
-				includeAllPersonalities: params.includeAllPersonalities ?? true,
-				includePersonalityIds: params.includePersonalityIds,
-			})
-		);
-
-		const responses = await Promise.all(searchPromises);
-
-		// Merge results, keeping best score per memory_id
-		const resultMap = new Map<string, SearchResult>();
-		const bestDebug = responses[0]?.debug;
-
-		for (const response of responses) {
-			for (const result of response.results) {
-				const existing = resultMap.get(result.memory_id);
-				const resultScore = result.score_summary.final_score ?? 0;
-				const existingScore = existing?.score_summary.final_score ?? 0;
-				if (!existing || resultScore > existingScore) {
-					resultMap.set(result.memory_id, result);
+				const rerankMs = stageTimings.rerank_ms;
+				if (typeof rerankMs === "number" && Number.isFinite(rerankMs) && rerankMs >= 0) {
+					memoryMetrics.recordLatency("rerank", rerankMs);
 				}
 			}
 		}
+	}
 
-		// Convert back to array
-		const limit = params.limit ?? this.config.caps.search_limit_default;
-		let results = Array.from(resultMap.values());
-
-		// Step 4b: Apply entity boost from ContentKG (Roampal pattern)
-		results = await this.applyEntityBoosts(params.userId, results);
-
-		// Sort by score and limit
-		results = results
-			.sort((a, b) => (b.score_summary.final_score ?? 0) - (a.score_summary.final_score ?? 0))
-			.slice(0, limit);
-
-		// Step 5: Apply sort mode
-		if (sortBy === "recency") {
-			results = this.sortByRecency(results);
-		} else if (sortBy === "score") {
-			results = this.sortByScore(results);
-		}
-		// Default "relevance" uses the hybrid search ranking
-
-		// Step 5: Update position tracking for record_response
-		this.updatePositionTracking(params.query, results, tiers);
-
-		const latencyMs = Date.now() - startTime;
-		logger.debug(
-			{
-				userId: params.userId,
-				query: params.query.slice(0, 50),
-				resultCount: results.length,
-				sortBy,
-				latencyMs,
-			},
-			"Memory search completed"
-		);
-
-		return {
-			results,
-			debug: bestDebug ?? {
-				confidence: "low" as const,
-				stage_timings_ms: {},
-				fallbacks_used: [],
-				errors: [],
-			},
-		};
+	async healthCheck(): Promise<boolean> {
+		return typeof (this.hybridSearch as unknown as { search?: unknown }).search === "function";
 	}
 
 	/**
@@ -363,7 +479,7 @@ export class SearchServiceImpl implements SearchService {
 	 */
 	private resolveTiers(collections?: MemoryTier[] | "all"): MemoryTier[] {
 		if (!collections || collections === "all") {
-			return ["working", "history", "patterns", "books", "memory_bank"];
+			return ["working", "history", "patterns", "documents", "memory_bank"];
 		}
 		return collections;
 	}

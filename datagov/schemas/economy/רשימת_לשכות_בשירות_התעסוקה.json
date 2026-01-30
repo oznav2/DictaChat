@@ -1,0 +1,233 @@
+{
+  "dataset_id": "186cd400-afba-4e66-885b-fcf903b5d5f9",
+  "title": "רשימת לשכות בשירות התעסוקה",
+  "organization": "שירות התעסוקה",
+  "tags": [
+    "אוכלוסיה",
+    "דרכי הגעה",
+    "טלפון",
+    "ישוב",
+    "כתובת",
+    "לשכה",
+    "מענה טלפוני",
+    "שעות פתיחה",
+    "תעסוקה"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "התעסוקה",
+    "כתובת",
+    "אוכלוסיה",
+    "לשכה",
+    "מענה",
+    "כללי",
+    "דרכי",
+    "לשכות",
+    "שעות",
+    "בשירות",
+    "טלפון",
+    "פקס",
+    "פתיחה",
+    "מנהל",
+    "טלפוני",
+    "מעסיקים",
+    "דואל",
+    "טקסט",
+    "waze",
+    "שירות",
+    "לנוער",
+    "מתאם",
+    "תעסוקה",
+    "ישוב",
+    "הגעה",
+    "iesaddress",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "2c499e31-cc80-4415-a6d0-71003305c5bb",
+      "title": "רשימת לשכות - עברית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "IesAddress",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מנהל לשכה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "שעות פתיחה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שעות לנוער",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "מתאם מעסיקים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "דואל מתאם",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון מתאם",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס מתאם",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דרכי הגעה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טקסט כללי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Waze",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 72
+    },
+    {
+      "resource_id": "438b7424-5dd1-49af-a4bc-0ac3d010110b",
+      "title": "רשימת לשכות - ערבית ",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "IesAddress",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מנהל לשכה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "שעות פתיחה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שעות לנוער",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "מתאם מעסיקים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "דואל מתאם",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טלפון מתאם",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פקס מתאם",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דרכי הגעה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "טקסט כללי",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 72
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

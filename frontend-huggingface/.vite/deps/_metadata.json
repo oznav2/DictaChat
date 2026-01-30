@@ -1,0 +1,406 @@
+{
+  "hash": "d83b0870",
+  "configHash": "a768f445",
+  "lockfileHash": "ced57686",
+  "browserHash": "c2c4fc10",
+  "optimized": {
+    "uuid": {
+      "src": "../../node_modules/uuid/dist/esm-browser/index.js",
+      "file": "uuid.js",
+      "fileHash": "0260444c",
+      "needsInterop": false
+    },
+    "clsx": {
+      "src": "../../node_modules/clsx/dist/clsx.mjs",
+      "file": "clsx.js",
+      "fileHash": "bac1ae08",
+      "needsInterop": false
+    },
+    "@braintree/sanitize-url": {
+      "src": "../../node_modules/@braintree/sanitize-url/dist/index.js",
+      "file": "@braintree_sanitize-url.js",
+      "fileHash": "9a3f34e9",
+      "needsInterop": true
+    },
+    "svelte": {
+      "src": "../../node_modules/svelte/src/index-client.js",
+      "file": "svelte.js",
+      "fileHash": "db79ca03",
+      "needsInterop": false
+    },
+    "svelte/animate": {
+      "src": "../../node_modules/svelte/src/animate/index.js",
+      "file": "svelte_animate.js",
+      "fileHash": "751c4145",
+      "needsInterop": false
+    },
+    "svelte/attachments": {
+      "src": "../../node_modules/svelte/src/attachments/index.js",
+      "file": "svelte_attachments.js",
+      "fileHash": "334375de",
+      "needsInterop": false
+    },
+    "svelte/easing": {
+      "src": "../../node_modules/svelte/src/easing/index.js",
+      "file": "svelte_easing.js",
+      "fileHash": "ae43ccfc",
+      "needsInterop": false
+    },
+    "svelte/internal": {
+      "src": "../../node_modules/svelte/src/internal/index.js",
+      "file": "svelte_internal.js",
+      "fileHash": "870cdd5f",
+      "needsInterop": true
+    },
+    "svelte/internal/client": {
+      "src": "../../node_modules/svelte/src/internal/client/index.js",
+      "file": "svelte_internal_client.js",
+      "fileHash": "a345e44c",
+      "needsInterop": false
+    },
+    "svelte/internal/disclose-version": {
+      "src": "../../node_modules/svelte/src/internal/disclose-version.js",
+      "file": "svelte_internal_disclose-version.js",
+      "fileHash": "7aabe7e9",
+      "needsInterop": false
+    },
+    "svelte/internal/flags/legacy": {
+      "src": "../../node_modules/svelte/src/internal/flags/legacy.js",
+      "file": "svelte_internal_flags_legacy.js",
+      "fileHash": "d4746394",
+      "needsInterop": false
+    },
+    "svelte/internal/flags/tracing": {
+      "src": "../../node_modules/svelte/src/internal/flags/tracing.js",
+      "file": "svelte_internal_flags_tracing.js",
+      "fileHash": "b31bc2b5",
+      "needsInterop": false
+    },
+    "svelte/legacy": {
+      "src": "../../node_modules/svelte/src/legacy/legacy-client.js",
+      "file": "svelte_legacy.js",
+      "fileHash": "349d10b6",
+      "needsInterop": false
+    },
+    "svelte/motion": {
+      "src": "../../node_modules/svelte/src/motion/index.js",
+      "file": "svelte_motion.js",
+      "fileHash": "7351f55c",
+      "needsInterop": false
+    },
+    "svelte/reactivity": {
+      "src": "../../node_modules/svelte/src/reactivity/index-client.js",
+      "file": "svelte_reactivity.js",
+      "fileHash": "218d2bfe",
+      "needsInterop": false
+    },
+    "svelte/reactivity/window": {
+      "src": "../../node_modules/svelte/src/reactivity/window/index.js",
+      "file": "svelte_reactivity_window.js",
+      "fileHash": "47a8bd1c",
+      "needsInterop": false
+    },
+    "svelte/store": {
+      "src": "../../node_modules/svelte/src/store/index-client.js",
+      "file": "svelte_store.js",
+      "fileHash": "b49a87da",
+      "needsInterop": false
+    },
+    "svelte/transition": {
+      "src": "../../node_modules/svelte/src/transition/index.js",
+      "file": "svelte_transition.js",
+      "fileHash": "64363389",
+      "needsInterop": false
+    },
+    "svelte/events": {
+      "src": "../../node_modules/svelte/src/events/index.js",
+      "file": "svelte_events.js",
+      "fileHash": "7118dda8",
+      "needsInterop": false
+    },
+    "svelte > clsx": {
+      "src": "../../node_modules/clsx/dist/clsx.mjs",
+      "file": "svelte___clsx.js",
+      "fileHash": "0b5eac27",
+      "needsInterop": false
+    },
+    "@elysiajs/eden": {
+      "src": "../../node_modules/@elysiajs/eden/dist/index.mjs",
+      "file": "@elysiajs_eden.js",
+      "fileHash": "ca36ced9",
+      "needsInterop": false
+    },
+    "@huggingface/inference": {
+      "src": "../../node_modules/@huggingface/inference/dist/esm/index.js",
+      "file": "@huggingface_inference.js",
+      "fileHash": "15d8fa55",
+      "needsInterop": false
+    },
+    "3d-force-graph": {
+      "src": "../../node_modules/3d-force-graph/dist/3d-force-graph.mjs",
+      "file": "3d-force-graph.js",
+      "fileHash": "6fbe9b52",
+      "needsInterop": false
+    },
+    "bits-ui": {
+      "src": "../../node_modules/bits-ui/dist/index.js",
+      "file": "bits-ui.js",
+      "fileHash": "5cf4c5fc",
+      "needsInterop": false
+    },
+    "bson-objectid": {
+      "src": "../../node_modules/bson-objectid/objectid.js",
+      "file": "bson-objectid.js",
+      "fileHash": "fe8fac7c",
+      "needsInterop": true
+    },
+    "d3": {
+      "src": "../../node_modules/d3/src/index.js",
+      "file": "d3.js",
+      "fileHash": "fe3739a8",
+      "needsInterop": false
+    },
+    "devalue": {
+      "src": "../../node_modules/devalue/index.js",
+      "file": "devalue.js",
+      "fileHash": "163e5511",
+      "needsInterop": false
+    },
+    "esm-env": {
+      "src": "../../node_modules/esm-env/index.js",
+      "file": "esm-env.js",
+      "fileHash": "9d6feb5e",
+      "needsInterop": false
+    },
+    "highlight.js/lib/core": {
+      "src": "../../node_modules/highlight.js/es/core.js",
+      "file": "highlight__js_lib_core.js",
+      "fileHash": "2b52a552",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/bash": {
+      "src": "../../node_modules/highlight.js/es/languages/bash.js",
+      "file": "highlight__js_lib_languages_bash.js",
+      "fileHash": "d1c2b273",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/c": {
+      "src": "../../node_modules/highlight.js/es/languages/c.js",
+      "file": "highlight__js_lib_languages_c.js",
+      "fileHash": "57e21427",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/cpp": {
+      "src": "../../node_modules/highlight.js/es/languages/cpp.js",
+      "file": "highlight__js_lib_languages_cpp.js",
+      "fileHash": "771022a6",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/csharp": {
+      "src": "../../node_modules/highlight.js/es/languages/csharp.js",
+      "file": "highlight__js_lib_languages_csharp.js",
+      "fileHash": "e113dc0f",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/css": {
+      "src": "../../node_modules/highlight.js/es/languages/css.js",
+      "file": "highlight__js_lib_languages_css.js",
+      "fileHash": "93364126",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/go": {
+      "src": "../../node_modules/highlight.js/es/languages/go.js",
+      "file": "highlight__js_lib_languages_go.js",
+      "fileHash": "4da84ba4",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/java": {
+      "src": "../../node_modules/highlight.js/es/languages/java.js",
+      "file": "highlight__js_lib_languages_java.js",
+      "fileHash": "d24f9f56",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/javascript": {
+      "src": "../../node_modules/highlight.js/es/languages/javascript.js",
+      "file": "highlight__js_lib_languages_javascript.js",
+      "fileHash": "8d2c422c",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/json": {
+      "src": "../../node_modules/highlight.js/es/languages/json.js",
+      "file": "highlight__js_lib_languages_json.js",
+      "fileHash": "cce28dc9",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/markdown": {
+      "src": "../../node_modules/highlight.js/es/languages/markdown.js",
+      "file": "highlight__js_lib_languages_markdown.js",
+      "fileHash": "8ea38a45",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/plaintext": {
+      "src": "../../node_modules/highlight.js/es/languages/plaintext.js",
+      "file": "highlight__js_lib_languages_plaintext.js",
+      "fileHash": "4acc0b89",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/python": {
+      "src": "../../node_modules/highlight.js/es/languages/python.js",
+      "file": "highlight__js_lib_languages_python.js",
+      "fileHash": "d187d098",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/rust": {
+      "src": "../../node_modules/highlight.js/es/languages/rust.js",
+      "file": "highlight__js_lib_languages_rust.js",
+      "fileHash": "9ee477c5",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/scss": {
+      "src": "../../node_modules/highlight.js/es/languages/scss.js",
+      "file": "highlight__js_lib_languages_scss.js",
+      "fileHash": "b2ade509",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/shell": {
+      "src": "../../node_modules/highlight.js/es/languages/shell.js",
+      "file": "highlight__js_lib_languages_shell.js",
+      "fileHash": "605cab91",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/sql": {
+      "src": "../../node_modules/highlight.js/es/languages/sql.js",
+      "file": "highlight__js_lib_languages_sql.js",
+      "fileHash": "a44e01c5",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/typescript": {
+      "src": "../../node_modules/highlight.js/es/languages/typescript.js",
+      "file": "highlight__js_lib_languages_typescript.js",
+      "fileHash": "2331d6ee",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/xml": {
+      "src": "../../node_modules/highlight.js/es/languages/xml.js",
+      "file": "highlight__js_lib_languages_xml.js",
+      "fileHash": "7479fdca",
+      "needsInterop": false
+    },
+    "highlight.js/lib/languages/yaml": {
+      "src": "../../node_modules/highlight.js/es/languages/yaml.js",
+      "file": "highlight__js_lib_languages_yaml.js",
+      "fileHash": "aed6b5aa",
+      "needsInterop": false
+    },
+    "isomorphic-dompurify": {
+      "src": "../../node_modules/isomorphic-dompurify/browser.js",
+      "file": "isomorphic-dompurify.js",
+      "fileHash": "9a81d512",
+      "needsInterop": true
+    },
+    "jszip": {
+      "src": "../../node_modules/jszip/dist/jszip.min.js",
+      "file": "jszip.js",
+      "fileHash": "d23ab696",
+      "needsInterop": true
+    },
+    "katex": {
+      "src": "../../node_modules/katex/dist/katex.mjs",
+      "file": "katex.js",
+      "fileHash": "7e2c4d42",
+      "needsInterop": false
+    },
+    "katex/dist/contrib/mhchem.mjs": {
+      "src": "../../node_modules/katex/dist/contrib/mhchem.mjs",
+      "file": "katex_dist_contrib_mhchem__mjs.js",
+      "fileHash": "66dfa83c",
+      "needsInterop": false
+    },
+    "marked": {
+      "src": "../../node_modules/marked/lib/marked.esm.js",
+      "file": "marked.js",
+      "fileHash": "f0cad86a",
+      "needsInterop": false
+    },
+    "superjson": {
+      "src": "../../node_modules/superjson/dist/index.js",
+      "file": "superjson.js",
+      "fileHash": "5ace036a",
+      "needsInterop": false
+    },
+    "svelte-tiny-virtual-list": {
+      "src": "../../node_modules/svelte-tiny-virtual-list/dist/index.js",
+      "file": "svelte-tiny-virtual-list.js",
+      "fileHash": "f6290974",
+      "needsInterop": false
+    },
+    "three": {
+      "src": "../../node_modules/three/build/three.module.js",
+      "file": "three.js",
+      "fileHash": "107d1c9a",
+      "needsInterop": false
+    },
+    "zod": {
+      "src": "../../node_modules/zod/dist/esm/index.js",
+      "file": "zod.js",
+      "fileHash": "df68b80f",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-SOPWONPC": {
+      "file": "chunk-SOPWONPC.js"
+    },
+    "chunk-TE7FJJUT": {
+      "file": "chunk-TE7FJJUT.js"
+    },
+    "chunk-5GONY4FY": {
+      "file": "chunk-5GONY4FY.js"
+    },
+    "chunk-QRCWDNKT": {
+      "file": "chunk-QRCWDNKT.js"
+    },
+    "chunk-NTBXCXB5": {
+      "file": "chunk-NTBXCXB5.js"
+    },
+    "chunk-ZQJPPEIT": {
+      "file": "chunk-ZQJPPEIT.js"
+    },
+    "chunk-DBTSH6U3": {
+      "file": "chunk-DBTSH6U3.js"
+    },
+    "chunk-IPTDMU3X": {
+      "file": "chunk-IPTDMU3X.js"
+    },
+    "chunk-7RQDXF5S": {
+      "file": "chunk-7RQDXF5S.js"
+    },
+    "chunk-PLKPVGU2": {
+      "file": "chunk-PLKPVGU2.js"
+    },
+    "chunk-DJ6FSLDI": {
+      "file": "chunk-DJ6FSLDI.js"
+    },
+    "chunk-EGNO7VLM": {
+      "file": "chunk-EGNO7VLM.js"
+    },
+    "chunk-FT2Y2KWB": {
+      "file": "chunk-FT2Y2KWB.js"
+    },
+    "chunk-2GRV7DLA": {
+      "file": "chunk-2GRV7DLA.js"
+    },
+    "chunk-OKMPZSYG": {
+      "file": "chunk-OKMPZSYG.js"
+    },
+    "chunk-KDVGFZWC": {
+      "file": "chunk-KDVGFZWC.js"
+    },
+    "chunk-7QVV7TAH": {
+      "file": "chunk-7QVV7TAH.js"
+    },
+    "chunk-6LNZPZHA": {
+      "file": "chunk-6LNZPZHA.js"
+    }
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "dataset_id": "001c72e3-cead-42ac-ac5c-17287aabf285",
+  "title": "תחנות מוניות",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "name",
+    "lon",
+    "מוניות",
+    "באר",
+    "תחבורה",
+    "lat",
+    "עיריית",
+    "address",
+    "שבע",
+    "תחנות"
+  ],
+  "resources": [
+    {
+      "resource_id": "f9e66724-2237-417b-b9e9-681a8771766c",
+      "title": "GeoJSON",
+      "format": "GEOJSON",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a323d256-e6fe-4804-a4ff-f2b87289cb53",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 40
+    },
+    {
+      "resource_id": "7ee315d5-d23e-4121-aaf8-6fd09f1195e1",
+      "title": "XML",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

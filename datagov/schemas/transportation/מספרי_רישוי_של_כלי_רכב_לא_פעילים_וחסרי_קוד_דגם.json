@@ -1,0 +1,163 @@
+{
+  "dataset_id": "8672aa2c-3873-443a-b1ea-47ad546c6043",
+  "title": "מספרי רישוי של כלי רכב לא פעילים וחסרי קוד דגם",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "finance"
+  ],
+  "keywords": [
+    "רישוי",
+    "nefach",
+    "hanaa",
+    "תחבורה",
+    "sug",
+    "וחסרי",
+    "degem",
+    "horaat",
+    "mispar",
+    "בדרכים",
+    "tkina",
+    "רכב",
+    "והבטיחות",
+    "כלי",
+    "shnat",
+    "mitan",
+    "shilda",
+    "דגם",
+    "harama",
+    "משרד",
+    "delek",
+    "מספרי",
+    "קוד",
+    "yitzur",
+    "rechev",
+    "kolel",
+    "azmi",
+    "rishum",
+    "eretz",
+    "tozeret",
+    "mishkal",
+    "פעילים",
+    "manoa",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "6f6acd03-f351-4a8f-8ecf-df792f4f573a",
+      "title": "מספרי רישוי של כלי רכב לא פעילים וחסרי קוד דגם",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "mispar_shilda",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tkina_EU",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_eretz_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_delek_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_delek_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_kolel",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_azmi",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "nefach_manoa",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "degem_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hanaa_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hanaa_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_mitan_harama",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "horaat_rishum",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1381718
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

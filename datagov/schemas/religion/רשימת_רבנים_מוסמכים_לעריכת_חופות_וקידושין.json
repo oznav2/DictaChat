@@ -1,0 +1,81 @@
+{
+  "dataset_id": "f312eda5-27bc-4619-8917-8072a12f14ce",
+  "title": "רשימת רבנים מוסמכים לעריכת חופות וקידושין",
+  "organization": "הרבנות הראשית לישראל",
+  "tags": [
+    "חופה",
+    "חופה וקידושין",
+    "חתונה",
+    "חתן",
+    "כלה",
+    "מקדש",
+    "קידושין",
+    "רב",
+    "רבנים"
+  ],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "לעריכת",
+    "קידושין",
+    "הרבנות",
+    "חופה",
+    "כלה",
+    "הראשית",
+    "רבנים",
+    "lastname",
+    "לישראל",
+    "חתן",
+    "מוסמכים",
+    "firstname",
+    "חופות",
+    "city",
+    "וקידושין",
+    "street",
+    "מקדש",
+    "חתונה"
+  ],
+  "resources": [
+    {
+      "resource_id": "4ed4984a-15c7-4fea-9568-c5183506a418",
+      "title": "רשימת הרבנים המאושרים לעורכי חופות וקידושין 07.03.2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "lastname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "firstname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 2651
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -51,7 +51,7 @@ const CHARACTERIZATION_QUERIES = [
 	"user preference for dark mode",
 	"API rate limiting",
 	"remember my name is John",
-	"what books have I read",
+	"what documents have I read",
 	"coding best practices",
 ];
 
@@ -262,7 +262,13 @@ describe("TestSearchBehavior", () => {
 
 		const { UnifiedMemoryFacade } = await import("../../UnifiedMemoryFacade");
 
-		const collections: MemoryTier[] = ["memory_bank", "working", "history", "patterns", "books"];
+		const collections: MemoryTier[] = [
+			"memory_bank",
+			"working",
+			"history",
+			"patterns",
+			"documents",
+		];
 
 		for (const coll of collections) {
 			const mockSearchService = {

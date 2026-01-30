@@ -1,0 +1,221 @@
+{
+  "dataset_id": "0914a18b-b2c9-4e2f-bc25-0a8dfc912acf",
+  "title": "עסקים במסגרת החזר מעמ לתייר - VAT Refund Stores",
+  "organization": "משרד התיירות",
+  "tags": [
+    "מעמ",
+    "משרד התיירות",
+    "עסקים",
+    "תיירות"
+  ],
+  "categories": [
+    "finance",
+    "tourism",
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "phone",
+    "מעמ",
+    "business",
+    "התיירות",
+    "vat",
+    "city",
+    "fulldescription",
+    "product",
+    "ending",
+    "תיירות",
+    "fax",
+    "עסקים",
+    "vendor",
+    "license",
+    "date",
+    "category",
+    "לתייר",
+    "store",
+    "shortdescription",
+    "refund",
+    "החזר",
+    "משרד",
+    "code",
+    "url",
+    "region",
+    "licensing",
+    "במסגרת",
+    "year",
+    "address",
+    "last",
+    "updated",
+    "stores",
+    "vendorid",
+    "bank",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "9ebbb336-454d-4b9e-991b-484c57852ecd",
+      "title": "קובץ הסבר",
+      "format": "DOCX",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "5555edc5-532d-46b5-8415-01a54d5a5b73",
+      "title": "VAT_GOISRAEL_English",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Id",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "ShortDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "VendorId",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Vendor_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Product_Url",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Bank_Code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Business_License",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "Fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Last_updated",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "Licensing_Ending_Date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Region",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "Store_Category",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "URL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "Year",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 3810
+    },
+    {
+      "resource_id": "905e6597-6b7b-4110-aa34-8ff68b955f43",
+      "title": "VAT_GOISRAEL_Hebrew",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 4609
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": true
+  }
+}

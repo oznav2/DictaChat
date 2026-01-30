@@ -1,0 +1,85 @@
+{
+  "dataset_id": "ee370e02-53e6-4c6a-ad13-cd96ed11dad8",
+  "title": "אומדן ביצוע ליום 31 למרץ 2021 - לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אומדן",
+    "שינויים בתקציב",
+    "תקציב",
+    "תקציב וביצוע"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "תוכנית",
+    "ברוטו",
+    "תקציב",
+    "מיועדת",
+    "ביצוע",
+    "שינויים",
+    "מבוקר",
+    "משרד",
+    "למרץ",
+    "אומדן",
+    "וביצוע",
+    "מקורי",
+    "השתתפויות",
+    "שינוייו",
+    "האוצר",
+    "בתקציב",
+    "הכנסה"
+  ],
+  "resources": [
+    {
+      "resource_id": "4a0f3ffe-16cc-464e-bda3-f5ef4d4f0bf9",
+      "title": "אומדן ביצוע ליום 31 למרץ 2021 - לא מבוקר",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תוכנית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו מקורי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב ברוטו על שינוייו",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב הכנסה מיועדת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע ברוטו כולל השתתפויות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ביצוע הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 434
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

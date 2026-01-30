@@ -1,0 +1,35 @@
+{
+  "dataset_id": "30e98ecf-c9ce-43fb-a78d-e1ef539e10ac",
+  "title": "תצלום אויר 2015 2 מטר - גליון הר צניפים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "צניפים",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "eccc6205-3819-481d-a04f-f1c1ad1c3c82",
+      "title": "תצלום אויר 2015 2 מטר - גליון הר צניפים",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "dataset_id": "d4bb45f7-5114-4a30-ad4a-1553b06c98fb",
+  "title": "סחר, יבוא וייצור מוצרי תעבורה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "economy"
+  ],
+  "keywords": [
+    "תחבורה",
+    "sug",
+    "יבוא",
+    "mispar",
+    "shem",
+    "בדרכים",
+    "רכב",
+    "והבטיחות",
+    "תעבורה",
+    "וייצור",
+    "משרד",
+    "isuk",
+    "cod",
+    "telephone",
+    "סחר",
+    "מוצרי",
+    "ktovet",
+    "esek",
+    "התחבורה",
+    "yishuv"
+  ],
+  "resources": [
+    {
+      "resource_id": "42e73a60-7acc-4c5d-b4ec-b0e468a73c51",
+      "title": "סחר, יבוא וייצור מוצרי תעבורה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_esek",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shem_esek",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_esek",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "yishuv",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ktovet",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "cod_isuk",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "isuk",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 11059
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

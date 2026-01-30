@@ -46,7 +46,7 @@ export const OIDConfig = z
 		CLIENT_SECRET: stringWithDefault(config.OPENID_CLIENT_SECRET),
 		PROVIDER_URL: stringWithDefault(config.OPENID_PROVIDER_URL),
 		SCOPES: stringWithDefault(config.OPENID_SCOPES),
-		NAME_CLAIM: stringWithDefault(config.OPENID_NAME_CLAIM).refine(
+		NAME_CLAIM: stringWithDefault(config.OPENID_NAME_CLAIM || "name").refine(
 			(el) => !["preferred_username", "email", "picture", "sub"].includes(el),
 			{ message: "nameClaim cannot be one of the restricted keys." }
 		),
@@ -57,6 +57,83 @@ export const OIDConfig = z
 	.parse(JSON5.parse(config.OPENID_CONFIG || "{}"));
 
 export const loginEnabled = !!OIDConfig.CLIENT_ID;
+export const singleUserAdminEnabled = (config.SINGLE_USER_ADMIN || "").toLowerCase() === "true";
+export const singleUserSessionSecret =
+	config.SINGLE_USER_SESSION_SECRET || "bricksllm-single-user-admin";
+
+export async function getSingleUserSessionId(): Promise<string> {
+	return sha256(singleUserSessionSecret);
+}
+
+function getSingleUserAdminObjectId(sessionId: string): ObjectId {
+	// sha256 output is hex, so the first 24 characters form a valid deterministic ObjectId.
+	return new ObjectId(sessionId.slice(0, 24));
+}
+
+function buildSingleUserAdminUser(sessionId: string): User {
+	const now = new Date();
+	return {
+		_id: getSingleUserAdminObjectId(sessionId),
+		createdAt: now,
+		updatedAt: now,
+		username: "admin",
+		name: "Admin",
+		email: undefined,
+		avatarUrl: undefined,
+		hfUserId: "single-user-admin",
+		isAdmin: true,
+		isEarlyAccess: true,
+	};
+}
+
+let singleUserBootstrap: Promise<void> | null = null;
+
+async function ensureSingleUserAdminUser(sessionId: string): Promise<User> {
+	const user = buildSingleUserAdminUser(sessionId);
+
+	if (!singleUserBootstrap) {
+		const now = new Date();
+		singleUserBootstrap = collections.users
+			.updateOne(
+				{ _id: user._id },
+				{
+					$setOnInsert: { createdAt: now },
+					$set: {
+						updatedAt: now,
+						username: user.username,
+						name: user.name,
+						email: user.email,
+						avatarUrl: user.avatarUrl,
+						hfUserId: user.hfUserId,
+						isAdmin: true,
+						isEarlyAccess: true,
+					},
+				},
+				{ upsert: true }
+			)
+			.then(() => undefined)
+			.catch((err) => {
+				singleUserBootstrap = null;
+				logger.error({ err }, "Failed to bootstrap single-user admin record");
+			});
+	}
+
+	await singleUserBootstrap;
+	return user;
+}
+
+async function buildSingleUserAdminAuth(): Promise<App.Locals & { secretSessionId: string }> {
+	const secretSessionId = singleUserSessionSecret;
+	const sessionId = await getSingleUserSessionId();
+	const user = await ensureSingleUserAdminUser(sessionId);
+	return {
+		user,
+		token: undefined,
+		sessionId,
+		secretSessionId,
+		isAdmin: true,
+	};
+}
 
 const sameSite = z
 	.enum(["lax", "none", "strict"])
@@ -188,6 +265,11 @@ export async function findUser(
 export const authCondition = (locals: App.Locals) => {
 	if (!locals.user && !locals.sessionId) {
 		throw new Error("User or sessionId is required");
+	}
+
+	if (singleUserAdminEnabled && locals.sessionId) {
+		// In strict single-user mode we only use session-scoped data.
+		return { sessionId: locals.sessionId, userId: { $exists: false } };
 	}
 
 	return locals.user
@@ -412,6 +494,10 @@ export async function authenticateRequest(
 	// once the entire API has been moved to elysia
 	// we can move this function to authPlugin.ts
 	// and get rid of the isApi && type: "svelte" options
+	if (singleUserAdminEnabled) {
+		return buildSingleUserAdminAuth();
+	}
+
 	const token =
 		cookie.type === "elysia"
 			? cookie.value[config.COOKIE_NAME].value

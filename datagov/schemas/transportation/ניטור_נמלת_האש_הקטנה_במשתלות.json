@@ -1,0 +1,125 @@
+{
+  "dataset_id": "14b7572d-c8f1-427a-8ef8-8069b197225d",
+  "title": "ניטור נמלת האש הקטנה במשתלות",
+  "organization": "המשרד להגנת הסביבה",
+  "tags": [
+    "הגנת הסביבה",
+    "המשרד להגנת הסביבה",
+    "מזיקים"
+  ],
+  "categories": [
+    "transportation",
+    "environment"
+  ],
+  "keywords": [
+    "name",
+    "gis",
+    "municipal",
+    "להגנת",
+    "res",
+    "האש",
+    "במשתלות",
+    "third",
+    "resu",
+    "results",
+    "המשרד",
+    "visi",
+    "מזיקים",
+    "first",
+    "הגנת",
+    "נמלת",
+    "ניטור",
+    "הסביבה",
+    "הקטנה",
+    "address",
+    "second",
+    "vis"
+  ],
+  "resources": [
+    {
+      "resource_id": "e32a5b9b-cc03-45a0-ae67-f4c3b7242140",
+      "title": "ניטור נמלת האש הקטנה במשתלות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "GIS_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "municipal",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "first_visi",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "first_resu",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "second_vis",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "second_res",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "third_visi",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "third_resu",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "results_ma",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 363
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

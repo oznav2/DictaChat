@@ -1,0 +1,71 @@
+{
+  "dataset_id": "071b73ec-178f-4228-aa01-b6d88ec6ccfa",
+  "title": "רשימות נכסים - גופים מוסדיים",
+  "organization": "רשות שוק ההון, ביטוח וחיסכון",
+  "tags": [
+    "אוצר וכלכלה",
+    "השקעות",
+    "נייר ערך בודד",
+    "ענפי מסחר",
+    "רשימות נכסים",
+    "רשימת נכס בודד",
+    "שווי הוגן",
+    "שווי שוק"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "ערך",
+    "נייר",
+    "וכלכלה",
+    "רשות",
+    "שוק",
+    "וחיסכון",
+    "מוסדיים",
+    "רשימות",
+    "שווי",
+    "גופים",
+    "בודד",
+    "ביטוח",
+    "השקעות",
+    "אוצר",
+    "ענפי",
+    "נכס",
+    "נכסים",
+    "ההון",
+    "מסחר",
+    "הוגן"
+  ],
+  "resources": [
+    {
+      "resource_id": "f7821f1b-999e-4579-9cc2-55fa08a311c6",
+      "title": "נתוני רשימות נכסים – גופים מוסדיים לשנת 2009: ינואר-מרץ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a1dfc952-a61a-4a52-9e3a-21d2e5d71d4d",
+      "title": "נתוני רשימות נכסים - גופים מוסדיים לשנת 2009: אפריל-יוני",
+      "format": "RAR",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "7bce8a7c-d9b9-4ef7-83ee-85f908cc3d72",
+      "title": "רשימות נכסים - פנסיה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "dataset_id": "6ecf725e-3c70-4c73-8c52-8b91f8cb0990",
+  "title": "שינויים תקציביים מאושרים לשנת 2015",
+  "organization": "משרד האוצר",
+  "tags": [
+    "שינויים תקציביים"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "שינויים",
+    "משרד",
+    "מאושרים",
+    "האוצר",
+    "תקציביים"
+  ],
+  "resources": [
+    {
+      "resource_id": "feec97a3-7a14-4eb3-92bd-146464b27edb",
+      "title": "שינויים תקציביים 2015",
+      "format": "CSV",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "e0d56911-89a6-4113-8e4f-343a7ae07b19",
+      "title": "דברי הסבר עבור קובץ שינויים תקציביים מאושרים 2015",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

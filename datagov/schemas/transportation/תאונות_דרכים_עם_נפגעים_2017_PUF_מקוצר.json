@@ -1,0 +1,40 @@
+{
+  "dataset_id": "ab1798b2-4d4f-43c4-b441-28b32d801e9b",
+  "title": "תאונות דרכים עם נפגעים - 2017 - PUF מקוצר",
+  "organization": "הלשכה המרכזית לסטטיסטיקה",
+  "tags": [
+    "הלשכה המרכזית לסטטיסטיקה",
+    "תאונות דרכים",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "מקוצר",
+    "תחבורה",
+    "נפגעים",
+    "הלשכה",
+    "המרכזית",
+    "לסטטיסטיקה",
+    "puf",
+    "תאונות",
+    "דרכים"
+  ],
+  "resources": [
+    {
+      "resource_id": "3295a340-2e36-459a-8f4e-67771d7754d9",
+      "title": "תאונות דרכים עם נפגעים 2017 - קובץ PUF מקוצר",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

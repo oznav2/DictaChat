@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { untrack } from "svelte";
 	import { memoryUi } from "$lib/stores/memoryUi";
 	import type { MemoryTier } from "$lib/types/MemoryMeta";
 
@@ -53,8 +54,10 @@
 			working: createEmptyTierMetric("working"),
 			history: createEmptyTierMetric("history"),
 			patterns: createEmptyTierMetric("patterns"),
-			books: createEmptyTierMetric("books"),
+			documents: createEmptyTierMetric("documents"),
 			memory_bank: createEmptyTierMetric("memory_bank"),
+			datagov_schema: createEmptyTierMetric("datagov_schema"),
+			datagov_expansion: createEmptyTierMetric("datagov_expansion"),
 		},
 		overall: {
 			p50: 0,
@@ -70,6 +73,8 @@
 		},
 		recentQueries: [],
 	});
+
+	let lastDebugHash = $state<string | null>(null);
 
 	function createEmptyTierMetric(tier: MemoryTier): LatencyMetric {
 		return {
@@ -88,6 +93,25 @@
 		const sorted = [...values].sort((a, b) => a - b);
 		const index = Math.ceil((percentile / 100) * sorted.length) - 1;
 		return sorted[Math.max(0, index)] ?? 0;
+	}
+
+	function stableStringify(value: unknown): string {
+		if (value === null || value === undefined) return "null";
+		if (typeof value !== "object") return JSON.stringify(value);
+		if (Array.isArray(value)) {
+			return `[${value.map((item) => stableStringify(item)).join(",")}]`;
+		}
+		const obj = value as Record<string, unknown>;
+		const keys = Object.keys(obj).sort();
+		return `{${keys.map((key) => `${JSON.stringify(key)}:${stableStringify(obj[key])}`).join(",")}}`;
+	}
+
+	function hashString(input: string): string {
+		let hash = 0;
+		for (let i = 0; i < input.length; i++) {
+			hash = (hash * 31 + input.charCodeAt(i)) | 0;
+		}
+		return (hash >>> 0).toString(16);
 	}
 
 	function updateMetricsFromDebug(debug: Record<string, unknown> | null) {
@@ -134,9 +158,14 @@
 
 	// Watch for debug data changes
 	$effect(() => {
-		if (debugData) {
-			updateMetricsFromDebug(debugData);
+		if (!debugData) {
+			lastDebugHash = null;
+			return;
 		}
+		const nextHash = hashString(stableStringify(debugData));
+		if (nextHash === lastDebugHash) return;
+		lastDebugHash = nextHash;
+		untrack(() => updateMetricsFromDebug(debugData));
 	});
 
 	function formatMs(ms: number): string {
@@ -180,8 +209,10 @@
 				working: createEmptyTierMetric("working"),
 				history: createEmptyTierMetric("history"),
 				patterns: createEmptyTierMetric("patterns"),
-				books: createEmptyTierMetric("books"),
+				documents: createEmptyTierMetric("documents"),
 				memory_bank: createEmptyTierMetric("memory_bank"),
+				datagov_schema: createEmptyTierMetric("datagov_schema"),
+				datagov_expansion: createEmptyTierMetric("datagov_expansion"),
 			},
 			overall: {
 				p50: 0,

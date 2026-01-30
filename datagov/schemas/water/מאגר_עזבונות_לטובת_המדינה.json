@@ -1,0 +1,205 @@
+{
+  "dataset_id": "f2949f90-ce4d-4a0a-81ee-d3b931cb7b9b",
+  "title": "מאגר עזבונות לטובת המדינה",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "עזבונות לטובת המדינה"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "פתיחת",
+    "לטובת",
+    "מטבע",
+    "סוג",
+    "חשבון",
+    "הפרוטוקול",
+    "הוועדה",
+    "סיבת",
+    "המדינה",
+    "פנימי",
+    "שולם",
+    "קיים",
+    "וועדת",
+    "מדינה",
+    "הפקדה",
+    "הקדש",
+    "עזבונות",
+    "העזבונות",
+    "משרד",
+    "מקור",
+    "שהוקצה",
+    "שבוטל",
+    "קבלה",
+    "תאריך",
+    "המשפטים",
+    "סטטוס",
+    "המרה",
+    "האם",
+    "סכום",
+    "לאחר",
+    "לשקלים",
+    "סגירה",
+    "ההפקדה",
+    "ארץ",
+    "תיק",
+    "ראשי",
+    "התיק"
+  ],
+  "resources": [
+    {
+      "resource_id": "4dc59d4d-26ea-49c6-b83c-b019addc6ec9",
+      "title": "קובץ הפקדות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר הפקדה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך קבלה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מטבע מקור של ההפקדה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סכום לאחר המרה לשקלים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך הפקדה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סוג מטבע מקור",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מדינה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ארץ",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 29580
+    },
+    {
+      "resource_id": "78241796-ee71-48a0-95df-dd071bc6364d",
+      "title": "קובץ חשבונות המרכיבים את החלטות הועדה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר פנימי של הפרוטוקול",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר תיק",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר חשבון פנימי",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "סכום שהוקצה ע~י וועדת העזבונות",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "סה~כ שולם",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סכום שבוטל ע~י הוועדה",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 36974
+    },
+    {
+      "resource_id": "5f2073fb-f4e7-4a44-922c-e0beb3e77e10",
+      "title": "קובץ תיקים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר תיק",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך פתיחת התיק",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סטטוס ראשי של התיק",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "ארץ התיק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך סגירה של התיק",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סיבת סגירה של התיק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "האם קיים הקדש",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 9563
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

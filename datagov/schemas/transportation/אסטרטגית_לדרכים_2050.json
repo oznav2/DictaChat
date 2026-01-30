@@ -1,0 +1,120 @@
+{
+  "dataset_id": "f2b2a661-c950-42c1-be07-1dafb89fa0d5",
+  "title": "אסטרטגית לדרכים 2050",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "totl",
+    "roadnumber",
+    "numlane",
+    "toll",
+    "oid",
+    "לדרכים",
+    "shape",
+    "בדרכים",
+    "project",
+    "משרד",
+    "ptl",
+    "district",
+    "fid",
+    "level",
+    "length",
+    "והבטיחות",
+    "אסטרטגית",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "56900daf-3a17-4420-bc5e-7e020d0ab52d",
+      "title": "ROAD_STRAT_2050_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "7ab0089a-0524-488b-9c90-d6f9d8bec079",
+      "title": "ROAD_STRAT_2050_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "ebe1e138-6288-40ee-8afc-b41c09018c56",
+      "title": "ROAD_STRAT_2050_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "FID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ROADNUMBER",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "DISTRICT",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "LEVEL_50",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TOTL_50",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NUMLANE_50",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PTL_50",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TOLL_50",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PROJECT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 2319
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

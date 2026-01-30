@@ -1,0 +1,126 @@
+{
+  "dataset_id": "dcd96625-def1-45dc-a2cf-f4ad7fc2360a",
+  "title": "ריביות של פיקדונות חסכון לכל ילד - עדכון יומי",
+  "organization": "משרד האוצר",
+  "tags": [
+    "חסכון לכל ילד",
+    "משרד האוצר",
+    "ריבית"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "ריביות",
+    "ילד",
+    "חסכון",
+    "variablespread",
+    "age",
+    "תאיור",
+    "savingsprogrambyage",
+    "לכל",
+    "savingsperiod",
+    "fixedlinkedconsumerpriceindval",
+    "האוצר",
+    "fixedwithoutlinkageval",
+    "פיקדונות",
+    "יומי",
+    "משרד",
+    "ריבית",
+    "savingsplan",
+    "עדכון",
+    "bank",
+    "interestsdate"
+  ],
+  "resources": [
+    {
+      "resource_id": "a737b311-c6d8-4084-9ac9-c40d0fd01125",
+      "title": "ריביות של פיקדונות חסכון לכל ילד - עדכון יומי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "INTERESTSDATE",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "SAVINGSPROGRAMBYAGE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AGE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BANK",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SAVINGSPLAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SAVINGSPERIOD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FIXEDWITHOUTLINKAGEVAL",
+          "type": "numeric",
+          "semantic": "url"
+        },
+        {
+          "name": "FIXEDLINKEDCONSUMERPRICEINDVAL",
+          "type": "numeric",
+          "semantic": "url"
+        },
+        {
+          "name": "VARIABLESPREAD",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 53865
+    },
+    {
+      "resource_id": "d4b0d8f5-a0c0-4614-866c-107fe879cf26",
+      "title": "ריביות של פיקדונות חסכון לכל ילד - תיאור",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאיור",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 9
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

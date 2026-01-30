@@ -1,0 +1,102 @@
+{
+  "dataset_id": "33d719c9-039d-440b-85e2-61a3c482ca8d",
+  "title": "סל מדע פרוט לפי חוגים תשעז",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "חוגים",
+    "סל מדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "פרוט",
+    "החדשנות",
+    "תלמידים",
+    "רשות",
+    "פעילות",
+    "נושא",
+    "תשעז",
+    "מדע",
+    "תקציב",
+    "בנים",
+    "הלא",
+    "יהודי",
+    "החרדי",
+    "משרד",
+    "תחום",
+    "תלמידות",
+    "בנות",
+    "המדע",
+    "מהמגזר",
+    "חוגים",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "7da4616f-7437-4835-b87b-cca12c7d5e78",
+      "title": "סל מדע פרוט לפי חוגים תשעז",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "תחום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "נושא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תקציב פעילות",
+          "type": "numeric",
+          "semantic": "status"
+        },
+        {
+          "name": "מס' תלמידים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תלמידים בנים",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תלמידות בנות",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תלמידים מהמגזר הלא-יהודי",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תלמידים מהמגזר החרדי",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1548
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

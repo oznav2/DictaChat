@@ -1,0 +1,206 @@
+{
+  "dataset_id": "fa322545-337f-4885-8939-3296ff9f4475",
+  "title": "נתוני קשת האוכלוסיות",
+  "organization": "שירות התעסוקה",
+  "tags": [
+    "אבטלה",
+    "אוכלוסיה",
+    "אקדמאים",
+    "הבטחת הכנסה",
+    "מפוטרים",
+    "תעסוקה"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "התעסוקה",
+    "claim",
+    "newcomers",
+    "אוכלוסיה",
+    "precentage",
+    "fired",
+    "deducted",
+    "newcomer",
+    "over",
+    "הכנסה",
+    "date",
+    "month",
+    "trend",
+    "unemployment",
+    "not",
+    "האוכלוסיות",
+    "מפוטרים",
+    "the",
+    "שירות",
+    "אקדמאים",
+    "הבטחת",
+    "קשת",
+    "days",
+    "תעסוקה",
+    "change",
+    "אבטלה",
+    "year",
+    "last",
+    "academics",
+    "original"
+  ],
+  "resources": [
+    {
+      "resource_id": "51fa2ef4-ebd1-463a-923e-63c45a17d71c",
+      "title": "קשת האוכלוסיות - אוקטובר 2109",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Date",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "Year",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Month",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Newcomers original",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Newcomers  deducted",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Newcomers trend",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Newcomer precentage change",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Fired original",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Fired deducted",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Fired trend",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Fired precentage change",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Hh original",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Hh deducted",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Hh trend",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Hh precentage change",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Hh over 270 days in the last year original",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Hh over 270 days in the last year deducted",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Hh over 270 days in the last year trend",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Hh over 270 days in the last year precentage change",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "Unemployment claim not academics original",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Unemployment claim not academics deducted",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Unemployment claim not academics trend",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Unemployment claim not academics precentage change",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Unemployment claim academics original",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Unemployment claim academics deducted",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Unemployment claim academics trend",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Unemployment claim academics precentage change",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 148
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

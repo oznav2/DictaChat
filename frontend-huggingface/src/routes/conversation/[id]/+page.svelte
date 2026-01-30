@@ -13,6 +13,7 @@
 		MessageUpdateStatus,
 		MessageUpdateType,
 		MessageMemoryUpdateType,
+		MessageReasoningUpdateType,
 	} from "$lib/types/MessageUpdate";
 	import { memoryUi } from "$lib/stores/memoryUi";
 	import titleUpdate from "$lib/stores/titleUpdate";
@@ -22,7 +23,7 @@
 	import { fetchMessageUpdates } from "$lib/utils/messageUpdates";
 	import type { v4 } from "uuid";
 	import { useSettingsStore } from "$lib/stores/settings.js";
-	import { derived as deriveStore } from "svelte/store";
+	import { derived as deriveStore, get } from "svelte/store";
 	import { enabledServers } from "$lib/stores/mcpServers";
 	import { browser } from "$app/environment";
 	import {
@@ -35,6 +36,7 @@
 	import SubscribeModal from "$lib/components/SubscribeModal.svelte";
 	import { loading } from "$lib/stores/loading.js";
 	import { requireAuthUser } from "$lib/utils/auth.js";
+	import { dispatchMemoryEvent } from "$lib/stores/memoryEvents";
 
 	let { data = $bindable() } = $props();
 
@@ -43,6 +45,25 @@
 	let showSubscribeModal = $state(false);
 
 	let files: File[] = $state([]);
+	let resetProcessingTimeout: ReturnType<typeof setTimeout> | null = null;
+
+	function scheduleResetProcessing(delayMs: number) {
+		if (resetProcessingTimeout) {
+			clearTimeout(resetProcessingTimeout);
+		}
+		resetProcessingTimeout = setTimeout(() => {
+			resetProcessingTimeout = null;
+			memoryUi.resetProcessing();
+		}, delayMs);
+	}
+
+	function resetProcessingNow() {
+		if (resetProcessingTimeout) {
+			clearTimeout(resetProcessingTimeout);
+			resetProcessingTimeout = null;
+		}
+		memoryUi.resetProcessing();
+	}
 
 	let conversations = $state(data.conversations);
 	$effect(() => {
@@ -115,6 +136,9 @@
 		messageId?: ReturnType<typeof v4>;
 		isRetry?: boolean;
 	}): Promise<void> {
+		let messageToWriteToId: Message["id"] | undefined = undefined;
+		let clientUserMessageId: Message["id"] | undefined = undefined;
+		let clientAssistantMessageId: Message["id"] | undefined = undefined;
 		try {
 			$isAborted = false;
 			$loading = true;
@@ -129,9 +153,6 @@
 					}))
 				)
 			);
-
-			let messageToWriteToId: Message["id"] | undefined = undefined;
-			// used for building the prompt, subtree of the conversation that goes from the latest message to the root
 
 			if (isRetry && messageId) {
 				// two cases, if we're retrying a user message with a newPrompt set,
@@ -160,6 +181,7 @@
 						},
 						messageId
 					);
+					clientUserMessageId = newUserMessageId;
 					messageToWriteToId = addChildren(
 						{
 							messages,
@@ -168,6 +190,7 @@
 						{ from: "assistant", content: "" },
 						newUserMessageId
 					);
+					clientAssistantMessageId = messageToWriteToId;
 				} else if (messageToRetry?.from === "assistant") {
 					// we're retrying an assistant message, to generate a new answer
 					// just add a sibling to the assistant answer where we can write to
@@ -179,6 +202,7 @@
 						{ from: "assistant", content: "" },
 						messageId
 					);
+					clientAssistantMessageId = messageToWriteToId;
 				}
 			} else {
 				// just a normal linear conversation, so we add the user message
@@ -195,6 +219,7 @@
 					},
 					messageId
 				);
+				clientUserMessageId = newUserMessageId;
 
 				if (!data.rootMessageId) {
 					data.rootMessageId = newUserMessageId;
@@ -211,6 +236,7 @@
 					},
 					newUserMessageId
 				);
+				clientAssistantMessageId = messageToWriteToId;
 			}
 
 			const userMessage = messages.find((message) => message.id === messageId);
@@ -218,6 +244,12 @@
 			if (!messageToWriteTo) {
 				throw new Error("Message to write to not found");
 			}
+
+			// Set active message ID for memory processing history capture
+			memoryUi.assistantStreamStarted({
+				conversationId: page.params.id,
+				messageId: messageToWriteTo.id,
+			});
 
 			const messageUpdatesAbortController = new AbortController();
 
@@ -229,6 +261,8 @@
 					messageId,
 					isRetry,
 					files: isRetry ? userMessage?.files : base64Files,
+					clientUserMessageId,
+					clientAssistantMessageId,
 					selectedMcpServerNames: $enabledServers.map((s) => s.name),
 					selectedMcpServers: $enabledServers.map((s) => ({
 						name: s.name,
@@ -251,13 +285,23 @@
 				if ($disableStreamSetting) return;
 				if (buffer.length === 0) return;
 
+				// DEFENSIVE: Validate messageToWriteTo still exists (enterprise robustness)
+				if (!messageToWriteTo) {
+					console.error("[flushStreamBuffer] messageToWriteTo became null during streaming");
+					buffer = "";
+					return;
+				}
+
 				messageToWriteTo.content += buffer;
 				const len = buffer.length;
 				buffer = "";
 				bufferedStreamLen += len;
 				lastUpdateTime = currentTime;
 
-				const existingUpdates = messageToWriteTo.updates ?? [];
+				// DEFENSIVE: Ensure updates is an array
+				const existingUpdates = Array.isArray(messageToWriteTo.updates)
+					? messageToWriteTo.updates
+					: [];
 				const lastUpdate = existingUpdates.at(-1);
 				const marker = {
 					type: MessageUpdateType.Stream as const,
@@ -266,10 +310,13 @@
 				};
 
 				if (lastUpdate?.type === MessageUpdateType.Stream && lastUpdate.token === "") {
+					// DEFENSIVE: Validate len is a number
+					const lastLen =
+						typeof lastUpdate.len === "number" && lastUpdate.len >= 0 ? lastUpdate.len : 0;
 					const merged = {
 						...lastUpdate,
 						token: "",
-						len: (lastUpdate.len ?? 0) + bufferedStreamLen,
+						len: lastLen + bufferedStreamLen,
 					};
 					messageToWriteTo.updates = [...existingUpdates.slice(0, -1), merged];
 				} else {
@@ -280,14 +327,25 @@
 
 			for await (const update of messageUpdatesIterator) {
 				if ($isAborted) {
+					// DEFENSIVE: Flush pending buffer before aborting to prevent data loss
+					if (buffer.length > 0 && messageToWriteTo) {
+						flushStreamBuffer(new Date());
+					}
 					messageUpdatesAbortController.abort();
 					return;
 				}
 
 				// Remove null characters added due to remote keylogging prevention
 				// See server code for more details
-				if (update.type === MessageUpdateType.Stream)
-					update.token = update.token.replaceAll("\0", "");
+				// DEFENSIVE: Type guard to prevent crash if token is undefined
+				if (update.type === MessageUpdateType.Stream) {
+					if (typeof update.token === "string") {
+						update.token = update.token.replaceAll("\0", "");
+					} else {
+						console.warn("[stream] Received non-string token:", typeof update.token);
+						update.token = "";
+					}
+				}
 
 				const isKeepAlive =
 					update.type === MessageUpdateType.Status &&
@@ -330,7 +388,8 @@
 						messageToWriteTo.updates?.some((u) => u.type === MessageUpdateType.Tool) ?? false;
 
 					if (hadTools) {
-						const existing = messageToWriteTo.content;
+						// DEFENSIVE: Ensure existing is always a string to prevent .replace()/.endsWith() crashes
+						const existing = messageToWriteTo.content ?? "";
 						const finalText = update.text ?? "";
 						const trimmedExistingSuffix = existing.replace(/\s+$/, "");
 						const trimmedFinalPrefix = finalText.replace(/^\s+/, "");
@@ -407,18 +466,111 @@
 						route: update.route,
 						model: update.model,
 					};
+				} else if (update.type === MessageUpdateType.Reasoning) {
+					if (
+						update.subtype === MessageReasoningUpdateType.Stream &&
+						"token" in update &&
+						typeof update.token === "string"
+					) {
+						messageToWriteTo.reasoning = (messageToWriteTo.reasoning ?? "") + update.token;
+					}
 				} else if (update.type === MessageUpdateType.Memory) {
 					// Handle memory system events for real-time UI feedback
 					if (update.subtype === MessageMemoryUpdateType.Searching) {
 						memoryUi.setProcessingSearching(update.query);
 					} else if (update.subtype === MessageMemoryUpdateType.Found) {
+						// Update processing status with count
 						memoryUi.setProcessingFound(update.count);
+						// Process memoryMeta early for immediate display of known context and citations
+						// This shows the user what memories are being used BEFORE the final answer
+						if (update.memoryMeta) {
+							memoryUi.memoryMetaUpdated({
+								conversationId: page.params.id,
+								messageId: messageToWriteTo.id,
+								meta: update.memoryMeta,
+							});
+						}
 					} else if (update.subtype === MessageMemoryUpdateType.Storing) {
 						memoryUi.setProcessingStatus("storing");
+					} else if (update.subtype === MessageMemoryUpdateType.Stored) {
+						const state = get(memoryUi);
+						const existing = state.data.recentMemories ?? [];
+						memoryUi.setRecentMemories(
+							[
+								{
+									memory_id: update.memoryId,
+									tier: update.tier,
+									preview: update.preview,
+									created_at: update.createdAt ?? null,
+								},
+								...existing,
+							].slice(0, 100)
+						);
+						// Skip dispatching event for pending IDs - prevents unnecessary panel refreshes
+						// Actual memory ID will be available on next conversation load
+						if (update.memoryId && update.memoryId !== "pending") {
+							dispatchMemoryEvent({
+								type: "memory_updated",
+								userId: "admin",
+								detail: {
+									source: "memory_stored",
+									memoryId: update.memoryId,
+									tier: update.tier,
+									conversationId: page.params.id,
+								},
+							});
+						}
+						scheduleResetProcessing(1500);
 					} else if (update.subtype === MessageMemoryUpdateType.Outcome) {
 						memoryUi.setProcessingStatus("learning");
+						// Skip dispatching if no actual memory IDs to update
+						// Prevents expensive panel refreshes for empty outcome events
+						const memoryIds = update.memoryIds ?? [];
+						if (memoryIds.length > 0) {
+							dispatchMemoryEvent({
+								type: "memory_updated",
+								userId: "admin",
+								detail: {
+									source: "response_outcome",
+									memoryIds,
+									conversationId: page.params.id,
+								},
+							});
+						}
 						// Clear status after a short delay
-						setTimeout(() => memoryUi.resetProcessing(), 2000);
+						scheduleResetProcessing(2000);
+					} else if (update.subtype === MessageMemoryUpdateType.Degraded) {
+						// Memory system is temporarily unavailable (circuit breaker open)
+						// This prevents UI freezes by notifying the user immediately
+						memoryUi.setProcessingStatus("degraded");
+						// Don't block - continue without memory context
+						console.debug("Memory system degraded:", update.reason, update.message);
+						scheduleResetProcessing(3000);
+					} else if (update.subtype === MessageMemoryUpdateType.DocumentIngesting) {
+						// Document upload/processing progress
+						memoryUi.setDocumentProcessing({
+							documentName: update.documentName,
+							stage: update.stage,
+							chunksProcessed: update.chunksProcessed,
+							totalChunks: update.totalChunks,
+							recognized: update.recognized,
+						});
+						// If completed or recognized, reset after delay
+						if (update.stage === "completed" || update.stage === "recognized") {
+							scheduleResetProcessing(3000);
+						}
+					} else if (update.subtype === MessageMemoryUpdateType.ToolIngesting) {
+						// Tool result ingestion progress (enhanced ingestion)
+						memoryUi.setToolIngestion({
+							toolName: update.toolName,
+							stage: update.stage,
+							entitiesExtracted: update.entitiesExtracted,
+							linkedDocuments: update.linkedDocuments,
+						});
+						// If completed, reset after delay
+						if (update.stage === "completed") {
+							scheduleResetProcessing(2000);
+						}
 					}
 				}
 			}
@@ -436,8 +588,25 @@
 		} finally {
 			$loading = false;
 			pending = false;
-			memoryUi.resetProcessing();
-			await invalidateAll();
+			resetProcessingNow();
+			// Mark stream finished to preserve memory processing history
+			if (messageToWriteToId) {
+				memoryUi.assistantStreamFinished({
+					conversationId: page.params.id,
+					messageId: messageToWriteToId,
+				});
+			}
+			// Phase 23.8 P1.4: Defer invalidateAll() to avoid overlapping with heavy post-processing
+			// Wait for browser idle time before refreshing data to reduce jank spikes
+			// This prevents invalidateAll from competing with citation enhancement and markdown rendering
+			const deferredInvalidate = () => {
+				invalidateAll().catch((err) => console.warn("Background invalidateAll failed:", err));
+			};
+			if (typeof requestIdleCallback !== "undefined") {
+				requestIdleCallback(deferredInvalidate, { timeout: 500 });
+			} else {
+				setTimeout(deferredInvalidate, 100);
+			}
 		}
 	}
 

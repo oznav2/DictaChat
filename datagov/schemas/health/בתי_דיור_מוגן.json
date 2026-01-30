@@ -1,0 +1,106 @@
+{
+  "dataset_id": "7d7a0b93-128b-4044-a2bf-f47542cda132",
+  "title": "בתי דיור מוגן",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "אזרחים וותיקים",
+    "בריאות ורווחה",
+    "דיור גיל הזהב",
+    "דיור מוגן"
+  ],
+  "categories": [
+    "health",
+    "welfare",
+    "housing"
+  ],
+  "keywords": [
+    "name",
+    "וותיקים",
+    "הזהב",
+    "מוגן",
+    "דיור",
+    "גיל",
+    "treatment",
+    "company",
+    "attitude",
+    "והביטחון",
+    "בריאות",
+    "settlement",
+    "משרד",
+    "ורווחה",
+    "religion",
+    "החברתי",
+    "אזרחים",
+    "house",
+    "internet",
+    "בתי",
+    "site",
+    "telephone",
+    "הרווחה",
+    "protected"
+  ],
+  "resources": [
+    {
+      "resource_id": "7c390473-42b8-4fd2-a72d-07fa126ffeee",
+      "title": "בתי דיור מוגן",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "protected_house_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "company",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "settlement",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "treatment",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "religion_attitude",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "internet_site",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 97
+    },
+    {
+      "resource_id": "76a6e1bc-8fce-4482-92f6-ac7c0bc63376",
+      "title": "מבנה הנתונים במאגר בתי דיור מוגן",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

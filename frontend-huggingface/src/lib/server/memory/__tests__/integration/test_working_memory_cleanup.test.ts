@@ -812,9 +812,15 @@ describe("TestPromotionThresholdEdgeCases", () => {
 describe("TestTTLEdgeCases", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		vi.useFakeTimers();
+		vi.setSystemTime(new Date("2026-01-01T00:00:00.000Z"));
 		mockWorkingMemories = new Map();
 		mockHistoryMemories = new Map();
 		mockPatternsMemories = new Map();
+	});
+
+	afterEach(() => {
+		vi.useRealTimers();
 	});
 
 	it("should keep memory at exactly 24h boundary", async () => {

@@ -1,0 +1,242 @@
+{
+  "dataset_id": "7ac97f91-54c7-48dc-ac61-2fdb687cd371",
+  "title": "עולים חדשים לפי שנים",
+  "organization": "משרד העלייה והקליטה",
+  "tags": [
+    "עולים חדשים",
+    "עלייה וקליטה"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "gender",
+    "tday",
+    "מקצוע",
+    "עולים",
+    "subcont",
+    "age",
+    "moza",
+    "aliya",
+    "גיל",
+    "יבשת",
+    "klita",
+    "yeshuv",
+    "month",
+    "erez",
+    "וקליטה",
+    "מחוז",
+    "עלייה",
+    "מוצא",
+    "משרד",
+    "שנים",
+    "machoz",
+    "mikzoa",
+    "חודש",
+    "ישוב",
+    "והקליטה",
+    "מגדר",
+    "year",
+    "חדשים",
+    "ארץ",
+    "העלייה"
+  ],
+  "resources": [
+    {
+      "resource_id": "a6482cb1-6464-4200-89a9-f65d9a6a4c60",
+      "title": "עולים חדשים - 2024",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנת עלייה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "חודש עלייה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "גיל ביום העלייה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "גיל ב- 1/12/2025",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מגדר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ארץ מוצא",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תת יבשת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "מקצוע",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 32678
+    },
+    {
+      "resource_id": "f7ec5de0-e7e7-4427-a6ab-56f16f3a6083",
+      "title": "עולים חדשים - 2023",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "year_aliya",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "month_aliya",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "age",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "age_tday",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "gender",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "erez_moza",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "subcont",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "yeshuv_klita",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "machoz",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mikzoa",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 46877
+    },
+    {
+      "resource_id": "f64f0d5c-8c4f-4fa2-ae35-63613ab4d404",
+      "title": "עולים חדשים - 2022",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "year_aliya",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "month_aliya",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "age",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "age_tday",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "gender",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "erez_moza",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "subcont",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "yeshuv_klita",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "machoz",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mikzoa",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 76601
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

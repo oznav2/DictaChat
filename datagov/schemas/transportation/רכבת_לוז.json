@@ -1,0 +1,75 @@
+{
+  "dataset_id": "cdffbed6-8388-4b72-8c74-d36403cc5b83",
+  "title": "רכבת לו\"ז",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משרד התחבורה",
+    "רכבת",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "station",
+    "רכבת",
+    "status",
+    "תחבורה",
+    "בדרכים",
+    "משרד",
+    "shana",
+    "hodesh",
+    "והבטיחות",
+    "train",
+    "count",
+    "ציבורית",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "1ebbbb91-1d44-4f41-a85c-4a93a35e32d6",
+      "title": "מאגר רכבת לו\"ז",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "shana",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hodesh",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "train_station_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "station_status_nm",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "status_count",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 21084
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

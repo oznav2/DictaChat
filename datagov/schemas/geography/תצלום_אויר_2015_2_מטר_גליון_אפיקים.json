@@ -1,0 +1,35 @@
+{
+  "dataset_id": "17d21933-0a14-423b-9b51-6efcdae62b9d",
+  "title": "תצלום אויר 2015 2 מטר - גליון אפיקים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "אפיקים",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "44481db5-d77c-493e-94cb-b87fb8b8487c",
+      "title": "תצלום אויר 2015 2 מטר - גליון אפיקים",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

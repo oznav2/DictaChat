@@ -1,0 +1,124 @@
+{
+  "dataset_id": "afaa1a38-85f7-4489-9d6a-62b813f23252",
+  "title": "מקוואות טהרה 2018",
+  "organization": "המשרד לשירותי דת",
+  "tags": [
+    "דת",
+    "מקוואות",
+    "שירותי דת"
+  ],
+  "categories": [
+    "religion"
+  ],
+  "keywords": [
+    "phone",
+    "shabat",
+    "good",
+    "religious",
+    "eve",
+    "city",
+    "night",
+    "hours",
+    "winter",
+    "appointment",
+    "שירותי",
+    "המשרד",
+    "לשירותי",
+    "טהרה",
+    "summer",
+    "מקוואות",
+    "schedule",
+    "saturday",
+    "accessibility",
+    "opening",
+    "holiday",
+    "mikve",
+    "neighborhood",
+    "notes",
+    "day",
+    "address",
+    "council"
+  ],
+  "resources": [
+    {
+      "resource_id": "9a939c58-d149-4c07-b37f-77dbf0d50e35",
+      "title": "מאגר מקוואות 2018",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Religious_Council",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "neighborhood",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Mikve_Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Opening_Hours_Summer",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "Opening_Hours_Winter",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Opening_Hours_Holiday_Eve_Shabat_Eve",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Opening_Hours_Saturday_Night_Good_Day",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Accessibility",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Schedule_Appointment",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Notes",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 693
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "dataset_id": "8cfa998a-6ae8-4033-b5a4-154a81367196",
+  "title": "דו\"ח שנתי 2017",
+  "organization": "רשות האכיפה והגבייה",
+  "tags": [
+    "הוצאה לפועל",
+    "מרכז לגביית קנסות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "הוצאה",
+    "לפועל",
+    "פתוחים",
+    "והגבייה",
+    "סוג",
+    "לגביית",
+    "רשות",
+    "שנתי",
+    "תיקים",
+    "מרכז",
+    "קנסות",
+    "תיק",
+    "מלאי",
+    "האכיפה"
+  ],
+  "resources": [
+    {
+      "resource_id": "7fa6a535-c934-45ac-9db9-91b33d07ba91",
+      "title": "1.1 מגק 2017  מלאי תיקים פתוחים 2014-2017.csv",
+      "format": "CSV",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "0f09f420-5bec-44af-b29d-d23026d36c78",
+      "title": "מגק 2017 מלאי תיקים פתוחים לפי סוג תיק 1.2 .csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מלאי תיקים פתוחים לפי סוג תיק",
+          "type": "text",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 18
+    },
+    {
+      "resource_id": "1f527686-5454-4727-a84a-66115413c31b",
+      "title": "מגק 2017 סכום החוב בפתיחה למלאי התיקים הפתוחים לפי סוג תיק 1.3.csv",
+      "format": "CSV",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

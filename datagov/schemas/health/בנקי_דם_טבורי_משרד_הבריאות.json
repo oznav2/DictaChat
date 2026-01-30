@@ -1,0 +1,44 @@
+{
+  "dataset_id": "1c8c276b-0eec-472e-b23f-c76c55caaa87",
+  "title": "בנקי דם טבורי - משרד הבריאות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בנקי דם טבורי",
+    "בריאות",
+    "בריאות ורווחה",
+    "דם טבורי",
+    "הריון ולידה",
+    "משרד הבריאות"
+  ],
+  "categories": [
+    "health",
+    "finance",
+    "welfare"
+  ],
+  "keywords": [
+    "טבורי",
+    "משרד",
+    "ולידה",
+    "בנקי",
+    "ורווחה",
+    "הבריאות",
+    "הריון",
+    "בריאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "081ca764-c1aa-4f87-8fb0-9569278219f7",
+      "title": "בנקי דם טבורי",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

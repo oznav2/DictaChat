@@ -1,0 +1,109 @@
+{
+  "dataset_id": "0b3bd728-6e49-46eb-8fac-595ea121368b",
+  "title": "מתחמי מרכזים מסחריים",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "תכנון עיר וגיאוגרפיה"
+  ],
+  "categories": [
+    "finance",
+    "economy",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "shape",
+    "מתחמי",
+    "באר",
+    "מסחריים",
+    "area",
+    "lon",
+    "עיר",
+    "folderpath",
+    "lat",
+    "תכנון",
+    "עיריית",
+    "שבע",
+    "leng",
+    "remarks",
+    "descriptio",
+    "מרכזים",
+    "וגיאוגרפיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "3804c055-dddd-479e-b1f5-815d24fb8f3d",
+      "title": "XML-ITM",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "3661f257-1fe5-4854-8895-a0399f884da1",
+      "title": "JSON-ITM",
+      "format": "JSON",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "3c5f8d70-b04d-49e0-acb8-e56231ef9d26",
+      "title": "XLSX-ITM",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "FolderPath",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "descriptio",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "remarks",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Leng",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Area",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 37
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

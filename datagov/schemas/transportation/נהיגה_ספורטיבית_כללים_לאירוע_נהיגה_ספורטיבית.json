@@ -1,0 +1,65 @@
+{
+  "dataset_id": "5e0cb6d8-3a61-440a-b0bb-af64c98e666e",
+  "title": "נהיגה ספורטיבית - כללים לאירוע נהיגה ספורטיבית",
+  "organization": "משרד התרבות והספורט",
+  "tags": [],
+  "categories": [
+    "transportation",
+    "culture"
+  ],
+  "keywords": [
+    "לאירוע",
+    "תחום",
+    "כללים",
+    "התרבות",
+    "לכלל",
+    "כלל",
+    "משרד",
+    "נהיגה",
+    "לינק",
+    "והספורט",
+    "ספורטיבית"
+  ],
+  "resources": [
+    {
+      "resource_id": "9c82b7c1-f7c1-46bd-ac6c-afe2934b8297",
+      "title": "most.DB.537.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "תחום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תת תחום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם כלל",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "לינק לכלל",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 71
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

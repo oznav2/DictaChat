@@ -1,0 +1,726 @@
+[0;32m[SUCCESS][0m Admin token ready (stored at .logs/admin.token)
+[0;34m[INFO][0m Admin login URL: http://localhost:8004?token=dc901bc2-8ad3-4c79-8a6a-845883128161
+[0;34m[INFO][0m Stopping stack (prevents port conflicts)...
+[0;32m[SUCCESS][0m Stack stopped
+[0;34m[INFO][0m Cleaning frontend caches (.svelte-kit, Vite optimize cache, build artifacts)...
+[0;32m[SUCCESS][0m Frontend caches cleared
+[0;34m[INFO][0m Starting Docker services (excluding frontend-ui)...
+ Network bricksllm_bricksllm-network Creating 
+ Network bricksllm_bricksllm-network Created 
+ Container dicta-retrieval Creating 
+ Container bricksllm-redis Creating 
+ Container bricksllm-postgresql Creating 
+ Container dicta-docling Creating 
+ Container bricksllm-mongo Creating 
+ Container bricksllm-swagger Creating 
+ Container mcp-sse-proxy Creating 
+ Container bricksllm-qdrant Creating 
+ Container bricksllm-redis Created 
+ Container bricksllm-postgresql Created 
+ Container bricksllm-gateway Creating 
+ Container dicta-retrieval Created 
+ Container dicta-ner Creating 
+ Container bricksllm-qdrant Created 
+ Container dicta-docling Created 
+ Container bricksllm-mongo Created 
+ Container bricksllm-llama Creating 
+ Container bricksllm-swagger Created 
+ Container mcp-sse-proxy Created 
+ Container bricksllm-gateway Created 
+ Container dicta-ner Created 
+ Container bricksllm-llama Created 
+ Container mcp-sse-proxy Starting 
+ Container bricksllm-postgresql Starting 
+ Container dicta-retrieval Starting 
+ Container bricksllm-redis Starting 
+ Container bricksllm-swagger Starting 
+ Container bricksllm-mongo Starting 
+ Container bricksllm-qdrant Starting 
+ Container dicta-docling Starting 
+ Container bricksllm-mongo Started 
+ Container bricksllm-redis Started 
+ Container mcp-sse-proxy Started 
+ Container bricksllm-swagger Started 
+ Container bricksllm-postgresql Started 
+ Container bricksllm-postgresql Waiting 
+ Container bricksllm-redis Waiting 
+ Container bricksllm-qdrant Started 
+ Container bricksllm-qdrant Waiting 
+ Container bricksllm-redis Waiting 
+ Container bricksllm-mongo Waiting 
+ Container dicta-retrieval Started 
+ Container dicta-retrieval Waiting 
+ Container dicta-docling Started 
+ Container bricksllm-qdrant Healthy 
+ Container bricksllm-postgresql Healthy 
+ Container bricksllm-mongo Healthy 
+ Container bricksllm-redis Healthy 
+ Container bricksllm-llama Starting 
+ Container bricksllm-redis Healthy 
+ Container bricksllm-gateway Starting 
+ Container bricksllm-llama Started 
+ Container bricksllm-gateway Started 
+ Container dicta-retrieval Healthy 
+ Container dicta-ner Starting 
+ Container dicta-ner Started 
+[0;32m[SUCCESS][0m Docker services started
+[0;34m[INFO][0m Tailing Docker logs (excluding frontend-ui)...
+[0;34m[INFO][0m Starting UI locally (port 8004, host 0.0.0.0)...
+[0;32m[SUCCESS][0m UI running (PID: 49805)
+[0;34m[INFO][0m Press Ctrl+C to stop local UI log tailing (Docker services stay up).
+[0;34m[INFO][0m Waiting for UI to be ready at http://127.0.0.1:8004?token=dc901bc2-8ad3-4c79-8a6a-845883128161...
+
+> chat-ui@0.20.0 dev
+> vite dev --port 8004 --host 0.0.0.0 --force
+
+▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json" [tsconfig.json]
+
+    tsconfig.json:2:12:
+      2 │   "extends": "./.svelte-kit/tsconfig.json",
+        ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+bricksllm-llama  | load: token to piece cache size = 0.8498 MB
+bricksllm-llama  | print_info: arch             = llama
+bricksllm-llama  | print_info: vocab_only       = 0
+bricksllm-llama  | print_info: no_alloc         = 0
+bricksllm-llama  | print_info: n_ctx_train      = 65280
+bricksllm-llama  | print_info: n_embd           = 5120
+bricksllm-llama  | print_info: n_embd_inp       = 5120
+bricksllm-llama  | print_info: n_layer          = 40
+bricksllm-llama  | print_info: n_head           = 32
+bricksllm-llama  | print_info: n_head_kv        = 8
+bricksllm-llama  | print_info: n_rot            = 128
+bricksllm-llama  | print_info: n_swa            = 0
+bricksllm-llama  | print_info: is_swa_any       = 0
+bricksllm-llama  | print_info: n_embd_head_k    = 128
+bricksllm-llama  | print_info: n_embd_head_v    = 128
+bricksllm-llama  | print_info: n_gqa            = 4
+bricksllm-llama  | print_info: n_embd_k_gqa     = 1024
+bricksllm-llama  | print_info: n_embd_v_gqa     = 1024
+bricksllm-llama  | print_info: f_norm_eps       = 0.0e+00
+bricksllm-llama  | print_info: f_norm_rms_eps   = 1.0e-05
+bricksllm-llama  | print_info: f_clamp_kqv      = 0.0e+00
+bricksllm-llama  | print_info: f_max_alibi_bias = 0.0e+00
+bricksllm-llama  | print_info: f_logit_scale    = 0.0e+00
+bricksllm-llama  | print_info: f_attn_scale     = 0.0e+00
+bricksllm-llama  | print_info: n_ff             = 32768
+bricksllm-llama  | print_info: n_expert         = 0
+bricksllm-llama  | print_info: n_expert_used    = 0
+bricksllm-llama  | print_info: n_expert_groups  = 0
+bricksllm-llama  | print_info: n_group_used     = 0
+bricksllm-llama  | print_info: causal attn      = 1
+bricksllm-llama  | print_info: pooling type     = 0
+bricksllm-llama  | print_info: rope type        = 0
+bricksllm-llama  | print_info: rope scaling     = linear
+bricksllm-llama  | print_info: freq_base_train  = 1000000.0
+bricksllm-llama  | print_info: freq_scale_train = 1
+bricksllm-llama  | print_info: n_ctx_orig_yarn  = 65280
+bricksllm-llama  | print_info: rope_yarn_log_mul= 0.0000
+bricksllm-llama  | print_info: rope_finetuned   = unknown
+bricksllm-llama  | print_info: model type       = 13B
+bricksllm-llama  | print_info: model params     = 23.57 B
+bricksllm-llama  | print_info: general.name     = DictaLM 3.0 24B Thinking
+bricksllm-llama  | print_info: vocab type       = BPE
+bricksllm-llama  | print_info: n_vocab          = 131072
+bricksllm-llama  | print_info: n_merges         = 269443
+bricksllm-llama  | print_info: BOS token        = 1 '<s>'
+bricksllm-llama  | print_info: EOS token        = 2 '</s>'
+bricksllm-llama  | print_info: EOT token        = 21 '<|im_end|>'
+bricksllm-llama  | print_info: UNK token        = 0 '<unk>'
+bricksllm-llama  | print_info: PAD token        = 11 '<pad>'
+bricksllm-llama  | print_info: LF token         = 1010 'Ċ'
+bricksllm-llama  | print_info: EOG token        = 2 '</s>'
+bricksllm-llama  | print_info: EOG token        = 21 '<|im_end|>'
+bricksllm-llama  | print_info: max token length = 150
+bricksllm-llama  | load_tensors: loading model tensors, this can take a while... (mmap = true)
+bricksllm-llama  | load_tensors: offloading output layer to GPU
+bricksllm-llama  | load_tensors: offloading 39 repeating layers to GPU
+bricksllm-llama  | load_tensors: offloaded 41/41 layers to GPU
+bricksllm-llama  | load_tensors:   CPU_Mapped model buffer size =   360.00 MiB
+bricksllm-llama  | load_tensors:        CUDA0 model buffer size = 13302.36 MiB
+bricksllm-llama  | ..........................................................................srv  log_server_r: request: GET /health 127.0.0.1 503
+bricksllm-llama  | ......................
+bricksllm-llama  | common_init_result: added </s> logit bias = -inf
+bricksllm-llama  | common_init_result: added <|im_end|> logit bias = -inf
+bricksllm-llama  | llama_context: constructing llama_context
+bricksllm-llama  | llama_context: n_seq_max     = 4
+bricksllm-llama  | llama_context: n_ctx         = 32768
+bricksllm-llama  | llama_context: n_ctx_seq     = 32768
+bricksllm-llama  | llama_context: n_batch       = 2048
+bricksllm-llama  | llama_context: n_ubatch      = 512
+bricksllm-llama  | llama_context: causal_attn   = 1
+bricksllm-llama  | llama_context: flash_attn    = auto
+bricksllm-llama  | llama_context: kv_unified    = true
+bricksllm-llama  | llama_context: freq_base     = 1000000.0
+bricksllm-llama  | llama_context: freq_scale    = 1
+bricksllm-llama  | llama_context: n_ctx_seq (32768) < n_ctx_train (65280) -- the full capacity of the model will not be utilized
+bricksllm-llama  | llama_context:  CUDA_Host  output buffer size =     2.00 MiB
+bricksllm-llama  | llama_kv_cache:      CUDA0 KV buffer size =  5120.00 MiB
+bricksllm-llama  | llama_kv_cache: size = 5120.00 MiB ( 32768 cells,  40 layers,  4/1 seqs), K (f16): 2560.00 MiB, V (f16): 2560.00 MiB
+bricksllm-llama  | llama_context: Flash Attention was auto, set to enabled
+bricksllm-llama  | llama_context:      CUDA0 compute buffer size =   266.00 MiB
+bricksllm-llama  | llama_context:  CUDA_Host compute buffer size =    74.01 MiB
+bricksllm-llama  | llama_context: graph nodes  = 1247
+bricksllm-llama  | llama_context: graph splits = 2
+bricksllm-llama  | common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+bricksllm-llama  | srv    load_model: initializing slots, n_slots = 4
+bricksllm-llama  | slot   load_model: id  0 | task -1 | new slot, n_ctx = 32768
+bricksllm-llama  | slot   load_model: id  1 | task -1 | new slot, n_ctx = 32768
+bricksllm-llama  | slot   load_model: id  2 | task -1 | new slot, n_ctx = 32768
+bricksllm-llama  | slot   load_model: id  3 | task -1 | new slot, n_ctx = 32768
+bricksllm-llama  | srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+bricksllm-llama  | srv    load_model: use `--cache-ram 0` to disable the prompt cache
+bricksllm-llama  | srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+bricksllm-llama  | srv    load_model: thinking = 0
+bricksllm-llama  | load_model: chat template, chat_template: {#  ───── header (system message) ─────  #} 
+bricksllm-llama  |  {{- "<|im_start|>system\n" -}} 
+bricksllm-llama  |  {#  ───── get the custom instructions + optional thinking override ─────  #} 
+bricksllm-llama  |  {%- if messages[0].role == "system" -%} 
+bricksllm-llama  |  	 {%- set custom_instructions = messages[0].content.rstrip() -%} 
+bricksllm-llama  |  {%- endif -%} 
+bricksllm-llama  |  {#  ───── set the system prompt ─────  #} 
+bricksllm-llama  |  {%- if custom_instructions -%} 
+bricksllm-llama  |  	 {{- custom_instructions -}} 
+bricksllm-llama  |  {%- else -%} 
+bricksllm-llama  |  	 {{- "You are DictaLM, a helpful AI assistant developed by Dicta. When answering, you MUST first provide your internal reasoning wrapped in <think></think> tags, followed by your final response outside the tags. Example: <think>Internal reasoning here...</think> Final response here." -}} 
+bricksllm-llama  |  {%- endif -%} 
+bricksllm-llama  |  {%- set ns = namespace(multi_step_tool=true, last_query_index=messages | length - 1) -%} 
+bricksllm-llama  |  {%- for message in messages[::-1] -%} 
+bricksllm-llama  |  	 {%- set index = messages | length - 1 - loop.index0 -%} 
+bricksllm-llama  |  	 {%- if ns.multi_step_tool and message.role == "user" and message.content is string and not (message.content.startswith("<tool_response>") and message.content.endswith("</tool_response>")) -%} 
+bricksllm-llama  |  	 	 {%- set ns.multi_step_tool = false -%} 
+bricksllm-llama  |  	 	 {%- set ns.last_query_index = index -%} 
+bricksllm-llama  |  	 {%- endif -%} 
+bricksllm-llama  |  {%- endfor -%} 
+bricksllm-llama  |  {%- if tools -%} 
+bricksllm-llama  |  	 {{- "\n\n## Tools\n\nYou may call one or more functions to assist with the user query.\n\nYou are provided with function signatures within <tools></tools> XML tags:\n<tools>" -}} 
+bricksllm-llama  |  	 {%- for tool in tools -%} 
+bricksllm-llama  |  	 	 {{- "\n" -}} 
+bricksllm-llama  |  	 	 {{- tool | tojson -}} 
+bricksllm-llama  |  	 {%- endfor -%} 
+bricksllm-llama  |  	 {{- "\n</tools>\n\nFor each function call, return a json object with function name and arguments within <tool_call></tool_call> XML tags:\n<tool_call>\n{\"name\": <function-name>, \"arguments\": <args-json-object>}\n</tool_call>" -}} 
+bricksllm-llama  |  {%- endif -%} 
+bricksllm-llama  |  {{- "<|im_end|>" -}} 
+bricksllm-llama  |  {%- for message in messages -%} 
+bricksllm-llama  |  	 {%- if message.content is string -%} 
+bricksllm-llama  |  	 	 {%- set content = message.content -%} 
+bricksllm-llama  |  	 {%- else -%} 
+bricksllm-llama  |  	 	 {%- set content = "" -%} 
+bricksllm-llama  |  	 {%- endif -%} 
+bricksllm-llama  |  	 {%- if message.role == "user" or message.role == "system" and not loop.first -%} 
+bricksllm-llama  |  	 	 {{- "\n<|im_start|>" + message.role + "\n" + content + "<|im_end|>" -}} 
+bricksllm-llama  |  	 {%- elif message.role == "assistant" -%} 
+bricksllm-llama  |  	 	 {% generation %} 
+bricksllm-llama  |  	 	 {%- set reasoning_content = "" -%} 
+bricksllm-llama  |  	 	 {%- if message.reasoning_content is string -%} 
+bricksllm-llama  |  	 	 	 {%- set reasoning_content = message.reasoning_content -%} 
+bricksllm-llama  |  	 	 {%- elif "</think>" in content -%} 
+bricksllm-llama  |  	 	 	 {%- set reasoning_content = content.split("</think>")[0].rstrip("\n").split("<think>")[-1].lstrip("\n") -%} 
+bricksllm-llama  |  	 	 	 {%- set content = content.split("</think>")[-1].lstrip("\n") -%} 
+bricksllm-llama  |  	 	 {%- endif -%} 
+bricksllm-llama  |  	 	 {%- if loop.index0 > ns.last_query_index -%} 
+bricksllm-llama  |  	 	 	 {%- if loop.last or not loop.last and reasoning_content -%} 
+bricksllm-llama  |  	 	 	 	 {{- "\n<|im_start|>" + message.role + "\n<think>" + reasoning_content.strip("\n") + "</think>" + content.lstrip("\n") -}} 
+bricksllm-llama  |  	 	 	 {%- else -%} 
+bricksllm-llama  |  	 	 	 	 {{- "\n<|im_start|>" + message.role + "\n" + content -}} 
+bricksllm-llama  |  	 	 	 {%- endif -%} 
+bricksllm-llama  |  	 	 {%- else -%} 
+bricksllm-llama  |  	 	 	 {{- "\n<|im_start|>" + message.role + "\n" + content -}} 
+bricksllm-llama  |  	 	 {%- endif -%} 
+bricksllm-llama  |  	 	 {%- if message.tool_calls -%} 
+bricksllm-llama  |  	 	 	 {%- for tool_call in message.tool_calls -%} 
+bricksllm-llama  |  	 	 	 	 {%- if loop.first and content or not loop.first -%} 
+bricksllm-llama  |  	 	 	 	 	 {{- "\n" -}} 
+bricksllm-llama  |  	 	 	 	 {%- endif -%} 
+bricksllm-llama  |  	 	 	 	 {%- if tool_call.function -%} 
+bricksllm-llama  |  	 	 	 	 	 {%- set tool_call = tool_call.function -%} 
+bricksllm-llama  |  	 	 	 	 {%- endif -%} 
+bricksllm-llama  |  	 	 	 	 {{- "<tool_call>\n{\"name\": \"" -}} 
+bricksllm-llama  |  	 	 	 	 {{- tool_call.name -}} 
+bricksllm-llama  |  	 	 	 	 {{- "\", \"arguments\": " -}} 
+bricksllm-llama  |  	 	 	 	 {%- if tool_call.arguments is string -%} 
+bricksllm-llama  |  	 	 	 	 	 {{- tool_call.arguments -}} 
+bricksllm-llama  |  	 	 	 	 {%- else -%} 
+bricksllm-llama  |  	 	 	 	 	 {{- tool_call.arguments | tojson -}} 
+bricksllm-llama  |  	 	 	 	 {%- endif -%} 
+bricksllm-llama  |  	 	 	 	 {{- "}\n</tool_call>" -}} 
+bricksllm-llama  |  	 	 	 {%- endfor -%} 
+bricksllm-llama  |  	 	 {%- endif -%} 
+bricksllm-llama  |  	 	 {{- "<|im_end|>" -}} 
+bricksllm-llama  |  	 	 {% endgeneration %} 
+bricksllm-llama  |  	 {%- elif message.role == "tool" -%} 
+bricksllm-llama  |  	 	 {%- if loop.first or messages[loop.index0 - 1].role != "tool" -%} 
+bricksllm-llama  |  	 	 	 {{- "\n<|im_start|>user" -}} 
+bricksllm-llama  |  	 	 {%- endif -%} 
+bricksllm-llama  |  	 	 {{- "\n<tool_response>\n" -}} 
+bricksllm-llama  |  	 	 {{- content -}} 
+bricksllm-llama  |  	 	 {{- "\n</tool_response>" -}} 
+bricksllm-llama  |  	 	 {%- if loop.last or messages[loop.index0 + 1].role != "tool" -%} 
+bricksllm-llama  |  	 	 	 {{- "<|im_end|>" -}} 
+bricksllm-llama  |  	 	 {%- endif -%} 
+bricksllm-llama  |  	 {%- endif -%} 
+bricksllm-llama  |  {%- endfor -%} 
+bricksllm-llama  | {{- "\n" -}} 
+bricksllm-llama  | {%- if add_generation_prompt -%} 
+bricksllm-llama  | 	 {{- "<|im_start|>assistant\n" -}} 
+bricksllm-llama  | {%- endif -%}
+bricksllm-llama  | , example_format: '<|im_start|>system
+bricksllm-llama  | You are a helpful assistant<|im_end|>
+bricksllm-llama  | <|im_start|>user
+bricksllm-llama  | Hello<|im_end|>
+bricksllm-llama  | <|im_start|>assistant
+bricksllm-llama  | Hi there<|im_end|>
+bricksllm-llama  | <|im_start|>user
+bricksllm-llama  | How are you?<|im_end|>
+bricksllm-llama  | <|im_start|>assistant
+bricksllm-llama  | '
+bricksllm-llama  | main: model loaded
+bricksllm-llama  | main: server is listening on http://0.0.0.0:5002
+bricksllm-llama  | main: starting the main loop...
+bricksllm-llama  | srv  update_slots: all slots are idle
+bricksllm-llama  | srv  log_server_r: request: GET /health 127.0.0.1 200
+bricksllm-gateway  | {"level":"info","message":"error loading config from .env file: open /go/bin/.env: no such file or directory"}
+bricksllm-gateway  | {"level":"info","message":"custom provider settings memdb updated at 1765708706 with 5 providers"}
+bricksllm-gateway  | {"level":"info","message":"custom providers memdb started listening for provider updates"}
+bricksllm-gateway  | {"level":"info","message":"routes memdb started listening for route updates"}
+bricksllm-gateway  | {"level":"info","message":"admin server listening at 8001"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | GET    | /api/health is set up for health checking the admin server"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | GET    | /api/key-management/keys is set up for retrieving keys using a query param called tag"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | POST   | /api/v2/key-management/keys is set up for retrieving keys"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | PUT    | /api/key-management/keys is set up for creating a key"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | PATCH  | /api/key-management/keys/:id is set up for updating a key using an id"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | GET    | /api/provider-settings is set up for getting provider settings"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | PUT    | /api/provider-settings is set up for creating a provider setting"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | PATCH  | /api/provider-settings:id is set up for updating provider setting"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | POST   | /api/reporting/events is set up for retrieving api metrics"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | GET    | /api/events is set up for retrieving events"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | POST   | /api/v2/events is set up for retrieving events"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | POST   | /api/custom/providers is set up for creating a custom provider"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | GET    | /api/custom/providers is set up for retrieving all custom providers"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | PATCH  | /api/custom/providers/:id is set up for updating a custom provider"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | POST   | /api/routes is set up for creating a custom route"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | GET    | /api/routes/:id is set up for retrieving a route"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | GET    | /api/routes is set up for retrieving routes"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | DELETE | /api/routes/:id is set up for deleting a route"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | POST   | /api/policies is set up for creating a policy"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | PATCH  | /api/policies/:id is set up for retrieving a policy"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | GET    | /api/policies is set up for retrieving policies"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | POST   | /api/users is set up for creating a user"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | GET    | /api/users is set up for retrieving users"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8001 | PATCH  | /api/users is set up for updating a user"}
+bricksllm-gateway  | {"level":"info","message":"proxy server listening at 8002"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/health is ready"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /v1/models is ready"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/audio/speech is ready for creating openai speeches"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/audio/transcriptions is ready for creating openai transcriptions"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/audio/translations is ready for creating openai translations"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/chat/completions is ready for forwarding chat completion requests to openai"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /v1/chat/completions is ready for OpenAI-compatible chat completions"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /v1/completions is ready for OpenAI-compatible completions"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/embeddings is ready for forwarding embeddings requests to openai"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/moderations is ready for forwarding moderation requests to openai"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/models is ready for listing openai models"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/models/:model is ready for retrieving an openai model"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/files is ready for listing files from openai"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/files is ready for uploading files to openai"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/files/:file_id is ready for retrieving a file metadata from openai"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/files/:file_id/content is ready for retrieving a file's content from openai"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/assistants is ready for creating openai assistants"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/assistants/:assistant_id is ready for retrieving an openai assistant"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/assistants/:assistant_id is ready for modifying an openai assistant"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | DELETE | /api/providers/openai/v1/assistants/:assistant_id is ready for deleting an openai assistant"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/assistants is ready for retrieving openai assistants"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/assistants/:assistant_id/files is ready for creating openai assistant file"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/assistants/:assistant_id/files/:file_id is ready for retrieving openai assistant file"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | DELETE | /api/providers/openai/v1/assistants/:assistant_id/files/:file_id is ready for deleting openai assistant file"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/assistants/:assistant_id/files is ready for retireving openai assistant files"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/threads is ready for creating an openai thread"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/threads/:thread_id is ready for retrieving an openai thread"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/threads/:thread_id is ready for modifying an openai thread"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/threads/:thread_id is ready for deleting an openai thread"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/threads/:thread_id/messages is ready for creating an openai message"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/threads/:thread_id/messages/:message_id is ready for retrieving an openai message"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/threads/:thread_id/messages/:message_id is ready for modifying an openai message"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/threads/:thread_id/messages is ready for retrieving openai messages"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/threads/:thread_id/messages/:message_id/files/:file_id is ready for retrieving an openai message file"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/threads/:thread_id/messages/:message_id/files is ready for retrieving openai message files"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/threads/:thread_id/runs is ready for creating an openai run"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/threads/:thread_id/runs/:run_id is ready for retrieving an openai run"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/threads/:thread_id/runs/:run_id is ready for modifying an openai run"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/threads/:thread_id/runs is ready for retrieving openai runs"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/threads/:thread_id/runs/:run_id/submit_tool_outputs is ready for submitting tool outputs to an openai run"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/threads/:thread_id/runs/:run_id/cancel is ready for cancelling an openai run"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/threads/runs is ready for creating an openai thread and run"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/threads/:thread_id/runs/:run_id/steps/:step_id is ready for retrieving an openai run step"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/threads/:thread_id/runs/:run_id/steps is ready for retrieving openai run steps"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/images/generations is ready for generating openai images"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/images/edits is ready for editting openi images"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/images/variations is ready for generating openai image variations"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/azure/openai/deployments/:deployment_id/chat/completions is ready for forwarding completion requests to azure openai"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/azure/openai/deployments/:deployment_id/embeddings is ready for forwarding embeddings requests to azure openai"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/anthropic/v1/complete is ready for forwarding completion requests to anthropic"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/anthropic/v1/messages is ready for forwarding message requests to anthropic"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/bedrock/anthropic/v1/complete is ready for forwarding completion requests to bedrock anthropic"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/bedrock/anthropic/v1/messages is ready for forwarding message requests to bedrock anthropic"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/vllm/v1/chat/completions is ready for forwarding vllm chat completions requests"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/vllm/v1/completions is ready for forwarding vllm completions requests"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/deepinfra/v1/chat/completions is ready for forwarding deepinfra chat completions requests"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/deepinfra/v1/completions is ready for forwarding deepinfra completions requests"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/deepinfra/v1/embeddings is ready for forwarding deepinfra embeddings requests"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/custom/providers/:provider/*wildcard is ready for forwarding requests to custom providers"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/routes/*route is ready for forwarding requests to a custom route"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/vector_stores is ready for creating an openai vector store"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/vector_stores is ready for listing openai vector stores"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/vector_stores/:vector_store_id is ready for getting an openai vector store"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/vector_stores/:vector_store_id is ready for modifying an openai vector store"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | DELETE | /api/providers/openai/v1/vector_stores/:vector_store_id is ready for deleting an openai vector store"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/vector_stores/:vector_store_id/files is ready for creating an openai vector store file"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/vector_stores/:vector_store_id/files is ready for listing openai vector store files"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/vector_stores/:vector_store_id/files/:file_id is ready for getting an openai vector store file"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | DELETE | /api/providers/openai/v1/vector_stores/:vector_store_id/files/:file_id is ready for deleting an openai vector store file"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/vector_stores/:vector_store_id/file_batches is ready for creating an openai vector store file batch"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/vector_stores/:vector_store_id/file_batches/:batch_id is ready for getting an openai vector store file batch"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | POST   | /api/providers/openai/v1/vector_stores/:vector_store_id/file_batches/:batch_id/cancel is ready for cancelling an openai vector store file batch"}
+bricksllm-gateway  | {"level":"info","message":"PORT 8002 | GET    | /api/providers/openai/v1/vector_stores/:vector_store_id/file_batches/:batch_id/files is ready for listing openai vector store file batch files"}
+bricksllm-gateway  | {"level":"info","message":"request to admin management api","correlationId":"dac74731-187b-49cc-8c9f-7fa0562addca","code":200,"method":"GET","path":"/api/health","lantecyInMs":0}
+bricksllm-qdrant   |            _                 _    
+bricksllm-qdrant   |   __ _  __| |_ __ __ _ _ __ | |_  
+bricksllm-qdrant   |  / _` |/ _` | '__/ _` | '_ \| __| 
+bricksllm-qdrant   | | (_| | (_| | | | (_| | | | | |_  
+bricksllm-qdrant   |  \__, |\__,_|_|  \__,_|_| |_|\__| 
+bricksllm-qdrant   |     |_|                           
+bricksllm-qdrant   | 
+bricksllm-qdrant   | Access web UI at http://0.0.0.0:6333/dashboard
+bricksllm-qdrant   | 
+bricksllm-qdrant   | 2026-01-20T01:27:51.408083Z  INFO storage::content_manager::consensus::persistent: Loading raft state from ./storage/raft_state.json    
+bricksllm-qdrant   | 2026-01-20T01:27:51.426058Z  INFO storage::content_manager::toc: Loading collection: memories_v1    
+bricksllm-qdrant   | 2026-01-20T01:27:51.579638Z  INFO qdrant: Distributed mode disabled    
+bricksllm-qdrant   | 2026-01-20T01:27:51.579705Z  INFO qdrant: Telemetry reporting enabled, id: 53307881-0f69-4dba-a89f-f19dee6a51e6    
+bricksllm-qdrant   | 2026-01-20T01:27:51.583869Z  INFO qdrant::actix: TLS disabled for REST API    
+bricksllm-qdrant   | 2026-01-20T01:27:51.585074Z  INFO qdrant::tonic: Qdrant gRPC listening on 6334    
+bricksllm-qdrant   | 2026-01-20T01:27:51.585168Z  INFO qdrant::tonic: TLS disabled for gRPC API    
+bricksllm-qdrant   | 2026-01-20T01:27:51.585083Z  INFO qdrant::actix: Qdrant HTTP listening on 6333    
+bricksllm-qdrant   | 2026-01-20T01:27:51.585243Z  INFO actix_server::builder: Starting 17 workers
+bricksllm-qdrant   | 2026-01-20T01:27:51.585261Z  INFO actix_server::server: Actix runtime found; starting in Actix runtime
+bricksllm-qdrant   | 2026-01-20T01:27:56.428573Z  INFO actix_web::middleware::logger: 127.0.0.1 "GET /readyz HTTP/1.1" 200 20 "-" "-" 0.000082    
+bricksllm-qdrant   | 2026-01-20T01:28:06.515383Z  INFO actix_web::middleware::logger: 127.0.0.1 "GET /readyz HTTP/1.1" 200 20 "-" "-" 0.000103    
+.dicta-docling      | Starting production server 🚀
+dicta-docling      | 
+dicta-docling      | Server started at http://0.0.0.0:5001
+dicta-docling      | Documentation at http://0.0.0.0:5001/docs
+dicta-docling      | Scalar docs at http://0.0.0.0:5001/scalar
+dicta-docling      | UI at http://0.0.0.0:5001/ui
+dicta-docling      | 
+dicta-docling      | Logs:
+dicta-docling      | INFO:     Will watch for changes in these directories: ['/opt/app-root/src']
+dicta-docling      | WARNING:  "workers" flag is ignored when reloading is enabled.
+dicta-docling      | INFO:     Uvicorn running on http://0.0.0.0:5001 (Press CTRL+C to quit)
+dicta-docling      | INFO:     Started reloader process [1] using WatchFiles
+dicta-docling      | [92mINFO[0m:	2026-01-20 01:27:56,218 - httpx - HTTP Request: GET https://raw.githubusercontent.com/docling-project/docling/refs/heads/main/docs/assets/logo.svg "HTTP/1.1 200 OK"
+dicta-docling      | /opt/app-root/lib64/python3.12/site-packages/gradio/helpers.py:1141: UserWarning: Watermarking for SVG images is currently not supported. No watermark will be applied.
+dicta-docling      |   warnings.warn(message)
+dicta-docling      | /opt/app-root/lib64/python3.12/site-packages/gradio/mcp.py:207: UserWarning: This MCP server includes a tool that has a gr.State input, which will not be updated between tool calls. The original, default value of the State will be used each time.
+dicta-docling      |   warnings.warn(
+dicta-docling      | new /ui
+dicta-docling      | INFO:     Started server process [28]
+dicta-docling      | INFO:     Waiting for application startup.
+dicta-docling      | [92mINFO[0m:	2026-01-20 01:27:56,874 - httpx - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+dicta-docling      | [92mINFO[0m:	2026-01-20 01:27:59,227 - docling_jobkit.convert.manager - artifacts_path is set to a valid directory. No model weights will be downloaded at runtime.
+dicta-docling      | [92mINFO[0m:	2026-01-20 01:27:59,232 - docling.document_converter - Initializing pipeline for StandardPdfPipeline with options hash c5dcc41a8b6fe307675f9f0741e6196d
+dicta-docling      | [92mINFO[0m:	2026-01-20 01:27:59,250 - docling.models.factories.base_factory - Loading plugin 'docling_defaults'
+dicta-docling      | [92mINFO[0m:	2026-01-20 01:27:59,252 - docling.models.factories - Registered picture descriptions: ['vlm', 'api']
+dicta-docling      | [92mINFO[0m:	2026-01-20 01:27:59,513 - docling.utils.accelerator_utils - Accelerator device: 'cuda:0'
+dicta-docling      | [32m[INFO] 2026-01-20 01:27:59,533 [RapidOCR] base.py:22: Using engine_name: onnxruntime[0m
+dicta-docling      | [32m[INFO] 2026-01-20 01:27:59,535 [RapidOCR] main.py:53: Using /opt/app-root/src/.cache/docling/models/RapidOcr/onnx/PP-OCRv4/det/ch_PP-OCRv4_det_infer.onnx[0m
+dicta-docling      | [32m[INFO] 2026-01-20 01:27:59,670 [RapidOCR] base.py:22: Using engine_name: onnxruntime[0m
+dicta-docling      | [32m[INFO] 2026-01-20 01:27:59,670 [RapidOCR] main.py:53: Using /opt/app-root/src/.cache/docling/models/RapidOcr/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_infer.onnx[0m
+dicta-docling      | [32m[INFO] 2026-01-20 01:27:59,735 [RapidOCR] base.py:22: Using engine_name: onnxruntime[0m
+dicta-docling      | [32m[INFO] 2026-01-20 01:27:59,736 [RapidOCR] main.py:53: Using /opt/app-root/src/.cache/docling/models/RapidOcr/onnx/PP-OCRv4/rec/ch_PP-OCRv4_rec_infer.onnx[0m
+dicta-docling      | [92mINFO[0m:	2026-01-20 01:27:59,938 - docling.models.auto_ocr_model - Auto OCR model selected rapidocr with onnxruntime.
+dicta-docling      | [92mINFO[0m:	2026-01-20 01:27:59,944 - docling.utils.accelerator_utils - Accelerator device: 'cuda:0'
+dicta-docling      | [92mINFO[0m:	2026-01-20 01:28:01,563 - docling.utils.accelerator_utils - Accelerator device: 'cuda:0'
+dicta-docling      | [92mINFO[0m:	2026-01-20 01:28:02,529 - mcp.server.streamable_http_manager - StreamableHTTP session manager started
+dicta-docling      | INFO:     Application startup complete.
+bricksllm-swagger  | /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+bricksllm-swagger  | /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+bricksllm-swagger  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+bricksllm-swagger  | 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+bricksllm-swagger  | 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
+bricksllm-swagger  | /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+bricksllm-swagger  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+bricksllm-swagger  | 20-envsubst-on-templates.sh: Running envsubst on /etc/nginx/templates/default.conf.template to /etc/nginx/conf.d/default.conf
+bricksllm-swagger  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+bricksllm-swagger  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/40-swagger-ui.sh
+bricksllm-swagger  | /docker-entrypoint.sh: Configuration complete; ready for start up
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: using the "epoll" event method
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: nginx/1.29.3
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: built by gcc 14.2.0 (Alpine 14.2.0) 
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: OS: Linux 6.6.87.1-microsoft-standard-WSL2
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker processes
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 63
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 64
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 65
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 66
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 67
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 68
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 69
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 70
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 71
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 72
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 73
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 74
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 75
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 76
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 77
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 78
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 79
+bricksllm-swagger  | 2026/01/20 01:27:51 [notice] 1#1: start worker process 80
+mcp-sse-proxy      | 
+mcp-sse-proxy      | > mcp-sse-proxy@1.0.0 start
+mcp-sse-proxy      | > node server.js
+mcp-sse-proxy      | 
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.312+00:00"},"s":"I",  "c":"CONTROL",  "id":23285,   "ctx":"main","msg":"Automatically disabling TLS 1.0, to force-enable TLS 1.0 specify --sslDisabledProtocols 'none'"}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.313+00:00"},"s":"I",  "c":"NETWORK",  "id":4915701, "ctx":"main","msg":"Initialized wire specification","attr":{"spec":{"incomingExternalClient":{"minWireVersion":0,"maxWireVersion":21},"incomingInternalClient":{"minWireVersion":0,"maxWireVersion":21},"outgoing":{"minWireVersion":6,"maxWireVersion":21},"isInternalClient":true}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.315+00:00"},"s":"I",  "c":"NETWORK",  "id":4648601, "ctx":"main","msg":"Implicit TCP FastOpen unavailable. If TCP FastOpen is required, set tcpFastOpenServer, tcpFastOpenClient, and tcpFastOpenQueueSize."}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.317+00:00"},"s":"I",  "c":"REPL",     "id":5123008, "ctx":"main","msg":"Successfully registered PrimaryOnlyService","attr":{"service":"TenantMigrationDonorService","namespace":"config.tenantMigrationDonors"}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.317+00:00"},"s":"I",  "c":"REPL",     "id":5123008, "ctx":"main","msg":"Successfully registered PrimaryOnlyService","attr":{"service":"TenantMigrationRecipientService","namespace":"config.tenantMigrationRecipients"}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.317+00:00"},"s":"I",  "c":"CONTROL",  "id":5945603, "ctx":"main","msg":"Multi threading initialized"}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.317+00:00"},"s":"I",  "c":"TENANT_M", "id":7091600, "ctx":"main","msg":"Starting TenantMigrationAccessBlockerRegistry"}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.318+00:00"},"s":"I",  "c":"CONTROL",  "id":4615611, "ctx":"initandlisten","msg":"MongoDB starting","attr":{"pid":1,"port":27017,"dbPath":"/data/db","architecture":"64-bit","host":"828f3589e871"}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.318+00:00"},"s":"I",  "c":"CONTROL",  "id":23403,   "ctx":"initandlisten","msg":"Build Info","attr":{"buildInfo":{"version":"7.0.28","gitVersion":"cfc346c59d2cc3dbc903507fc642e22e3097f362","openSSLVersion":"OpenSSL 3.0.2 15 Mar 2022","modules":[],"allocator":"tcmalloc","environment":{"distmod":"ubuntu2204","distarch":"x86_64","target_arch":"x86_64"}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.318+00:00"},"s":"I",  "c":"CONTROL",  "id":51765,   "ctx":"initandlisten","msg":"Operating System","attr":{"os":{"name":"Ubuntu","version":"22.04"}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.318+00:00"},"s":"I",  "c":"CONTROL",  "id":21951,   "ctx":"initandlisten","msg":"Options set by command line","attr":{"options":{"net":{"bindIp":"*"}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.319+00:00"},"s":"I",  "c":"STORAGE",  "id":22270,   "ctx":"initandlisten","msg":"Storage engine to use detected by data files","attr":{"dbpath":"/data/db","storageEngine":"wiredTiger"}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.319+00:00"},"s":"I",  "c":"STORAGE",  "id":22297,   "ctx":"initandlisten","msg":"Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem","tags":["startupWarnings"]}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.319+00:00"},"s":"I",  "c":"STORAGE",  "id":22315,   "ctx":"initandlisten","msg":"Opening WiredTiger","attr":{"config":"create,cache_size=24582M,session_max=33000,eviction=(threads_min=4,threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,remove=true,path=journal,compressor=snappy),builtin_extension_config=(zstd=(compression_level=6)),file_manager=(close_idle_time=600,close_scan_interval=10,close_handle_minimum=2000),statistics_log=(wait=0),json_output=(error,message),verbose=[recovery_progress:1,checkpoint_progress:1,compact_progress:1,backup:0,checkpoint:0,compact:0,evict:0,history_store:0,recovery:0,rts:0,salvage:0,tiered:0,timestamp:0,transaction:0,verify:0,log:0],"}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.433+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1768872471,"ts_usec":433723,"thread":"1:0x7c6f83bb5c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Recovering log 125 through 126"}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.485+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1768872471,"ts_usec":485903,"thread":"1:0x7c6f83bb5c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Recovering log 126 through 126"}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.616+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1768872471,"ts_usec":616089,"thread":"1:0x7c6f83bb5c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Main recovery loop: starting at 125/75520 to 126/256"}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.722+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1768872471,"ts_usec":722270,"thread":"1:0x7c6f83bb5c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Recovering log 125 through 126"}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.786+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1768872471,"ts_usec":786069,"thread":"1:0x7c6f83bb5c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Recovering log 126 through 126"}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.842+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1768872471,"ts_usec":841981,"thread":"1:0x7c6f83bb5c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"recovery log replay has successfully finished and ran for 408 milliseconds"}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.842+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1768872471,"ts_usec":842101,"thread":"1:0x7c6f83bb5c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Set global recovery timestamp: (0, 0)"}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.842+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1768872471,"ts_usec":842121,"thread":"1:0x7c6f83bb5c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"Set global oldest timestamp: (0, 0)"}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.845+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1768872471,"ts_usec":845846,"thread":"1:0x7c6f83bb5c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"recovery rollback to stable has successfully finished and ran for 3 milliseconds"}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.854+00:00"},"s":"I",  "c":"WTCHKPT",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1768872471,"ts_usec":854019,"thread":"1:0x7c6f83bb5c80","session_name":"WT_SESSION.checkpoint","category":"WT_VERB_CHECKPOINT_PROGRESS","category_id":6,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"saving checkpoint snapshot min: 1, snapshot max: 1 snapshot count: 0, oldest timestamp: (0, 0) , meta checkpoint timestamp: (0, 0) base write gen: 321022"}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.861+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1768872471,"ts_usec":861016,"thread":"1:0x7c6f83bb5c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"recovery checkpoint has successfully finished and ran for 14 milliseconds"}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.861+00:00"},"s":"I",  "c":"WTRECOV",  "id":22430,   "ctx":"initandlisten","msg":"WiredTiger message","attr":{"message":{"ts_sec":1768872471,"ts_usec":861180,"thread":"1:0x7c6f83bb5c80","session_name":"txn-recover","category":"WT_VERB_RECOVERY_PROGRESS","category_id":30,"verbose_level":"DEBUG_1","verbose_level_id":1,"msg":"recovery was completed successfully and took 427ms, including 408ms for the log replay, 3ms for the rollback to stable, and 14ms for the checkpoint."}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.863+00:00"},"s":"I",  "c":"STORAGE",  "id":4795906, "ctx":"initandlisten","msg":"WiredTiger opened","attr":{"durationMillis":544}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.863+00:00"},"s":"I",  "c":"RECOVERY", "id":23987,   "ctx":"initandlisten","msg":"WiredTiger recoveryTimestamp","attr":{"recoveryTimestamp":{"$timestamp":{"t":0,"i":0}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.888+00:00"},"s":"W",  "c":"CONTROL",  "id":22120,   "ctx":"initandlisten","msg":"Access control is not enabled for the database. Read and write access to data and configuration is unrestricted","tags":["startupWarnings"]}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.888+00:00"},"s":"W",  "c":"CONTROL",  "id":5123300, "ctx":"initandlisten","msg":"vm.max_map_count is too low","attr":{"currentValue":262144,"recommendedMinimum":1677720,"maxConns":838860},"tags":["startupWarnings"]}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.891+00:00"},"s":"I",  "c":"NETWORK",  "id":4915702, "ctx":"initandlisten","msg":"Updated wire specification","attr":{"oldSpec":{"incomingExternalClient":{"minWireVersion":0,"maxWireVersion":21},"incomingInternalClient":{"minWireVersion":0,"maxWireVersion":21},"outgoing":{"minWireVersion":6,"maxWireVersion":21},"isInternalClient":true},"newSpec":{"incomingExternalClient":{"minWireVersion":0,"maxWireVersion":21},"incomingInternalClient":{"minWireVersion":21,"maxWireVersion":21},"outgoing":{"minWireVersion":21,"maxWireVersion":21},"isInternalClient":true}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.891+00:00"},"s":"I",  "c":"REPL",     "id":5853300, "ctx":"initandlisten","msg":"current featureCompatibilityVersion value","attr":{"featureCompatibilityVersion":"7.0","context":"startup"}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.892+00:00"},"s":"I",  "c":"STORAGE",  "id":5071100, "ctx":"initandlisten","msg":"Clearing temp directory"}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.965+00:00"},"s":"I",  "c":"CONTROL",  "id":6608200, "ctx":"initandlisten","msg":"Initializing cluster server parameters from disk"}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.965+00:00"},"s":"I",  "c":"CONTROL",  "id":20536,   "ctx":"initandlisten","msg":"Flow Control is enabled on this deployment"}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.966+00:00"},"s":"I",  "c":"FTDC",     "id":20625,   "ctx":"initandlisten","msg":"Initializing full-time diagnostic data capture","attr":{"dataDirectory":"/data/db/diagnostic.data"}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.972+00:00"},"s":"I",  "c":"REPL",     "id":6015317, "ctx":"initandlisten","msg":"Setting new configuration state","attr":{"newState":"ConfigReplicationDisabled","oldState":"ConfigPreStart"}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.972+00:00"},"s":"I",  "c":"STORAGE",  "id":22262,   "ctx":"initandlisten","msg":"Timestamp monitor starting"}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.974+00:00"},"s":"I",  "c":"NETWORK",  "id":23015,   "ctx":"listener","msg":"Listening on","attr":{"address":"/tmp/mongodb-27017.sock"}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.974+00:00"},"s":"I",  "c":"NETWORK",  "id":23015,   "ctx":"listener","msg":"Listening on","attr":{"address":"0.0.0.0"}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.974+00:00"},"s":"I",  "c":"NETWORK",  "id":23016,   "ctx":"listener","msg":"Waiting for connections","attr":{"port":27017,"ssl":"off"}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:51.974+00:00"},"s":"I",  "c":"CONTROL",  "id":8423403, "ctx":"initandlisten","msg":"mongod startup complete","attr":{"Summary of time elapsed":{"Startup from clean shutdown?":true,"Statistics":{"Transport layer setup":"0 ms","Run initial syncer crash recovery":"0 ms","Create storage engine lock file in the data directory":"0 ms","Get metadata describing storage engine":"0 ms","Validate options in metadata against current startup options":"0 ms","Create storage engine":"564 ms","Write current PID to file":"0 ms","Initialize FCV before rebuilding indexes":"3 ms","Drop abandoned idents and get back indexes that need to be rebuilt or builds that need to be restarted":"0 ms","Rebuild indexes for collections":"0 ms","Load cluster parameters from disk for a standalone":"0 ms","Build user and roles graph":"0 ms","Set up the background thread pool responsible for waiting for opTimes to be majority committed":"0 ms","Initialize information needed to make a mongod instance shard aware":"0 ms","Start up the replication coordinator":"4 ms","Start transport layer":"0 ms","_initAndListen total elapsed time":"656 ms"}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.559+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:56092","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"ded3cf37-350f-4181-8b9c-22adf5d9ba44"}},"connectionId":1,"connectionCount":1}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.561+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn1","msg":"client metadata","attr":{"remote":"127.0.0.1:56092","client":"conn1","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.562+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn1","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:56092","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.600+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:56102","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"d58a7131-08b8-484c-81f8-7e6fa79ef36a"}},"connectionId":2,"connectionCount":2}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.600+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:56114","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"ea651131-396a-40d4-9431-5707a59769fc"}},"connectionId":3,"connectionCount":3}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.602+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn2","msg":"client metadata","attr":{"remote":"127.0.0.1:56102","client":"conn2","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.602+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn2","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:56102","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.603+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn3","msg":"client metadata","attr":{"remote":"127.0.0.1:56114","client":"conn3","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.603+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn3","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:56114","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.604+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn2","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":1}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.605+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:56124","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"f025d363-6b41-44c8-98cc-030c46395997"}},"connectionId":4,"connectionCount":4}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.607+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:56132","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"7f2db4ed-517b-4789-96b5-7d21ee4d6971"}},"connectionId":5,"connectionCount":5}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.608+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn4","msg":"client metadata","attr":{"remote":"127.0.0.1:56124","client":"conn4","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.608+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn4","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:56124","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.610+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn5","msg":"client metadata","attr":{"remote":"127.0.0.1:56132","client":"conn5","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.610+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn5","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:56132","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.611+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn4","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":3}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.616+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn5","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":5}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.636+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn4","msg":"Connection ended","attr":{"remote":"127.0.0.1:56124","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"f025d363-6b41-44c8-98cc-030c46395997"}},"connectionId":4,"connectionCount":4}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.636+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn1","msg":"Connection ended","attr":{"remote":"127.0.0.1:56092","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"ded3cf37-350f-4181-8b9c-22adf5d9ba44"}},"connectionId":1,"connectionCount":3}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.636+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn3","msg":"Connection ended","attr":{"remote":"127.0.0.1:56114","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"ea651131-396a-40d4-9431-5707a59769fc"}},"connectionId":3,"connectionCount":2}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.636+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn2","msg":"Connection ended","attr":{"remote":"127.0.0.1:56102","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"d58a7131-08b8-484c-81f8-7e6fa79ef36a"}},"connectionId":2,"connectionCount":1}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:27:56.636+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn5","msg":"Connection ended","attr":{"remote":"127.0.0.1:56132","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"7f2db4ed-517b-4789-96b5-7d21ee4d6971"}},"connectionId":5,"connectionCount":0}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.135+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:40694","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"ed4e67b0-ba49-49de-b91f-67049c47ef71"}},"connectionId":6,"connectionCount":1}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.141+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn6","msg":"client metadata","attr":{"remote":"127.0.0.1:40694","client":"conn6","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.141+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn6","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:40694","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.210+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:40696","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"1149d89a-5c0e-4d8d-92e0-adc8d98e9433"}},"connectionId":7,"connectionCount":2}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.212+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:40700","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"17be3af8-432d-40a8-b81e-9d2c7848c738"}},"connectionId":8,"connectionCount":3}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.213+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn7","msg":"client metadata","attr":{"remote":"127.0.0.1:40696","client":"conn7","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.213+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn7","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:40696","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.215+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn8","msg":"client metadata","attr":{"remote":"127.0.0.1:40700","client":"conn8","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.216+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn8","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:40700","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.216+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn7","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":2}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.216+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:40710","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"332fe157-78eb-418b-a3b1-fbabc29bc276"}},"connectionId":9,"connectionCount":4}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.220+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:40718","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"9f039bdf-2b0d-4c48-bae9-09bec225b41c"}},"connectionId":10,"connectionCount":5}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.220+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn9","msg":"client metadata","attr":{"remote":"127.0.0.1:40710","client":"conn9","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.220+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn9","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:40710","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.226+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn9","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":5}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.227+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn10","msg":"client metadata","attr":{"remote":"127.0.0.1:40718","client":"conn10","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.227+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn10","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:40718","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.229+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn10","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":2}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.282+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn10","msg":"Connection ended","attr":{"remote":"127.0.0.1:40718","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"9f039bdf-2b0d-4c48-bae9-09bec225b41c"}},"connectionId":10,"connectionCount":4}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.282+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn8","msg":"Connection ended","attr":{"remote":"127.0.0.1:40700","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"17be3af8-432d-40a8-b81e-9d2c7848c738"}},"connectionId":8,"connectionCount":3}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.282+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn7","msg":"Connection ended","attr":{"remote":"127.0.0.1:40696","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"1149d89a-5c0e-4d8d-92e0-adc8d98e9433"}},"connectionId":7,"connectionCount":2}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.282+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn6","msg":"Connection ended","attr":{"remote":"127.0.0.1:40694","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"ed4e67b0-ba49-49de-b91f-67049c47ef71"}},"connectionId":6,"connectionCount":1}}
+bricksllm-mongo    | {"t":{"$date":"2026-01-20T01:28:07.282+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn9","msg":"Connection ended","attr":{"remote":"127.0.0.1:40710","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"332fe157-78eb-418b-a3b1-fbabc29bc276"}},"connectionId":9,"connectionCount":0}}
+dicta-retrieval    | 🚀 Starting BAAI Retrieval Services...
+dicta-retrieval    | 📊 Starting Embedding Service on port 5005...
+dicta-retrieval    | ✅ Embedding service started (PID: 26)
+dicta-retrieval    | 2026-01-20 01:27:52,856 - embed-api - INFO - __main__.main - Starting the embed-api server...
+dicta-retrieval    | 2026-01-20 01:27:52,857 - embed-api - INFO - core.config.app_config.initialize - Initializing configuration...
+dicta-retrieval    | 2026-01-20 01:27:52,857 - embed-api - INFO - core.config.app_config.initialize - Configuration loaded:
+dicta-retrieval    | SERVICE_TYPE: embedding
+dicta-retrieval    | LOG_LEVEL: INFO
+dicta-retrieval    | DEVICE: cuda
+dicta-retrieval    | FASTAPI_HOST: 0.0.0.0
+dicta-retrieval    | FASTAPI_PORT: 5005
+dicta-retrieval    | EMBEDDING_MODEL_NAME: /app/models/embeddings/bge-m3-f16.gguf
+dicta-retrieval    | RERANKER_MODEL_NAME: /app/models/reranking/bge-reranker-v2-m3-q8_0.gguf
+dicta-retrieval    | MODEL_IDLE_TIMEOUT: 60
+dicta-retrieval    | USE_FP16: True
+dicta-retrieval    | 2026-01-20 01:27:52,857 - embed-api - INFO - core.config.app_config.initialize - Configuration initialized successfully.
+dicta-retrieval    | 2026-01-20 01:27:52,857 - embed-api - INFO - core.logger.logger.set_level - Setting log level to INFO
+dicta-retrieval    | 2026-01-20 01:27:52,857 - embed-api - INFO - core.logger.logger.set_level - Log level set successfully.
+dicta-retrieval    | 2026-01-20 01:27:52,858 - embed-api - INFO - core.cuda.cuda_checker.check_cuda_support - PyTorch not installed; skipping CUDA availability check.
+dicta-retrieval    | 2026-01-20 01:27:52,929 - embed-api - INFO - api.server.__init__ - Loading Embedding routes...
+dicta-retrieval    | 2026-01-20 01:27:52,932 - embed-api - INFO - api.server.start - Starting FastAPI embedding server...
+dicta-retrieval    | 2026-01-20 01:27:52,955 - uvicorn.error - INFO - Started server process [26]
+dicta-retrieval    | 2026-01-20 01:27:52,955 - uvicorn.error - INFO - Waiting for application startup.
+dicta-retrieval    | 2026-01-20 01:27:52,955 - uvicorn.error - INFO - Application startup complete.
+dicta-retrieval    | 2026-01-20 01:27:52,956 - uvicorn.error - INFO - Uvicorn running on http://0.0.0.0:5005 (Press CTRL+C to quit)
+dicta-retrieval    | 2026-01-20 01:27:56,632 - embed-api - INFO - api.middlewares.process_time_middleware.dispatch - Request 143b3785-9216-46e2-b3bf-df3b3aa08270 started: GET http://localhost:5005/health
+dicta-retrieval    | 2026-01-20 01:27:56,635 - embed-api - INFO - api.middlewares.process_time_middleware.dispatch - Request 143b3785-9216-46e2-b3bf-df3b3aa08270 completed: GET http://localhost:5005/health processed in 0.0016 seconds.
+dicta-retrieval    | 2026-01-20 01:27:56,635 - uvicorn.access - INFO - 127.0.0.1:44976 - "GET /health HTTP/1.1" 200
+dicta-retrieval    | 2026-01-20 01:28:01,770 - embed-api - INFO - api.middlewares.process_time_middleware.dispatch - Request 5fccce76-a4f2-41ae-950b-b5215e3eefda started: GET http://localhost:5005/health
+dicta-retrieval    | 2026-01-20 01:28:01,771 - embed-api - INFO - api.middlewares.process_time_middleware.dispatch - Request 5fccce76-a4f2-41ae-950b-b5215e3eefda completed: GET http://localhost:5005/health processed in 0.0005 seconds.
+dicta-retrieval    | 2026-01-20 01:28:01,771 - uvicorn.access - INFO - 127.0.0.1:43520 - "GET /health HTTP/1.1" 200
+dicta-retrieval    | 🔄 Starting Reranking Service on port 5006...
+dicta-retrieval    | ✅ Reranking service started (PID: 61)
+dicta-retrieval    | ✅ All services running!
+dicta-retrieval    |    📊 Dicta BAAI Embeddings:  http://0.0.0.0:5005
+dicta-retrieval    |    🔄 Dicta BAAI Reranking:   http://0.0.0.0:5006
+dicta-retrieval    | 2026-01-20 01:28:06,890 - embed-api - INFO - api.middlewares.process_time_middleware.dispatch - Request 037a822e-54e3-4732-b973-8495d3bf494e started: GET http://localhost:5005/health
+dicta-retrieval    | 2026-01-20 01:28:06,891 - embed-api - INFO - api.middlewares.process_time_middleware.dispatch - Request 037a822e-54e3-4732-b973-8495d3bf494e completed: GET http://localhost:5005/health processed in 0.0006 seconds.
+dicta-retrieval    | 2026-01-20 01:28:06,891 - uvicorn.access - INFO - 127.0.0.1:43536 - "GET /health HTTP/1.1" 200
+dicta-retrieval    | 2026-01-20 01:28:07,302 - embed-api - INFO - __main__.main - Starting the embed-api server...
+dicta-retrieval    | 2026-01-20 01:28:07,303 - embed-api - INFO - core.config.app_config.initialize - Initializing configuration...
+dicta-retrieval    | 2026-01-20 01:28:07,304 - embed-api - INFO - core.config.app_config.initialize - Configuration loaded:
+dicta-retrieval    | SERVICE_TYPE: reranker
+dicta-retrieval    | LOG_LEVEL: INFO
+dicta-retrieval    | DEVICE: cuda
+dicta-retrieval    | FASTAPI_HOST: 0.0.0.0
+dicta-retrieval    | FASTAPI_PORT: 5006
+dicta-retrieval    | EMBEDDING_MODEL_NAME: /app/models/embeddings/bge-m3-f16.gguf
+dicta-retrieval    | RERANKER_MODEL_NAME: /app/models/reranking/bge-reranker-v2-m3-q8_0.gguf
+dicta-retrieval    | MODEL_IDLE_TIMEOUT: 60
+dicta-retrieval    | USE_FP16: True
+dicta-retrieval    | 2026-01-20 01:28:07,305 - embed-api - INFO - core.config.app_config.initialize - Configuration initialized successfully.
+dicta-retrieval    | 2026-01-20 01:28:07,305 - embed-api - INFO - core.logger.logger.set_level - Setting log level to INFO
+dicta-retrieval    | 2026-01-20 01:28:07,306 - embed-api - INFO - core.logger.logger.set_level - Log level set successfully.
+dicta-retrieval    | 2026-01-20 01:28:07,306 - embed-api - INFO - core.cuda.cuda_checker.check_cuda_support - PyTorch not installed; skipping CUDA availability check.
+dicta-retrieval    | 2026-01-20 01:28:07,354 - embed-api - INFO - api.server.__init__ - Loading Reranker routes...
+dicta-retrieval    | 2026-01-20 01:28:07,355 - embed-api - INFO - api.routers.reranker_router._load_model - Loading reranker model: /app/models/reranking/bge-reranker-v2-m3-q8_0.gguf
+dicta-retrieval    | 2026-01-20 01:28:08,847 - embed-api - INFO - api.routers.reranker_router._load_model - Reranker model loaded successfully
+dicta-retrieval    | 2026-01-20 01:28:08,852 - embed-api - INFO - api.server.start - Starting FastAPI reranker server...
+dicta-retrieval    | 2026-01-20 01:28:08,863 - uvicorn.error - INFO - Started server process [61]
+dicta-retrieval    | 2026-01-20 01:28:08,864 - uvicorn.error - INFO - Waiting for application startup.
+dicta-retrieval    | 2026-01-20 01:28:08,864 - uvicorn.error - INFO - Application startup complete.
+dicta-retrieval    | 2026-01-20 01:28:08,864 - uvicorn.error - INFO - Uvicorn running on http://0.0.0.0:5006 (Press CTRL+C to quit)
+dicta-retrieval    | 2026-01-20 01:28:11,990 - embed-api - INFO - api.middlewares.process_time_middleware.dispatch - Request 410e0d0f-76a5-47d0-8177-542c5476b680 started: GET http://localhost:5005/health
+dicta-retrieval    | 2026-01-20 01:28:11,991 - embed-api - INFO - api.middlewares.process_time_middleware.dispatch - Request 410e0d0f-76a5-47d0-8177-542c5476b680 completed: GET http://localhost:5005/health processed in 0.0004 seconds.
+dicta-retrieval    | 2026-01-20 01:28:11,992 - uvicorn.access - INFO - 127.0.0.1:38710 - "GET /health HTTP/1.1" 200
+dicta-retrieval    | 2026-01-20 01:28:12,013 - embed-api - INFO - api.middlewares.process_time_middleware.dispatch - Request 235f42fc-afe1-465c-95f7-67b3d43241a2 started: GET http://localhost:5006/health
+dicta-retrieval    | 2026-01-20 01:28:12,014 - embed-api - INFO - api.middlewares.process_time_middleware.dispatch - Request 235f42fc-afe1-465c-95f7-67b3d43241a2 completed: GET http://localhost:5006/health processed in 0.0007 seconds.
+dicta-retrieval    | 2026-01-20 01:28:12,014 - uvicorn.access - INFO - 127.0.0.1:52190 - "GET /health HTTP/1.1" 200
+bricksllm-postgresql  | 
+bricksllm-postgresql  | PostgreSQL Database directory appears to contain a database; Skipping initialization
+bricksllm-postgresql  | 
+bricksllm-postgresql  | 2026-01-20 01:27:51.429 UTC [1] LOG:  starting PostgreSQL 16.1 on x86_64-pc-linux-musl, compiled by gcc (Alpine 13.2.1_git20231014) 13.2.1 20231014, 64-bit
+bricksllm-postgresql  | 2026-01-20 01:27:51.429 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+bricksllm-postgresql  | 2026-01-20 01:27:51.429 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+bricksllm-postgresql  | 2026-01-20 01:27:51.434 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+bricksllm-postgresql  | 2026-01-20 01:27:51.445 UTC [24] LOG:  database system was shut down at 2026-01-20 01:27:49 UTC
+bricksllm-postgresql  | 2026-01-20 01:27:51.454 UTC [1] LOG:  database system is ready to accept connections
+NODE_ENV=production is not supported in the .env file. Only NODE_ENV=development is supported to create a development build of your project. If you need to set process.env.NODE_ENV, you can set it in the Vite config instead.
+3:28:14 AM [vite] (client) Forced re-optimization of dependencies
+Port 8004 is in use, trying another one...
+
+  VITE v6.3.5  ready in 1447 ms
+
+  ➜  Local:   http://localhost:8005/
+  ➜  Network: http://10.255.255.254:8005/
+  ➜  Network: http://172.28.37.240:8005/
+.dicta-ner             | INFO:     Started server process [1]
+dicta-ner             | INFO:     Waiting for application startup.
+dicta-ner             | 2026-01-20 01:28:15,979 - main - INFO - Starting NER service...
+dicta-ner             | 2026-01-20 01:28:15,979 - main - INFO - Model: dicta-il/dictabert-ner
+dicta-ner             | 2026-01-20 01:28:15,979 - main - INFO - Requested device: cuda
+dicta-ner             | 2026-01-20 01:28:15,980 - main - INFO - CUDA available: True
+dicta-ner             | 2026-01-20 01:28:16,018 - main - INFO - CUDA device: NVIDIA GeForce RTX 3090
+dicta-ner             | 2026-01-20 01:28:16,018 - main - INFO - CUDA memory: 25.8 GB
+dicta-ner             | 2026-01-20 01:28:16,018 - main - INFO - Using CUDA device 0
+dicta-ner             | 2026-01-20 01:28:16,018 - main - INFO - Loading pipeline from dicta-il/dictabert-ner...
+dicta-ner             | /usr/local/lib/python3.11/site-packages/huggingface_hub/file_download.py:942: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+dicta-ner             |   warnings.warn(
+.bricksllm-qdrant      | 2026-01-20T01:28:16.600925Z  INFO actix_web::middleware::logger: 127.0.0.1 "GET /readyz HTTP/1.1" 200 20 "-" "-" 0.000120    
+.bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.863+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:34324","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"08ac2d3c-727e-4930-83d7-bb12dab7c129"}},"connectionId":11,"connectionCount":1}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.870+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn11","msg":"client metadata","attr":{"remote":"127.0.0.1:34324","client":"conn11","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.871+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn11","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:34324","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.947+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:34338","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"9440db43-757d-48fe-9d68-659b11c43bf8"}},"connectionId":12,"connectionCount":2}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.947+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:34352","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"ccea0bc8-1c69-4ef6-a80b-b96804de40ec"}},"connectionId":13,"connectionCount":3}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.949+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn12","msg":"client metadata","attr":{"remote":"127.0.0.1:34338","client":"conn12","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.949+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn12","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:34338","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.951+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn13","msg":"client metadata","attr":{"remote":"127.0.0.1:34352","client":"conn13","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.951+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn13","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:34352","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.954+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn12","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":4}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.954+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:34356","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"7b583534-45d4-4154-b1af-da67aa55510f"}},"connectionId":14,"connectionCount":4}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.959+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:34364","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"24a5cfeb-c184-4f9d-8b37-699b7ccfba9b"}},"connectionId":15,"connectionCount":5}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.961+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn14","msg":"client metadata","attr":{"remote":"127.0.0.1:34356","client":"conn14","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.963+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn14","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:34356","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.967+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn15","msg":"client metadata","attr":{"remote":"127.0.0.1:34364","client":"conn15","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.967+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn15","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:34364","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.969+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn14","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":8}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:17.985+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn15","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":18}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:18.042+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn11","msg":"Connection ended","attr":{"remote":"127.0.0.1:34324","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"08ac2d3c-727e-4930-83d7-bb12dab7c129"}},"connectionId":11,"connectionCount":4}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:18.042+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn15","msg":"Connection ended","attr":{"remote":"127.0.0.1:34364","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"24a5cfeb-c184-4f9d-8b37-699b7ccfba9b"}},"connectionId":15,"connectionCount":3}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:18.047+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn13","msg":"Connection ended","attr":{"remote":"127.0.0.1:34352","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"ccea0bc8-1c69-4ef6-a80b-b96804de40ec"}},"connectionId":13,"connectionCount":2}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:18.052+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn12","msg":"Connection ended","attr":{"remote":"127.0.0.1:34338","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"9440db43-757d-48fe-9d68-659b11c43bf8"}},"connectionId":12,"connectionCount":1}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:18.052+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn14","msg":"Connection ended","attr":{"remote":"127.0.0.1:34356","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"7b583534-45d4-4154-b1af-da67aa55510f"}},"connectionId":14,"connectionCount":0}}
+.....bricksllm-gateway     | {"level":"info","message":"request to admin management api","correlationId":"99fd05ac-6dab-4320-baa9-721f36a7d9a4","code":200,"method":"GET","path":"/api/health","lantecyInMs":0}
+....bricksllm-qdrant      | 2026-01-20T01:28:26.683600Z  INFO actix_web::middleware::logger: 127.0.0.1 "GET /readyz HTTP/1.1" 200 20 "-" "-" 0.000119    
+..bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.544+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:41544","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"7b030fb0-a2c1-48c4-a34a-f875df786563"}},"connectionId":16,"connectionCount":1}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.550+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn16","msg":"client metadata","attr":{"remote":"127.0.0.1:41544","client":"conn16","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.550+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn16","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:41544","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.624+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:41556","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"e0df0530-a45f-4bc7-aa41-681d71671c0a"}},"connectionId":17,"connectionCount":2}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.624+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:41570","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"abf4151c-6ae9-45e5-816e-90cd6718272c"}},"connectionId":18,"connectionCount":3}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.626+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn17","msg":"client metadata","attr":{"remote":"127.0.0.1:41556","client":"conn17","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.626+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn17","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:41556","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.627+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn18","msg":"client metadata","attr":{"remote":"127.0.0.1:41570","client":"conn18","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.627+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn18","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:41570","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.635+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn17","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":8}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.635+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:41580","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"f46824dc-89c3-431c-967b-8978816b14bf"}},"connectionId":19,"connectionCount":4}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.637+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:41588","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"6beacacf-82f8-4f80-b316-ab8b84344db2"}},"connectionId":20,"connectionCount":5}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.638+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn19","msg":"client metadata","attr":{"remote":"127.0.0.1:41580","client":"conn19","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.639+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn19","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:41580","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.644+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn18","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":17}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.646+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn20","msg":"client metadata","attr":{"remote":"127.0.0.1:41588","client":"conn20","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.646+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn20","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:41588","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.649+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn19","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":10}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.655+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn20","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":9}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.696+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn20","msg":"Connection ended","attr":{"remote":"127.0.0.1:41588","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"6beacacf-82f8-4f80-b316-ab8b84344db2"}},"connectionId":20,"connectionCount":4}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.697+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn18","msg":"Connection ended","attr":{"remote":"127.0.0.1:41570","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"abf4151c-6ae9-45e5-816e-90cd6718272c"}},"connectionId":18,"connectionCount":3}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.697+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn16","msg":"Connection ended","attr":{"remote":"127.0.0.1:41544","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"7b030fb0-a2c1-48c4-a34a-f875df786563"}},"connectionId":16,"connectionCount":2}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.697+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn17","msg":"Connection ended","attr":{"remote":"127.0.0.1:41556","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"e0df0530-a45f-4bc7-aa41-681d71671c0a"}},"connectionId":17,"connectionCount":1}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:28.697+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn19","msg":"Connection ended","attr":{"remote":"127.0.0.1:41580","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"f46824dc-89c3-431c-967b-8978816b14bf"}},"connectionId":19,"connectionCount":0}}
+...dicta-docling         | INFO:     127.0.0.1:37450 - "GET /health HTTP/1.1" 200 OK
+.....bricksllm-qdrant      | 2026-01-20T01:28:36.759355Z  INFO actix_web::middleware::logger: 127.0.0.1 "GET /readyz HTTP/1.1" 200 20 "-" "-" 0.000097    
+.bricksllm-gateway     | {"level":"info","message":"request to admin management api","correlationId":"6817c534-dbb6-417a-9090-be86ceacdabc","code":200,"method":"GET","path":"/api/health","lantecyInMs":0}
+.bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:39.291+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:35922","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"6d74f5f6-172c-40fc-817e-778090a2a263"}},"connectionId":21,"connectionCount":1}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:39.294+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn21","msg":"client metadata","attr":{"remote":"127.0.0.1:35922","client":"conn21","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+bricksllm-mongo       | {"t":{"$date":"2026-01-20T01:28:39.294+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn21","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:35922","doc":{"application":{"name":"mongosh 2.5.10"},"driver":{"name":"nodejs|mongosh","version":"6.19.0|2.5.10"},"platform":"Node.js v20.19.6, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+

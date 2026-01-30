@@ -1,0 +1,49 @@
+{
+  "dataset_id": "ea9d20b5-40c8-4ff0-861f-1cae19891b9e",
+  "title": "סל הספורט - סוגי מתקנים",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "סוגי מתקן",
+    "סל הספורט"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "התרבות",
+    "סוג",
+    "משרד",
+    "סוגי",
+    "הספורט",
+    "מתקן",
+    "והספורט",
+    "מתקנים"
+  ],
+  "resources": [
+    {
+      "resource_id": "228ea2d3-c8ce-4e12-ba80-047bdb8518b5",
+      "title": "most.DB.535.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג מתקן",
+          "type": "text",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 23
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

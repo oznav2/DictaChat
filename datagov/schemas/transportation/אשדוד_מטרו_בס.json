@@ -1,0 +1,108 @@
+{
+  "dataset_id": "30cc4889-9bd7-4888-a66d-51ab39eb579a",
+  "title": "אשדוד מטרו בס",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אוטובוסים",
+    "אוטובוסים מהירים",
+    "אשדוד",
+    "חצב",
+    "מטרו בס",
+    "תחבורה מהירה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תחבורה",
+    "destnation",
+    "מטרו",
+    "בדרכים",
+    "והבטיחות",
+    "route",
+    "אוטובוסים",
+    "משרד",
+    "lengt",
+    "length",
+    "חצב",
+    "shape",
+    "מהירה",
+    "oid",
+    "origin",
+    "מהירים",
+    "אשדוד",
+    "line",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "0cf31903-92a5-4904-8ea4-d126e7dd9d00",
+      "title": "ASHDOD_METRO_BUS_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "27f5e95f-8554-45bc-818e-59ea199eb364",
+      "title": "ASHDOD_METRO_BUS_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "dadb68b2-ed9f-45e6-b41b-80b23f72ec20",
+      "title": "ASHDOD_METRO_BUS_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ORIGIN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DESTNATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LINE",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ROUTE_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "LENGT_KM",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 2
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

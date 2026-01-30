@@ -1,0 +1,161 @@
+{
+  "dataset_id": "a545d0ba-0d30-4fbc-be38-e965c5dae56b",
+  "title": "פנקס הקבלנים הרשומים",
+  "organization": "משרד הבינוי והשיכון",
+  "tags": [
+    "בעלי מקצוע",
+    "משרד הבינוי והשיכון",
+    "פנקס הקבלנים",
+    "תכנון",
+    "תכנון ובניה"
+  ],
+  "categories": [
+    "water",
+    "housing"
+  ],
+  "keywords": [
+    "heara",
+    "teur",
+    "מקצוע",
+    "פנקס",
+    "bait",
+    "sug",
+    "kod",
+    "והשיכון",
+    "mispar",
+    "kablan",
+    "shem",
+    "הרשומים",
+    "הקבלנים",
+    "rehov",
+    "yeshut",
+    "ובניה",
+    "sivug",
+    "email",
+    "mukar",
+    "tarich",
+    "תכנון",
+    "בעלי",
+    "משרד",
+    "hekef",
+    "ovdim",
+    "anaf",
+    "tel",
+    "kvutza",
+    "taarich",
+    "הבינוי",
+    "yishuv"
+  ],
+  "resources": [
+    {
+      "resource_id": "4eb61bd6-18cf-4e7c-9f9c-e166dfa0a2d8",
+      "title": "פנקס הקבלנים הרשומים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "MISPAR_YESHUT",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SHEM_YESHUT",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MISPAR_KABLAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHEM_YISHUV",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SHEM_REHOV",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MISPAR_BAIT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TAARICH_KABLAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MISPAR_TEL",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "EMAIL",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "KOD_ANAF",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEUR_ANAF",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "KVUTZA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SIVUG",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TARICH_SUG",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HEKEF",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "KABLAN_MUKAR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OVDIM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HEARA",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 23643
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

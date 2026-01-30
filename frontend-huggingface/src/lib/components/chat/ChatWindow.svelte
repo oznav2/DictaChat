@@ -18,6 +18,7 @@
 	import file2base64 from "$lib/utils/file2base64";
 	import { base } from "$app/paths";
 	import ChatMessage from "./ChatMessage.svelte";
+	import VirtualizedMessageList from "./VirtualizedMessageList.svelte";
 	import ScrollToBottomBtn from "../ScrollToBottomBtn.svelte";
 	import ScrollToPreviousBtn from "../ScrollToPreviousBtn.svelte";
 	import { browser } from "$app/environment";
@@ -67,6 +68,27 @@
 	}
 
 	import { detectRTLLanguage } from "$lib/utils/marked";
+	const GREETING_PATTERNS = [
+		/^(hi|hello|hey|yo|howdy|greetings|sup|morning|evening|good (morning|afternoon|evening))\b/i,
+		/^(שלום|שלום לך|היי|הי|בוקר טוב|צהריים טובים|ערב טוב|לילה טוב|מה נשמע|מה קורה|מה העניינים)\b/i,
+	];
+
+	const isShortGreetingPrompt = (text: string): boolean => {
+		const trimmed = text.trim();
+		if (!trimmed) return false;
+
+		const normalized = trimmed.toLowerCase();
+		const cleaned = normalized
+			.replace(/[^\p{L}\p{N}\s]+/gu, " ")
+			.replace(/\s+/g, " ")
+			.trim();
+		if (!cleaned) return false;
+
+		const wordCount = cleaned.split(" ").length;
+		if (cleaned.length > 48 || wordCount > 5) return false;
+
+		return GREETING_PATTERNS.some((pattern) => pattern.test(cleaned));
+	};
 
 	let {
 		messages = [],
@@ -91,6 +113,23 @@
 		for (const group of messagesAlternatives) {
 			for (const id of group) {
 				map.set(id, group);
+			}
+		}
+		return map;
+	});
+	let hideMemoryUiByMessageId = $derived.by(() => {
+		const map = new Map<Message["id"], boolean>();
+		let lastUserMessage: Message | null = null;
+		for (const message of messages) {
+			if (message.from === "user") {
+				lastUserMessage = message;
+				continue;
+			}
+			if (message.from === "assistant" && lastUserMessage) {
+				const shouldHide = isShortGreetingPrompt(lastUserMessage.content ?? "");
+				if (shouldHide) {
+					map.set(message.id, true);
+				}
 			}
 		}
 		return map;
@@ -274,7 +313,7 @@
 
 	// Force scroll to bottom when user sends a new message
 	// Pattern: user message + empty assistant message are added together
-	let prevMessageCount = $state(messages.length);
+	let prevMessageCount = messages.length;
 	let forceReattach = $state(0);
 	$effect(() => {
 		if (messages.length > prevMessageCount) {
@@ -298,6 +337,14 @@
 
 	const settings = useSettingsStore();
 	const hidePromptExamples = deriveStore(settings, (s) => s.hidePromptExamples);
+	const enableVirtualization = deriveStore(settings, (s) => s.enableVirtualization);
+
+	// RoamPal v0.2.11 Fix #2: Enable virtualization for long conversations
+	// Threshold: 50 messages or user-enabled setting
+	const VIRTUALIZATION_THRESHOLD = 50;
+	let shouldVirtualize = $derived(
+		$enableVirtualization ?? messages.length > VIRTUALIZATION_THRESHOLD
+	);
 	const multimodalOverrides = deriveStore(settings, (s) => s.multimodalOverrides);
 	const toolsOverrides = deriveStore(settings, (s) => s.toolsOverrides);
 
@@ -481,7 +528,7 @@
 	}}
 />
 
-<div class="relative z-[-1] min-h-0 min-w-0" dir={isRTL ? "rtl" : "ltr"}>
+<div class="relative h-full min-h-0 w-full min-w-0" dir={isRTL ? "rtl" : "ltr"}>
 	{#if shareModalOpen}
 		<ShareConversationModal open={shareModalOpen} onclose={() => shareModal.close()} />
 	{/if}
@@ -498,44 +545,73 @@
 			{/if}
 
 			{#if messages.length > 0}
-				<div class="flex h-max flex-col gap-8 pb-52">
-					{#each messages as message, idx (message.id)}
-						{@const prev = idx > 0 ? messages[idx - 1] : null}
-						{@const prevTime =
-							prev?.createdAt instanceof Date
-								? prev.createdAt.getTime()
-								: prev?.createdAt
-									? new Date(prev.createdAt as unknown as string).getTime()
-									: null}
-						{@const currTime =
-							message.createdAt instanceof Date
-								? message.createdAt.getTime()
-								: message.createdAt
-									? new Date(message.createdAt as unknown as string).getTime()
-									: null}
-						{@const groupedWithPrevious =
-							!!prev &&
-							prev.from === message.from &&
-							prevTime !== null &&
-							currTime !== null &&
-							currTime - prevTime < 2 * 60 * 1000}
-						<ChatMessage
-							loading={idx === messages.length - 1 ? loading : false}
-							{message}
-							{groupedWithPrevious}
-							alternatives={alternativesByMessageId.get(message.id) ?? []}
-							isAuthor={!shared}
-							readOnly={isReadOnly}
-							isLast={idx === messages.length - 1}
+				<!-- 
+					RoamPal v0.2.11 Fix #2: Message History Performance
+					- Using keyed each blocks with message.id for stable identity
+					- Non-last messages have loading=false to prevent unnecessary updates
+					- Virtualization available for 50+ messages via VirtualizedMessageList
+				-->
+				{#if shouldVirtualize && browser}
+					<!-- Virtualized rendering for long conversations -->
+					<div class="h-[calc(100vh-300px)] min-h-[400px] pb-52">
+						<VirtualizedMessageList
+							{messages}
+							{loading}
+							{shared}
+							{isReadOnly}
 							bind:editMsdgId
+							{alternativesByMessageId}
+							{hideMemoryUiByMessageId}
+							height={typeof window !== "undefined" ? window.innerHeight - 300 : 600}
 							onretry={(payload) => onretry?.(payload)}
 							onshowAlternateMsg={(payload) => onshowAlternateMsg?.(payload)}
 						/>
-					{/each}
-					{#if isReadOnly}
-						<ModelSwitch {models} {currentModel} />
-					{/if}
-				</div>
+						{#if isReadOnly}
+							<ModelSwitch {models} {currentModel} />
+						{/if}
+					</div>
+				{:else}
+					<!-- Standard rendering for short conversations -->
+					<div class="flex h-max flex-col gap-8 pb-52">
+						{#each messages as message, idx (message.id)}
+							{@const prev = idx > 0 ? messages[idx - 1] : null}
+							{@const prevTime =
+								prev?.createdAt instanceof Date
+									? prev.createdAt.getTime()
+									: prev?.createdAt
+										? new Date(prev.createdAt as unknown as string).getTime()
+										: null}
+							{@const currTime =
+								message.createdAt instanceof Date
+									? message.createdAt.getTime()
+									: message.createdAt
+										? new Date(message.createdAt as unknown as string).getTime()
+										: null}
+							{@const groupedWithPrevious =
+								!!prev &&
+								prev.from === message.from &&
+								prevTime !== null &&
+								currTime !== null &&
+								currTime - prevTime < 2 * 60 * 1000}
+							<ChatMessage
+								loading={idx === messages.length - 1 ? loading : false}
+								{message}
+								{groupedWithPrevious}
+								alternatives={alternativesByMessageId.get(message.id) ?? []}
+								hideMemoryUi={hideMemoryUiByMessageId.get(message.id) ?? false}
+								isAuthor={!shared}
+								readOnly={isReadOnly}
+								isLast={idx === messages.length - 1}
+								bind:editMsdgId
+								onretry={(payload) => onretry?.(payload)}
+								onshowAlternateMsg={(payload) => onshowAlternateMsg?.(payload)}
+							/>
+						{/each}
+						{#if isReadOnly}
+							<ModelSwitch {models} {currentModel} />
+						{/if}
+					</div>
+				{/if}
 			{:else if pending}
 				<ChatMessage
 					loading={true}

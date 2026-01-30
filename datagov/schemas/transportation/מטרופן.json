@@ -1,0 +1,142 @@
+{
+  "dataset_id": "ce345e12-77fc-4fcb-9cb3-a369b5f87709",
+  "title": "מטרופן",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "gis",
+    "אופניים",
+    "חיפה",
+    "חצב",
+    "טירת הכרמל",
+    "ממג",
+    "נשר",
+    "קריות",
+    "רשת שבילים",
+    "תכנית אב"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "ממג",
+    "objectid",
+    "start",
+    "status",
+    "city",
+    "מטרופן",
+    "אופניים",
+    "נשר",
+    "חיפה",
+    "gis",
+    "destnation",
+    "בדרכים",
+    "leng",
+    "והבטיחות",
+    "street",
+    "רשת",
+    "שבילים",
+    "משרד",
+    "type",
+    "fid",
+    "lengt",
+    "חצב",
+    "shape",
+    "תכנית",
+    "הכרמל",
+    "טירת",
+    "קריות",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "5f6cfbd5-f733-4f3b-ba8f-1c7b6e4f031b",
+      "title": "METROFAN_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "c2585f87-b07f-42d9-ac05-09c3c42fc89b",
+      "title": "METROFAN_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "6ac4334d-808a-4ee6-8ef8-6a2f129256ea",
+      "title": "METROFAN_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "START_",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DESTNATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STREET",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "TYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Shape_Leng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "LENGT",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 411
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

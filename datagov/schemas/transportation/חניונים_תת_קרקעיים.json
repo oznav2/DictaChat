@@ -1,0 +1,85 @@
+{
+  "dataset_id": "613fef08-5986-41d8-b26c-771fbb12c0e2",
+  "title": "חניונים תת קרקעיים",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "אזורי תעשייה",
+    "חניה",
+    "חניון",
+    "נגישות",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "water",
+    "economy"
+  ],
+  "keywords": [
+    "תעשייה",
+    "objectid",
+    "קרקעיים",
+    "תחבורה",
+    "street",
+    "nam",
+    "אדומים",
+    "emergency",
+    "location",
+    "עיריית",
+    "layer",
+    "חניון",
+    "נגישות",
+    "רכב",
+    "אזורי",
+    "מעלה",
+    "חניונים",
+    "חניה"
+  ],
+  "resources": [
+    {
+      "resource_id": "7aed7347-8629-445f-8b5f-ef45384593e5",
+      "title": "חניונים תת קרקעיים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "LAYER",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STREET_NAM",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Emergency_",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Location",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

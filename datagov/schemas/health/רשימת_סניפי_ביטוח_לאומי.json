@@ -1,0 +1,43 @@
+{
+  "dataset_id": "f1e34104-24cc-44de-856e-2bf5374a9ca5",
+  "title": "רשימת סניפי ביטוח לאומי",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "ביטוח לאומי",
+    "בריאות ורווחה",
+    "סביבה",
+    "סניפים"
+  ],
+  "categories": [
+    "health",
+    "environment",
+    "welfare"
+  ],
+  "keywords": [
+    "ביטוח",
+    "לאומי",
+    "לביטוח",
+    "סניפים",
+    "ורווחה",
+    "המוסד",
+    "בריאות",
+    "סביבה",
+    "סניפי"
+  ],
+  "resources": [
+    {
+      "resource_id": "cd822572-a32b-4ca5-9817-9ff4d0bc3cb8",
+      "title": "רשימת סניפי ביטוח לאומי",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

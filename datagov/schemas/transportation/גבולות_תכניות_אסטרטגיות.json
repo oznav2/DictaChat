@@ -1,0 +1,108 @@
+{
+  "dataset_id": "03092ac8-91ad-4a29-9ad6-78d838dff833",
+  "title": "גבולות תכניות אסטרטגיות",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "ממג",
+    "תחבורה",
+    "תכניות אסטרטגיות"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "status",
+    "תחבורה",
+    "gis",
+    "תכניות",
+    "התחבורה",
+    "גבולות",
+    "editor",
+    "בדרכים",
+    "והבטיחות",
+    "אסטרטגיות",
+    "משרד",
+    "חצב",
+    "shape",
+    "area",
+    "oid",
+    "length",
+    "link"
+  ],
+  "resources": [
+    {
+      "resource_id": "dcc7bbb5-cc7b-4d90-a0b5-b8a406983b90",
+      "title": "STRAT_BORDER_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "078255dc-c520-47fb-81d4-66ccaf265255",
+      "title": "STRAT_BORDER_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e9c9b934-ae9b-49c5-9bd6-527b8fbc39a5",
+      "title": "STRAT_BORDER_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "SHAPE_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Area",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "EDITOR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "LINK",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 9
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

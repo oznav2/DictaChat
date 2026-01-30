@@ -38,7 +38,7 @@ export interface ContextResponse {
 	confidence: "high" | "medium" | "low";
 }
 
-const ALL_TIERS: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+const ALL_TIERS: MemoryTier[] = ["working", "history", "patterns", "documents", "memory_bank"];
 
 export const POST: RequestHandler = async ({ request }) => {
 	const body: ContextRequest = await request.json();

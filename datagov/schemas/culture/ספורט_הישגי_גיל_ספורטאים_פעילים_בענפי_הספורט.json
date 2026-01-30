@@ -1,0 +1,42 @@
+{
+  "dataset_id": "586ae9ae-46a4-4f0c-b766-1c031604afb1",
+  "title": "ספורט הישגי - גיל ספורטאים פעילים בענפי הספורט",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "גיל",
+    "ספורט",
+    "ענף"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "התרבות",
+    "ספורטאים",
+    "משרד",
+    "הישגי",
+    "ענף",
+    "בענפי",
+    "הספורט",
+    "פעילים",
+    "והספורט",
+    "גיל",
+    "ספורט"
+  ],
+  "resources": [
+    {
+      "resource_id": "1dab5278-36c9-405e-9fb9-8a92e7d317a7",
+      "title": "most.DB.536.csv",
+      "format": "CSV",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

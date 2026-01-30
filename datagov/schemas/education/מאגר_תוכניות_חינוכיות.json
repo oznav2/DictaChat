@@ -1,0 +1,131 @@
+{
+  "dataset_id": "e698930f-6343-44b0-b495-1a8ee9eeda1a",
+  "title": "מאגר תוכניות חינוכיות",
+  "organization": "משרד החינוך",
+  "tags": [
+    "חינוך"
+  ],
+  "categories": [
+    "education",
+    "water"
+  ],
+  "keywords": [
+    "makortochnit",
+    "shemtochnit",
+    "shnathatchala",
+    "sugirgun",
+    "חינוך",
+    "חינוכיות",
+    "tnaeihitstarfut",
+    "החינוך",
+    "shemirgun",
+    "yechidamelavebamisrad",
+    "shemtochnitnosaf",
+    "shutafimlatochnit",
+    "משרד",
+    "statustochnit",
+    "tchummerkazi",
+    "hearot",
+    "mispartochnit",
+    "matarattochnit",
+    "taktsirtochnit",
+    "תוכניות"
+  ],
+  "resources": [
+    {
+      "resource_id": "b04578f3-2ece-47ce-a457-66a00a9d1eac",
+      "title": "מאגר תוכניות חינוכיות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "misparTochnit",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shemTochnit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shemTochnitNosaf",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "statusTochnit",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "makorTochnit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "taktsirTochnit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mataratTochnit",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tchumMerkazi",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shnatHatchala",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shemIrgun",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sugIrgun",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shutafimLatochnit",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "tnaeiHitstarfut",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hearot",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "yechidaMelaveBaMisrad",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1905
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

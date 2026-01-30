@@ -1,0 +1,199 @@
+{
+  "dataset_id": "aec8cb0e-6e20-44a5-aaeb-17c203cd8a7e",
+  "title": "רשימת הרשויות הציבוריות מתוקף חוק חופש המידע",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "חופש המידע",
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "mmdtypes",
+    "חוק",
+    "הציבוריות",
+    "govxcontentsection",
+    "mmdsubjects",
+    "receptionphonenumbers",
+    "formfax",
+    "fax",
+    "paymentbanktransfer",
+    "mmdofficestypes",
+    "הרשויות",
+    "paymentpostalbank",
+    "formemail",
+    "paymentphone",
+    "websiteurl",
+    "receptionaddressnotes",
+    "חופש",
+    "formonlineurl",
+    "forwizard",
+    "משרד",
+    "officenamecode",
+    "paymentcash",
+    "formletter",
+    "paymentcheck",
+    "המשפטים",
+    "officetypecode",
+    "paymentonlineurl",
+    "title",
+    "מתוקף",
+    "paymenttreasury",
+    "managername",
+    "officeicon",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "e6429707-50d0-4682-880a-4f11431b5da4",
+      "title": "רשימת הרשויות הציבוריות מתוקף חוק חופש המידע",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "MMDOfficesTypes",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ManagerName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "Fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "ReceptionAddressNotes",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "ReceptionPhoneNumbers",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "websiteURL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "PaymentBankTransfer",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "GovXContentSection",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FormEmail",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "FormFax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "FormLetter",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FormOnlineURL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "forWizard",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MMDSubjects",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MMDTypes",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "OfficeIcon",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OfficeNameCode",
+          "type": "numeric",
+          "semantic": "name"
+        },
+        {
+          "name": "OfficeTypeCode",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PaymentCash",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PaymentCheck",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PaymentOnlineURL",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "PaymentPhone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "PaymentPostalBank",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "PaymentTreasury",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 2100
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

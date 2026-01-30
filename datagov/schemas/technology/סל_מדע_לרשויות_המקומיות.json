@@ -1,0 +1,55 @@
+{
+  "dataset_id": "b7bd167b-9c16-48fc-92b9-fbaf6b8e06be",
+  "title": "סל מדע לרשויות המקומיות",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "מדע",
+    "סל מדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "המקומיות",
+    "מדע",
+    "החדשנות",
+    "הרשות",
+    "סכום",
+    "משרד",
+    "המדע",
+    "לרשויות",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "479641a6-885c-48dd-81d1-f76ade5095ee",
+      "title": "סל מדע לרשיויות המקומיות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הרשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "סכום",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 156
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

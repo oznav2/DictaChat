@@ -1,0 +1,53 @@
+{
+  "dataset_id": "65f5541e-73c5-4528-95b6-f238bf7883a9",
+  "title": "מאגר יועצים משפטיים",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "מאגר יועצים משפטיים"
+  ],
+  "categories": [
+    "water",
+    "justice",
+    "culture"
+  ],
+  "keywords": [
+    "משפטיים",
+    "התרבות",
+    "יועצים",
+    "משרד",
+    "הערות",
+    "והספורט"
+  ],
+  "resources": [
+    {
+      "resource_id": "bd249845-aacf-451c-a576-fd41f28bdd21",
+      "title": "רשימת יועצים משפטיים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "הערות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 35
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

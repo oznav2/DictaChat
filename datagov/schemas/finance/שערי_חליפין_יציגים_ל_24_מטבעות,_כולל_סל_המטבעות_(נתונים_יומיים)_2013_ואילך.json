@@ -1,0 +1,198 @@
+{
+  "dataset_id": "7e546ff4-76ae-455c-b213-7f641cb00502",
+  "title": "שערי חליפין יציגים ל- 24 מטבעות, כולל סל המטבעות (נתונים יומיים) 2013 ואילך",
+  "organization": "בנק ישראל",
+  "tags": [
+    "אוצר וכלכלה"
+  ],
+  "categories": [
+    "finance",
+    "environment",
+    "economy"
+  ],
+  "keywords": [
+    "וכלכלה",
+    "japanese",
+    "danish",
+    "swedish",
+    "french",
+    "canadian",
+    "date",
+    "swiss",
+    "spanish",
+    "egyptian",
+    "יציגים",
+    "dutch",
+    "belgian",
+    "finish",
+    "חליפין",
+    "afr",
+    "lebanese",
+    "south",
+    "שערי",
+    "בנק",
+    "ואילך",
+    "אוצר",
+    "currency",
+    "מטבעות",
+    "austrian",
+    "המטבעות",
+    "irish",
+    "italian",
+    "ישראל",
+    "eur",
+    "german",
+    "יומיים",
+    "jordanian",
+    "english",
+    "australian",
+    "norwegian"
+  ],
+  "resources": [
+    {
+      "resource_id": "626dc624-277d-4c06-9efe-d282adfabb28",
+      "title": "שערי חליפין יציגים ל- 24 מטבעות, כולל סל המטבעות (נתונים יומיים) 2013 ואילך",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "DATE",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "CURRENCY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "US",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "GERMAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ENGLISH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FRENCH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "JAPANESE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DUTCH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SWISS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SWEDISH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NORWEGIAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DANISH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FINISH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CANADIAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AUSTRALIAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SOUTH AFR.",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BELGIAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AUSTRIAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ITALIAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "IRISH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SPANISH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "EUR",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "JORDANIAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LEBANESE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "EGYPTIAN",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 2706
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -6,6 +6,8 @@ import { config } from "dotenv";
 
 config({ path: "./.env.local" });
 
+const enableBrowserTests = process.env.VITEST_BROWSER === "true";
+
 // used to load fonts server side for thumbnail generation
 function loadTTFAsArrayBuffer() {
 	return {
@@ -20,6 +22,7 @@ function loadTTFAsArrayBuffer() {
 	};
 }
 export default defineConfig({
+	cacheDir: ".vite",
 	plugins: [
 		sveltekit(),
 		Icons({
@@ -49,10 +52,12 @@ export default defineConfig({
 		},
 	},
 	optimizeDeps: {
-		include: ["uuid", "sharp", "clsx", "@braintree/sanitize-url"],
-		exclude: ["mermaid", "dayjs"],
+		include: ["uuid", "clsx", "@braintree/sanitize-url"],
+		exclude: ["mermaid", "dayjs", "sharp"],
+		holdUntilCrawlEnd: true,
 	},
 	build: {
+		chunkSizeWarningLimit: 1500,
 		rollupOptions: {
 			// Mark ioredis as external - it's optionally used for caching
 			// and gracefully falls back when not available
@@ -61,24 +66,26 @@ export default defineConfig({
 	},
 	test: {
 		workspace: [
+			...(enableBrowserTests
+				? [
+						{
+							extends: "./vite.config.ts",
+							test: {
+								name: "client",
+								environment: "browser",
+								browser: {
+									enabled: true,
+									provider: "playwright",
+									instances: [{ browser: "chromium", headless: true }],
+								},
+								include: ["src/**/*.svelte.{test,spec}.{js,ts}"],
+								exclude: ["src/lib/server/**", "src/**/*.ssr.{test,spec}.{js,ts}"],
+								setupFiles: ["./scripts/setups/vitest-setup-client.ts"],
+							},
+						},
+					]
+				: []),
 			{
-				// Client-side tests (Svelte components)
-				extends: "./vite.config.ts",
-				test: {
-					name: "client",
-					environment: "browser",
-					browser: {
-						enabled: true,
-						provider: "playwright",
-						instances: [{ browser: "chromium", headless: true }],
-					},
-					include: ["src/**/*.svelte.{test,spec}.{js,ts}"],
-					exclude: ["src/lib/server/**", "src/**/*.ssr.{test,spec}.{js,ts}"],
-					setupFiles: ["./scripts/setups/vitest-setup-client.ts"],
-				},
-			},
-			{
-				// SSR tests (Server-side rendering)
 				extends: "./vite.config.ts",
 				test: {
 					name: "ssr",
@@ -87,7 +94,6 @@ export default defineConfig({
 				},
 			},
 			{
-				// Server-side tests (Node.js utilities)
 				extends: "./vite.config.ts",
 				test: {
 					name: "server",

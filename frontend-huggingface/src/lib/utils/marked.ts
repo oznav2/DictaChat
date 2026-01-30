@@ -30,7 +30,6 @@ import sql from "highlight.js/lib/languages/sql";
 import plaintext from "highlight.js/lib/languages/plaintext";
 import { parseIncompleteMarkdown } from "./parseIncompleteMarkdown";
 import { parseMarkdownIntoBlocks } from "./parseBlocks";
-import DOMPurify from "isomorphic-dompurify";
 
 const bundledLanguages: [string, LanguageFn][] = [
 	["javascript", javascript],
@@ -241,6 +240,35 @@ function escapeHTML(content: string) {
 	);
 }
 
+function sanitizeDetailsHtml(html: string): string {
+	const replacements: Record<string, string> = {};
+	let index = 0;
+
+	const stash = (replacement: string) => {
+		const key = `__DETAILS_TAG_${index++}__`;
+		replacements[key] = replacement;
+		return key;
+	};
+
+	let sanitized = html.replace(/<\/?details[^>]*>/gi, (match) => {
+		if (match.startsWith("</")) {
+			return stash("</details>");
+		}
+		const hasOpen = /\bopen\b/i.test(match);
+		return stash(hasOpen ? "<details open>" : "<details>");
+	});
+
+	sanitized = sanitized.replace(/<\/?summary[^>]*>/gi, (match) => {
+		if (match.startsWith("</")) {
+			return stash("</summary>");
+		}
+		return stash("<summary>");
+	});
+
+	sanitized = escapeHTML(sanitized);
+	return sanitized.replace(/__DETAILS_TAG_\d+__/g, (match) => replacements[match] ?? "");
+}
+
 function addInlineCitations(md: string, webSearchSources: SimpleSource[] = []): string {
 	const linkStyle =
 		"color: rgb(59, 130, 246); text-decoration: none; hover:text-decoration: underline;";
@@ -298,10 +326,7 @@ function createMarkedInstance(sources: SimpleSource[]): Marked {
 			html: (html) => {
 				// Allow details and summary tags for collapsible sections, but sanitize to prevent XSS
 				if (html.includes("<details") || html.includes("<summary")) {
-					return DOMPurify.sanitize(html, {
-						ALLOWED_TAGS: ["details", "summary"],
-						ALLOWED_ATTR: ["open"],
-					});
+					return sanitizeDetailsHtml(html);
 				}
 				return escapeHTML(html);
 			},

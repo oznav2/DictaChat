@@ -28,6 +28,26 @@ const SERVER_DOMAIN_MAPPING: Record<string, string> = {
 	discord: "discord.com",
 };
 
+function isLocalHostname(hostname: string): boolean {
+	const lower = hostname.toLowerCase();
+	if (lower === "localhost" || lower === "127.0.0.1" || lower === "0.0.0.0" || lower === "::1") {
+		return true;
+	}
+	if (lower.endsWith(".local")) {
+		return true;
+	}
+	if (/^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(lower)) {
+		return true;
+	}
+	if (/^192\.168\.\d{1,3}\.\d{1,3}$/.test(lower)) {
+		return true;
+	}
+	if (/^172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}$/.test(lower)) {
+		return true;
+	}
+	return false;
+}
+
 /**
  * Generates a Google favicon URL for the given server URL
  * @param serverUrl - The MCP server URL (e.g., "https://mcp.exa.ai/mcp")
@@ -37,6 +57,9 @@ const SERVER_DOMAIN_MAPPING: Record<string, string> = {
 export function getMcpServerFaviconUrl(serverUrl: string, size: number = 64): string {
 	try {
 		const parsed = new URL(serverUrl);
+		if (isLocalHostname(parsed.hostname)) {
+			return "";
+		}
 
 		// Check if it's a proxy URL (e.g. http://mcp-sse-proxy:3100/git/sse)
 		// We assume the second part of the path is the server name
@@ -57,6 +80,9 @@ export function getMcpServerFaviconUrl(serverUrl: string, size: number = 64): st
 		const domain = `${parsed.protocol}//${rootDomain}`;
 		return `https://www.google.com/s2/favicons?sz=${size}&domain_url=${encodeURIComponent(domain)}`;
 	} catch {
+		if (/(?:localhost|127\.0\.0\.1|0\.0\.0\.0|::1)/i.test(serverUrl)) {
+			return "";
+		}
 		// If URL parsing fails, just use the raw serverUrl - Google will handle it
 		return `https://www.google.com/s2/favicons?sz=${size}&domain_url=${encodeURIComponent(serverUrl)}`;
 	}

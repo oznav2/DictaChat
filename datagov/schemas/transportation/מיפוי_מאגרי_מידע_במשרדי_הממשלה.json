@@ -1,0 +1,125 @@
+{
+  "dataset_id": "069357eb-bcc9-466c-a515-ce6d0a81462f",
+  "title": "מיפוי מאגרי מידע במשרדי הממשלה",
+  "organization": "מערך הדיגיטל הלאומי",
+  "tags": [
+    "אוכלוסיה",
+    "אוצר וכלכלה",
+    "אנרגיה ומים",
+    "בריאות ורווחה",
+    "דיור",
+    "חינוך ותרבות",
+    "משפט",
+    "סביבה",
+    "תחבורה",
+    "תיירות"
+  ],
+  "categories": [
+    "transportation",
+    "health",
+    "education",
+    "environment",
+    "water",
+    "justice",
+    "welfare",
+    "housing",
+    "tourism",
+    "culture",
+    "economy",
+    "geography"
+  ],
+  "keywords": [
+    "וכלכלה",
+    "תחבורה",
+    "מיפוי",
+    "אוכלוסיה",
+    "במשרדי",
+    "הדיגיטל",
+    "datasettype",
+    "apiavailability",
+    "datasetstoke",
+    "אנרגיה",
+    "דיור",
+    "תיירות",
+    "הממשלה",
+    "חינוך",
+    "הלאומי",
+    "datasetlink",
+    "ותרבות",
+    "בריאות",
+    "משפט",
+    "datasetnotes",
+    "filetype",
+    "אוצר",
+    "ורווחה",
+    "סביבה",
+    "מאגרי",
+    "מערך",
+    "ומים",
+    "organization"
+  ],
+  "resources": [
+    {
+      "resource_id": "c569fa65-1525-4070-b306-d297b81debca",
+      "title": "מיפוי המאגרים 2023 - דברי הסבר",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "63717ee6-90db-4627-86fe-026a24933249",
+      "title": "מיפוי מאגרי מידע במשרדי הממשלה ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Organization",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DataSetStoke",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DataSetType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "APIAvailability",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "FileType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DataSetLink",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "DataSetNotes",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3262
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

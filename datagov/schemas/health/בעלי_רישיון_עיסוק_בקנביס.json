@@ -1,0 +1,71 @@
+{
+  "dataset_id": "5ab07db3-c8a9-4399-8247-1ae9f9455003",
+  "title": "בעלי רישיון עיסוק בקנביס",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "קנאביס רפואי",
+    "קנביס רפואי",
+    "רישיון עיסוק בקנביס"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "company",
+    "notes",
+    "בקנביס",
+    "קנביס",
+    "עיסוק",
+    "בעלי",
+    "משרד",
+    "קנאביס",
+    "type",
+    "הבריאות",
+    "רפואי",
+    "description",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "c05fc5e0-c292-4633-8b06-e4f8b635d2a0",
+      "title": "בעלי רישיון עיסוק בקנביס",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "company_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "type",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "type_description",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 305
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

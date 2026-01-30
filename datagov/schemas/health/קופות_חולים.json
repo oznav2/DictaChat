@@ -1,0 +1,106 @@
+{
+  "dataset_id": "e7798424-57f2-4cda-b2c3-ceab37879a58",
+  "title": "קופות חולים",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "בריאות",
+    "קופות חולים",
+    "רופאים",
+    "רפואה",
+    "תרופות"
+  ],
+  "categories": [
+    "health",
+    "water"
+  ],
+  "keywords": [
+    "name",
+    "כתובת",
+    "objectid",
+    "רופאים",
+    "מעלה",
+    "טלפון",
+    "מקדמת",
+    "אחראית",
+    "מנהל",
+    "בריאות",
+    "קופות",
+    "מחוז",
+    "אדומים",
+    "תרופות",
+    "קופה",
+    "אחראי",
+    "רופא",
+    "אחות",
+    "רפואה",
+    "חולים",
+    "עיריית"
+  ],
+  "resources": [
+    {
+      "resource_id": "a48e7587-554e-4fe5-ba65-973a77f53653",
+      "title": "רשימת קופות חולים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מנהל_קופה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "רופא_אחראי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אחות__אחראית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מנהל_מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "מקדמת_בריאות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 12
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

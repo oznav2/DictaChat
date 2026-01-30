@@ -1,0 +1,96 @@
+{
+  "dataset_id": "4228d240-3b78-41c1-affe-67374124abf6",
+  "title": "בתי מרקחת",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "אדומים",
+    "בתי מרקחת",
+    "מעלה",
+    "מעלה אדומים",
+    "עירייה",
+    "תרופות"
+  ],
+  "categories": [
+    "water",
+    "municipal"
+  ],
+  "keywords": [
+    "מרקחת",
+    "name",
+    "fax",
+    "עירייה",
+    "בתי",
+    "אדומים",
+    "עיריית",
+    "תרופות",
+    "bikort",
+    "telefon",
+    "menael",
+    "ktovet",
+    "מעלה",
+    "sugbealut",
+    "bealim"
+  ],
+  "resources": [
+    {
+      "resource_id": "d65660ac-f895-463e-a8ed-3cdecc5d2c1b",
+      "title": "רשימת בתי מרקחת",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "telefon",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "bealim",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ktovet",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "bikort",
+          "type": "timestamp",
+          "semantic": null
+        },
+        {
+          "name": "menael",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sugbealut",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 9
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

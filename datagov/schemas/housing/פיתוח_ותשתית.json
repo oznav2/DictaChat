@@ -1,0 +1,152 @@
+{
+  "dataset_id": "62c626d7-e01a-48ff-8f66-f5a502bac5c7",
+  "title": "פיתוח ותשתית",
+  "organization": "משרד הבינוי והשיכון",
+  "tags": [
+    "פיתוח",
+    "שיווק ובניה"
+  ],
+  "categories": [
+    "housing",
+    "technology"
+  ],
+  "keywords": [
+    "publishdate",
+    "proposalstatus",
+    "atarname",
+    "tendernumber",
+    "tenderdescription",
+    "tenderid",
+    "והשיכון",
+    "proposalsnumber",
+    "omdan",
+    "פיתוח",
+    "ובניה",
+    "שיווק",
+    "atarcode",
+    "משרד",
+    "tenderyear",
+    "ותשתית",
+    "lamascode",
+    "lamasname",
+    "decisiondate",
+    "proposalamount",
+    "providername",
+    "הבינוי"
+  ],
+  "resources": [
+    {
+      "resource_id": "04e375ef-08a6-4327-8044-7bd595c4d106",
+      "title": "תוצאות מכרזי פיתוח ותשתית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "TenderID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "LamasCode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "LamasName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "AtarCode",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "AtarName",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TenderNumber",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "TenderYear",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "TenderDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OMDAN",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PublishDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "DecisionDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "ProposalsNumber",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 594
+    },
+    {
+      "resource_id": "722aebc6-5541-46fa-abcf-15b06e02c70c",
+      "title": "סכומי ההצעות למכרזי הפיתוח והתשתית",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "TenderID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ProposalAmount",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ProposalStatus",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "ProviderName",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 5815
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

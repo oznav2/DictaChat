@@ -1,0 +1,541 @@
+{
+  "dataset_id": "56ddb2ac-0627-4908-86b3-f50ac4311552",
+  "title": "סדרות העשרה לאקוויפר החוף",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "water",
+    "אקוויפר",
+    "הידרוגיאולוגיה",
+    "מי תהום",
+    "מים",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "סדרות",
+    "הרשות",
+    "אקוויפר",
+    "רשות",
+    "הידרוגיאולוגיה",
+    "תהום",
+    "למים",
+    "הממשלתית",
+    "המים",
+    "מים",
+    "ולביוב",
+    "החוף",
+    "לאקוויפר",
+    "העשרה",
+    "water",
+    "scenario"
+  ],
+  "resources": [
+    {
+      "resource_id": "f27d9310-cd41-4cf9-99b7-06aa0869bd47",
+      "title": "Measure_Costal_Rechrge_Components_V1",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "scenario",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "2004",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2005",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2006",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2007",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2008",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2009",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2010",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2011",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2012",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2013",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2014",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 578
+    },
+    {
+      "resource_id": "735ee4e6-cd98-4272-92a8-e57b3311c77c",
+      "title": "Model_Costal_Rechrge_Components_V1",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "scenario",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "2023",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2024",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2025",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2026",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2027",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2028",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2029",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2030",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2031",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2032",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2033",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2034",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2035",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2036",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2037",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2038",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2039",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2040",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2041",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2042",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2043",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2044",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2045",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2046",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2047",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2048",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2049",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2050",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2051",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2052",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2053",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2054",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2055",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2056",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2057",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2058",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2059",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2060",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2061",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2062",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2063",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2064",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2065",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2066",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2067",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2068",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2069",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2070",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2071",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2072",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2073",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2074",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2075",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2076",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2077",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2078",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2079",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2080",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2081",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2082",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2083",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2084",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2085",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2086",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2087",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2088",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2089",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2090",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2091",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2092",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2093",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2094",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2095",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2096",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2097",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2098",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2099",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "2100",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1257
+    },
+    {
+      "resource_id": "d3848acb-2caf-4ce5-83e1-91ef47c48a34",
+      "title": "CostalAquiferCells_V1",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

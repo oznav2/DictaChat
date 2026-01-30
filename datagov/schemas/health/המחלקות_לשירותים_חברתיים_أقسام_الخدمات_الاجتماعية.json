@@ -1,0 +1,131 @@
+{
+  "dataset_id": "86f98fb9-7a0b-43c4-9ffb-0e50d22c134f",
+  "title": "המחלקות לשירותים חברתיים أقسام الخدمات الاجتماعية",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "בריאות ורווחה",
+    "משרד הרווחה"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "phone",
+    "sort",
+    "manager",
+    "city",
+    "המחלקות",
+    "fax",
+    "לשירותים",
+    "adress",
+    "והביטחון",
+    "בריאות",
+    "חברתיים",
+    "authority",
+    "משרד",
+    "district",
+    "ורווחה",
+    "semel",
+    "num",
+    "החברתי",
+    "machlaka",
+    "הרווחה",
+    "location",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "ff5a820a-eae2-460e-8800-7cd64d38bc08",
+      "title": "أقسام الخدمات الاجتماعية",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "authority_num",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "semel_machlaka",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "manager",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sort",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "machlaka_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "machlaka_fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "authority_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "authority_fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 329
+    },
+    {
+      "resource_id": "74eb4fcc-e384-49a7-bde8-5906e947519d",
+      "title": "הסבר מבנה הנתונים בקובץ המחלקות לשירותים חברתיים - ערבית ",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

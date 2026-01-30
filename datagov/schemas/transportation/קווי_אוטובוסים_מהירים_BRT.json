@@ -1,0 +1,111 @@
+{
+  "dataset_id": "66ba64f9-f47c-4c0a-917f-e3cdaf1cf6b1",
+  "title": "קווי אוטובוסים מהירים BRT",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "BRT",
+    "GIS",
+    "אוטובוס",
+    "אוטובוסים מהירים",
+    "ממג",
+    "תחבורה מהירה"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "קווי",
+    "ממג",
+    "status",
+    "תחבורה",
+    "freq",
+    "אוטובוס",
+    "gis",
+    "בדרכים",
+    "והבטיחות",
+    "אוטובוסים",
+    "brt",
+    "infra",
+    "משרד",
+    "length",
+    "shape",
+    "מהירה",
+    "oid",
+    "מהירים",
+    "line",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "8d4d11cc-0406-4cb4-8344-d2752b89e003",
+      "title": "BRT_LINE_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "44e90389-c7f5-423e-9036-d3702ea43815",
+      "title": "BRT_LINE_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1859ef16-1f1e-45d1-8265-297e8be40fde",
+      "title": "BRT_LINE_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LINE_EG",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LINE_INFRA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FREQ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 6
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

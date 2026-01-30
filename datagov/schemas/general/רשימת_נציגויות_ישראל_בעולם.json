@@ -1,0 +1,198 @@
+{
+  "dataset_id": "14f2521f-819a-4ea4-87e8-6811d43e4495",
+  "title": "רשימת נציגויות ישראל בעולם",
+  "organization": "משרד החוץ",
+  "tags": [
+    "משרד החוץ",
+    "נציגויות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "visa",
+    "fax",
+    "החוץ",
+    "shem",
+    "kabala",
+    "ntz",
+    "ybsht",
+    "maamad",
+    "addrs",
+    "נציגויות",
+    "משרד",
+    "atar",
+    "mdn",
+    "tel",
+    "ישראל",
+    "בעולם",
+    "israel",
+    "address",
+    "email"
+  ],
+  "resources": [
+    {
+      "resource_id": "6fc859cb-8a6f-458b-bd5a-9bd0cfbfce11",
+      "title": "נציגויות ישראל בעולם - אנגלית CSV ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "shem_mdn_a",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "k_ntz",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ybsht_a",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "shem_ntz_a",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "maamad_a",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Addrs",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Kabala",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "tel",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Atar",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "visa_to_mdn",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "visa_to_Israel",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 197
+    },
+    {
+      "resource_id": "4d1ce6f0-08d9-4294-a7ae-aae1b29bb769",
+      "title": "נציגויות ישראל בעולם - עברית CSV ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "shem_mdn",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ybsht",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "k_ntz",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shem_ntz",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "maamad",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Kabala",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "tel",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "fax",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Atar",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "visa_to_mdn",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "visa_to_Israel",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 197
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "dataset_id": "71426c53-ccfe-4463-a625-d0c8eae8f69c",
+  "title": "בתי ספר לנהיגה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משרד התחבורה",
+    "נהיגה",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תחבורה",
+    "telefon",
+    "hiter",
+    "ezor",
+    "menahel",
+    "traktor",
+    "shem",
+    "בדרכים",
+    "והבטיחות",
+    "beit",
+    "sefer",
+    "משרד",
+    "otobus",
+    "grar",
+    "ofnoa",
+    "prati",
+    "cod",
+    "בתי",
+    "נהיגה",
+    "masa",
+    "ktovet",
+    "ספר",
+    "התחבורה",
+    "לנהיגה"
+  ],
+  "resources": [
+    {
+      "resource_id": "3f06e2f2-e2ad-41ac-9665-37d0625537f2",
+      "title": "בתי ספר לנהיגה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "cod_ezor",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ezor",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "cod_beit_sefer",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shem_beit_sefer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "cod_hiter",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "menahel",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ktovet",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "telefon",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "prati",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "masa",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "traktor",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ofnoa",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "otobus",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "grar",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 399
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

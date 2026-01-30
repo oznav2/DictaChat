@@ -2,7 +2,6 @@
 	import { base } from "$app/paths";
 	import { afterNavigate, goto } from "$app/navigation";
 	import { useSettingsStore } from "$lib/stores/settings";
-	import { canPopSettingsStack, popSettingsStack } from "$lib/stores/settingsStack";
 	import CarbonCheckmark from "~icons/carbon/checkmark";
 
 	import Modal from "$lib/components/Modal.svelte";
@@ -16,14 +15,14 @@
 	let previousPage: string = $state(base || "/");
 
 	function handleClose() {
-		if (canPopSettingsStack()) {
-			const next = popSettingsStack();
-			if (next) {
-				goto(next);
-				return;
-			}
-		}
-		goto(previousPage);
+		// Simple navigation - go back to previous page or root
+		const target = previousPage || base || "/";
+		console.log("[Settings Modal] Closing, navigating to:", target);
+		goto(target).catch((err) => {
+			console.error("[Settings Modal] Navigation failed:", err);
+			// Fallback: force navigation via window.location
+			window.location.href = target;
+		});
 	}
 
 	afterNavigate(({ from }) => {

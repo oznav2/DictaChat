@@ -1,0 +1,179 @@
+{
+  "dataset_id": "a8a16612-69c6-4ae9-952b-b1c7332d08ec",
+  "title": "התקדמות הבניה",
+  "organization": "משרד הבינוי והשיכון",
+  "tags": [
+    "שיווק ובניה"
+  ],
+  "categories": [
+    "housing"
+  ],
+  "keywords": [
+    "mitham",
+    "mahoz",
+    "הבניה",
+    "helka",
+    "והשיכון",
+    "mispar",
+    "lamas",
+    "shem",
+    "yeshuv",
+    "bniya",
+    "ובניה",
+    "kobea",
+    "שיווק",
+    "shnat",
+    "shitat",
+    "משרד",
+    "shivuk",
+    "התקדמות",
+    "atar",
+    "migrash",
+    "shetah",
+    "hoze",
+    "gush",
+    "shlav",
+    "taarich",
+    "yehidot",
+    "הבינוי",
+    "binyan",
+    "komot"
+  ],
+  "resources": [
+    {
+      "resource_id": "1ec45809-5927-430a-9b30-77f77f528ce3",
+      "title": "דיווחי התקדמות הבניה - בניה רוויה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "MAHOZ",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YESHUV_LAMAS",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ATAR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MISPAR_MITHAM",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SHEM_MITHAM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MIGRASH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GUSH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HELKA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MISPAR_BINYAN",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "KOMOT_BINYAN",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YEHIDOT_BINYAN",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SHETAH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHITAT_SHIVUK",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TAARICH_KOBEA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHNAT_HOZE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TAARICH_SHLAV_BNIYA_5",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TAARICH_SHLAV_BNIYA_7",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TAARICH_SHLAV_BNIYA_8",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TAARICH_SHLAV_BNIYA_16",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TAARICH_SHLAV_BNIYA_18",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TAARICH_SHLAV_BNIYA_29",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TAARICH_SHLAV_BNIYA_39",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TAARICH_SHLAV_BNIYA_42",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 10371
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

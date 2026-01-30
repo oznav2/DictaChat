@@ -1,0 +1,153 @@
+{
+  "dataset_id": "f517f2b4-bd7d-4cb4-b777-708cf26deef7",
+  "title": "שינויי תקציב 2005",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אוצר וכלכלה",
+    "שינוי תקציב",
+    "שינויים תקציב",
+    "תקציב"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "הוצאה",
+    "תיאור",
+    "שיא",
+    "וכלכלה",
+    "מיועדת",
+    "שינוי",
+    "סוג",
+    "הוצאות",
+    "מוביל",
+    "הכנסה",
+    "תקציב",
+    "שינויי",
+    "בהכנסה",
+    "שינויים",
+    "סעיף",
+    "נטו",
+    "וועדה",
+    "הרשאה",
+    "האוצר",
+    "להתחייב",
+    "תוכנית",
+    "משרד",
+    "אוצר",
+    "קוד",
+    "בקשה",
+    "שנה",
+    "מותנית"
+  ],
+  "resources": [
+    {
+      "resource_id": "d93bd241-d6d2-4062-bb6e-42690ce0c5ac",
+      "title": "שינויי תקציב 2005",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "סעיף מוביל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תיאור בקשה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד שינוי",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם שינוי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד סוג בקשה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם סוג בקשה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר וועדה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "קוד תוכנית",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תוכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "הוצאות נטו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הוצאה מותנית בהכנסה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הרשאה להתחייב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שיא כא",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 6969
+    },
+    {
+      "resource_id": "a98c58b9-c4c5-44d7-ba5e-a449460a5d4f",
+      "title": "הסברים",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

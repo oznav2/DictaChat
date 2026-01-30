@@ -4,7 +4,7 @@
  * Responsibilities:
  * - Collection creation and management
  * - Vector upsert, delete, query operations
- * - 768d vector dimension validation
+ * - 1024d vector dimension validation (BGE-M3)
  * - Fail-open behavior with timeouts
  *
  * Key design principles:
@@ -12,6 +12,8 @@
  * - Return empty results on timeout/error, never throw to UI path
  * - Single collection with payload filtering (not per-tier collections)
  */
+
+import { v5 as uuidv5, validate as uuidValidate } from "uuid";
 
 import { logger } from "$lib/server/logger";
 import type { MemoryConfig, QdrantDistance } from "../memory_config";
@@ -33,6 +35,7 @@ export interface QdrantPoint {
 }
 
 export interface QdrantPayload {
+	memory_id?: string;
 	user_id: string;
 	tier: MemoryTier;
 	status: MemoryStatus;
@@ -71,6 +74,14 @@ export interface QdrantSearchParams {
 	status?: MemoryStatus[];
 	tags?: string[];
 	minScore?: number;
+	/** NER Integration: Pre-filter to only these memory IDs */
+	filterIds?: string[];
+}
+
+export interface EntityFilterParams {
+	userId: string;
+	entityWords: string[];
+	limit?: number;
 }
 
 export interface QdrantHealthStatus {
@@ -95,6 +106,8 @@ interface QdrantCollectionInfo {
 	};
 }
 
+const MEMORY_ID_NAMESPACE = uuidv5.DNS;
+
 export class QdrantAdapter {
 	private baseUrl: string;
 	private apiKey?: string;
@@ -118,7 +131,8 @@ export class QdrantAdapter {
 
 		this.collectionName = this.config.qdrant.collection_name;
 		this.vectorName = this.config.qdrant.vector_name;
-		this.expectedDims = this.config.qdrant.expected_embedding_dims ?? 768;
+		// BGE-M3 produces 1024-dim vectors - must match DictaEmbeddingClient default
+		this.expectedDims = this.config.qdrant.expected_embedding_dims ?? 1024;
 		this.distance = this.config.qdrant.distance;
 	}
 
@@ -251,6 +265,26 @@ export class QdrantAdapter {
 		}
 	}
 
+	private toPointId(memoryId: string): string {
+		const trimmed = memoryId.trim();
+		if (uuidValidate(trimmed)) {
+			return trimmed;
+		}
+		return uuidv5(trimmed, MEMORY_ID_NAMESPACE);
+	}
+
+	private resolveMemoryId(
+		pointId: string | number,
+		payload?: QdrantPayload,
+		fallbackMap?: Map<string, string>
+	): string {
+		if (payload?.memory_id) {
+			return payload.memory_id;
+		}
+		const pointIdStr = String(pointId);
+		return fallbackMap?.get(pointIdStr) ?? pointIdStr;
+	}
+
 	// ============================================
 	// Collection Management
 	// ============================================
@@ -265,6 +299,43 @@ export class QdrantAdapter {
 		);
 		if (!result) return false;
 		return result.result.collections.some((c) => c.name === this.collectionName);
+	}
+
+	/**
+	 * Delete the entire collection (DESTRUCTIVE - use with caution!)
+	 */
+	async deleteCollection(): Promise<boolean> {
+		try {
+			const result = await this.request<{ result: boolean }>(
+				"DELETE",
+				`/collections/${this.collectionName}`
+			);
+
+			if (result?.result) {
+				logger.info({ collection: this.collectionName }, "Deleted Qdrant collection");
+				return true;
+			}
+
+			return false;
+		} catch (err) {
+			logger.error({ err, collection: this.collectionName }, "Failed to delete Qdrant collection");
+			return false;
+		}
+	}
+
+	/**
+	 * Get collection info (point count, vector dims, etc.)
+	 */
+	async getCollectionInfo(): Promise<QdrantCollectionInfo | null> {
+		try {
+			const result = await this.request<{ result: QdrantCollectionInfo }>(
+				"GET",
+				`/collections/${this.collectionName}`
+			);
+			return result?.result ?? null;
+		} catch {
+			return null;
+		}
 	}
 
 	/**
@@ -427,11 +498,17 @@ export class QdrantAdapter {
 		}
 
 		const body = {
-			points: points.map((p) => ({
-				id: p.id,
-				vector: { [this.vectorName]: p.vector },
-				payload: p.payload,
-			})),
+			points: points.map((p) => {
+				const pointId = this.toPointId(p.id);
+				return {
+					id: pointId,
+					vector: { [this.vectorName]: p.vector },
+					payload: {
+						...p.payload,
+						memory_id: p.payload.memory_id ?? p.id,
+					},
+				};
+			}),
 		};
 
 		const result = await this.request<{ result: { status: string } }>(
@@ -450,7 +527,7 @@ export class QdrantAdapter {
 		if (ids.length === 0) return true;
 
 		const body = {
-			points: ids,
+			points: ids.map((id) => this.toPointId(id)),
 		};
 
 		const result = await this.request<{ result: { status: string } }>(
@@ -464,29 +541,55 @@ export class QdrantAdapter {
 
 	/**
 	 * Delete points by filter (e.g., all points for a user)
+	 *
+	 * Supports two filter formats:
+	 * 1. Simple object: { userId, tier, status }
+	 * 2. Qdrant-native filter: { must: [{ key, match: { value } }] }
+	 *
+	 * v0.2.9 Parity: Used by clearDocumentsTier for "True Collection Nuke"
 	 */
 	async deleteByFilter(filter: {
 		userId?: string;
 		tier?: MemoryTier;
 		status?: MemoryStatus;
-	}): Promise<boolean> {
-		const must: Array<{ key: string; match: { value: string } }> = [];
+		must?: Array<{ key: string; match: { value: string } }>;
+	}): Promise<{ deleted: number; success: boolean }> {
+		let must: Array<{ key: string; match: { value: string } }> = [];
 
-		if (filter.userId) {
-			must.push({ key: "user_id", match: { value: filter.userId } });
-		}
-		if (filter.tier) {
-			must.push({ key: "tier", match: { value: filter.tier } });
-		}
-		if (filter.status) {
-			must.push({ key: "status", match: { value: filter.status } });
+		// Support native Qdrant filter format
+		if (filter.must) {
+			must = filter.must;
+		} else {
+			// Build from simple object format
+			if (filter.userId) {
+				must.push({ key: "user_id", match: { value: filter.userId } });
+			}
+			if (filter.tier) {
+				must.push({ key: "tier", match: { value: filter.tier } });
+			}
+			if (filter.status) {
+				must.push({ key: "status", match: { value: filter.status } });
+			}
 		}
 
 		if (must.length === 0) {
 			logger.warn("deleteByFilter called with empty filter, skipping");
-			return false;
+			return { deleted: 0, success: false };
 		}
 
+		// First count how many points will be deleted
+		const countBody = {
+			filter: { must },
+			exact: true,
+		};
+		const countResult = await this.request<{ result: { count: number } }>(
+			"POST",
+			`/collections/${this.collectionName}/points/count`,
+			countBody
+		);
+		const willDelete = countResult?.result?.count ?? 0;
+
+		// Now delete
 		const body = {
 			filter: { must },
 		};
@@ -497,7 +600,9 @@ export class QdrantAdapter {
 			body
 		);
 
-		return result?.result?.status === "completed" || result?.result?.status === "acknowledged";
+		const success =
+			result?.result?.status === "completed" || result?.result?.status === "acknowledged";
+		return { deleted: willDelete, success };
 	}
 
 	/**
@@ -532,6 +637,11 @@ export class QdrantAdapter {
 			must.push({ key: "tags", match: { any: params.tags } });
 		}
 
+		// NER Integration: Add ID filter for entity pre-filtering
+		if (params.filterIds?.length) {
+			must.push({ has_id: params.filterIds.map((id) => this.toPointId(id)) });
+		}
+
 		const body = {
 			vector: { name: this.vectorName, vector: params.vector },
 			filter: { must },
@@ -546,8 +656,13 @@ export class QdrantAdapter {
 
 		if (!result) return [];
 
+		logger.debug(
+			{ results: result.result.length, userId: params.userId, tiers: params.tiers ?? [] },
+			"[qdrant] search ok"
+		);
+
 		return result.result.map((r) => ({
-			id: r.id,
+			id: this.resolveMemoryId(r.id, r.payload),
 			score: r.score,
 			payload: r.payload,
 		}));
@@ -559,8 +674,15 @@ export class QdrantAdapter {
 	async getByIds(ids: string[]): Promise<QdrantSearchResult[]> {
 		if (ids.length === 0) return [];
 
+		const pointIdToMemoryId = new Map<string, string>();
+		const pointIds = ids.map((id) => {
+			const pointId = this.toPointId(id);
+			pointIdToMemoryId.set(pointId, id);
+			return pointId;
+		});
+
 		const body = {
-			ids,
+			ids: pointIds,
 			with_payload: true,
 			with_vector: false,
 		};
@@ -574,10 +696,66 @@ export class QdrantAdapter {
 		if (!result) return [];
 
 		return result.result.map((r) => ({
-			id: r.id,
+			id: this.resolveMemoryId(r.id, r.payload, pointIdToMemoryId),
 			score: 1, // No score for direct lookups
 			payload: r.payload,
 		}));
+	}
+
+	/**
+	 * Filter by entities (NER Integration)
+	 *
+	 * Finds memory IDs that have matching entities in their payload.
+	 * Uses Qdrant scroll API with payload filtering for efficiency.
+	 *
+	 * @param params - Entity filter parameters
+	 * @returns Array of matching memory IDs
+	 */
+	async filterByEntities(params: EntityFilterParams): Promise<string[]> {
+		if (!params.entityWords || params.entityWords.length === 0) {
+			return [];
+		}
+
+		const limit = params.limit ?? 500;
+
+		// Build filter: user_id match AND entities array contains any of the query words
+		// Qdrant supports "match any" for array fields
+		const filter = {
+			must: [
+				{ key: "user_id", match: { value: params.userId } },
+				{ key: "status", match: { value: "active" } },
+			],
+			should: params.entityWords.map((word) => ({
+				key: "entities",
+				match: { value: word.toLowerCase() },
+			})),
+			min_should: { conditions: 1 }, // At least one entity must match
+		};
+
+		try {
+			const body = {
+				filter,
+				limit,
+				with_payload: ["memory_id"],
+				with_vector: false,
+			};
+
+			const result = await this.request<{
+				result: { points: Array<{ id: string; payload?: QdrantPayload }> };
+			}>("POST", `/collections/${this.collectionName}/points/scroll`, body);
+
+			if (!result?.result?.points) {
+				return [];
+			}
+
+			return result.result.points.map((p) => this.resolveMemoryId(p.id, p.payload));
+		} catch (err) {
+			logger.warn(
+				{ err, entityCount: params.entityWords.length },
+				"[qdrant] filterByEntities failed"
+			);
+			return [];
+		}
 	}
 
 	/**
@@ -585,8 +763,9 @@ export class QdrantAdapter {
 	 * Used for score/usage updates
 	 */
 	async updatePayload(id: string, payload: Partial<QdrantPayload>): Promise<boolean> {
+		const pointId = this.toPointId(id);
 		const body = {
-			points: [id],
+			points: [pointId],
 			payload,
 		};
 
@@ -650,7 +829,7 @@ export class QdrantAdapter {
 
 		return {
 			points: result.result.points.map((p) => ({
-				id: p.id,
+				id: this.resolveMemoryId(p.id, p.payload),
 				score: 1,
 				payload: p.payload,
 			})),

@@ -1,0 +1,323 @@
+{
+  "dataset_id": "6d8bf87d-bd13-4df6-9846-d449f407b318",
+  "title": "מאגר הכונס הרשמי",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "הכונס הרשמי",
+    "משרד המשפטים",
+    "פשיטת רגל",
+    "צווי כינוס"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "זיהוי",
+    "אישור",
+    "פתיחת",
+    "הגשה",
+    "גזירת",
+    "תביעת",
+    "מתגורר",
+    "קבלת",
+    "סוג",
+    "פרעון",
+    "מיוחד",
+    "חוב",
+    "פעילות",
+    "נכלל",
+    "בבנק",
+    "ביטול",
+    "הרשמי",
+    "הקפאת",
+    "הצו",
+    "דוח",
+    "ידי",
+    "סיבת",
+    "מתוכנן",
+    "סעיף",
+    "הגשת",
+    "החברה",
+    "מנהל",
+    "רגילה",
+    "מסכם",
+    "צווי",
+    "סגירת",
+    "שאושר",
+    "פירוק",
+    "החוב",
+    "משפט",
+    "פשיטת",
+    "יצירת",
+    "בצו",
+    "עיר",
+    "הכונס",
+    "יתרה",
+    "כתביעת",
+    "משרד",
+    "מתנהל",
+    "בדין",
+    "תובע",
+    "מזהה",
+    "תיקים",
+    "מחוזי",
+    "תאריך",
+    "המשפטים",
+    "מערכת",
+    "סטטוס",
+    "האם",
+    "בית",
+    "סכום",
+    "תכנית",
+    "כינוס",
+    "קדימה",
+    "להגשת",
+    "הכינוס",
+    "סגירה",
+    "תיק",
+    "רגל",
+    "התיק",
+    "הבקשה",
+    "חברה",
+    "החייב"
+  ],
+  "resources": [
+    {
+      "resource_id": "d8715392-287f-49b7-9ae3-f21ec5bf55f3",
+      "title": "קובץ חברות בפירוק",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מזהה תיק פירוק חברה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "עיר פעילות חברה",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "סטטוס תיק",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך הגשת הבקשה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך קבלת צו פירוק",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך ביטול / הקפאת צו פירוק",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך סגירת תיק",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סיבת סגירה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "בית משפט מחוזי בו מתנהל התיק",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "שם החברה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר זיהוי של החברה",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 12276
+    },
+    {
+      "resource_id": "3cb25b2e-a501-4870-86a6-30be8d8e80a5",
+      "title": "תביעות חוב בהליכי פשיטת רגל או פירוק חברה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סוג תובע החוב",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סטטוס תביעת חוב",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "סוג מערכת",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "תאריך יצירת החוב",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מזהה תיק",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "סכום תביעת החוב",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "סכום שאושר",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "סכום שאושר כתביעת חוב רגילה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "סכום שאושר בדין קדימה",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 2527080
+    },
+    {
+      "resource_id": "2156937e-524a-4511-907d-5470a6a5264f",
+      "title": "קובץ חייבים בהליך פשיטת רגל ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר רץ תיקים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "עיר בה מתגורר החייב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם בית משפט",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סטטוס תיק",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך פתיחת תיק",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך צו כינוס",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך צו פשיטת רגל",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך ביטול צו",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סיבת ביטול צו",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך גזירת תיק",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סכום הצו",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "יתרה בבנק",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "האם בצו הכינוס נכלל סעיף 42",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך הגשת דוח על ידי מנהל מיוחד",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך הגשה של תכנית פרעון",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך מתוכנן להגשת דוח",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך מתוכנן להגשת תכנית פרעון",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך אישור דוח מסכם",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 209374
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

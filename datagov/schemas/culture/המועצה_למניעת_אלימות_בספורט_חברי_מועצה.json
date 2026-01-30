@@ -1,0 +1,64 @@
+{
+  "dataset_id": "c5f699fe-6d9a-4fea-8369-2a85a84dbdd5",
+  "title": "המועצה למניעת אלימות בספורט - חברי מועצה",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "אלימות ספורט"
+  ],
+  "categories": [
+    "culture",
+    "municipal"
+  ],
+  "keywords": [
+    "מייל",
+    "התרבות",
+    "מלא",
+    "למניעת",
+    "משרד",
+    "תפקיד",
+    "המועצה",
+    "והספורט",
+    "אלימות",
+    "בספורט",
+    "מועצה",
+    "חברי",
+    "ספורט"
+  ],
+  "resources": [
+    {
+      "resource_id": "3e657d72-028f-4873-847f-8ad1e0d98c75",
+      "title": "רשימת חברי מועצה למניעת אלימות בספורט",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מלא",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תפקיד",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מייל",
+          "type": "text",
+          "semantic": "email"
+        }
+      ],
+      "total_records": 5
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": true,
+    "has_date": false
+  }
+}

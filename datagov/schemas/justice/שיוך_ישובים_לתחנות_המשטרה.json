@@ -1,0 +1,106 @@
+{
+  "dataset_id": "6dd02a0b-aba0-4a5d-bf0a-a84b15da290d",
+  "title": "שיוך ישובים לתחנות המשטרה",
+  "organization": "משטרת ישראל",
+  "tags": [
+    "יישובים",
+    "משטרה",
+    "משטרת ישראל",
+    "תחנות"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "name",
+    "יישובים",
+    "notes",
+    "long",
+    "משטרה",
+    "שיוך",
+    "ישראל",
+    "merhavheb",
+    "sitetype",
+    "itm",
+    "lat",
+    "המשטרה",
+    "address",
+    "ישובים",
+    "לתחנות",
+    "תחנות",
+    "משטרת",
+    "mahozheb"
+  ],
+  "resources": [
+    {
+      "resource_id": "ea5c58c9-5031-4c5e-aed7-f521872f2852",
+      "title": "שיוך ישובים לתחנות המשטרה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "MahozHeb",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MerhavHeb",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SiteType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "X_ITM",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Y_ITM",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Long_X_",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "Lat_Y",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 210
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

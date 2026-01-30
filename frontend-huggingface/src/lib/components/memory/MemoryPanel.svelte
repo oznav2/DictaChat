@@ -3,7 +3,7 @@
 	import { browser } from "$app/environment";
 	import { base } from "$app/paths";
 	import { memoryUi } from "$lib/stores/memoryUi";
-	import type { MemoryTier } from "$lib/types/MemoryMeta";
+	import { type MemoryTier, DATAGOV_CATEGORIES, isDataGovTier } from "$lib/types/MemoryMeta";
 	import MemoryDetailModal from "./MemoryDetailModal.svelte";
 	import VirtualList from "$lib/components/common/VirtualList.svelte";
 	import { scoreToBgColor } from "$lib/utils/memoryScore";
@@ -32,6 +32,12 @@
 		tags?: string[];
 		outcomes?: { worked: number; failed: number; partial: number };
 		last_used?: string;
+		// Phase 25: DataGov source metadata
+		source?: {
+			type?: string;
+			category?: string;
+			category_he?: string;
+		};
 	}
 
 	let selectedTier = $state<MemoryTier | "all">("all");
@@ -41,6 +47,10 @@
 	let memories = $state<MemoryItem[]>([]);
 	let isLoading = $state(false);
 	let showHelp = $state(false);
+	// Phase 25: DataGov filter state
+	let showDataGovFilter = $state(false);
+	let selectedDataGovCategories = $state<Set<string>>(new Set());
+	let includeDataGov = $state(true);
 
 	// Virtual list settings
 	const MEMORY_ITEM_HEIGHT = 90; // Approximate height of each memory item
@@ -59,13 +69,22 @@
 			name: "דפוסים",
 			desc: "תבניות שלמדתי מהשימוש שלך",
 		},
-		books: {
-			name: "ספרים",
+		documents: {
+			name: "מסמכים",
 			desc: "מסמכים וקבצים שהעלית",
 		},
 		memory_bank: {
 			name: "בנק זיכרון",
 			desc: "מידע שהצמדת באופן ידני",
+		},
+		// Phase 25: DataGov tiers
+		datagov_schema: {
+			name: "מאגרי מידע ממשלתיים",
+			desc: "סכמות נתונים מ-data.gov.il",
+		},
+		datagov_expansion: {
+			name: "הרחבות סמנטיות",
+			desc: "מונחים והגדרות מקצועיות",
 		},
 	};
 
@@ -74,8 +93,11 @@
 			working: "bg-blue-500",
 			history: "bg-purple-500",
 			patterns: "bg-green-500",
-			books: "bg-amber-500",
+			documents: "bg-amber-500",
 			memory_bank: "bg-pink-500",
+			// Phase 25: DataGov tier colors
+			datagov_schema: "bg-cyan-500",
+			datagov_expansion: "bg-teal-500",
 		};
 		return colors[tier] ?? "bg-gray-500";
 	}
@@ -97,6 +119,7 @@
 			if (!response.ok) throw new Error(`Failed to fetch stats: ${response.status}`);
 			const data = await response.json();
 			stats = data?.stats ?? null;
+			memoryUi.setMemoryStats(stats ? (stats as unknown as Record<string, unknown>) : null);
 		} catch (err) {
 			console.error("Failed to load memory stats:", err);
 		}
@@ -110,17 +133,57 @@
 			params.set("sort_by", sortBy);
 			params.set("limit", "100");
 
+			// Phase 25: Add DataGov filter params
+			if (includeDataGov) {
+				params.set("include_datagov", "true");
+			}
+			if (selectedDataGovCategories.size > 0) {
+				params.set("datagov_categories", Array.from(selectedDataGovCategories).join(","));
+			}
+
 			const response = await fetch(`${base}/api/memory/search?${params}`);
 			if (!response.ok) throw new Error(`Failed to fetch memories: ${response.status}`);
 			const data = await response.json();
 
 			memories = data.memories ?? [];
+			memoryUi.setRecentMemories(
+				(memories ?? []).map((m) => ({
+					memory_id: m.memory_id,
+					tier: m.tier,
+					preview: (m.content ?? "").slice(0, 200),
+					created_at: m.created_at ?? null,
+				}))
+			);
 		} catch (err) {
 			console.error("Failed to load memories:", err);
 			memories = [];
 		} finally {
 			isLoading = false;
 		}
+	}
+
+	// Phase 25: Toggle DataGov category selection
+	function toggleDataGovCategory(category: string) {
+		const newSet = new Set(selectedDataGovCategories);
+		if (newSet.has(category)) {
+			newSet.delete(category);
+		} else {
+			newSet.add(category);
+		}
+		selectedDataGovCategories = newSet;
+	}
+
+	// Phase 25: Clear all DataGov category filters
+	function clearDataGovFilters() {
+		selectedDataGovCategories = new Set();
+	}
+
+	// Phase 25: Get category badge for DataGov items
+	function getDataGovCategoryBadge(memory: MemoryItem): string | null {
+		if (!isDataGovTier(memory.tier)) return null;
+		const category = memory.source?.category;
+		if (!category) return null;
+		return DATAGOV_CATEGORIES[category] ?? category;
 	}
 
 	async function refresh() {
@@ -153,6 +216,35 @@
 		loadStats();
 	}
 
+	/**
+	 * Phase 5: Trigger reindex when user clicks button in 0-results state
+	 */
+	async function triggerReindex() {
+		try {
+			isLoading = true;
+			const response = await fetch(`${base}/api/memory/ops/reindex/deferred`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+			});
+
+			if (!response.ok) {
+				console.error("Reindex trigger failed:", response.status);
+				return;
+			}
+
+			const result = await response.json();
+			console.log("Reindex triggered:", result);
+
+			// Wait a moment then refresh
+			await new Promise((resolve) => setTimeout(resolve, 2000));
+			await refresh();
+		} catch (err) {
+			console.error("Failed to trigger reindex:", err);
+		} finally {
+			isLoading = false;
+		}
+	}
+
 	onMount(() => {
 		refresh();
 		memoryUi.openMemoryEducationIfNeeded();
@@ -162,12 +254,30 @@
 			refresh();
 		};
 		window.addEventListener("memoryUpdated", handler);
-		return () => window.removeEventListener("memoryUpdated", handler);
+		const unsubscribe = memoryUi.subscribe((state) => {
+			if (selectedTier !== "all" || sortBy !== "recent") return;
+			if (isLoading) return;
+			if (memories.length > 0) return;
+			const next = state.data.recentMemories ?? [];
+			if (next.length === 0) return;
+			memories = next.map((m) => ({
+				memory_id: m.memory_id,
+				content: m.preview,
+				tier: m.tier as MemoryTier,
+				wilson_score: 0.5,
+				created_at: m.created_at ?? new Date().toISOString(),
+			}));
+		});
+
+		return () => {
+			window.removeEventListener("memoryUpdated", handler);
+			unsubscribe();
+		};
 	});
 
 	$effect(() => {
-		// Re-fetch when tier or sort changes
-		if (selectedTier || sortBy) {
+		// Re-fetch when tier, sort, or DataGov filters change
+		if (selectedTier || sortBy || includeDataGov !== undefined || selectedDataGovCategories) {
 			loadMemories();
 		}
 	});
@@ -253,6 +363,29 @@
 			<option value="score">ציון</option>
 		</select>
 
+		<!-- Phase 25: DataGov Filter Toggle -->
+		<button
+			type="button"
+			onclick={() => (showDataGovFilter = !showDataGovFilter)}
+			class={[
+				"rounded p-1.5 transition-colors",
+				showDataGovFilter || selectedDataGovCategories.size > 0
+					? "bg-cyan-100 text-cyan-700 dark:bg-cyan-900 dark:text-cyan-300"
+					: "text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600",
+			]}
+			title="סנן לפי מאגרי מידע ממשלתיים"
+			aria-label="סנן DataGov"
+		>
+			<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+				/>
+			</svg>
+		</button>
+
 		<button
 			type="button"
 			onclick={() => (showHelp = !showHelp)}
@@ -274,8 +407,25 @@
 	<!-- Help Panel -->
 	{#if showHelp}
 		<div
-			class="rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-900/30"
+			class="relative rounded-lg border border-blue-200 bg-blue-50 p-3 dark:border-blue-800 dark:bg-blue-900/30"
 		>
+			<!-- Close Button -->
+			<button
+				type="button"
+				onclick={() => (showHelp = false)}
+				class="absolute left-2 top-2 rounded-full p-1 text-blue-600 hover:bg-blue-200 dark:text-blue-300 dark:hover:bg-blue-800"
+				aria-label="סגור עזרה"
+			>
+				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/>
+				</svg>
+			</button>
+
 			<h4 class="mb-2 text-sm font-medium text-blue-800 dark:text-blue-200">סוגי זיכרון</h4>
 			<div class="space-y-1.5">
 				{#each Object.entries(tierDescriptions) as [tier, info]}
@@ -288,7 +438,14 @@
 					</div>
 				{/each}
 			</div>
-			<div class="mt-3 flex justify-end">
+			<div class="mt-3 flex justify-end gap-2">
+				<button
+					type="button"
+					onclick={() => (showHelp = false)}
+					class="rounded-lg border border-blue-300 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-100 dark:border-blue-600 dark:text-blue-300 dark:hover:bg-blue-800"
+				>
+					סגור
+				</button>
 				<button
 					type="button"
 					onclick={openMemoryEducation}
@@ -297,6 +454,73 @@
 					למידע נוסף
 				</button>
 			</div>
+		</div>
+	{/if}
+
+	<!-- Phase 25: DataGov Filter Panel -->
+	{#if showDataGovFilter}
+		<div
+			class="relative rounded-lg border border-cyan-200 bg-cyan-50 p-3 dark:border-cyan-800 dark:bg-cyan-900/30"
+		>
+			<!-- Close Button -->
+			<button
+				type="button"
+				onclick={() => (showDataGovFilter = false)}
+				class="absolute left-2 top-2 rounded-full p-1 text-cyan-600 hover:bg-cyan-200 dark:text-cyan-300 dark:hover:bg-cyan-800"
+				aria-label="סגור סינון DataGov"
+			>
+				<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/>
+				</svg>
+			</button>
+
+			<h4 class="mb-2 text-sm font-medium text-cyan-800 dark:text-cyan-200">מאגרי מידע ממשלתיים</h4>
+
+			<!-- Include DataGov Toggle -->
+			<label class="mb-2 flex items-center gap-2 text-xs">
+				<input
+					type="checkbox"
+					bind:checked={includeDataGov}
+					class="size-3.5 rounded border-cyan-300 text-cyan-600 focus:ring-cyan-500 dark:border-cyan-600 dark:bg-gray-700"
+				/>
+				<span class="text-cyan-700 dark:text-cyan-300">הצג מאגרי מידע ממשלתיים</span>
+			</label>
+
+			{#if includeDataGov}
+				<!-- Category Chips -->
+				<div class="mb-2 flex flex-wrap gap-1">
+					{#each Object.entries(DATAGOV_CATEGORIES) as [key, label]}
+						<button
+							type="button"
+							onclick={() => toggleDataGovCategory(key)}
+							class={[
+								"rounded-full px-2 py-0.5 text-[10px] transition-colors",
+								selectedDataGovCategories.has(key)
+									? "bg-cyan-600 text-white"
+									: "bg-cyan-100 text-cyan-700 hover:bg-cyan-200 dark:bg-cyan-800 dark:text-cyan-300 dark:hover:bg-cyan-700",
+							]}
+						>
+							{label}
+						</button>
+					{/each}
+				</div>
+
+				<!-- Clear Button -->
+				{#if selectedDataGovCategories.size > 0}
+					<button
+						type="button"
+						onclick={clearDataGovFilters}
+						class="text-xs text-cyan-600 underline hover:text-cyan-800 dark:text-cyan-400 dark:hover:text-cyan-200"
+					>
+						נקה סינון ({selectedDataGovCategories.size} נבחרו)
+					</button>
+				{/if}
+			{/if}
 		</div>
 	{/if}
 
@@ -309,8 +533,36 @@
 				></div>
 			</div>
 		{:else if memories.length === 0}
-			<div class="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-				אין זיכרונות להצגה
+			<!-- Phase 5: Enhanced 0-results feedback with diagnostics -->
+			<div class="py-4 text-center">
+				<div class="mb-3 text-sm text-gray-500 dark:text-gray-400">אין זיכרונות להצגה</div>
+				<!-- Debug panel for 0 results -->
+				<div
+					class="mx-auto max-w-xs rounded-lg border border-amber-200 bg-amber-50 p-3 text-right dark:border-amber-800 dark:bg-amber-900/30"
+				>
+					<p class="mb-2 text-xs font-medium text-amber-800 dark:text-amber-200">סיבות אפשריות:</p>
+					<ul class="mb-3 space-y-1 text-xs text-amber-700 dark:text-amber-300">
+						<li class="flex items-start gap-1">
+							<span class="mt-1">•</span>
+							<span>פריטים ממתינים לאינדוקס</span>
+						</li>
+						<li class="flex items-start gap-1">
+							<span class="mt-1">•</span>
+							<span>שירות האמבדינג לא זמין</span>
+						</li>
+						<li class="flex items-start gap-1">
+							<span class="mt-1">•</span>
+							<span>שאילתת החיפוש ספציפית מדי</span>
+						</li>
+					</ul>
+					<button
+						type="button"
+						onclick={triggerReindex}
+						class="w-full rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-amber-700 dark:bg-amber-700 dark:hover:bg-amber-600"
+					>
+						הפעל אינדוקס מחדש
+					</button>
+				</div>
 			</div>
 		{:else}
 			<VirtualList
@@ -321,6 +573,7 @@
 			>
 				{#snippet children({ item: memory })}
 					{@const mem = memory as MemoryItem}
+					{@const categoryBadge = getDataGovCategoryBadge(mem)}
 					<button
 						type="button"
 						onclick={() => openMemoryDetail(mem)}
@@ -331,6 +584,13 @@
 							<span class="text-xs text-gray-500 dark:text-gray-400">
 								{tierDescriptions[mem.tier]?.name ?? mem.tier}
 							</span>
+							{#if categoryBadge}
+								<span
+									class="rounded-full bg-cyan-100 px-1.5 py-0.5 text-[10px] text-cyan-700 dark:bg-cyan-800 dark:text-cyan-300"
+								>
+									{categoryBadge}
+								</span>
+							{/if}
 							<span class="mr-auto text-xs text-gray-400">
 								{(mem.wilson_score * 100).toFixed(0)}%
 							</span>

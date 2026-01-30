@@ -1,0 +1,137 @@
+{
+  "dataset_id": "3dfc6b2a-bc1d-4770-8d5f-457ce50a73b3",
+  "title": "מאגר טיסות",
+  "organization": "רשות שדות התעופה",
+  "tags": [
+    "טיסות"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "choperd",
+    "choper",
+    "שדות",
+    "chrminh",
+    "chstol",
+    "chckzn",
+    "רשות",
+    "טיסות",
+    "chfltn",
+    "chloc",
+    "chlocct",
+    "chrmine",
+    "chterm",
+    "chcint",
+    "chptol",
+    "chaord",
+    "התעופה"
+  ],
+  "resources": [
+    {
+      "resource_id": "e83f763b-b7d7-479e-b172-ae981ddc6de5",
+      "title": "מאגר טיסות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CHOPER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHFLTN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHOPERD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHSTOL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHPTOL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHAORD",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHLOC1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHLOC1D",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHLOC1TH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHLOC1T",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHLOC1CH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHLOCCT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHTERM",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CHCINT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHCKZN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHRMINE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CHRMINH",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2105
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

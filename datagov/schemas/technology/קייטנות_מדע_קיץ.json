@@ -1,0 +1,68 @@
+{
+  "dataset_id": "8dc5be59-f6df-4d97-a19f-e7171e3759ad",
+  "title": "קייטנות מדע קיץ",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "מדע",
+    "קייטנות",
+    "קיץ"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "מדע",
+    "החדשנות",
+    "הרשות",
+    "טלפון",
+    "קייטנות",
+    "משרד",
+    "המדע",
+    "מוקד",
+    "מייל",
+    "והטכנולוגיה",
+    "קיץ"
+  ],
+  "resources": [
+    {
+      "resource_id": "9a9e7385-6c02-495f-b7ac-1be25d46bb5e",
+      "title": "most.DB.29.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הרשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם מוקד",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "טלפון מוקד",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "מייל מוקד",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 205
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

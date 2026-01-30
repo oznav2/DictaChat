@@ -1,0 +1,210 @@
+{
+  "dataset_id": "3e4e79f7-643b-4be6-94c2-e47667d42916",
+  "title": "ספר סיווג טובין ביצוא - Israel Customs Book for export",
+  "organization": "רשות המסים בישראל",
+  "tags": [
+    "אישור יצוא",
+    "הסכם סחר",
+    "טובין",
+    "יצוא",
+    "יצואן",
+    "מכס",
+    "ספר המכס",
+    "צו תעריף המכס",
+    "תיאור טובין",
+    "תעריף המכס"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "אישור",
+    "תיאור",
+    "ביצוא",
+    "goodsdescription",
+    "fullgoodsdescription",
+    "סיווג",
+    "רשות",
+    "customs",
+    "מכס",
+    "book",
+    "תעריף",
+    "maslulmeasurementunit",
+    "measurementunitdescription",
+    "customsitemfullclassification",
+    "export",
+    "digits",
+    "טובין",
+    "hierarchiclocation",
+    "יצואן",
+    "המסים",
+    "measurementunitid",
+    "customsitem",
+    "יצוא",
+    "המכס",
+    "הסכם",
+    "israel",
+    "סחר",
+    "customsbooktypeid",
+    "for",
+    "customsitemenddate",
+    "ספר",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "aa292a26-c102-41f9-9ab2-f289298acf37",
+      "title": "ספר סיווג טובין ביצוא באנגלית, Israel Customs Book for export, English",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CustomsBookTypeID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItem_2_Digits",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_4_Digits",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_6_Digits",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemFullClassification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HierarchicLocation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullGoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MeasurementUnitID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "MeasurementUnitDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemEndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "MaslulMeasurementUnit",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 9290
+    },
+    {
+      "resource_id": "f83f08d3-c0cd-4fa5-af22-8d884e0c0ba8",
+      "title": "ספר סיווג טובין ביצוא - עברית",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CustomsBookTypeID",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CustomsItem_2_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_4_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItem_6_Digits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemFullClassification",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HierarchicLocation",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "GoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "FullGoodsDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MeasurementUnitID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "MeasurementUnitDescription",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "CustomsItemEndDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "MaslulMeasurementUnit",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 9290
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

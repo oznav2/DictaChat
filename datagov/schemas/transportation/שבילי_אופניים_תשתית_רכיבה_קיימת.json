@@ -1,0 +1,308 @@
+{
+  "dataset_id": "c425e549-60b4-4523-badd-de6886d81306",
+  "title": "שבילי אופניים - תשתית רכיבה קיימת",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "אופניים",
+    "חצב",
+    "מצב קיים",
+    "שבילי אופניים",
+    "תחבורה קלה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "start",
+    "תחבורה",
+    "lat",
+    "streetname",
+    "bphtype",
+    "אופניים",
+    "קיימת",
+    "trafcode",
+    "dirtraffic",
+    "twidth",
+    "bphplace",
+    "dirtype",
+    "paint",
+    "lon",
+    "roadname",
+    "bphdir",
+    "twidthway",
+    "בדרכים",
+    "end",
+    "veh",
+    "parking",
+    "bphseg",
+    "level",
+    "והבטיחות",
+    "usable",
+    "slope",
+    "streetcode",
+    "קיים",
+    "topology",
+    "lastchange",
+    "finish",
+    "authority",
+    "infra",
+    "משרד",
+    "open",
+    "קלה",
+    "bphcode",
+    "div",
+    "walk",
+    "חצב",
+    "תשתית",
+    "רכיבה",
+    "shape",
+    "oid",
+    "signpost",
+    "trees",
+    "trafauth",
+    "max",
+    "year",
+    "authcode",
+    "roadtype",
+    "שבילי",
+    "מצב",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "abb1f19f-4482-40df-9da8-bf0bf126bf9e",
+      "title": "BPH_INFRA_EXIST.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "eaa9f579-05c9-435f-b5af-a25be63b91ba",
+      "title": "BPH_INFRA_EXIST_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "6c6f191a-0839-411d-ac4f-59abe36a3593",
+      "title": "BPH_INFRA_EXIST_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "BPHCODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "BPHSEG",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AUTHORITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AUTHCODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "TRAFAUTH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TRAFCODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "STREETNAME",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "STREETCODE",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "ROADNAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "START",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LAT_START",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LON_START",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FINISH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LAT_END",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LON_END",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "TWIDTH",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "TWIDTHWAY",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "MAX_SLOPE",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "OPEN_YEAR",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "LASTCHANGE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BPHType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "INFRA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ROADTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "BPHPLACE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DirType",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DIRTRAFFIC",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TOPOLOGY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DIV_VEH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DIV_Walk",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Signpost",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PARKING",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LEVEL_",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Paint",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Trees",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "USABLE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LENGTH_M",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "BPHDIR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 10476
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

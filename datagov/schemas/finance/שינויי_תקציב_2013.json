@@ -1,0 +1,161 @@
+{
+  "dataset_id": "2facb661-cb70-4e8f-884b-b500740ce5cb",
+  "title": "שינויי תקציב 2013",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אוצר וכלכלה",
+    "משרד האוצר",
+    "שינויי תקציב",
+    "תקציב 2013",
+    "תקציב המדינה"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "הוצאה",
+    "תיאור",
+    "אישור",
+    "שיא",
+    "וכלכלה",
+    "מיועדת",
+    "שינוי",
+    "סוג",
+    "הוצאות",
+    "מוביל",
+    "הכנסה",
+    "תקציב",
+    "שינויי",
+    "בהכנסה",
+    "סעיף",
+    "המדינה",
+    "נטו",
+    "וועדה",
+    "הרשאה",
+    "האוצר",
+    "להתחייב",
+    "תוכנית",
+    "משרד",
+    "אוצר",
+    "קוד",
+    "תאריך",
+    "בקשה",
+    "שנה",
+    "מותנית"
+  ],
+  "resources": [
+    {
+      "resource_id": "fefd1ab1-c9d6-43f1-888f-0076dab1194b",
+      "title": "שינויי תקציב 2013",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "סעיף מוביל",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תיאור בקשה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד שינוי",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם שינוי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד סוג בקשה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם סוג בקשה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר וועדה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "קוד תוכנית",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תוכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "הוצאות נטו",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הוצאה מותנית בהכנסה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הכנסה מיועדת",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הרשאה להתחייב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שיא כא",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תאריך אישור",
+          "type": "timestamp",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 3332
+    },
+    {
+      "resource_id": "f5721cab-5a8b-427d-bc65-0ac742b03671",
+      "title": "דברי הסבר לשינוי תקציב 2013",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

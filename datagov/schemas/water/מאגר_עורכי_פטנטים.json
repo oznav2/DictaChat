@@ -1,0 +1,132 @@
+{
+  "dataset_id": "1806c96c-9cc4-47bf-98b3-80a18f061f98",
+  "title": "מאגר עורכי פטנטים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "עורכי פטנטים"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "מיקוד",
+    "כתובת",
+    "בפנקס",
+    "תואר",
+    "באנגלית",
+    "רישום",
+    "לשנה",
+    "משרד",
+    "פרטי",
+    "ישוב",
+    "עורכי",
+    "פטנטים",
+    "יישוב",
+    "משפחה",
+    "תשלום",
+    "מייל",
+    "המשפטים",
+    "רישיון"
+  ],
+  "resources": [
+    {
+      "resource_id": "0ff306c2-1ad9-4974-a2be-0420acf35685",
+      "title": "פנקס עורכי פטנטים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר רישיון",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תואר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם משפחה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנת רישום בפנקס",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תשלום לשנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "כתובת מייל",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "יישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "מיקוד",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ישוב באנגלית",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כתובת באנגלית",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "שם משפחה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם פרטי באנגלית",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 582
+    },
+    {
+      "resource_id": "0b18c999-1627-4b5e-b771-8bc69af5afd3",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

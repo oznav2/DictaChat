@@ -1,0 +1,38 @@
+{
+  "dataset_id": "31531bfa-e6f2-4988-ba24-95d6c1c78cb4",
+  "title": "תקציב מול ביצוע ברוטו, כולל מפעלים עסקיים לשנת 2019",
+  "organization": "משרד האוצר",
+  "tags": [
+    "תקציב"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "ברוטו",
+    "תקציב",
+    "ביצוע",
+    "משרד",
+    "עסקיים",
+    "מפעלים",
+    "מול",
+    "האוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "cbb49778-d567-40fa-8887-8ab03ffd90af",
+      "title": "תקציב מול ביצוע ברוטו, כולל מפעלים עסקיים לשנת 2019",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

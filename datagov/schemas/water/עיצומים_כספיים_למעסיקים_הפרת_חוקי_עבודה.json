@@ -1,0 +1,150 @@
+{
+  "dataset_id": "3ab09979-7d64-4402-ae51-5fa320a37a56",
+  "title": "עיצומים כספיים למעסיקים - הפרת חוקי עבודה",
+  "organization": "משרד העבודה",
+  "tags": [
+    "מעסיקים",
+    "עיצומים כספיים"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "name",
+    "reduction",
+    "general",
+    "העבודה",
+    "כספיים",
+    "court",
+    "city",
+    "עיצומים",
+    "עבודה",
+    "sanction",
+    "חוקי",
+    "decision",
+    "date",
+    "מעסיקים",
+    "number",
+    "appeal",
+    "למעסיקים",
+    "more",
+    "משרד",
+    "checked",
+    "note",
+    "review",
+    "amount",
+    "law",
+    "employees",
+    "final",
+    "הפרת",
+    "financial",
+    "address",
+    "employer",
+    "reason",
+    "details",
+    "industry"
+  ],
+  "resources": [
+    {
+      "resource_id": "b033f289-4143-4a9d-9612-da6e8cc2f380",
+      "title": "עיצומים כספיים למעסיקים - הפרת חוקי עבודה",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "employer_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "employer_number",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "more_details",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "decision_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "industry",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "final_sanction_amount",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "reason_of_review",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "law",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "note",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "employees_general_number",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "checked_employees_number",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "appeal",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "court_appeal",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "financial_sanction_reduction",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 4930
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

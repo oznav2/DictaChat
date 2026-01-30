@@ -1300,8 +1300,8 @@ export function createMockMemoryFacade() {
 		removeValue: vi.fn().mockResolvedValue({ success: true }),
 		storeArbitraryData: vi.fn().mockResolvedValue({ success: true }),
 		retrieveArbitraryData: vi.fn().mockResolvedValue(null),
-		listBooks: vi.fn().mockResolvedValue([]),
-		retrieveFromBooks: vi.fn().mockResolvedValue([]),
+		listDocuments: vi.fn().mockResolvedValue([]),
+		retrieveFromDocuments: vi.fn().mockResolvedValue([]),
 		removeBook: vi.fn().mockResolvedValue({ success: true }),
 		getHealth: vi.fn().mockReturnValue({ status: "healthy" }),
 		getStats: vi.fn().mockResolvedValue({

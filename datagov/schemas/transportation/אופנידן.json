@@ -1,0 +1,122 @@
+{
+  "dataset_id": "0ec0c9e6-36f0-4ca2-8e93-c9a394786455",
+  "title": "אופנידן",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "אופני דן",
+    "אופנידן",
+    "אופניים",
+    "ממג"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "yearmonth",
+    "shape",
+    "אופנידן",
+    "ממג",
+    "oid",
+    "status",
+    "comp",
+    "בדרכים",
+    "משרד",
+    "desc",
+    "lengt",
+    "אופניים",
+    "והבטיחות",
+    "gis",
+    "length",
+    "אופני",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "06cf6cd4-32d2-424b-ae41-5236b14b3c35",
+      "title": "OFNEIDAN_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "91d6ae23-492f-48e9-8825-28adc0c0c8b3",
+      "title": "OFNEIDAN_KML",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "94c34998-b8fe-414b-94d8-23e92299ed4a",
+      "title": "OFNEIDAN_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "DP",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DP_DESC",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "COMP",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DP_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "LENGT",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 193
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

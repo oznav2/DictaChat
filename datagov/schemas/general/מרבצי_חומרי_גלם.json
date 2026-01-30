@@ -1,0 +1,44 @@
+{
+  "dataset_id": "0180a8e4-518d-4568-9a61-4c36f2bc9f0b",
+  "title": "מרבצי חומרי גלם",
+  "organization": "משרד האנרגיה ",
+  "tags": [
+    "חציבה",
+    "כריה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "חומרי",
+    "גלם",
+    "כריה",
+    "משרד",
+    "מרבצי",
+    "חציבה",
+    "האנרגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "a5408d43-d0fa-40fb-a4a2-9b48f6807359",
+      "title": "מרבצי חומרי גלם",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a774debf-56f9-47c6-ad9a-907612039260",
+      "title": "דברי הסבר שכבת מרבצי חומרי גלם",
+      "format": "DOCX",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

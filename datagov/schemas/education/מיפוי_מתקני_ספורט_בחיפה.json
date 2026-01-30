@@ -1,0 +1,85 @@
+{
+  "dataset_id": "49fd47dc-0eb7-4950-8bf4-23e0ad22fc9f",
+  "title": "מיפוי מתקני ספורט בחיפה",
+  "organization": "עיריית חיפה",
+  "tags": [
+    "אוכלוסיה",
+    "חינוך ותרבות",
+    "חיפה",
+    "מתקני ספורט"
+  ],
+  "categories": [
+    "education",
+    "culture",
+    "geography"
+  ],
+  "keywords": [
+    "מיפוי",
+    "אוכלוסיה",
+    "חינוך",
+    "עיריית",
+    "לעמודה",
+    "בחיפה",
+    "חיפה",
+    "ותרבות",
+    "ספורט",
+    "מתקני"
+  ],
+  "resources": [
+    {
+      "resource_id": "32933de9-1e33-4ae5-a99c-699839c8d674",
+      "title": "מיפוי מתקני ספורט בחיפה",
+      "format": "XLS",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "לעמודה C",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "לעמודה P",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "לעמודה Q",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "לעמודה R",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "לעמודה S",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "לעמודה T",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "לעמודה U",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 22
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

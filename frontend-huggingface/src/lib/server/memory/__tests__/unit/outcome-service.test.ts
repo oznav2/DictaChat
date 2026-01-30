@@ -362,7 +362,7 @@ describe("OutcomeServiceImpl", () => {
 	// ========================================================================
 
 	describe("Protected Tiers", () => {
-		it("should not score books tier", async () => {
+		it("should not score documents tier", async () => {
 			const startTime = Date.now();
 
 			const { OutcomeServiceImpl } = await import("../../services/OutcomeServiceImpl");
@@ -373,7 +373,7 @@ describe("OutcomeServiceImpl", () => {
 
 			mockMongo.getById.mockResolvedValue({
 				id: "mem_book_1",
-				tier: "books",
+				tier: "documents",
 				wilson_score: 0.5,
 			});
 
@@ -390,7 +390,7 @@ describe("OutcomeServiceImpl", () => {
 			});
 
 			const result: TestResult = {
-				name: "skip_books_tier",
+				name: "skip_documents_tier",
 				passed: mockMongo.recordOutcome.mock.calls.length === 0,
 				duration: Date.now() - startTime,
 			};
@@ -522,7 +522,7 @@ describe("OutcomeServiceImpl", () => {
 			mockMongo.getById.mockImplementation((id: string) => {
 				const tiers: Record<string, string> = {
 					mem_1: "working",
-					mem_2: "books",
+					mem_2: "documents",
 					mem_3: "patterns",
 					mem_4: "memory_bank",
 				};
@@ -686,19 +686,16 @@ describe("OutcomeServiceImpl", () => {
 				keyTakeaway: "No outcome specified",
 			});
 
-			const storeCall = mockMongo.store.mock.calls[0][0];
+			const upsertCall = mockQdrant.upsert.mock.calls[0][0];
 
 			const result: TestResult = {
 				name: "default_unknown_outcome",
-				passed:
-					storeCall.metadata.initial_outcome === "unknown" &&
-					storeCall.metadata.initial_score === 0.5,
+				passed: upsertCall.payload.composite_score === 0.5,
 				duration: Date.now() - startTime,
 			};
 
 			harness.recordResult(result);
-			expect(storeCall.metadata.initial_outcome).toBe("unknown");
-			expect(storeCall.metadata.initial_score).toBe(0.5);
+			expect(upsertCall.payload.composite_score).toBe(0.5);
 		});
 
 		it("should use worked outcome score", async () => {
@@ -722,16 +719,16 @@ describe("OutcomeServiceImpl", () => {
 				outcome: "worked",
 			});
 
-			const storeCall = mockMongo.store.mock.calls[0][0];
+			const upsertCall = mockQdrant.upsert.mock.calls[0][0];
 
 			const result: TestResult = {
 				name: "worked_outcome_score",
-				passed: storeCall.metadata.initial_score === 0.7,
+				passed: upsertCall.payload.composite_score === 0.7,
 				duration: Date.now() - startTime,
 			};
 
 			harness.recordResult(result);
-			expect(storeCall.metadata.initial_score).toBe(0.7);
+			expect(upsertCall.payload.composite_score).toBe(0.7);
 		});
 
 		it("should call clearTurnTracking", async () => {
@@ -982,7 +979,7 @@ describe("OutcomeServiceImpl", () => {
 			mockMongo.getById.mockResolvedValue({
 				id: "mem_123",
 				tier: "working",
-				wilson_score: 0.75,
+				stats: { wilson_score: 0.75 },
 			});
 
 			const service = new OutcomeServiceImpl({

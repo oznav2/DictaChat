@@ -1,0 +1,48 @@
+{
+  "dataset_id": "3c5329df-3036-4ed2-a12d-316a6c3ed3d6",
+  "title": "שכבת נמלים ימיים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "ים",
+    "נמל",
+    "נמלים ימיים",
+    "סביבה"
+  ],
+  "categories": [
+    "transportation",
+    "environment",
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "ימיים",
+    "ישראל",
+    "נמלים",
+    "נמל",
+    "המרכז",
+    "סביבה"
+  ],
+  "resources": [
+    {
+      "resource_id": "da4d39c3-4cac-4c87-a4eb-532f8a85ad13",
+      "title": "שכבת נמלים ימיים",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e03d59d3-db99-411b-9cd5-c6dbec5bb261",
+      "title": "קישור להסברים",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

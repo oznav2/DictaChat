@@ -1,0 +1,104 @@
+{
+  "dataset_id": "e3f2eab4-bcdd-4fca-87db-18cb14ad4e4c",
+  "title": "כמות כלי רכב חדשים בעלי קוד דגם העולים על הכביש בכל חודש",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "immigration"
+  ],
+  "keywords": [
+    "תחבורה",
+    "הכביש",
+    "sug",
+    "degem",
+    "sgira",
+    "בדרכים",
+    "month",
+    "רכב",
+    "והבטיחות",
+    "כלי",
+    "דגם",
+    "כמות",
+    "kinuy",
+    "בעלי",
+    "משרד",
+    "mishari",
+    "קוד",
+    "num",
+    "חודש",
+    "car",
+    "העולים",
+    "בכל",
+    "tozeret",
+    "חדשים",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "602ac32d-19c0-4b41-88e0-e3ce8a7e80b7",
+      "title": "כמות סגירות חודשי עבור רכבים חדשים בעלי קוד דגם",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "sgira_month",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "sug_degem",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "car_num",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kinuy_mishari",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 226849
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

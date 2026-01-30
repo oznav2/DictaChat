@@ -1,0 +1,109 @@
+{
+  "dataset_id": "75989c99-3122-4656-943c-3b758262cbf4",
+  "title": "רשימת תאגידים בנקאיים בישראל - כתובות וקישורים",
+  "organization": "בנק ישראל",
+  "tags": [
+    "אוצר וכלכלה",
+    "בנק ישראל",
+    "בנקים"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "name",
+    "וכלכלה",
+    "city",
+    "וקישורים",
+    "fax",
+    "תאגידים",
+    "category",
+    "code",
+    "בנק",
+    "swift",
+    "אוצר",
+    "zip",
+    "internet",
+    "כתובות",
+    "ישראל",
+    "telephone",
+    "בנקים",
+    "בנקאיים",
+    "address",
+    "bank",
+    "בישראל"
+  ],
+  "resources": [
+    {
+      "resource_id": "ebb61778-e34c-4e67-8fcf-0e643d9cf8c2",
+      "title": "רשימת תאגידים בנקאיים בישראל - כתובות וקישורים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Category",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Bank_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Bank_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Internet_Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Swift_Code",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "Zip_Code",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Telephone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Fax",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 18
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

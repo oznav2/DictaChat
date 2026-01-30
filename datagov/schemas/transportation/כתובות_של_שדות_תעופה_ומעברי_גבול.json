@@ -1,0 +1,67 @@
+{
+  "dataset_id": "ac94b6c0-ea34-462b-949a-4d169fdd4286",
+  "title": "כתובות של שדות תעופה ומעברי גבול",
+  "organization": "רשות שדות התעופה",
+  "tags": [
+    "אוכלוסיה",
+    "כתובות",
+    "מעברי גבול",
+    "שדות תעופה",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "מיקוד",
+    "גבול",
+    "כתובת",
+    "כתובות",
+    "שדות",
+    "תחבורה",
+    "אוכלוסיה",
+    "פירוט",
+    "רשות",
+    "מעברי",
+    "ומעברי",
+    "תעופה",
+    "התעופה"
+  ],
+  "resources": [
+    {
+      "resource_id": "4e8e8c11-5c97-4412-a3fd-1eb862eed668",
+      "title": "כתובות של שדות תעופה ומעברי גבול",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "פירוט",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "מיקוד",
+          "type": "text",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 12
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

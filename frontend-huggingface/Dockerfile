@@ -1,4 +1,5 @@
-# syntax=docker/dockerfile:1
+# syntax directive removed - was causing BuildKit credential issues in WSL2
+# # syntax=docker/dockerfile:1
 ARG INCLUDE_DB=false
 
 FROM node:24-slim AS base
@@ -32,7 +33,8 @@ RUN mkdir -p /app/uploads && chown -R 1000:1000 /app/uploads
 USER user
 
 
-COPY --chown=1000 .env /app/.env
+# .env is passed via docker-compose environment section, not copied
+# All config consolidated in root .env file
 COPY --chown=1000 entrypoint.sh /app/entrypoint.sh
 COPY --chown=1000 package.json /app/package.json
 COPY --chown=1000 package-lock.json /app/package-lock.json
@@ -43,11 +45,14 @@ FROM node:24 AS builder
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y git
+
 COPY --link --chown=1000 package-lock.json package.json ./
 
 ARG APP_BASE=
 ARG PUBLIC_APP_COLOR=
 ENV BODY_SIZE_LIMIT=15728640
+ENV BRICKSLLM_SKIP_MODEL_FETCH=true
 
 RUN --mount=type=cache,target=/app/.npm \
     npm set cache /app/.npm && \

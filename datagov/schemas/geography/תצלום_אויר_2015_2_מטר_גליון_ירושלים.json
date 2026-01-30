@@ -1,0 +1,35 @@
+{
+  "dataset_id": "c45f869f-606d-47cb-98d8-abf9aa1f34d5",
+  "title": "תצלום אויר 2015 2 מטר - גליון ירושלים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "ירושלים",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "f4598554-9077-454d-856d-ada98dfbb6c1",
+      "title": "תצלום אויר 2015 2 מטר - גליון ירושלים",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

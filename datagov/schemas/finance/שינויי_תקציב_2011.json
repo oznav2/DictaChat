@@ -1,0 +1,152 @@
+{
+  "dataset_id": "d4537b8b-3480-464d-a7ee-9fc2a1ba1dd4",
+  "title": "שינויי תקציב 2011",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אוצר וכלכלה",
+    "שינויים תקציב",
+    "תקציב"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "הוצאה",
+    "תיאור",
+    "שיא",
+    "וכלכלה",
+    "מיועדת",
+    "שינוי",
+    "סוג",
+    "הוצאות",
+    "מוביל",
+    "הכנסה",
+    "תקציב",
+    "שינויי",
+    "בהכנסה",
+    "שינויים",
+    "סעיף",
+    "נטו",
+    "וועדה",
+    "הרשאה",
+    "האוצר",
+    "להתחייב",
+    "תוכנית",
+    "משרד",
+    "אוצר",
+    "קוד",
+    "בקשה",
+    "שנה",
+    "מותנית"
+  ],
+  "resources": [
+    {
+      "resource_id": "b202bd3f-f06b-43d0-bfee-a8a250f10851",
+      "title": "שינויי תקציב 2011",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סעיף מוביל",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר בקשה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תיאור בקשה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד שינוי",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם שינוי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד סוג בקשה",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם סוג בקשה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר וועדה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "קוד תוכנית",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תוכנית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "הוצאות נטו",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הוצאה מותנית בהכנסה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הכנסה מיועדת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הרשאה להתחייב",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שיא כא",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 7540
+    },
+    {
+      "resource_id": "b73b3ea7-0bf7-4ade-9918-b1e9fbbd7b60",
+      "title": "שינויי תקציב הסברים לקובץ",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

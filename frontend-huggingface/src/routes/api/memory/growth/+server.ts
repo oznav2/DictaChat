@@ -25,12 +25,25 @@ export const GET: RequestHandler = async ({ url }) => {
 		const db = client.db(config.MONGODB_DB_NAME);
 
 		// Aggregate memories by date and source
+		// Handle both `created_at` (schema) and `timestamps.created_at` (legacy) formats
 		const pipeline = [
 			{ $match: { user_id: ADMIN_USER_ID } },
 			{
+				$addFields: {
+					// Normalize date field - try created_at first, fall back to timestamps.created_at
+					_normalizedDate: {
+						$cond: {
+							if: { $ne: ["$created_at", null] },
+							then: "$created_at",
+							else: { $ifNull: ["$timestamps.created_at", new Date()] },
+						},
+					},
+				},
+			},
+			{
 				$group: {
 					_id: {
-						date: { $dateToString: { format: "%Y-%m-%d", date: "$created_at" } },
+						date: { $dateToString: { format: "%Y-%m-%d", date: "$_normalizedDate" } },
 						source: { $ifNull: ["$source.tool_name", "manual"] },
 					},
 					count: { $sum: 1 },

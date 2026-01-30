@@ -5,6 +5,11 @@ import {
 	scorePerplexityTools,
 	type PerplexityTool,
 } from "../utils/hebrewIntentDetector";
+import {
+	DATAGOV_INTENT_PATTERNS,
+	CATEGORY_HEBREW_NAMES,
+	type DataGovIntent,
+} from "$lib/server/memory/datagov";
 
 /**
  * Maximum number of tools to send to the model.
@@ -12,6 +17,58 @@ import {
  * More than 5 may cause context overflow or slow inference.
  */
 const MAX_TOOLS = parseInt(process.env.MCP_MAX_TOOLS || "4", 10);
+
+/**
+ * Normalize tool name to handle MCP server inconsistency.
+ * Some MCP servers use hyphens (tavily-search), others use underscores (perplexity_ask).
+ * This function converts to lowercase with underscores for consistent matching.
+ */
+function normalizeToolName(name: string): string {
+	return name.toLowerCase().replace(/-/g, "_");
+}
+
+/**
+ * Check if a tool name matches any in the relevant set (handles hyphen/underscore variants).
+ */
+function toolNameMatches(toolName: string, relevantNames: Set<string>): boolean {
+	const normalized = normalizeToolName(toolName);
+	for (const name of relevantNames) {
+		if (normalizeToolName(name) === normalized) {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
+ * Get priority score for a tool (handles hyphen/underscore variants).
+ */
+function getToolPriority(toolName: string, priorities: Record<string, number>): number {
+	// Try exact match first
+	if (priorities[toolName] !== undefined) {
+		return priorities[toolName];
+	}
+	// Try normalized match
+	const normalized = normalizeToolName(toolName);
+	for (const [key, value] of Object.entries(priorities)) {
+		if (normalizeToolName(key) === normalized) {
+			return value;
+		}
+	}
+	return 0;
+}
+
+const HISTORICAL_DATE_KEYWORDS = /\b(when)\b|מתי|תאריך|באיזה\s*תאריך|באיזה\s*יום|באיזה\s*מועד|מועד/i;
+const HISTORICAL_CONTEXT_KEYWORDS =
+	/\b(decision|appointed|appointment|nominated|nomination|elected|election|resigned|ruling|verdict|court|case|founded|established|announced|approved|hearing)\b|החלט(?:ה|ות)|הוחלט|מונ(?:ה|ו|תה)|מינוי|נבחר|התפטר|פסק(?:\s*דין)?|בג\"ץ|בית\s*המשפט|הוקם|נוסד|אושר|הוכרז|מינויו|מינויה|דיון|שימוע|ישיבה/i;
+const CURRENT_TIME_KEYWORDS =
+	/\b(current time|time now|what time|timezone|convert|clock|local time)\b|מה\s*השעה|שעה\s*עכשיו|אזור\s*זמן|המרת?\s*זמן|שעון/i;
+
+export function isHistoricalDateQuery(query: string): boolean {
+	if (!HISTORICAL_DATE_KEYWORDS.test(query)) return false;
+	if (CURRENT_TIME_KEYWORDS.test(query)) return false;
+	return HISTORICAL_CONTEXT_KEYWORDS.test(query);
+}
 
 /**
  * Cache for tool filtering results to improve performance
@@ -119,29 +176,40 @@ const TOOL_CATEGORIES: Record<string, { keywords: RegExp; tools: string[] }> = {
 	},
 	// DEEP RESEARCH: Perplexity-only (מחקר, research, deep dive)
 	// Tavily is explicitly EXCLUDED for research intent
+	// NOTE: Tool names use UNDERSCORES to match actual MCP tool names
 	deepResearch: {
 		keywords: /\b(research|deep dive|in-depth|comprehensive|analyze)\b|מחקר|לחקור|ניתוח מעמיק/i,
-		tools: ["perplexity-ask", "perplexity-search", "perplexity-research", "perplexity-reason"],
+		tools: ["perplexity_ask", "perplexity_search", "perplexity_research", "perplexity_reason"],
 	},
 	// SIMPLE SEARCH: Tavily (חפש, search, find)
+	// NOTE: fetch is NOT included - it should only be used for direct URL retrieval
+	// NOTE: Tool names use UNDERSCORES to match actual MCP tool names
 	simpleSearch: {
 		keywords: /\b(search|find|look up|what is|who is)\b|חפש|חיפוש|מצא/i,
-		tools: ["tavily-search", "tavily-extract", "tavily-map", "fetch"],
+		tools: ["tavily_search", "tavily_extract", "tavily_map"],
 	},
 	// GENERAL INFO: Perplexity preferred (info, news, explain, etc.)
 	// NOTE: Tavily is NOT included here - use simpleSearch category for Tavily
+	// NOTE: fetch is NOT included - it should only be used for direct URL retrieval
+	// NOTE: Tool names use UNDERSCORES to match actual MCP tool names
 	research: {
 		// English + Hebrew: information, news, buy, price, compare, recommend, best
 		keywords:
 			/\b(how to|why|explain|information|news|article|latest|current|today|buy|purchase|price|compare|review|market|recommend|best|top|popular)\b|מידע|חדשות|מאמר|עדכני|היום|קנה|לקנות|מחיר|השווה|השוואה|ביקורת|שוק|המלצה|הטוב ביותר|פופולרי|מה זה|מי זה|איך|למה|הסבר/i,
 		tools: [
-			"perplexity-ask",
-			"perplexity-search",
-			"perplexity-research",
-			"perplexity-reason",
+			"perplexity_ask",
+			"perplexity_search",
+			"perplexity_research",
+			"perplexity_reason",
 			"search", // Context7
-			"fetch",
 		],
+	},
+	// DIRECT URL FETCH: Only for explicit URL retrieval (not web search)
+	// Use when user provides a specific URL to fetch content from
+	directUrl: {
+		keywords:
+			/\b(fetch|get|retrieve|download|url|link|page|website)\b.*\b(https?:\/\/|www\.)|https?:\/\/[^\s]+|הבא.*מ|משוך.*מ|הורד.*מ|קישור|אתר/i,
+		tools: ["fetch"],
 	},
 	reasoning: {
 		// English + Hebrew: think, reason, plan, solve, analyze, step by step
@@ -280,15 +348,15 @@ const TOOL_CATEGORIES: Record<string, { keywords: RegExp; tools: string[] }> = {
  */
 const TOOL_PRIORITIES: Record<string, number> = {
 	sequentialthinking: 95,
-	// Perplexity tools (hyphen format - MCP standard)
-	"perplexity-ask": 100,
-	"perplexity-search": 100,
-	"perplexity-research": 100,
-	"perplexity-reason": 100,
-	// Tavily tools (hyphen format - MCP standard)
-	"tavily-search": 90,
-	"tavily-extract": 90,
-	"tavily-map": 85,
+	// Perplexity tools (underscore format - matches actual MCP tool names)
+	perplexity_ask: 100,
+	perplexity_search: 100,
+	perplexity_research: 100,
+	perplexity_reason: 100,
+	// Tavily tools (underscore format - matches actual MCP tool names)
+	tavily_search: 90,
+	tavily_extract: 90,
+	tavily_map: 85,
 	"get-video-info-for-summary-from-url": 90,
 	// DataGov tools - datagov_query is PRIMARY (highest priority)
 	datagov_query: 95,
@@ -413,7 +481,7 @@ export function filterToolsByIntent(
 	allTools: OpenAiTool[],
 	userQuery: string,
 	options?: ToolFilterOptions
-): { filtered: OpenAiTool[]; categories: string[] } {
+): { filtered: OpenAiTool[]; categories: string[]; datagovIntent?: DataGovIntent | null } {
 	const { hasDocuments = false } = options || {};
 
 	// CRITICAL: If documents are attached, ALWAYS include docling tools
@@ -447,6 +515,18 @@ export function filterToolsByIntent(
 		}
 	}
 
+	const isHistoricalDate = isHistoricalDateQuery(userQuery);
+	if (isHistoricalDate) {
+		if (!matchedCategories.includes("simpleSearch")) {
+			matchedCategories.push("simpleSearch");
+		}
+		if (!matchedCategories.includes("research")) {
+			matchedCategories.push("research");
+		}
+		TOOL_CATEGORIES.simpleSearch.tools.forEach((t) => relevantToolNames.add(t));
+		TOOL_CATEGORIES.research.tools.forEach((t) => relevantToolNames.add(t));
+	}
+
 	// Exclude sequentialthinking when documents are attached - the model already has native
 	// <think> capability and sequentialthinking can cause issues with Hebrew JSON parsing
 	if (hasDocuments) {
@@ -460,12 +540,23 @@ export function filterToolsByIntent(
 	}
 
 	// Filter available tools to only those in our relevant set
-	let filtered = allTools.filter((tool) => relevantToolNames.has(tool.function.name));
+	// Uses normalized matching to handle MCP server inconsistency (hyphens vs underscores)
+	console.log("[tool-filter] DEBUG: relevantToolNames =", Array.from(relevantToolNames));
+	console.log("[tool-filter] DEBUG: allTools sample =", allTools.slice(0, 10).map((t) => t.function.name));
+
+	let filtered = allTools.filter((tool) => {
+		const matches = toolNameMatches(tool.function.name, relevantToolNames);
+		if (matches) {
+			console.log(`[tool-filter] DEBUG: matched tool "${tool.function.name}"`);
+		}
+		return matches;
+	});
 
 	// Sort filtered tools by Best-in-Class priority score (Descending)
+	// Uses normalized matching for priority lookup
 	filtered.sort((a, b) => {
-		const scoreA = TOOL_PRIORITIES[a.function.name] || 0;
-		const scoreB = TOOL_PRIORITIES[b.function.name] || 0;
+		const scoreA = getToolPriority(a.function.name, TOOL_PRIORITIES);
+		const scoreB = getToolPriority(b.function.name, TOOL_PRIORITIES);
 		return scoreB - scoreA;
 	});
 
@@ -510,10 +601,16 @@ export function filterToolsByIntent(
 		filtered = selectBestPerplexityTool(allTools, userQuery, filtered);
 	}
 
+	// Phase 25.9: Detect DataGov knowledge queries (memory-first hint)
+	// This checks if the query can be answered from pre-loaded DataGov knowledge
+	// instead of calling the DataGov API tools
+	const datagovIntent = detectDataGovIntent(userQuery);
+
 	// If we still have no tools after filtering, take the first MAX_TOOLS from research
 	if (filtered.length === 0) {
+		const researchToolSet = new Set(TOOL_CATEGORIES.research.tools);
 		filtered = allTools
-			.filter((t) => TOOL_CATEGORIES.research.tools.includes(t.function.name))
+			.filter((t) => toolNameMatches(t.function.name, researchToolSet))
 			.slice(0, MAX_TOOLS);
 	}
 
@@ -527,7 +624,7 @@ export function filterToolsByIntent(
 		filtered = filtered.slice(0, MAX_TOOLS);
 	}
 
-	const result = { filtered, categories: matchedCategories };
+	const result = { filtered, categories: matchedCategories, datagovIntent };
 
 	// Cache the result for future use
 	toolFilterCache.set(userQuery, filtered, matchedCategories);
@@ -540,7 +637,8 @@ export function filterToolsByIntent(
  */
 export function extractUserQuery(messages: Array<{ from?: string; content?: string }>): string {
 	const lastUserMsg = [...messages].reverse().find((m) => m.from === "user");
-	return lastUserMsg?.content?.toLowerCase() || "";
+	// Finding 7: Ensure query is normalized (lowercase + trimmed) for consistent intent matching
+	return lastUserMsg?.content?.toLowerCase().trim() || "";
 }
 
 export function clearToolFilterCache(): void {
@@ -552,6 +650,57 @@ export function clearToolFilterCache(): void {
  * Used for graceful error handling when tool is not found.
  * Returns null if tool pattern is unknown.
  */
+/**
+ * Phase 25.9: Detect DataGov knowledge queries
+ *
+ * Detects queries about Israeli government data that can be answered
+ * from pre-loaded DataGov knowledge (categories, schemas, expansions)
+ * rather than calling the DataGov API tools.
+ *
+ * Returns suggestMemoryFirst=true when the query is about:
+ * - Available datasets/categories ("אילו מאגרים יש?")
+ * - Government data overview ("מידע ממשלתי על תחבורה")
+ * - Data structure questions ("מה יש ב-data.gov?")
+ *
+ * @param query - User's query text
+ * @returns DataGovIntent or null if not a DataGov knowledge query
+ */
+export function detectDataGovIntent(query: string): DataGovIntent | null {
+	// Check against all DataGov intent patterns
+	for (const pattern of DATAGOV_INTENT_PATTERNS) {
+		const match = pattern.exec(query);
+		if (match) {
+			// Check for category-specific match
+			let category: string | undefined;
+			const categoryNames = Object.keys(CATEGORY_HEBREW_NAMES);
+			const hebrewNames = Object.values(CATEGORY_HEBREW_NAMES);
+
+			// Try to identify specific category from query
+			for (let i = 0; i < categoryNames.length; i++) {
+				const catRegex = new RegExp(hebrewNames[i], "i");
+				if (catRegex.test(query)) {
+					category = categoryNames[i];
+					break;
+				}
+			}
+
+			console.log(
+				`[tool-filter] DataGov intent detected: pattern="${pattern.source}", category=${category || "none"}`
+			);
+
+			return {
+				detected: true,
+				suggestMemoryFirst: true,
+				confidence: 0.85,
+				category,
+				matchedPattern: pattern.source,
+			};
+		}
+	}
+
+	return null;
+}
+
 export function identifyToolMcp(toolName: string): { mcpName: string; displayName: string } | null {
 	const name = toolName.toLowerCase();
 

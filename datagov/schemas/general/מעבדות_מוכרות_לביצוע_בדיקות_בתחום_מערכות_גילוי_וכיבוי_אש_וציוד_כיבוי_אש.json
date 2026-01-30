@@ -1,0 +1,83 @@
+{
+  "dataset_id": "a725b698-e7e2-4452-9c74-2e8d1a546d7f",
+  "title": "מעבדות מוכרות לביצוע בדיקות בתחום מערכות גילוי וכיבוי אש וציוד כיבוי אש",
+  "organization": "כבאות והצלה לישראל",
+  "tags": [
+    "גילוי אש",
+    "כבאות והצלה",
+    "מעבדות"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "name",
+    "כבאות",
+    "לישראל",
+    "recognition",
+    "לביצוע",
+    "והצלה",
+    "בדיקות",
+    "כיבוי",
+    "וכיבוי",
+    "validity",
+    "number",
+    "standard",
+    "מוכרות",
+    "בתחום",
+    "lab",
+    "certification",
+    "גילוי",
+    "comments",
+    "מעבדות",
+    "וציוד",
+    "מערכות"
+  ],
+  "resources": [
+    {
+      "resource_id": "bfab076e-827a-4fc4-b5ba-9c27c9fc884c",
+      "title": "מעבדות מוכרות לביצוע בדיקות בתחום מערכות גילוי וכיבוי אש וציוד כיבוי אש ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "certification_standard",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lab_number",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "lab_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "recognition_validity",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "comments",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 103
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

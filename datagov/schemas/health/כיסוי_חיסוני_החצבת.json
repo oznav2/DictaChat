@@ -1,0 +1,76 @@
+{
+  "dataset_id": "42ec4b75-e499-4178-b1e6-be52727b1278",
+  "title": "כיסוי חיסוני החצבת",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות",
+    "חיסונים",
+    "חצב",
+    "מחלו",
+    "מחלו זיהומיו",
+    "משרד הבריאו"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "מחלו",
+    "החצבת",
+    "חיסוני",
+    "כיסוי",
+    "משרד",
+    "חיסונים",
+    "סמל",
+    "הבריאו",
+    "הכיסוי",
+    "לימודים",
+    "הבריאות",
+    "זיהומיו",
+    "יישוב",
+    "חצב",
+    "אחוז",
+    "בריאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "1ed79571-04e9-46dc-8b55-566ee78bf9da",
+      "title": "כיסוי חיסוני של חצבת בקרב תלמידי כיתות א'",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנת לימודים",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סמל יישוב",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "יישוב",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "אחוז הכיסוי",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 2088
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

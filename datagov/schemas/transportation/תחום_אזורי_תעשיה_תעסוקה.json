@@ -1,0 +1,152 @@
+{
+  "dataset_id": "8db5effd-59ca-44ef-b561-86e0ce2911d1",
+  "title": "תחום אזורי תעשיה תעסוקה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "ממג",
+    "תעסוקה",
+    "תעשיה"
+  ],
+  "categories": [
+    "transportation",
+    "economy",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "taba",
+    "indnetarea",
+    "city",
+    "gis",
+    "בדרכים",
+    "minority",
+    "והבטיחות",
+    "תעשיה",
+    "authority",
+    "empnetarea",
+    "משרד",
+    "brutoarea",
+    "district",
+    "חצב",
+    "num",
+    "אזורי",
+    "yearmonth",
+    "shape",
+    "area",
+    "תחום",
+    "oid",
+    "תעסוקה",
+    "owner",
+    "length",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c9447ab4-f167-4194-92e4-a5718915004c",
+      "title": "INDUSTRIAL SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a7b34e8a-fb46-448c-ad3a-244bae6d137c",
+      "title": "INDUSTRIAL KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "71799e72-7a1f-45cf-9d81-5cd1d5f3b201",
+      "title": "INDUSTRIAL csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "TABA_NUM",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "CITY",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "DISTRICT",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "MINORITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "OWNER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "INDNETAREA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "EMPNETAREA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "BRUTOAREA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "AUTHORITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 427
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

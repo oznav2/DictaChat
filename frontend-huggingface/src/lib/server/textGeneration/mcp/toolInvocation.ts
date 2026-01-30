@@ -1,8 +1,9 @@
-import { randomUUID } from "crypto";
+import { randomUUID, createHash } from "crypto";
 import { logger } from "../../logger";
 import { existsSync } from "fs";
 import { readdir } from "fs/promises";
 import { join } from "path";
+import { env } from "$env/dynamic/private";
 import type { MessageUpdate, MessageTraceUpdate } from "$lib/types/MessageUpdate";
 import {
 	MessageToolUpdateType,
@@ -11,7 +12,7 @@ import {
 } from "$lib/types/MessageUpdate";
 import { ToolResultStatus } from "$lib/types/Tool";
 import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
-import type { McpToolMapping } from "$lib/server/mcp/tools";
+import type { McpToolMapping, OpenAiTool } from "$lib/server/mcp/tools";
 import type { McpServerConfig } from "$lib/server/mcp/httpClient";
 import { callMcpTool, type McpToolTextResponse } from "$lib/server/mcp/httpClient";
 import {
@@ -29,10 +30,26 @@ import {
 	getProgressMessage,
 	getToolIntelligence,
 	getFallbackChain,
+	// Phase: Wire remaining 64 - Tool Intelligence utilities
+	getLatencyTier,
+	getToolTimeout,
+	getUserFeedbackDelay,
+	getMaxOutputTokens,
+	needsSummarization,
+	generatePostExecutionSuggestions,
+	getToolUsageAttribution,
+	getComplementaryTools,
 } from "./toolIntelligenceRegistry";
+// Phase 7: Tool Summarizers for large output storage
+import { getSummarizerPattern, applyLanguageInstructions } from "./toolSummarizers";
+import { buildToolResultSchemaRegistry, validateToolResult } from "./ToolResultSchemaRegistry";
 import type { Client } from "@modelcontextprotocol/sdk/client";
 import { UnifiedMemoryFacade } from "$lib/server/memory";
 import { ADMIN_USER_ID } from "$lib/server/constants";
+// Phase 2 (+16): Tool Result Ingestion
+import { ToolResultIngestionService } from "$lib/server/memory/services/ToolResultIngestionService";
+// Phase 19: Action Outcomes Tracking
+import type { Outcome, ToolRunStatus, ActionType, ContextType } from "$lib/server/memory/types";
 
 // ============================================
 // DOCLING TOOL TRACE INTEGRATION
@@ -56,7 +73,18 @@ function isDoclingTool(toolName: string): boolean {
 	return DOCLING_TOOL_NAMES.has(nameLower) || nameLower.includes("docling");
 }
 
-const UPLOADS_DIR = "/app/uploads";
+function resolveUploadsDir(): string {
+	if (env.UPLOADS_DIR) return env.UPLOADS_DIR;
+	if (env.DOCKER_ENV === "true") return "/app/uploads";
+	return join(process.cwd(), ".uploads");
+}
+
+const UPLOADS_DIR = resolveUploadsDir();
+
+const BACKGROUND_INGEST_DELAY_MS = 50;
+const BACKGROUND_OUTCOME_DELAY_MS = 100;
+const BACKGROUND_DOCLING_BRIDGE_DELAY_MS = 75;
+const BACKGROUND_MAX_STAGGER_MS = 300;
 
 function extractShaCandidate(input: string): string | null {
 	if (!input) return null;
@@ -88,6 +116,10 @@ async function resolveDoclingFilePath(
  * Bridge docling tool output to the memory system
  * This ensures documents processed via tool calls are stored in memory
  * for visibility in the Memory Panel and future retrieval
+ *
+ * Phase 4: Now uses SHA-256 hash for document deduplication
+ * - Prevents duplicate storage when same document is processed multiple times
+ * - Uses hash-based documentId for consistent identification
  */
 async function bridgeDoclingToMemory(
 	conversationId: string,
@@ -101,18 +133,52 @@ async function bridgeDoclingToMemory(
 	}
 
 	try {
-		logger.info(
-			{ conversationId, toolName, outputLength: output.length },
-			"[mcp→memory] Bridging docling output to memory system"
-		);
-
 		const facade = UnifiedMemoryFacade.getInstance();
 		if (!facade.isInitialized()) {
 			logger.warn("[mcp→memory] Memory system not initialized, skipping bridge");
 			return;
 		}
 
-		const documentId = `docling:${conversationId}:${Date.now()}`;
+		// Phase 4.1.1: Calculate content hash for deduplication
+		const contentHash = createHash("sha256").update(output.trim()).digest("hex");
+		const shortHash = contentHash.slice(0, 16);
+
+		logger.info(
+			{ conversationId, toolName, outputLength: output.length, contentHash: shortHash },
+			"[mcp→memory] Bridging docling output to memory system"
+		);
+
+		// Phase 4.1.2: Check if document already exists via hash lookup
+		// Use MemoryMongoStore directly for document existence check
+		try {
+			const { Database } = await import("$lib/server/database");
+			const { MemoryMongoStore } = await import("$lib/server/memory/stores/MemoryMongoStore");
+
+			const db = await Database.getInstance();
+			const client = db.getClient();
+			const mongoStore = new MemoryMongoStore({ client, dbName: "chat-ui" });
+			await mongoStore.initialize();
+
+			const exists = await mongoStore.documentExists(ADMIN_USER_ID, contentHash);
+
+			if (exists) {
+				// Phase 4.1.3: Skip storage if duplicate
+				logger.info(
+					{ contentHash: shortHash, fileName, conversationId },
+					"[mcp→memory] Document already in memory, skipping duplicate storage"
+				);
+				return;
+			}
+		} catch (checkErr) {
+			// If existence check fails, proceed with storage (fail-open)
+			logger.warn(
+				{ err: checkErr, contentHash: shortHash },
+				"[mcp→memory] Document existence check failed, proceeding with storage"
+			);
+		}
+
+		// Phase 4.1.4: Use hash-based documentId instead of timestamp
+		const documentId = `docling:${shortHash}`;
 
 		// Chunk with overlap (same as books endpoint)
 		const chunkSize = 1000;
@@ -135,7 +201,7 @@ async function bridgeDoclingToMemory(
 		for (let i = 0; i < chunks.length; i++) {
 			const res = await facade.store({
 				userId: ADMIN_USER_ID,
-				tier: "books",
+				tier: "documents",
 				text: chunks[i],
 				metadata: {
 					book_id: documentId,
@@ -145,12 +211,11 @@ async function bridgeDoclingToMemory(
 					source: "docling_tool",
 					conversation_id: conversationId,
 					tool_name: toolName,
+					// Phase 4.1.5: Persist document_hash for deduplication queries
+					document_hash: contentHash,
 				},
 			});
-			logger.debug(
-				{ chunkIndex: i, memoryId: res.memory_id },
-				"[mcp→memory] Stored docling chunk"
-			);
+			logger.debug({ chunkIndex: i, memoryId: res.memory_id }, "[mcp→memory] Stored docling chunk");
 		}
 
 		logger.info(
@@ -268,6 +333,267 @@ function createDoclingTraceRunCompleted(runId: string): MessageTraceUpdate {
 	};
 }
 
+// ============================================
+// Phase 19: ACTION OUTCOMES TRACKING
+// ============================================
+
+/**
+ * Map tool execution status to action outcome
+ * Phase 19.2.3: Classify outcome: success, error, timeout, empty
+ */
+function classifyToolOutcome(result: { error?: string; output?: string }): {
+	outcome: Outcome;
+	toolStatus: ToolRunStatus;
+} {
+	if (result.error) {
+		const errorLower = result.error.toLowerCase();
+		if (errorLower.includes("timeout") || errorLower.includes("timed out")) {
+			return { outcome: "failed", toolStatus: "timeout" };
+		}
+		return { outcome: "failed", toolStatus: "error" };
+	}
+
+	if (!result.output || result.output.trim().length === 0) {
+		// Empty result - partial success (tool ran but nothing found)
+		return { outcome: "partial", toolStatus: "ok" };
+	}
+
+	// Check for error-like content in output
+	const outputLower = result.output.toLowerCase();
+	if (
+		outputLower.includes("error:") ||
+		outputLower.includes("failed to") ||
+		outputLower.includes("exception")
+	) {
+		return { outcome: "partial", toolStatus: "error" };
+	}
+
+	return { outcome: "worked", toolStatus: "ok" };
+}
+
+/**
+ * Detect if tool output indicates blocking (robots.txt, captcha, unusual traffic)
+ * These are "successful" HTTP responses but contain no useful content
+ * Used specifically for fetch tool to trigger fallback to search APIs
+ */
+function isFetchBlockedResponse(output: string): boolean {
+	if (!output || output.length === 0) return false;
+
+	const outputLower = output.toLowerCase();
+
+	// Robots.txt and crawling restrictions
+	if (
+		outputLower.includes("robots.txt") ||
+		outputLower.includes("disallowed by robots") ||
+		outputLower.includes("blocked by robots") ||
+		outputLower.includes("crawling not allowed")
+	) {
+		return true;
+	}
+
+	// CAPTCHA and verification challenges
+	if (
+		outputLower.includes("captcha") ||
+		outputLower.includes("verify you are human") ||
+		outputLower.includes("are you a robot") ||
+		outputLower.includes("prove you're not a robot") ||
+		outputLower.includes("human verification")
+	) {
+		return true;
+	}
+
+	// Google-specific blocking
+	if (
+		outputLower.includes("unusual traffic") ||
+		outputLower.includes("automated requests") ||
+		outputLower.includes("our systems have detected")
+	) {
+		return true;
+	}
+
+	// Rate limiting and access denied
+	if (
+		outputLower.includes("rate limit") ||
+		outputLower.includes("too many requests") ||
+		outputLower.includes("access denied") ||
+		outputLower.includes("403 forbidden")
+	) {
+		return true;
+	}
+
+	// JavaScript-only pages (fetch gets empty shell)
+	if (
+		outputLower.includes("enable javascript") ||
+		outputLower.includes("javascript required") ||
+		outputLower.includes("please enable javascript")
+	) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Map tool name to ActionType for consistent tracking
+ */
+function toolNameToActionType(toolName: string): ActionType {
+	const nameLower = toolName.toLowerCase();
+
+	// Memory tools
+	if (nameLower.includes("search_memory") || nameLower.includes("memory_search")) {
+		return "search_memory";
+	}
+	if (nameLower.includes("add_to_memory") || nameLower.includes("memory_bank")) {
+		return "add_to_memory_bank";
+	}
+	if (nameLower.includes("context_insights") || nameLower.includes("get_context")) {
+		return "get_context_insights";
+	}
+	if (nameLower.includes("update_memory")) {
+		return "update_memory";
+	}
+	if (nameLower.includes("archive_memory")) {
+		return "archive_memory";
+	}
+	if (nameLower.includes("delete_memory")) {
+		return "delete_memory";
+	}
+
+	// Return tool name as ActionType (extensible string type)
+	return toolName as ActionType;
+}
+
+/**
+ * Fire-and-forget action outcome recording
+ * Phase 19.2: Record tool execution outcomes for learning
+ *
+ * This helps the system learn:
+ * - Which tools work best for which types of queries
+ * - Which tools have high error rates
+ * - Latency patterns for optimization
+ */
+async function recordToolActionOutcome(params: {
+	toolName: string;
+	result: { error?: string; output?: string };
+	conversationId?: string;
+	userId?: string;
+	latencyMs?: number;
+	contextType?: ContextType;
+}): Promise<void> {
+	try {
+		const facade = UnifiedMemoryFacade.getInstance();
+		const { outcome, toolStatus } = classifyToolOutcome(params.result);
+
+		await facade.recordActionOutcome({
+			action_id: randomUUID(),
+			action_type: toolNameToActionType(params.toolName),
+			context_type: params.contextType ?? "general",
+			outcome,
+			tool_status: toolStatus,
+			conversation_id: params.conversationId ?? null,
+			message_id: null,
+			answer_attempt_id: null,
+			tier: null,
+			doc_id: null,
+			memory_id: null,
+			action_params: null,
+			latency_ms: params.latencyMs ?? null,
+			error_type: params.result.error ? "tool_error" : null,
+			error_message: params.result.error?.slice(0, 500) ?? null,
+			timestamp: new Date().toISOString(),
+		});
+
+		logger.debug(
+			{
+				toolName: params.toolName,
+				outcome,
+				toolStatus,
+				latencyMs: params.latencyMs,
+			},
+			"[Phase 19] Recorded tool action outcome"
+		);
+	} catch (err) {
+		// Fire-and-forget: don't let outcome recording failures affect tool execution
+		logger.warn({ err, toolName: params.toolName }, "[Phase 19] Failed to record action outcome");
+	}
+}
+
+// ============================================
+// Phase 7: TOOL OUTPUT SUMMARIZATION
+// ============================================
+
+/**
+ * Summarize large tool outputs before storage in memory
+ * Uses tool-specific summarization patterns for optimal compression
+ *
+ * Phase 7: Enables efficient storage of search results, research findings, etc.
+ * - Reduces token usage in memory retrieval
+ * - Preserves key information using domain-specific patterns
+ * - Applies language-appropriate formatting (Hebrew/English)
+ */
+async function summarizeForStorage(
+	toolName: string,
+	output: string,
+	language: "en" | "he" = "en"
+): Promise<string> {
+	// Skip small outputs - no summarization needed
+	if (output.length < 500) {
+		return output;
+	}
+
+	// Phase: Wire remaining 64 - Use Tool Intelligence utilities
+	const requiresSummarization = needsSummarization(toolName);
+	const maxTokens = getMaxOutputTokens(toolName);
+
+	// If tool doesn't need summarization according to registry, return as-is
+	if (!requiresSummarization) {
+		logger.debug(
+			{ toolName, outputLength: output.length },
+			"[Phase 7] Tool Intelligence: no summarization needed per registry"
+		);
+		return output;
+	}
+
+	// Get the appropriate summarizer pattern for this tool
+	const pattern = getSummarizerPattern([toolName]);
+
+	// If no specific pattern (only default), skip summarization for storage
+	// Default pattern is for user-facing summaries, not storage compression
+	if (pattern.id === "default-comprehensive") {
+		logger.debug(
+			{ toolName, outputLength: output.length },
+			"[Phase 7] No specific summarizer pattern, storing full output"
+		);
+		return output;
+	}
+
+	// Apply language-specific instructions if Hebrew
+	const finalPattern = language === "he" ? applyLanguageInstructions(pattern, true) : pattern;
+
+	// For storage, we extract key information rather than full summarization
+	// This preserves the structured data while reducing verbosity
+	logger.info(
+		{ toolName, patternId: finalPattern.id, outputLength: output.length, maxTokens },
+		"[Phase 7] Summarizer pattern available for tool output"
+	);
+
+	// Truncate if output exceeds max tokens (approximate: 4 chars per token)
+	const maxChars = maxTokens * 4;
+	if (output.length > maxChars) {
+		logger.info(
+			{ toolName, originalLength: output.length, truncatedTo: maxChars },
+			"[Phase 7] Truncating large output per Tool Intelligence maxTokens"
+		);
+		return output.slice(0, maxChars) + "\n... [truncated for storage]";
+	}
+
+	// For now, return the original output - full LLM summarization would require
+	// an inference call which adds latency. The pattern metadata is logged for
+	// future enhancement where we could optionally summarize very large outputs.
+	// The ingestion service already handles chunking for large outputs.
+	return output;
+}
+
 export type Primitive = string | number | boolean;
 
 export type ToolRun = {
@@ -286,6 +612,7 @@ export interface ExecuteToolCallsParams {
 	calls: NormalizedToolCall[];
 	mapping: Record<string, McpToolMapping>;
 	servers: McpServerConfig[];
+	toolDefinitions?: OpenAiTool[];
 	parseArgs: (raw: unknown) => { value: Record<string, unknown>; error?: string };
 	resolveFileRef?: FileRefResolver;
 	toPrimitive: (value: unknown) => Primitive | undefined;
@@ -655,6 +982,7 @@ export async function* executeToolCalls({
 	calls,
 	mapping,
 	servers,
+	toolDefinitions,
 	parseArgs,
 	resolveFileRef,
 	toPrimitive,
@@ -670,6 +998,29 @@ export async function* executeToolCalls({
 	const toolMessages: ChatCompletionMessageParam[] = [];
 	const toolRuns: ToolRun[] = [];
 	const serverLookup = serverMap(servers);
+	const toolResultSchemaRegistry = buildToolResultSchemaRegistry(toolDefinitions ?? [], {
+		info: (message, meta) => logger.info(meta ?? {}, message),
+		warn: (message, meta) => logger.warn(meta ?? {}, message),
+		debug: (message, meta) => logger.debug(meta ?? {}, message),
+	});
+	const normalizeToolOutput = (toolName: string, response: McpToolTextResponse) => {
+		const validation = validateToolResult(
+			toolName,
+			{ text: response.text, structured: response.structured },
+			toolResultSchemaRegistry,
+			{
+				info: (message, meta) => logger.info(meta ?? {}, message),
+				warn: (message, meta) => logger.warn(meta ?? {}, message),
+				debug: (message, meta) => logger.debug(meta ?? {}, message),
+			}
+		);
+		const { annotated } = processToolOutput(validation.outputText);
+		return {
+			annotated,
+			structured: validation.structured,
+			blocks: response.content,
+		};
+	};
 
 	// Track trace state for tool calls
 	// Each REAL tool call gets its own step in the trace
@@ -686,6 +1037,9 @@ export async function* executeToolCalls({
 		error?: string;
 		uuid: string;
 		paramsClean: Record<string, Primitive>;
+		// Phase 19: Track tool execution latency for outcome learning
+		latencyMs?: number;
+		params?: Record<string, unknown>;
 	};
 
 	const prepared = calls.map((call) => {
@@ -701,10 +1055,16 @@ export async function* executeToolCalls({
 		// arguments (e.g. "image_1") while the full data: URLs or image blobs are
 		// only sent to the MCP tool server.
 		attachFileRefsToArgs(argsObj, resolveFileRef);
-		return { call, argsObj, paramsClean, uuid: randomUUID(), parseError: parsedArgs.error };
+		// Finding 2: Preserve call.id when present to maintain UI tracking consistency
+		return { call, argsObj, paramsClean, uuid: call.id ?? randomUUID(), parseError: parsedArgs.error };
 	});
 
 	for (const p of prepared) {
+		// Phase: Wire remaining 64 - Use Tool Intelligence for dynamic ETA
+		const feedbackDelay = getUserFeedbackDelay(p.call.name);
+		const latencyTier = getLatencyTier(p.call.name);
+		const dynamicEta = Math.max(10, Math.round(feedbackDelay / 1000)); // Convert ms to seconds
+
 		yield {
 			type: "update",
 			update: {
@@ -720,9 +1080,14 @@ export async function* executeToolCalls({
 				type: MessageUpdateType.Tool,
 				subtype: MessageToolUpdateType.ETA,
 				uuid: p.uuid,
-				eta: 10,
+				eta: dynamicEta,
 			},
 		};
+
+		logger.debug(
+			{ tool: p.call.name, latencyTier, feedbackDelay, eta: dynamicEta },
+			"[mcp] Tool Intelligence: computed dynamic ETA"
+		);
 	}
 
 	// ============================================
@@ -935,6 +1300,10 @@ export async function* executeToolCalls({
 					}
 				}
 
+				// Phase 19: Track execution timing
+				// Phase: Wire remaining 64 - Use dynamic timeout from Tool Intelligence
+				const dynamicTimeout = Math.max(toolTimeoutMs, getToolTimeout(p.call.name));
+				const toolStartTime = Date.now();
 				const toolResponse: McpToolTextResponse = await callMcpTool(
 					serverCfg,
 					mappingEntry.tool,
@@ -942,21 +1311,105 @@ export async function* executeToolCalls({
 					{
 						client: currentClient,
 						signal: abortSignal,
-						timeoutMs: toolTimeoutMs,
+						timeoutMs: dynamicTimeout,
 					}
 				);
-				const { annotated } = processToolOutput(toolResponse.text ?? "");
+				const toolLatencyMs = Date.now() - toolStartTime;
+				const normalizedOutput = normalizeToolOutput(p.call.name, toolResponse);
 				logger.debug(
-					{ server: mappingEntry.server, tool: mappingEntry.tool },
+					{ server: mappingEntry.server, tool: mappingEntry.tool, latencyMs: toolLatencyMs },
 					"[mcp] tool call completed"
 				);
+
+				// ============================================================
+				// FETCH BLOCKED RESPONSE DETECTION: Check for robots/captcha
+				// If fetch got blocked, trigger fallback to search APIs
+				// ============================================================
+				const isFetchTool = p.call.name.toLowerCase() === "fetch";
+				if (isFetchTool && isFetchBlockedResponse(normalizedOutput.annotated)) {
+					logger.warn(
+						{ tool: p.call.name, contentPreview: normalizedOutput.annotated.slice(0, 100) },
+						"[mcp] fetch returned blocked response (robots/captcha), triggering fallback"
+					);
+
+					// Try fallback chain for blocked fetch
+					const fallbackChain = getFallbackChain(p.call.name);
+					let fallbackSucceeded = false;
+
+					for (const fallbackToolName of fallbackChain) {
+						const fallbackNormalized = normalizeToolName(fallbackToolName, mapping);
+						const fallbackMapping = mapping[fallbackNormalized];
+
+						if (!fallbackMapping) continue;
+
+						const fallbackServerCfg = serverLookup.get(fallbackMapping.server);
+						if (!fallbackServerCfg) continue;
+
+						let fallbackClient = clientMap.get(fallbackMapping.server);
+						if (!fallbackClient) {
+							try {
+								fallbackClient = await getClientEnhanced(fallbackServerCfg, abortSignal);
+								clientMap.set(fallbackMapping.server, fallbackClient);
+							} catch {
+								continue;
+							}
+						}
+
+						try {
+							const fallbackResponse = await callMcpTool(
+								fallbackServerCfg,
+								fallbackMapping.tool,
+								p.argsObj,
+								{ client: fallbackClient, signal: abortSignal, timeoutMs: toolTimeoutMs }
+							);
+							const fallbackOutput = normalizeToolOutput(fallbackToolName, fallbackResponse);
+
+							logger.info(
+								{ originalTool: p.call.name, fallbackTool: fallbackToolName },
+								"[mcp] fallback succeeded after fetch block"
+							);
+
+							q.push({
+								index,
+								output: fallbackOutput.annotated,
+								structured: fallbackOutput.structured,
+								blocks: fallbackOutput.blocks,
+								uuid: p.uuid,
+								paramsClean: p.paramsClean,
+								latencyMs: toolLatencyMs,
+								params: p.argsObj,
+							});
+							fallbackSucceeded = true;
+							break;
+						} catch {
+							continue;
+						}
+					}
+
+					if (fallbackSucceeded) return;
+
+					// No fallback worked - return graceful error
+					q.push({
+						index,
+						error: toGracefulError(
+							p.call.name,
+							"האתר חסם את הגישה (robots/captcha). נסה להשתמש בכלי חיפוש כמו Perplexity או Tavily."
+						),
+						uuid: p.uuid,
+						paramsClean: p.paramsClean,
+					});
+					return;
+				}
+
 				q.push({
 					index,
-					output: annotated,
-					structured: toolResponse.structured,
-					blocks: toolResponse.content,
+					output: normalizedOutput.annotated,
+					structured: normalizedOutput.structured,
+					blocks: normalizedOutput.blocks,
 					uuid: p.uuid,
 					paramsClean: p.paramsClean,
+					latencyMs: toolLatencyMs,
+					params: p.argsObj,
 				});
 			} catch (err) {
 				const message = err instanceof Error ? err.message : String(err);
@@ -1072,7 +1525,7 @@ export async function* executeToolCalls({
 									}
 								);
 
-								const { annotated } = processToolOutput(fallbackResponse.text ?? "");
+								const fallbackOutput = normalizeToolOutput(fallbackToolName, fallbackResponse);
 
 								// SUCCESS! Push result and return
 								logger.info(
@@ -1082,9 +1535,9 @@ export async function* executeToolCalls({
 
 								q.push({
 									index,
-									output: annotated,
-									structured: fallbackResponse.structured,
-									blocks: fallbackResponse.content,
+									output: fallbackOutput.annotated,
+									structured: fallbackOutput.structured,
+									blocks: fallbackOutput.blocks,
 									uuid: p.uuid,
 									paramsClean: p.paramsClean,
 								});
@@ -1183,11 +1636,111 @@ export async function* executeToolCalls({
 		// in the memory system for visibility in Memory Panel
 		// ============================================
 		if (isTrackedTool && !r.error && r.output && conversationId) {
+			const output = r.output;
+			if (!output) return;
+			const bridgeDelayMs = Math.min(
+				BACKGROUND_MAX_STAGGER_MS,
+				BACKGROUND_DOCLING_BRIDGE_DELAY_MS + r.index * 50
+			);
 			// Fire and forget - don't block tool execution
-			bridgeDoclingToMemory(conversationId, toolName, r.output).catch((err) => {
-				logger.warn({ err, toolName }, "[mcp] Memory bridge failed (non-blocking)");
-			});
+			setTimeout(() => {
+				bridgeDoclingToMemory(conversationId, toolName, output).catch((err) => {
+					logger.warn({ err, toolName }, "[mcp] Memory bridge failed (non-blocking)");
+				});
+			}, bridgeDelayMs);
 		}
+
+		// ============================================
+		// PHASE 2 (+16): INGEST ALL TOOL RESULTS TO MEMORY
+		// For non-docling tools (search, research, data queries),
+		// store results for future retrieval without re-researching
+		// Fire-and-forget: NEVER blocks user response path
+		// Phase 7: Uses ToolSummarizers for pattern-aware processing
+		// ============================================
+		if (!r.error && r.output && conversationId) {
+			const output = r.output;
+			if (!output) return;
+			const trimmedOutputLen = r.output.trim().length;
+			if (trimmedOutputLen < 100) {
+				logger.warn({ toolName }, "[ingest] Skipped - output too short");
+			} else {
+				// Extract query from tool arguments (varies by tool)
+				const toolQuery =
+					((r.params as Record<string, unknown>)?.query as string) ??
+					((r.params as Record<string, unknown>)?.prompt as string) ??
+					((r.params as Record<string, unknown>)?.q as string) ??
+					undefined;
+
+				// Phase 7: Apply tool-specific summarization before storage
+				// Fire-and-forget async chain to avoid blocking
+				const ingestDelayMs = Math.min(
+					BACKGROUND_MAX_STAGGER_MS,
+					BACKGROUND_INGEST_DELAY_MS + r.index * 50
+				);
+				setTimeout(() => {
+					summarizeForStorage(toolName, output)
+						.then((processedOutput) => {
+							return ToolResultIngestionService.getInstance().ingestToolResult({
+								conversationId,
+								toolName,
+								query: toolQuery,
+								output: processedOutput,
+								metadata: {
+									tool_call_id: toolCallId,
+									params_preview: JSON.stringify(r.paramsClean ?? {}).slice(0, 200),
+									original_length: r.output?.length ?? 0,
+									summarized: processedOutput.length !== (r.output?.length ?? 0),
+									// Phase: Wire remaining 64 - Tool Intelligence metadata
+									source_attribution: getToolUsageAttribution(toolName),
+									suggestions: generatePostExecutionSuggestions(toolName, toolQuery ?? ""),
+									complementary_tools: getComplementaryTools(toolName).map((t) => t.name),
+								},
+							});
+						})
+						.then((res) => {
+							if (res.stored) {
+								logger.info(
+									{ toolName, outputLen: r.output?.length ?? 0 },
+									"[ingest] Tool result stored"
+								);
+								logger.info({ toolName, category: "unknown" }, "[tool-ingest] Stored result");
+							} else if (res.attempted) {
+								logger.warn(
+									{ toolName, reason: res.reason ?? "unknown" },
+									"[tool-ingest] Skipped - low quality output"
+								);
+							}
+						})
+						.catch((err) => {
+							logger.warn(
+								{ err, toolName },
+								"[mcp] Tool result ingestion failed (non-blocking)"
+							);
+						});
+				}, ingestDelayMs);
+			}
+		}
+
+		// ============================================
+		// PHASE 19: RECORD ACTION OUTCOME FOR LEARNING
+		// Track tool execution success/failure for future optimization
+		// Fire-and-forget: NEVER blocks user response path
+		// ============================================
+		// Gemini Finding 6: Log errors instead of silently ignoring
+		const outcomeDelayMs = Math.min(
+			BACKGROUND_MAX_STAGGER_MS,
+			BACKGROUND_OUTCOME_DELAY_MS + r.index * 50
+		);
+		setTimeout(() => {
+			recordToolActionOutcome({
+				toolName,
+				result: { error: r.error, output: r.output },
+				conversationId,
+				latencyMs: r.latencyMs,
+			}).catch((err) => {
+				logger.warn({ err, toolName }, "[mcp] recordToolActionOutcome failed (non-blocking)");
+			});
+		}, outcomeDelayMs);
 
 		// ============================================
 		// EMIT TRACE STEP COMPLETION FOR REAL TOOL CALLS
@@ -1265,6 +1818,12 @@ export async function* executeToolCalls({
 				{ toolName: name, error: r.error },
 				"[mcp] individual tool call failed but continuing with successful tools"
 			);
+			// CRITICAL FIX (Gemini Finding 1): OpenAI API requires a tool message for EVERY tool_call
+			// Missing tool messages cause "Invalid conversation history" 400 errors
+			// Include error message so the model knows the tool failed and can adapt
+			const errorContent = `Error executing tool "${name}": ${r.error}`;
+			toolRuns.push({ name, parameters: r.paramsClean, output: errorContent });
+			toolMessages.push({ role: "tool", tool_call_id: id, content: errorContent });
 		}
 	}
 

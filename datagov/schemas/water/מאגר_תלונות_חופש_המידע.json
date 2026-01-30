@@ -1,0 +1,183 @@
+{
+  "dataset_id": "44801328-cc70-4d68-b701-8242d29d274e",
+  "title": "מאגר תלונות חופש המידע",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים",
+    "תלונות חופש המידע"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "תיאור",
+    "הסגירה",
+    "החלטה",
+    "ראשונית",
+    "קבלת",
+    "סוג",
+    "המתלונן",
+    "בקשת",
+    "נושא",
+    "התלונה",
+    "למידע",
+    "הגשת",
+    "חופש",
+    "משרד",
+    "תלונה",
+    "סיום",
+    "הנילון",
+    "ערוץ",
+    "קבלה",
+    "תאריך",
+    "המשפטים",
+    "טיפול",
+    "תלונות",
+    "סטטוס",
+    "בקשה",
+    "הבקשה"
+  ],
+  "resources": [
+    {
+      "resource_id": "b460e022-0f7c-48c6-ba64-ce16e1340056",
+      "title": "תלונות חופש המידע שנפתחו מ 25-04-2021",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר התלונה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך הגשת הבקשה למידע",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך קבלת תלונה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "ערוץ קבלת תלונה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג המתלונן",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שם המתלונן",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "נושא התלונה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שם הנילון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "נושא בקשת חופש מידע",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטטוס",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "החלטה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך סיום טיפול",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 1157
+    },
+    {
+      "resource_id": "38fc6470-0440-47bb-9eb2-b32dd9c30aec",
+      "title": "תלונות חופש המידע  שנפתחו עד 25-04-2021 כולל",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר תלונה",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "ערוץ קבלה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך בקשה ראשונית ל מידע",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "נושא  התלונה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך קבלת תלונה",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "שם הנילון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך הסגירה",
+          "type": "timestamp",
+          "semantic": "date"
+        },
+        {
+          "name": "תיאור החלטה",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 444
+    },
+    {
+      "resource_id": "0c0cccda-4b32-4eff-8adb-49044d4ff0c9",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

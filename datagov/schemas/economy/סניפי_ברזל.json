@@ -1,0 +1,116 @@
+{
+  "dataset_id": "27b4b40e-b019-4a70-8e5d-4741110fc55d",
+  "title": "סניפי ברזל",
+  "organization": "משרד הכלכלה והתעשייה",
+  "tags": [],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "company",
+    "ברזל",
+    "branch",
+    "code",
+    "משרד",
+    "date",
+    "private",
+    "address",
+    "city",
+    "settl",
+    "הכלכלה",
+    "conc",
+    "והתעשייה",
+    "home",
+    "store",
+    "street",
+    "report",
+    "סניפי"
+  ],
+  "resources": [
+    {
+      "resource_id": "f7d9c47e-3414-4524-a187-a0f0e057b08a",
+      "title": "סניפי ברזל",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "PRIVATE_COMPANY",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SETTL_CODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "STREET_CODE",
+          "type": "numeric",
+          "semantic": "address"
+        },
+        {
+          "name": "N_HOME",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "ADDRESS_CONC",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "store",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "branch",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "report_date",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 623
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

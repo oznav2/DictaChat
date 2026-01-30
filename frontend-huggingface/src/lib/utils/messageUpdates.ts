@@ -33,6 +33,8 @@ type MessageUpdateRequestOptions = {
 	isRetry: boolean;
 	isContinue?: boolean;
 	files?: MessageFile[];
+	clientUserMessageId?: string;
+	clientAssistantMessageId?: string;
 	// Optional: pass selected MCP server names (client-side selection)
 	selectedMcpServerNames?: string[];
 	// Optional: pass selected MCP server configs (for custom client-defined servers)
@@ -53,6 +55,8 @@ export async function fetchMessageUpdates(
 		id: opts.messageId,
 		is_retry: opts.isRetry,
 		is_continue: Boolean(opts.isContinue),
+		clientUserMessageId: opts.clientUserMessageId,
+		clientAssistantMessageId: opts.clientAssistantMessageId,
 		// Will be ignored server-side if unsupported
 		selectedMcpServerNames: opts.selectedMcpServerNames,
 		selectedMcpServers: opts.selectedMcpServers,
@@ -102,23 +106,44 @@ async function* endpointStreamToIterator(
 	// Handle any cases where we must abort
 	reader.closed.then(() => abortController.abort());
 
-	// Handle logic for aborting
-	abortController.signal.addEventListener("abort", () => reader.cancel());
+	// Handle logic for aborting - use { once: true } for auto-cleanup
+	abortController.signal.addEventListener("abort", () => reader.cancel(), { once: true });
 
 	// ex) If the last response is => {"type": "stream", "token":
 	// It should be => {"type": "stream", "token": "Hello"} = prev_input_chunk + "Hello"}
 	let prevChunk = "";
-	while (!abortController.signal.aborted) {
-		const { done, value } = await reader.read();
-		if (done) {
-			abortController.abort();
-			break;
-		}
-		if (!value) continue;
 
-		const { messageUpdates, remainingText } = parseMessageUpdates(prevChunk + value);
-		prevChunk = remainingText;
-		for (const messageUpdate of messageUpdates) yield messageUpdate;
+	// ENTERPRISE: Error boundary with proper cleanup to prevent silent crashes
+	try {
+		while (!abortController.signal.aborted) {
+			const { done, value } = await reader.read();
+			if (done) {
+				abortController.abort();
+				break;
+			}
+			// DEFENSIVE: Check for undefined/null values explicitly
+			if (value === undefined || value === null) continue;
+
+			const { messageUpdates, remainingText } = parseMessageUpdates(prevChunk + value);
+			prevChunk = remainingText;
+			for (const messageUpdate of messageUpdates) yield messageUpdate;
+		}
+	} catch (error) {
+		// Log error with context for debugging but don't crash
+		console.error("[endpointStreamToIterator] Stream error:", {
+			error: error instanceof Error ? error.message : String(error),
+			aborted: abortController.signal.aborted,
+			chunkPreview: prevChunk.slice(0, 100),
+		});
+		// Ensure cleanup on error
+		abortController.abort();
+	} finally {
+		// ENTERPRISE: Ensure reader is always released
+		try {
+			reader.releaseLock();
+		} catch {
+			// Reader may already be released - ignore
+		}
 	}
 }
 
@@ -126,37 +151,54 @@ function parseMessageUpdates(value: string): {
 	messageUpdates: MessageUpdate[];
 	remainingText: string;
 } {
-	const inputs = value.split("\n");
 	const messageUpdates: MessageUpdate[] = [];
-	for (const input of inputs) {
+	const inputs = value.split("\n");
+
+	// Treat the last split item as a potentially-incomplete tail (no trailing newline)
+	const hasTrailingNewline = value.endsWith("\n");
+	const lastIndex = Math.max(0, inputs.length - 1);
+	const tail = inputs[lastIndex] ?? "";
+
+	// Parse all complete lines, skipping empty/whitespace-only keepalive lines
+	for (let i = 0; i < lastIndex; i++) {
+		const input = inputs[i] ?? "";
+		if (input.trim().length === 0) continue;
+
 		try {
 			messageUpdates.push(JSON.parse(input) as MessageUpdate);
 		} catch (error) {
-			// in case of parsing error, we return what we were able to parse
-			if (error instanceof SyntaxError) {
-				return {
-					messageUpdates,
-					remainingText: inputs.at(-1) ?? "",
-				};
-			}
+			const remainingText = inputs.slice(i).join("\n");
+			console.error("[parseMessageUpdates] Error parsing:", {
+				error: error instanceof Error ? error.message : String(error),
+				inputPreview: input.slice(0, 100),
+			});
+			return { messageUpdates, remainingText };
 		}
 	}
-	return { messageUpdates, remainingText: "" };
+
+	// If the stream chunk ended with a newline, tail is complete (often empty) and can be dropped
+	if (hasTrailingNewline) {
+		return { messageUpdates, remainingText: "" };
+	}
+
+	// Keep an incomplete tail for the next chunk, unless it's just whitespace
+	return { messageUpdates, remainingText: tail.trim().length > 0 ? tail : "" };
 }
 
 /**
  * Emits all the message updates immediately that aren't "stream" type
  * Emits a concatenated "stream" type message update once it detects a full word
  * Example: "what" " don" "'t" => "what" " don't"
- * Only supports latin languages, ignores others
+ * Supports Latin and Hebrew languages
  */
 async function* streamMessageUpdatesToFullWords(
 	iterator: AsyncGenerator<MessageUpdate>
 ): AsyncGenerator<MessageUpdate> {
 	let bufferedStreamUpdates: MessageStreamUpdate[] = [];
 
-	const endAlphanumeric = /[a-zA-Z0-9À-ž'`]+$/;
-	const beginnningAlphanumeric = /^[a-zA-Z0-9À-ž'`]+/;
+	// Include Hebrew unicode range (U+0590-U+05FF) for RTL language support
+	const endAlphanumeric = /[a-zA-Z0-9À-ž\u0590-\u05FF'`]+$/;
+	const beginnningAlphanumeric = /^[a-zA-Z0-9À-ž\u0590-\u05FF'`]+/;
 
 	for await (const messageUpdate of iterator) {
 		if (messageUpdate.type !== "stream") {
@@ -201,30 +243,69 @@ async function* streamMessageUpdatesToFullWords(
 /**
  * Attempts to smooth out the time between values emitted by an async iterator
  * by waiting for the average time between values to emit the next value
+ *
+ * ENTERPRISE: Fixed recursive promise chain (stack overflow) and added buffer limits
  */
 async function* smoothAsyncIterator<T>(iterator: AsyncGenerator<T>): AsyncGenerator<T> {
 	const eventTarget = new EventTarget();
 	let done = false;
+	let iteratorError: Error | null = null;
 	const valuesBuffer: T[] = [];
 	const valueTimesMS: number[] = [];
 
-	const next = async () => {
-		const obj = await iterator.next();
-		if (obj.done) {
+	// ENTERPRISE: High-water marks to prevent unbounded memory growth
+	const MAX_BUFFER_SIZE = 1000;
+	const MAX_TIMES_SIZE = 100;
+
+	// ENTERPRISE: Convert recursive call to iterative loop to prevent stack overflow
+	const consumeIterator = async () => {
+		try {
+			while (!done) {
+				const obj = await iterator.next();
+				if (obj.done) {
+					done = true;
+				} else {
+					valuesBuffer.push(obj.value);
+					valueTimesMS.push(performance.now());
+
+					// ENTERPRISE: Enforce high-water mark - trim old entries
+					if (valueTimesMS.length > MAX_TIMES_SIZE) {
+						valueTimesMS.splice(0, valueTimesMS.length - MAX_TIMES_SIZE);
+					}
+
+					// ENTERPRISE: If buffer exceeds limit, log warning (indicates slow consumer)
+					if (valuesBuffer.length > MAX_BUFFER_SIZE) {
+						console.warn("[smoothAsyncIterator] Buffer overflow - consumer too slow");
+					}
+				}
+				eventTarget.dispatchEvent(new Event("next"));
+			}
+		} catch (error) {
+			// ENTERPRISE: Capture error for re-throwing in consumer
+			iteratorError = error instanceof Error ? error : new Error(String(error));
 			done = true;
-		} else {
-			valuesBuffer.push(obj.value);
-			valueTimesMS.push(performance.now());
-			next();
+			eventTarget.dispatchEvent(new Event("next"));
 		}
-		eventTarget.dispatchEvent(new Event("next"));
 	};
-	next();
+
+	// Start consuming in background (non-blocking)
+	consumeIterator();
 
 	let timeOfLastEmitMS = performance.now();
 	while (!done || valuesBuffer.length > 0) {
+		// ENTERPRISE: Check for upstream errors
+		if (iteratorError && valuesBuffer.length === 0) {
+			throw iteratorError;
+		}
+
 		// Only consider the last X times between tokens
 		const sampledTimesMS = valueTimesMS.slice(-30);
+
+		// Guard against empty samples
+		if (sampledTimesMS.length < 2) {
+			await waitForEvent(eventTarget, "next");
+			continue;
+		}
 
 		// Get the total time spent in abnormal periods
 		const anomalyThresholdMS = 2000;
@@ -234,13 +315,12 @@ async function* smoothAsyncIterator<T>(iterator: AsyncGenerator<T>): AsyncGenera
 			.filter((time) => time > anomalyThresholdMS)
 			.reduce((a, b) => a + b, 0);
 
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		const totalTimeMSBetweenValues = sampledTimesMS.at(-1)! - sampledTimesMS[0];
+		const totalTimeMSBetweenValues = (sampledTimesMS.at(-1) ?? 0) - (sampledTimesMS[0] ?? 0);
 		const timeMSBetweenValues = totalTimeMSBetweenValues - anomalyDurationMS;
 
 		const averageTimeMSBetweenValues = Math.min(
 			200,
-			timeMSBetweenValues / (sampledTimesMS.length - 1)
+			timeMSBetweenValues / Math.max(1, sampledTimesMS.length - 1)
 		);
 		const timeSinceLastEmitMS = performance.now() - timeOfLastEmitMS;
 
@@ -258,8 +338,15 @@ async function* smoothAsyncIterator<T>(iterator: AsyncGenerator<T>): AsyncGenera
 
 		// Emit
 		timeOfLastEmitMS = performance.now();
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		yield valuesBuffer.shift()!;
+		const value = valuesBuffer.shift();
+		if (value !== undefined) {
+			yield value;
+		}
+	}
+
+	// ENTERPRISE: Re-throw any captured error after draining buffer
+	if (iteratorError) {
+		throw iteratorError;
 	}
 }
 

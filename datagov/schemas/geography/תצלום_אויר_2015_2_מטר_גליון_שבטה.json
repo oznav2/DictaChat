@@ -1,0 +1,35 @@
+{
+  "dataset_id": "140ed8ea-3ecf-4ab8-ad94-620e354ca6be",
+  "title": "תצלום אויר 2015 2 מטר - גליון שבטה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "מטר",
+    "ישראל",
+    "שבטה",
+    "תצלום",
+    "אויר",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "21d6c0f3-870f-445a-ad19-64b383314a93",
+      "title": "תצלום אויר 2015 2 מטר - גליון שבטה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

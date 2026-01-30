@@ -1,0 +1,111 @@
+{
+  "dataset_id": "96b3081f-f7d0-45da-ac6b-76c12c60d222",
+  "title": "תיקים בטיפול היחידה לתיאום המאבק בסחר בבני אדם",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "פתיחת",
+    "סוג",
+    "המאבק",
+    "היחידה",
+    "בטיפול",
+    "נושא",
+    "בסחר",
+    "לתיאום",
+    "בבני",
+    "משרד",
+    "אדם",
+    "תיקים",
+    "הפונה",
+    "יצירה",
+    "תאריך",
+    "המשפטים",
+    "הגורם",
+    "סטטוס",
+    "הפניה",
+    "סגירה",
+    "התיק"
+  ],
+  "resources": [
+    {
+      "resource_id": "329b3f63-fa09-44e7-bddf-286c7f8e3999",
+      "title": "סחר בבני אדם",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "סטטוס",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך סטטוס",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך פתיחת התיק",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך סגירה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סוג התיק",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סטטוס הפניה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך הפניה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "נושא התיק",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "הגורם הפונה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך יצירה",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 1111
+    },
+    {
+      "resource_id": "0161d763-b268-4cd6-8788-2fc4dcb728f0",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "dataset_id": "15072295-27ab-4939-951b-de462adc0ab0",
+  "title": "תחנות- ספיקות שיא היסטוריות",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "discharge",
+    "water",
+    "הידרומטריה",
+    "מים",
+    "ספיקה",
+    "רשות המים",
+    "תחנה הידרומטרית"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "שיא",
+    "תחנה",
+    "רשות",
+    "הממשלתית",
+    "מים",
+    "רום",
+    "הידרולוגית",
+    "הידרומטריה",
+    "היסטוריות",
+    "water",
+    "discharge",
+    "ולביוב",
+    "שניה",
+    "הערות",
+    "הידרומטרית",
+    "המדידה",
+    "למים",
+    "ספיקה",
+    "באנגלית",
+    "תחנות",
+    "תאריך",
+    "ספיקת",
+    "הרשות",
+    "ספיקות",
+    "שנה",
+    "היסטורית",
+    "בעברית",
+    "המים",
+    "קבוצה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d60e5849-5d6e-468c-afe0-cf5b5a2fb987",
+      "title": "ספיקות שיא היסטוריות בתחנות הידרומטריות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "זיהוי תחנה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שם תחנה בעברית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם תחנה באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר קבוצה",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שנה הידרולוגית",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך המדידה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "ספיקת שיא היסטורית (מ''ק/שניה)",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "רום המים (מ')",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "הערות",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 240
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

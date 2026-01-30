@@ -1,0 +1,194 @@
+{
+  "dataset_id": "25e728e6-bbad-4cbd-96cd-4f911fcde089",
+  "title": "תחנות מטאורולוגיות - מגבלות בניה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "gis",
+    "השרות המטאורולוגי",
+    "חצב",
+    "מגבלות בניה",
+    "ממג",
+    "תחנות"
+  ],
+  "categories": [
+    "transportation",
+    "housing",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "objectid",
+    "lat",
+    "השרות",
+    "מגבלות",
+    "gis",
+    "התחבורה",
+    "lon",
+    "perim",
+    "בדרכים",
+    "leng",
+    "והבטיחות",
+    "radius",
+    "מטאורולוגיות",
+    "stat",
+    "משרד",
+    "fid",
+    "המטאורולוגי",
+    "חצב",
+    "num",
+    "תחנות",
+    "limits",
+    "height",
+    "shape",
+    "yearmonth",
+    "elevation",
+    "area",
+    "בניה",
+    "ename",
+    "variables",
+    "location",
+    "link"
+  ],
+  "resources": [
+    {
+      "resource_id": "7c7afffc-5f83-492f-8b29-372e67e220fe",
+      "title": "IMS_STAT.zip",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d5a09917-9313-45e3-a126-08c6719493b7",
+      "title": "IMS_STAT_KMZ.zip",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d5b0c0f4-f2a1-49e7-af7d-0720a935399a",
+      "title": "IMS_STAT.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "FID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "LINK",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "RADIUS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ENAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NUM",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "X",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "LON",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "LAT",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "VARIABLES",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LOCATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ELEVATION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HEIGHT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AREA_STAT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PERIM_STAT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LIMITS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Leng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 88
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

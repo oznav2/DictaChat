@@ -1,0 +1,42 @@
+{
+  "dataset_id": "04bfd0d3-cb57-4980-94f6-0fa4cead9055",
+  "title": "אומדן ביצוע ליום 30 ביוני2021 - לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "אומדן",
+    "שינויים בתקציב",
+    "תקציב",
+    "תקציב וביצוע"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "ביוני",
+    "תקציב",
+    "ביצוע",
+    "שינויים",
+    "מבוקר",
+    "משרד",
+    "אומדן",
+    "וביצוע",
+    "האוצר",
+    "בתקציב"
+  ],
+  "resources": [
+    {
+      "resource_id": "61f9a755-e572-424b-83b9-44430ecc9c11",
+      "title": "אומדן ביצוע ליום 30 ביוני 2021 - לא מבוקר.xlsx",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

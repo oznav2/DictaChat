@@ -1,0 +1,37 @@
+{
+  "dataset_id": "608e4d62-8b3e-4631-9652-4fa8ff8db52a",
+  "title": "מחשבון חניות תחבורה קלה במוקדי תחבורה ציבורית",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תחבורה",
+    "בדרכים",
+    "חניות",
+    "מחשבון",
+    "משרד",
+    "קלה",
+    "והבטיחות",
+    "התחבורה",
+    "ציבורית",
+    "במוקדי"
+  ],
+  "resources": [
+    {
+      "resource_id": "88eec2b8-b9de-427d-887f-920ca982074f",
+      "title": "מחשבון חניות תחבורה קלה במוקדי תחבורה ציבורית - גרסה 1.0.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

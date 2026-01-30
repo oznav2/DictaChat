@@ -1,0 +1,135 @@
+{
+  "dataset_id": "a53613b2-f5da-48d1-86d8-1a8094c568af",
+  "title": "דוח קטלוג מעיינות",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "spring",
+    "water",
+    "מים",
+    "מעיין",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "זיהוי",
+    "תצפית",
+    "מדידה",
+    "סוג",
+    "רשות",
+    "הממשלתית",
+    "מים",
+    "אקויפר",
+    "דוח",
+    "דיווח",
+    "קטלוג",
+    "הנביעה",
+    "מקום",
+    "רום",
+    "water",
+    "spring",
+    "למים",
+    "באנגלית",
+    "קוד",
+    "נביעה",
+    "הרשות",
+    "מעיין",
+    "מעיינות",
+    "ולביוב",
+    "תחילת",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "e0f10edd-2780-4221-97dc-3ac9d2f62cd0",
+      "title": "קטלוג מעיינות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר זיהוי",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם מעיין",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם מעיין באנגלית",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תחילת תצפית",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "נביעה X .נ.צ",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "נביעה Y .נ.צ",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "נ.צ. X מקום מדידה",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "נ.צ. Y מקום מדידה",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "רום הנביעה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "סוג מעיין",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שם אקויפר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד אקויפר",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "שם תא דיווח",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד תא דיווח",
+          "type": "numeric",
+          "semantic": "id"
+        }
+      ],
+      "total_records": 677
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

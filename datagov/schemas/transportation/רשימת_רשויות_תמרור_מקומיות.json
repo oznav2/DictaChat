@@ -1,0 +1,69 @@
+{
+  "dataset_id": "8d4fac46-2a3e-4995-b066-3b9f1ea228c3",
+  "title": "רשימת רשויות תמרור מקומיות",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "בטיחות בדרכים",
+    "זכות דרך",
+    "חצב",
+    "משרד התחבורה",
+    "רשות תמרור מקומית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "רשויות",
+    "תמרור",
+    "דרך",
+    "בטיחות",
+    "בדרכים",
+    "סוג",
+    "משרד",
+    "רשות",
+    "והבטיחות",
+    "זכות",
+    "קוד",
+    "חצב",
+    "התחבורה",
+    "מקומית",
+    "מקומיות"
+  ],
+  "resources": [
+    {
+      "resource_id": "8db59260-64fd-4f15-a264-3c47c1bc76df",
+      "title": "TRAFFIC_AUTHORITY",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם רשות תמרור",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "סוג רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "קוד רשות תמרור",
+          "type": "text",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 44
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

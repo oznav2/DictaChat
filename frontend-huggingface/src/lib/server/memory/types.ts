@@ -1,6 +1,47 @@
 export type Outcome = "worked" | "failed" | "partial" | "unknown";
 
-export type MemoryTier = "working" | "history" | "patterns" | "books" | "memory_bank";
+/**
+ * Memory tier types:
+ * - working: Short-term working memory (TTL: 24h)
+ * - history: Medium-term conversation history (TTL: 7d)
+ * - patterns: Learned patterns and preferences (TTL: 30d)
+ * - documents: Document chunks from uploaded PDFs/files (permanent)
+ * - memory_bank: Long-term permanent storage
+ * - datagov_schema: Israeli government data schemas (Phase 25)
+ * - datagov_expansion: Hebrew/English term expansions (Phase 25)
+ */
+export type MemoryTier =
+	| "working"
+	| "history"
+	| "patterns"
+	| "documents"
+	| "memory_bank"
+	| "datagov_schema"
+	| "datagov_expansion";
+
+/**
+ * Tier constants for consistent usage across memory services
+ */
+export const MEMORY_TIER_GROUPS = {
+	/** Core tiers for normal user memories (subject to TTL and promotion) */
+	CORE: ["working", "history", "patterns", "documents", "memory_bank"] as const,
+	/** DataGov tiers - static, pre-loaded government data (Phase 25) */
+	DATAGOV: ["datagov_schema", "datagov_expansion"] as const,
+	/** All searchable tiers */
+	ALL_SEARCHABLE: [
+		"working",
+		"history",
+		"patterns",
+		"documents",
+		"memory_bank",
+		"datagov_schema",
+		"datagov_expansion",
+	] as const,
+	/** Tiers eligible for Wilson scoring and outcome tracking */
+	LEARNABLE: ["working", "history", "patterns", "memory_bank"] as const,
+	/** Tiers subject to TTL cleanup */
+	CLEANABLE: ["working", "history", "patterns"] as const,
+};
 
 export type MemoryStatus = "active" | "archived" | "deleted";
 
@@ -58,6 +99,8 @@ export interface MemoryStats {
 	failed_count: number;
 	partial_count: number;
 	unknown_count: number;
+	/** Phase 23.2: Cumulative success value for Wilson calculation */
+	success_count?: number;
 	success_rate: number;
 	wilson_score: number;
 }
@@ -108,6 +151,12 @@ export interface MemoryItem {
 	org_id: string | null;
 	tier: MemoryTier;
 	status: MemoryStatus;
+	needs_reindex?: boolean;
+	reindex_reason?: string | null;
+	reindex_marked_at?: string | null;
+	embedding_status?: "pending" | "indexed" | "failed";
+	embedding_error?: string | null;
+	last_reindexed_at?: string | null;
 	tags: string[];
 	always_inject?: boolean;
 	text: string;
@@ -157,13 +206,18 @@ export interface ActionOutcome {
 
 export interface StageTimingsMs {
 	memory_prefetch_ms?: number;
+	parallel_prefetch_ms?: number;
+	format_ms?: number;
 	qdrant_query_ms?: number;
 	bm25_query_ms?: number;
 	candidate_merge_ms?: number;
+	wilson_blend_ms?: number;
 	rerank_ms?: number;
 	kg_insights_ms?: number;
 	known_solution_lookup?: number;
 	entity_boost_ms?: number;
+	/** NER Integration: Entity pre-filtering stage timing */
+	entity_prefilter_ms?: number;
 }
 
 export interface SearchScoreSummary {

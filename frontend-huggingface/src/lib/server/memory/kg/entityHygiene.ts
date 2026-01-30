@@ -11,7 +11,7 @@ const EXACT_BLOCKLIST = new Set([
 	"working",
 	"history",
 	"patterns",
-	"books",
+	"documents",
 	"function",
 	"parameter",
 	"response",
@@ -51,4 +51,3 @@ export function isEntityBlocklistedLabel(rawLabel: string): boolean {
 
 	return false;
 }
-

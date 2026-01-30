@@ -1,0 +1,56 @@
+{
+  "dataset_id": "9c595010-b5e8-4dc5-aa34-e49b3d66df76",
+  "title": "עולים מ 1989 עד 2015 - מגדר",
+  "organization": "משרד העלייה והקליטה",
+  "tags": [
+    "אוכלוסיה",
+    "גברים",
+    "מגדר",
+    "נשים",
+    "נשים וגברים",
+    "עולה",
+    "עולה חדש",
+    "עולים",
+    "עולים חדשים",
+    "עליה",
+    "עלייה",
+    "קליטת עליה",
+    "קליטת עלייה"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "קליטת",
+    "עלייה",
+    "אוכלוסיה",
+    "גברים",
+    "נשים",
+    "מגדר",
+    "עולה",
+    "עולים",
+    "חדש",
+    "עליה",
+    "משרד",
+    "והקליטה",
+    "חדשים",
+    "העלייה",
+    "וגברים"
+  ],
+  "resources": [
+    {
+      "resource_id": "e8578c27-d287-4d57-9118-ab7bbca7a1b4",
+      "title": "עולים מ 1989 עד 2015 - מגדר",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

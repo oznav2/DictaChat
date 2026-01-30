@@ -1,0 +1,176 @@
+{
+  "dataset_id": "f0b71d2d-9448-4b8b-a4ec-d1ddc8977c9c",
+  "title": "דרישות בטיחות אש לרישוי עסקים",
+  "organization": "כבאות והצלה לישראל",
+  "tags": [
+    "בעלי עסקים",
+    "הסוכנות לעסקים קטנים",
+    "כבאות והצלה",
+    "עסקים",
+    "עסקים קטנים",
+    "רישוי"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "כבאות",
+    "רישוי",
+    "בטיחות",
+    "לישראל",
+    "remarks",
+    "והצלה",
+    "categorydesc",
+    "עסקים",
+    "categorygroup",
+    "requirementnumber",
+    "לרישוי",
+    "source",
+    "requirement",
+    "בעלי",
+    "requirementdesc",
+    "הסוכנות",
+    "categorycode",
+    "לעסקים",
+    "categorytypedesc",
+    "דרישות",
+    "desc",
+    "קטנים"
+  ],
+  "resources": [
+    {
+      "resource_id": "ecc26b0b-981a-4135-8bbe-ba0b8c2b71f9",
+      "title": "דרישות כבאות לרישוי עסקים - הסתייגות משפטית",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "85897b58-c39e-4384-917d-665686c659c4",
+      "title": "דרישות כבאות לרישוי עסקים - מבנה קובץ",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "bbe559cd-9332-4bc5-8178-8ceb850a86a1",
+      "title": "דרישות בטיחות אש - לרישוי עסקים נכון ליום 07-12-2025",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "CategoryTypeDesc",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode1",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryGroup",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc1",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode2",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc2",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode3",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc3",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode4",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc4",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode5",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc5",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode6",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc6",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryCode7",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "CategoryDesc7",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "RequirementNumber",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "RequirementDesc",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Remarks",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "REQUIREMENT_SOURCE_DESC",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 21935
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

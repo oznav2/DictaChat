@@ -1,5 +1,6 @@
 import type { Conversation } from "$lib/types/Conversation";
 import type { MessageFile } from "$lib/types/Message";
+import { env } from "$env/dynamic/private";
 import { sha256 } from "$lib/utils/sha256";
 import { fileTypeFromBuffer } from "file-type";
 import { collections } from "$lib/server/database";
@@ -7,8 +8,13 @@ import { writeFile, mkdir } from "fs/promises";
 import { existsSync } from "fs";
 import { join } from "path";
 
-// Directory for MCP-accessible uploads (shared volume with mcp-sse-proxy)
-const UPLOADS_DIR = "/app/uploads";
+function resolveUploadsDir(): string {
+	if (env.UPLOADS_DIR) return env.UPLOADS_DIR;
+	if (env.DOCKER_ENV === "true") return "/app/uploads";
+	return join(process.cwd(), ".uploads");
+}
+
+const UPLOADS_DIR = resolveUploadsDir();
 
 export async function uploadFile(file: File, conv: Conversation): Promise<MessageFile> {
 	const sha = await sha256(await file.text());

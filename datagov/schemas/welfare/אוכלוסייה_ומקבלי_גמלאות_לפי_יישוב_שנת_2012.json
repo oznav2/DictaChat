@@ -1,0 +1,57 @@
+{
+  "dataset_id": "6eb90ba7-9d55-4068-9dc3-9eb89963df5d",
+  "title": "אוכלוסייה ומקבלי גמלאות לפי יישוב - שנת 2012",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "אוכלוסיה",
+    "אוכלוסייה",
+    "אוצר וכלכלה"
+  ],
+  "categories": [
+    "welfare",
+    "economy",
+    "demographics"
+  ],
+  "keywords": [
+    "וכלכלה",
+    "לאומי",
+    "אוכלוסיה",
+    "לביטוח",
+    "ומקבלי",
+    "גמלאות",
+    "אוצר",
+    "יישוב",
+    "המוסד",
+    "אוכלוסייה"
+  ],
+  "resources": [
+    {
+      "resource_id": "fc10946a-b543-4bb9-8f3a-8b2e3ff47aa9",
+      "title": "היישובים בישראל, מספר התושבים ומספר מקבלי גמלאות",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "e57fb599-5e90-49dd-8c1e-ffea240d19d1",
+      "title": "היישובים בישראל, מספר התושבים ומספר מקבלי גמלאות",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "789ed60e-4229-4074-a77e-36f340612893",
+      "title": "היישובים בישראל, מקבלי הגמלאות כאחוז מהאוכלוסייה ביישוב",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

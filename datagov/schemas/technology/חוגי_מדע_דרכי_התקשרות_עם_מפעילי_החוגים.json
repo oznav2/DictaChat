@@ -1,0 +1,84 @@
+{
+  "dataset_id": "7759e9fe-58c1-482c-a70d-c1b0b7282b2f",
+  "title": "חוגי מדע - דרכי התקשרות עם מפעילי החוגים",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [
+    "מדע"
+  ],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "כתובת",
+    "איש",
+    "נושא",
+    "דרכי",
+    "דואר",
+    "מדע",
+    "טלפון",
+    "הפעילות",
+    "הרשת",
+    "התקשרות",
+    "חוגי",
+    "משרד",
+    "הקשר",
+    "מפעילי",
+    "החוגים",
+    "המדע",
+    "אלקטרוני",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "a59f548a-cbc6-4bf4-85d6-c889e2f5ff6e",
+      "title": "חוגי מדע -דרכי התקשרות עם מפעילי החוגים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הרשת",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם איש הקשר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "דואר אלקטרוני",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "נושא הפעילות",
+          "type": "text",
+          "semantic": "status"
+        }
+      ],
+      "total_records": 5
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": true,
+    "has_date": false
+  }
+}

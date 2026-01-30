@@ -1,0 +1,129 @@
+{
+  "dataset_id": "c11b5d08-411b-4e54-b267-f1bd58a00dd2",
+  "title": "אירועים לפי מחוז",
+  "organization": "כבאות והצלה לישראל",
+  "tags": [
+    "אירועים",
+    "חילוץ",
+    "כבאות",
+    "שריפה"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "eventscenariocode",
+    "מחוז",
+    "כבאות",
+    "eventmonth",
+    "eventareacode",
+    "תחום",
+    "settlementlamascode",
+    "שריפה",
+    "לישראל",
+    "אירועים",
+    "eventtypecode",
+    "שנה",
+    "תרחיש",
+    "מיקום",
+    "חילוץ",
+    "מתאר",
+    "והצלה"
+  ],
+  "resources": [
+    {
+      "resource_id": "fa4d5b30-c319-4ae7-a63e-7c8e61f24013",
+      "title": "מבנה הקובץ",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a65f349e-7a7b-4d7e-90c7-40ec33e62d08",
+      "title": "אירועים לפי מחוז - מונחים",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0f971ff1-3aba-4fe3-9695-246d01ee1531",
+      "title": "אירועים לפי מחוז לשנת 2025 רבעון 2",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "EventMonth",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "EventAreaCode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "תחום",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "EventTypeCode",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "מתאר",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "EventScenarioCode",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "תרחיש",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מיקום",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "SettlementLamasCode",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר אירועים",
+          "type": "numeric",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 10906
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

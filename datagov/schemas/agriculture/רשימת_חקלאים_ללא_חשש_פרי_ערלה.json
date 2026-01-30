@@ -1,0 +1,91 @@
+{
+  "dataset_id": "e6ef4310-746f-4504-867b-804520401755",
+  "title": "רשימת חקלאים ללא חשש פרי ערלה",
+  "organization": "הרבנות הראשית לישראל",
+  "tags": [
+    "יצרן",
+    "סוג פרי",
+    "שם ישוב"
+  ],
+  "categories": [
+    "agriculture",
+    "religion"
+  ],
+  "keywords": [
+    "הרבנות",
+    "locality",
+    "notes",
+    "הראשית",
+    "חשש",
+    "סוג",
+    "ישוב",
+    "לישראל",
+    "ללא",
+    "manufacturer",
+    "checked",
+    "date",
+    "fruits",
+    "validity",
+    "ערלה",
+    "חקלאים",
+    "יצרן",
+    "פרי"
+  ],
+  "resources": [
+    {
+      "resource_id": "fff644c8-82de-4642-b343-7802cfb174d9",
+      "title": "רשימת חקלאים ללא חשש פרי ערלה 25.12.25",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "locality",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "manufacturer",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "fruits",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "checked",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "validity",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "date",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 4258
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

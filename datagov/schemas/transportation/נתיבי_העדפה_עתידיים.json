@@ -1,0 +1,225 @@
+{
+  "dataset_id": "07dea244-635a-4fc4-af59-8f16685a4182",
+  "title": "נתיבי העדפה עתידיים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "חצב",
+    "משרד התחבורה",
+    "נתיבי העדפה",
+    "תכנית אסטרטגית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "start",
+    "ptldir",
+    "lat",
+    "status",
+    "streetname",
+    "עתידיים",
+    "העדפה",
+    "trafcode",
+    "executing",
+    "lon",
+    "roadname",
+    "בדרכים",
+    "end",
+    "ptltype",
+    "והבטיחות",
+    "sourcename",
+    "urbantype",
+    "numother",
+    "authority",
+    "ptlseg",
+    "משרד",
+    "lengt",
+    "נתיבי",
+    "length",
+    "bicycle",
+    "חצב",
+    "yearmonth",
+    "shape",
+    "metropolin",
+    "oid",
+    "תכנית",
+    "trafauth",
+    "year",
+    "numlanes",
+    "authcode",
+    "אסטרטגית",
+    "התחבורה",
+    "ptlname"
+  ],
+  "resources": [
+    {
+      "resource_id": "458d6584-7986-4eb3-8bae-5d0708736783",
+      "title": "NATAZ_STRATEGIC_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "989d6d33-8191-467b-970e-8b5212624bc9",
+      "title": "NATAZ_STRATEGIC_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "42b50aba-414b-41f2-be8b-9609780cba54",
+      "title": "NATAZ_STRATEGIC_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "PTLSEG",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PTLNAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "SOURCENAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "AUTHORITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "AUTHCODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "TRAFAUTH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TRAFCODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "STREETNAME",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "ROADNAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LAT_START",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LON_START",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "LAT_END",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LON_END",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "PTLDIR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NUMLANES",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NUMOTHER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEAR",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "LENGT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "PTLTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "URBANTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "BICYCLE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "EXECUTING",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "METROPOLIN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Length",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 1639
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

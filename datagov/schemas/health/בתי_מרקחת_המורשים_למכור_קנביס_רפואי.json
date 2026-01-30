@@ -1,0 +1,82 @@
+{
+  "dataset_id": "0952e5e4-8910-477a-8ba3-cde48f4c048f",
+  "title": "בתי מרקחת המורשים למכור קנביס רפואי",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "קנאביס רפואי",
+    "קנביס רפואי"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "מרקחת",
+    "name",
+    "המורשים",
+    "למכור",
+    "notes",
+    "קנביס",
+    "בתי",
+    "pharmacy",
+    "משרד",
+    "קנאביס",
+    "city",
+    "הבריאות",
+    "street",
+    "delivery",
+    "map",
+    "רפואי"
+  ],
+  "resources": [
+    {
+      "resource_id": "f635f611-5b6d-4b21-9cd3-ce7b14da6c11",
+      "title": "בתי מרקחת המורשים למכור קנביס רפואי",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "pharmacy_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "pharmacy_delivery",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "pharmacy_street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "pharmacy_city",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "pharmacy_notes",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "map",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 418
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

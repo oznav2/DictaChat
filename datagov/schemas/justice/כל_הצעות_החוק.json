@@ -1,0 +1,53 @@
+{
+  "dataset_id": "34046e85-a585-43ac-b981-768d7d079182",
+  "title": "כל הצעות החוק",
+  "organization": "הכנסת",
+  "tags": [
+    "בהכנה בוועדה",
+    "הכנסת",
+    "הנחה במליאה",
+    "הצעות חוק",
+    "חקיקה",
+    "כנסת",
+    "לדיון במליאה",
+    "קריאה ראשונה",
+    "קריאה שלישית",
+    "קריאה שנייה"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "הצעות",
+    "הכנסת",
+    "חוק",
+    "שנייה",
+    "חקיקה",
+    "במליאה",
+    "כנסת",
+    "בוועדה",
+    "החוק",
+    "ראשונה",
+    "שלישית",
+    "קריאה",
+    "בהכנה",
+    "לדיון",
+    "הנחה"
+  ],
+  "resources": [
+    {
+      "resource_id": "d4091ded-06b1-41cd-b7e0-454e5fb81029",
+      "title": "LawSuggestionsSearch.aspx?t=LawSuggestionsSearch&st=AllSuggestions",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

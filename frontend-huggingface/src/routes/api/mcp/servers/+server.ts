@@ -1,9 +1,24 @@
 import type { MCPServer } from "$lib/types/Tool";
 import { config } from "$lib/server/config";
 
+const sanitizeJsonEnv = (val: string | undefined): string => {
+	const raw = (val || "").trim();
+	if (!raw) return "";
+	if (
+		(raw.startsWith("'") && raw.endsWith("'")) ||
+		(raw.startsWith('"') && raw.endsWith('"')) ||
+		(raw.startsWith("`") && raw.endsWith("`"))
+	) {
+		return raw.slice(1, -1).trim();
+	}
+	return raw;
+};
+
 export async function GET() {
-	// Parse MCP_SERVERS environment variable
-	const mcpServersEnv = config.MCP_SERVERS || "[]";
+	// Prefer MCP_SERVERS but fall back to FRONTEND_MCP_SERVERS for dev/local flows.
+	const mcpServersEnv = sanitizeJsonEnv(config.MCP_SERVERS) ||
+		sanitizeJsonEnv(config.FRONTEND_MCP_SERVERS) ||
+		"[]";
 
 	let servers: Array<{ name: string; url: string; headers?: Record<string, string> }> = [];
 

@@ -1,0 +1,72 @@
+{
+  "dataset_id": "ecae900d-a67a-4a65-ad4d-7cf452e8c6a4",
+  "title": "רשימת הרשמים  בבתי הדין השרעיים - בערבית",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "name",
+    "בבתי",
+    "השרעיים",
+    "הרשמים",
+    "phone",
+    "court",
+    "משרד",
+    "address",
+    "mobile",
+    "בערבית",
+    "full",
+    "הדין",
+    "המשפטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "52d4950e-8ce3-499c-aac5-f7722dce1b8e",
+      "title": "قائمة بأسماء المأذونين الشرعيين - المحاكم الشرعية",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Court_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Full_Name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "Mobile",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "Phone",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 330
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

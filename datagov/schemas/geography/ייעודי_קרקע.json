@@ -1,0 +1,118 @@
+{
+  "dataset_id": "b2969a93-239e-4418-815d-3c6b5580ab12",
+  "title": "ייעודי קרקע",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "תכנון עיר וגיאוגרפיה"
+  ],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "lat",
+    "שבע",
+    "planlot",
+    "lon",
+    "ייעודי",
+    "lot",
+    "leng",
+    "עיר",
+    "תכנון",
+    "shape",
+    "plandisgn",
+    "באר",
+    "internet",
+    "area",
+    "landdesign",
+    "עיריית",
+    "thickness",
+    "קרקע",
+    "וגיאוגרפיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "78b7bfa3-eba7-405f-850f-76a8881cd80f",
+      "title": "ייעודי קרקע- כל הפורמטים",
+      "format": "JPEG",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "c2dee7ca-56a4-4b44-9d4d-9786e4cc206b",
+      "title": "SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "60bedb3c-1520-4475-86a1-44de38f9d284",
+      "title": "CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "PlanDisgn",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LandDesign",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Lot",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PlanLot",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "THICKNESS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "internet",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Leng",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SHAPE_Area",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "text",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 29526
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "dataset_id": "1fa94390-b665-4317-a8f9-84795ae7fd2f",
+  "title": "נחלים shape",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "ישראל",
+    "נחלים",
+    "המרכז",
+    "shape"
+  ],
+  "resources": [
+    {
+      "resource_id": "2c86e008-7503-42ca-a99b-d79aaac82bb9",
+      "title": "נחלים",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

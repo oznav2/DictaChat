@@ -1,0 +1,36 @@
+{
+  "dataset_id": "0412ad7c-2a98-4cf7-94dd-2a493e931252",
+  "title": "תשואות לפדיון על מק\"מ",
+  "organization": "בנק ישראל",
+  "tags": [
+    "אוצר וכלכלה"
+  ],
+  "categories": [
+    "finance",
+    "economy"
+  ],
+  "keywords": [
+    "וכלכלה",
+    "לפדיון",
+    "ישראל",
+    "בנק",
+    "אוצר",
+    "תשואות"
+  ],
+  "resources": [
+    {
+      "resource_id": "d137dcbc-5d7d-4522-ac06-166239e3e428",
+      "title": "תשואות לפדיון על מק\"מ",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

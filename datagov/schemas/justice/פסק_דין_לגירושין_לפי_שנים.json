@@ -1,0 +1,68 @@
+{
+  "dataset_id": "fa494da7-1dd9-4806-a03d-a5ee95babb4a",
+  "title": "פסק דין לגירושין לפי שנים",
+  "organization": "בתי הדין הרבניים",
+  "tags": [
+    "בתי דין הרבניים",
+    "בתי הדין",
+    "גירושין",
+    "דת",
+    "משפט",
+    "פסקי דין"
+  ],
+  "categories": [
+    "justice",
+    "religion"
+  ],
+  "keywords": [
+    "פסק",
+    "משפט",
+    "הרבניים",
+    "גירושין",
+    "כמות",
+    "בתי",
+    "לגירושין",
+    "שנים",
+    "שנה",
+    "דין",
+    "הדין",
+    "פסקי"
+  ],
+  "resources": [
+    {
+      "resource_id": "30035b4c-1bea-467f-a368-b1453d540fd0",
+      "title": "פסק דין לגירושין לפי שנים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם פסק דין לגירושין",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "כמות",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 56
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

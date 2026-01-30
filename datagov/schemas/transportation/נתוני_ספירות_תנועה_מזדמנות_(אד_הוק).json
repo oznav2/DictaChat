@@ -1,0 +1,58 @@
+{
+  "dataset_id": "944e53ea-5fb0-40c6-9427-d9d7ba1407a2",
+  "title": "נתוני ספירות תנועה מזדמנות (אד-הוק)",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "משרד התחבורה",
+    "נפחי תנועה",
+    "סווג כלי רכב",
+    "ספירות תנועה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "בדרכים",
+    "משרד",
+    "נפחי",
+    "רכב",
+    "מזדמנות",
+    "והבטיחות",
+    "כלי",
+    "סווג",
+    "התחבורה",
+    "ספירות",
+    "תנועה",
+    "הוק"
+  ],
+  "resources": [
+    {
+      "resource_id": "b9fc10f1-d753-44be-8aae-5f925d669571",
+      "title": "Countsvol1_upto2010",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "817599ba-1330-4b28-9650-74e512967c7e",
+      "title": "Countsvol2_2010-2015",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "ca453c88-d320-49de-b4ea-0c71878024b0",
+      "title": "Countsvol3__2015-2020",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

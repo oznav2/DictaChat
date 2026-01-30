@@ -1,0 +1,52 @@
+{
+  "dataset_id": "d4b95764-3d20-41a2-88a7-bdb553a6951f",
+  "title": "רשימת טוענים רבניים",
+  "organization": "בתי הדין הרבניים",
+  "tags": [
+    "בתי הדין הרבניים"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "הרבניים",
+    "בתי",
+    "lastname",
+    "טוענים",
+    "firstname",
+    "הדין",
+    "רבניים"
+  ],
+  "resources": [
+    {
+      "resource_id": "97df96d1-0c8c-43c1-944b-c5bf1561eb6d",
+      "title": "רשימת טוענים רבניים",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "firstname",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "lastname",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 346
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "dataset_id": "bd5a8164-5615-463a-9f4a-d994df09e021",
+  "title": "תצלום אויר 2015 2 מטר - גליון באר אורה",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [],
+  "categories": [
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "המרכז",
+    "באר",
+    "מטר",
+    "ישראל",
+    "תצלום",
+    "אויר",
+    "אורה",
+    "גליון"
+  ],
+  "resources": [
+    {
+      "resource_id": "9b8f0046-2d24-49b3-b131-aa2e6d18e3bf",
+      "title": "תצלום אויר 2015 2 מטר - גליון באר אורה",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

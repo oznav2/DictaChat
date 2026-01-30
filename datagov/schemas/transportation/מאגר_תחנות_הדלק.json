@@ -1,0 +1,89 @@
+{
+  "dataset_id": "09f0e9ee-5cef-48f7-84f6-10235e6dd9ed",
+  "title": "מאגר תחנות הדלק",
+  "organization": "משרד האנרגיה ",
+  "tags": [
+    "אנרגיה ומים",
+    "תחבורה",
+    "תחנות דלק"
+  ],
+  "categories": [
+    "transportation",
+    "water"
+  ],
+  "keywords": [
+    "name",
+    "station",
+    "company",
+    "authority",
+    "תחבורה",
+    "telephone",
+    "משרד",
+    "דלק",
+    "תחנות",
+    "city",
+    "אנרגיה",
+    "האנרגיה",
+    "location",
+    "הדלק",
+    "number",
+    "ומים"
+  ],
+  "resources": [
+    {
+      "resource_id": "ff3b653c-d268-4eb7-a86b-6de69e77043a",
+      "title": "מאגר תחנות הדלק",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "station_number",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "station_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "company",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "City",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "authority_name",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "telephone",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 1267
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

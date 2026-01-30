@@ -1,0 +1,48 @@
+{
+  "dataset_id": "03bfb30d-43f2-45bd-bd01-80a282216a16",
+  "title": "עולים מ 1989 עד 2015 - לפי יבשת",
+  "organization": "משרד העלייה והקליטה",
+  "tags": [
+    "אוכלוסיה",
+    "ארצות מוצא עולים",
+    "עולה",
+    "עולה חדש",
+    "עולים",
+    "עולים חדשים",
+    "קליטת עלייה"
+  ],
+  "categories": [
+    "immigration"
+  ],
+  "keywords": [
+    "קליטת",
+    "יבשת",
+    "עלייה",
+    "אוכלוסיה",
+    "מוצא",
+    "ארצות",
+    "עולה",
+    "משרד",
+    "עולים",
+    "והקליטה",
+    "חדשים",
+    "העלייה",
+    "חדש"
+  ],
+  "resources": [
+    {
+      "resource_id": "2399bccc-0b7d-4bed-b282-83e15bf5d1fa",
+      "title": "עולים מ 1989 עד 2015 - לפי יבשת",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

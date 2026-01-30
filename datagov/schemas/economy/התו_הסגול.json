@@ -1,0 +1,104 @@
+{
+  "dataset_id": "fffada0a-b021-4629-9244-bc5e301f23d5",
+  "title": "התו הסגול",
+  "organization": "עיריית באר שבע",
+  "tags": [
+    "כלכלה עסקים ויזמות"
+  ],
+  "categories": [
+    "economy"
+  ],
+  "keywords": [
+    "lon",
+    "באר",
+    "עסקים",
+    "ויזמות",
+    "business",
+    "lat",
+    "numb",
+    "עיריית",
+    "התו",
+    "שבע",
+    "note",
+    "street",
+    "house",
+    "הסגול",
+    "כלכלה"
+  ],
+  "resources": [
+    {
+      "resource_id": "838b4fb9-e9e8-4b74-883c-8aff75f57ead",
+      "title": "XML-ITM",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "b128fef2-75c2-4a39-9dc8-96fd30309dd2",
+      "title": "JSON-ITM",
+      "format": "JSON",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "resource_id": "9aa90ee8-2c88-4b98-9448-233de0dba6b3",
+      "title": "XLSX-ITM",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "business",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "street",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "house_numb",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "X",
+          "type": "numeric",
+          "semantic": "phone"
+        },
+        {
+          "name": "Y",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "Note",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lat",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "lon",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        }
+      ],
+      "total_records": 1260
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

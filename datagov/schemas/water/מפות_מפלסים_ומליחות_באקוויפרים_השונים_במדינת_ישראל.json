@@ -1,0 +1,70 @@
+{
+  "dataset_id": "022552b2-a33e-456e-ace3-dcdbf831264b",
+  "title": "מפות מפלסים ומליחות באקוויפרים השונים במדינת ישראל",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "water",
+    "הידרוגיאולוגיה",
+    "מי תהום",
+    "מים",
+    "מליחות",
+    "מפלס",
+    "רשות המים",
+    "תת הקרקע"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "רשות",
+    "הידרוגיאולוגיה",
+    "הממשלתית",
+    "מים",
+    "השונים",
+    "הקרקע",
+    "באקוויפרים",
+    "במדינת",
+    "מליחות",
+    "תהום",
+    "מפות",
+    "water",
+    "מפלסים",
+    "ומליחות",
+    "מפלס",
+    "למים",
+    "הרשות",
+    "ישראל",
+    "ולביוב",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "09cb448b-0fec-43f2-b921-ccbb0299e497",
+      "title": "מליחות שנתית באקוויפר החוף",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "ef611855-592d-4a1f-9ee7-f1266bff23d9",
+      "title": "מפלס שנתי באקוויפר החוף",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "d53a6120-f6cb-4647-87e5-5848eb63768b",
+      "title": "מפלס שנתי היסטורי - אקוויפר ההר הצפון מזרחי",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

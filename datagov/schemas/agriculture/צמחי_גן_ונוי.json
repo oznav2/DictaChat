@@ -1,0 +1,43 @@
+{
+  "dataset_id": "458a2aac-e6d0-43d1-99e8-a52ac3c46024",
+  "title": "צמחי גן ונוי",
+  "organization": "מינהל המחקר החקלאי - מרכז וולקני",
+  "tags": [
+    "גני נוי",
+    "חקלאות",
+    "צמחים"
+  ],
+  "categories": [
+    "agriculture",
+    "technology"
+  ],
+  "keywords": [
+    "המחקר",
+    "מינהל",
+    "צמחים",
+    "החקלאי",
+    "ונוי",
+    "נוי",
+    "מרכז",
+    "צמחי",
+    "גני",
+    "חקלאות",
+    "וולקני"
+  ],
+  "resources": [
+    {
+      "resource_id": "8ffb0c25-14f8-4dbf-a5ae-384f2a85149b",
+      "title": "מאגר צמחי גן ונוי",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

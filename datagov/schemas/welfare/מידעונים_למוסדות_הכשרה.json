@@ -1,0 +1,56 @@
+{
+  "dataset_id": "850181fe-7449-4911-bf42-d6ee47ba7994",
+  "title": "מידעונים למוסדות הכשרה",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "מוסדות הכשרה",
+    "מידעונים"
+  ],
+  "categories": [
+    "welfare",
+    "culture"
+  ],
+  "keywords": [
+    "הכשרה",
+    "התרבות",
+    "קישור",
+    "משרד",
+    "המידעון",
+    "מידעונים",
+    "מוסדות",
+    "למוסדות",
+    "והספורט"
+  ],
+  "resources": [
+    {
+      "resource_id": "16448c01-61a2-4c62-9273-42ff9b4d3ec1",
+      "title": "most.DB.519.csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המידעון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קישור",
+          "type": "text",
+          "semantic": "url"
+        }
+      ],
+      "total_records": 30
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

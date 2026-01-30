@@ -1,0 +1,36 @@
+{
+  "dataset_id": "1d2d0ec1-bcdb-41dd-a8bc-0d1189cbcf78",
+  "title": "גושים shape",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "דיור"
+  ],
+  "categories": [
+    "housing",
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "גושים",
+    "ישראל",
+    "המרכז",
+    "דיור",
+    "shape"
+  ],
+  "resources": [
+    {
+      "resource_id": "f8824746-8e6a-475d-96eb-8c24ceb39a8b",
+      "title": "גושים shape",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "dataset_id": "19da5005-4b4d-4a03-841e-22bb6ea3e331",
+  "title": "مؤسسات دراسة برامج العمل الاجتماعي في الخارج - מוסדות ותכניות לימודי עבודה סוציאלית בחו\"ל (ערבית)",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [],
+  "categories": [
+    "welfare"
+  ],
+  "keywords": [
+    "start",
+    "state",
+    "ערבית",
+    "sort",
+    "degree",
+    "institute",
+    "בחו",
+    "עבודה",
+    "program",
+    "date",
+    "לימודי",
+    "והביטחון",
+    "משרד",
+    "מוסדות",
+    "החברתי",
+    "סוציאלית",
+    "notes",
+    "הרווחה",
+    "ותכניות"
+  ],
+  "resources": [
+    {
+      "resource_id": "8b368153-956f-40ae-a4ba-665a6d5af63a",
+      "title": "רשימת מוסדות מוכרים - ערבית.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "institute",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "date_program",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "start_date",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "state",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "institute_sort",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degree",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 267
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

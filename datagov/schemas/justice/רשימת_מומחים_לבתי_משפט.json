@@ -1,0 +1,126 @@
+{
+  "dataset_id": "63445be8-e05d-4ab4-81b6-dfa241388f8e",
+  "title": "רשימת מומחים לבתי משפט",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "בית משפט",
+    "גירושין",
+    "משרד הרווחה"
+  ],
+  "categories": [
+    "justice",
+    "welfare"
+  ],
+  "keywords": [
+    "phone",
+    "adress",
+    "cell",
+    "והביטחון",
+    "לבתי",
+    "languages",
+    "משפט",
+    "authority",
+    "משרד",
+    "opinion",
+    "expert",
+    "district",
+    "מומחים",
+    "החברתי",
+    "notes",
+    "גירושין",
+    "בית",
+    "profession",
+    "employer",
+    "הרווחה",
+    "payment"
+  ],
+  "resources": [
+    {
+      "resource_id": "ebe7b0fa-42c8-4195-8b40-b0b0e73cc494",
+      "title": "רשימת מומחים לבתי משפט - משפחות בסכסוך משפטי (גירושין)  ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "district",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "employer",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "expert",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "adress",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "authority",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "profession",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "opinion",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "cell_phone",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "payment",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "notes",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "languages",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 126
+    },
+    {
+      "resource_id": "fe3b2f13-08b4-498a-a4cb-8b35a3b66b4d",
+      "title": "מבנה הנתונים במאגר רשימת מומחים לבתי משפט.pdf",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

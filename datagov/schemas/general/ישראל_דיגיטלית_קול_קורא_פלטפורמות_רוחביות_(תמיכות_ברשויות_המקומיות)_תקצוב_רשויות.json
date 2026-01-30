@@ -1,0 +1,128 @@
+{
+  "dataset_id": "591daf7f-ae86-4194-b03d-f8fb08722771",
+  "title": "ישראל דיגיטלית - קול קורא - פלטפורמות רוחביות (תמיכות ברשויות המקומיות) - תקצוב רשויות",
+  "organization": "המשרד לשוויון חברתי",
+  "tags": [
+    "דיגיטלית",
+    "המשרד",
+    "השרד לשוויון חברתי",
+    "חברתי",
+    "ישראל",
+    "ישראל דיגיטלית",
+    "לשוויון",
+    "פלטפורמות",
+    "פלטפורמות רוחביות",
+    "קול",
+    "קול קורא",
+    "קורא",
+    "רוחביות",
+    "רשויות",
+    "תקצוב"
+  ],
+  "categories": [
+    "general"
+  ],
+  "keywords": [
+    "הוצאה",
+    "תקצוב",
+    "סוג",
+    "קורא",
+    "רשות",
+    "פלטפורמות",
+    "רוחביות",
+    "דיגיטלית",
+    "לשוויון",
+    "ברשויות",
+    "השתתפות",
+    "רמה",
+    "המשרד",
+    "תמיכות",
+    "למס",
+    "פרויקט",
+    "המקומיות",
+    "חברתי",
+    "משרד",
+    "תמיכת",
+    "מרכיב",
+    "קוד",
+    "מערכת",
+    "רשויות",
+    "השרד",
+    "מסד",
+    "ישראל",
+    "שנה",
+    "קול"
+  ],
+  "resources": [
+    {
+      "resource_id": "71569373-010c-4519-be01-feefe78fedc1",
+      "title": "IDG_Platform.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מסד",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "קוד רשות למס",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "שם רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "סוג מערכת",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "מרכיב פרויקט",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "רמה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "שנה",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "סוג הוצאה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "תמיכת משרד",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "השתתפות רשות",
+          "type": "numeric",
+          "semantic": "city"
+        }
+      ],
+      "total_records": 34934
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

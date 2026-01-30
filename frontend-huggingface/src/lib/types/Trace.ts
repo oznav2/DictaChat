@@ -36,6 +36,7 @@ export interface TraceStep {
  */
 export interface RunState {
 	runId: string;
+	runType?: "memory_prefetch" | "tool_execution" | "document_rag";
 	steps: Map<string, TraceStep>;
 	stepOrder: string[];
 	childrenByParent: Map<string, string[]>;

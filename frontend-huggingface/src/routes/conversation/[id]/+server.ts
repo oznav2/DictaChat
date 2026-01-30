@@ -124,6 +124,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 		inputs: newPrompt,
 		id: messageId,
 		is_retry: isRetry,
+		clientUserMessageId,
+		clientAssistantMessageId,
 		selectedMcpServerNames,
 		selectedMcpServers,
 	} = z
@@ -136,6 +138,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 					.transform((s) => s.replace(/\r\n/g, "\n"))
 			),
 			is_retry: z.optional(z.boolean()),
+			clientUserMessageId: z.string().uuid().refine(isMessageId).optional(),
+			clientAssistantMessageId: z.string().uuid().refine(isMessageId).optional(),
 			selectedMcpServerNames: z.optional(z.array(z.string())),
 			selectedMcpServers: z
 				.optional(
@@ -251,7 +255,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 					createdAt: new Date(),
 					updatedAt: new Date(),
 				},
-				messageId
+				messageId,
+				clientUserMessageId
 			);
 			messageToWriteToId = addChildren(
 				conv,
@@ -261,7 +266,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 					createdAt: new Date(),
 					updatedAt: new Date(),
 				},
-				newUserMessageId
+				newUserMessageId,
+				clientAssistantMessageId
 			);
 			messagesForPrompt = buildSubtree(conv, newUserMessageId);
 		} else if (messageToRetry.from === "assistant") {
@@ -270,7 +276,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 			messageToWriteToId = addSibling(
 				conv,
 				{ from: "assistant", content: "", createdAt: new Date(), updatedAt: new Date() },
-				messageId
+				messageId,
+				clientAssistantMessageId
 			);
 			messagesForPrompt = buildSubtree(conv, messageId);
 			messagesForPrompt.pop(); // don't need the latest assistant message in the prompt since we're retrying it
@@ -287,7 +294,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			},
-			messageId
+			messageId,
+			clientUserMessageId
 		);
 
 		messageToWriteToId = addChildren(
@@ -298,7 +306,8 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			},
-			newUserMessageId
+			newUserMessageId,
+			clientAssistantMessageId
 		);
 		// build the prompt from the user message
 		messagesForPrompt = buildSubtree(conv, newUserMessageId);
@@ -369,6 +378,19 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 			async function update(event: MessageUpdate) {
 				if (!messageToWriteTo || !conv) {
 					throw Error("No message or conversation to write events to");
+				}
+				if (
+					event.type === MessageUpdateType.FinalAnswer ||
+					event.type === MessageUpdateType.Memory
+				) {
+					logger.info(
+						{
+							conversationId: convId.toString(),
+							messageId: messageToWriteTo.id,
+							updateType: event.type,
+						},
+						"[stream] message update"
+					);
 				}
 
 				// Add token to content or skip if empty
@@ -499,12 +521,10 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 					);
 				}
 
-				// Avoid remote keylogging attack executed by watching packet lengths
-				// by padding the text with null chars to a fixed length
-				// https://cdn.arstechnica.net/wp-content/uploads/2024/03/LLM-Side-Channel.pdf
-				if (event.type === MessageUpdateType.Stream) {
-					event = { ...event, token: event.token.padEnd(16, "\0") };
-				}
+				// NOTE: Null padding for keylogging prevention has been REMOVED
+				// The original approach (.padEnd(16, "\0")) broke Hebrew/UTF-8 encoding
+				// and caused JSON parsing failures on the frontend.
+				// For proper side-channel protection, use transport-layer padding instead.
 
 				messageToWriteTo.updatedAt = new Date();
 
@@ -512,14 +532,18 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 					if (clientDetached) return;
 					try {
 						controller.enqueue(JSON.stringify(event) + "\n");
-						if (event.type === MessageUpdateType.FinalAnswer) {
-							controller.enqueue(" ".repeat(4096));
-						}
+						// Note: Removed 4KB padding that was blocking stream closure
+						// FinalAnswer already includes all necessary data; padding was causing UI sluggishness
 					} catch (err) {
 						clientDetached = true;
-						logger.info(
-							{ conversationId: convId.toString() },
-							"Client detached during message streaming"
+						// ENTERPRISE: Log detailed error context for debugging
+						logger.error(
+							{
+								conversationId: convId.toString(),
+								errorMessage: err instanceof Error ? err.message : String(err),
+								eventType: event.type,
+							},
+							"Client detached during message streaming - enqueue failed"
 						);
 					}
 				};
@@ -642,7 +666,6 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 				}
 			}
 
-			await persistConversation();
 			abortRegistry.unregister(conversationKey, ctrl);
 
 			// used to detect if cancel() is called bc of interrupt or just because the connection closes
@@ -650,11 +673,23 @@ export const POST: RequestHandler = async ({ request, locals, params, getClientA
 			if (!clientDetached) {
 				controller.close();
 			}
+
+			// Fire-and-forget: Persist AFTER closing stream to prevent UI sluggishness
+			// User already has their answer, persistence is best-effort background work
+			persistConversation().catch((err) => {
+				logger.error({ err, conversationId: conversationKey }, "Background persist failed");
+			});
 		},
 		async cancel() {
 			if (doneStreaming) return;
 			clientDetached = true;
-			await persistConversation();
+			// Fire-and-forget persistence on cancel too
+			persistConversation().catch((err) => {
+				logger.error(
+					{ err, conversationId: convId.toString() },
+					"Background persist failed on cancel"
+				);
+			});
 		},
 	});
 

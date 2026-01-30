@@ -1,0 +1,100 @@
+{
+  "dataset_id": "e29dbb16-fca8-40e0-9d96-bb12987120ec",
+  "title": "רשימת הממונים ברשויות הציבוריות מכח חוק חופש המידע, התשנ\"ח-1998 פרטי המאגר",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "חוק חופש המידע",
+    "משפט"
+  ],
+  "categories": [
+    "water",
+    "justice"
+  ],
+  "keywords": [
+    "חוק",
+    "כתובת",
+    "חשבון",
+    "הציבוריות",
+    "התשנ",
+    "הממונים",
+    "דואר",
+    "פקס",
+    "טלפון",
+    "ברשויות",
+    "mmdofficestypes",
+    "המאגר",
+    "חופש",
+    "משפט",
+    "הממונה",
+    "משרד",
+    "בנק",
+    "מייל",
+    "המשפטים",
+    "הרשות",
+    "למשלוח",
+    "פרטי",
+    "מכח"
+  ],
+  "resources": [
+    {
+      "resource_id": "0340becb-132a-4e2d-864b-562b8c17da42",
+      "title": "רשימת הממונים ברשויות הציבוריות מכח חוק חופש המידע, התשנ\"ח-1998",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הרשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "MMDOfficesTypes",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "שם הממונה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מייל",
+          "type": "text",
+          "semantic": "email"
+        },
+        {
+          "name": "פקס",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "כתובת למשלוח דואר",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "פרטי חשבון בנק",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2012
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": true,
+    "has_email": true,
+    "has_date": false
+  }
+}

@@ -67,14 +67,33 @@ function defaultTierStats(): TierStats {
 }
 
 /**
- * All memory tiers
+ * All memory tiers (including DataGov tiers from Phase 25)
+ * Note: DataGov tiers are static/pre-loaded and don't follow normal TTL rules
  */
-const ALL_TIERS: MemoryTier[] = ["working", "history", "patterns", "books", "memory_bank"];
+const ALL_TIERS: MemoryTier[] = [
+	"working",
+	"history",
+	"patterns",
+	"documents",
+	"memory_bank",
+	"datagov_schema",
+	"datagov_expansion",
+];
+
+/**
+ * Core memory tiers (excludes DataGov - for routing and promotion logic)
+ */
+const CORE_TIERS: MemoryTier[] = ["working", "history", "patterns", "documents", "memory_bank"];
 
 /**
  * Max examples to keep per action (bounded growth)
  */
 const MAX_ACTION_EXAMPLES = 20;
+
+/**
+ * Finding 6: Maximum time for KG queries to prevent indefinite blocking
+ */
+const KG_QUERY_TIMEOUT_MS = 5000;
 
 export class KnowledgeGraphService {
 	private db: Db;
@@ -161,7 +180,11 @@ export class KnowledgeGraphService {
 			{ user_id: 1, context_type: 1, action: 1, tier_key: 1 },
 			{ unique: true }
 		);
-		await this.contextActionEffectiveness.createIndex({ user_id: 1, context_type: 1, wilson_score: -1 });
+		await this.contextActionEffectiveness.createIndex({
+			user_id: 1,
+			context_type: 1,
+			wilson_score: -1,
+		});
 	}
 
 	// ============================================
@@ -177,11 +200,15 @@ export class KnowledgeGraphService {
 		}
 
 		// Get stats for all concepts
+		// Finding 6: Add timeout to prevent indefinite blocking
 		const conceptStats = await this.routingStats
-			.find({
-				user_id: userId,
-				concept_id: { $in: concepts },
-			})
+			.find(
+				{
+					user_id: userId,
+					concept_id: { $in: concepts },
+				},
+				{ maxTimeMS: KG_QUERY_TIMEOUT_MS }
+			)
 			.toArray();
 
 		if (conceptStats.length === 0) {
@@ -257,8 +284,9 @@ export class KnowledgeGraphService {
 		const now = new Date();
 		if (concepts.length === 0) return;
 
+		// Finding 6: Add timeout to prevent indefinite blocking
 		const existingStats = await this.routingStats
-			.find({ user_id: userId, concept_id: { $in: concepts } })
+			.find({ user_id: userId, concept_id: { $in: concepts } }, { maxTimeMS: KG_QUERY_TIMEOUT_MS })
 			.toArray();
 		const statsByConcept = new Map(existingStats.map((s) => [s.concept_id, s]));
 
@@ -318,7 +346,8 @@ export class KnowledgeGraphService {
 		});
 
 		try {
-			const conceptBulkWrite = (this.routingConcepts as unknown as { bulkWrite?: unknown }).bulkWrite;
+			const conceptBulkWrite = (this.routingConcepts as unknown as { bulkWrite?: unknown })
+				.bulkWrite;
 			if (conceptOps.length) {
 				if (typeof conceptBulkWrite === "function") {
 					await (this.routingConcepts as any).bulkWrite(conceptOps, { ordered: false });
@@ -393,7 +422,12 @@ export class KnowledgeGraphService {
 
 		for (const match of hebrewMatches) {
 			const clean = normalizeEntityLabel(match);
-			if (clean.length > 2 && !isCommonWord(clean) && !isEntityBlocklistedLabel(clean) && !seen.has(clean)) {
+			if (
+				clean.length > 2 &&
+				!isCommonWord(clean) &&
+				!isEntityBlocklistedLabel(clean) &&
+				!seen.has(clean)
+			) {
 				seen.add(match);
 				entities.push({
 					label: clean,
@@ -475,11 +509,15 @@ export class KnowledgeGraphService {
 
 		for (const memoryId of memoryIds) {
 			// Find entities that mention this memory
+			// Finding 6: Add timeout to prevent indefinite blocking
 			const nodes = await this.kgNodes
-				.find({
-					user_id: userId,
-					memory_ids: memoryId,
-				})
+				.find(
+					{
+						user_id: userId,
+						memory_ids: memoryId,
+					},
+					{ maxTimeMS: KG_QUERY_TIMEOUT_MS }
+				)
 				.toArray();
 
 			const usable = nodes.filter((n) => !isEntityBlocklistedLabel(String(n.label ?? "")));
@@ -506,11 +544,15 @@ export class KnowledgeGraphService {
 			.map(generateNodeId);
 
 		// Get edges from these nodes
+		// Finding 6: Add timeout to prevent indefinite blocking
 		const edges = await this.kgEdges
-			.find({
-				user_id: userId,
-				$or: [{ source_id: { $in: nodeIds } }, { target_id: { $in: nodeIds } }],
-			})
+			.find(
+				{
+					user_id: userId,
+					$or: [{ source_id: { $in: nodeIds } }, { target_id: { $in: nodeIds } }],
+				},
+				{ maxTimeMS: KG_QUERY_TIMEOUT_MS }
+			)
 			.sort({ weight: -1 })
 			.limit(limit * 2)
 			.toArray();
@@ -523,11 +565,15 @@ export class KnowledgeGraphService {
 		}
 
 		// Fetch related nodes
+		// Finding 6: Add timeout to prevent indefinite blocking
 		const nodes = await this.kgNodes
-			.find({
-				user_id: userId,
-				node_id: { $in: Array.from(relatedIds) },
-			})
+			.find(
+				{
+					user_id: userId,
+					node_id: { $in: Array.from(relatedIds) },
+				},
+				{ maxTimeMS: KG_QUERY_TIMEOUT_MS }
+			)
 			.sort({ avg_quality: -1 })
 			.limit(limit)
 			.toArray();
@@ -653,8 +699,9 @@ export class KnowledgeGraphService {
 		userId: string,
 		contextType: ContextType
 	): Promise<ActionEffectiveness[]> {
+		// Finding 6: Add timeout to prevent indefinite blocking
 		return this.actionEffectiveness
-			.find({ user_id: userId, context_type: contextType })
+			.find({ user_id: userId, context_type: contextType }, { maxTimeMS: KG_QUERY_TIMEOUT_MS })
 			.sort({ wilson_score: -1 })
 			.toArray();
 	}
@@ -774,11 +821,15 @@ export class KnowledgeGraphService {
 		);
 
 		// Recalculate mentions and quality for affected nodes
+		// Finding 6: Add timeout to prevent indefinite blocking
 		const affectedNodes = await this.kgNodes
-			.find({
-				user_id: userId,
-				memory_ids: { $size: 0 },
-			})
+			.find(
+				{
+					user_id: userId,
+					memory_ids: { $size: 0 },
+				},
+				{ maxTimeMS: KG_QUERY_TIMEOUT_MS }
+			)
 			.toArray();
 
 		// Remove nodes with no memories

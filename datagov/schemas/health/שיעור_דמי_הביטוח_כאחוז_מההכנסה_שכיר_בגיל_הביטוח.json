@@ -1,0 +1,50 @@
+{
+  "dataset_id": "f0f94b64-2124-467a-812a-03bf09908b4b",
+  "title": "שיעור דמי הביטוח כאחוז מההכנסה - שכיר בגיל הביטוח",
+  "organization": "המוסד לביטוח לאומי",
+  "tags": [
+    "אוצר וכלכלה",
+    "ביטוח לאומי",
+    "בריאות ורווחה",
+    "שכיר"
+  ],
+  "categories": [
+    "health",
+    "finance",
+    "welfare",
+    "economy"
+  ],
+  "keywords": [
+    "ביטוח",
+    "וכלכלה",
+    "לאומי",
+    "מההכנסה",
+    "לביטוח",
+    "שכיר",
+    "בגיל",
+    "הביטוח",
+    "אוצר",
+    "דמי",
+    "שיעור",
+    "ורווחה",
+    "כאחוז",
+    "המוסד",
+    "בריאות"
+  ],
+  "resources": [
+    {
+      "resource_id": "50c34efd-34eb-4d40-b142-efeafa00fd64",
+      "title": "שיעור דמי הביטוח כאחוז מההכנסה - שכיר בגיל הביטוח",
+      "format": "XLS",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

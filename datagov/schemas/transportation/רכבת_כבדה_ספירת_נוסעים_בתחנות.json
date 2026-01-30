@@ -1,0 +1,138 @@
+{
+  "dataset_id": "f1e810ec-1cee-4782-8e2e-99656f592c5e",
+  "title": "רכבת כבדה - ספירת נוסעים בתחנות",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "חצב",
+    "יורדים",
+    "ממג",
+    "נוסעים",
+    "עולים",
+    "רכבת",
+    "רכבת כבדה"
+  ],
+  "categories": [
+    "transportation",
+    "geography",
+    "immigration"
+  ],
+  "keywords": [
+    "name",
+    "ממג",
+    "objectid",
+    "עולים",
+    "gis",
+    "כבדה",
+    "רכבת",
+    "בדרכים",
+    "off",
+    "asset",
+    "והבטיחות",
+    "ספירת",
+    "יורדים",
+    "משרד",
+    "בתחנות",
+    "חצב",
+    "yearmonth",
+    "נוסעים",
+    "day",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "8ce0a8c9-b9fb-4d4c-a1d8-fd17ae432244",
+      "title": "RAIL_STAT_ONOFF_MONTH_SHP",
+      "format": "SHP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "98889926-9c3b-43ce-89d6-a7a1d9668fec",
+      "title": "RAIL_STAT_ONOFF_MONTH_KMZ",
+      "format": "KMZ",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "0f772fd8-0010-46be-9f40-28a6229fe682",
+      "title": "RAIL_STAT_ONOFF_MONTH_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "ASSET_NO",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "ON_7_DAY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "OFF_7_DAY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ON_17_DAY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "OFF_17_DAY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "ON_0700",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OFF_0700",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ON_1700",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OFF_1700",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 63
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "dataset_id": "7f799ce1-e75c-48b0-bd3e-c26321985ae3",
+  "title": "המועצה לביקורת סרטים - סיווג גיל לסרטי קולנוע",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "סרטים"
+  ],
+  "categories": [
+    "culture",
+    "municipal"
+  ],
+  "keywords": [
+    "התרבות",
+    "הסרט",
+    "סרטים",
+    "משרד",
+    "סיווג",
+    "לסרטי",
+    "המועצה",
+    "לביקורת",
+    "קולנוע",
+    "והספורט",
+    "גיל"
+  ],
+  "resources": [
+    {
+      "resource_id": "e3efaeee-e066-4ac5-80c9-c58c3dae8ff1",
+      "title": "סיווג לסרטים ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הסרט",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סיווג",
+          "type": "text",
+          "semantic": "type"
+        }
+      ],
+      "total_records": 275
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

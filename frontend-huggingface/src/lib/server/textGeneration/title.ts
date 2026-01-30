@@ -5,24 +5,41 @@ import { MessageUpdateType, type MessageUpdate } from "$lib/types/MessageUpdate"
 import type { Conversation } from "$lib/types/Conversation";
 import { getReturnFromGenerator } from "$lib/utils/getReturnFromGenerator";
 
+/**
+ * Phase 23.8 P2.6: Added abort signal support to prevent title generation
+ * from prolonging the response stream after text generation completes
+ */
 export async function* generateTitleForConversation(
 	conv: Conversation,
-	locals: App.Locals | undefined
+	locals: App.Locals | undefined,
+	abortSignal?: AbortSignal
 ): AsyncGenerator<MessageUpdate, undefined, undefined> {
 	try {
+		// Check abort early
+		if (abortSignal?.aborted) return;
+
 		const userMessage = conv.messages.find((m) => m.from === "user");
 		// HACK: detect if the conversation is new
 		if (conv.title !== "New Chat" || !userMessage) return;
 
 		const prompt = userMessage.content;
 		const modelForTitle = config.TASK_MODEL?.trim() ? config.TASK_MODEL : conv.model;
-		const title = (await generateTitle(prompt, modelForTitle, locals)) ?? "New Chat";
+
+		// Check abort before expensive operation
+		if (abortSignal?.aborted) return;
+
+		const title = (await generateTitle(prompt, modelForTitle, locals, abortSignal)) ?? "New Chat";
+
+		// Check abort after generation - don't emit if already done
+		if (abortSignal?.aborted) return;
 
 		yield {
 			type: MessageUpdateType.Title,
 			title,
 		};
 	} catch (cause) {
+		// Ignore abort errors - they're expected
+		if (cause instanceof Error && cause.name === "AbortError") return;
 		logger.error(Error("Failed whilte generating title for conversation", { cause }));
 	}
 }
@@ -30,8 +47,14 @@ export async function* generateTitleForConversation(
 async function generateTitle(
 	prompt: string,
 	modelId: string | undefined,
-	locals: App.Locals | undefined
+	locals: App.Locals | undefined,
+	abortSignal?: AbortSignal
 ) {
+	// Check abort before starting
+	if (abortSignal?.aborted) {
+		return prompt.split(/\s+/g).slice(0, 5).join(" ");
+	}
+
 	if (config.LLM_SUMMARIZATION !== "true") {
 		// When summarization is disabled, use the first five words without adding emojis
 		return prompt.split(/\s+/g).slice(0, 5).join(" ");

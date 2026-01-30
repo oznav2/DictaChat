@@ -1,0 +1,180 @@
+{
+  "dataset_id": "6fca1935-7d3f-43b9-afc8-d6d2460dedad",
+  "title": "מקבלי הטבה לפי ספק",
+  "organization": "הרשות הממשלתית למים ולביוב",
+  "tags": [
+    "water",
+    "מים",
+    "ספק",
+    "ספקי מים",
+    "רשות המים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "רשות",
+    "הממשלתית",
+    "ברשות",
+    "מים",
+    "ניצולי",
+    "ספק",
+    "הטבה",
+    "הבטחון",
+    "ביטוח",
+    "לאפריל",
+    "water",
+    "נכון",
+    "שואה",
+    "הזכאים",
+    "ספקי",
+    "לאומי",
+    "למאי",
+    "זכאים",
+    "משרד",
+    "למים",
+    "מקבלי",
+    "הכל",
+    "הרשות",
+    "ולביוב",
+    "המים"
+  ],
+  "resources": [
+    {
+      "resource_id": "375a0352-081d-49e4-ab47-680ee917da45",
+      "title": "מקבלי הטבה לפי ספק - אפריל 2022",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר ספק ברשות המים",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "שם ספק",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר זכאים ביטוח לאומי",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר זכאים משרד הבטחון",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר זכאים רשות ניצולי שואה",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "סך כל הזכאים נכון לאפריל 2022",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1072
+    },
+    {
+      "resource_id": "005248b9-0a61-4c04-8c6a-c7bcd9bd72bd",
+      "title": "מקבלי הטבה לפי ספק - מאי 2024",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר ספק ברשות המים",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "שם ספק",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר זכאים ביטוח לאומי",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר זכאים משרד הבטחון",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר זכאים רשות ניצולי שואה",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "סך הכל הזכאים נכון למאי 2024",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1038
+    },
+    {
+      "resource_id": "4f1dfc0b-f39f-4995-bf4c-7ad53f6867ca",
+      "title": "מקבלי הטבה לפי ספק - מאי 2025",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מספר ספק",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "שם ספק",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר זכאים ביטוח לאומי",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר זכאים משרד הבטחון",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר זכאים רשות ניצולי שואה",
+          "type": "numeric",
+          "semantic": "city"
+        },
+        {
+          "name": "סך הכל הזכאים נכון למאי 2025",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1021
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

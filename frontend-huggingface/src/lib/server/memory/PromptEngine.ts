@@ -13,7 +13,7 @@
 
 import Handlebars from "handlebars";
 import { existsSync, readFileSync, readdirSync, statSync } from "fs";
-import { join, basename, extname } from "path";
+import { join, basename } from "path";
 import { logger } from "$lib/server/logger";
 
 // ============================================================================

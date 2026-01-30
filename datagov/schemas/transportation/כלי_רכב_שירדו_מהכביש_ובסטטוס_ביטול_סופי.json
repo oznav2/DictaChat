@@ -1,0 +1,483 @@
+{
+  "dataset_id": "fe8604fe-2d71-4cb5-a35e-2df97756c5a4",
+  "title": "כלי רכב שירדו מהכביש ובסטטוס ביטול סופי",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורכ"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "misgeret",
+    "tzeva",
+    "ובסטטוס",
+    "lakvish",
+    "sug",
+    "ביטול",
+    "aliya",
+    "degem",
+    "tozar",
+    "ramat",
+    "eivzur",
+    "kvutzat",
+    "ahori",
+    "horaat",
+    "mispar",
+    "moed",
+    "בדרכים",
+    "רכב",
+    "שירדו",
+    "gimur",
+    "והבטיחות",
+    "כלי",
+    "shnat",
+    "zmig",
+    "bitul",
+    "baalut",
+    "kinuy",
+    "משרד",
+    "zihum",
+    "delek",
+    "סופי",
+    "mishari",
+    "kidmi",
+    "betihuty",
+    "rechev",
+    "yitzur",
+    "kolel",
+    "rishum",
+    "tozeret",
+    "mishkal",
+    "מהכביש",
+    "manoa",
+    "תחבורכ",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "851ecab1-0622-4dbe-a6c7-f950cf82abf9",
+      "title": "כלי רכב שירדו מהכביש ובסטטוס ביטול סופי",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_cd",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "moed_aliya_lakvish",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "bitul_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "misgeret",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozar_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mispar_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_kolel",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ramat_gimur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ramat_eivzur_betihuty",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kvutzat_zihum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "baalut",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tzeva_rechev",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "zmig_kidmi",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "zmig_ahori",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_delek_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "horaat_rishum",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "kinuy_mishari",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 1116854
+    },
+    {
+      "resource_id": "4e6b9724-4c1e-43f0-909a-154d4cc4e046",
+      "title": "כלי רכב שירדו מהכביש ובסטטוס ביטול סופי 2010-2016",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "moed_aliya_lakvish",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "bitul_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "misgeret",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozar_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mispar_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_kolel",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ramat_gimur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ramat_eivzur_betihuty",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kvutzat_zihum",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "baalut",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tzeva_rechev",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "zmig_kidmi",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "zmig_ahori",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_delek_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "horaat_rishum",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "kinuy_mishari",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 670293
+    },
+    {
+      "resource_id": "ec8cbc34-72e1-4b69-9c48-22821ba0bd6c",
+      "title": "כלי רכב שירדו מהכביש ובסטטוס ביטול סופי 2000-2009",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "mispar_rechev",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozeret_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_cd",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_rechev_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "moed_aliya_lakvish",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "bitul_dt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "misgeret",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tozar_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "degem_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mispar_manoa",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "mishkal_kolel",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ramat_gimur",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ramat_eivzur_betihuty",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "kvutzat_zihum",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shnat_yitzur",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "baalut",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "tzeva_rechev",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "zmig_kidmi",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "zmig_ahori",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sug_delek_nm",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "horaat_rishum",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "kinuy_mishari",
+          "type": "text",
+          "semantic": "coordinate_y"
+        }
+      ],
+      "total_records": 499791
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

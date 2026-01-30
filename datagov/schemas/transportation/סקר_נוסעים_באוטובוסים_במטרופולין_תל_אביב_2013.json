@@ -1,0 +1,50 @@
+{
+  "dataset_id": "30941344-d632-40a7-8238-851dfc2ce17d",
+  "title": "סקר נוסעים באוטובוסים במטרופולין תל אביב 2013",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "מטרופולין תל אביב",
+    "סקר נוסעים",
+    "תחבורה ציבורית"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "אביב",
+    "נוסעים",
+    "סקר",
+    "תחבורה",
+    "בדרכים",
+    "משרד",
+    "מטרופולין",
+    "והבטיחות",
+    "ציבורית",
+    "באוטובוסים",
+    "במטרופולין",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "dca2c9d4-63ee-41e3-aaf3-e26dd3841354",
+      "title": "OBBusTA2013",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "06f38acd-54a5-4b04-86a8-11b313743d55",
+      "title": "מטאדאטה",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

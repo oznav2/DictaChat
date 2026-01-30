@@ -1,0 +1,81 @@
+{
+  "dataset_id": "7ef72ddf-c565-4fff-8a8d-21ce6fe998e2",
+  "title": "מוזאונים מוכרים",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "מוזיאון",
+    "מוכר",
+    "תרבות"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "מוזיאון",
+    "מוכר",
+    "טלפון",
+    "התרבות",
+    "כתובת",
+    "מוכרים",
+    "משרד",
+    "המוזאון",
+    "מוזאונים",
+    "המנהל",
+    "אתר",
+    "תרבות",
+    "מייל",
+    "והספורט"
+  ],
+  "resources": [
+    {
+      "resource_id": "0309ee10-21a0-4ee9-8094-8fb474ca208a",
+      "title": "most.DB.510.xlsx",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם המוזאון",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "שם המנהל",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "מספר  טלפון",
+          "type": "text",
+          "semantic": "phone"
+        },
+        {
+          "name": "כתובת",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "כתובת מייל",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "כתובת אתר המוזאון",
+          "type": "text",
+          "semantic": "address"
+        }
+      ],
+      "total_records": 57
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": true,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "dataset_id": "0b08defb-3719-42c7-b588-72918fc3ac13",
+  "title": "מקלטים",
+  "organization": "עיריית מעלה אדומים",
+  "tags": [
+    "ביטחון",
+    "חירום",
+    "מקלטים"
+  ],
+  "categories": [
+    "water"
+  ],
+  "keywords": [
+    "ביטחון",
+    "shelter",
+    "objectid",
+    "אדומים",
+    "neighborho",
+    "עיריית",
+    "adress",
+    "for",
+    "מקלטים",
+    "מעלה",
+    "חירום"
+  ],
+  "resources": [
+    {
+      "resource_id": "d35945fa-eb3c-4802-a956-73b6273017f6",
+      "title": "רשימת מקלטים",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OBJECTID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "Neighborho",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Shelter_Ad",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "For_Adress",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 528
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "dataset_id": "463c19e1-ec05-47d0-86a6-2bbfc743c161",
+  "title": "סרטים",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "סרטים"
+  ],
+  "categories": [
+    "culture"
+  ],
+  "keywords": [
+    "משרד",
+    "התרבות",
+    "והספורט",
+    "סרטים"
+  ],
+  "resources": [
+    {
+      "resource_id": "7387cd01-4904-4679-8909-d06d26fa8f98",
+      "title": "רשימת סרטים",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "de04cfcf-ef86-4595-8c86-1b4a8f07a52d",
+      "title": "",
+      "format": "",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

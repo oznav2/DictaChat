@@ -1,0 +1,37 @@
+{
+  "dataset_id": "710a2ad7-73d9-4146-95ac-0d03f185c102",
+  "title": "ספירות תנועה 2018",
+  "organization": "הלשכה המרכזית לסטטיסטיקה",
+  "tags": [
+    "הלשכה המרכזית לסטטיסטיקה",
+    "ספירות תנועה",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תחבורה",
+    "הלשכה",
+    "המרכזית",
+    "לסטטיסטיקה",
+    "ספירות",
+    "תנועה"
+  ],
+  "resources": [
+    {
+      "resource_id": "422b7b57-2028-4c1e-a082-122e0148d7d7",
+      "title": "ספירות תנועה 2018",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

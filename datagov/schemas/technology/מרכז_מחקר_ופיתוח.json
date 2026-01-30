@@ -1,0 +1,47 @@
+{
+  "dataset_id": "8e87c346-e50c-415a-aebe-d972c57c9efe",
+  "title": "מרכז מחקר ופיתוח",
+  "organization": "משרד החדשנות, המדע והטכנולוגיה",
+  "tags": [],
+  "categories": [
+    "technology"
+  ],
+  "keywords": [
+    "החדשנות",
+    "מרכזי",
+    "ופיתוח",
+    "משרד",
+    "מרכז",
+    "מופ",
+    "המדע",
+    "מחקר",
+    "והטכנולוגיה"
+  ],
+  "resources": [
+    {
+      "resource_id": "1c185ce1-b285-471e-a167-db4b606a11e0",
+      "title": "מרכז מחקר ופיתוח",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מרכזי מופ",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 7
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

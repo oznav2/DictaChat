@@ -1,0 +1,73 @@
+{
+  "dataset_id": "399937dd-d8b9-4b18-9e1e-e13acc7cbbe7",
+  "title": "סקר חוויית המטופל מהטיפול בבתי חולים כלליים 2014",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "בריאות",
+    "בריאות ורווחה",
+    "בתי חולים",
+    "חוויית המטופל",
+    "משרד הבריאות",
+    "סקרים"
+  ],
+  "categories": [
+    "health",
+    "welfare"
+  ],
+  "keywords": [
+    "בבתי",
+    "סקר",
+    "מהטיפול",
+    "בתי",
+    "כלליים",
+    "משרד",
+    "חוויית",
+    "חולים",
+    "code",
+    "hospitel",
+    "ורווחה",
+    "הבריאות",
+    "סקרים",
+    "קוד",
+    "קודביתחולים",
+    "בריאות",
+    "המטופל"
+  ],
+  "resources": [
+    {
+      "resource_id": "cbb2e19a-a419-453c-a2e0-1b0d887ee7b0",
+      "title": "סקר חוויית המטופל מהטיפול בבתי חולים כלליים - 2014",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "קודביתחולים",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "קוד",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "code_hospitel",
+          "type": "text",
+          "semantic": "phone"
+        }
+      ],
+      "total_records": 252
+    }
+  ],
+  "field_availability": {
+    "has_phone": true,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "dataset_id": "5e581e7e-7280-441f-94cb-8f273f8befe3",
+  "title": "אומדן ביצוע תקציב על שינוייו  30 ביוני 2020 -  לא מבוקר",
+  "organization": "משרד האוצר",
+  "tags": [
+    "תקציב"
+  ],
+  "categories": [
+    "finance"
+  ],
+  "keywords": [
+    "ביוני",
+    "תקציב",
+    "ביצוע",
+    "מבוקר",
+    "משרד",
+    "אומדן",
+    "שינוייו",
+    "האוצר"
+  ],
+  "resources": [
+    {
+      "resource_id": "66582760-4bb0-4cb8-8eca-9df2ce3ba9a1",
+      "title": "אומדן ביצוע ליום 30 ביוני 2020 לא מבוקר.xlsx",
+      "format": "XLSX",
+      "fields": [],
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

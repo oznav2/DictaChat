@@ -1,0 +1,108 @@
+{
+  "dataset_id": "507f46c1-20f3-445e-8063-ad9ace29bcb0",
+  "title": "רשימת התובעים בעלי הסמכה מאת היועץ המשפטי לממשלה",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "הסמכות תובעים",
+    "הסמכת תובעים",
+    "משרד המשפטים",
+    "תובעים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "הסמכת",
+    "סוג",
+    "הסמכה",
+    "סיבת",
+    "הסמכות",
+    "לממשלה",
+    "התובעים",
+    "תובעים",
+    "בעלי",
+    "משרד",
+    "היועץ",
+    "תובע",
+    "מאת",
+    "סיום",
+    "המשפטים",
+    "טיפול",
+    "פרטי",
+    "מבקש",
+    "המשפטי",
+    "מועד",
+    "משפחה",
+    "תחילת",
+    "גוף"
+  ],
+  "resources": [
+    {
+      "resource_id": "19ea0497-654a-4417-aa7a-0426a99ef946",
+      "title": "רשימת התובעים בעלי הסמכה",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם פרטי",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "משפחה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג תובע",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סוג הסמכה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "גוף מבקש",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מועד תחילת הסמכה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מועד סיום הסמכה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סיבת סיום טיפול",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 2119
+    },
+    {
+      "resource_id": "ad1a699d-a817-43c2-b787-ca969dd61d8d",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

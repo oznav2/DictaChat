@@ -8,6 +8,7 @@
 import { logger } from "$lib/server/logger";
 import type { MemoryConfig } from "../memory_config";
 import { defaultMemoryConfig } from "../memory_config";
+import { getMemoryFeatureFlags } from "../featureFlags";
 import type { ContextInsights, SearchDebug } from "../types";
 import type {
 	ContextService,
@@ -49,11 +50,13 @@ export class ContextServiceImpl implements ContextService {
 			const limit = params.limit ?? coldStartConfig.limit;
 
 			// Search for high-value memories using cold-start query
+			// Respect the MEMORY_RERANK_ENABLED feature flag for graceful degradation
+			const flags = getMemoryFeatureFlags();
 			const searchResult = await this.searchService.search({
 				userId: params.userId,
 				query: coldStartConfig.query,
 				limit,
-				enableRerank: true,
+				enableRerank: flags.rerankEnabled,
 			});
 
 			if (searchResult.results.length === 0) {
@@ -61,7 +64,9 @@ export class ContextServiceImpl implements ContextService {
 			}
 
 			// Format results into context injection string
-			const contextLines = searchResult.results.map((r, i) => `${i + 1}. ${r.preview}`);
+			// CRITICAL FIX: Use r.content (full text) instead of r.preview (200 char truncated)
+			// The preview truncation was cutting off the actual answers from document chunks
+			const contextLines = searchResult.results.map((r, i) => `${i + 1}. ${r.content}`);
 			const contextText = [coldStartConfig.header, ...contextLines, coldStartConfig.footer].join(
 				"\n"
 			);
@@ -142,6 +147,77 @@ export class ContextServiceImpl implements ContextService {
 		} catch (err) {
 			logger.error({ err, userId: params.userId }, "Failed to get context insights");
 			return emptyInsights;
+		}
+	}
+
+	/**
+	 * Extract entities from text and store them in the Content KG
+	 * Phase 3 Gap 7: Content KG Entity Extraction
+	 *
+	 * RoamPal Parity:
+	 * - On memory storage, extracts entities from text
+	 * - Builds Content Graph with entity relationships
+	 * - Used for cold-start and organic recall
+	 */
+	async extractAndStoreEntities(params: {
+		userId: string;
+		memoryId: string;
+		text: string;
+		importance?: number;
+		confidence?: number;
+	}): Promise<{ entitiesExtracted: number; entitiesStored: number; entities: string[] }> {
+		const result = {
+			entitiesExtracted: 0,
+			entitiesStored: 0,
+			entities: [] as string[],
+		};
+
+		if (!this.kgService) {
+			return result;
+		}
+
+		try {
+			// Extract entities using KG service's heuristic extraction
+			const entities = this.kgService.extractEntities(params.text);
+			result.entitiesExtracted = entities.length;
+			result.entities = entities.map((e) => e.label);
+
+			if (entities.length === 0) {
+				return result;
+			}
+
+			// Store entities in Content KG with quality score
+			const importance = params.importance ?? 0.5;
+			const confidence = params.confidence ?? 0.5;
+
+			await this.kgService.updateContentKg(
+				params.userId,
+				params.memoryId,
+				entities,
+				importance,
+				confidence
+			);
+
+			result.entitiesStored = entities.length;
+
+			logger.debug(
+				{
+					userId: params.userId,
+					memoryId: params.memoryId,
+					entitiesExtracted: result.entitiesExtracted,
+					entitiesStored: result.entitiesStored,
+					entityLabels: result.entities.slice(0, 5), // Log first 5 for debugging
+				},
+				"Entities extracted and stored to Content KG"
+			);
+
+			return result;
+		} catch (err) {
+			logger.error(
+				{ err, userId: params.userId, memoryId: params.memoryId },
+				"Failed to extract and store entities"
+			);
+			return result;
 		}
 	}
 }

@@ -1,0 +1,151 @@
+{
+  "dataset_id": "5641b8c0-52d6-415d-95f7-abf9e1218ea1",
+  "title": "תכניות תשתית לאומית - תחבורה",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "ממג",
+    "תחבורה",
+    "תכנית תשתית לאומית",
+    "תתל"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "name",
+    "לאומית",
+    "ממג",
+    "status",
+    "תחבורה",
+    "gis",
+    "תכניות",
+    "תתל",
+    "remarks",
+    "בדרכים",
+    "adress",
+    "והבטיחות",
+    "משרד",
+    "subject",
+    "type",
+    "label",
+    "תשתית",
+    "link",
+    "yearmonth",
+    "shape",
+    "area",
+    "oid",
+    "תכנית",
+    "tasrit",
+    "length",
+    "plan",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "c50fdc71-d52a-4b8f-ac7c-f99af53022e6",
+      "title": "TTL_TRANSPORT.zip",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "4fc22971-e2e6-41b7-8f43-401d7e1d2a1a",
+      "title": "TTL_TRANSPORT_KML",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "1f2d023b-da8e-4afd-b478-5f01f5865f77",
+      "title": "TTL_TRANSPORT_csv",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "TYPE_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "TASRIT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LABEL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "REMARKS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SUBJECT",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ADRESS",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PLAN_NAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "PLAN_LINK",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Shape_Area",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 134
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

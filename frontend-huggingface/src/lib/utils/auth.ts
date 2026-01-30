@@ -7,6 +7,9 @@ import { page } from "$app/state";
  * and the login feature is enabled.
  */
 export function requireAuthUser(): boolean {
+	if (page.data.singleUserAdminEnabled) {
+		return false;
+	}
 	if (page.data.loginEnabled && !page.data.user) {
 		const next = page.url.pathname + page.url.search;
 		const url = `${base}/login?next=${encodeURIComponent(next)}`;

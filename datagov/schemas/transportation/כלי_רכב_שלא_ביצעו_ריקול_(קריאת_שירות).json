@@ -1,0 +1,88 @@
+{
+  "dataset_id": "9a7bd490-2daf-4168-b930-665981e54250",
+  "title": "כלי רכב שלא ביצעו ריקול (קריאת שירות)",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "כלי רכב",
+    "משרד התחבורה",
+    "רכב",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation"
+  ],
+  "keywords": [
+    "תחבורה",
+    "teur",
+    "sug",
+    "pticha",
+    "mispar",
+    "בדרכים",
+    "רכב",
+    "והבטיחות",
+    "כלי",
+    "שלא",
+    "קריאת",
+    "ביצעו",
+    "recall",
+    "משרד",
+    "שירות",
+    "rechev",
+    "ריקול",
+    "takala",
+    "taarich",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "36bf1404-0be4-49d2-82dc-2f1ead4a8b93",
+      "title": "כלי רכב שלא ביצעו ריקול (קריאת שירות)",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "MISPAR_RECHEV",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "RECALL_ID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "SUG_RECALL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SUG_TAKALA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TEUR_TAKALA",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "TAARICH_PTICHA",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 138629
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "dataset_id": "87cf4a13-8e99-40ff-8605-086d359680c1",
+  "title": "המועצה לקידום ספורט נשים - חברי מועצה",
+  "organization": "משרד התרבות והספורט",
+  "tags": [
+    "קידום נשים ספורט חברי מועצה"
+  ],
+  "categories": [
+    "culture",
+    "municipal"
+  ],
+  "keywords": [
+    "התרבות",
+    "מלא",
+    "נשים",
+    "משרד",
+    "קידום",
+    "המועצה",
+    "לקידום",
+    "והספורט",
+    "תפקיד",
+    "מועצה",
+    "חברי",
+    "ספורט"
+  ],
+  "resources": [
+    {
+      "resource_id": "2bef8f8b-6f85-4011-9db3-426f5809762f",
+      "title": "חברי מועצה לקידום ספורט נשים ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם מלא",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תפקיד",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 13
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

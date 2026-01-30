@@ -1,0 +1,636 @@
+{
+  "dataset_id": "3bd97fde-6cc3-456d-ab63-1caad16b2b6a",
+  "title": "מפקד האוכלוסין והדיור 2022",
+  "organization": "הלשכה המרכזית לסטטיסטיקה",
+  "tags": [
+    "מפקד",
+    "מפקד 2022"
+  ],
+  "categories": [
+    "housing",
+    "demographics"
+  ],
+  "keywords": [
+    "chldborn",
+    "employeeswage",
+    "religionheb",
+    "africa",
+    "classified",
+    "aliya",
+    "druze",
+    "wrky",
+    "pop",
+    "households",
+    "non",
+    "religion",
+    "mdn",
+    "localitycode",
+    "size",
+    "selfemployedannual",
+    "marriageage",
+    "arab",
+    "average",
+    "midatdatiyut",
+    "jews",
+    "name",
+    "vehicle",
+    "christians",
+    "age",
+    "sexratio",
+    "wrkoutloc",
+    "total",
+    "others",
+    "avg",
+    "מפקד",
+    "המרכזית",
+    "collective",
+    "europe",
+    "household",
+    "decile",
+    "residents",
+    "לסטטיסטיקה",
+    "approx",
+    "והדיור",
+    "statarea",
+    "acadmcert",
+    "foreigners",
+    "america",
+    "rent",
+    "koshi",
+    "shem",
+    "abr",
+    "medwage",
+    "pcnt",
+    "empl",
+    "female",
+    "asia",
+    "density",
+    "male",
+    "israel",
+    "population",
+    "median",
+    "foreign",
+    "own",
+    "moslems",
+    "הלשכה",
+    "wrk",
+    "employeesannual",
+    "isr",
+    "dependencyratio",
+    "locnameheb",
+    "parking",
+    "inst",
+    "selfempl",
+    "computer",
+    "האוכלוסין",
+    "selfemployedwage",
+    "statareacmb",
+    "not",
+    "hrswrkwk",
+    "arabs",
+    "change",
+    "and",
+    "eretz",
+    "married",
+    "residences",
+    "institutions"
+  ],
+  "resources": [
+    {
+      "resource_id": "5474c592-3faa-4298-8783-a8da9acc040f",
+      "title": "אוכלוסייה לפי גיל",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "Age",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Total_Population",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Jews_and_Others",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Jews",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Non_Arab_Christians",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Not_Classified_By_Religion",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Arabs_Total",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "Moslems",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Arab_Christians",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Druze",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Foreigners",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Total_Population_Male",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Jews_and_Others_Male",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Jews_Male",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Non_Arab_Christians_Male",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Not_Classified_By_Religion_Male",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Arabs_Total_Male",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "Moslems_Male",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Arab_Christians_Male",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Druze_Male",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Foreigners_Male",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Total_Population_Female",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Jews_and_Others_Female",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Jews_Female",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Non_Arab_Christians_Female",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Not_Classified_By_Religion_Female",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Arabs_Total_Female",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "Moslems_Female",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Arab_Christians_Female",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Druze_Female",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Foreigners_Female",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 87
+    },
+    {
+      "resource_id": "38207cf8-afe2-48ed-a3b0-c8f70c796015",
+      "title": "אוכלוסייה ומשקי בית לפי יישוב",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "LocalityCode",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "LocNameHeb",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "Total_Population",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Residents_in_collective_residences_and_institutions",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "Foreigners",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Households",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Average_size_of_household",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 1222
+    },
+    {
+      "resource_id": "9a9e085f-3bc8-41df-b15f-be0daaf99e30",
+      "title": "נתונים נבחרים לפי יישובים ואזורים סטטיסטיים - מפקד 2022",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "LocNameHeb",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "LocalityCode",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "StatArea",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "StatAreaCmb",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "pop_approx",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "change_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "pop_density",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "religion",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ReligionHeb",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "sexRatio",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "inst_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Foreign_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "age0_19_pcnt",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "age20_64_pcnt",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "age65_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "DependencyRatio",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "age_median",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "m_age_median",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "w_age_median",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "married18_34_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "married45_54_pcnt",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "j_isr_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "j_abr_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "aliya2002_pcnt",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "aliya2010_pcnt",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "israel_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "asia_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "africa_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "europe_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "america_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "shem_eretz1",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "MarriageAge_mdn",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "m_MarriageAge_mdn",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "w_MarriageAge_mdn",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "ChldBorn_avg",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "koshi5_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "koshi65_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "AcadmCert_pcnt",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "WrkY_pcnt",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "Empl_pcnt",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "SelfEmpl_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "HrsWrkWk_avg",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Wrk_15_17_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "WrkOutLoc_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "employeesAnnual_medWage",
+          "type": "numeric",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "EmployeesWage_decile9Up",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SelfEmployedAnnual_medWage",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "SelfEmployedWage_decile9Up",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "hh_total_approx",
+          "type": "numeric",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "size_avg",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hh0_5_pcnt",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "hh18_24_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "hh_MidatDatiyut",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "hh_MidatDatiyut_Name",
+          "type": "numeric",
+          "semantic": "name"
+        },
+        {
+          "name": "Computer_avg",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "Vehicle0_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Vehicle2up_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "Parking_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "own_pcnt",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "rent_pcnt",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 3379
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": false
+  }
+}

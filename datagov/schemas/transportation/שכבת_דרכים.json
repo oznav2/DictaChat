@@ -1,0 +1,39 @@
+{
+  "dataset_id": "e2c38b34-961c-456f-8da7-99bb9c771150",
+  "title": "שכבת דרכים",
+  "organization": "המרכז למיפוי ישראל",
+  "tags": [
+    "סביבה",
+    "שכבת דרכים",
+    "תחבורה"
+  ],
+  "categories": [
+    "transportation",
+    "environment",
+    "geography"
+  ],
+  "keywords": [
+    "למיפוי",
+    "תחבורה",
+    "ישראל",
+    "המרכז",
+    "סביבה",
+    "דרכים"
+  ],
+  "resources": [
+    {
+      "resource_id": "f9347b1b-ca34-4254-8f72-5076a82a059f",
+      "title": "שכבת דרכים כולל קואורדינטות",
+      "format": "XML",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

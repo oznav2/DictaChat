@@ -1,0 +1,204 @@
+{
+  "dataset_id": "7169b38c-8aa1-47f6-938c-518ef7a59270",
+  "title": "סיוע משפטי",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "מפורט",
+    "במערכת",
+    "התמחות",
+    "סוג",
+    "חודשיים",
+    "המוגדרת",
+    "תשלום",
+    "ביטול",
+    "מכסת",
+    "קביעת",
+    "סיבת",
+    "מיוחדת",
+    "סיוע",
+    "משפטי",
+    "חיוב",
+    "מחוז",
+    "פטור",
+    "משרד",
+    "מקדמה",
+    "תיקים",
+    "השלמה",
+    "אתר",
+    "בפועל",
+    "תאריך",
+    "המשפטים",
+    "סטטוס",
+    "סכום",
+    "אזורים",
+    "שפות",
+    "הפגישה",
+    "פעולה",
+    "מומחיות",
+    "פגישה"
+  ],
+  "resources": [
+    {
+      "resource_id": "39c7ba4e-499d-476a-9ff9-c1736ec3323a",
+      "title": "קובץ_אגרות      ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "מקדמה/השלמה",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג פעולה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סכום חיוב",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "סכום תשלום בפועל",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך תשלום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סוג פטור",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סיבת פטור",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סיבת פטור מפורט",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 2193069
+    },
+    {
+      "resource_id": "08591a8d-0a55-46ce-bc5b-42466cfbd568",
+      "title": "קובץ_פגישות",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "אתר",
+          "type": "text",
+          "semantic": "url"
+        },
+        {
+          "name": "תאריך קביעת הפגישה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך הפגישה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "תאריך ביטול",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "תאריך פגישה בפועל",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 2015959
+    },
+    {
+      "resource_id": "3b1dc8ce-e676-4e1c-bae6-a5604cbec188",
+      "title": "עורכי דין",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שפות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "אזורים",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "התמחות",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סטטוס",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "מחוז",
+          "type": "text",
+          "semantic": "district"
+        },
+        {
+          "name": "מומחיות מיוחדת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מכסת תיקים חודשיים המוגדרת במערכת",
+          "type": "numeric",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 4423
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

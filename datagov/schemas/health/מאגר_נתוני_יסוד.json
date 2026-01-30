@@ -1,0 +1,122 @@
+{
+  "dataset_id": "35f9e1d4-a407-4d8f-af87-9e3ccb02c05d",
+  "title": "מאגר נתוני יסוד",
+  "organization": "משרד הרווחה והביטחון החברתי",
+  "tags": [
+    "בריאות ורווחה"
+  ],
+  "categories": [
+    "health",
+    "water",
+    "welfare"
+  ],
+  "keywords": [
+    "אשכול",
+    "חברתי",
+    "מוכרים",
+    "יסוד",
+    "משרד",
+    "רשות",
+    "שנה",
+    "סמל",
+    "תיקים",
+    "ורווחה",
+    "הרווחה",
+    "החברתי",
+    "והביטחון",
+    "בריאות",
+    "כלכלי"
+  ],
+  "resources": [
+    {
+      "resource_id": "b6dcbb4c-4102-43d2-a5a1-8e049457fe7a",
+      "title": "מספר תיקים ומוכרים מפורט לפי רשות ואשכול חברתי כלכלי בעשור האחרון",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סמל רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "שם רשות",
+          "type": "text",
+          "semantic": "city"
+        },
+        {
+          "name": "אשכול חברתי כלכלי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר מוכרים",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר תיקים",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 2552
+    },
+    {
+      "resource_id": "1ac83090-dcae-41b5-80a5-0a22fe89427d",
+      "title": "הסבר שדות  - מספר תיקים מוכרים מפורט לפי רשות ואשכול חברתי כלכלי בעשור האחרון",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "807745f4-0e6b-4c3a-841c-fbed708a2485",
+      "title": "מספר תיקים ומוכרים מסוכם לפי אשכול חברתי כלכלי בעשור האחרון ",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שנה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "אשכול חברתי",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "מספר מוכרים",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "מספר תיקים",
+          "type": "text",
+          "semantic": "count"
+        }
+      ],
+      "total_records": 100
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

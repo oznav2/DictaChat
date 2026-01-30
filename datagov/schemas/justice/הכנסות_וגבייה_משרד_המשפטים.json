@@ -1,0 +1,344 @@
+{
+  "dataset_id": "aa009a0c-8103-4641-9ff4-247b5e1fe303",
+  "title": "הכנסות וגבייה משרד המשפטים",
+  "organization": "משרד המשפטים",
+  "tags": [
+    "משרד המשפטים"
+  ],
+  "categories": [
+    "justice"
+  ],
+  "keywords": [
+    "פתיחת",
+    "התיישנות",
+    "התאמה",
+    "סוג",
+    "היחידה",
+    "וביטול",
+    "האגרה",
+    "בשקלים",
+    "החיוב",
+    "וגבייה",
+    "הכנסות",
+    "סיבת",
+    "חיוב",
+    "החוב",
+    "פטור",
+    "יתרה",
+    "משרד",
+    "קוד",
+    "להתאמה",
+    "תאריך",
+    "המשפטים",
+    "ההתאמה",
+    "סטטוס",
+    "סכום",
+    "הוספה",
+    "תיק",
+    "עדכון",
+    "תנועה"
+  ],
+  "resources": [
+    {
+      "resource_id": "69adb272-de96-4db0-bb3c-19477e3014f8",
+      "title": "הכנסות וגבייה משרד המשפטים לשנת 2020",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם היחידה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד תנועה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "סטטוס תנועה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך סטטוס תנועה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סיבת פטור וביטול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג תיק",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שם האגרה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג האגרה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סכום בשקלים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך עדכון סכום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שנת חיוב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תאריך פתיחת חיוב",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סטטוס התאמה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך סטטוס התאמה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "יתרה להתאמה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנת התיישנות החוב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תאריך הוספה",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 3048138
+    },
+    {
+      "resource_id": "acec82d2-886d-4569-af81-ec69f2832350",
+      "title": "הכנסות וגבייה משרד המשפטים לשנת 2019",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם היחידה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד תנועה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "סטטוס תנועה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך סטטוס תנועה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סיבת פטור וביטול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג תיק",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שם האגרה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג האגרה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סכום בשקלים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך עדכון סכום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שנת החיוב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תאריך פתיחת החיוב",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סטטוס ההתאמה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך סטטוס ההתאמה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "יתרה להתאמה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנת התיישנות החוב",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תאריך הוספה",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 2968927
+    },
+    {
+      "resource_id": "bae6f1a6-9ce5-447b-9f0e-1157288c231f",
+      "title": "הכנסות וגבייה משרד המשפטים לשנת 2018",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "שם היחידה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "קוד תנועה",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "סטטוס תנועה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך סטטוס תנועה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סיבת פטור וביטול",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "סוג תיק",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "שם האגרה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "סוג האגרה",
+          "type": "text",
+          "semantic": "type"
+        },
+        {
+          "name": "סכום בשקלים",
+          "type": "numeric",
+          "semantic": "count"
+        },
+        {
+          "name": "תאריך עדכון סכום",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שנת חיוב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תאריך פתיחת חיוב",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "סטטוס התאמה",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "תאריך סטטוס התאמה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "יתרה להתאמה",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "שנת התיישנות החוב",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "תאריך הוספה",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 1972837
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

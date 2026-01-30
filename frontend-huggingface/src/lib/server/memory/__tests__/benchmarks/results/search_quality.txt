@@ -1,18 +1,18 @@
 ============================= test session starts =============================
 platform: node v20.18.1
 test framework: vitest
-timestamp: 2026-01-11T16:08:11.348Z
+timestamp: 2026-01-28T09:35:55.837Z
 rootdir: /home/ilan/BricksLLM/frontend-huggingface
 
 collecting ... collected 9 items
 
-test_search_quality::test_synonym_understanding PASSED (13ms) [car_synonym_found=1.000, vehicle_synonym_found=1.000, joyful_synonym_found=1.000, synonym_success_rate=1.000] [ 11%]
-test_search_quality::test_hebrew_synonym_understanding PASSED (1ms) [hebrew_synonym_results=2.000] [ 22%]
-test_search_quality::test_typo_tolerance PASSED (3ms) [typo_queries=3.000, typo_matches=3.000, typo_tolerance_rate=1.000] [ 33%]
-test_search_quality::test_acronym_expansion PASSED (7ms) [ai_full_found_acronym=1.000, api_full_found_acronym=1.000, ai_acronym_found_full=1.000, acronym_success_rate=1.000] [ 44%]
+test_search_quality::test_synonym_understanding PASSED (8ms) [car_synonym_found=1.000, vehicle_synonym_found=1.000, joyful_synonym_found=1.000, synonym_success_rate=1.000] [ 11%]
+test_search_quality::test_hebrew_synonym_understanding PASSED (2ms) [hebrew_synonym_results=2.000] [ 22%]
+test_search_quality::test_typo_tolerance PASSED (2ms) [typo_queries=3.000, typo_matches=3.000, typo_tolerance_rate=1.000] [ 33%]
+test_search_quality::test_acronym_expansion PASSED (3ms) [ai_full_found_acronym=1.000, api_full_found_acronym=1.000, ai_acronym_found_full=1.000, acronym_success_rate=1.000] [ 44%]
 test_search_quality::test_result_diversity PASSED (1ms) [total_topics=6.000, topics_in_results=5.000, diversity_ratio=1.000] [ 56%]
-test_search_quality::test_recency_vs_relevance PASSED (0ms) [old_relevant_found=1.000, new_relevant_found=1.000, results_count=3.000] [ 67%]
-test_search_quality::test_partial_match_quality PASSED (1ms) [partial_match_relevant=3.000, partial_match_total=3.000, ethiopian_relevant=2.000, partial_precision=1.000] [ 78%]
+test_search_quality::test_recency_vs_relevance PASSED (1ms) [old_relevant_found=1.000, new_relevant_found=1.000, results_count=3.000] [ 67%]
+test_search_quality::test_partial_match_quality PASSED (2ms) [partial_match_relevant=3.000, partial_match_total=3.000, ethiopian_relevant=2.000, partial_precision=1.000] [ 78%]
 test_search_quality::test_bilingual_search_quality PASSED (1ms) [english_search_found=1.000, hebrew_search_found=1.000, mixed_search_found=1.000, bilingual_success_rate=1.000] [ 89%]
 test_search_quality::test_search_quality PASSED (1ms) [mrr=1.000, ndcg_at_5=1.000, precision_at_5=0.600, results_count=5.000, relevant_in_corpus=3.000] [100%]
 
@@ -51,5 +51,5 @@ Metrics Summary:
   relevant_in_corpus: avg=3.000, min=3.000, max=3.000
 
 ============================== test results ===================================
-9 passed, 0 failed in 0.06s
+9 passed, 0 failed in 0.04s
 ===============================================================================

@@ -1,0 +1,93 @@
+{
+  "dataset_id": "07f3f91d-62f1-409c-916a-5fa3559c206f",
+  "title": "התקשרות המדינה עם עורכי דין של הוועדה להעסקת עורכי דין חיצוניים",
+  "organization": "משרד המשפטים",
+  "tags": [],
+  "categories": [
+    "justice",
+    "economy"
+  ],
+  "keywords": [
+    "חיצוניים",
+    "ייבחר",
+    "מבוקשת",
+    "עוד",
+    "הוועדה",
+    "המדינה",
+    "להעסקת",
+    "עורכי",
+    "התקשרות",
+    "העסקה",
+    "באיזה",
+    "משרד",
+    "מזהה",
+    "הפונה",
+    "דין",
+    "תאריך",
+    "המשפטים",
+    "תחום",
+    "אופן",
+    "פנייה",
+    "פעולה",
+    "הגוף"
+  ],
+  "resources": [
+    {
+      "resource_id": "d0081345-b331-446b-ac68-9d58255cdb6e",
+      "title": "הוראות לפתיחת קובץ מאגר באמצעות תוכנת excel",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "81108843-f82c-4d35-92fe-ddb9e9aad405",
+      "title": "התקשרות המדינה עם עורכי דין",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "מזהה פנייה",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "שם הגוף הפונה",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "תאריך פנייה",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "שם משרד/עוד/באיזה אופן ייבחר",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "פעולה מבוקשת",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "תחום העסקה",
+          "type": "text",
+          "semantic": null
+        }
+      ],
+      "total_records": 252
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": true
+  }
+}

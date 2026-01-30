@@ -4,14 +4,14 @@
   "description": "Schema for MCP (Model Context Protocol) server configuration files",
   "type": "object",
   "required": [
-    "mcpServers"
+    "servers"
   ],
   "properties": {
-    "mcpServers": {
+    "servers": {
       "type": "object",
       "description": "MCP server and extension configurations keyed by server name",
       "patternProperties": {
-        "^[a-z0-9-]+$": {
+        "^[a-zA-Z0-9-]+$": {
           "oneOf": [
             {
               "type": "object",
@@ -67,6 +67,27 @@
                       "DEBUG": "true"
                     }
                   ]
+                },
+                "timeout": {
+                  "type": "integer",
+                  "description": "Timeout in milliseconds"
+                },
+                "disabled": {
+                  "type": "boolean",
+                  "description": "Whether the server is disabled"
+                },
+                "autoApprove": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "List of auto-approved permissions"
+                },
+                "retries": {
+                    "type": "integer"
+                },
+                "retryDelay": {
+                    "type": "integer"
                 }
               },
               "additionalProperties": false
@@ -113,6 +134,24 @@
                   "additionalProperties": {
                     "type": "string"
                   }
+                },
+                "timeout": {
+                  "type": "integer"
+                },
+                "disabled": {
+                  "type": "boolean"
+                },
+                "autoApprove": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "retries": {
+                    "type": "integer"
+                },
+                "retryDelay": {
+                    "type": "integer"
                 }
               },
               "additionalProperties": false
@@ -158,6 +197,24 @@
                   "additionalProperties": {
                     "type": "string"
                   }
+                },
+                "timeout": {
+                  "type": "integer"
+                },
+                "disabled": {
+                  "type": "boolean"
+                },
+                "autoApprove": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "retries": {
+                    "type": "integer"
+                },
+                "retryDelay": {
+                    "type": "integer"
                 }
               },
               "additionalProperties": false

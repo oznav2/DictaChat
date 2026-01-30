@@ -1,0 +1,257 @@
+{
+  "dataset_id": "75812a55-3f2c-4cec-9e54-d1a977cabdb7",
+  "title": "נתיבי העדפה מתוכננים",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "GIS",
+    "אוטובוס",
+    "ממג",
+    "נתיבי העדפה",
+    "נתצ"
+  ],
+  "categories": [
+    "transportation",
+    "geography"
+  ],
+  "keywords": [
+    "ממג",
+    "נתצ",
+    "ptldir",
+    "start",
+    "status",
+    "streetname",
+    "אוטובוס",
+    "העדפה",
+    "gis",
+    "trafcode",
+    "execoper",
+    "division",
+    "roadname",
+    "account",
+    "בדרכים",
+    "source",
+    "ptltype",
+    "והבטיחות",
+    "מתוכננים",
+    "inaugur",
+    "lastchange",
+    "urbantype",
+    "finish",
+    "authority",
+    "ptlseg",
+    "משרד",
+    "נתיבי",
+    "numlother",
+    "bicycle",
+    "yearmonth",
+    "shape",
+    "optype",
+    "tactical",
+    "oid",
+    "planoper",
+    "ptlcode",
+    "fromplan",
+    "trafauth",
+    "numlanes",
+    "authcode",
+    "length",
+    "התחבורה",
+    "ptlname"
+  ],
+  "resources": [
+    {
+      "resource_id": "fbcc4ecb-9844-4573-847d-fd10ebd04fa6",
+      "title": "NATAZ_PLANNED_SHP",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "6ea7307f-f79f-4d9b-b8b1-c9e97521cbd2",
+      "title": "NATAZ_PLANNED_KMZ",
+      "format": "ZIP",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "a3952398-2aed-4d0e-bcd8-253d32fe9975",
+      "title": "NATAZ_PLANNED_CSV",
+      "format": "CSV",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "OID",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "PTLNAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "PTLSEG",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "AUTHCODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "TRAFCODE",
+          "type": "numeric",
+          "semantic": "id"
+        },
+        {
+          "name": "STREETNAME",
+          "type": "text",
+          "semantic": "address"
+        },
+        {
+          "name": "ROADNAME",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "FINISH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PTLDIR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "ACCOUNT",
+          "type": "text",
+          "semantic": "count"
+        },
+        {
+          "name": "INAUGUR",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "LASTCHANGE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PTLTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "YEARMONTH",
+          "type": "numeric",
+          "semantic": "date"
+        },
+        {
+          "name": "LENGTH_M",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "URBANTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "BICYCLE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "DIVISION",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "OPTYPE",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TACTICAL",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "PLANOPER",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "EXECOPER",
+          "type": "text",
+          "semantic": "coordinate_x"
+        },
+        {
+          "name": "FROMPLAN",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "SOURCE",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "NUMLANES",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "NUMLOTHER",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "PTLCODE",
+          "type": "text",
+          "semantic": "id"
+        },
+        {
+          "name": "AUTHORITY",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "TRAFAUTH",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "START_",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "STATUS",
+          "type": "text",
+          "semantic": "status"
+        },
+        {
+          "name": "Shape_Length",
+          "type": "numeric",
+          "semantic": null
+        }
+      ],
+      "total_records": 3439
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": true,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

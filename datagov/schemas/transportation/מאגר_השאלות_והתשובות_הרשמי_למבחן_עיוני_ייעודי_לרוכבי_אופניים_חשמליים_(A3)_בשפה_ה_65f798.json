@@ -1,0 +1,116 @@
+{
+  "dataset_id": "65f7981a-7b40-45dd-bd88-5643569dc361",
+  "title": "מאגר השאלות והתשובות הרשמי למבחן עיוני ייעודי לרוכבי אופניים חשמליים (A3) בשפה הרוסית",
+  "organization": "משרד התחבורה והבטיחות בדרכים",
+  "tags": [
+    "מבחן נהיגה",
+    "מבחן נהיגה עיוני",
+    "משרד התחבורה",
+    "שאלות תאוריה"
+  ],
+  "categories": [
+    "transportation",
+    "water"
+  ],
+  "keywords": [
+    "language",
+    "והתשובות",
+    "אופניים",
+    "מבחן",
+    "חשמליים",
+    "הרשמי",
+    "ייעודי",
+    "הרוסית",
+    "בדרכים",
+    "שאלות",
+    "השאלות",
+    "והבטיחות",
+    "category",
+    "description",
+    "תאוריה",
+    "בשפה",
+    "משרד",
+    "pubdate",
+    "למבחן",
+    "עיוני",
+    "לרוכבי",
+    "lastbuilddate",
+    "version",
+    "title",
+    "נהיגה",
+    "generator",
+    "התחבורה"
+  ],
+  "resources": [
+    {
+      "resource_id": "96c18b29-a098-43d6-9ca7-1787711e089b",
+      "title": "מאגר השאלות והתשובות בשפה הרוסית A3",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "version",
+          "type": "numeric",
+          "semantic": null
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "lastBuildDate",
+          "type": "text",
+          "semantic": "date"
+        },
+        {
+          "name": "generator",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "language",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "title2",
+          "type": "text",
+          "semantic": "name"
+        },
+        {
+          "name": "description4",
+          "type": "text",
+          "semantic": null
+        },
+        {
+          "name": "category",
+          "type": "text",
+          "semantic": "coordinate_y"
+        },
+        {
+          "name": "pubDate",
+          "type": "text",
+          "semantic": "date"
+        }
+      ],
+      "total_records": 40
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": true,
+    "has_email": false,
+    "has_date": true
+  }
+}

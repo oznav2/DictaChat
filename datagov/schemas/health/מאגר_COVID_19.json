@@ -1,0 +1,50 @@
+{
+  "dataset_id": "f54e79b2-3e6b-4b65-a857-f93e47997d9c",
+  "title": "מאגר COVID-19",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "covid19",
+    "משרד הבריאות",
+    "קורונה"
+  ],
+  "categories": [
+    "health",
+    "water"
+  ],
+  "keywords": [
+    "קורונה",
+    "משרד",
+    "הבריאות",
+    "covid"
+  ],
+  "resources": [
+    {
+      "resource_id": "4d567a96-a3bc-4979-ad37-2c201b2c3b3c",
+      "title": "הודעות חשובות בהקשר לטבלאות",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "b45d0790-0a96-49fc-9bb1-6b488eb4b67b",
+      "title": "הנחיות לעבודה ולהורדת טבלאות",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    },
+    {
+      "resource_id": "25390689-4c0c-4be7-8d63-eb91aa8c1b77",
+      "title": "COVID-19",
+      "format": "PDF",
+      "fields": [],
+      "note": "Non-datastore format"
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}

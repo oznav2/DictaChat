@@ -139,7 +139,9 @@
 				`${base}/api/model/providers/detect`,
 				{ timeoutMs: 5000, retries: 0 }
 			)) as { providers?: ProviderStatus[] };
-			providerStatuses = Array.isArray(detect?.providers) ? (detect.providers as ProviderStatus[]) : [];
+			providerStatuses = Array.isArray(detect?.providers)
+				? (detect.providers as ProviderStatus[])
+				: [];
 		} catch (e) {
 			providerStatusError = "Failed to detect providers";
 		}
@@ -162,7 +164,9 @@
 		</div>
 	{/if}
 
-	<div class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+	<div
+		class="rounded-xl border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+	>
 		<div class="flex items-start justify-between gap-3">
 			<div class="min-w-0">
 				<div class="text-[13px] font-medium text-gray-800 dark:text-gray-200">מודל פעיל וספקים</div>
@@ -185,7 +189,9 @@
 		</div>
 
 		{#if providerStatusError}
-			<div class="mt-2 rounded-md bg-red-50 px-2 py-1 text-xs text-red-700 dark:bg-red-500/10 dark:text-red-300">
+			<div
+				class="mt-2 rounded-md bg-red-50 px-2 py-1 text-xs text-red-700 dark:bg-red-500/10 dark:text-red-300"
+			>
 				{providerStatusError}
 			</div>
 		{/if}
@@ -212,7 +218,7 @@
 										: "bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-300",
 								]}
 							>
-								{p.ok ? "OK" : p.error ?? "DOWN"}
+								{p.ok ? "OK" : (p.error ?? "DOWN")}
 							</span>
 						</div>
 					</div>

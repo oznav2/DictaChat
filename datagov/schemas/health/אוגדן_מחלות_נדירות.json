@@ -1,0 +1,49 @@
+{
+  "dataset_id": "7b840685-b166-46aa-9612-883bc9d2b91e",
+  "title": "אוגדן מחלות נדירות",
+  "organization": "משרד הבריאות",
+  "tags": [
+    "מחלות",
+    "מחלות נדירות"
+  ],
+  "categories": [
+    "health"
+  ],
+  "keywords": [
+    "name",
+    "נדירות",
+    "משרד",
+    "מחלות",
+    "rare",
+    "diseases",
+    "הבריאות",
+    "אוגדן"
+  ],
+  "resources": [
+    {
+      "resource_id": "926899e6-079b-48e4-a4f9-515d8940a419",
+      "title": "אוגדן מחלות נדירות",
+      "format": "XLSX",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int",
+          "semantic": "id"
+        },
+        {
+          "name": "rare_diseases_name",
+          "type": "text",
+          "semantic": "name"
+        }
+      ],
+      "total_records": 9784
+    }
+  ],
+  "field_availability": {
+    "has_phone": false,
+    "has_address": false,
+    "has_location": false,
+    "has_email": false,
+    "has_date": false
+  }
+}
